@@ -8,7 +8,7 @@ namespace AnatoliaLibrary
 {
     class AnatoliaWebClient
     {
-        // Sending Web requests using RestSharp
+        // Sending Web requests using Xamarin RestSharp library
         public void SendPostRequest()
         {
 
@@ -17,6 +17,5 @@ namespace AnatoliaLibrary
         {
 
         }
-
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnatoliaLibrary
+namespace AnatoliaLibrary.user
 {
-    public class AnatoliaUser : User
+    public class AnatoliaUserModel 
     {
         string _userId;
         public string UserId
@@ -30,16 +30,24 @@ namespace AnatoliaLibrary
             get { return _lastName; }
             set { _lastName = value; }
         }
-        public AnatoliaUser(string parseObjectId, string userName)
+        public AnatoliaUserModel(string parseObjectId, string userName)
         {
             _userId = parseObjectId;
             _username = userName;
         }
         public DateTime BirthDate { get; set; }
         public string ShippingAddress { get; set; }
-        public async Task SaveAsync()
+        public async Task<bool> SaveAsync()
         {
             await Task.Run(() => { return; });
+            throw new NotImplementedException();
+        }
+        public async Task<bool> LoginAsync()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> SendOrderAsync(Order order)
+        {
             throw new NotImplementedException();
         }
     }

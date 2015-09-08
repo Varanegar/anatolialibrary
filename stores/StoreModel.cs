@@ -1,0 +1,18 @@
+﻿using AnatoliaLibrary.products;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AnatoliaLibrary.stores
+{
+    public class StoreModel
+    {
+        public async Task SaveRate()
+        {
+            throw new NotImplementedException();
+        }
+        
+    }
+}

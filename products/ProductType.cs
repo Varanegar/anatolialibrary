@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnatoliaLibrary.products
 {
-    public class ProductCategory
+    public class ProductType
     {
-        public static List<Product> ListProducts(string catId)
-        {
-            return new List<Product>();
-        }
     }
 }
