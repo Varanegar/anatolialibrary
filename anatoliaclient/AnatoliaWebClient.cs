@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnatoliaLibrary
+namespace AnatoliaLibrary.anatoliaclient
 {
-    class AnatoliaWebClient
+    public abstract class AnatoliaWebClient
     {
         // Sending Web requests using Xamarin RestSharp library
         public void SendPostRequest()
@@ -17,5 +17,6 @@ namespace AnatoliaLibrary
         {
 
         }
+        public abstract bool IsOnline();
     }
 }

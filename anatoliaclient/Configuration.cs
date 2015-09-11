@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnatoliaLibrary
+namespace AnatoliaLibrary.anatoliaclient
 {
     public class Configuration
     {

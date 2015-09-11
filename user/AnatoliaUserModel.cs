@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AnatoliaLibrary.anatoliaclient;
+using Parse;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AnatoliaLibrary.user
 {
-    public class AnatoliaUserModel 
+    public class AnatoliaUserModel : SyncDataModel
     {
         string _userId;
         public string UserId
@@ -30,17 +32,17 @@ namespace AnatoliaLibrary.user
             get { return _lastName; }
             set { _lastName = value; }
         }
-        public AnatoliaUserModel(string parseObjectId, string userName)
+        public AnatoliaUserModel(string parseObjectId, string userName, AnatoliaClient client)
+            : base(client)
         {
             _userId = parseObjectId;
             _username = userName;
         }
         public DateTime BirthDate { get; set; }
-        public string ShippingAddress { get; set; }
-        public async Task<bool> SaveAsync()
+        List<ShippingInfo> _shippingInfoList;
+        public List<ShippingInfo> ShippingInfoList
         {
-            await Task.Run(() => { return; });
-            throw new NotImplementedException();
+            get { return _shippingInfoList; }
         }
         public async Task<bool> LoginAsync()
         {
@@ -48,6 +50,29 @@ namespace AnatoliaLibrary.user
         }
         public async Task<bool> SendOrderAsync(Order order)
         {
+            throw new NotImplementedException();
+        }
+        public async void RegisterAsync(string userName, string firstName, string lastName)
+        {
+            ParseObject anatoliaUser = new ParseObject("AnatoliaUser");
+            await anatoliaUser.SaveAsync();
+            _userId = anatoliaUser.ObjectId;
+            _username = userName;
+            FirstName = firstName;
+            LastName = lastName;
+            await SaveAsync();
+        }
+        public async override void LocalSaveAsync()
+        {
+            var connection = Client.DbClient.GetConnection();
+            // todo: Save user object in database
+            await Task.Run(() => { return; });
+            throw new NotImplementedException();
+        }
+
+        public async override void CloudSaveAsync()
+        {
+            await Task.Run(() => { return; });
             throw new NotImplementedException();
         }
     }

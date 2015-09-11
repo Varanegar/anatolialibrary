@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnatoliaLibrary.anatoliaclient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,9 @@ namespace AnatoliaLibrary.user
     public class UserLog
     {
         IFileIO _file;
-        public UserLog(IFileIO file)
+        public UserLog(AnatoliaClient client)
         {
-            _file = file;
+            _file = client.FileIO;
         }
         public async Task LogActivityAsync()
         {
