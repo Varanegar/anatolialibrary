@@ -32,11 +32,10 @@ namespace AnatoliaLibrary.user
             get { return _lastName; }
             set { _lastName = value; }
         }
-        public AnatoliaUserModel(string parseObjectId, string userName, AnatoliaClient client)
+        public AnatoliaUserModel(AnatoliaClient client)
             : base(client)
         {
-            _userId = parseObjectId;
-            _username = userName;
+
         }
         public DateTime BirthDate { get; set; }
         List<ShippingInfo> _shippingInfoList;
@@ -52,7 +51,7 @@ namespace AnatoliaLibrary.user
         {
             throw new NotImplementedException();
         }
-        public async void RegisterAsync(string userName, string firstName, string lastName)
+        public async Task RegisterAsync(string userName, string firstName, string lastName)
         {
             ParseObject anatoliaUser = new ParseObject("AnatoliaUser");
             await anatoliaUser.SaveAsync();
@@ -67,13 +66,13 @@ namespace AnatoliaLibrary.user
             var connection = Client.DbClient.GetConnection();
             // todo: Save user object in database
             await Task.Run(() => { return; });
-            throw new NotImplementedException();
+            
         }
 
         public async override void CloudSaveAsync()
         {
             await Task.Run(() => { return; });
-            throw new NotImplementedException();
+
         }
     }
 }
