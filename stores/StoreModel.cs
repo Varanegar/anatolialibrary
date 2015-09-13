@@ -9,10 +9,6 @@ namespace AnatoliaLibrary.stores
 {
     public class StoreModel
     {
-        public async Task SaveRate()
-        {
-            throw new NotImplementedException();
-        }
         
     }
 }
