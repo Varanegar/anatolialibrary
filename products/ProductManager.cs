@@ -52,14 +52,19 @@ namespace AnatoliaLibrary.products
         }
         public async Task<RateResponse> SaveRateAsync(AnatoliaUserModel user, ProductModel product, int rate)
         {
-            var client = new RestClient(Configuration.PortalUri);
-            // client.Authenticator = new HttpBasicAuthenticator(username, password);
-            var request = new RestRequest(String.Format("resource/{1}", Configuration.RateProductUri), HttpMethod.Post);
-            request.AddParameter("product_id", product.Id);
-            request.AddParameter("rate", rate);
-            request.AddParameter("user_id", user.UserId);
-            var response = await client.Execute<RateResponse>(request);
-            return response.Data;
+            if (_client.WebClient.IsOnline())
+            {
+                var client = new RestClient(Configuration.PortalUri);
+                // client.Authenticator = new HttpBasicAuthenticator(username, password);
+                var request = new RestRequest(String.Format("resource/{1}", Configuration.RateProductUri), HttpMethod.Post);
+                request.AddParameter("product_id", product.Id);
+                request.AddParameter("rate", rate);
+                request.AddParameter("user_id", user.UserId);
+                var response = await client.Execute<RateResponse>(request);
+                return response.Data;
+            }
+            else
+                return null;
         }
 
         public class RateResponse
