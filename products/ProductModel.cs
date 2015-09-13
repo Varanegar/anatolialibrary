@@ -24,18 +24,12 @@ namespace AnatoliaLibrary.products
         {
             get { return _rateCount; }
         }
-        public async void Rate()
-        {
-            _rateCount = await SaveRateAsync();
-        }
-        async Task<int> SaveRateAsync()
-        {
-            throw new NotImplementedException();
-        }
         public ProductName Name { get; set; }
         public class ProductName
         {
             public string Name { get; set; }
         }
+
+        public string Id { get; }
     }
 }
