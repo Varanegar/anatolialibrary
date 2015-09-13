@@ -32,6 +32,12 @@ namespace AnatoliaLibrary.user
             get { return _lastName; }
             set { _lastName = value; }
         }
+        MailAddress _email;
+        public MailAddress Email
+        {
+            get { return _email; }
+            set { _email = value; }
+        }
         public AnatoliaUserModel(AnatoliaClient client)
             : base(client)
         {
@@ -66,7 +72,7 @@ namespace AnatoliaLibrary.user
             var connection = Client.DbClient.GetConnection();
             // todo: Save user object in database
             await Task.Run(() => { return; });
-            
+
         }
 
         public async override void CloudSaveAsync()
