@@ -8,5 +8,6 @@ namespace AnatoliaLibrary.stores
 {
     public class DeliveryModel
     {
+        
     }
 }

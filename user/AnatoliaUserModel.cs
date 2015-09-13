@@ -59,7 +59,7 @@ namespace AnatoliaLibrary.user
             if (_favorites.ContainsKey(name))
                 return false;
             else
-                _favorites.Add(name, new FavoritsModel());
+                _favorites.Add(name, new FavoritsModel(_client));
             return true;
         }
         public bool RemoveFavoritsModel(string name)

@@ -8,7 +8,7 @@ namespace AnatoliaLibrary.anatoliaclient
 {
     public abstract class SyncDataModel
     {
-        AnatoliaClient _client;
+        protected AnatoliaClient _client;
         protected AnatoliaClient Client
         {
             get { return _client; }

@@ -29,7 +29,7 @@ namespace AnatoliaLibrary.products
         {
             public string Name { get; set; }
         }
-
-        public string Id { get; }
+        string _id;
+        public string Id { get { return _id; } }
     }
 }

@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace AnatoliaLibrary.user
 {
-    class FavoritsModel : SyncDataModel
+    public class FavoritsModel : SyncDataModel
     {
+        public FavoritsModel(AnatoliaClient client) : base(client) { }
         Dictionary<ProductModel, int> _products;
         public Dictionary<ProductModel, int> Products
         {
@@ -45,7 +46,11 @@ namespace AnatoliaLibrary.user
         {
             try
             {
-                _products[product] -= count;
+                int cnt = _products[product] - count;
+                if (cnt > 0)
+                    _products[product] = cnt;
+                else
+                    _products.Remove(product);
             }
             catch (Exception)
             {
