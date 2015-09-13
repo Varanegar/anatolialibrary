@@ -8,15 +8,6 @@ namespace AnatoliaLibrary.anatoliaclient
 {
     public abstract class AnatoliaWebClient
     {
-        // Sending Web requests using Xamarin RestSharp library
-        public void SendPostRequest()
-        {
-
-        }
-        public void SendGetRequest()
-        {
-
-        }
         public abstract bool IsOnline();
     }
 }

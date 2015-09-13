@@ -49,6 +49,34 @@ namespace AnatoliaLibrary.user
         {
             get { return _shippingInfoList; }
         }
+        Dictionary<string, FavoritsModel> _favorites;
+        public Dictionary<string, FavoritsModel> Favorits
+        {
+            get { return _favorites; }
+        }
+        public bool NewFavoritsModel(string name)
+        {
+            if (_favorites.ContainsKey(name))
+                return false;
+            else
+                _favorites.Add(name, new FavoritsModel());
+            return true;
+        }
+        public bool RemoveFavoritsModel(string name)
+        {
+            if (!_favorites.ContainsKey(name))
+                return false;
+            else
+                try
+                {
+                    _favorites.Remove(name);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            return true;
+        }
         public async Task<bool> LoginAsync()
         {
             throw new NotImplementedException();
