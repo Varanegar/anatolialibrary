@@ -41,7 +41,7 @@ namespace AnatoliaLibrary.user
         public AnatoliaUserModel(AnatoliaClient client)
             : base(client)
         {
-
+            _favorites = new Dictionary<string, FavoritsModel>();
         }
         public DateTime BirthDate { get; set; }
         List<ShippingInfo> _shippingInfoList;
@@ -59,7 +59,7 @@ namespace AnatoliaLibrary.user
             if (_favorites.ContainsKey(name))
                 return false;
             else
-                _favorites.Add(name, new FavoritsModel(_client));
+                _favorites.Add(name, new FavoritsModel(_client, this));
             return true;
         }
         public bool RemoveFavoritsModel(string name)

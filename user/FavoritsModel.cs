@@ -11,7 +11,22 @@ namespace AnatoliaLibrary.user
 {
     public class FavoritsModel : SyncDataModel
     {
-        public FavoritsModel(AnatoliaClient client) : base(client) { }
+        AnatoliaUserModel _user;
+        public FavoritsModel(AnatoliaClient client, AnatoliaUserModel user)
+            : base(client)
+        {
+            _products = new Dictionary<ProductModel, int>();
+            _user = user;
+            if (_client.DbClient.TableExists(FavoritModel.TableName))
+            {
+                var table = _client.DbClient.Connection.Table<FavoritModel>();
+                var query = table.Where(fm => true);
+                foreach (var item in query)
+                {
+                    _products.Add(new ProductModel(item.ProductId), item.Count);
+                }
+            }
+        }
         Dictionary<ProductModel, int> _products;
         public Dictionary<ProductModel, int> Products
         {
@@ -59,12 +74,21 @@ namespace AnatoliaLibrary.user
         }
         public override void LocalSaveAsync()
         {
-            throw new NotImplementedException();
+            var connection = _client.DbClient.GetConnection();
+            if (!_client.DbClient.TableExists(FavoritModel.TableName))
+            {
+                connection.CreateTable<FavoritModel>();
+            }
+            foreach (var item in _products)
+            {
+                var fm = new FavoritModel(_user.UserId, item.Key.Id, item.Value);
+                connection.Insert(fm);
+            }
         }
 
         public override void CloudSaveAsync()
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

@@ -13,8 +13,8 @@ namespace AnatoliaLibrary.anatoliaclient
         {
             get { return _webClient; }
         }
-        ISQLite _sqlite;
-        public ISQLite DbClient
+        AnatoliaSQLite _sqlite;
+        public AnatoliaSQLite DbClient
         {
             get { return _sqlite; }
         }
@@ -23,7 +23,7 @@ namespace AnatoliaLibrary.anatoliaclient
         {
             get { return _fileIO; }
         }
-        public AnatoliaClient(AnatoliaWebClient webClient, ISQLite sqlite, IFileIO fileIO)
+        public AnatoliaClient(AnatoliaWebClient webClient, AnatoliaSQLite sqlite, IFileIO fileIO)
         {
             _webClient = webClient;
             _sqlite = sqlite;
