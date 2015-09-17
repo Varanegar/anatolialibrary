@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7652423f-f5e3-4a1a-958f-7331c42ae409}</ProjectGuid>
+    <ProjectGuid>{7652423F-F5E3-4A1A-958F-7331C42AE409}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Anatoli</RootNamespace>
@@ -34,11 +34,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="App\Adapter\Product\ProductAdapter.cs" />
+    <Compile Include="App\Manager\Product\ProductManager.cs" />
+    <Compile Include="App\Model\Product\ProductListModel.cs" />
+    <Compile Include="App\Model\Product\ProductModel.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
+    <Compile Include="Framework\AnatoliBase\Configuration.cs" />
+    <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
+    <Compile Include="Framework\AnatoliBase\SyncDataModel.cs" />
+    <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />
+    <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
+    <Compile Include="Framework\Manager\BaseManager.cs" />
+    <Compile Include="Framework\Model\BaseListModel.cs" />
+    <Compile Include="Framework\Model\BaseModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\ProductTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SQLite-net">
+      <HintPath>..\..\..\Library\sqlite-net-pcl.1.0.11\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLite-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCL.raw">
+      <HintPath>..\..\..\Library\SQLitePCL.raw_basic.0.7.1\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLitePCL.raw.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -48,5 +71,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
