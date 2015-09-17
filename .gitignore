@@ -47,7 +47,6 @@ dlldata.c
 *.log
 *.vspscc
 *.vssscc
-*.csproj
 .builds
 *.pidb
 *.svclog
