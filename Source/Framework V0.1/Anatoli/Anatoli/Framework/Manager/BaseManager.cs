@@ -11,7 +11,7 @@ namespace Anatoli.Framework.Manager
     public class BaseManager<DataAdapter, DataList, Data>
         where DataAdapter : BaseDataAdapter<DataList, Data>, new()
         where DataList : BaseListModel<Data>, new()
-        where Data : BaseModel, new()
+        where Data : BaseDataModel, new()
     {
         protected DataAdapter dataAdapter = null;
 

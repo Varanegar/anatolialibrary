@@ -5,6 +5,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Anatoli.App.Manager.Product;
+using AnatoliLibrary.Anatoliclient;
+using Android.Net;
 
 namespace AnatoliAndroid
 {
@@ -24,7 +27,15 @@ namespace AnatoliAndroid
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.MyButton);
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            button.Click += delegate
+            {
+                var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
+                AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
+                ProductManager pm = new ProductManager();
+                var p = pm.GetById(0);
+                button.Text = p.Name;
+            };
+
         }
     }
 }

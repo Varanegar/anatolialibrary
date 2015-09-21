@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Adapter.Product
 {
-    public class ProductAdapter : BaseDataAdapter<ProductListModel, ProductModel>
+    public class ProductAdapter : UpdateOnlyDataAdapter<ProductListModel, ProductModel>
     {
     }
 }

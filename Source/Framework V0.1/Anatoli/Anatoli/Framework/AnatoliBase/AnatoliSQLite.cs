@@ -18,7 +18,7 @@ namespace AnatoliLibrary.Anatoliclient
         {
             _connection = GetConnection();
         }
-        public abstract SQLiteConnection GetConnection();
+        protected abstract SQLiteConnection GetConnection();
         public bool TableExists(String tableName)
         {
             SQLiteCommand cmd = _connection.CreateCommand("SELECT * FROM sqlite_master WHERE type = 'table' AND name = @name", new object[] { tableName });

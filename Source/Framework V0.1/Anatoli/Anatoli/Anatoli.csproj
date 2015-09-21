@@ -36,6 +36,8 @@
   <ItemGroup>
     <Compile Include="App\Adapter\Product\ProductAdapter.cs" />
     <Compile Include="App\Manager\Product\ProductManager.cs" />
+    <Compile Include="App\Model\Product\ProductFieldModel.cs" />
+    <Compile Include="App\Model\Product\ProductImage.cs" />
     <Compile Include="App\Model\Product\ProductListModel.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
@@ -43,12 +45,15 @@
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
     <Compile Include="Framework\AnatoliBase\Configuration.cs" />
     <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
-    <Compile Include="Framework\AnatoliBase\SyncDataModel.cs" />
+    <Compile Include="Framework\DataAdapter\SyncDataAdapter.cs" />
+    <Compile Include="Framework\DataAdapter\UpdateOnlyDataAdapter.cs" />
+    <Compile Include="Framework\Model\SyncDataModel.cs" />
     <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />
     <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
     <Compile Include="Framework\Manager\BaseManager.cs" />
     <Compile Include="Framework\Model\BaseListModel.cs" />
-    <Compile Include="Framework\Model\BaseModel.cs" />
+    <Compile Include="Framework\Model\BaseDataModel.cs" />
+    <Compile Include="Framework\Model\UpdateOnlyDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\ProductTest.cs" />
   </ItemGroup>

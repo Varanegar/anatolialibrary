@@ -9,33 +9,20 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Framework.DataAdapter
 {
-    public class BaseDataAdapter<DataListTemplate, Data>
+    public abstract class BaseDataAdapter<DataListTemplate, Data>
         where DataListTemplate : BaseListModel<Data>, new()
-        where Data : BaseModel, new()
+        where Data : BaseDataModel, new()
     {
         public DataListTemplate GetAll(params object[] queryParams)
         {
             return GetAll(new DataListTemplate(), queryParams);
         }
 
-        public DataListTemplate GetAll(DataListTemplate dataList, params object[] queryParams)
-        {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
-            return dataList;
-        }
+        public abstract DataListTemplate GetAll(DataListTemplate dataList, params object[] queryParams);
 
-        public Data GetById(int id)
-        {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
-            return new Data();
-        }
+        public abstract Data GetById(int id);
 
-        public bool IsDataIDValid(int ID)
-        {
-            
-            return false;
-
-        }
+        public abstract bool IsDataIDValid(int ID);
 
     }
 }
