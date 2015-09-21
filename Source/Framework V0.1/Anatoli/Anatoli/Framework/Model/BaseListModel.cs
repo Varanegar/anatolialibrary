@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Anatoli.Framework.Model
 {
     public class BaseListModel<TemplateData> : IList
-            where TemplateData : BaseModel
+            where TemplateData : BaseDataModel
     {
 
         protected const int _defaultCapacity = 16;

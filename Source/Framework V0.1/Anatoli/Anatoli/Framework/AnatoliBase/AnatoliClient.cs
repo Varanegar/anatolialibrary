@@ -26,10 +26,15 @@ namespace AnatoliLibrary.Anatoliclient
         }
 
         private static AnatoliClient instance;
-
+        public static AnatoliClient GetInstance()
+        {
+            if (instance == null)
+                throw new NullReferenceException("AnatoliClient is null. You should run GetInstance(AnatoliWebClient webClient, AnatoliSQLite sqlite, IFileIO fileIO) for the first time");
+            return instance;
+        }
         public static AnatoliClient GetInstance(AnatoliWebClient webClient, AnatoliSQLite sqlite, IFileIO fileIO)
         {
-            if(instance == null)
+            if (instance == null)
                 instance = new AnatoliClient(webClient, sqlite, fileIO);
 
             return instance;
