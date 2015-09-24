@@ -1,4 +1,4 @@
-﻿using Aantoli.Common.Entity.Base;
+﻿using Aantoli.Framework.Entity.Base;
 using Aantoli.Common.Entity.Common;
 using System;
 using System.Collections.Generic;

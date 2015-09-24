@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Build\Common\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anatoli.Framework">
+      <HintPath>..\..\..\Build\Framework\Anatoli.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -44,7 +47,6 @@
   <ItemGroup>
     <Compile Include="App\Basket\BasketInfoEntity.cs" />
     <Compile Include="App\Basket\BasketItemInfoEntity.cs" />
-    <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Common\PublicEnumcs.cs" />
     <Compile Include="Gateway\BaseValue\BaseValueInfoEntity.cs" />
     <Compile Include="Gateway\BaseValue\BaseValueTypeEntity.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Gateway\Region\CityRegionEntity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Base\" />
     <Folder Include="Supplier\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
