@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aantoli.Framework.Entity.Base
 {
-    public class BaseListModel<TemplateData> : IList
+    public class BaseListEntity<TemplateData> : IList
             where TemplateData : BaseEntity
     {
 
@@ -16,7 +16,7 @@ namespace Aantoli.Framework.Entity.Base
         protected TemplateData[] _array = null;
         protected int _count = 0;
 
-        public BaseListModel()
+        public BaseListEntity()
         {
             this._array = CreateArray(_defaultCapacity);
         }
@@ -25,14 +25,14 @@ namespace Aantoli.Framework.Entity.Base
             return new TemplateData[capacity];
         }
 
-        public BaseListModel(int capacity)
+        public BaseListEntity(int capacity)
         {
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException("capacity", capacity, "Argument cannot be negative.");
 
             this._array = CreateArray(capacity);
         }
-        public BaseListModel(BaseListModel<TemplateData> collection)
+        public BaseListEntity(BaseListEntity<TemplateData> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");
@@ -41,7 +41,7 @@ namespace Aantoli.Framework.Entity.Base
             AddRange(collection);
         }
 
-        public BaseListModel(TemplateData[] array)
+        public BaseListEntity(TemplateData[] array)
         {
             if (array == null)
                 throw new ArgumentNullException("array");
@@ -67,7 +67,7 @@ namespace Aantoli.Framework.Entity.Base
             this._count += array.Length;
         }
 
-        public virtual void AddRange(BaseListModel<TemplateData> collection)
+        public virtual void AddRange(BaseListEntity<TemplateData> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");
@@ -364,11 +364,11 @@ namespace Aantoli.Framework.Entity.Base
             IEnumerator
         {
 
-            private readonly BaseListModel<TemplateData> _collection;
+            private readonly BaseListEntity<TemplateData> _collection;
             private readonly int _version;
             private int _index;
 
-            internal Enumerator(BaseListModel<TemplateData> collection)
+            internal Enumerator(BaseListEntity<TemplateData> collection)
             {
                 this._collection = collection;
                 this._index = -1;
