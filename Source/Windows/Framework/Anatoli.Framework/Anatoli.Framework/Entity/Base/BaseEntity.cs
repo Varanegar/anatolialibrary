@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aantoli.Common.Entity.Base
+namespace Aantoli.Framework.Entity.Base
 {
     public class BaseEntity
     {
