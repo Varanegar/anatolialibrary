@@ -48,8 +48,11 @@
     <Compile Include="Common\PublicEnumcs.cs" />
     <Compile Include="Gateway\BaseValue\BaseValueInfoEntity.cs" />
     <Compile Include="Gateway\BaseValue\BaseValueTypeEntity.cs" />
+    <Compile Include="Gateway\Customer\CustomerEntity.cs" />
+    <Compile Include="Gateway\Customer\BaseAddressEntity.cs" />
+    <Compile Include="Gateway\Customer\ShipAddressEntity.cs" />
     <Compile Include="Gateway\Manufacture\ManufactureEntity.cs" />
-    <Compile Include="Gateway\Onahnd\StoreOnHandEntity.cs" />
+    <Compile Include="Gateway\Warehouse\StoreOnHandEntity.cs" />
     <Compile Include="Gateway\Order\OrderStatusInfoEntity.cs" />
     <Compile Include="Gateway\Order\PurchaseBaseEntity.cs" />
     <Compile Include="Gateway\Order\PurchaseDiscountEntity.cs" />
@@ -71,7 +74,6 @@
     <Compile Include="Gateway\Region\CityRegionEntity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gateway\Customer\" />
     <Folder Include="Supplier\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

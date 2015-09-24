@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aantoli.Common.Entity.Gateway.Onahnd
+namespace Aantoli.Common.Entity.Gateway.Warehouse
 {
     public class StoreOnHandEntity : BaseEntity
     {
