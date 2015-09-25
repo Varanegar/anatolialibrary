@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Infrastructure
+namespace Anatoli.Cloud.WebApi.Infrastructure
 {
     public static class ExtendedClaimsProvider
     {

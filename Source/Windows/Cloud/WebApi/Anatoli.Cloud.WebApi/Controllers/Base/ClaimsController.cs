@@ -1,4 +1,4 @@
-﻿using AnatoliIdentity.WebApi.Models;
+﻿using Anatoli.Cloud.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
 
-namespace AnatoliIdentity.WebApi.Controllers
+namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/claims")]
     public class ClaimsController : BaseApiController

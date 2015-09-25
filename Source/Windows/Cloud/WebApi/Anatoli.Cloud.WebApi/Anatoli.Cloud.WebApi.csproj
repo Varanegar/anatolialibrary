@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Build\Cloud\WebApi\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -142,25 +142,22 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\App\BasketValueController.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
+    <Compile Include="Controllers\App\Basket\BasketValueController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
-    <Compile Include="Controllers\Gateway\Base\ManufactureController.cs" />
-    <Compile Include="Controllers\Gateway\Base\RegionController.cs" />
+    <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />
     <Compile Include="Controllers\Gateway\Customer\CustomerShipAddressController.cs" />
     <Compile Include="Controllers\Gateway\Customer\CustomerController.cs" />
-    <Compile Include="Controllers\Gateway\Product\ProductGroupController.cs" />
     <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
-    <Compile Include="Controllers\Gateway\Product\ProductCharTypeController.cs" />
-    <Compile Include="Controllers\Gateway\Product\ProductCharGroupController.cs" />
-    <Compile Include="Controllers\Gateway\Base\BaseValueController.cs" />
-    <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
     <Compile Include="Controllers\Gateway\Store\StoreOnHandController.cs" />
     <Compile Include="Controllers\Gateway\Store\StorePriceListController.cs" />
     <Compile Include="Controllers\Gateway\Store\StoreController.cs" />
-    <Compile Include="Controllers\Sample\OrdersController.cs" />
     <Compile Include="Controllers\Base\RolesController.cs" />
+    <Compile Include="Controllers\Base\OrdersController.cs" />
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
@@ -209,6 +206,9 @@
       <Name>Anatoli.Cloud.Gateway</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\Sample\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -224,7 +224,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59822</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59822/</IISUrl>
+          <IISUrl>http://localhost:59823/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

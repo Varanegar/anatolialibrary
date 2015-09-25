@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Services
+namespace Anatoli.Cloud.WebApi.Services
 {
     public class EmailService : IIdentityMessageService
     {

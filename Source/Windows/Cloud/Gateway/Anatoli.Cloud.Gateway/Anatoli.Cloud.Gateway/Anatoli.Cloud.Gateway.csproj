@@ -39,31 +39,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\BaseValue\BaseValueTypeHandler.cs" />
-    <Compile Include="Business\BaseValue\BaseValueInfoHandler.cs" />
-    <Compile Include="Business\Basket\BasketInfoHandler.cs" />
-    <Compile Include="Business\Basket\BasketItemInfoHandler.cs" />
-    <Compile Include="Business\Customer\CustomerHandler.cs" />
-    <Compile Include="Business\Customer\ShipAddressHandler.cs" />
-    <Compile Include="Business\Manufacture\ManufactureHandler.cs" />
-    <Compile Include="Business\Order\OrderStatusInfoHandler.cs" />
-    <Compile Include="Business\Order\PurchaseDiscountHandler.cs" />
-    <Compile Include="Business\Order\PurchaseHistoryHandler.cs" />
-    <Compile Include="Business\Order\PurchaseOrderHandler.cs" />
-    <Compile Include="Business\Order\PurchaseOrderItemHandler.cs" />
-    <Compile Include="Business\Product\ProductCharGroupHandler.cs" />
-    <Compile Include="Business\Product\ProductCharTypeHandler.cs" />
-    <Compile Include="Business\Product\ProductCharValueHandler.cs" />
-    <Compile Include="Business\Product\ProductGroupHandler.cs" />
-    <Compile Include="Business\Product\ProductHandler.cs" />
-    <Compile Include="Business\Product\ProductSupplierHandler.cs" />
-    <Compile Include="Business\Region\CityRegionHandler.cs" />
-    <Compile Include="Business\Store\StoreDeliveryTimeInfoHandler.cs" />
-    <Compile Include="Business\Store\StoreHandler.cs" />
-    <Compile Include="Business\Store\StoreOnHandHandler.cs" />
-    <Compile Include="Business\Store\StoreOpenTimeInfoHandler.cs" />
-    <Compile Include="Business\Store\StoreProductPriceHandler.cs" />
-    <Compile Include="Business\Store\StoreProductPriceListsHandler.cs" />
+    <Compile Include="Business\BaseValue\BaseValueTypeCloudHandler.cs" />
+    <Compile Include="Business\Basket\BasketInfoCloudHandler.cs" />
+    <Compile Include="Business\Customer\CustomerCloudHandler.cs" />
+    <Compile Include="Business\Customer\ShipAddressCloudHandler.cs" />
+    <Compile Include="Business\Manufacture\ManufactureCloudHandler.cs" />
+    <Compile Include="Business\Order\OrderStatusInfoCloudHandler.cs" />
+    <Compile Include="Business\Order\PurchaseDiscountCloudHandler.cs" />
+    <Compile Include="Business\Order\PurchaseHistoryCloudHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderCloudHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderItemCloudHandler.cs" />
+    <Compile Include="Business\Product\ProductCharGroupCloudHandler.cs" />
+    <Compile Include="Business\Product\ProductCharTypeCloudHandler.cs" />
+    <Compile Include="Business\Product\ProductGroupCloudHandler.cs" />
+    <Compile Include="Business\Product\ProductCloudHandler.cs" />
+    <Compile Include="Business\Product\ProductSupplierCloudHandler.cs" />
+    <Compile Include="Business\Region\CityRegionCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreDeliveryTimeInfoCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreOnHandCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreOpenTimeInfoCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceCloudHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceListsCloudHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

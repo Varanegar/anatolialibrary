@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Models
+namespace Anatoli.Cloud.WebApi.Models
 {
     public class CreateUserBindingModel
     {

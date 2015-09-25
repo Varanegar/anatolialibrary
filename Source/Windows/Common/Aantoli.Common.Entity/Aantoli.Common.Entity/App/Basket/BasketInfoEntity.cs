@@ -20,8 +20,8 @@ namespace Aantoli.Common.Entity.App.Basket
         public DateTime ChangeDate { get; set; }
         public SOURCE_TYPE RequestSourceId { get; set; }
         public string DeviceIMEI { get; set; }
-        public List<String> NoteInfoList { get; set; }
-        public List<BasketInfoEntity> ItemInfoList { get; set; }
+        public BasketNoteInfoListEntity NoteInfoList { get; set; }
+        public BasketItemInfoListEntity ItemInfoList { get; set; }
 
     }
 }

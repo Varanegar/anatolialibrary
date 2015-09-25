@@ -10,7 +10,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Net.Http;
 
-namespace AnatoliIdentity.WebApi.Infrastructure
+namespace Anatoli.Cloud.WebApi.Infrastructure
 {
 
     public class ClaimsAuthorizationAttribute : AuthorizationFilterAttribute

@@ -1,4 +1,4 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Validators
+namespace Anatoli.Cloud.WebApi.Validators
 {
     public class MyCustomUserValidator : UserValidator<ApplicationUser>
     {

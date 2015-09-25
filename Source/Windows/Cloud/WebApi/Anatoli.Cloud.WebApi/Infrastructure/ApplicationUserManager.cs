@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Infrastructure
+namespace Anatoli.Cloud.WebApi.Infrastructure
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
@@ -38,7 +38,7 @@ namespace AnatoliIdentity.WebApi.Infrastructure
                 RequireUppercase = true,
             };
             
-            appUserManager.EmailService = new AnatoliIdentity.WebApi.Services.EmailService();
+            appUserManager.EmailService = new Anatoli.Cloud.WebApi.Services.EmailService();
 
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)

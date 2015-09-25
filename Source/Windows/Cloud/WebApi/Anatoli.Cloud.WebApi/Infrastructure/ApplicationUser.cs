@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Infrastructure
+namespace Anatoli.Cloud.WebApi.Infrastructure
 {
     public class ApplicationUser : IdentityUser
     {

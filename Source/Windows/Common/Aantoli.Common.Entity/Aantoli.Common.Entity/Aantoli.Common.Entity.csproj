@@ -45,6 +45,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Basket\BasketNoteInfoEntity.cs" />
+    <Compile Include="App\Basket\BasketNoteInfoListEntity.cs" />
     <Compile Include="App\Basket\BasketItemInfoListEntity.cs" />
     <Compile Include="App\Basket\BasketInfoListEntity.cs" />
     <Compile Include="App\Basket\BasketInfoEntity.cs" />

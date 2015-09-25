@@ -1,4 +1,4 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 
-namespace AnatoliIdentity.WebApi.Providers
+namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {

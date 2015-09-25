@@ -1,4 +1,4 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +8,16 @@ using System.Net.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
-using AnatoliIdentity.WebApi.Models;
+using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
 
-namespace AnatoliIdentity.WebApi.Controllers
+namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
 
-        [Authorize(Roles="Admin")]
+        //[Authorize(Roles="Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using Thinktecture.IdentityModel.Tokens;
 
-namespace AnatoliIdentity.WebApi.Providers
+namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomJwtFormat : ISecureDataFormat<AuthenticationTicket>
     {
