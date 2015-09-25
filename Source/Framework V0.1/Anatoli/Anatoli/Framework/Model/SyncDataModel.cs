@@ -1,4 +1,4 @@
-﻿using AnatoliLibrary.Anatoliclient;
+﻿using Anatoli.Anatoliclient;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,15 +6,16 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Anatoli.App.Manager.Product;
-using AnatoliLibrary.Anatoliclient;
+using Anatoli.Anatoliclient;
 using Android.Net;
+using Anatoli.App.Manager;
 
 namespace AnatoliAndroid
 {
     [Activity(Label = "AnatoliAndroid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        int count = 1;
+        
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -27,13 +28,15 @@ namespace AnatoliAndroid
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.MyButton);
 
-            button.Click += delegate
+            button.Click += async delegate
             {
                 var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
                 AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-                ProductManager pm = new ProductManager();
-                var p = pm.GetById(0);
-                button.Text = p.Name;
+                AnatoliUserManager um = new AnatoliUserManager();
+                await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
+                //ProductManager pm = new ProductManager();
+                //var p = pm.GetById(0);
+                //button.Text = p.Name;
             };
 
         }

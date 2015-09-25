@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnatoliLibrary.Anatoliclient
+namespace Anatoli.Anatoliclient
 {
     public interface IFileIO
     {
