@@ -1,6 +1,5 @@
 ﻿using Aantoli.Common.Entity.App.Basket;
-using Aantoli.Common.Entity.Gateway.BaseValue;
-using Anatoli.Common.Gateway.DataAccess.BaseValue;
+using Anatoli.Common.Gateway.DataAccess.Basket;
 using Anatoli.Framework.Busieness;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Common.Gateway.Business.Basket
 {
-    public class BaseValueInfoHandler : BaseHandler<BaseValueInfoDataAdapter, BaseValueInfoListEntity, BaseValueInfoEntity>
+    public class BasketItemInfoHandler : BaseHandler<BasketItemInfoDataAdapter, BasketItemInfoListEntity, BasketItemInfoEntity>
     {
     }
 }

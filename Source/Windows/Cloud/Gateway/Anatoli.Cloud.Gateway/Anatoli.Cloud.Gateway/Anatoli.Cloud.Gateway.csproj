@@ -39,23 +39,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\BaseValue\BaseValueTypeHandler.cs" />
+    <Compile Include="Business\BaseValue\BaseValueInfoHandler.cs" />
+    <Compile Include="Business\Basket\BasketInfoHandler.cs" />
+    <Compile Include="Business\Basket\BasketItemInfoHandler.cs" />
+    <Compile Include="Business\Customer\CustomerHandler.cs" />
+    <Compile Include="Business\Customer\ShipAddressHandler.cs" />
+    <Compile Include="Business\Manufacture\ManufactureHandler.cs" />
+    <Compile Include="Business\Order\OrderStatusInfoHandler.cs" />
+    <Compile Include="Business\Order\PurchaseDiscountHandler.cs" />
+    <Compile Include="Business\Order\PurchaseHistoryHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderItemHandler.cs" />
+    <Compile Include="Business\Product\ProductCharGroupHandler.cs" />
+    <Compile Include="Business\Product\ProductCharTypeHandler.cs" />
+    <Compile Include="Business\Product\ProductCharValueHandler.cs" />
+    <Compile Include="Business\Product\ProductGroupHandler.cs" />
+    <Compile Include="Business\Product\ProductHandler.cs" />
+    <Compile Include="Business\Product\ProductSupplierHandler.cs" />
+    <Compile Include="Business\Region\CityRegionHandler.cs" />
+    <Compile Include="Business\Store\StoreDeliveryTimeInfoHandler.cs" />
+    <Compile Include="Business\Store\StoreHandler.cs" />
+    <Compile Include="Business\Store\StoreOnHandHandler.cs" />
+    <Compile Include="Business\Store\StoreOpenTimeInfoHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceListsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\BaseValue\" />
-    <Folder Include="Business\Customer\" />
-    <Folder Include="Business\Manufacture\" />
-    <Folder Include="Business\Order\" />
-    <Folder Include="Business\Region\" />
-    <Folder Include="Business\Store\" />
-    <Folder Include="Business\Warehouse\" />
-    <Folder Include="DataAccess\BaseValue\" />
-    <Folder Include="DataAccess\Customer\" />
-    <Folder Include="DataAccess\Manufacture\" />
-    <Folder Include="DataAccess\Order\" />
-    <Folder Include="DataAccess\Region\" />
-    <Folder Include="DataAccess\Store\" />
-    <Folder Include="DataAccess\Warehouse\" />
+    <ProjectReference Include="..\..\..\..\Common\Aantoli.Common.Entity\Aantoli.Common.Entity\Aantoli.Common.Entity.csproj">
+      <Project>{172c4199-551d-486d-a096-9d60eb06f7c1}</Project>
+      <Name>Aantoli.Common.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Common\Anatoli.Common.Gateway\Anatoli.Common.Gateway\Anatoli.Common.Gateway\Anatoli.Common.Gateway.csproj">
+      <Project>{e08d16df-778d-4d8a-ab6e-9e1fcb70a2f4}</Project>
+      <Name>Anatoli.Common.Gateway</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Framework\Anatoli.Framework\Anatoli.Framework\Anatoli.Framework.csproj">
+      <Project>{58bbceaf-cd30-4906-ba07-774929a88b50}</Project>
+      <Name>Anatoli.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

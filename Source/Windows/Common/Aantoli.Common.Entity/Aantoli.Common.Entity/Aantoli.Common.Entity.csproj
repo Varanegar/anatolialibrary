@@ -45,6 +45,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Basket\BasketItemInfoListEntity.cs" />
+    <Compile Include="App\Basket\BasketInfoListEntity.cs" />
     <Compile Include="App\Basket\BasketInfoEntity.cs" />
     <Compile Include="App\Basket\BasketItemInfoEntity.cs" />
     <Compile Include="Common\PublicEnumcs.cs" />
@@ -76,8 +78,8 @@
     <Compile Include="Gateway\Store\StoreProductPriceListEntity.cs" />
     <Compile Include="Gateway\Store\StoreOpenTimeInfoListEntity.cs" />
     <Compile Include="Gateway\Store\StoreDeliveryTimeInfoListEntity.cs" />
-    <Compile Include="Gateway\Warehouse\StoreOnHandListEntity.cs" />
-    <Compile Include="Gateway\Warehouse\StoreOnHandEntity.cs" />
+    <Compile Include="Gateway\Store\StoreOnHandListEntity.cs" />
+    <Compile Include="Gateway\Store\StoreOnHandEntity.cs" />
     <Compile Include="Gateway\Order\OrderStatusInfoEntity.cs" />
     <Compile Include="Gateway\Order\PurchaseBaseEntity.cs" />
     <Compile Include="Gateway\Order\PurchaseDiscountEntity.cs" />

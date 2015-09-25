@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Common.Gateway.Business.Basket
 {
-    public class BaseValueInfoHandler : BaseHandler<BaseValueInfoDataAdapter, BaseValueInfoListEntity, BaseValueInfoEntity>
+    public class BaseValueTypeHandler : BaseHandler<BaseValueTypeDataAdapter, BaseValueTypeListEntity, BaseValueTypeEntity>
     {
     }
 }

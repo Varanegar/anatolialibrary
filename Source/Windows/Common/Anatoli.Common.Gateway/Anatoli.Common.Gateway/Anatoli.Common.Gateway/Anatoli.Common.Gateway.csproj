@@ -39,8 +39,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\BaseValue\BaseValueTypeHandler.cs" />
     <Compile Include="Business\BaseValue\BaseValueInfoHandler.cs" />
+    <Compile Include="Business\Basket\BasketItemInfoHandler.cs" />
+    <Compile Include="Business\Basket\BasketInfoHandler.cs" />
+    <Compile Include="Business\Customer\CustomerHandler.cs" />
+    <Compile Include="Business\Customer\ShipAddressHandler.cs" />
+    <Compile Include="Business\Manufacture\ManufactureHandler.cs" />
+    <Compile Include="Business\Order\OrderStatusInfoHandler.cs" />
+    <Compile Include="Business\Order\PurchaseDiscountHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderHandler.cs" />
+    <Compile Include="Business\Order\PurchaseOrderItemHandler.cs" />
+    <Compile Include="Business\Order\PurchaseHistoryHandler.cs" />
+    <Compile Include="Business\Product\ProductCharTypeHandler.cs" />
+    <Compile Include="Business\Product\ProductGroupHandler.cs" />
+    <Compile Include="Business\Product\ProductSupplierHandler.cs" />
+    <Compile Include="Business\Product\ProductCharValueHandler.cs" />
+    <Compile Include="Business\Product\ProductCharGroupHandler.cs" />
+    <Compile Include="Business\Product\ProductHandler.cs" />
+    <Compile Include="Business\Region\CityRegionHandler.cs" />
+    <Compile Include="Business\Store\StoreOnHandHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceListsHandler.cs" />
+    <Compile Include="Business\Store\StoreProductPriceHandler.cs" />
+    <Compile Include="Business\Store\StoreOpenTimeInfoHandler.cs" />
+    <Compile Include="Business\Store\StoreDeliveryTimeInfoHandler.cs" />
+    <Compile Include="Business\Store\StoreHandler.cs" />
+    <Compile Include="DataAccess\BaseValue\BaseValueTypeDataAdapter.cs" />
     <Compile Include="DataAccess\BaseValue\BaseValueInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Basket\BasketItemInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Basket\BasketInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Customer\ShipAddressDataAdapter.cs" />
+    <Compile Include="DataAccess\Customer\CustomerDataAdapter.cs" />
+    <Compile Include="DataAccess\Manufacture\ManufactureDataAdapter.cs" />
+    <Compile Include="DataAccess\Order\OrderStatusInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Order\PurchaseDiscountDataAdapter.cs" />
+    <Compile Include="DataAccess\Order\PurchaseHistoryDataAdapter.cs" />
+    <Compile Include="DataAccess\Order\PurchaseOrderItemDataAdapter.cs" />
+    <Compile Include="DataAccess\Order\PurchaseOrderDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductSupplierDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductGroupDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductCharTypeDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductCharValueDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductDataAdapter.cs" />
+    <Compile Include="DataAccess\Product\ProductCharGroupDataAdapter.cs" />
+    <Compile Include="DataAccess\Region\CityRegionDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreDeliveryTimeInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreOpenTimeInfoDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreProductPriceDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreProductPriceListsDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreOnHandDataAdapter.cs" />
+    <Compile Include="DataAccess\Store\StoreDataAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,20 +101,7 @@
       <Name>Aantoli.Common.Entity</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Business\Customer\" />
-    <Folder Include="Business\Manufacture\" />
-    <Folder Include="Business\Order\" />
-    <Folder Include="Business\Region\" />
-    <Folder Include="Business\Store\" />
-    <Folder Include="Business\Warehouse\" />
-    <Folder Include="DataAccess\Customer\" />
-    <Folder Include="DataAccess\Manufacture\" />
-    <Folder Include="DataAccess\Order\" />
-    <Folder Include="DataAccess\Region\" />
-    <Folder Include="DataAccess\Store\" />
-    <Folder Include="DataAccess\Warehouse\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

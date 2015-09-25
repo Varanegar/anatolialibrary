@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aantoli.Common.Entity.Gateway.Warehouse
+namespace Aantoli.Common.Entity.App.Basket
 {
-    public class StoreOnHandListEntity : BaseListEntity<StoreOnHandEntity>
+    public class BasketItemInfoListEntity : BaseListEntity<BasketItemInfoEntity>
     {
     }
 }
