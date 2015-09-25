@@ -8,6 +8,11 @@ namespace Aantoli.Framework.Entity.Base
 {
     public class BaseEntity
     {
+        public BaseEntity()
+        {
+            UniqueId = Guid.NewGuid();
+        }
+
         public int ID { get; set; }
         public Guid UniqueId { get; set; }
     }

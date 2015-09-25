@@ -10,6 +10,6 @@ namespace Aantoli.Common.Entity.Gateway.Product
     public class ProductCharTypeEntity : BaseEntity
     {
         public string CharTypeDesc { get; set; }
-        public List<ProductCharValueEntity> CharValueList { get; set; }
+        public ProductCharValueListEntity CharValueList { get; set; }
     }
 }

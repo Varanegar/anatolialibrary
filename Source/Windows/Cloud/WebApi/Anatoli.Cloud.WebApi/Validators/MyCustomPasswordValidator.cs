@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Validators
+namespace Anatoli.Cloud.WebApi.Validators
 {
     public class MyCustomPasswordValidator : PasswordValidator
     {

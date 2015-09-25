@@ -1,5 +1,5 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
-using AnatoliIdentity.WebApi.Models;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.Cloud.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace AnatoliIdentity.WebApi.Controllers
+namespace Anatoli.Cloud.WebApi.Controllers
 {
     [Authorize(Roles="Admin")]
     [RoutePrefix("api/roles")]

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AnatoliIdentity.WebApi.Infrastructure
+namespace Anatoli.Cloud.WebApi.Infrastructure
 {
     public class ApplicationRoleManager : RoleManager<IdentityRole>
     {

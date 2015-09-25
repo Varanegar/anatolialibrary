@@ -1,5 +1,5 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
-using AnatoliIdentity.WebApi.Models;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.Cloud.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Web.Http;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 
-namespace AnatoliIdentity.WebApi.Controllers
+namespace Anatoli.Cloud.WebApi.Controllers
 {
     public class BaseApiController : ApiController
     {

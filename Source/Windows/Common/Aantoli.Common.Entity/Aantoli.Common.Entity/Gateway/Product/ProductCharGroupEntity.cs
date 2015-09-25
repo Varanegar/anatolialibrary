@@ -11,6 +11,6 @@ namespace Aantoli.Common.Entity.Gateway.Product
     {
         public int GroupCode { get; set; }
         public string GroupName { get; set; }
-        public List<int> GroupTypeList { get; set; }
+        public ProductCharTypeListEntity GroupTypeList { get; set; }
     }
 }

@@ -21,5 +21,6 @@ namespace Aantoli.Common.Entity.Gateway.Order
         public string Comment { get; set; }
         public bool AllowReplace { get; set; }
         public decimal Weight { get; set; }
+        public PurchaseOrderItemListEntity ItemList { get; set; }
     }
 }

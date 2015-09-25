@@ -11,7 +11,6 @@ namespace Aantoli.Common.Entity.Gateway.BaseValue
     {
         public string BaseTypeDescription { get; set; }
         public string BaseTypeName { get; set; }
-        public int BaseValueValue { get; set; }
-        public List<BaseValueInfoEntity> BaseValueList { get; set; }
+        public BaseValueInfoListEntity BaseValueList { get; set; }
     }
 }

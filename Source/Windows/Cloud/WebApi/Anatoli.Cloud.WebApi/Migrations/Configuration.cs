@@ -1,6 +1,6 @@
-namespace AnatoliIdentity.WebApi.Migrations
+namespace Anatoli.Cloud.WebApi.Migrations
 {
-    using AnatoliIdentity.WebApi.Infrastructure;
+    using Anatoli.Cloud.WebApi.Infrastructure;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
@@ -8,14 +8,14 @@ namespace AnatoliIdentity.WebApi.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<AnatoliIdentity.WebApi.Infrastructure.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Anatoli.Cloud.WebApi.Infrastructure.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AnatoliIdentity.WebApi.Infrastructure.ApplicationDbContext context)
+        protected override void Seed(Anatoli.Cloud.WebApi.Infrastructure.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

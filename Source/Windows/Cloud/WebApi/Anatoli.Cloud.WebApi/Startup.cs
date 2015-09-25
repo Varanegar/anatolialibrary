@@ -1,5 +1,5 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
-using AnatoliIdentity.WebApi.Providers;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.Cloud.WebApi.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
@@ -15,7 +15,7 @@ using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
 
-namespace AnatoliIdentity.WebApi
+namespace Anatoli.Cloud.WebApi
 {
     public class Startup
     {

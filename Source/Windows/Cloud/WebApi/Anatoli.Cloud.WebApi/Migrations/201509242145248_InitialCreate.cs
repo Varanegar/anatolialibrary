@@ -1,4 +1,4 @@
-namespace AnatoliIdentity.WebApi.Migrations
+namespace Anatoli.Cloud.WebApi.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

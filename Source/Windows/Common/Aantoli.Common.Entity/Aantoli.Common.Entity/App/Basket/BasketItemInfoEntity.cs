@@ -9,7 +9,7 @@ namespace Aantoli.Common.Entity.App.Basket
 {
     public class BasketItemInfoEntity : BaseEntity
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public decimal Qty { get; set; }
     }
 }

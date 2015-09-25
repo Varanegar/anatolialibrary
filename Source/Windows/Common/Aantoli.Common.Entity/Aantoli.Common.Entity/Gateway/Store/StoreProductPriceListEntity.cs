@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aantoli.Common.Entity.Gateway.Store
 {
-    public class StoreProductPriceListEntity : BaseEntity
+    public class StoreProductPriceListEntity : BaseListEntity<StoreProductPriceEntity>
     {
-        public Guid StoreId { get; set; }
-        public DateTime LastUpdate { get; set; }
-        public List<StoreProductPriceEntity> PriceListInfo { get; set; }
     }
 }

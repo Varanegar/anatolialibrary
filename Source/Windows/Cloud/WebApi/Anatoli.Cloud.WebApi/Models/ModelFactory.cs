@@ -1,4 +1,4 @@
-﻿using AnatoliIdentity.WebApi.Infrastructure;
+﻿using Anatoli.Cloud.WebApi.Infrastructure;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http.Routing;
 
-namespace AnatoliIdentity.WebApi.Models
+namespace Anatoli.Cloud.WebApi.Models
 {
     public class ModelFactory
     {
