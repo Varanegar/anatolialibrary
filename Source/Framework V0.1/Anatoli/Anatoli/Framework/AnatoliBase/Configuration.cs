@@ -5,14 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnatoliLibrary.Anatoliclient
+namespace Anatoli.Anatoliclient
 {
     public class Configuration
     {
         public static readonly string parseAppId = "ecg0bl83b3s1B57NtV65iGiy3IH38QfavsF1DHeX";
         public static readonly string parseDotNetKey = "SmgvPBYprBhYo1KTGPIhjoevR3YhXBccqFwqvfXL";
-        public static readonly string PortalUri = "https://Anatoli.varanegar.com";
-
-        public static string RateProductUri { get { return Path.Combine(PortalUri, "RateProduct"); } }
+        public static readonly string PortalUri = "http://www.ayuz.ir/";
+        public static class WebService
+        {
+            public static readonly string UserLoginUrl = "/Users/UserLogin";
+            public static readonly string UserRegisterUrl = "test";
+            public static readonly string RateProductUri = "/Products/Rate";
+        }
     }
 }

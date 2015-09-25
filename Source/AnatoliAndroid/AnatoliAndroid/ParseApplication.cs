@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Parse;
 using Anatoli.App;
+using Anatoli.Anatoliclient;
 
 namespace AnatoliAndroid
 {
