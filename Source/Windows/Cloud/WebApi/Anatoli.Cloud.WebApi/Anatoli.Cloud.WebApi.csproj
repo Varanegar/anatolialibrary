@@ -141,11 +141,25 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AccountsController.cs" />
-    <Compile Include="Controllers\BaseApiController.cs" />
-    <Compile Include="Controllers\ClaimsController.cs" />
-    <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\App\BasketValueController.cs" />
+    <Compile Include="Controllers\Base\AccountsController.cs" />
+    <Compile Include="Controllers\Base\BaseApiController.cs" />
+    <Compile Include="Controllers\Gateway\Base\ManufactureController.cs" />
+    <Compile Include="Controllers\Gateway\Base\RegionController.cs" />
+    <Compile Include="Controllers\Gateway\Customer\CustomerShipAddressController.cs" />
+    <Compile Include="Controllers\Gateway\Customer\CustomerController.cs" />
+    <Compile Include="Controllers\Gateway\Product\ProductGroupController.cs" />
+    <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
+    <Compile Include="Controllers\Gateway\Product\ProductCharTypeController.cs" />
+    <Compile Include="Controllers\Gateway\Product\ProductCharGroupController.cs" />
+    <Compile Include="Controllers\Gateway\Base\BaseValueController.cs" />
+    <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
+    <Compile Include="Controllers\Gateway\Store\StoreOnHandController.cs" />
+    <Compile Include="Controllers\Gateway\Store\StorePriceListController.cs" />
+    <Compile Include="Controllers\Gateway\Store\StoreController.cs" />
+    <Compile Include="Controllers\Sample\OrdersController.cs" />
+    <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
@@ -176,6 +190,7 @@
       <DependentUpon>201509242145248_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
