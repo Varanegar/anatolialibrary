@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aantoli.Common.Entity.Gateway.Store
 {
-    public class StoreProductPriceListEntity : BaseListEntity<StoreProductPriceEntity>
+    public class StoreOpenTimeInfoListEntity : BaseListEntity<StoreOpenTimeInfoEntity>
     {
     }
 }

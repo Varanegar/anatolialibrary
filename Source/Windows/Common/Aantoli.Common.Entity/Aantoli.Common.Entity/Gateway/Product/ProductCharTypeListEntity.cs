@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aantoli.Common.Entity.Gateway.Product
 {
-    public class ProductCharTypeEntity : BaseEntity
+    public class ProductCharTypeListEntity : BaseListEntity<ProductCharTypeEntity>
     {
-        public string CharTypeDesc { get; set; }
-        public ProductCharValueListEntity CharValueList { get; set; }
     }
 }

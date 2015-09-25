@@ -16,11 +16,21 @@ namespace Anatoli.Framework.DataAdapter
             return GetAll(new DataListTemplate(), queryParams);
         }
 
-        public abstract DataListTemplate GetAll(DataListTemplate dataList, params object[] queryParams);
+        public DataListTemplate GetAll(DataListTemplate dataList, params object[] queryParams)
+        {
+            return new DataListTemplate();
+        }
 
-        public abstract Data GetById(int id);
+        public Data GetById(int id)
+        {
+            return new Data();
+        }
 
-        public abstract bool IsDataIDValid(int ID);
+        public bool IsDataIDValid(int ID)
+        {
+            return false;
+
+        }
 
     }
 }

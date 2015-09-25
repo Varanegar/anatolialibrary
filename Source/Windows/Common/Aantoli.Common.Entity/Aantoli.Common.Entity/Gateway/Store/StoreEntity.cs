@@ -23,8 +23,8 @@ namespace Aantoli.Common.Entity.Gateway.Store
         public bool SupportWebOrder { get; set; }
         public bool SupportCallCenterOrder { get; set; }
         public Guid StoreStatusTypeId { get; set; }
-        public List<StoreOpenTimeInfoEntity> OpenTimeInfoList { get; set; }
-        public List<StoreDeliveryTimeInfoEntity> DeliveryTimeInfoList { get; set; }
-        public List<CityRegionEntity> CityRegionList { get; set; }
+        public StoreOpenTimeInfoListEntity OpenTimeInfoList { get; set; }
+        public StoreDeliveryTimeInfoListEntity DeliveryTimeInfoList { get; set; }
+        public CityRegionListEntity CityRegionList { get; set; }
     }
 }

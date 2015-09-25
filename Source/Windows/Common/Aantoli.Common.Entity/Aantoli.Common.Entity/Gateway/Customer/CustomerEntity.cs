@@ -16,6 +16,6 @@ namespace Aantoli.Common.Entity.Gateway.Customer
         public string CustomerName { get; set; }
         public string BirthPDate { get; set; }
         public DateTime BirthDate { get; set; }
-        public List<BaseAddressEntity> ShippingAddressList { get; set; }
+        public ShipAddressListEntity ShippingAddressList { get; set; }
     }
 }

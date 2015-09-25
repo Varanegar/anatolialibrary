@@ -23,7 +23,7 @@ namespace Aantoli.Common.Entity.Gateway.Product
         public string SmallPicURL { get; set; }
         public string LargePicURL { get; set; }
 
-        public List<ProductSupplierEntity> SupplierInfoList { get; set; }
+        public ProductSupplierListEntity SupplierInfoList { get; set; }
     }
 
 }

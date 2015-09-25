@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aantoli.Common.Entity.Gateway.Store
+namespace Aantoli.Common.Entity.Gateway.Customer
 {
-    public class StoreProductPriceListEntity : BaseListEntity<StoreProductPriceEntity>
+    public class ShipAddressListEntity : BaseListEntity<ShipAddressEntity>
     {
     }
 }
