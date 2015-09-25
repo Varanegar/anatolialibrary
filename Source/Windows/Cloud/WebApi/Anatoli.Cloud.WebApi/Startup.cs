@@ -33,6 +33,8 @@ namespace Anatoli.Cloud.WebApi
 
             app.UseWebApi(httpConfig);
 
+            httpConfig.EnsureInitialized();
+
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)

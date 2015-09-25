@@ -18,7 +18,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/basedata")]
     public class BaseTypeInfoController : BaseApiController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("basevalues")]
         public IHttpActionResult GetBaseValues()
         {

@@ -11,15 +11,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/product")]
     public class ProductController : ApiController
     {
-        [Authorize(Roles = "Admin")]
-        [Route("/chargroups")]
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("chargroups")]
         public IHttpActionResult GetCharGroups()
         {
             return Ok(ProductCharGroupCloudHandler.GetInstance().GetSampleData());
         }
 
-        [Authorize(Roles = "Admin")]
-        [Route("/chartypes")]
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("chartypes")]
         public IHttpActionResult GetCharTypes()
         {
             return Ok(ProductCharTypeCloudHandler.GetInstance().GetSampleData());

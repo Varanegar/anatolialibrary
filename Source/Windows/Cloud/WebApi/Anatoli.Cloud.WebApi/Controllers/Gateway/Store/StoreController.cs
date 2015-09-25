@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.Cloud.Gateway.Business.Store;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class StoreController : ApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("")]
-        public IHttpActionResult Get()
+        [Route("storeonhand")]
+        public IHttpActionResult GetStoreOnHand()
         {
-            return Ok();
+            return Ok(StoreOnHandCloudHandler.GetInstance().GetSampleData());
         }
     }
 }

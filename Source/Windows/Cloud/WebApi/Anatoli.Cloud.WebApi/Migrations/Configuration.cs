@@ -39,13 +39,14 @@ namespace Anatoli.Cloud.WebApi.Migrations
             if (roleManager.Roles.Count() == 0)
             {
                 roleManager.Create(new IdentityRole { Name = "SuperAdmin" });
-                roleManager.Create(new IdentityRole { Name = "Admin"});
-                roleManager.Create(new IdentityRole { Name = "User"});
+                roleManager.Create(new IdentityRole { Name = "Admin" });
+                roleManager.Create(new IdentityRole { Name = "AuthorizedApp" });
+                roleManager.Create(new IdentityRole { Name = "User" });
             }
 
             var adminUser = manager.FindByName("anatoli");
 
-            manager.AddToRoles(adminUser.Id, new string[] { "SuperAdmin", "Admin" });
+            manager.AddToRoles(adminUser.Id, new string[] { "SuperAdmin", "Admin", "AuthorizedApp", "User" });
 
             var user2 = new ApplicationUser()
             {
@@ -54,15 +55,15 @@ namespace Anatoli.Cloud.WebApi.Migrations
                 EmailConfirmed = true,
                 FirstName = "P2P",
                 LastName = "petropay",
-                Level = 1,
-                JoinDate = DateTime.Now.AddYears(-3)
+                Level = 2,
+                JoinDate = DateTime.Now.AddDays(-3)
             };
 
-            manager.Create(user, "petropay");
+            manager.Create(user2, "petropay");
 
             var userInfo = manager.FindByName("petropay");
 
-            manager.AddToRoles(adminUser.Id, new string[] { "User"});
+            manager.AddToRoles(adminUser.Id, new string[] { "AuthorizedApp", "User" });
         }
     }
 }

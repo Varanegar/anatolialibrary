@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.Cloud.Gateway.Business.Manufacture;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class ManufactureController : ApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("")]
-        public IHttpActionResult Get()
+        [Route("manufactures")]
+        public IHttpActionResult GetManufactures()
         {
-            return Ok();
+            return Ok(ManufactureCloudHandler.GetInstance().GetSampleData());
         }
     }
 }

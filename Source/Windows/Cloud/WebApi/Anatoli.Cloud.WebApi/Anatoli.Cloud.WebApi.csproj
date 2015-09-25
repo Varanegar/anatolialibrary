@@ -148,13 +148,10 @@
     <Compile Include="Controllers\Base\ClaimsController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />
-    <Compile Include="Controllers\Gateway\Customer\CustomerShipAddressController.cs" />
     <Compile Include="Controllers\Gateway\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
-    <Compile Include="Controllers\Gateway\Store\StoreOnHandController.cs" />
-    <Compile Include="Controllers\Gateway\Store\StorePriceListController.cs" />
     <Compile Include="Controllers\Gateway\Store\StoreController.cs" />
     <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Controllers\Base\OrdersController.cs" />
@@ -166,9 +163,9 @@
     <Compile Include="Infrastructure\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Infrastructure\ExtendedClaimsProvider.cs" />
     <Compile Include="Infrastructure\RolesFromClaims.cs" />
-    <Compile Include="Migrations\201509242145248_InitialCreate.cs" />
-    <Compile Include="Migrations\201509242145248_InitialCreate.Designer.cs">
-      <DependentUpon>201509242145248_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201509251908290_InitialCreate.cs" />
+    <Compile Include="Migrations\201509251908290_InitialCreate.Designer.cs">
+      <DependentUpon>201509251908290_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -182,11 +179,6 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\MyCustomPasswordValidator.cs" />
     <Compile Include="Validators\MyCustomUserValidator.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509242145248_InitialCreate.resx">
-      <DependentUpon>201509242145248_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Aantoli.Common.Entity\Aantoli.Common.Entity\Aantoli.Common.Entity.csproj">
@@ -208,6 +200,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Sample\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509251908290_InitialCreate.resx">
+      <DependentUpon>201509251908290_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

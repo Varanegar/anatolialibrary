@@ -13,7 +13,7 @@ namespace Anatoli.Cloud.WebApi.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201509242145248_InitialCreate"; }
+            get { return "201509251908290_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
