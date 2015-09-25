@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/app/basket")]
-    public class BasketValueController : ApiController
+    public class BasketInfoController : BaseApiController
     {
         [Authorize(Roles = "Admin")]
         [Route("baskets")]

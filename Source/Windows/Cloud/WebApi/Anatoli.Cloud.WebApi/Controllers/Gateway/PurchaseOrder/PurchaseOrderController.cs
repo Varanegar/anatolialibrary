@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aantoli.Common.Entity.Gateway.Order;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public IHttpActionResult Get()
         {
             return Ok();
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("create")]
+        public async Task<IHttpActionResult> CreateOrder(PurchaseOrderEntity orderEntity)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
         }
     }
 }
