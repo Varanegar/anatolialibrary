@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
-    [RoutePrefix("api/purchaseorder")]
+    [RoutePrefix("api/gateway/purchaseorder")]
     public class PurchaseOrderController : ApiController
     {
         /*

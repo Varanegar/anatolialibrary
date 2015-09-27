@@ -22,7 +22,7 @@ namespace Aantoli.Common.Entity.Gateway.Product
         public decimal RateValue { get; set; }
         public string SmallPicURL { get; set; }
         public string LargePicURL { get; set; }
-
+        public string Desctription { get; set; }
         public ProductSupplierListEntity SupplierInfoList { get; set; }
     }
 

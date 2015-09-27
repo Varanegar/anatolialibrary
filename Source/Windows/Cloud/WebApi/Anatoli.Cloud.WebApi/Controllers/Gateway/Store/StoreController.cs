@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
-    [RoutePrefix("api/store")]
+    [RoutePrefix("api/gateway/store")]
     public class StoreController : ApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
