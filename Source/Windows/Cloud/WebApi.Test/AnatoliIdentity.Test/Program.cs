@@ -14,7 +14,8 @@ namespace ClientApp
     {
         static void Main(string[] args)
         {
-            var oauthClient = new OAuth2Client(new Uri("http://localhost:59823/oauth/token"));
+            string servserURI = "http://79.175.166.186:80";
+            var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
             try
             {
                 var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli", "foo bar").Result;
@@ -30,11 +31,11 @@ namespace ClientApp
                     var client = new HttpClient();
                     client.SetBearerToken(oauthresult.AccessToken);
 
-                    var result = client.GetAsync("http://localhost:59823/api/gateway/basedata/basevalues").Result; 
+                    var result = client.GetAsync(servserURI + "/api/gateway/basedata/basevalues").Result; 
                     var json = result.Content.ReadAsStringAsync().Result;
 
-                    var result2 = client.GetAsync("http://localhost:59823/api/app/basket/baskets").Result;
-                    var json2 = result.Content.ReadAsStringAsync().Result;
+                    var result2 = client.GetAsync(servserURI + "/api/app/basket/baskets").Result;
+                    var json2 = result2.Content.ReadAsStringAsync().Result;
                     
                     Console.WriteLine(json);
                 }

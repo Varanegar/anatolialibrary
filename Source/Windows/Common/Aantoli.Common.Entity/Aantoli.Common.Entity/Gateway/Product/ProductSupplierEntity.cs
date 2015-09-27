@@ -9,7 +9,7 @@ namespace Aantoli.Common.Entity.Gateway.Product
 {
     public class ProductSupplierEntity : BaseEntity
     {
-        public int SupplierId { get; set; }
+        public Guid SupplierId { get; set; }
         public string SupplierComment { get; set; }
     }
 }

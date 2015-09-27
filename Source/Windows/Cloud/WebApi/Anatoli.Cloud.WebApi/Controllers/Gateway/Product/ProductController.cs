@@ -24,5 +24,20 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             return Ok(ProductCharTypeCloudHandler.GetInstance().GetSampleData());
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("productlist")]
+        public IHttpActionResult GetProducts()
+        {
+            return Ok(ProductCloudHandler.GetInstance().GetSampleData());
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("productgroups")]
+        public IHttpActionResult GetProductGroups()
+        {
+            return Ok(ProductGroupCloudHandler.GetInstance().GetSampleData());
+        }
+
     }
 }

@@ -17,5 +17,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             return Ok(StoreOnHandCloudHandler.GetInstance().GetSampleData());
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storepricelist")]
+        public IHttpActionResult GetStorePriceLists()
+        {
+            return Ok(StoreProductPriceListsCloudHandler.GetInstance().GetSampleData());
+        }
     }
 }

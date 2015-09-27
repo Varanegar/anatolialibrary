@@ -10,7 +10,7 @@ namespace Aantoli.Common.Entity.Gateway.Store
     public class StoreProductPriceListsEntity : BaseEntity
     {
         public Guid StoreId { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public DateTime UpdateDate { get; set; }
         public StoreProductPriceListEntity PriceListInfo { get; set; }
     }
 }

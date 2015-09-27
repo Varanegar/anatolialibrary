@@ -1,4 +1,5 @@
 ﻿using Aantoli.Common.Entity.Gateway.Order;
+using Anatoli.Cloud.Gateway.Business.Manufacture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/purchaseorder")]
     public class PurchaseOrderController : ApiController
     {
+        /*
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("")]
-        public IHttpActionResult Get()
+        [Route("history")]
+        public IHttpActionResult GetPurchaseHistory()
         {
-            return Ok();
+            return Ok(PurchaseHistoryCloudHandler.);
         }
-
+        */
         [Authorize(Roles = "AuthorizedApp")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateOrder(PurchaseOrderEntity orderEntity)
@@ -26,6 +28,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+            return null;
         }
     }
 }
