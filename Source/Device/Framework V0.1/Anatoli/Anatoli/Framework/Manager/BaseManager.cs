@@ -1,4 +1,5 @@
-﻿using Anatoli.Framework.DataAdapter;
+﻿using Anatoli.Framework.AnatoliBase;
+using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Model;
 using System;
 using System.Collections.Generic;
@@ -20,19 +21,25 @@ namespace Anatoli.Framework.Manager
             dataAdapter = new DataAdapter();
         }
 
-        public bool IsIdValid(int id)
+        public bool IsIdValid(string id)
         {
             return dataAdapter.IsDataIDValid(id);
         }
-
-        public DataList GetAll()
+        //protected DataList GetAll(string query)
+        //{
+        //    return dataAdapter.GetAll(query);
+        //}
+        public async Task<DataList> GetAllAsync(string localQuery, RemoteQueryParams remoteQueryParams)
         {
-            return dataAdapter.GetAll();
+            return await Task.Run(() => { return dataAdapter.GetAll(localQuery, remoteQueryParams); });
         }
-
-        public Data GetById(int id)
+        protected Data GetById(string id)
         {
             return dataAdapter.GetById(id);
+        }
+        public async Task<Data> GetByIdAsync(string id)
+        {
+            return await Task.Run(() => { return dataAdapter.GetById(id); });
         }
     }
 }

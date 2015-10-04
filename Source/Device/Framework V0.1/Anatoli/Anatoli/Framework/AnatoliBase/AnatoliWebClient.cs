@@ -16,7 +16,7 @@ namespace Anatoli.Anatoliclient
         {
             var client = new RestClient(Configuration.PortalUri);
             var request = new RestRequest(requestUri, HttpMethod.Post);
-            
+            request.AddHeader("Accept", "application/json");
             foreach (var item in parameters)
             {
                 Parameter p = new Parameter();
@@ -26,6 +26,37 @@ namespace Anatoli.Anatoliclient
             }
             var asyncHandle = await client.Execute<Result>(request);
             return asyncHandle.Data;
+        }
+
+        internal async Task<Result> SendGetRequestAsync<Result>(string requestUri, params Tuple<string, string>[] parameters)
+        {
+            var client = new RestClient(Configuration.PortalUri);
+            var request = new RestRequest(requestUri, HttpMethod.Get);
+            request.AddHeader("Accept", "application/json");
+            foreach (var item in parameters)
+            {
+                Parameter p = new Parameter();
+                p.Name = item.Item1;
+                p.Value = item.Item2;
+                request.AddParameter(p);
+            }
+            var asyncHandle = await client.Execute<Result>(request);
+            return asyncHandle.Data;
+        }
+        public Result SendGetRequest<Result>(string requestUri, params Tuple<string, string>[] parameters)
+        {
+            var client = new RestClient(Configuration.PortalUri);
+            var request = new RestRequest(requestUri, HttpMethod.Get);
+            request.AddHeader("Accept", "application/json");
+            foreach (var item in parameters)
+            {
+                Parameter p = new Parameter();
+                p.Name = item.Item1;
+                p.Value = item.Item2;
+                request.AddParameter(p);
+            }
+            var response = client.Execute<Result>(request);
+            return response.Result.Data;
         }
     }
     public class RequestResult

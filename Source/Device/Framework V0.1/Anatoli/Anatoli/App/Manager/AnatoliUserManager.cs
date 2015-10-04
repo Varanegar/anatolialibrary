@@ -32,6 +32,7 @@ namespace Anatoli.App.Manager
                 new Tuple<string, string>("tel", tel)
                 );
             ParseObject userParseObject = new ParseObject("AnatoliUser");
+            userParseObject.Add("UserId", result.userModel.UserId);
             await userParseObject.SaveAsync();
             return result;
         }

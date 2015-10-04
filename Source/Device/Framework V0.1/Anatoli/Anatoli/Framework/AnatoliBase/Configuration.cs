@@ -15,8 +15,14 @@ namespace Anatoli.Anatoliclient
         public static class WebService
         {
             public static readonly string UserLoginUrl = "/Users/UserLogin";
-            public static readonly string UserRegisterUrl = "test";
+            public static readonly string UserRegisterUrl = "test.php";
             public static readonly string RateProductUri = "/Products/Rate";
+            public static class Products
+            {
+                public static readonly string ProductView = "product_view.php";
+                public static readonly string ProductsView = "products_test.php";
+                public static readonly string FOGList = "list.php";
+            }
         }
     }
 }

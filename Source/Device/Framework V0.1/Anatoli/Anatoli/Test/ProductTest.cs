@@ -18,7 +18,7 @@ namespace Anatoli.Test
         public static void TestProduct()
         {
             ProductManager pm = new ProductManager();
-            pm.GetById(0);
+            
         }
     }
 }

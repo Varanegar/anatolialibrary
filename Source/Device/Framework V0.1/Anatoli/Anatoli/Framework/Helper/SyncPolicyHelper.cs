@@ -11,8 +11,8 @@ namespace Anatoli.Framework.Helper
     {
         InvalidData = 0,
         ForceOnline = 1,
-        ForceOnlineIfConnected = 2,
-        ForceOnlineIfWifi = 3,
+        OnlineIfConnected = 2,
+        OnlineIfWifi = 3,
         Offline
     }
     public class SyncPolicyHelper
@@ -36,13 +36,17 @@ namespace Anatoli.Framework.Helper
         {
             if (modelType == typeof(ProductModel))
             {
-                return SYNC_POLICY.Offline;
+                return SYNC_POLICY.OnlineIfConnected;
             }
             else if (modelType == typeof(ProductImage))
             {
-                return SYNC_POLICY.ForceOnlineIfWifi;
+                return SYNC_POLICY.OnlineIfWifi;
             }
             return SYNC_POLICY.ForceOnline;
+        }
+        public class SyncPolicyException : Exception
+        {
+
         }
     }
 }

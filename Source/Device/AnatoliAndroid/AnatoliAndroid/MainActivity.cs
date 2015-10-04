@@ -9,13 +9,14 @@ using Anatoli.App.Manager.Product;
 using Anatoli.Anatoliclient;
 using Android.Net;
 using Anatoli.App.Manager;
+using Parse;
 
 namespace AnatoliAndroid
 {
     [Activity(Label = "AnatoliAndroid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        
+
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -32,11 +33,26 @@ namespace AnatoliAndroid
             {
                 var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
                 AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-                AnatoliUserManager um = new AnatoliUserManager();
-                await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
-                //ProductManager pm = new ProductManager();
-                //var p = pm.GetById(0);
-                //button.Text = p.Name;
+                var dbClient = AnatoliClient.GetInstance().DbClient;
+                if (!dbClient.TableExists("products"))
+                {
+                    dbClient.Connection.Execute("CREATE TABLE products(id TEXT PRIMARY KEY, name TEXT); ");
+                }
+                //AnatoliUserManager um = new AnatoliUserManager();
+                //var result = await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
+                //button.Text = result.metaInfo.Result.ToString();
+                ProductManager pm = new ProductManager();
+                try
+                {
+                    var p = await pm.GetByIdAsync("qqq");
+                    button.Text = p.Name;
+                    var list = await pm.GetFrequentlyOrderedProducts(10);
+                    button.Text = list.Count.ToString();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             };
 
         }

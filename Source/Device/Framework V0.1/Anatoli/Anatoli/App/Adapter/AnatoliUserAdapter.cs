@@ -8,7 +8,26 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Adapter
 {
-    public class AnatoliUserAdapter : SyncDataAdapter<AnatoliUserListModel, AnatoliUserModel>
+    public class AnatoliUserAdapter : DataAdapter<AnatoliUserListModel, AnatoliUserModel>
     {
+        public override void CloudUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void LocalUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CloudSave()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void LocalSave()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
