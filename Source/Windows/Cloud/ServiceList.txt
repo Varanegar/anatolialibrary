@@ -8,7 +8,7 @@ api/gateway/base/region/cityregion
 
 api/gateway/base/manufacture/manufactures
 
-api/gateway/basedata/basevalues
+api/app/basedata/basevalues
 
 api/gateway/product/chargroups
 api/gateway/product/chartypes

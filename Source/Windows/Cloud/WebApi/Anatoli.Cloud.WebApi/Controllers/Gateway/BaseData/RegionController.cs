@@ -12,7 +12,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class RegionController : ApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("CityRegions")]
+        [Route("cityregion")]
         public IHttpActionResult Get()
         {
             return Ok(CityRegionCloudHandler.GetInstance().GetSampleData());

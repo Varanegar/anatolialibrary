@@ -18,7 +18,7 @@ namespace ClientApp
             var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
             try
             {
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli", "foo bar").Result;
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("petropay", "petropay", "foo bar").Result;
                 if (oauthresult.AccessToken != null)
                 {
                     Console.WriteLine(oauthresult.AccessToken);
@@ -34,7 +34,7 @@ namespace ClientApp
                     var result = client.GetAsync(servserURI + "/api/product/chargroups").Result; 
                     var json = result.Content.ReadAsStringAsync().Result;
 
-                    var result2 = client.GetAsync(servserURI + "/api/product/chartypes").Result;
+                    var result2 = client.GetAsync(servserURI + "/api/gateway/base/manufacture/manufactures").Result;
                     var json2 = result2.Content.ReadAsStringAsync().Result;
                     
                     Console.WriteLine(json);
