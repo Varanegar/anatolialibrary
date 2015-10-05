@@ -16,7 +16,7 @@ namespace Anatoli.App.Manager.Product
     {
         public async Task<ProductListModel> GetFrequentlyOrderedProducts(int count)
         {
-            return await GetAllAsync("SELECT * FROM products", new RemoteQueryParams(Configuration.WebService.Products.ProductsView, null));
+            return await GetAllAsync(string.Format("SELECT * FROM products ORDER BY `order_count` DESC LIMIT {0}", count.ToString()), new RemoteQueryParams(Configuration.WebService.Products.ProductsView, new Tuple<string, string>("count", count.ToString())));
         }
     }
 }

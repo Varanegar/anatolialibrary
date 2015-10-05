@@ -33,20 +33,13 @@ namespace AnatoliAndroid
             {
                 var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
                 AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-                var dbClient = AnatoliClient.GetInstance().DbClient;
-                if (!dbClient.TableExists("products"))
-                {
-                    dbClient.Connection.Execute("CREATE TABLE products(id TEXT PRIMARY KEY, name TEXT); ");
-                }
                 //AnatoliUserManager um = new AnatoliUserManager();
                 //var result = await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
                 //button.Text = result.metaInfo.Result.ToString();
                 ProductManager pm = new ProductManager();
                 try
                 {
-                    var p = await pm.GetByIdAsync("qqq");
-                    button.Text = p.Name;
-                    var list = await pm.GetFrequentlyOrderedProducts(10);
+                    var list = await pm.GetFrequentlyOrderedProducts(2);
                     button.Text = list.Count.ToString();
                 }
                 catch (Exception)
