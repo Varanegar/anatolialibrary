@@ -1,5 +1,5 @@
 ﻿using Anatoli.Anatoliclient;
-using Anatoli.App.Adapter.Product;
+using Anatoli.App.Adapter;
 using Anatoli.App.Model.Product;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.Manager;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.App.Manager.Product
+namespace Anatoli.App.Manager
 {
     public class ProductManager : BaseManager<ProductAdapter, ProductListModel, ProductModel>
     {

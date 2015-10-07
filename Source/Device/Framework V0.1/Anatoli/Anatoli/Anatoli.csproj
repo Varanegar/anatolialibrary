@@ -36,9 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App\Adapter\AnatoliUserAdapter.cs" />
-    <Compile Include="App\Adapter\Product\ProductAdapter.cs" />
+    <Compile Include="App\Adapter\ProductAdapter.cs" />
+    <Compile Include="App\Adapter\StoreAdapter.cs" />
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
-    <Compile Include="App\Manager\Product\ProductManager.cs" />
+    <Compile Include="App\Manager\ProductManager.cs" />
+    <Compile Include="App\Manager\StoreManager.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserListModel.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
@@ -48,6 +50,7 @@
     <Compile Include="App\Model\Product\ProductListModel.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
     <Compile Include="App\Model\Product\ProductModelUpdateResult.cs" />
+    <Compile Include="App\Model\Store\StoreDataModel.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
@@ -63,6 +66,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Model\BaseListResult.cs" />
+    <Compile Include="Framework\Model\BaseModelResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\ProductTest.cs" />
   </ItemGroup>
@@ -99,6 +103,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

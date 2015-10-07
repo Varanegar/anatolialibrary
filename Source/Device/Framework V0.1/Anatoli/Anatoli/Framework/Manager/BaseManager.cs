@@ -33,13 +33,13 @@ namespace Anatoli.Framework.Manager
         {
             return await Task.Run(() => { return dataAdapter.GetAll(localQuery, remoteQueryParams); });
         }
-        protected Data GetById(string id)
+        protected Data GetById(string id, RemoteQueryParams parameters)
         {
-            return dataAdapter.GetById(id);
+            return dataAdapter.GetById(id, parameters);
         }
-        public async Task<Data> GetByIdAsync(string id)
+        public async Task<Data> GetByIdAsync(string id, RemoteQueryParams parameters)
         {
-            return await Task.Run(() => { return dataAdapter.GetById(id); });
+            return await Task.Run(() => { return dataAdapter.GetById(id, parameters); });
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Anatoli.Framework.DataAdapter
                 return null;
             }
         }
-        public Data GetById(string id)
+        public Data GetById(string id, RemoteQueryParams parameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
             DataModel = new Data();
@@ -74,12 +74,12 @@ namespace Anatoli.Framework.DataAdapter
             {
                 if (policy == SYNC_POLICY.ForceOnline)
                 {
-                    CloudUpdate();
+                    CloudUpdate(parameters);
                 }
                 else if (policy == SYNC_POLICY.OnlineIfConnected)
                 {
                     if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                        CloudUpdate();
+                        CloudUpdate(parameters);
                     else
                         LocalUpdate();
                 }
@@ -95,7 +95,39 @@ namespace Anatoli.Framework.DataAdapter
             }
         }
         public abstract bool IsDataIDValid(string ID);
-        public abstract void LocalUpdate();
-        public abstract void CloudUpdate();
+        public void LocalUpdate()
+        {
+            var connection = AnatoliClient.GetInstance().DbClient.Connection;
+            var query = connection.CreateCommand(string.Format("SELECT * FROM {0} WHERE store_id={1}", DataModel.DataTable, DataModel.ID));
+            try
+            {
+                var qResult = query.ExecuteQuery<Data>();
+                if (qResult.Count > 0)
+                {
+                    DataModel = qResult.First<Data>();
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+        public void CloudUpdate(RemoteQueryParams parameters)
+        {
+            try
+            {
+                var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseModelResult<Data>>(
+                parameters.Endpoint,
+                new Tuple<string, string>("ID", DataModel.UniqueId.ToString())
+                );
+                if (response.metaInfo.Result)
+                {
+                    DataModel = response.data;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

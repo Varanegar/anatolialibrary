@@ -27,6 +27,9 @@ namespace Anatoli.App.Model.Product
             }
         }
 
-        
+        protected override string GetDataTable()
+        {
+            return "products";
+        }
     }
 }
