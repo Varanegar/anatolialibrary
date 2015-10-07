@@ -5,10 +5,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Anatoli.App.Manager.Product;
+using Anatoli.App.Manager;
 using Anatoli.Anatoliclient;
 using Android.Net;
-using Anatoli.App.Manager;
 using Parse;
 
 namespace AnatoliAndroid
@@ -37,10 +36,15 @@ namespace AnatoliAndroid
                 //var result = await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
                 //button.Text = result.metaInfo.Result.ToString();
                 ProductManager pm = new ProductManager();
+                StoreManager sm = new StoreManager();
                 try
                 {
                     var list = await pm.GetFrequentlyOrderedProducts(2);
                     button.Text = list.Count.ToString();
+                    var list2 = await sm.GetNearStores(4);
+                    button.Text = list2.Count.ToString();
+                    var list3 = await sm.GetAllAsync(0, 10, 2);
+                    button.Text = list3.Count.ToString();
                 }
                 catch (Exception)
                 {

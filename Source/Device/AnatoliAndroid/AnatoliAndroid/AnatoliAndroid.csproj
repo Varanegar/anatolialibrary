@@ -95,10 +95,8 @@
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\db\paa.db">
-      <Link>Assets\paa.db</Link>
-    </None>
     <None Include="app.config" />
+    <AndroidAsset Include="Assets\paa.db" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

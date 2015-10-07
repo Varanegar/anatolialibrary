@@ -10,15 +10,8 @@ namespace Anatoli.App.Adapter
 {
     public class AnatoliUserAdapter : DataAdapter<AnatoliUserListModel, AnatoliUserModel>
     {
-        public override void CloudUpdate()
-        {
-            throw new NotImplementedException();
-        }
+       
 
-        public override void LocalUpdate()
-        {
-            throw new NotImplementedException();
-        }
 
         public override void CloudSave()
         {
