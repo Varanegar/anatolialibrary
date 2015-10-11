@@ -49,10 +49,5 @@ namespace Anatoli.App.Adapter
         //    }
         //}
 
-
-        public override bool IsDataIDValid(string ID)
-        {
-            return true;
-        }
     }
 }

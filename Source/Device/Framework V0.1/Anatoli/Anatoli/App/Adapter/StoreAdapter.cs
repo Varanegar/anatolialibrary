@@ -12,12 +12,6 @@ namespace Anatoli.App.Adapter
 {
     public class StoreAdapter : BaseDataAdapter<BaseListModel<StoreDataModel>, StoreDataModel>
     {
-        public override bool IsDataIDValid(string ID)
-        {
-            throw new NotImplementedException();
-        }
-
-       
 
        
     }

@@ -41,5 +41,11 @@ namespace Anatoli.Framework.Manager
         {
             return await Task.Run(() => { return dataAdapter.GetById(id, parameters); });
         }
+
+        public async Task<DataList> GetAllAsync()
+        {
+            return await Task.Run(() => { return dataAdapter.GetAll(); });
+        }
+
     }
 }

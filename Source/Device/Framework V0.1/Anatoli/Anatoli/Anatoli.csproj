@@ -57,8 +57,8 @@
     <Compile Include="Framework\AnatoliBase\Configuration.cs" />
     <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
     <Compile Include="Framework\AnatoliBase\RemoteQueryParams.cs" />
-    <Compile Include="Framework\DataAdapter\DataAdapter.cs" />
     <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />
+    <Compile Include="Framework\DataAdapter\DataAdapter.cs" />
     <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
     <Compile Include="Framework\Manager\BaseManager.cs" />
     <Compile Include="Framework\Model\BaseDataModel.cs" />

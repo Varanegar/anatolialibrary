@@ -11,11 +11,15 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace Anatoli.Framework.DataAdapter
 {
-    public abstract class BaseDataAdapter<DataListTemplate, Data>
+    public class BaseDataAdapter<DataListTemplate, Data>
         where DataListTemplate : BaseListModel<Data>, new()
         where Data : BaseDataModel, new()
     {
-        protected Data DataModel;
+        protected Data DataModel = new Data();
+        public DataListTemplate GetAll()
+        {
+            return GetAll(string.Format("SELECT * FROM {0}", DataModel.DataTable), null);
+        }
         public DataListTemplate GetAll(string localQuery, RemoteQueryParams parameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
@@ -69,7 +73,6 @@ namespace Anatoli.Framework.DataAdapter
         public Data GetById(string id, RemoteQueryParams parameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
-            DataModel = new Data();
             try
             {
                 if (policy == SYNC_POLICY.ForceOnline)
@@ -94,7 +97,10 @@ namespace Anatoli.Framework.DataAdapter
                 throw;
             }
         }
-        public abstract bool IsDataIDValid(string ID);
+        public bool IsDataIDValid(string ID)
+        {
+            return true;
+        }
         public void LocalUpdate()
         {
             var connection = AnatoliClient.GetInstance().DbClient.Connection;

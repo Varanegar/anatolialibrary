@@ -12,10 +12,6 @@ namespace Anatoli.Framework.DataAdapter
         where DataListTemplate : BaseListModel<Data>, new()
         where Data : BaseDataModel, new()
     {
-        public override bool IsDataIDValid(string ID)
-        {
-            return false;
-        }
         public abstract void CloudSave();
         public abstract void LocalSave();
     }
