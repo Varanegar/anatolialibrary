@@ -22,7 +22,8 @@ namespace AnatoliAndroid
         DrawerLayout _drawerLayout;
         ListView _drawerListView;
         static readonly string[] _sections = new[] { "Products", "Stores", "Settings" };
-
+        ProductsListFragment _productsListF;
+        StoresListFragment _storesListF;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -33,7 +34,7 @@ namespace AnatoliAndroid
             _drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
             _drawerListView.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, _sections);
             _drawerListView.ItemClick += _drawerListView_ItemClick;
-
+            ActivityContainer.Initialize(this);
 
             //button.Click += async delegate
             //{
@@ -62,10 +63,25 @@ namespace AnatoliAndroid
             switch (e.Position)
             {
                 case 0:
-                    fragment = new ProductsListFragment();
+                    if (_productsListF == null)
+                    {
+                        _productsListF = new ProductsListFragment();
+                    }
+                    fragment = _productsListF;
+                    break;
+                case 1:
+                    if (_storesListF == null)
+                    {
+                        _storesListF = new StoresListFragment();
+                    }
+                    fragment = _storesListF;
                     break;
                 default:
-                    fragment = new StoresListFragment();
+                    if (_storesListF == null)
+                    {
+                        _storesListF = new StoresListFragment();
+                    }
+                    fragment = _storesListF;
                     break;
             }
             _drawerListView.SetItemChecked(e.Position, true);
@@ -76,7 +92,8 @@ namespace AnatoliAndroid
         protected override void OnPostCreate(Bundle savedInstanceState)
         {
             base.OnPostCreate(savedInstanceState);
-            FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, new StoresListFragment()).Commit();
+            _productsListF = new ProductsListFragment();
+            FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
             //_drawerToggle.SyncState();

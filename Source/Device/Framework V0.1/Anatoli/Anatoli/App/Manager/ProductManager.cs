@@ -1,7 +1,7 @@
 ﻿using Anatoli.Anatoliclient;
-using Anatoli.App.Adapter;
 using Anatoli.App.Model.Product;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Manager;
 using Anatoli.Framework.Model;
 using System;
@@ -12,11 +12,16 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class ProductManager : BaseManager<ProductAdapter, ProductListModel, ProductModel>
+    public class ProductManager : BaseManager<BaseDataAdapter<ProductModel>, ProductModel>
     {
-        public async Task<ProductListModel> GetFrequentlyOrderedProducts(int count)
+        protected override string GetDataTable()
         {
-            return await GetAllAsync(string.Format("SELECT * FROM products ORDER BY `order_count` DESC LIMIT {0}", count.ToString()), new RemoteQueryParams(Configuration.WebService.Products.ProductsView, new Tuple<string, string>("count", count.ToString())));
+            return "products";
+        }
+
+        protected override string GetWebServiceUri()
+        {
+            return Configuration.WebService.Products.ProductsView;
         }
     }
 }

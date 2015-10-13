@@ -21,17 +21,5 @@ namespace Anatoli.Framework.Model
         public bool IsUnchanged { get; set; }
         public bool IsSaveRequired { get; set; }
         public bool ReadOnly { get { return false; } }
-        public string DataTable
-        {
-            get { return GetDataTable(); }
-            set { SetDataTable(value); }
-        }
-
-        protected void SetDataTable(string value)
-        {
-            DataTable = value;
-        }
-
-        protected abstract string GetDataTable();
     }
 }

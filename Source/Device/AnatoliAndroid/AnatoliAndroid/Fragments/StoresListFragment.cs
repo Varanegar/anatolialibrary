@@ -11,14 +11,18 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Anatoli.App.Model.Store;
-using Anatoli.App.Adapter;
 using Anatoli.Framework.Model;
 using Anatoli.App.Manager;
+using AnatoliAndroid.ListAdapters;
 
 namespace AnatoliAndroid.Fragments
 {
-    class StoresListFragment : BaseListFragment<StoreAdapter, BaseListModel<StoreDataModel>, StoreDataModel>
+    class StoresListFragment : BaseListFragment<StoreManager,StoresListAdapter, StoreDataModel>
     {
-        public StoresListFragment() : base(new StoreManager()) { }
+        protected override List<Anatoli.Framework.AnatoliBase.Query.QueryParameter> CreateQueryParameters()
+        {
+            var parameters = new List<Anatoli.Framework.AnatoliBase.Query.QueryParameter>();
+            return parameters;
+        }
     }
 }

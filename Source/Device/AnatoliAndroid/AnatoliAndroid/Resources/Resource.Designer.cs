@@ -115,8 +115,14 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050002
 			public const int listToolsTextView = 2131034114;
 			
-			// aapt resource value: 0x7f05000e
-			public const int mainMenu = 2131034126;
+			// aapt resource value: 0x7f050010
+			public const int mainMenu = 2131034128;
+			
+			// aapt resource value: 0x7f05000a
+			public const int productNameTextView = 2131034122;
+			
+			// aapt resource value: 0x7f05000b
+			public const int productPriceTextView = 2131034123;
 			
 			// aapt resource value: 0x7f050008
 			public const int productSummaryImageView = 2131034120;
@@ -130,11 +136,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f05000d
 			public const int searchEditText = 2131034125;
 			
-			// aapt resource value: 0x7f05000a
-			public const int textView1 = 2131034122;
+			// aapt resource value: 0x7f05000f
+			public const int storeAddressTextView = 2131034127;
 			
-			// aapt resource value: 0x7f05000b
-			public const int textView2 = 2131034123;
+			// aapt resource value: 0x7f05000e
+			public const int storeNameTextView = 2131034126;
 			
 			static Id()
 			{
@@ -160,6 +166,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f030003
 			public const int SearchPageLayout = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int StoreSummaryLayout = 2130903044;
 			
 			static Layout()
 			{

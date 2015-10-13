@@ -15,9 +15,5 @@ namespace Anatoli.App.Model.Store
         public string store_zone { get; set; }
         public string store_city { get; set; }
         public string store_province { get; set; }
-        protected override string GetDataTable()
-        {
-            return "stores";
-        }
     }
 }

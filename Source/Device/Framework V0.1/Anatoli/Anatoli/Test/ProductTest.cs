@@ -1,5 +1,4 @@
-﻿using Anatoli.App.Adapter;
-using Anatoli.App.Manager;
+﻿using Anatoli.App.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;

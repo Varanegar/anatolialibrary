@@ -25,12 +25,12 @@
             p1:textAppearance="?android:attr/textAppearanceMedium"
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
-            p1:id="@+id/textView1" />
+            p1:id="@+id/productNameTextView" />
         <TextView
             p1:text="Medium Text"
             p1:textAppearance="?android:attr/textAppearanceMedium"
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
-            p1:id="@+id/textView2" />
+            p1:id="@+id/productPriceTextView" />
     </LinearLayout>
 </RelativeLayout>

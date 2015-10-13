@@ -12,21 +12,26 @@ using Android.Widget;
 using Anatoli.Framework.Manager;
 using Anatoli.Framework.Model;
 using Anatoli.Framework.DataAdapter;
+using AnatoliAndroid.ListAdapters;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
-    abstract class BaseListFragment<DataAdapter, DataList, Data> : Fragment 
-        where DataAdapter : BaseDataAdapter<DataList, Data>, new()
-        where DataList : BaseListModel<Data>, new()
-        where Data : BaseDataModel, new()
+    abstract class BaseListFragment<BaseDataManager, DataListAdapter, DataModel> : Fragment
+        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
+        where DataListAdapter : BaseListAdapter<DataModel>, new()
+        where DataModel : BaseDataModel, new()
     {
-        protected BaseManager<DataAdapter, DataList, Data> _manager;
         protected View _view;
         protected ListView _listView;
-        public BaseListFragment(BaseManager<DataAdapter, DataList, Data> manager)
+        protected DataListAdapter _listAdapter;
+        protected object[] queryParams;
+        protected BaseDataManager _dataManager;
+        public BaseListFragment()
             : base()
         {
-            _manager = manager;
+            _listAdapter = new DataListAdapter();
+            _dataManager = new BaseDataManager();
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -35,16 +40,21 @@ namespace AnatoliAndroid.Fragments
             _view = inflater.Inflate(
                 Resource.Layout.ItemsListLayout, container, false);
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
-            // todo : set base list adapter here
+            _listView.Adapter = _listAdapter;
             return _view;
         }
-        
-
-        public async override void OnResume()
+        public async override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnResume();
-            var list = await _manager.GetAllAsync();
+            base.OnCreate(savedInstanceState);
+            SetParameters();
+            var list = await _dataManager.GetNextAsync();
+            _listAdapter.SetList(list);
         }
-
+        void SetParameters()
+        {
+            var parameters = CreateQueryParameters();
+            _dataManager.SetQueryParameters(parameters);
+        }
+        protected abstract List<Query.QueryParameter> CreateQueryParameters();
     }
 }

@@ -31,7 +31,7 @@ namespace Anatoli.Cloud.Gateway.Business.BaseValue
             BaseValueTypeListEntity returnDataList = new BaseValueTypeListEntity();
             BaseValueTypeEntity returnData = new BaseValueTypeEntity();
             returnData.BaseTypeName = "واحد سنجش";
-            returnData.BaseTypeDescription = "";
+            returnData.BaseTypeDescription = "واحد سنجش کالا بر اساس وزن";
             returnData.ID = 1;
             BaseValueInfoListEntity infoList = new BaseValueInfoListEntity();
             BaseValueInfoEntity info = new BaseValueInfoEntity();
@@ -48,7 +48,7 @@ namespace Anatoli.Cloud.Gateway.Business.BaseValue
 
             returnData = new BaseValueTypeEntity();
             returnData.BaseTypeName = "نوع کالا";
-            returnData.BaseTypeDescription = "";
+            returnData.BaseTypeDescription = "نوع کالا بر اساس انبار";
             returnData.ID = 2;
             infoList = new BaseValueInfoListEntity();
             info = new BaseValueInfoEntity();

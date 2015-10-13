@@ -15,9 +15,5 @@ namespace Anatoli.App.Model.AnatoliUser
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Tel { get; set; }
-        protected override string GetDataTable()
-        {
-            return null;
-        }
     }
 }

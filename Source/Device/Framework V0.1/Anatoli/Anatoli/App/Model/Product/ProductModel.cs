@@ -10,26 +10,10 @@ namespace Anatoli.App.Model.Product
 {
     public class ProductModel : BaseDataModel
     {
-        public int RateCount { get; set; }
-        public ProductName Name { get; set; }
-        public class ProductName
-        {
-            public string Name { get; set; }
-            public static implicit operator ProductName(string name)
-            {
-                var p = new ProductName();
-                p.Name = name;
-                return p;
-            }
-            public static implicit operator string(ProductName pname)
-            {
-                return pname.Name;
-            }
-        }
-
-        protected override string GetDataTable()
-        {
-            return "products";
-        }
+        public int order_count { get; set; }
+        public int cat_id { get; set; }
+        public int brand_id { get; set; }
+        public string product_name { get; set; }
+        public int product_id { get; set; }
     }
 }

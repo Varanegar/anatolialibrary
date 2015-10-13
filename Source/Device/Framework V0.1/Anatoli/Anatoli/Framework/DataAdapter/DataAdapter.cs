@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Framework.DataAdapter
 {
-    public abstract class DataAdapter<DataListTemplate, Data> : BaseDataAdapter<DataListTemplate, Data>
-        where DataListTemplate : BaseListModel<Data>, new()
+    public abstract class DataAdapter<Data> : BaseDataAdapter<Data>
         where Data : BaseDataModel, new()
     {
         public abstract void CloudSave();

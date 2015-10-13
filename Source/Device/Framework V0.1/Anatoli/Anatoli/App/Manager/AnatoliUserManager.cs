@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.Framework.Manager;
-using Anatoli.App.Adapter;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.Anatoliclient;
 using Parse;
+using Anatoli.Framework.DataAdapter;
 namespace Anatoli.App.Manager
 {
-    public class AnatoliUserManager : BaseManager<AnatoliUserAdapter, AnatoliUserListModel, AnatoliUserModel>
+    public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
         public async Task<LoginResult> LoginAsync(string userName, string passWord)
         {
@@ -35,6 +35,16 @@ namespace Anatoli.App.Manager
             userParseObject.Add("UserId", result.userModel.UserId);
             await userParseObject.SaveAsync();
             return result;
+        }
+
+        protected override string GetDataTable()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override string GetWebServiceUri()
+        {
+            throw new NotImplementedException();
         }
     }
 }

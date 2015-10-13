@@ -93,11 +93,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivitiyContainer.cs" />
     <Compile Include="AndroidFileIO.cs" />
     <Compile Include="AndroidWebClient.cs" />
     <Compile Include="Fragments\BaseListFragment.cs" />
     <Compile Include="Fragments\StoresListFragment.cs" />
     <Compile Include="Fragments\ProductsListFragment.cs" />
+    <Compile Include="ListAdapters\BaseListAdapter.cs" />
+    <Compile Include="ListAdapters\StoresListAdapter.cs" />
+    <Compile Include="ListAdapters\ProductsListAdapter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="ParseApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -117,6 +121,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ItemsListLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\StoreSummaryLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

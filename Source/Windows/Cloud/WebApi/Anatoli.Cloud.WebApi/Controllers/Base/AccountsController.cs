@@ -27,7 +27,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("user/{id:guid}", Name = "GetUserById")]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
@@ -43,7 +43,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("user/{username}")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
@@ -59,7 +59,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(CreateUserBindingModel createUserModel)
         {
@@ -73,6 +73,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 UserName = createUserModel.Username,
                 Email = createUserModel.Email,
+                EmailConfirmed = true,
                 FirstName = createUserModel.FirstName,
                 LastName = createUserModel.LastName,
                 Level = 3,

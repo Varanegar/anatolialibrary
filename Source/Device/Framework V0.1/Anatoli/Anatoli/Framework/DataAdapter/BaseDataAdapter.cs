@@ -11,128 +11,122 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace Anatoli.Framework.DataAdapter
 {
-    public class BaseDataAdapter<DataListTemplate, Data>
-        where DataListTemplate : BaseListModel<Data>, new()
-        where Data : BaseDataModel, new()
+    public class BaseDataAdapter<DataModel>
+        where DataModel : BaseDataModel, new()
     {
-        protected Data DataModel = new Data();
-        public DataListTemplate GetAll()
+        public List<DataModel> GetList(DBQuery localParameters)
         {
-            return GetAll(string.Format("SELECT * FROM {0}", DataModel.DataTable), null);
+            return GetList(localParameters, null);
         }
-        public DataListTemplate GetAll(string localQuery, RemoteQueryParams parameters)
+        public List<DataModel> GetList(RemoteQuery remoteParameters)
         {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
-            if (policy == SYNC_POLICY.ForceOnline && parameters == null)
+            return GetList(null, remoteParameters);
+        }
+        public List<DataModel> GetList(DBQuery localParameters, RemoteQuery remoteParameters)
+        {
+            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
+            if (policy == SYNC_POLICY.ForceOnline && remoteParameters == null)
             {
                 throw new SyncPolicyHelper.SyncPolicyException();
             }
-            if (policy == SYNC_POLICY.OnlineIfConnected && parameters != null)
+            if (policy == SYNC_POLICY.OnlineIfConnected && remoteParameters != null)
             {
                 if (AnatoliClient.GetInstance().WebClient.IsOnline())
                 {
                     try
                     {
-                        var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseListResult<Data>>(
-                        parameters.Endpoint,
-                        parameters.Parameters
+                        var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseListResult<DataModel>>(
+                        remoteParameters.WebServiceEndpoint,
+                        remoteParameters.Params.ToArray()
                         );
                         if (response.metaInfo.Result)
                         {
-                            var l = new DataListTemplate();
-                            foreach (var item in response.items)
-                            {
-                                l.Add(item);
-                            }
-                            return l;
+                            var list = new List<DataModel>();
+                            return list;
                         }
                     }
                     catch (Exception)
                     {
-                        throw;
+                        return null;
                     }
                 }
             }
             try
             {
                 var connection = AnatoliClient.GetInstance().DbClient.Connection;
-                var command = connection.CreateCommand(localQuery);
-                var result = command.ExecuteQuery<Data>();
-                var list = new DataListTemplate();
-                foreach (var item in result)
-                {
-                    list.Add(item);
-                }
-                return list;
+                var command = connection.CreateCommand(localParameters.Command);
+                var result = command.ExecuteQuery<DataModel>();
+                return result;
             }
             catch (Exception)
             {
                 return null;
             }
         }
-        public Data GetById(string id, RemoteQueryParams parameters)
+        public DataModel GetItem(DBQuery localParameters, RemoteQuery remoteParameters)
         {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(Data));
+            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
+            DataModel data = null;
             try
             {
                 if (policy == SYNC_POLICY.ForceOnline)
                 {
-                    CloudUpdate(parameters);
+                    data = CloudUpdate(remoteParameters);
                 }
                 else if (policy == SYNC_POLICY.OnlineIfConnected)
                 {
                     if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                        CloudUpdate(parameters);
+                        data = CloudUpdate(remoteParameters);
                     else
-                        LocalUpdate();
+                        data = LocalUpdate(localParameters);
                 }
                 else if (policy == SYNC_POLICY.Offline)
                 {
-                    LocalUpdate();
+                    data = LocalUpdate(localParameters);
                 }
-                return DataModel;
+                return data;
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
         }
-        public bool IsDataIDValid(string ID)
-        {
-            return true;
-        }
-        public void LocalUpdate()
+
+        public DataModel LocalUpdate(DBQuery parameters)
         {
             var connection = AnatoliClient.GetInstance().DbClient.Connection;
-            var query = connection.CreateCommand(string.Format("SELECT * FROM {0} WHERE store_id={1}", DataModel.DataTable, DataModel.ID));
+            var query = connection.CreateCommand(parameters.Command);
             try
             {
-                var qResult = query.ExecuteQuery<Data>();
+                var qResult = query.ExecuteQuery<DataModel>();
                 if (qResult.Count > 0)
                 {
-                    DataModel = qResult.First<Data>();
+                    return qResult.First<DataModel>();
                 }
+                return null;
             }
             catch (Exception)
             {
+                return null;
             }
         }
-        public void CloudUpdate(RemoteQueryParams parameters)
+        public DataModel CloudUpdate(RemoteQuery parameters)
         {
             try
             {
-                var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseModelResult<Data>>(
-                parameters.Endpoint,
-                new Tuple<string, string>("ID", DataModel.UniqueId.ToString())
+                var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseModelResult<DataModel>>(
+                parameters.WebServiceEndpoint,
+                parameters.Params.ToArray()
                 );
                 if (response.metaInfo.Result)
                 {
-                    DataModel = response.data;
+                    return response.data;
                 }
+                return null;
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
         }
     }
