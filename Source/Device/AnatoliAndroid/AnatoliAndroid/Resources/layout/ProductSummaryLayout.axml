@@ -5,8 +5,8 @@
     p1:id="@+id/productSummaryRelativeLayout">
     <ImageView
         p1:src="@android:drawable/ic_menu_gallery"
-        p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
+        p1:layout_width="50dp"
+        p1:layout_height="50dp"
         p1:id="@+id/productSummaryImageView"
         p1:layout_alignParentRight="true"
         p1:background="@android:drawable/gallery_thumb" />
@@ -22,15 +22,36 @@
         p1:layout_toLeftOf="@id/productSummaryImageView">
         <TextView
             p1:text="Medium Text"
-            p1:textAppearance="?android:attr/textAppearanceMedium"
-            p1:layout_width="match_parent"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:layout_width="100dp"
             p1:layout_height="wrap_content"
-            p1:id="@+id/productNameTextView" />
+            p1:id="@+id/productNameTextView"
+            p1:maxWidth="200dp" />
         <TextView
             p1:text="Medium Text"
-            p1:textAppearance="?android:attr/textAppearanceMedium"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
             p1:id="@+id/productPriceTextView" />
     </LinearLayout>
+    <Button
+        p1:text="+"
+        p1:layout_width="30dp"
+        p1:layout_height="wrap_content"
+        p1:layout_toLeftOf="@id/productSummaryInfoLinearLayout"
+        p1:id="@+id/addProductButton" />
+    <Button
+        p1:text="-"
+        p1:layout_width="30dp"
+        p1:layout_height="wrap_content"
+        p1:id="@+id/removeProductButton"
+        p1:layout_toLeftOf="@id/addProductButton" />
+    <TextView
+        p1:text="Small Text"
+        p1:textAppearance="?android:attr/textAppearanceSmall"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:id="@+id/productCountTextView"
+        p1:layout_alignParentLeft="true"
+        p1:layout_centerVertical="true" />
 </RelativeLayout>

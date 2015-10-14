@@ -22,8 +22,8 @@ namespace AnatoliAndroid.ListAdapters
         {
             convertView = _context.LayoutInflater.Inflate(Resource.Layout.StoreSummaryLayout, null);
             StoreDataModel item = null;
-            if (_list != null)
-                item = _list[position];
+            if (List != null)
+                item = List[position];
             else
                 return convertView;
             TextView storeNameTextView = convertView.FindViewById<TextView>(Resource.Id.storeNameTextView);

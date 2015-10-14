@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userNameEditText"
+        android:hint="نام کاربری" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordEditText"
+        android:hint="کلمه عبور" />
+    <Button
+        android:text="ورود"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginButton" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginResultTextView"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal" />
+    <TextView
+        android:text="ثبت نام"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerTextView"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/holo_green_dark" />
+</LinearLayout>

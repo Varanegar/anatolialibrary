@@ -34,7 +34,7 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86,x86_64,arm64-v8a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <Debugger>Xamarin</Debugger>
@@ -93,6 +93,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginActivity.cs" />
+    <Compile Include="MenuDialogFragment.cs" />
+    <Compile Include="RegisterActivity.cs" />
+    <Compile Include="ShoppingCard.cs" />
     <Compile Include="ActivitiyContainer.cs" />
     <Compile Include="AndroidFileIO.cs" />
     <Compile Include="AndroidWebClient.cs" />
@@ -106,11 +110,15 @@
     <Compile Include="ParseApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShoppingCardActivity.cs" />
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="..\..\db\paa.db">
+      <Link>Assets\paa.db</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="app.config" />
-    <AndroidAsset Include="Assets\paa.db" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -124,6 +132,18 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\StoreSummaryLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MenuDialogFragmentLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\LoginLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\RegisterLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ShoppingCardLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

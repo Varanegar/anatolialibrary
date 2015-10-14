@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <Button
+        android:text="بازگشت"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button7" />
+    <Button
+        android:text="ورود"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginButton" />
+    <Button
+        android:text="پیغام ها"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
+    <Button
+        android:text="علاقه مندی ها"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button3" />
+    <Button
+        android:text="سفارش ها"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button4" />
+    <Button
+        android:text="انتخاب فروشگاه"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button5" />
+    <Button
+        android:text="مشخصات من"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button6" />
+</LinearLayout>

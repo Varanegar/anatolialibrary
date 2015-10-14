@@ -27,6 +27,7 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected object[] queryParams;
         protected BaseDataManager _dataManager;
+        private bool _firstShow = true;
         public BaseListFragment()
             : base()
         {
@@ -40,17 +41,35 @@ namespace AnatoliAndroid.Fragments
             _view = inflater.Inflate(
                 Resource.Layout.ItemsListLayout, container, false);
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
+            _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
             return _view;
         }
         public async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetParameters();
-            var list = await _dataManager.GetNextAsync();
-            _listAdapter.SetList(list);
+            if (_firstShow)
+            {
+                SetParameters();
+                _listAdapter.List = await _dataManager.GetNextAsync();
+                _listAdapter.NotifyDataSetChanged();
+            }
+            _firstShow = false;
         }
-        void SetParameters()
+
+        async void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
+        {
+            if (e.ScrollState == ScrollState.Idle)
+            {
+                if ((_listView.Adapter.Count - 1) <= _listView.LastVisiblePosition)
+                {
+                    var list = await _dataManager.GetNextAsync();
+                    _listAdapter.List.AddRange(list);
+                    _listAdapter.NotifyDataSetChanged();
+                }
+            }
+        }
+        protected void SetParameters()
         {
             var parameters = CreateQueryParameters();
             _dataManager.SetQueryParameters(parameters);

@@ -124,7 +124,8 @@ namespace Anatoli.Framework.AnatoliBase
                     for (int i = 0; i < Filters.Count - 1; i++)
                     {
                         FilterParam filter = Filters[i];
-                        q += string.Format(" {0}={1} and ", filter.FilterName, filter.FilterValue);
+                        q += string.Format(" {0}={1} or ", filter.FilterName, filter.FilterValue);
+                        // todo : and should be added
                     }
                     q += string.Format(" {0}={1} ", Filters.Last<FilterParam>().FilterName, Filters.Last<FilterParam>().FilterValue);
                 }

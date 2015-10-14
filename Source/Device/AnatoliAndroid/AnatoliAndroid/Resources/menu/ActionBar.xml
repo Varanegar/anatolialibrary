@@ -1,8 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
+android:id="@+id/shoppinCard"
+android:title="Main Menu"
+android:icon="@android:drawable/ic_menu_more"
+android:showAsAction="always"
+android:layout_alignParentLeft="true"/>
+  <item
+android:id="@+id/mainMenu2"
+android:title="Main Menu"
+android:icon="@android:drawable/ic_menu_more"
+android:showAsAction="always"
+android:layout_alignParentLeft="true"/>
+  <item
   android:id="@+id/mainMenu"
   android:title="Main Menu"
   android:icon="@android:drawable/ic_menu_more"
   android:showAsAction="always"/>
+
 </menu>

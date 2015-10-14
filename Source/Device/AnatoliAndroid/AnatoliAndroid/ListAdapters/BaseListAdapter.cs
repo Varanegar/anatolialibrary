@@ -16,17 +16,17 @@ namespace AnatoliAndroid.ListAdapters
     class BaseListAdapter<DataModel> : BaseAdapter<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        protected List<DataModel> _list;
+        public List<DataModel> List;
         protected Activity _context;
         public BaseListAdapter()
         {
-            _list = new List<DataModel>();
+            List = new List<DataModel>();
             _context = ActivityContainer.GetInstance().Activity;
         }
 
         public override int Count
         {
-            get { return (_list == null) ? 0 : _list.Count; }
+            get { return (List == null) ? 0 : List.Count; }
         }
 
         public override long GetItemId(int position)
@@ -36,20 +36,16 @@ namespace AnatoliAndroid.ListAdapters
 
         public override DataModel this[int position]
         {
-            get { return _list[position]; }
-        }
-        public void SetList(List<DataModel> list)
-        {
-            _list = list;
-            NotifyDataSetChanged();
+            get { return List[position]; }
         }
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            return GetItemView(position, convertView, parent);
+            return GetItemView(position, convertView, parent);            
         }
         public virtual View GetItemView(int position, View convertView, ViewGroup parent)
         {
             return convertView;
         }
+        
     }
 }

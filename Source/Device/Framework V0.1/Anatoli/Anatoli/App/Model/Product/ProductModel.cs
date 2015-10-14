@@ -15,5 +15,6 @@ namespace Anatoli.App.Model.Product
         public int brand_id { get; set; }
         public string product_name { get; set; }
         public int product_id { get; set; }
+        public double price { get; set; }
     }
 }

@@ -81,9 +81,14 @@ namespace Anatoli.Framework.Manager
             _remoteP.Index += Math.Min(list.Count, _limit);
             return list;
         }
-        public async Task<DataModel> GetByIdAsync(string id)
+        public async Task<DataModel> GetItemAsync(List<Query.QueryParameter> parameters)
         {
-            var localP = new DBQuery(DataTable, new Query.FilterParam("id", id));
+            var localP = new DBQuery(DataTable, parameters);
+            return await Task.Run(() => { return dataAdapter.GetItem(localP, null); });
+        }
+        public async Task<DataModel> GetItemAsync(params Query.QueryParameter[] parameters)
+        {
+            var localP = new DBQuery(DataTable, parameters);
             return await Task.Run(() => { return dataAdapter.GetItem(localP, null); });
         }
     }
