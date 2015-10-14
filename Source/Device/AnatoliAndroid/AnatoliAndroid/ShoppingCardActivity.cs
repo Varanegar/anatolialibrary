@@ -19,7 +19,7 @@ namespace AnatoliAndroid
     public class ShoppingCardActivity : Activity
     {
         ListView _itemsListView;
-        EditText _deliveryAddress;
+        TextView _deliveryAddress;
         TextView _factorPrice;
         EditText _delivaryDate;
         EditText _deliveryTime;
@@ -28,22 +28,38 @@ namespace AnatoliAndroid
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.ShoppingCardLayout);
             _itemsListView = FindViewById<ListView>(Resource.Id.shoppingCardListView);
-            _deliveryAddress = FindViewById<EditText>(Resource.Id.addressEditText);
+            _deliveryAddress = FindViewById<TextView>(Resource.Id.addressTextView);
             _factorPrice = FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _delivaryDate = FindViewById<EditText>(Resource.Id.deliveryDateEditText);
             _deliveryTime = FindViewById<EditText>(Resource.Id.deliveryTimeEditText);
             List<ProductModel> products = new List<ProductModel>();
             ProductManager pm = new ProductManager();
-
+            double price = 0;
             foreach (var item in ShoppingCard.GetInstance().Items)
             {
                 var p = await pm.GetByIdAsync(item.Key.ToString());
+                price += (p.price * item.Value);
                 products.Add(p);
             }
+            _factorPrice.Text = price.ToString();
             var adapter = new ProductsListAdapter();
+            adapter.DataChanged += adapter_DataChanged;
             adapter.List = products;
             _itemsListView.Adapter = adapter;
+            
             // Create your application here
+        }
+
+        async void adapter_DataChanged(object sender)
+        {
+            double price = 0;
+            foreach (var item in ShoppingCard.GetInstance().Items)
+            {
+                ProductManager pm = new ProductManager();
+                var p = await pm.GetByIdAsync(item.Key.ToString());
+                price += (p.price * item.Value);
+            }
+            _factorPrice.Text = price.ToString();
         }
     }
 }

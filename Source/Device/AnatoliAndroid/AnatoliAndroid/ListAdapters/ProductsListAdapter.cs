@@ -63,6 +63,7 @@ namespace AnatoliAndroid.ListAdapters
             }
 
             NotifyDataSetChanged();
+            OnDataChanged();
         }
 
         void productAddButton_Click(ProductModel item)
@@ -75,6 +76,17 @@ namespace AnatoliAndroid.ListAdapters
                 ShoppingCard.GetInstance().Items.Add(item.product_id, 1);
             _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].ToString();
             NotifyDataSetChanged();
+            OnDataChanged();
         }
+
+        public void OnDataChanged()
+        {
+            if (DataChanged != null)
+            {
+                DataChanged(this);
+            }
+        }
+        public event DataChangedEventHandler DataChanged;
+        public delegate void DataChangedEventHandler(object sender);
     }
 }

@@ -39,11 +39,12 @@ namespace AnatoliAndroid
         async void _registerButton_Click(object sender, EventArgs e)
         {
             AnatoliUserManager um = new AnatoliUserManager();
-            var result = await um.RegisterAsync(_userNameEditText.Text, _passwordEditText.Text, _firstNameEditText.Text, _lastNameEditText.Text, "");
-            if (result.userModel == null)
-            {
+            //var result = await um.RegisterAsync(_userNameEditText.Text, _passwordEditText.Text, _firstNameEditText.Text, _lastNameEditText.Text, "");
+            //if (result.userModel == null)
+            //{
                 
-            }
+            //}
+            // todo : register
         }
     }
 }

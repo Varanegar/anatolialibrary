@@ -49,12 +49,13 @@ namespace AnatoliAndroid.Fragments
                 return;
             }
             AnatoliUserManager um = new AnatoliUserManager();
-            var result = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-            if (result.userModel == null)
-            {
-                _loginResultTextView.Text = "نام کاربری یا کلمه عبور اشتباه است";
+            // var result = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+            // todo : login 
+            //if (result.userModel == null)
+            //{
+            //    _loginResultTextView.Text = "نام کاربری یا کلمه عبور اشتباه است";
 
-            }
+            //}
         }
 
     }

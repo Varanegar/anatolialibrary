@@ -39,9 +39,8 @@ namespace AnatoliAndroid
             _drawerListView.Adapter = new ArrayAdapter<Tuple<int, string>>(this, Android.Resource.Layout.SimpleListItem1, _sections);
             _drawerListView.ItemClick += _drawerListView_ItemClick;
 
-
             ActivityContainer.Initialize(this);
-
+            
             //button.Click += async delegate
             //{
             //    var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -110,6 +109,7 @@ namespace AnatoliAndroid
             FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
+            //AnatoliClient.GetInstance().WebClient.Authenticate();
             //_drawerToggle.SyncState();
         }
         public override bool OnCreateOptionsMenu(IMenu menu)

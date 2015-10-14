@@ -11,11 +11,12 @@ namespace Anatoli.Anatoliclient
     {
         public static readonly string parseAppId = "ecg0bl83b3s1B57NtV65iGiy3IH38QfavsF1DHeX";
         public static readonly string parseDotNetKey = "SmgvPBYprBhYo1KTGPIhjoevR3YhXBccqFwqvfXL";
-        public static readonly string PortalUri = "http://www.ayuz.ir/";
+        public static readonly string PortalUri = "http://79.175.166.186/";
         public struct WebService
         {
+            public static readonly string OAuthTokenUrl = "oauth/token";
             public static readonly string UserLoginUrl = "/Users/UserLogin";
-            public static readonly string UserRegisterUrl = "test.php";
+            public static readonly string UserRegisterUrl = "api/accounts/create";
             public static readonly string RateProductUri = "/Products/Rate";
             public struct Products
             {

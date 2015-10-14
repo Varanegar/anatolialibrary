@@ -95,7 +95,7 @@ namespace AnatoliAndroid
 			public const int addProductButton = 2131034135;
 			
 			// aapt resource value: 0x7f050021
-			public const int addressEditText = 2131034145;
+			public const int addressTextView = 2131034145;
 			
 			// aapt resource value: 0x7f05000d
 			public const int button2 = 2131034125;

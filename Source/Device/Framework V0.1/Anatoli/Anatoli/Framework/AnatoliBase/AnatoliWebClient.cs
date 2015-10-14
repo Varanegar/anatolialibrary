@@ -1,4 +1,5 @@
 ﻿using RestSharp.Portable;
+using RestSharp.Portable.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,13 @@ namespace Anatoli.Anatoliclient
     public abstract class AnatoliWebClient
     {
         public abstract bool IsOnline();
-
+        //public void Authenticate()
+        //{
+        //    var client = new RestClient(Configuration.PortalUri);
+        //    var request = new RestRequest(Configuration.WebService.OAuthTokenUrl, HttpMethod.Post);
+        //    client.Authenticator = new HttpBasicAuthenticator("petropay", "petropay");
+        //    var response = client.Execute(request);
+        //}
         internal async Task<Result> SendPostRequestAsync<Result>(string requestUri, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.PortalUri);
