@@ -31,7 +31,7 @@ namespace AnatoliAndroid
             // your Parse dashboard
             ParseClient.Initialize(Configuration.parseAppId, Configuration.parseDotNetKey);
             ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
-
+            //Console.WriteLine(ParseInstallation.CurrentInstallation.InstallationId);
         }
     }
 }
