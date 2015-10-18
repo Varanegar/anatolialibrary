@@ -38,7 +38,7 @@ namespace AnatoliAndroid
             {
                 var lines = File.ReadAllLines(path);
                 AnatoliTokenInfo tk = new AnatoliTokenInfo();
-                tk.AccessToken = lines[0];
+                tk.AccessToken = Crypto.DecryptStringAES(lines[0], "Ae2@l0)m4!ws");
                 tk.ExpiresIn = long.Parse(lines[1]);
                 return tk;
             }
@@ -51,7 +51,7 @@ namespace AnatoliAndroid
             var path = Path.Combine(documents, "tk.info");
             using (var stream = File.CreateText(path))
             {
-                await stream.WriteLineAsync(tokenInfo.AccessToken);
+                await stream.WriteLineAsync(Crypto.EncryptStringAES(tokenInfo.AccessToken, "Ae2@l0)m4!ws"));
                 await stream.WriteLineAsync(tokenInfo.ExpiresIn.ToString());
             }
         }

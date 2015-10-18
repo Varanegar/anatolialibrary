@@ -109,8 +109,8 @@ namespace AnatoliAndroid.Activities
             FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-            //await AnatoliClient.GetInstance().WebClient.GetTokenAsync();
             //await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters("petropay", "petropay", "foo bar"));
+            //await AnatoliClient.GetInstance().WebClient.GetTokenAsync();
             //var a = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<User>("/api/accounts/user/anatoli");
             //string n = a.UserName;
             //_drawerToggle.SyncState();

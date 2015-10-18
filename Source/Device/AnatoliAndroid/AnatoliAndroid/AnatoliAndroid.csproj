@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\LoginActivity.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="MenuDialogFragment.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="ShoppingCard.cs" />
