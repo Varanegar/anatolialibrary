@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace AnatoliAndroid
+namespace AnatoliAndroid.Activities
 {
     class ActivityContainer
     {

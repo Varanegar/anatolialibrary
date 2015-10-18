@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 
-namespace AnatoliAndroid.Fragments
+namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "ورود")]
     class LoginActivity : Activity

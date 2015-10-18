@@ -13,7 +13,7 @@ using Anatoli.App.Model.Product;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 
-namespace AnatoliAndroid
+namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "ShoppingCardActivity")]
     public class ShoppingCardActivity : Activity

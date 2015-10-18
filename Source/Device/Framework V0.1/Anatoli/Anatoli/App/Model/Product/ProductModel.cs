@@ -1,5 +1,5 @@
 ﻿using Anatoli.Framework.Model;
-using Anatoli.Anatoliclient;
+using Anatoli.Framework.AnatoliBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Anatoli.Framework.Model;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.ListAdapters
 {

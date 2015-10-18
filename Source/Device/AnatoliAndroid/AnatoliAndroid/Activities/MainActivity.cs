@@ -6,15 +6,15 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Anatoli.App.Manager;
-using Anatoli.Anatoliclient;
 using Android.Net;
 using Parse;
 using AnatoliAndroid.Fragments;
 using Android.Support.V4.Widget;
 using Android.Support.V4.App;
 using System.Collections.Generic;
+using Anatoli.Framework.AnatoliBase;
 
-namespace AnatoliAndroid
+namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "آناتولی", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
@@ -40,7 +40,7 @@ namespace AnatoliAndroid
             _drawerListView.ItemClick += _drawerListView_ItemClick;
 
             ActivityContainer.Initialize(this);
-            
+
             //button.Click += async delegate
             //{
             //    var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -109,7 +109,10 @@ namespace AnatoliAndroid
             FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-            //AnatoliClient.GetInstance().WebClient.Authenticate();
+            //await AnatoliClient.GetInstance().WebClient.GetTokenAsync();
+            //await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters("petropay", "petropay", "foo bar"));
+            //var a = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<User>("/api/accounts/user/anatoli");
+            //string n = a.UserName;
             //_drawerToggle.SyncState();
         }
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -151,6 +154,17 @@ namespace AnatoliAndroid
             var transaction = FragmentManager.BeginTransaction();
             var dialogFragment = new MenuDialogFragment();
             dialogFragment.Show(transaction, "dialog_fragment");
+        }
+
+
+        public class User
+        {
+            public string UserName { get; set; }
+            public string LastName { get; set; }
+            public string FirstName { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string ConfirmPassword { get; set; }
         }
     }
 }

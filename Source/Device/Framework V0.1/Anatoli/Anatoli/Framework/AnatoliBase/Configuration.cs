@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.Anatoliclient
+namespace Anatoli.Framework.AnatoliBase
 {
     public class Configuration
     {
         public static readonly string parseAppId = "wUAgTsRuLdin0EvsBhPniG40O24i2nEGVFl8R5OI";
         public static readonly string parseDotNetKey = "G7guVuyx35bb4fBOwo7BVhlG2L2E2qKLQI0sLAe0";
-        public static readonly string PortalUri = "http://79.175.166.186/";
         public struct WebService
         {
-            public static readonly string OAuthTokenUrl = "oauth/token";
+            public static readonly string PortalAddress = "http://79.175.166.186/";
+            public static readonly string OAuthTokenUrl = "/oauth/token";
             public static readonly string UserLoginUrl = "/Users/UserLogin";
             public static readonly string UserRegisterUrl = "api/accounts/create";
             public static readonly string RateProductUri = "/Products/Rate";

@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 
-namespace AnatoliAndroid
+namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "RegisterActivity")]
     public class RegisterActivity : Activity

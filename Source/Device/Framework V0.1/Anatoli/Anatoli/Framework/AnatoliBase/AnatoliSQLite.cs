@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.Anatoliclient
+namespace Anatoli.Framework.AnatoliBase
 {
     public abstract class AnatoliSQLite
     {

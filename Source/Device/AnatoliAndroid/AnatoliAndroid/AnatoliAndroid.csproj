@@ -106,11 +106,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoginActivity.cs" />
+    <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="MenuDialogFragment.cs" />
-    <Compile Include="RegisterActivity.cs" />
+    <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="ShoppingCard.cs" />
-    <Compile Include="ActivitiyContainer.cs" />
+    <Compile Include="Activities\ActivitiyContainer.cs" />
     <Compile Include="AndroidFileIO.cs" />
     <Compile Include="AndroidWebClient.cs" />
     <Compile Include="Fragments\BaseListFragment.cs" />
@@ -119,11 +119,11 @@
     <Compile Include="ListAdapters\BaseListAdapter.cs" />
     <Compile Include="ListAdapters\StoresListAdapter.cs" />
     <Compile Include="ListAdapters\ProductsListAdapter.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="ParseApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShoppingCardActivity.cs" />
+    <Compile Include="Activities\ShoppingCardActivity.cs" />
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Anatoli.Anatoliclient;
+﻿using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.Model;
 using System;
 using System.Collections.Generic;

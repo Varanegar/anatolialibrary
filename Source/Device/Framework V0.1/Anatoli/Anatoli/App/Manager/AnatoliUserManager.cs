@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Anatoli.Framework.Manager;
 using Anatoli.App.Model.AnatoliUser;
-using Anatoli.Anatoliclient;
+using Anatoli.Framework.AnatoliBase;
 using Parse;
 using Anatoli.Framework.DataAdapter;
 namespace Anatoli.App.Manager

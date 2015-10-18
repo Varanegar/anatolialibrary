@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Parse;
 using Anatoli.App;
-using Anatoli.Anatoliclient;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid
 {
@@ -31,7 +31,6 @@ namespace AnatoliAndroid
             // your Parse dashboard
             ParseClient.Initialize(Configuration.parseAppId, Configuration.parseDotNetKey);
             ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
-            //Console.WriteLine(ParseInstallation.CurrentInstallation.InstallationId);
         }
     }
 }

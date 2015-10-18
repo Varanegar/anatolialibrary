@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Anatoli.Anatoliclient;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid
 {

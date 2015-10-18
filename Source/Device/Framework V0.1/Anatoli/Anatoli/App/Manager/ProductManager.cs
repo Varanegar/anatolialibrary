@@ -1,6 +1,5 @@
-﻿using Anatoli.Anatoliclient;
+﻿using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model.Product;
-using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Manager;
 using Anatoli.Framework.Model;
