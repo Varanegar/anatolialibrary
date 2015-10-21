@@ -6,9 +6,7 @@ using System.Text;
 
 namespace Anatoli.App.Model.AnatoliUser
 {
-    public class LoginResult
+    public class LoginResult : AnatoliUserModel
     {
-        public AnatoliMetaInfo metaInfo { get; set; }
-        public AnatoliUserModel userModel { get; set; }
     }
 }

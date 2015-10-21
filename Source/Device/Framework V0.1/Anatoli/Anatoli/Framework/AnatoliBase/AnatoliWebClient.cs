@@ -16,8 +16,21 @@ namespace Anatoli.Framework.AnatoliBase
         AnatoliTokenInfo _tokenInfo;
         public abstract AnatoliTokenInfo LoadTokenInfoFromFile();
         public abstract void SaveTokenInfoToFile(AnatoliTokenInfo tokenInfo);
-        RestRequest CreateRequest(string requestUrl, HttpMethod method, params Tuple<string, string>[] parameters)
+        async Task<RestRequest> CreateRequestAsync(string requestUrl, HttpMethod method, params Tuple<string, string>[] parameters)
         {
+            if (_tokenInfo == null)
+            {
+                _tokenInfo = await GetTokenAsync();
+                if (_tokenInfo == null)
+                {
+                    var tparameters = new TokenRefreshParameters("petropay", "petropay", "foo bar");
+                    _tokenInfo = await RefreshTokenAsync(tparameters);
+                    if (_tokenInfo == null)
+                    {
+                        throw new ServerUnreachable();
+                    }
+                }
+            }
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", _tokenInfo.AccessToken), ParameterType.HttpHeader);
             request.AddHeader("Accept", "application/json");
@@ -28,6 +41,27 @@ namespace Anatoli.Framework.AnatoliBase
                 p.Value = item.Item2;
                 request.AddParameter(p);
             }
+            return request;
+        }
+        async Task<RestRequest> CreateRequestAsync(string requestUrl, HttpMethod method, object obj)
+        {
+            if (_tokenInfo == null)
+            {
+                _tokenInfo = await GetTokenAsync();
+                if (_tokenInfo == null)
+                {
+                    var tparameters = new TokenRefreshParameters("petropay", "petropay", "foo bar");
+                    _tokenInfo = await RefreshTokenAsync(tparameters);
+                    if (_tokenInfo == null)
+                    {
+                        throw new ServerUnreachable();
+                    }
+                }
+            }
+            var request = new RestRequest(requestUrl, method);
+            request.AddParameter("Authorization", string.Format("Bearer {0}", _tokenInfo.AccessToken), ParameterType.HttpHeader);
+            request.AddHeader("Accept", "application/json");
+            request.AddJsonBody(obj);
             return request;
         }
         public async Task<AnatoliTokenInfo> GetTokenAsync()
@@ -46,6 +80,7 @@ namespace Anatoli.Framework.AnatoliBase
                 var tclient = new Thinktecture.IdentityModel.Client.OAuth2Client(new Uri(Configuration.WebService.PortalAddress + Configuration.WebService.OAuthTokenUrl));
                 try
                 {
+                    tclient.Timeout = new TimeSpan(0, 0, 30);
                     var oauthresult = await tclient.RequestResourceOwnerPasswordAsync(parameters.UserName, parameters.Password, parameters.Scope);
                     _tokenInfo = new AnatoliTokenInfo();
                     _tokenInfo.AccessToken = oauthresult.AccessToken;
@@ -62,21 +97,28 @@ namespace Anatoli.Framework.AnatoliBase
         public async Task<Result> SendPostRequestAsync<Result>(string requestUri, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
-            var request = CreateRequest(requestUri, HttpMethod.Post, parameters);
+            var request = await CreateRequestAsync(requestUri, HttpMethod.Post, parameters);
+            var asyncHandle = await client.Execute<Result>(request);
+            return asyncHandle.Data;
+        }
+        public async Task<Result> SendPostRequestAsync<Result>(string requestUri, object obj)
+        {
+            var client = new RestClient(Configuration.WebService.PortalAddress);
+            var request = await CreateRequestAsync(requestUri, HttpMethod.Post, obj);
             var asyncHandle = await client.Execute<Result>(request);
             return asyncHandle.Data;
         }
         public async Task<Result> SendGetRequestAsync<Result>(string requestUri, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
-            var request = CreateRequest(requestUri, HttpMethod.Get, parameters);
+            var request = await CreateRequestAsync(requestUri, HttpMethod.Get, parameters);
             var asyncHandle = await client.Execute<Result>(request);
             return asyncHandle.Data;
         }
         public Result SendGetRequest<Result>(string requestUri, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
-            var request = CreateRequest(requestUri, HttpMethod.Get, parameters);
+            var request = CreateRequestAsync(requestUri, HttpMethod.Get, parameters).Result;
             var response = client.Execute<Result>(request);
             return response.Result.Data;
         }
@@ -103,5 +145,9 @@ namespace Anatoli.Framework.AnatoliBase
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Scope { get; set; }
+    }
+    public class ServerUnreachable : Exception
+    {
+
     }
 }

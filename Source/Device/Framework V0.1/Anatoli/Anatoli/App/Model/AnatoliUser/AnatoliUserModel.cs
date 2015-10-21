@@ -15,5 +15,6 @@ namespace Anatoli.App.Model.AnatoliUser
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Tel { get; set; }
+        public string Email { get; set; }
     }
 }

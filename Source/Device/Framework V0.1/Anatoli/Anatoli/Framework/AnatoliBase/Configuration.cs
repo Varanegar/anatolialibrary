@@ -15,19 +15,22 @@ namespace Anatoli.Framework.AnatoliBase
         {
             public static readonly string PortalAddress = "http://79.175.166.186/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
-            public static readonly string UserLoginUrl = "/Users/UserLogin";
-            public static readonly string UserRegisterUrl = "api/accounts/create";
-            public static readonly string RateProductUri = "/Products/Rate";
             public struct Products
             {
                 public static readonly string ProductView = "product_view.php";
                 public static readonly string ProductsView = "products_test.php";
                 public static readonly string FOGList = "list.php";
+                public static readonly string RateProductUri = "/Products/Rate";
             }
             public struct Stores
             {
                 public static readonly string StoreView = "store_view";
                 public static readonly string StoresView = "store_list";
+            }
+            public struct Users
+            {
+                public static readonly string UserCreateUrl = "/api/accounts/create";
+                public static readonly string UserAuthUrl = "/api/accounts/create";
             }
         }
     }

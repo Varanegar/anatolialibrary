@@ -12,29 +12,40 @@ namespace Anatoli.App.Manager
 {
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
-        public async Task<LoginResult> LoginAsync(string userName, string passWord)
+        public async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<LoginResult>(
-                Configuration.WebService.UserLoginUrl,
-                new Tuple<string, string>("user_name", userName),
-                new Tuple<string, string>("password", passWord)
-                );
-            return result;
+            var tk = await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
+            if (tk != null)
+            {
+                var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>("/api/accounts/user/anatoli");
+                return userModel;
+            }
+            return null;
         }
-        public async Task<RegisterResult> RegisterAsync(string userName, string passWord, string firstName, string lastName, string tel)
+        public async Task<RegisterResult> RegisterAsync(string userName, string passWord, string confirmPassword, string firstName, string lastName, string tel, string email)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(
-                Configuration.WebService.UserRegisterUrl,
-                new Tuple<string, string>("user_name", userName),
-                new Tuple<string, string>("password", passWord),
-                new Tuple<string, string>("first_name", firstName),
-                new Tuple<string, string>("last_name", lastName),
-                new Tuple<string, string>("tel", tel)
+            User user = new User();
+            user.Email = email;
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.UserName = userName;
+            user.Password = passWord;
+            user.ConfirmPassword = confirmPassword;
+            try
+            {
+                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(
+                Configuration.WebService.Users.UserCreateUrl,
+                user
                 );
-            ParseObject userParseObject = new ParseObject("AnatoliUser");
-            userParseObject.Add("UserId", result.userModel.UserId);
-            await userParseObject.SaveAsync();
-            return result;
+                ParseObject userParseObject = new ParseObject("AnatoliUser");
+                userParseObject.Add("UserId", result.UserId);
+                await userParseObject.SaveAsync();
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         protected override string GetDataTable()
@@ -46,5 +57,15 @@ namespace Anatoli.App.Manager
         {
             throw new NotImplementedException();
         }
+        internal class User
+        {
+            public string UserName { get; set; }
+            public string LastName { get; set; }
+            public string FirstName { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string ConfirmPassword { get; set; }
+        }
+
     }
 }

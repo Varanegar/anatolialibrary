@@ -6,16 +6,6 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/firstNameEditText"
-        android:hint="نام" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lastNameEditText"
-        android:hint="نام خانوادگی" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/userNameEditText"
         android:hint="نام کاربری" />
     <EditText
@@ -23,6 +13,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/passwordEditText"
         android:hint="کلمه عبور" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirmPassEditText"
+        android:hint="تکرار کلمه عبور" />
     <Button
         android:text="ثبت نام"
         android:layout_width="match_parent"

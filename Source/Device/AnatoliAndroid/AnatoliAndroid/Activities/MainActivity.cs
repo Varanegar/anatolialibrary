@@ -29,8 +29,6 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             _drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
@@ -38,57 +36,11 @@ namespace AnatoliAndroid.Activities
             _sections = _pm.GetCategories(0);
             _drawerListView.Adapter = new ArrayAdapter<Tuple<int, string>>(this, Android.Resource.Layout.SimpleListItem1, _sections);
             _drawerListView.ItemClick += _drawerListView_ItemClick;
-
             ActivityContainer.Initialize(this);
-
-            //button.Click += async delegate
-            //{
-            //    var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
-            //    AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-            //    //AnatoliUserManager um = new AnatoliUserManager();
-            //    //var result = await um.RegisterAsync("a.toraby", "pass", "ALi Asghar", "Torabi", "09122073285");
-            //    //button.Text = result.metaInfo.Result.ToString();
-            //    ProductManager pm = new ProductManager();
-            //    StoreManager sm = new StoreManager();
-            //    try
-            //    {
-            //        var list = await pm.GetFrequentlyOrderedProducts(10);
-            //    }
-            //    catch (Exception)
-            //    {
-            //        throw;
-            //    }
-            //};
-
         }
 
         void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            //Android.App.Fragment fragment = null;
-            //switch (e.Position)
-            //{
-            //    case 0:
-            //        if (_productsListF == null)
-            //        {
-            //            _productsListF = new ProductsListFragment();
-            //        }
-            //        fragment = _productsListF;
-            //        break;
-            //    case 1:
-            //        if (_storesListF == null)
-            //        {
-            //            _storesListF = new StoresListFragment();
-            //        }
-            //        fragment = _storesListF;
-            //        break;
-            //    default:
-            //        if (_storesListF == null)
-            //        {
-            //            _storesListF = new StoresListFragment();
-            //        }
-            //        fragment = _storesListF;
-            //        break;
-            //}
             _drawerListView.SetItemChecked(e.Position, true);
             ActionBar.Title = _sections[e.Position].Item2;
             var temp = _pm.GetCategories(_sections[e.Position].Item1);
@@ -154,17 +106,6 @@ namespace AnatoliAndroid.Activities
             var transaction = FragmentManager.BeginTransaction();
             var dialogFragment = new MenuDialogFragment();
             dialogFragment.Show(transaction, "dialog_fragment");
-        }
-
-
-        public class User
-        {
-            public string UserName { get; set; }
-            public string LastName { get; set; }
-            public string FirstName { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string ConfirmPassword { get; set; }
         }
     }
 }
