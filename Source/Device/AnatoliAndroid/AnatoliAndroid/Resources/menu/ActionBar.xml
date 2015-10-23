@@ -19,5 +19,4 @@ android:layout_alignParentLeft="true"/>
   p1:showAsAction="always"
   android:icon="@android:drawable/ic_menu_more"
   />
-
 </menu>

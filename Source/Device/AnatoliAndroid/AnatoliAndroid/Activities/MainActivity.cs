@@ -34,7 +34,12 @@ namespace AnatoliAndroid.Activities
             SetContentView(Resource.Layout.Main);
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            
+            var toolbarImageView = toolbar.FindViewById<ImageView>(Resource.Id.toolbarImageView);
+            toolbarImageView.Click += toolbarImageView_Click;
+            var searchImageView = toolbar.FindViewById<ImageView>(Resource.Id.searchImageView);
+            searchImageView.Click += searchImageView_Click;
+            var shoppingCardImageView = toolbar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
+            shoppingCardImageView.Click += shoppingCardImageView_Click;
             //Toolbar will now take on default actionbar characteristics
             SetSupportActionBar(toolbar);
             SupportActionBar.Title = "آناتولی";
@@ -46,6 +51,33 @@ namespace AnatoliAndroid.Activities
             _drawerListView.ItemClick += _drawerListView_ItemClick;
             ActivityContainer.Initialize(this);
         }
+
+        void shoppingCardImageView_Click(object sender, EventArgs e)
+        {
+            if (ShoppingCard.GetInstance().Items != null)
+            {
+                Intent intent = new Intent(this, typeof(ShoppingCardActivity));
+                StartActivityForResult(intent, 0);
+            }
+        }
+
+        void searchImageView_Click(object sender, EventArgs e)
+        {
+            ShowDialog();
+        }
+
+        void toolbarImageView_Click(object sender, EventArgs e)
+        {
+            if (_drawerLayout.IsDrawerOpen(_drawerListView))
+            {
+                _drawerLayout.CloseDrawer(_drawerListView);
+            }
+            else
+            {
+                _drawerLayout.OpenDrawer(_drawerListView);
+            }
+        }
+
 
         void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -69,46 +101,9 @@ namespace AnatoliAndroid.Activities
             FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
-            //await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters("petropay", "petropay", "foo bar"));
-            //await AnatoliClient.GetInstance().WebClient.GetTokenAsync();
-            //var a = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<User>("/api/accounts/user/anatoli");
-            //string n = a.UserName;
-            //_drawerToggle.SyncState();
+
         }
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.ActionBar, menu);
-            return base.OnCreateOptionsMenu(menu);
-        }
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Resource.Id.mainMenu:
-                    if (_drawerLayout.IsDrawerOpen(_drawerListView))
-                    {
-                        _drawerLayout.CloseDrawer(_drawerListView);
-                    }
-                    else
-                    {
-                        _drawerLayout.OpenDrawer(_drawerListView);
-                    }
-                    return true;
-                case Resource.Id.searchMenu:
-                    ShowDialog();
-                    return true;
-                case Resource.Id.shoppinCard:
-                    if (ShoppingCard.GetInstance().Items != null)
-                    {
-                        Intent intent = new Intent(this, typeof(ShoppingCardActivity));
-                        StartActivityForResult(intent, 0);
-                    }
-                    return true;
-                default:
-                    break;
-            }
-            return base.OnOptionsItemSelected(item);
-        }
+      
         public void ShowDialog()
         {
             var transaction = FragmentManager.BeginTransaction();
