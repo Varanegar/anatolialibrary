@@ -1371,14 +1371,17 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f02003e
 			public const int Icon = 2130837566;
 			
-			// aapt resource value: 0x7f020041
-			public const int notification_template_icon_bg = 2130837569;
-			
 			// aapt resource value: 0x7f02003f
-			public const int Search = 2130837567;
+			public const int Menu = 2130837567;
+			
+			// aapt resource value: 0x7f020042
+			public const int notification_template_icon_bg = 2130837570;
 			
 			// aapt resource value: 0x7f020040
-			public const int ShoppingCard = 2130837568;
+			public const int Search = 2130837568;
+			
+			// aapt resource value: 0x7f020041
+			public const int ShoppingCard = 2130837569;
 			
 			static Drawable()
 			{
@@ -1555,6 +1558,9 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0029
 			public const int icon = 2131427369;
 			
+			// aapt resource value: 0x7f0b0087
+			public const int icons = 2131427463;
+			
 			// aapt resource value: 0x7f0b001d
 			public const int ifRoom = 2131427357;
 			
@@ -1594,8 +1600,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0058
 			public const int loginResultTextView = 2131427416;
 			
-			// aapt resource value: 0x7f0b0089
-			public const int mainMenu = 2131427465;
+			// aapt resource value: 0x7f0b008a
+			public const int mainMenu = 2131427466;
 			
 			// aapt resource value: 0x7f0b005b
 			public const int main_content = 2131427419;
@@ -1675,11 +1681,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b007e
 			public const int searchEditText = 2131427454;
 			
-			// aapt resource value: 0x7f0b0050
-			public const int searchImageView = 2131427408;
+			// aapt resource value: 0x7f0b0051
+			public const int searchImageView = 2131427409;
 			
-			// aapt resource value: 0x7f0b0088
-			public const int searchMenu = 2131427464;
+			// aapt resource value: 0x7f0b0089
+			public const int searchMenu = 2131427465;
 			
 			// aapt resource value: 0x7f0b0042
 			public const int search_badge = 2131427394;
@@ -1714,11 +1720,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b004c
 			public const int select_dialog_listview = 2131427404;
 			
-			// aapt resource value: 0x7f0b0087
-			public const int shoppinCard = 2131427463;
+			// aapt resource value: 0x7f0b0088
+			public const int shoppinCard = 2131427464;
 			
-			// aapt resource value: 0x7f0b0051
-			public const int shoppingCardImageView = 2131427409;
+			// aapt resource value: 0x7f0b0050
+			public const int shoppingCardImageView = 2131427408;
 			
 			// aapt resource value: 0x7f0b007f
 			public const int shoppingCardListView = 2131427455;
@@ -2029,6 +2035,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f050014
 			public const int OpenDrawer = 2131034132;
+			
+			// aapt resource value: 0x7f050016
+			public const int Products = 2131034134;
 			
 			// aapt resource value: 0x7f050000
 			public const int abc_action_bar_home_description = 2131034112;

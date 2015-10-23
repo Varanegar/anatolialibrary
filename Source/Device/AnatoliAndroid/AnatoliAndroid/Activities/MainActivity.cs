@@ -21,7 +21,9 @@ namespace AnatoliAndroid.Activities
     [Activity(Label = "آناتولی", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : ActionBarActivity
     {
-
+        ImageView _shoppingCardImageView;
+        ImageView _searchImageView;
+        TextView _toolbarTextView;
         DrawerLayout _drawerLayout;
         ListView _drawerListView;
         List<Tuple<int, string>> _sections;
@@ -33,16 +35,16 @@ namespace AnatoliAndroid.Activities
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            var toolbarImageView = toolbar.FindViewById<ImageView>(Resource.Id.toolbarImageView);
-            toolbarImageView.Click += toolbarImageView_Click;
-            var searchImageView = toolbar.FindViewById<ImageView>(Resource.Id.searchImageView);
-            searchImageView.Click += searchImageView_Click;
-            var shoppingCardImageView = toolbar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
-            shoppingCardImageView.Click += shoppingCardImageView_Click;
-            //Toolbar will now take on default actionbar characteristics
-            SetSupportActionBar(toolbar);
-            SupportActionBar.Title = "آناتولی";
+            var _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            var _toolbarImageView = _toolbar.FindViewById<ImageView>(Resource.Id.toolbarImageView);
+            _toolbarImageView.Click += toolbarImageView_Click;
+            _searchImageView = _toolbar.FindViewById<ImageView>(Resource.Id.searchImageView);
+            _searchImageView.Click += searchImageView_Click;
+            _shoppingCardImageView = _toolbar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
+            _shoppingCardImageView.Click += shoppingCardImageView_Click;
+            _toolbarTextView = _toolbar.FindViewById<TextView>(Resource.Id.toolbarTextView);
+            _toolbarTextView.SetText(Resource.String.Products);
+            SetSupportActionBar(_toolbar);
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             _drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
             _pm = new ProductManager();
@@ -103,7 +105,7 @@ namespace AnatoliAndroid.Activities
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
 
         }
-      
+
         public void ShowDialog()
         {
             var transaction = FragmentManager.BeginTransaction();

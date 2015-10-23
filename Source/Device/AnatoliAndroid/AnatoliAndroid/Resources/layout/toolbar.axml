@@ -8,34 +8,7 @@
     android:background="?attr/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/relativeLayout1">
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbarImageView"
-            android:layout_alignParentRight="true" />
-        <TextView
-            android:text="Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/toolbarImageView"
-            android:id="@+id/toolbarTextView"
-            android:gravity="right" />
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchImageView"
-            android:layout_toLeftOf="@id/toolbarTextView" />
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/shoppingCardImageView"
-            android:layout_toLeftOf="@id/searchImageView" />
-    </RelativeLayout>
+    <include
+        android:id="@+id/icons"
+        layout="@layout/CustomActionBar" />
 </android.support.v7.widget.Toolbar>
