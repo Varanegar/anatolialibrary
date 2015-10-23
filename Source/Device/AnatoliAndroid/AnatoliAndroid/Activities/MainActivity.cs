@@ -32,6 +32,7 @@ namespace AnatoliAndroid.Activities
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
+            Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             
             //Toolbar will now take on default actionbar characteristics
