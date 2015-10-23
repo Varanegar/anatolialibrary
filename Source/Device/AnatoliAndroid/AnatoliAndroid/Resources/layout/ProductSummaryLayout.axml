@@ -9,7 +9,8 @@
         p1:layout_height="50dp"
         p1:id="@+id/productSummaryImageView"
         p1:layout_alignParentRight="true"
-        p1:background="@android:drawable/gallery_thumb" />
+        p1:background="@android:drawable/gallery_thumb"
+        p1:layout_margin="5dp" />
     <LinearLayout
         p1:orientation="vertical"
         p1:minWidth="50dp"
@@ -32,26 +33,34 @@
             p1:textAppearance="?android:attr/textAppearanceSmall"
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
-            p1:id="@+id/productPriceTextView" />
+            p1:id="@+id/productPriceTextView"
+            p1:textColor="@android:color/holo_red_light" />
     </LinearLayout>
-    <Button
-        p1:text="+"
-        p1:layout_width="30dp"
-        p1:layout_height="wrap_content"
-        p1:layout_toLeftOf="@id/productSummaryInfoLinearLayout"
-        p1:id="@+id/addProductButton" />
-    <Button
-        p1:text="-"
-        p1:layout_width="30dp"
-        p1:layout_height="wrap_content"
-        p1:id="@+id/removeProductButton"
-        p1:layout_toLeftOf="@id/addProductButton" />
+    <ImageView
+        p1:src="@drawable/removeproductimage"
+        p1:layout_width="40dp"
+        p1:layout_height="40dp"
+        p1:layout_alignParentLeft="true"
+        p1:id="@+id/removeProductImageView"
+        p1:layout_centerVertical="true" />
     <TextView
-        p1:text="Small Text"
+        p1:text="0"
         p1:textAppearance="?android:attr/textAppearanceSmall"
         p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
+        p1:layout_height="50dp"
         p1:id="@+id/productCountTextView"
-        p1:layout_alignParentLeft="true"
+        p1:layout_centerVertical="true"
+        p1:layout_toRightOf="@id/removeProductImageView"
+        p1:textAlignment="center"
+        p1:layout_marginLeft="10dp"
+        p1:layout_marginRight="10dp"
+        p1:gravity="center_vertical"
+        p1:minWidth="10dp" />
+    <ImageView
+        p1:src="@drawable/addproductimage"
+        p1:layout_width="40dp"
+        p1:layout_height="40dp"
+        p1:layout_toRightOf="@id/productCountTextView"
+        p1:id="@+id/addProductImageView"
         p1:layout_centerVertical="true" />
 </RelativeLayout>

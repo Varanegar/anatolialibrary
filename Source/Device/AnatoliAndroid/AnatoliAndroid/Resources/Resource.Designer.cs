@@ -1369,19 +1369,25 @@ namespace AnatoliAndroid
 			public const int abc_textfield_search_material = 2130837565;
 			
 			// aapt resource value: 0x7f02003e
-			public const int Icon = 2130837566;
+			public const int AddProductImage = 2130837566;
 			
 			// aapt resource value: 0x7f02003f
-			public const int Menu = 2130837567;
-			
-			// aapt resource value: 0x7f020042
-			public const int notification_template_icon_bg = 2130837570;
+			public const int Icon = 2130837567;
 			
 			// aapt resource value: 0x7f020040
-			public const int Search = 2130837568;
+			public const int Menu = 2130837568;
+			
+			// aapt resource value: 0x7f020044
+			public const int notification_template_icon_bg = 2130837572;
 			
 			// aapt resource value: 0x7f020041
-			public const int ShoppingCard = 2130837569;
+			public const int RemoveProductImage = 2130837569;
+			
+			// aapt resource value: 0x7f020042
+			public const int Search = 2130837570;
+			
+			// aapt resource value: 0x7f020043
+			public const int ShoppingCard = 2130837571;
 			
 			static Drawable()
 			{
@@ -1444,8 +1450,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0024
 			public const int activity_chooser_view_content = 2131427364;
 			
-			// aapt resource value: 0x7f0b0077
-			public const int addProductButton = 2131427447;
+			// aapt resource value: 0x7f0b0079
+			public const int addProductImageView = 2131427449;
 			
 			// aapt resource value: 0x7f0b0080
 			public const int addressTextView = 2131427456;
@@ -1630,8 +1636,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0056
 			public const int passwordEditText = 2131427414;
 			
-			// aapt resource value: 0x7f0b0079
-			public const int productCountTextView = 2131427449;
+			// aapt resource value: 0x7f0b0078
+			public const int productCountTextView = 2131427448;
 			
 			// aapt resource value: 0x7f0b0075
 			public const int productNameTextView = 2131427445;
@@ -1669,8 +1675,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b004d
 			public const int relativeLayout1 = 2131427405;
 			
-			// aapt resource value: 0x7f0b0078
-			public const int removeProductButton = 2131427448;
+			// aapt resource value: 0x7f0b0077
+			public const int removeProductImageView = 2131427447;
 			
 			// aapt resource value: 0x7f0b0014
 			public const int screen = 2131427348;

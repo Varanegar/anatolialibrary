@@ -28,8 +28,8 @@ namespace AnatoliAndroid.ListAdapters
             TextView productPriceTextView = convertView.FindViewById<TextView>(Resource.Id.productPriceTextView);
             _productCountTextView = convertView.FindViewById<TextView>(Resource.Id.productCountTextView);
             ImageView productIimageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-            Button productAddButton = convertView.FindViewById<Button>(Resource.Id.addProductButton);
-            Button productRemoveButton = convertView.FindViewById<Button>(Resource.Id.removeProductButton);
+            ImageView productAddButton = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
+            ImageView productRemoveButton = convertView.FindViewById<ImageView>(Resource.Id.removeProductImageView);
 
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
             {
