@@ -13,11 +13,13 @@ using Android.Support.V4.Widget;
 using Android.Support.V4.App;
 using System.Collections.Generic;
 using Anatoli.Framework.AnatoliBase;
+using Android.Support.V7.App;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "آناتولی", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : ActionBarActivity
     {
 
         DrawerLayout _drawerLayout;
@@ -30,6 +32,11 @@ namespace AnatoliAndroid.Activities
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
+            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            
+            //Toolbar will now take on default actionbar characteristics
+            SetSupportActionBar(toolbar);
+            SupportActionBar.Title = "آناتولی";
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             _drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
             _pm = new ProductManager();
@@ -86,7 +93,7 @@ namespace AnatoliAndroid.Activities
                         _drawerLayout.OpenDrawer(_drawerListView);
                     }
                     return true;
-                case Resource.Id.mainMenu2:
+                case Resource.Id.searchMenu:
                     ShowDialog();
                     return true;
                 case Resource.Id.shoppinCard:

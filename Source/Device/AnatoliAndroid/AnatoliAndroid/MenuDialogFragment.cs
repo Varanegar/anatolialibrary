@@ -16,10 +16,8 @@ namespace AnatoliAndroid
 {
     public class MenuDialogFragment : DialogFragment
     {
-        private int _clickCount;
         public override void OnCreate(Bundle savedInstanceState)
         {
-            _clickCount = 0;
             base.OnCreate(savedInstanceState);
         }
 
