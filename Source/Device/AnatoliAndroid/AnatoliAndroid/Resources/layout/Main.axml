@@ -25,12 +25,12 @@
             <ListView
                 android:id="@+id/drawer_list"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
+                android:dividerHeight="2dp"
                 android:choiceMode="singleChoice"
                 android:layout_width="240dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:background="#111" />
+                android:background="#fff" />
         </android.support.v4.widget.DrawerLayout>
     </LinearLayout>
 </RelativeLayout>

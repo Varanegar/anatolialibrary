@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:layout_width="match_parent"
+    p1:layout_height="wrap_content"
+    p1:id="@+id/relativeLayout1">
+    <ImageView
+        p1:src="@android:drawable/ic_menu_gallery"
+        p1:layout_width="50dp"
+        p1:layout_height="50dp"
+        p1:id="@+id/itemIconImageView"
+        p1:layout_alignParentRight="true" />
+    <TextView
+        p1:text="Medium Text"
+        p1:textAppearance="?android:attr/textAppearanceMedium"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:layout_toLeftOf="@id/itemIconImageView"
+        p1:id="@+id/itemTextView"
+        p1:textColor="@android:color/holo_red_light"
+        p1:gravity="right"
+        p1:layout_marginRight="10dp"
+        p1:layout_centerVertical="true" />
+</RelativeLayout>
