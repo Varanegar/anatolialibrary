@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Consumer": {
+      "applicationId": "wUAgTsRuLdin0EvsBhPniG40O24i2nEGVFl8R5OI"
+    },
+    "_default": {
+      "link": "Consumer"
+    }
+  }
+}
