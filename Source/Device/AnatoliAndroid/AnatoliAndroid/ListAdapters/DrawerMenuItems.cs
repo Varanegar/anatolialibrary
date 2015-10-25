@@ -95,6 +95,7 @@ namespace AnatoliAndroid.ListAdapters
             public const int Profile = 3;
             public const int Help = 4;
             public const int Login = 5;
+            public const int StoresList = 6;
         }
     }
 }

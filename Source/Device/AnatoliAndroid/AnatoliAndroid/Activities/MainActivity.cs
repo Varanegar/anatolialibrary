@@ -40,6 +40,7 @@ namespace AnatoliAndroid.Activities
         RelativeLayout _searchBarLayout;
         RelativeLayout _toolbarLayout;
         bool _searchBar = false;
+        Android.App.Fragment _currentFragment;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -84,17 +85,26 @@ namespace AnatoliAndroid.Activities
             var item2 = new DrawerMainItem();
             item2.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
             item2.Name = "سبد خرید";
+            item2.ImageResId = Resource.Drawable.ShoppingCardRed;
             var item3 = new DrawerMainItem();
             item3.ItemId = DrawerMainItem.DrawerMainItems.Profile;
             item3.Name = "مشخصات من";
+            item3.ImageResId = Resource.Drawable.Profile;
             var item4 = new DrawerMainItem();
             item4.ItemId = DrawerMainItem.DrawerMainItems.Help;
             item4.Name = "راهنما";
+            item4.ImageResId = Resource.Drawable.Help;
             var item5 = new DrawerMainItem();
             item5.ItemId = DrawerMainItem.DrawerMainItems.Login;
             item5.Name = "ورود";
+            item5.ImageResId = Resource.Drawable.Profile;
+            var item6 = new DrawerMainItem();
+            item6.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
+            item6.Name = "انتخاب فروشگاه";
+            item6.ImageResId = Resource.Drawable.Store;
             _mainItems.Add(item1);
             _mainItems.Add(item2);
+            _mainItems.Add(item6);
             _mainItems.Add(item3);
             _mainItems.Add(item5);
             _mainItems.Add(item4);
@@ -106,7 +116,15 @@ namespace AnatoliAndroid.Activities
 
         void _searchButtonImageView_Click(object sender, EventArgs e)
         {
-            _productsListF.Search(_searchEditText.Text);
+            _productsListF.Search("product_name", _searchEditText.Text);
+            if (_currentFragment.GetType() == typeof(ProductsListFragment))
+            {
+                _productsListF.Search("product_name", _searchEditText.Text);
+            }
+            if (_currentFragment.GetType() == typeof(StoresListFragment))
+            {
+                _storesListF.Search("store_name", _searchEditText.Text);
+            }
         }
 
         void _searchBarImageView_Click(object sender, EventArgs e)
@@ -119,10 +137,11 @@ namespace AnatoliAndroid.Activities
         {
             if (ShoppingCard.GetInstance().Items.Count > 0)
             {
-                var transaction = FragmentManager.BeginTransaction();
-                var shoppingCardFragment = new ShoppingCardFragment();
-                transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
-                transaction.Commit();
+                //var transaction = FragmentManager.BeginTransaction();
+                //var shoppingCardFragment = new ShoppingCardFragment();
+                //transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
+                //transaction.Commit();
+                SetFragment<ShoppingCardFragment>(new ShoppingCardFragment(), "shoppingCard_fragment");
             }
             _drawerLayout.CloseDrawer(_drawerListView);
         }
@@ -176,25 +195,35 @@ namespace AnatoliAndroid.Activities
                         _menuItems = categories;
                         _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
                         _drawerListView.InvalidateViews();
-                        var transactionF = FragmentManager.BeginTransaction();
-                        transactionF.Replace(Resource.Id.content_frame, _productsListF, "products_fragment");
-                        transactionF.Commit();
+                        //var transactionF = FragmentManager.BeginTransaction();
+                        //transactionF.Replace(Resource.Id.content_frame, _productsListF, "products_fragment");
+                        //transactionF.Commit();
+                        SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
                         if (ShoppingCard.GetInstance().Items.Count > 0)
                         {
-                            var transaction = FragmentManager.BeginTransaction();
+                            //var transaction = FragmentManager.BeginTransaction();
                             var shoppingCardFragment = new ShoppingCardFragment();
-                            transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
-                            transaction.Commit();
+                            //transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
+                            //transaction.Commit();
+                            SetFragment<ShoppingCardFragment>(shoppingCardFragment, "shoppingCard_fragment");
                         }
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
+                    case DrawerMainItem.DrawerMainItems.StoresList:
+                        //var transactionS = FragmentManager.BeginTransaction();
+                        // transactionS.Replace(Resource.Id.content_frame, _storesListF, "stores_fragment");
+                        // transactionS.Commit();
+                        _storesListF = SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+                        _drawerLayout.CloseDrawer(_drawerListView);
+                        break;
                     case DrawerMainItem.DrawerMainItems.Login:
-                        var transaction2 = FragmentManager.BeginTransaction();
+                        //var transaction2 = FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
-                        transaction2.Replace(Resource.Id.content_frame, loginFragment, "login_fragment");
-                        transaction2.Commit();
+                        //transaction2.Replace(Resource.Id.content_frame, loginFragment, "login_fragment");
+                        //transaction2.Commit();
+                        SetFragment<LoginFragment>(loginFragment, "login_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.MainMenu:
@@ -235,10 +264,23 @@ namespace AnatoliAndroid.Activities
             base.OnPostCreate(savedInstanceState);
             _toolbarTextView.Text = "دسته بندی کالا";
             _productsListF = new ProductsListFragment();
-            FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
+            //FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
+            SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
             var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
             AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
 
+        }
+        FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag) where FragmentType : Android.App.Fragment, new()
+        {
+            var transaction = FragmentManager.BeginTransaction();
+            if (fragment == null)
+            {
+                fragment = new FragmentType();
+            }
+            transaction.Replace(Resource.Id.content_frame, fragment, tag);
+            transaction.Commit();
+            _currentFragment = fragment;
+            return fragment;
         }
     }
 

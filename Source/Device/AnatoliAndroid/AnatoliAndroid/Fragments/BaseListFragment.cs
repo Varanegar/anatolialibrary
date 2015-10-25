@@ -28,16 +28,16 @@ namespace AnatoliAndroid.Fragments
         protected object[] queryParams;
         protected BaseDataManager _dataManager;
         private bool _firstShow = true;
-        protected string _searchKeyWord;
+        protected Tuple<string, string> _searchKeyWord;
         public BaseListFragment()
             : base()
         {
             _listAdapter = new DataListAdapter();
             _dataManager = new BaseDataManager();
         }
-        public async void Search(string key)
+        public async void Search(string key, string value)
         {
-            _searchKeyWord = key;
+            _searchKeyWord = new Tuple<string, string>(key, value);
             SetParameters();
             _listAdapter.List = await _dataManager.GetNextAsync();
             _listAdapter.NotifyDataSetChanged();
@@ -86,7 +86,7 @@ namespace AnatoliAndroid.Fragments
             var parameters = CreateQueryParameters();
             if (_searchKeyWord != null)
             {
-                parameters.Add(new Anatoli.Framework.AnatoliBase.Query.SearchFilterParam("product_name", _searchKeyWord));
+                parameters.Add(new Anatoli.Framework.AnatoliBase.Query.SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2));
             }
             _dataManager.SetQueryParameters(parameters);
         }
