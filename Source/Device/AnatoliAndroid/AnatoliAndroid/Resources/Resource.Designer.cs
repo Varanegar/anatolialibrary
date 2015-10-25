@@ -1389,8 +1389,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f020044
 			public const int MenuItem = 2130837572;
 			
-			// aapt resource value: 0x7f020048
-			public const int notification_template_icon_bg = 2130837576;
+			// aapt resource value: 0x7f020049
+			public const int notification_template_icon_bg = 2130837577;
 			
 			// aapt resource value: 0x7f020045
 			public const int RemoveProductImage = 2130837573;
@@ -1400,6 +1400,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f020047
 			public const int ShoppingCard = 2130837575;
+			
+			// aapt resource value: 0x7f020048
+			public const int splash = 2130837576;
 			
 			static Drawable()
 			{
@@ -2843,6 +2846,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f0700e6
 			public const int Theme_AppCompat_NoActionBar = 2131165414;
+			
+			// aapt resource value: 0x7f070130
+			public const int Theme_Splash = 2131165488;
 			
 			// aapt resource value: 0x7f0700e7
 			public const int ThemeOverlay_AppCompat = 2131165415;

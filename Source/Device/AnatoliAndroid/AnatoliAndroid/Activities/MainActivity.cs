@@ -19,7 +19,7 @@ using AnatoliAndroid.ListAdapters;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "آناتولی", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "آناتولی", Icon = "@drawable/icon")]
     public class MainActivity : ActionBarActivity
     {
         ImageView _shoppingCardImageView;

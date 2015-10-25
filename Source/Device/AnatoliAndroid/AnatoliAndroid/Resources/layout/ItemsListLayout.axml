@@ -15,7 +15,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listToolsTextView" />
+            android:id="@+id/listToolsTextView"
+            android:visibility="gone" />
     </RelativeLayout>
     <ListView
         android:minWidth="25px"
