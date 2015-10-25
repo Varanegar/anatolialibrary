@@ -106,11 +106,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
-    <Compile Include="MenuDialogFragment.cs" />
-    <Compile Include="Activities\RegisterActivity.cs" />
+    <Compile Include="Fragments\LoginFragment.cs" />
+    <Compile Include="Fragments\RegisterFragment.cs" />
     <Compile Include="ShoppingCard.cs" />
     <Compile Include="Activities\ActivitiyContainer.cs" />
     <Compile Include="AndroidFileIO.cs" />
@@ -125,7 +124,7 @@
     <Compile Include="ParseApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Activities\ShoppingCardActivity.cs" />
+    <Compile Include="Fragments\ShoppingCardFragment.cs" />
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +226,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\MenuItem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\gwarrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

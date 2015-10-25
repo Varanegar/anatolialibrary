@@ -15,7 +15,7 @@ namespace AnatoliAndroid
 {
     class ShoppingCard
     {
-        public Dictionary<int, int> Items;
+        public Dictionary<int, CardItem> Items;
         private static ShoppingCard instance;
         public static ShoppingCard GetInstance()
         {
@@ -29,7 +29,17 @@ namespace AnatoliAndroid
         }
         private ShoppingCard()
         {
-            Items = new Dictionary<int, int>();
+            Items = new Dictionary<int, CardItem>();
         }
+    }
+    class CardItem
+    {
+        public CardItem(int count, ProductModel productModel)
+        {
+            this.productModel = productModel;
+            this.Count = count;
+        }
+        public ProductModel productModel { get; set; }
+        public int Count { get; set; }
     }
 }

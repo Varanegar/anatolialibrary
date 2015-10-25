@@ -60,7 +60,7 @@ namespace Anatoli.Framework.AnatoliBase
             }
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", _tokenInfo.AccessToken), ParameterType.HttpHeader);
-            request.AddHeader("Accept", "application/json");
+            //request.AddHeader("Accept", "application/json");
             request.AddJsonBody(obj);
             return request;
         }

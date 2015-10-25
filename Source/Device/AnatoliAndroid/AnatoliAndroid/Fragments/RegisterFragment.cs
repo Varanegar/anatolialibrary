@@ -11,28 +11,32 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 
-namespace AnatoliAndroid.Activities
+namespace AnatoliAndroid.Fragments
 {
-    [Activity(Label = "RegisterActivity")]
-    public class RegisterActivity : Activity
+    
+    public class RegisterFragment : Fragment
     {
         EditText _userNameEditText;
         EditText _passwordEditText;
         EditText _confirmPassEditText;
         TextView _registerResultTextView;
         Button _registerButton;
-        protected override void OnCreate(Bundle bundle)
+        public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.RegisterLayout);
-            _userNameEditText = FindViewById<EditText>(Resource.Id.userNameEditText);
-            _passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
-            _confirmPassEditText = FindViewById<EditText>(Resource.Id.confirmPassEditText);
-            _registerResultTextView = FindViewById<TextView>(Resource.Id.registerResultTextView);
-            _registerButton = FindViewById<Button>(Resource.Id.registerButton);
-            _registerButton.Click += _registerButton_Click;
         }
-
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            var view = inflater.Inflate(Resource.Layout.RegisterLayout, container, false);
+            _userNameEditText = view.FindViewById<EditText>(Resource.Id.userNameEditText);
+            _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
+            _confirmPassEditText = view.FindViewById<EditText>(Resource.Id.confirmPassEditText);
+            _registerResultTextView = view.FindViewById<TextView>(Resource.Id.registerResultTextView);
+            _registerButton = view.FindViewById<Button>(Resource.Id.registerButton);
+            _registerButton.Click += _registerButton_Click;
+            return view;
+        }
         async void _registerButton_Click(object sender, EventArgs e)
         {
             if (!_passwordEditText.Text.Equals(_confirmPassEditText.Text))

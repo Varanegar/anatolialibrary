@@ -33,7 +33,7 @@ namespace AnatoliAndroid.ListAdapters
 
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
             {
-                _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].ToString();
+                _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
             }
             else
                 _productCountTextView.Text = "";
@@ -50,15 +50,15 @@ namespace AnatoliAndroid.ListAdapters
         {
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
             {
-                if (ShoppingCard.GetInstance().Items[item.product_id] == 1)
+                if (ShoppingCard.GetInstance().Items[item.product_id].Count == 1)
                 {
                     ShoppingCard.GetInstance().Items.Remove(item.product_id);
                     _productCountTextView.Text = "";
                 }
                 else
                 {
-                    ShoppingCard.GetInstance().Items[item.product_id]--;
-                    _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].ToString();
+                    ShoppingCard.GetInstance().Items[item.product_id].Count--;
+                    _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
                 }
             }
 
@@ -71,10 +71,10 @@ namespace AnatoliAndroid.ListAdapters
             // todo : implement add to shopping card
 
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
-                ShoppingCard.GetInstance().Items[item.product_id]++;
+                (ShoppingCard.GetInstance().Items[item.product_id].Count)++;
             else
-                ShoppingCard.GetInstance().Items.Add(item.product_id, 1);
-            _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].ToString();
+                ShoppingCard.GetInstance().Items.Add(item.product_id, new CardItem(1, item));
+            _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
             NotifyDataSetChanged();
             OnDataChanged();
         }

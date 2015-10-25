@@ -1,31 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:orientation="vertical"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
     p1:layout_width="match_parent"
-    p1:layout_height="wrap_content"
-    p1:id="@+id/relativeLayout1">
-    <ImageView
-        p1:src="@drawable/Menu"
-        p1:layout_width="50dp"
-        p1:layout_height="50dp"
-        p1:id="@+id/toolbarImageView"
-        p1:layout_alignParentRight="true" />
-    <TextView
-        p1:text="Anatoli"
-        p1:layout_width="wrap_content"
-        p1:layout_height="50dp"
-        p1:layout_toLeftOf="@id/toolbarImageView"
-        p1:id="@+id/toolbarTextView"
-        p1:gravity="center_vertical" />
-    <ImageView
-        p1:src="@drawable/ShoppingCard"
-        p1:layout_width="50dp"
-        p1:layout_height="50dp"
-        p1:id="@+id/shoppingCardImageView"
-        p1:layout_alignParentLeft="true" />
-    <ImageView
-        p1:src="@drawable/Search"
-        p1:layout_width="50dp"
-        p1:layout_height="50dp"
-        p1:id="@+id/searchImageView"
-        p1:layout_toRightOf="@id/shoppingCardImageView" />
-</RelativeLayout>
+    p1:layout_height="match_parent"
+    p1:id="@+id/linearLayout1">
+    <RelativeLayout
+        p1:id="@+id/toolbarRelativeLayout"
+        p1:layout_width="match_parent"
+        p1:layout_height="50dp">
+        <ImageView
+            p1:src="@drawable/Menu"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/toolbarImageView"
+            p1:layout_alignParentRight="true"
+            p1:layout_centerVertical="true" />
+        <ImageView
+            p1:src="@drawable/ShoppingCard"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/shoppingCardImageView"
+            p1:layout_alignParentLeft="true"
+            p1:layout_centerVertical="true" />
+        <TextView
+            p1:text="Anatoli"
+            p1:layout_width="wrap_content"
+            p1:layout_height="50dp"
+            p1:id="@+id/toolbarTextView"
+            p1:gravity="center_vertical"
+            p1:layout_centerVertical="true"
+            p1:layout_toLeftOf="@id/toolbarImageView"
+            p1:padding="2dp" />
+        <ImageView
+            p1:src="@drawable/Search"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/searchImageView"
+            p1:layout_toRightOf="@id/shoppingCardImageView"
+            p1:layout_centerVertical="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        p1:id="@+id/searchRelativeLayout"
+        p1:layout_width="match_parent"
+        p1:layout_height="50dp">
+        <ImageView
+            p1:src="@drawable/gwarrow"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/searchbarImageView"
+            p1:layout_alignParentRight="true"
+            p1:layout_centerVertical="true" />
+        <EditText
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/searchEditText"
+            p1:layout_alignParentTop="true"
+            p1:layout_centerVertical="true"
+            p1:layout_alignParentBottom="true"
+            p1:background="@android:color/white"
+            p1:layout_toLeftOf="@id/searchbarImageView"
+            p1:textColor="@android:color/black"
+            p1:padding="2dp" />
+        <ImageView
+            p1:src="@drawable/Search"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/searchButtonImageView"
+            p1:layout_alignParentLeft="true"
+            p1:layout_centerVertical="true" />
+    </RelativeLayout>
+</LinearLayout>

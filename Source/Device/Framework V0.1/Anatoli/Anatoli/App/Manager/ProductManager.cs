@@ -82,7 +82,7 @@ namespace Anatoli.App.Manager
 
         public async Task<ProductModel> GetByIdAsync(string id)
         {
-            return await GetItemAsync(new Query.FilterParam("product_id", id));
+            return await GetItemAsync(new Query.SearchFilterParam("product_id", id));
         }
     }
 }

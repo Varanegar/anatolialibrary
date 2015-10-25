@@ -8,34 +8,41 @@ namespace Anatoli.Framework.AnatoliBase
 {
     public class Query
     {
-        public List<FilterParam> Filters;
+        public List<SearchFilterParam> SearchFilters;
+        public List<CategoryFilterParam> CategoryFilters;
         public List<SortParam> Sorts;
         public int Limit;
         public int Index;
         public Query(params QueryParameter[] options)
         {
-            Filters = new List<FilterParam>();
+            SearchFilters = new List<SearchFilterParam>();
+            CategoryFilters = new List<CategoryFilterParam>();
             Sorts = new List<SortParam>();
             Index = 0;
             Limit = 10;
             foreach (var item in options)
             {
-                if (item.GetType() == typeof(FilterParam))
-                    Filters.Add(item as FilterParam);
+                if (item.GetType() == typeof(SearchFilterParam))
+                    SearchFilters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(CategoryFilterParam))
+                    CategoryFilters.Add(item as CategoryFilterParam);
                 else if (item.GetType() == typeof(SortParam))
                     Sorts.Add(item as SortParam);
             }
         }
         public Query(List<QueryParameter> options)
         {
-            Filters = new List<FilterParam>();
+            SearchFilters = new List<SearchFilterParam>();
+            CategoryFilters = new List<CategoryFilterParam>();
             Sorts = new List<SortParam>();
             Index = 0;
             Limit = 10;
             foreach (var item in options)
             {
-                if (item.GetType() == typeof(FilterParam))
-                    Filters.Add(item as FilterParam);
+                if (item.GetType() == typeof(SearchFilterParam))
+                    SearchFilters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(CategoryFilterParam))
+                    CategoryFilters.Add(item as CategoryFilterParam);
                 else if (item.GetType() == typeof(SortParam))
                     Sorts.Add(item as SortParam);
             }
@@ -44,7 +51,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
 
         }
-        public class FilterParam : QueryParameter
+        public abstract class FilterParam : QueryParameter
         {
             string _filterName;
             string _filterValue;
@@ -55,6 +62,25 @@ namespace Anatoli.Framework.AnatoliBase
                 _filterName = filterName;
                 _filterValue = filterValue;
             }
+        }
+        public class SearchFilterParam : FilterParam
+        {
+            public SearchFilterParam(string filterName, string filterValue)
+                : base(filterName, filterValue)
+            {
+
+            }
+        }
+        public class CategoryFilterParam : FilterParam
+        {
+
+
+            public CategoryFilterParam(string filterName, string filterValue)
+                : base(filterName, filterValue)
+            {
+
+            }
+
         }
         public class SortParam : QueryParameter
         {
@@ -88,7 +114,11 @@ namespace Anatoli.Framework.AnatoliBase
             get
             {
                 List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                foreach (var item in Filters)
+                foreach (var item in SearchFilters)
+                {
+                    parameters.Add(new Tuple<string, string>(item.FilterName, item.FilterValue));
+                }
+                foreach (var item in CategoryFilters)
                 {
                     parameters.Add(new Tuple<string, string>(item.FilterName, item.FilterValue));
                 }
@@ -114,20 +144,46 @@ namespace Anatoli.Framework.AnatoliBase
             get
             {
                 string q = string.Format(" SELECT * FROM  {0} ", DBTableName);
-                if (Filters.Count == 1)
+                if (SearchFilters.Count == 1)
                 {
-                    q += string.Format(" WHERE {0}={1} ", Filters.First<FilterParam>().FilterName, Filters.First<FilterParam>().FilterValue);
+                    q += string.Format(" WHERE {0} LIKE '%{1}%' ", SearchFilters.First<FilterParam>().FilterName, SearchFilters.First<FilterParam>().FilterValue);
                 }
-                else if (Filters.Count > 1)
+                else if (SearchFilters.Count > 1)
                 {
-                    q += " WHERE ";
-                    for (int i = 0; i < Filters.Count - 1; i++)
+                    q += " WHERE (";
+                    for (int i = 0; i < SearchFilters.Count - 1; i++)
                     {
-                        FilterParam filter = Filters[i];
-                        q += string.Format(" {0}={1} or ", filter.FilterName, filter.FilterValue);
+                        var filter = SearchFilters[i];
+                        q += string.Format(" {0} LIKE '%{1}%' and ", filter.FilterName, filter.FilterValue);
                         // todo : and should be added
                     }
-                    q += string.Format(" {0}={1} ", Filters.Last<FilterParam>().FilterName, Filters.Last<FilterParam>().FilterValue);
+                    q += string.Format(" {0} LIKE '%{1}%' )", SearchFilters.Last<FilterParam>().FilterName, SearchFilters.Last<FilterParam>().FilterValue);
+                }
+
+                if (CategoryFilters.Count == 1)
+                {
+                    if (SearchFilters.Count > 0)
+                    {
+                        q += string.Format(" AND {0}='{1}' ", CategoryFilters.First<FilterParam>().FilterName, CategoryFilters.First<FilterParam>().FilterValue);
+                    }
+                    else
+                        q += string.Format(" WHERE {0}='{1}' ", CategoryFilters.First<FilterParam>().FilterName, CategoryFilters.First<FilterParam>().FilterValue);
+                }
+                else if (CategoryFilters.Count > 1)
+                {
+                    if (SearchFilters.Count == 0)
+                    {
+                        q += " WHERE (";
+                    }
+                    else
+                        q += " AND ( ";
+                    for (int i = 0; i < CategoryFilters.Count - 1; i++)
+                    {
+                        var filter = CategoryFilters[i];
+                        q += string.Format(" {0}='{1}' or ", filter.FilterName, filter.FilterValue);
+                        // todo : and should be added
+                    }
+                    q += string.Format(" {0}='{1}' )", CategoryFilters.Last<FilterParam>().FilterName, CategoryFilters.Last<FilterParam>().FilterValue);
                 }
 
                 if (Sorts.Count == 1)

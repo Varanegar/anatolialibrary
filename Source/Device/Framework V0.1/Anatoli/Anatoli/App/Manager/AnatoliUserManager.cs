@@ -25,12 +25,12 @@ namespace Anatoli.App.Manager
         public async Task<RegisterResult> RegisterAsync(string userName, string passWord, string confirmPassword, string firstName, string lastName, string tel, string email)
         {
             User user = new User();
-            user.Email = email;
-            user.FirstName = firstName;
-            user.LastName = lastName;
-            user.UserName = userName;
-            user.Password = passWord;
-            user.ConfirmPassword = confirmPassword;
+            user.Email = "hooman.ahmadi1@gmail.com";
+            user.FirstName = "hooman2";
+            user.LastName = "ahmadi3";
+            user.UserName = "hooman.ahmadi2";
+            user.Password = "Hooman.ahmadi2";
+            user.ConfirmPassword = "Hooman.ahmadi2";
             try
             {
                 var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(

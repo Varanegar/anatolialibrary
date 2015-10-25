@@ -26,12 +26,12 @@ namespace AnatoliAndroid.Fragments
             parameters.Add(new Query.SortParam("order_count", SortTypes.DESC));
             ProductManager pm = new ProductManager();
             var ids = pm.GetCategories(cat_id);
-            parameters.Add(new Query.FilterParam("cat_id", cat_id.ToString()));
+            parameters.Add(new Query.CategoryFilterParam("cat_id", cat_id.ToString()));
             if (ids != null)
             {
                 foreach (var item in ids)
                 {
-                    parameters.Add(new Query.FilterParam("cat_id", item.Item1.ToString()));
+                    parameters.Add(new Query.CategoryFilterParam("cat_id", item.Item1.ToString()));
                 }
             }
 
