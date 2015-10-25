@@ -55,11 +55,17 @@ namespace AnatoliAndroid.Fragments
         void adapter_DataChanged(object sender)
         {
             double price = 0;
+            _products = new List<ProductModel>();
             foreach (var item in ShoppingCard.GetInstance().Items)
             {
                 price += (item.Value.productModel.price * item.Value.Count);
+                _products.Add(item.Value.productModel);
             }
             _factorPrice.Text = price.ToString();
+            var adapter = new ProductsListAdapter();
+            adapter.List = _products;
+            adapter.DataChanged += adapter_DataChanged;
+            _itemsListView.Adapter = adapter;
         }
     }
 }
