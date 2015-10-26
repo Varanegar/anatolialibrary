@@ -43,10 +43,8 @@ namespace AnatoliAndroid.Fragments
 
         void _registerTextView_Click(object sender, EventArgs e)
         {
-            var transaction = FragmentManager.BeginTransaction();
             var fragment = new RegisterFragment();
-            transaction.Replace(Resource.Id.content_frame, fragment, "register_fragment");
-            transaction.Commit();
+            ActivityContainer.GetInstance().SetFragment<RegisterFragment>(fragment, "register_fragment");
         }
         async void loginButton_Click(object sender, EventArgs e)
         {
