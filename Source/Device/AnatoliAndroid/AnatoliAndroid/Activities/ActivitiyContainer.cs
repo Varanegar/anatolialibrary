@@ -30,7 +30,6 @@ namespace AnatoliAndroid.Activities
         }
         public static void Initialize(Activity activity)
         {
-            if (instance == null)
                 instance = new ActivityContainer(activity);
         }
         private ActivityContainer()
