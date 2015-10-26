@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +48,10 @@ namespace AnatoliAndroid.Fragments
             adapter.DataChanged += adapter_DataChanged;
             adapter.List = _products;
             _itemsListView.Adapter = adapter;
+            if (ShoppingCard.GetInstance().Items.Count() == 0)
+            {
+                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Long).Show();
+            }
             return view;
             // Create your application here
         }

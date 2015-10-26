@@ -135,14 +135,7 @@ namespace AnatoliAndroid.Activities
 
         void shoppingCardImageView_Click(object sender, EventArgs e)
         {
-            if (ShoppingCard.GetInstance().Items.Count > 0)
-            {
-                //var transaction = FragmentManager.BeginTransaction();
-                //var shoppingCardFragment = new ShoppingCardFragment();
-                //transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
-                //transaction.Commit();
-                AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(new ShoppingCardFragment(), "shoppingCard_fragment");
-            }
+            AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(new ShoppingCardFragment(), "shoppingCard_fragment");
             _drawerLayout.CloseDrawer(_drawerListView);
         }
 
@@ -195,34 +188,19 @@ namespace AnatoliAndroid.Activities
                         _menuItems = categories;
                         _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
                         _drawerListView.InvalidateViews();
-                        //var transactionF = FragmentManager.BeginTransaction();
-                        //transactionF.Replace(Resource.Id.content_frame, _productsListF, "products_fragment");
-                        //transactionF.Commit();
                         AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
-                        if (ShoppingCard.GetInstance().Items.Count > 0)
-                        {
-                            //var transaction = FragmentManager.BeginTransaction();
-                            var shoppingCardFragment = new ShoppingCardFragment();
-                            //transaction.Replace(Resource.Id.content_frame, shoppingCardFragment, "shoppingCard_fragment");
-                            //transaction.Commit();
-                            AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(shoppingCardFragment, "shoppingCard_fragment");
-                        }
+                        var shoppingCardFragment = new ShoppingCardFragment();
+                        AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(shoppingCardFragment, "shoppingCard_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.StoresList:
-                        //var transactionS = FragmentManager.BeginTransaction();
-                        // transactionS.Replace(Resource.Id.content_frame, _storesListF, "stores_fragment");
-                        // transactionS.Commit();
                         _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Login:
-                        //var transaction2 = FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
-                        //transaction2.Replace(Resource.Id.content_frame, loginFragment, "login_fragment");
-                        //transaction2.Commit();
                         AnatoliApp.GetInstance().SetFragment<LoginFragment>(loginFragment, "login_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
