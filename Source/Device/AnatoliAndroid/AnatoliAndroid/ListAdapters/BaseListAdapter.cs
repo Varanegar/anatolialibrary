@@ -22,7 +22,7 @@ namespace AnatoliAndroid.ListAdapters
         public BaseListAdapter()
         {
             List = new List<DataModel>();
-            _context = ActivityContainer.GetInstance().Activity;
+            _context = AnatoliApp.GetInstance().Activity;
         }
 
         public override int Count

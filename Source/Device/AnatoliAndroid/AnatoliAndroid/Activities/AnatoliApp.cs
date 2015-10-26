@@ -12,17 +12,25 @@ using Android.Widget;
 
 namespace AnatoliAndroid.Activities
 {
-    class ActivityContainer
+    class AnatoliApp
     {
-        private static ActivityContainer instance;
+        private static AnatoliApp instance;
         private Activity _activity;
-        Android.App.Fragment _currentFragment;
+
+        private static Stack<Tuple<string, Fragment>> _stack;
         public Android.App.Fragment GetCurrentFragment()
         {
-            return _currentFragment;
+            try
+            {
+                return _stack.Peek().Item2;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public Activity Activity { get { return _activity; } }
-        public static ActivityContainer GetInstance()
+        public static AnatoliApp GetInstance()
         {
             if (instance == null)
                 throw new NullReferenceException();
@@ -30,14 +38,15 @@ namespace AnatoliAndroid.Activities
         }
         public static void Initialize(Activity activity)
         {
-                instance = new ActivityContainer(activity);
+            instance = new AnatoliApp(activity);
+            _stack = new Stack<Tuple<string, Fragment>>();
         }
-        private ActivityContainer()
+        private AnatoliApp()
         {
 
         }
 
-        private ActivityContainer(Activity activity)
+        private AnatoliApp(Activity activity)
         {
             _activity = activity;
         }
@@ -50,8 +59,24 @@ namespace AnatoliAndroid.Activities
             }
             transaction.Replace(Resource.Id.content_frame, fragment, tag);
             transaction.Commit();
-            _currentFragment = fragment;
+            _stack.Push(new Tuple<string, Fragment>(tag, fragment));
             return fragment;
+        }
+        public bool BackFragment()
+        {
+            var transaction = _activity.FragmentManager.BeginTransaction();
+            try
+            {
+                var stackItem = _stack.Pop();
+                stackItem = _stack.Peek();
+                transaction.Replace(Resource.Id.content_frame, stackItem.Item2, stackItem.Item1);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

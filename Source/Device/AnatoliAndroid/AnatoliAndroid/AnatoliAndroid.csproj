@@ -112,7 +112,7 @@
     <Compile Include="Fragments\LoginFragment.cs" />
     <Compile Include="Fragments\RegisterFragment.cs" />
     <Compile Include="ShoppingCard.cs" />
-    <Compile Include="Activities\ActivitiyContainer.cs" />
+    <Compile Include="Activities\AnatoliApp.cs" />
     <Compile Include="AndroidFileIO.cs" />
     <Compile Include="AndroidWebClient.cs" />
     <Compile Include="Fragments\BaseListFragment.cs" />
