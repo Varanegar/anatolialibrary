@@ -45,6 +45,11 @@ namespace AnatoliAndroid.Activities
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
+
+            _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+            Application.Context.RegisterReceiver(_broadcastReceiver, new IntentFilter(ConnectivityManager.ConnectivityAction));
+
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
 
@@ -249,6 +254,17 @@ namespace AnatoliAndroid.Activities
 
         }
 
+        private void OnNetworkStatusChanged(object sender, EventArgs e)
+        {
+
+            
+        }
+
+        void cn_DefaultNetworkActive(object sender, EventArgs e)
+        {
+            
+        }
+
         bool exit = false;
         public override void OnBackPressed()
         {
@@ -268,6 +284,22 @@ namespace AnatoliAndroid.Activities
                 exit = false;
         }
 
+        public event EventHandler NetworkStatusChanged;
+
+        public NetworkStatusBroadcastReceiver _broadcastReceiver { get; set; }
+    }
+
+    [BroadcastReceiver()]
+    public class NetworkStatusBroadcastReceiver : BroadcastReceiver
+    {
+
+        public event EventHandler ConnectionStatusChanged;
+
+        public override void OnReceive(Context context, Intent intent)
+        {
+            if (ConnectionStatusChanged != null)
+                ConnectionStatusChanged(this, EventArgs.Empty);
+        }
     }
 
 }
