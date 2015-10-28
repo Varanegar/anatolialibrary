@@ -25,7 +25,6 @@ namespace AnatoliAndroid.Fragments
         protected View _view;
         protected ListView _listView;
         protected DataListAdapter _listAdapter;
-        protected object[] queryParams;
         protected BaseDataManager _dataManager;
         private bool _firstShow = true;
         protected Tuple<string, string> _searchKeyWord;

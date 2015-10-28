@@ -45,6 +45,7 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         item.favorit = 0;
                         NotifyDataSetChanged();
+                        OnDataRemoved(item);
                     }
                 };
             }
@@ -56,6 +57,7 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         item.favorit = 1;
                         NotifyDataSetChanged();
+                        OnDataRemoved(item);
                     }
                 };
             }
@@ -106,15 +108,5 @@ namespace AnatoliAndroid.ListAdapters
             NotifyDataSetChanged();
             OnDataChanged();
         }
-
-        public void OnDataChanged()
-        {
-            if (DataChanged != null)
-            {
-                DataChanged(this);
-            }
-        }
-        public event DataChangedEventHandler DataChanged;
-        public delegate void DataChangedEventHandler(object sender);
     }
 }

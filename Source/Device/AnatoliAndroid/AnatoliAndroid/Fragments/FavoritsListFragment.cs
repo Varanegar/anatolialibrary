@@ -21,6 +21,17 @@ namespace AnatoliAndroid.Fragments
 {
     class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
+        public FavoritsListFragment()
+        {
+            _listAdapter.DataRemoved += _listAdapter_DataRemoved;
+        }
+
+        void _listAdapter_DataRemoved(object sender, ProductModel item)
+        {
+            _listAdapter.List.Remove(item);
+            _listView.InvalidateViews();
+        }
+
         protected override List<QueryParameter> CreateQueryParameters()
         {
             var parameters = new List<QueryParameter>();
