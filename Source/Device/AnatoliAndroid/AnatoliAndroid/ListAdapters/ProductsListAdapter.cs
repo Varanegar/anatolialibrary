@@ -10,12 +10,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Anatoli.App.Model.Product;
+using Anatoli.App.Model.AnatoliUser;
+using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.ListAdapters
 {
-    class ProductsListAdapter : BaseListAdapter<ProductModel>
+    class ProductsListAdapter : BaseListAdapter<ProductManager, ProductModel>
     {
         TextView _productCountTextView;
+        ImageView _favoritsImageView;
+
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
             convertView = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
@@ -30,13 +34,37 @@ namespace AnatoliAndroid.ListAdapters
             ImageView productIimageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
             ImageView productAddButton = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
             ImageView productRemoveButton = convertView.FindViewById<ImageView>(Resource.Id.removeProductImageView);
+            _favoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
 
+            if (item.IsFavorit)
+            {
+                _favoritsImageView.SetImageResource(Resource.Drawable.Favorits);
+                _favoritsImageView.Click += async (s, e) =>
+                {
+                    if (await ProductManager.RemoveFavorit(item.product_id) == true)
+                    {
+                        _favoritsImageView.SetImageResource(Resource.Drawable.FavoritsGray);
+                        NotifyDataSetChanged();
+                    }
+                };
+            }
+            else
+            {
+                _favoritsImageView.Click += async (s, e) =>
+                {
+                    if (await ProductManager.AddToFavorits(item) == true)
+                    {
+                        _favoritsImageView.SetImageResource(Resource.Drawable.Favorits);
+                        NotifyDataSetChanged();
+                    }
+                };
+            }
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
             {
                 _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
             }
             else
-                _productCountTextView.Text = "";
+                _productCountTextView.Text = "0";
 
             productAddButton.Click += (o, e) => productAddButton_Click(item);
             productRemoveButton.Click += (o, e) => productRemoveButton_Click(item);
@@ -73,7 +101,7 @@ namespace AnatoliAndroid.ListAdapters
             if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
                 (ShoppingCard.GetInstance().Items[item.product_id].Count)++;
             else
-                ShoppingCard.GetInstance().Items.Add(item.product_id, new CardItem(1, item));
+                ShoppingCard.GetInstance().Items.Add(item.product_id, new ShoppingCardItem(1, item));
             _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
             NotifyDataSetChanged();
             OnDataChanged();

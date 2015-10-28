@@ -13,15 +13,8 @@ namespace Anatoli.App.Manager
 {
     public class ProductManager : BaseManager<BaseDataAdapter<ProductModel>, ProductModel>
     {
-        protected override string GetDataTable()
-        {
-            return "products_price_view";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return Configuration.WebService.Products.ProductsView;
-        }
+        const string _productsTbl = "products";
+        const string _productsView = "products_price_view";
         public List<Tuple<int, string>> GetCategories(int catId)
         {
             switch (catId)
@@ -80,9 +73,22 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public async Task<ProductModel> GetByIdAsync(string id)
+        //public async Task<ProductModel> GetByIdAsync(string id)
+        //{
+        //    var parameter = new Query.SearchFilterParam("product_id", id);
+        //    return await GetItemAsync(new DBQuery("products",parameter));
+        //}
+
+        public static async Task<bool> RemoveFavorit(int pId)
         {
-            return await GetItemAsync(new Query.SearchFilterParam("product_id", id));
+            var dbQuery = new UpdateCommand(_productsTbl, new SearchFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
+            return await LocalUpdate(dbQuery);
+        }
+
+        public static async Task<bool> AddToFavorits(ProductModel item)
+        {
+            var dbQuery = new UpdateCommand(_productsTbl, new SearchFilterParam("product_id", item.product_id.ToString()), new BasicParam("favorit", "1"));
+            return await LocalUpdate(dbQuery);
         }
     }
 }

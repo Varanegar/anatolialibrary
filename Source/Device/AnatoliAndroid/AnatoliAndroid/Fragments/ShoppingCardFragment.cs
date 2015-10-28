@@ -12,6 +12,7 @@ using Android.Widget;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
+using Anatoli.App.Model.AnatoliUser;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -50,7 +51,7 @@ namespace AnatoliAndroid.Fragments
             _itemsListView.Adapter = adapter;
             if (ShoppingCard.GetInstance().Items.Count() == 0)
             {
-                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Long).Show();
+                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
             }
             return view;
             // Create your application here

@@ -21,6 +21,8 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string ProductsView = "products_test.php";
                 public static readonly string FOGList = "list.php";
                 public static readonly string RateProductUri = "/Products/Rate";
+
+                public static readonly string FavoritsView = "/Products/Rate";
             }
             public struct Stores
             {

@@ -47,16 +47,6 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
-
-        protected override string GetDataTable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            throw new NotImplementedException();
-        }
         internal class User
         {
             public string UserName { get; set; }

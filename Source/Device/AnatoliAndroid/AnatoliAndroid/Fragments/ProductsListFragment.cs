@@ -20,18 +20,18 @@ namespace AnatoliAndroid.Fragments
     class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
         int cat_id = 0;
-        protected override List<Anatoli.Framework.AnatoliBase.Query.QueryParameter> CreateQueryParameters()
+        protected override List<QueryParameter> CreateQueryParameters()
         {
-            var parameters = new List<Anatoli.Framework.AnatoliBase.Query.QueryParameter>();
-            parameters.Add(new Query.SortParam("order_count", SortTypes.DESC));
+            var parameters = new List<QueryParameter>();
+            parameters.Add(new SortParam("order_count", SortTypes.DESC));
             ProductManager pm = new ProductManager();
             var ids = pm.GetCategories(cat_id);
-            parameters.Add(new Query.CategoryFilterParam("cat_id", cat_id.ToString()));
+            parameters.Add(new CategoryFilterParam("cat_id", cat_id.ToString()));
             if (ids != null)
             {
                 foreach (var item in ids)
                 {
-                    parameters.Add(new Query.CategoryFilterParam("cat_id", item.Item1.ToString()));
+                    parameters.Add(new CategoryFilterParam("cat_id", item.Item1.ToString()));
                 }
             }
 
@@ -43,6 +43,16 @@ namespace AnatoliAndroid.Fragments
             SetParameters();
             _listAdapter.List = await _dataManager.GetNextAsync();
             _listAdapter.NotifyDataSetChanged();
+        }
+
+        protected override string GetTableName()
+        {
+            return "products_price_view";
+        }
+
+        protected override string GetWebServiceUri()
+        {
+            return Configuration.WebService.Products.ProductsView;
         }
     }
 }

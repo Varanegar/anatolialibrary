@@ -10,30 +10,32 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Anatoli.App.Model.Store;
-using Anatoli.Framework.Model;
+using Anatoli.App.Model.Product;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.Framework.Manager;
+using Anatoli.Framework.DataAdapter;
 
 namespace AnatoliAndroid.Fragments
 {
-    class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, StoreDataModel>
+    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
         protected override List<QueryParameter> CreateQueryParameters()
         {
             var parameters = new List<QueryParameter>();
+            parameters.Add(new SearchFilterParam("favorit", "1"));
             return parameters;
         }
 
         protected override string GetTableName()
         {
-            return "stores";
+            return "products_price_view";
         }
 
         protected override string GetWebServiceUri()
         {
-            return Configuration.WebService.Stores.StoresView;
+            return Configuration.WebService.Products.FavoritsView;
         }
     }
 }

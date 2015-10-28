@@ -83,36 +83,41 @@ namespace AnatoliAndroid.Activities
             _drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
             _pm = new ProductManager();
             _mainItems = new List<DrawerItemType>();
-            var item1 = new DrawerMainItem();
-            item1.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
-            item1.Name = "دسته بندی کالا";
-            item1.ImageResId = Resource.Drawable.GroupIcon;
-            var item2 = new DrawerMainItem();
-            item2.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
-            item2.Name = "سبد خرید";
-            item2.ImageResId = Resource.Drawable.ShoppingCardRed;
-            var item3 = new DrawerMainItem();
-            item3.ItemId = DrawerMainItem.DrawerMainItems.Profile;
-            item3.Name = "مشخصات من";
-            item3.ImageResId = Resource.Drawable.Profile;
-            var item4 = new DrawerMainItem();
-            item4.ItemId = DrawerMainItem.DrawerMainItems.Help;
-            item4.Name = "راهنما";
-            item4.ImageResId = Resource.Drawable.Help;
-            var item5 = new DrawerMainItem();
-            item5.ItemId = DrawerMainItem.DrawerMainItems.Login;
-            item5.Name = "ورود";
-            item5.ImageResId = Resource.Drawable.Profile;
-            var item6 = new DrawerMainItem();
-            item6.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            item6.Name = "انتخاب فروشگاه";
-            item6.ImageResId = Resource.Drawable.Store;
-            _mainItems.Add(item1);
-            _mainItems.Add(item2);
-            _mainItems.Add(item6);
-            _mainItems.Add(item3);
-            _mainItems.Add(item5);
-            _mainItems.Add(item4);
+            var categoriesMenuEntry = new DrawerMainItem();
+            categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
+            categoriesMenuEntry.Name = "دسته بندی کالا";
+            categoriesMenuEntry.ImageResId = Resource.Drawable.GroupIcon;
+            var shoppingCardMenuEntry = new DrawerMainItem();
+            shoppingCardMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
+            shoppingCardMenuEntry.Name = "سبد خرید";
+            shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
+            var profileMenuEntry = new DrawerMainItem();
+            profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+            profileMenuEntry.Name = "مشخصات من";
+            profileMenuEntry.ImageResId = Resource.Drawable.Profile;
+            var helpMenuEntry = new DrawerMainItem();
+            helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
+            helpMenuEntry.Name = "راهنما";
+            helpMenuEntry.ImageResId = Resource.Drawable.Help;
+            var loginMenuEntry = new DrawerMainItem();
+            loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
+            loginMenuEntry.Name = "ورود";
+            loginMenuEntry.ImageResId = Resource.Drawable.Profile;
+            var storesMenuEntry = new DrawerMainItem();
+            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
+            storesMenuEntry.Name = "انتخاب فروشگاه";
+            storesMenuEntry.ImageResId = Resource.Drawable.Store;
+            var favoritsMenuEntry = new DrawerMainItem();
+            favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
+            favoritsMenuEntry.Name = "علاقه مندی ها";
+            favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
+            _mainItems.Add(categoriesMenuEntry);
+            _mainItems.Add(favoritsMenuEntry);
+            _mainItems.Add(shoppingCardMenuEntry);
+            _mainItems.Add(storesMenuEntry);
+            _mainItems.Add(profileMenuEntry);
+            _mainItems.Add(loginMenuEntry);
+            _mainItems.Add(helpMenuEntry);
             _menuItems = _mainItems;
             _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
             _drawerListView.ItemClick += _drawerListView_ItemClick;
@@ -214,6 +219,11 @@ namespace AnatoliAndroid.Activities
                         _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
                         _drawerListView.InvalidateViews();
                         break;
+                    case DrawerMainItem.DrawerMainItems.Favorits:
+                        var favoritsFragment = new FavoritsListFragment();
+                        AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(favoritsFragment, "favorits_fragment");
+                        _drawerLayout.CloseDrawer(_drawerListView);
+                        break;
                     default:
                         break;
                 }
@@ -257,12 +267,7 @@ namespace AnatoliAndroid.Activities
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
 
-            
-        }
 
-        void cn_DefaultNetworkActive(object sender, EventArgs e)
-        {
-            
         }
 
         bool exit = false;
@@ -275,7 +280,7 @@ namespace AnatoliAndroid.Activities
                 if (!exit)
                 {
                     exit = true;
-                    Toast.MakeText(this, "Please press back again to exit", ToastLength.Long).Show();
+                    Toast.MakeText(this, "Please press back again to exit", ToastLength.Short).Show();
                 }
                 else
                     Finish();

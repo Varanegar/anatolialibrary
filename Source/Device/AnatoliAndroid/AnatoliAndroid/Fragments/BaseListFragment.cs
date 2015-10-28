@@ -19,7 +19,7 @@ namespace AnatoliAndroid.Fragments
 {
     abstract class BaseListFragment<BaseDataManager, DataListAdapter, DataModel> : Fragment
         where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
-        where DataListAdapter : BaseListAdapter<DataModel>, new()
+        where DataListAdapter : BaseListAdapter<BaseDataManager, DataModel>, new()
         where DataModel : BaseDataModel, new()
     {
         protected View _view;
@@ -86,10 +86,12 @@ namespace AnatoliAndroid.Fragments
             var parameters = CreateQueryParameters();
             if (_searchKeyWord != null)
             {
-                parameters.Add(new Anatoli.Framework.AnatoliBase.Query.SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2));
+                parameters.Add(new SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2));
             }
-            _dataManager.SetQueryParameters(parameters);
+            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters), new RemoteQuery(GetWebServiceUri(), parameters));
         }
-        protected abstract List<Query.QueryParameter> CreateQueryParameters();
+        protected abstract List<QueryParameter> CreateQueryParameters();
+        protected abstract string GetTableName();
+        protected abstract string GetWebServiceUri();
     }
 }

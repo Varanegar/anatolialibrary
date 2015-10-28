@@ -11,11 +11,14 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.Framework.Model;
 using AnatoliAndroid.Activities;
+using Anatoli.Framework.DataAdapter;
+using Anatoli.Framework.Manager;
 
 namespace AnatoliAndroid.ListAdapters
 {
-    class BaseListAdapter<DataModel> : BaseAdapter<DataModel>
+    class BaseListAdapter<BaseDataManager, DataModel> : BaseAdapter<DataModel>
         where DataModel : BaseDataModel, new()
+        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
     {
         public List<DataModel> List;
         protected Activity _context;
@@ -41,12 +44,12 @@ namespace AnatoliAndroid.ListAdapters
         }
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            return GetItemView(position, convertView, parent);            
+            return GetItemView(position, convertView, parent);
         }
         public virtual View GetItemView(int position, View convertView, ViewGroup parent)
         {
             return convertView;
         }
-        
+
     }
 }

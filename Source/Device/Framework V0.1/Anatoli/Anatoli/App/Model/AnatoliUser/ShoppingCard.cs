@@ -2,20 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Anatoli.App.Model.Product;
 
-namespace AnatoliAndroid
+namespace Anatoli.App.Model.AnatoliUser
 {
-    class ShoppingCard
+    public class ShoppingCard
     {
-        public Dictionary<int, CardItem> Items;
+        public Dictionary<int, ShoppingCardItem> Items;
         private static ShoppingCard instance;
         public static ShoppingCard GetInstance()
         {
@@ -29,12 +22,12 @@ namespace AnatoliAndroid
         }
         private ShoppingCard()
         {
-            Items = new Dictionary<int, CardItem>();
+            Items = new Dictionary<int, ShoppingCardItem>();
         }
     }
-    class CardItem
+    public class ShoppingCardItem
     {
-        public CardItem(int count, ProductModel productModel)
+        public ShoppingCardItem(int count, ProductModel productModel)
         {
             this.productModel = productModel;
             this.Count = count;

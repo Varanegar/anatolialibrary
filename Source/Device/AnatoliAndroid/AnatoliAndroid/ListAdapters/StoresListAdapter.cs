@@ -12,10 +12,11 @@ using Android.Widget;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Model.Store;
 using Anatoli.Framework.Model;
+using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.ListAdapters
 {
-    class StoresListAdapter : BaseListAdapter<StoreDataModel>
+    class StoresListAdapter : BaseListAdapter<StoreManager, StoreDataModel>
     {
 
         public override View GetItemView(int position, View convertView, ViewGroup parent)

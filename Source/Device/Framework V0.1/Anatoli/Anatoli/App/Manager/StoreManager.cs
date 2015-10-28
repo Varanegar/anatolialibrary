@@ -26,14 +26,6 @@ namespace Anatoli.App.Manager
         //{
         //    return await GetNextAsync(string.Format("SELECT * FROM stores_products INNER JOIN stores WHERE stores.store_id == stores_products.store_id AND product_id = {0} LIMIT {1},{2}", productId.ToString(), index.ToString(), (index + offset).ToString()), null);
         //}
-        protected override string GetDataTable()
-        {
-            return "stores";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return Configuration.WebService.Stores.StoresView;
-        }
+      
     }
 }

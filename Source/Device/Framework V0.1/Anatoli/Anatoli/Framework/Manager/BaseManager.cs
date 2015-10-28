@@ -17,30 +17,6 @@ namespace Anatoli.Framework.Manager
         int _limit = 10;
         protected DBQuery _localP;
         protected RemoteQuery _remoteP;
-        protected string DataTable
-        {
-            get { return GetDataTable(); }
-            set { SetDataTable(value); }
-        }
-        protected void SetDataTable(string value)
-        {
-            DataTable = value;
-        }
-        protected abstract string GetDataTable();
-
-
-        protected string WebServiceUri
-        {
-            get { return GetWebServiceUri(); }
-            set { SetWebServiceUri(value); }
-        }
-        protected void SetWebServiceUri(string value)
-        {
-            WebServiceUri = value;
-        }
-        protected abstract string GetWebServiceUri();
-
-
         public int Limit
         {
             get { return _limit; }
@@ -55,19 +31,12 @@ namespace Anatoli.Framework.Manager
         {
             return true;
         }
-        public void SetQueryParameters(List<Query.QueryParameter> parameters)
+        public void SetQueries(DBQuery dbQuery, RemoteQuery remoteQuery)
         {
-            SetRemoteQueryParameters(parameters);
-            SetDBQueryParameters(parameters);
+            _localP = dbQuery;
+            _remoteP = remoteQuery;
         }
-        void SetRemoteQueryParameters(List<Query.QueryParameter> parameters)
-        {
-            _remoteP = new RemoteQuery(WebServiceUri, parameters);
-        }
-        void SetDBQueryParameters(List<Query.QueryParameter> parameters)
-        {
-            _localP = new DBQuery(DataTable, parameters);
-        }
+
         public async Task<List<DataModel>> GetNextAsync()
         {
             if (_localP == null && _remoteP == null)
@@ -81,15 +50,17 @@ namespace Anatoli.Framework.Manager
             _remoteP.Index += Math.Min(list.Count, _limit);
             return list;
         }
-        public async Task<DataModel> GetItemAsync(List<Query.QueryParameter> parameters)
+        public static async Task<DataModel> GetItemAsync(DBQuery query)
         {
-            var localP = new DBQuery(DataTable, parameters);
-            return await Task.Run(() => { return dataAdapter.GetItem(localP, null); });
+            return await Task.Run(() => { return BaseDataAdapter<DataModel>.GetItem(query, null); });
         }
-        public async Task<DataModel> GetItemAsync(params Query.QueryParameter[] parameters)
+        public static DataModel GetItem(DBQuery query)
         {
-            var localP = new DBQuery(DataTable, parameters);
-            return await Task.Run(() => { return dataAdapter.GetItem(localP, null); });
+            return BaseDataAdapter<DataModel>.GetItem(query, null);
+        }
+        public static async Task<bool> LocalUpdate(DBQuery command)
+        {
+            return await Task.Run(() => { return BaseDataAdapter<DataModel>.LocalUpdate(command); });
         }
     }
 }

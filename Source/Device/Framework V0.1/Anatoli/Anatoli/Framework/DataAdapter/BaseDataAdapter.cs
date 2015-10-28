@@ -53,7 +53,7 @@ namespace Anatoli.Framework.DataAdapter
             try
             {
                 var connection = AnatoliClient.GetInstance().DbClient.Connection;
-                var command = connection.CreateCommand(localParameters.Command);
+                var command = connection.CreateCommand(localParameters.GetCommand());
                 var result = command.ExecuteQuery<DataModel>();
                 return result;
             }
@@ -62,7 +62,7 @@ namespace Anatoli.Framework.DataAdapter
                 return null;
             }
         }
-        public DataModel GetItem(DBQuery localParameters, RemoteQuery remoteParameters)
+        public static DataModel GetItem(DBQuery localParameters, RemoteQuery remoteParameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
             DataModel data = null;
@@ -70,18 +70,18 @@ namespace Anatoli.Framework.DataAdapter
             {
                 if (policy == SYNC_POLICY.ForceOnline)
                 {
-                    data = CloudUpdate(remoteParameters);
+                    data = CloudRead(remoteParameters);
                 }
                 else if (policy == SYNC_POLICY.OnlineIfConnected)
                 {
                     if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                        data = CloudUpdate(remoteParameters);
+                        data = CloudRead(remoteParameters);
                     else
-                        data = LocalUpdate(localParameters);
+                        data = LocalRead(localParameters);
                 }
                 else if (policy == SYNC_POLICY.Offline)
                 {
-                    data = LocalUpdate(localParameters);
+                    data = LocalRead(localParameters);
                 }
                 return data;
             }
@@ -91,10 +91,10 @@ namespace Anatoli.Framework.DataAdapter
             }
         }
 
-        public DataModel LocalUpdate(DBQuery parameters)
+        public static DataModel LocalRead(DBQuery parameters)
         {
             var connection = AnatoliClient.GetInstance().DbClient.Connection;
-            var query = connection.CreateCommand(parameters.Command);
+            var query = connection.CreateCommand(parameters.GetCommand());
             try
             {
                 var qResult = query.ExecuteQuery<DataModel>();
@@ -109,7 +109,7 @@ namespace Anatoli.Framework.DataAdapter
                 return null;
             }
         }
-        public DataModel CloudUpdate(RemoteQuery parameters)
+        public static DataModel CloudRead(RemoteQuery parameters)
         {
             try
             {
@@ -126,6 +126,28 @@ namespace Anatoli.Framework.DataAdapter
             catch (Exception)
             {
                 return null;
+            }
+        }
+        public static DataModel CloudInsert(RemoteQuery query)
+        {
+            throw new NotImplementedException();
+        }
+        public static bool LocalUpdate(DBQuery dbQuery)
+        {
+            var connection = AnatoliClient.GetInstance().DbClient.Connection;
+            var query = connection.CreateCommand(dbQuery.GetCommand());
+            try
+            {
+                var qResult = query.ExecuteNonQuery();
+                if (qResult > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
     }
