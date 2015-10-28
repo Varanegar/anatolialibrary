@@ -35,6 +35,8 @@ namespace AnatoliAndroid.Activities
         List<DrawerItemType> _mainItems;
         ProductsListFragment _productsListF;
         StoresListFragment _storesListF;
+        FavoritsListFragment _favoritsFragment;
+        ShoppingCardFragment _shoppingCardFragment;
         ProductManager _pm;
         Toolbar _toolbar;
         RelativeLayout _searchBarLayout;
@@ -127,11 +129,11 @@ namespace AnatoliAndroid.Activities
         void _searchButtonImageView_Click(object sender, EventArgs e)
         {
             _productsListF.Search("product_name", _searchEditText.Text);
-            if (AnatoliApp.GetInstance().GetCurrentFragment().GetType() == typeof(ProductsListFragment))
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
             {
                 _productsListF.Search("product_name", _searchEditText.Text);
             }
-            if (AnatoliApp.GetInstance().GetCurrentFragment().GetType() == typeof(StoresListFragment))
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
             {
                 _storesListF.Search("store_name", _searchEditText.Text);
             }
@@ -145,7 +147,7 @@ namespace AnatoliAndroid.Activities
 
         void shoppingCardImageView_Click(object sender, EventArgs e)
         {
-            AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(new ShoppingCardFragment(), "shoppingCard_fragment");
+            AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
             _drawerLayout.CloseDrawer(_drawerListView);
         }
 
@@ -201,12 +203,11 @@ namespace AnatoliAndroid.Activities
                         AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
-                        var shoppingCardFragment = new ShoppingCardFragment();
-                        AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(shoppingCardFragment, "shoppingCard_fragment");
+                        AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.StoresList:
-                        _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+                        _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Login:
@@ -220,8 +221,8 @@ namespace AnatoliAndroid.Activities
                         _drawerListView.InvalidateViews();
                         break;
                     case DrawerMainItem.DrawerMainItems.Favorits:
-                        var favoritsFragment = new FavoritsListFragment();
-                        AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(favoritsFragment, "favorits_fragment");
+                        _favoritsFragment = new FavoritsListFragment();
+                        AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
                         _drawerLayout.CloseDrawer(_drawerListView);
                         break;
                     default:

@@ -17,12 +17,12 @@ namespace AnatoliAndroid.Activities
         private static AnatoliApp instance;
         private Activity _activity;
 
-        private static Stack<Tuple<string, Fragment>> _stack;
-        public Android.App.Fragment GetCurrentFragment()
+        private static Stack<StackItem> _stack;
+        public Type GetCurrentFragmentType()
         {
             try
             {
-                return _stack.Peek().Item2;
+                return _stack.Peek().FragmentType;
             }
             catch (Exception)
             {
@@ -39,7 +39,7 @@ namespace AnatoliAndroid.Activities
         public static void Initialize(Activity activity)
         {
             instance = new AnatoliApp(activity);
-            _stack = new Stack<Tuple<string, Fragment>>();
+            _stack = new Stack<StackItem>();
         }
         private AnatoliApp()
         {
@@ -59,7 +59,7 @@ namespace AnatoliAndroid.Activities
             }
             transaction.Replace(Resource.Id.content_frame, fragment, tag);
             transaction.Commit();
-            _stack.Push(new Tuple<string, Fragment>(tag, fragment));
+            _stack.Push(new StackItem(tag, fragment.GetType()));
             return fragment;
         }
         public bool BackFragment()
@@ -69,13 +69,25 @@ namespace AnatoliAndroid.Activities
             {
                 var stackItem = _stack.Pop();
                 stackItem = _stack.Peek();
-                transaction.Replace(Resource.Id.content_frame, stackItem.Item2, stackItem.Item1);
+                var fragment = Activator.CreateInstance(stackItem.FragmentType);
+                transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
                 transaction.Commit();
                 return true;
             }
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public class StackItem
+        {
+            public string FragmentName;
+            public Type FragmentType;
+            public StackItem(string FragmentName, Type FragmentType)
+            {
+                this.FragmentName = FragmentName;
+                this.FragmentType = FragmentType;
             }
         }
     }
