@@ -43,7 +43,7 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     if (await ProductManager.RemoveFavorit(item.product_id) == true)
                     {
-                        _favoritsImageView.SetImageResource(Resource.Drawable.FavoritsGray);
+                        item.favorit = 0;
                         NotifyDataSetChanged();
                     }
                 };
@@ -54,7 +54,7 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     if (await ProductManager.AddToFavorits(item) == true)
                     {
-                        _favoritsImageView.SetImageResource(Resource.Drawable.Favorits);
+                        item.favorit = 1;
                         NotifyDataSetChanged();
                     }
                 };
