@@ -59,7 +59,7 @@ namespace Anatoli.Framework.DataAdapter
             }
             catch (Exception)
             {
-                return null;
+                return new List<DataModel>();
             }
         }
         public static DataModel GetItem(DBQuery localParameters, RemoteQuery remoteParameters)
@@ -172,7 +172,7 @@ namespace Anatoli.Framework.DataAdapter
                     }
                     catch (Exception)
                     {
-                        return null;
+                        return new List<DataModel>();
                     }
                 }
             }

@@ -71,5 +71,6 @@ namespace Anatoli.Framework.Manager
         {
             return await Task.Run(() => { return BaseDataAdapter<DataModel>.LocalUpdate(command); });
         }
+
     }
 }

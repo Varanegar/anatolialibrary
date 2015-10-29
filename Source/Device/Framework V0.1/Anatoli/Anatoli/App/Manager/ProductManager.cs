@@ -90,5 +90,61 @@ namespace Anatoli.App.Manager
             var dbQuery = new UpdateCommand(_productsTbl, new SearchFilterParam("product_id", item.product_id.ToString()), new BasicParam("favorit", "1"));
             return await LocalUpdateAsync(dbQuery) > 0 ? true : false;
         }
+        public static async Task<List<string>> GetSuggests(string key, int no)
+        {
+            var dbQuery = new SelectQuery(_productsTbl, new SearchFilterParam("product_name", key));
+            dbQuery.Limit = 10000;
+            var listModel = await Task.Run(() => { return GetList(dbQuery, null); });
+            if (listModel.Count > 0)
+                return ShowSuggests(listModel, no);
+            else
+                return null;
+        }
+
+        static List<string> ShowSuggests(List<ProductModel> list, int no)
+        {
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+            List<string> suggestions = new List<string>();
+            foreach (var item in list)
+            {
+                var pname = item.product_name;
+                var splits = pname.Split(new char[] { ' ' });
+                string word = splits[0];
+                if (!dict.ContainsKey(word))
+                    dict.Add(word, 1);
+                else
+                    dict[word]++;
+
+                if (splits.Length > 1)
+                {
+                    word = splits[0] + " " + splits[1];
+                    if (!dict.ContainsKey(word))
+                        dict.Add(word, 1);
+                    else
+                        dict[word]++;
+                }
+
+                if (splits.Length > 2)
+                {
+                    word = splits[0] + " " + splits[1] + " " + splits[2];
+                    if (!dict.ContainsKey(word))
+                        dict.Add(word, 1);
+                    else
+                        dict[word]++;
+                }
+            }
+
+            foreach (KeyValuePair<string, int> item in dict.OrderByDescending(k => k.Value))
+            {
+                suggestions.Add(item.Key);
+            }
+            List<string> output = new List<string>();
+            for (int i = 0; i < Math.Min(no, suggestions.Count); i++)
+            {
+                output.Add(suggestions[i]);
+            }
+            return output;
+        }
+
     }
 }
