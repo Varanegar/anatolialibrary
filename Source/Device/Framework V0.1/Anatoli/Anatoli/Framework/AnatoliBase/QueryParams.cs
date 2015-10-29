@@ -315,15 +315,15 @@ namespace Anatoli.Framework.AnatoliBase
                 return q;
             }
             q += String.Format("{0}", _parameters.First<BasicParam>().Name);
-            v += String.Format("{0}", _parameters.First<BasicParam>().Value);
-            for (int i = 0; i < _parameters.Count - 1; i++)
+            v += String.Format("'{0}'", _parameters.First<BasicParam>().Value);
+            for (int i = 1; i < _parameters.Count - 1; i++)
             {
                 q += String.Format(",{0}", _parameters[i].Name);
-                v += String.Format(",{0}", _parameters[i].Value);
+                v += String.Format(",'{0}'", _parameters[i].Value);
             }
             q += String.Format(",{0})", _parameters.Last<BasicParam>().Name);
-            v += String.Format(",{0})", _parameters.Last<BasicParam>().Value);
-            return q + v; ;
+            v += String.Format(",'{0}')", _parameters.Last<BasicParam>().Value);
+            return q + v;
 
         }
     }
@@ -358,7 +358,7 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 q += String.Format("{0}={1}", _valueParameters.First<BasicParam>().Name, _valueParameters.First<BasicParam>().Value);
             }
-            else
+            else if (_valueParameters.Count > 1)
             {
                 q += String.Format("{0}={1}", _valueParameters.First<BasicParam>().Name, _valueParameters.First<BasicParam>().Value);
                 for (int i = 1; i < _valueParameters.Count - 1; i++)
@@ -371,7 +371,7 @@ namespace Anatoli.Framework.AnatoliBase
                 q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
                 return q;
             }
-            else
+            else if (_searchParameters.Count > 1)
             {
                 q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
                 for (int i = 1; i < _searchParameters.Count - 1; i++)

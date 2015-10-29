@@ -67,7 +67,7 @@ namespace Anatoli.Framework.Manager
         {
             return BaseDataAdapter<DataModel>.GetItem(query, null);
         }
-        public static async Task<bool> LocalUpdateAsync(DBQuery command)
+        public static async Task<int> LocalUpdateAsync(DBQuery command)
         {
             return await Task.Run(() => { return BaseDataAdapter<DataModel>.LocalUpdate(command); });
         }

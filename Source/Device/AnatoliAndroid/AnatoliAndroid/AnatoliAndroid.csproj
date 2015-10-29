@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Crypto.cs" />
+    <Compile Include="Fragments\EditShippingInfoFragment.cs" />
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
@@ -168,6 +169,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DrawerItemLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ShippingInfoEditLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -251,6 +255,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\FavoritsGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Checkout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

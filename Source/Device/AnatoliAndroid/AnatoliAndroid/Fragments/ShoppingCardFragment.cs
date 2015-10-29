@@ -26,6 +26,7 @@ namespace AnatoliAndroid.Fragments
         TextView _factorPrice;
         EditText _delivaryDate;
         EditText _deliveryTime;
+        ImageView _editAddressImageView;
         ProductsListAdapter _listAdapter;
         public override void OnCreate(Bundle bundle)
         {
@@ -40,10 +41,16 @@ namespace AnatoliAndroid.Fragments
             _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _delivaryDate = view.FindViewById<EditText>(Resource.Id.deliveryDateEditText);
             _deliveryTime = view.FindViewById<EditText>(Resource.Id.deliveryTimeEditText);
+            _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
+
             _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString();
             _listAdapter = new ProductsListAdapter();
             _listAdapter.List = ShoppingCardManager.GetAllItems();
             _listAdapter.NotifyDataSetChanged();
+            _listAdapter.DataChanged += (s) =>
+            {
+                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString();
+            };
             _listAdapter.DataRemoved += (s, item) =>
             {
                 _listAdapter.List.Remove(item);
@@ -54,6 +61,22 @@ namespace AnatoliAndroid.Fragments
             {
                 Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
             }
+
+            var shippingInfo = ShippingInfoManager.GetDefault();
+            if (shippingInfo != null)
+            {
+                _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
+            }
+            _editAddressImageView.Click += (s, e) =>
+                {
+                    var transaction = FragmentManager.BeginTransaction();
+                    EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
+                    editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
+                        {
+                            _deliveryAddress.Text = address + " " + name;
+                        };
+                    editShippingDialog.Show(transaction, "shipping_dialog");
+                };
             return view;
         }
 

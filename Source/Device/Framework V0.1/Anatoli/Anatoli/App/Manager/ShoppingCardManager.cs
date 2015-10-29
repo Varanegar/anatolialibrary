@@ -20,7 +20,7 @@ namespace Anatoli.App.Manager
                 query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new SearchFilterParam("product_id", item.product_id.ToString()));
-            return await LocalUpdateAsync(query);
+            return await LocalUpdateAsync(query) > 0 ? true : false;
         }
         public static async Task<bool> RemoveProductAsync(ProductModel item)
         {
@@ -29,12 +29,12 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new SearchFilterParam("product_id", item.product_id.ToString()));
-            return await LocalUpdateAsync(query);
+            return await LocalUpdateAsync(query) > 0 ? true : false;
         }
 
         public static double GetTotalPrice()
         {
-            DBQuery query = new SelectQuery("shopping_card");
+            DBQuery query = new SelectQuery("shopping_card_view");
             var result = GetList(query, null);
             double p = 0;
             foreach (var item in result)

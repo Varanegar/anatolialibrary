@@ -87,7 +87,6 @@ namespace AnatoliAndroid.ListAdapters
                 };
             productNameTextView.Text = item.product_name;
             productPriceTextView.Text = string.Format(" {0}  Ê„«‰", item.price);
-            // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
         }
     }

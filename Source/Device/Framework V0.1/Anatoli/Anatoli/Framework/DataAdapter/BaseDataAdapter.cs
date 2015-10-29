@@ -132,22 +132,18 @@ namespace Anatoli.Framework.DataAdapter
         {
             throw new NotImplementedException();
         }
-        public static bool LocalUpdate(DBQuery dbQuery)
+        public static int LocalUpdate(DBQuery dbQuery)
         {
             var connection = AnatoliClient.GetInstance().DbClient.Connection;
             var query = connection.CreateCommand(dbQuery.GetCommand());
             try
             {
                 var qResult = query.ExecuteNonQuery();
-                if (qResult > 0)
-                {
-                    return true;
-                }
-                return false;
+                return qResult;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 

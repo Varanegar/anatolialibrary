@@ -36,12 +36,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
+    <Compile Include="App\Manager\ShippingInfoManager.cs" />
     <Compile Include="App\Manager\ShoppingCardManager.cs" />
     <Compile Include="App\Manager\ProductManager.cs" />
     <Compile Include="App\Manager\StoreManager.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
     <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
+    <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
     <Compile Include="App\Model\Product\ProductFieldModel.cs" />
     <Compile Include="App\Model\Product\ProductImage.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
