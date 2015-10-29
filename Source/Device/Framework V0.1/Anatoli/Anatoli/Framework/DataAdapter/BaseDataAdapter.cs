@@ -150,5 +150,47 @@ namespace Anatoli.Framework.DataAdapter
                 return false;
             }
         }
+
+        internal static List<DataModel> GetListStatic(DBQuery dbQuery, RemoteQuery remoteQuery)
+        {
+            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
+            if (policy == SYNC_POLICY.ForceOnline && remoteQuery == null)
+            {
+                throw new SyncPolicyHelper.SyncPolicyException();
+            }
+            if (policy == SYNC_POLICY.OnlineIfConnected && remoteQuery != null)
+            {
+                if (AnatoliClient.GetInstance().WebClient.IsOnline())
+                {
+                    try
+                    {
+                        var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseListResult<DataModel>>(
+                        remoteQuery.WebServiceEndpoint,
+                        remoteQuery.Params.ToArray()
+                        );
+                        if (response.metaInfo.Result)
+                        {
+                            var list = new List<DataModel>();
+                            return list;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+            }
+            try
+            {
+                var connection = AnatoliClient.GetInstance().DbClient.Connection;
+                var command = connection.CreateCommand(dbQuery.GetCommand());
+                var result = command.ExecuteQuery<DataModel>();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

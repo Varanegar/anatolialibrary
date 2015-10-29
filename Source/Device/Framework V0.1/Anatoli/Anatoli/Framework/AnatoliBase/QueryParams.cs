@@ -263,6 +263,11 @@ namespace Anatoli.Framework.AnatoliBase
         public DeleteCommand(string DBTableName, params SearchFilterParam[] options)
             : base(DBTableName)
         {
+            _parameters = new List<SearchFilterParam>();
+            foreach (var item in options)
+            {
+                _parameters.Add(item);
+            }
         }
         List<SearchFilterParam> _parameters;
         public override string GetCommand()

@@ -17,6 +17,7 @@ namespace Anatoli.App.Model.Product
         public int product_id { get; set; }
         public double price { get; set; }
         public int favorit { get; set; }
+        public int count { get; set; }
         public bool IsFavorit
         {
             get { return favorit == 1 ? true : false; }

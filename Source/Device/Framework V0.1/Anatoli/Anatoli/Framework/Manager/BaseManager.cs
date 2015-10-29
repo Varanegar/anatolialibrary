@@ -41,13 +41,22 @@ namespace Anatoli.Framework.Manager
         {
             if (_localP == null && _remoteP == null)
             {
-                throw new ArgumentNullException("Both Local query and remote quesry are null. You have to call SetDBQuery() or SetRemoteQuery()");
+                throw new ArgumentNullException();
             }
             _localP.Limit = _limit;
             _remoteP.Limit = _limit;
             var list = await Task.Run(() => { return dataAdapter.GetList(_localP, _remoteP); });
             _localP.Index += Math.Min(list.Count, _limit);
             _remoteP.Index += Math.Min(list.Count, _limit);
+            return list;
+        }
+        public static List<DataModel> GetList(DBQuery dbQuery, RemoteQuery remoteQuery)
+        {
+            if (dbQuery == null && remoteQuery == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var list = BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery);
             return list;
         }
         public static async Task<DataModel> GetItemAsync(DBQuery query)
@@ -58,7 +67,7 @@ namespace Anatoli.Framework.Manager
         {
             return BaseDataAdapter<DataModel>.GetItem(query, null);
         }
-        public static async Task<bool> LocalUpdate(DBQuery command)
+        public static async Task<bool> LocalUpdateAsync(DBQuery command)
         {
             return await Task.Run(() => { return BaseDataAdapter<DataModel>.LocalUpdate(command); });
         }

@@ -61,52 +61,34 @@ namespace AnatoliAndroid.ListAdapters
                     }
                 };
             }
-            if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
-            {
-                _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
-            }
-            else
-                _productCountTextView.Text = "0";
+            _productCountTextView.Text = item.count.ToString();
 
-            productAddButton.Click += (o, e) => productAddButton_Click(item);
-            productRemoveButton.Click += (o, e) => productRemoveButton_Click(item);
+            productAddButton.Click += async (o, e) =>
+            {
+                if (await ShoppingCardManager.AddProductAsync(item))
+                {
+                    item.count++;
+                    NotifyDataSetChanged();
+                    OnDataChanged();
+                }
+            };
+            productRemoveButton.Click += async (o, e) =>
+                {
+                    if (await ShoppingCardManager.RemoveProductAsync(item))
+                    {
+                        item.count--;
+                        if (item.count == 0)
+                        {
+                            OnDataRemoved(item);
+                        }
+                        NotifyDataSetChanged();
+                        OnDataChanged();
+                    }
+                };
             productNameTextView.Text = item.product_name;
             productPriceTextView.Text = string.Format(" {0}  Ê„«‰", item.price);
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
-        }
-
-        private void productRemoveButton_Click(ProductModel item)
-        {
-            if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
-            {
-                if (ShoppingCard.GetInstance().Items[item.product_id].Count == 1)
-                {
-                    ShoppingCard.GetInstance().Items.Remove(item.product_id);
-                    _productCountTextView.Text = "";
-                }
-                else
-                {
-                    ShoppingCard.GetInstance().Items[item.product_id].Count--;
-                    _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
-                }
-            }
-
-            NotifyDataSetChanged();
-            OnDataChanged();
-        }
-
-        void productAddButton_Click(ProductModel item)
-        {
-            // todo : implement add to shopping card
-
-            if (ShoppingCard.GetInstance().Items.ContainsKey(item.product_id))
-                (ShoppingCard.GetInstance().Items[item.product_id].Count)++;
-            else
-                ShoppingCard.GetInstance().Items.Add(item.product_id, new ShoppingCardItem(1, item));
-            _productCountTextView.Text = ShoppingCard.GetInstance().Items[item.product_id].Count.ToString();
-            NotifyDataSetChanged();
-            OnDataChanged();
         }
     }
 }
