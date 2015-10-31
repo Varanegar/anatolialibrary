@@ -16,6 +16,7 @@ using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Model;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -24,10 +25,14 @@ namespace AnatoliAndroid.Fragments
         ListView _itemsListView;
         TextView _deliveryAddress;
         TextView _factorPrice;
-        EditText _delivaryDate;
-        EditText _deliveryTime;
+        Spinner _delivaryDate;
+        Spinner _deliveryTime;
         ImageView _editAddressImageView;
         ProductsListAdapter _listAdapter;
+        DateOption[] _dateOptions;
+        TimeOption[] _timeOptions;
+        ImageView _checkoutImageView;
+        ImageView _callImageView;
         public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -39,17 +44,31 @@ namespace AnatoliAndroid.Fragments
             _itemsListView = view.FindViewById<ListView>(Resource.Id.shoppingCardListView);
             _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
             _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
-            _delivaryDate = view.FindViewById<EditText>(Resource.Id.deliveryDateEditText);
-            _deliveryTime = view.FindViewById<EditText>(Resource.Id.deliveryTimeEditText);
+            _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
+            _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
+            _checkoutImageView = view.FindViewById<ImageView>(Resource.Id.checkoutImageView);
 
-            _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString();
+            if (DateTime.Now.ToLocalTime().Hour < 16)
+                _dateOptions = new DateOption[] { new DateOption("امروز", ShippingInfoManager.ShippingDateOptions.Today), new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
+            else
+                _dateOptions = new DateOption[] { new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
+            _delivaryDate.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _dateOptions);
+            _delivaryDate.ItemSelected += (s, e) =>
+                {
+                    var selectedDateOption = _dateOptions[_delivaryDate.SelectedItemPosition];
+                    var timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
+                    _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, timeOptions);
+                };
+
+
+            _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
             _listAdapter = new ProductsListAdapter();
             _listAdapter.List = ShoppingCardManager.GetAllItems();
             _listAdapter.NotifyDataSetChanged();
             _listAdapter.DataChanged += (s) =>
             {
-                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString();
+                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
             };
             _listAdapter.DataRemoved += (s, item) =>
             {
@@ -66,6 +85,7 @@ namespace AnatoliAndroid.Fragments
             if (shippingInfo != null)
             {
                 _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
+                _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
             }
             _editAddressImageView.Click += (s, e) =>
                 {
@@ -74,11 +94,18 @@ namespace AnatoliAndroid.Fragments
                     editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
                         {
                             _deliveryAddress.Text = address + " " + name;
+                            if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text))
+                                _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
+                            else
+                                _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
                         };
                     editShippingDialog.Show(transaction, "shipping_dialog");
                 };
             return view;
         }
+
+
+
 
     }
 }
