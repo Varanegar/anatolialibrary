@@ -45,31 +45,39 @@
     <RelativeLayout
         p1:id="@+id/searchRelativeLayout"
         p1:layout_width="match_parent"
-        p1:layout_height="50dp">
+        p1:layout_height="50dp"
+        p1:background="@android:drawable/editbox_background"
+        p1:padding="1dp"
+        p1:paddingRight="20dp">
         <ImageView
-            p1:src="@drawable/gwarrow"
+            p1:src="@drawable/searchback"
             p1:layout_width="50dp"
-            p1:layout_height="50dp"
+            p1:layout_height="match_parent"
             p1:id="@+id/searchbarImageView"
             p1:layout_alignParentRight="true"
-            p1:layout_centerVertical="true" />
+            p1:layout_centerVertical="true"
+            p1:layout_margin="0dp" />
+        <ImageView
+            p1:src="@drawable/Searchgreen"
+            p1:layout_width="50dp"
+            p1:layout_height="match_parent"
+            p1:id="@+id/searchButtonImageView"
+            p1:layout_alignParentLeft="true"
+            p1:layout_centerVertical="true"
+            p1:layout_margin="0dp" />
         <AutoCompleteTextView
-            p1:layout_width="match_parent"
-            p1:layout_height="wrap_content"
+            p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
             p1:layout_alignParentTop="true"
             p1:layout_centerVertical="true"
             p1:layout_alignParentBottom="true"
-            p1:background="@android:color/white"
-            p1:layout_toLeftOf="@id/searchbarImageView"
             p1:textColor="@android:color/black"
-            p1:padding="2dp" />
-        <ImageView
-            p1:src="@drawable/Search"
-            p1:layout_width="50dp"
-            p1:layout_height="50dp"
-            p1:id="@+id/searchButtonImageView"
-            p1:layout_alignParentLeft="true"
-            p1:layout_centerVertical="true" />
+            p1:layout_width="wrap_content"
+            p1:layout_toLeftOf="@id/searchbarImageView"
+            p1:layout_toRightOf="@id/searchButtonImageView"
+            p1:paddingLeft="5dp"
+            p1:paddingRight="5dp"
+            p1:paddingTop="1dp"
+            p1:paddingBottom="1dp" />
     </RelativeLayout>
 </LinearLayout>
