@@ -90,7 +90,7 @@ namespace Anatoli.Framework.AnatoliBase
                 }
                 catch
                 {
-                    return null;
+                    throw;
                 }
             }
         }

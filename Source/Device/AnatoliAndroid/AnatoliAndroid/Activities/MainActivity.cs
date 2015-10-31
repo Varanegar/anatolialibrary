@@ -28,7 +28,7 @@ namespace AnatoliAndroid.Activities
         ImageView _searchButtonImageView;
         ImageView _toolbarImageView;
         TextView _toolbarTextView;
-        AutoCompleteTextView _searchEditText;
+        EditText _searchEditText;
         DrawerLayout _drawerLayout;
         ListView _drawerListView;
         List<DrawerItemType> _menuItems;
@@ -74,27 +74,27 @@ namespace AnatoliAndroid.Activities
             _searchButtonImageView = _toolbar.FindViewById<ImageView>(Resource.Id.searchButtonImageView);
             _searchButtonImageView.Click += _searchButtonImageView_Click;
 
-            _searchEditText = _toolbar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
-            _autoCompleteOptions = new String[] { "Hello", "Hey", "Heja", "Hi", "Hola", "Bonjour", "Gday", "Goodbye", "Sayonara", "Farewell", "Adios" };
-            _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
-            _searchEditText.Adapter = _autoCompleteAdapter;
-            _searchEditText.TextChanged += async (s, e) =>
-                {
-                    if (e.AfterCount == 3)
-                    {
-                        if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
-                        {
-                            _autoCompleteOptions = (await ProductManager.GetSuggests(_searchEditText.Text, 20)).ToArray();
-                            if (_autoCompleteOptions != null)
-                            {
-                                _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
-                                _searchEditText.Adapter = _autoCompleteAdapter;
-                                _searchEditText.Invalidate();
-                            }
+            _searchEditText = _toolbar.FindViewById<EditText>(Resource.Id.searchEditText);
+            //_autoCompleteOptions = new String[] { "Hello", "Hey", "Heja", "Hi", "Hola", "Bonjour", "Gday", "Goodbye", "Sayonara", "Farewell", "Adios" };
+            //_autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
+            //_searchEditText.Adapter = _autoCompleteAdapter;
+            //_searchEditText.TextChanged += async (s, e) =>
+            //    {
+            //        if (e.AfterCount == 3)
+            //        {
+            //            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
+            //            {
+            //                _autoCompleteOptions = (await ProductManager.GetSuggests(_searchEditText.Text, 20)).ToArray();
+            //                if (_autoCompleteOptions != null)
+            //                {
+            //                    _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
+            //                    _searchEditText.Adapter = _autoCompleteAdapter;
+            //                    _searchEditText.Invalidate();
+            //                }
 
-                        }
-                    }
-                };
+            //            }
+            //        }
+            //    };
             _shoppingCardImageView = _toolbar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
             _shoppingCardImageView.Click += shoppingCardImageView_Click;
 

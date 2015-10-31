@@ -9,21 +9,16 @@ namespace Anatoli.Framework.AnatoliBase
 {
     public abstract class AnatoliSQLite
     {
-        protected SQLiteConnection _connection;
-        public SQLiteConnection Connection
-        {
-            get { return _connection; }
-        }
         public AnatoliSQLite()
         {
-            _connection = GetConnection();
+
         }
-        protected abstract SQLiteConnection GetConnection();
-        public bool TableExists(String tableName)
+        public abstract SQLiteConnection GetConnection();
+        public bool TableExists(SQLiteConnection connection, String tableName)
         {
             try
             {
-                var info = _connection.GetTableInfo(tableName);
+                var info = connection.GetTableInfo(tableName);
                 return (info.Count > 0);
             }
             catch (Exception)

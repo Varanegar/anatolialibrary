@@ -19,7 +19,7 @@ namespace AnatoliAndroid
     class SQLiteAndroid : AnatoliSQLite
     {
 
-        protected override SQLiteConnection GetConnection()
+        public override SQLiteConnection GetConnection()
         {
             string path = FileAccessHelper.GetLocalFilePath("paa.db");
             var conn = new SQLite.SQLiteConnection(path);

@@ -53,7 +53,7 @@
             p1:id="@+id/searchbarImageView"
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true" />
-        <AutoCompleteTextView
+        <EditText
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
             p1:id="@+id/searchEditText"
