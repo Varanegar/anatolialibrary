@@ -16,6 +16,7 @@ using Anatoli.Framework.AnatoliBase;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.ListAdapters;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Activities
 {
@@ -28,7 +29,7 @@ namespace AnatoliAndroid.Activities
         ImageView _searchButtonImageView;
         ImageView _toolbarImageView;
         TextView _toolbarTextView;
-        EditText _searchEditText;
+        AutoCompleteTextView _searchEditText;
         DrawerLayout _drawerLayout;
         ListView _drawerListView;
         List<DrawerItemType> _menuItems;
@@ -72,29 +73,30 @@ namespace AnatoliAndroid.Activities
             _searchBarImageView.Click += _searchBarImageView_Click;
 
             _searchButtonImageView = _toolbar.FindViewById<ImageView>(Resource.Id.searchButtonImageView);
-            _searchButtonImageView.Click += _searchButtonImageView_Click;
+            _searchButtonImageView.Click += async (s, e) => { await Search(_searchEditText.Text); };
 
-            _searchEditText = _toolbar.FindViewById<EditText>(Resource.Id.searchEditText);
-            //_autoCompleteOptions = new String[] { "Hello", "Hey", "Heja", "Hi", "Hola", "Bonjour", "Gday", "Goodbye", "Sayonara", "Farewell", "Adios" };
-            //_autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
-            //_searchEditText.Adapter = _autoCompleteAdapter;
-            //_searchEditText.TextChanged += async (s, e) =>
-            //    {
-            //        if (e.AfterCount == 3)
-            //        {
-            //            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
-            //            {
-            //                _autoCompleteOptions = (await ProductManager.GetSuggests(_searchEditText.Text, 20)).ToArray();
-            //                if (_autoCompleteOptions != null)
-            //                {
-            //                    _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
-            //                    _searchEditText.Adapter = _autoCompleteAdapter;
-            //                    _searchEditText.Invalidate();
-            //                }
+            _searchEditText = _toolbar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
+            _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
+            _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
+            _searchEditText.Adapter = _autoCompleteAdapter;
+            _searchEditText.TextChanged += async (s, e) =>
+                {
+                    if (e.AfterCount > 3)
+                    {
+                        if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
+                        {
+                            _autoCompleteOptions = (await ProductManager.GetSuggests(_searchEditText.Text, 20)).ToArray();
+                            if (_autoCompleteOptions != null)
+                            {
+                                _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
+                                _searchEditText.Adapter = _autoCompleteAdapter;
+                                _searchEditText.Invalidate();
+                            }
 
-            //            }
-            //        }
-            //    };
+                        }
+                    }
+                };
+            _searchEditText.ItemClick += async (s, e) => { await Search(_searchEditText.Text); };
             _shoppingCardImageView = _toolbar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
             _shoppingCardImageView.Click += shoppingCardImageView_Click;
 
@@ -146,19 +148,18 @@ namespace AnatoliAndroid.Activities
             _drawerListView.ItemClick += _drawerListView_ItemClick;
             AnatoliApp.Initialize(this);
         }
-        void _searchButtonImageView_Click(object sender, EventArgs e)
+
+        async Task Search(string value)
         {
-            _productsListF.Search("product_name", _searchEditText.Text);
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
             {
-                _productsListF.Search("product_name", _searchEditText.Text);
+                await _productsListF.Search("product_name", value);
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
             {
-                _storesListF.Search("store_name", _searchEditText.Text);
+                await _storesListF.Search("store_name", value);
             }
         }
-
         void _searchBarImageView_Click(object sender, EventArgs e)
         {
             _searchBarLayout.Visibility = ViewStates.Gone;

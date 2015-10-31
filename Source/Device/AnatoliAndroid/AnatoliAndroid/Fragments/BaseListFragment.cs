@@ -14,6 +14,7 @@ using Anatoli.Framework.Model;
 using Anatoli.Framework.DataAdapter;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -34,7 +35,7 @@ namespace AnatoliAndroid.Fragments
             _listAdapter = new DataListAdapter();
             _dataManager = new BaseDataManager();
         }
-        public async void Search(string key, string value)
+        public async Task Search(string key, string value)
         {
             _searchKeyWord = new Tuple<string, string>(key, value);
             SetParameters();
