@@ -61,15 +61,5 @@ namespace AnatoliAndroid.ListAdapters
         public event DataChangedEventHandler DataChanged;
         public delegate void DataChangedEventHandler(object sender);
 
-        public void OnDataRemoved(DataModel data)
-        {
-            if (DataRemoved != null)
-            {
-                DataRemoved(this, data);
-            }
-        }
-        public event DataRemovedEventHandler DataRemoved;
-        public delegate void DataRemovedEventHandler(object sender, DataModel data);
-
     }
 }

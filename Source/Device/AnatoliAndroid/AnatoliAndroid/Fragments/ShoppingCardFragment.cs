@@ -70,7 +70,7 @@ namespace AnatoliAndroid.Fragments
             {
                 _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
             };
-            _listAdapter.DataRemoved += (s, item) =>
+            _listAdapter.ShoppingCardItemRemoved += (s, item) =>
             {
                 _listAdapter.List.Remove(item);
                 _itemsListView.InvalidateViews();

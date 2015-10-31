@@ -45,7 +45,7 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         item.favorit = 0;
                         NotifyDataSetChanged();
-                        OnDataRemoved(item);
+                        OnFavoritRemoved(item);
                     }
                 };
             }
@@ -57,7 +57,7 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         item.favorit = 1;
                         NotifyDataSetChanged();
-                        OnDataRemoved(item);
+                        OnFavoritAdded(item);
                     }
                 };
             }
@@ -79,7 +79,7 @@ namespace AnatoliAndroid.ListAdapters
                         item.count--;
                         if (item.count == 0)
                         {
-                            OnDataRemoved(item);
+                            OnShoppingCardItemRemoved(item);
                         }
                         NotifyDataSetChanged();
                         OnDataChanged();
@@ -89,5 +89,45 @@ namespace AnatoliAndroid.ListAdapters
             productPriceTextView.Text = string.Format(" {0}  Ê„«‰", item.price);
             return convertView;
         }
+
+        void OnShoppingCardItemRemoved(ProductModel data)
+        {
+            if (ShoppingCardItemRemoved != null)
+            {
+                ShoppingCardItemRemoved(this, data);
+            }
+        }
+        public event ItemRemovedEventHandler ShoppingCardItemRemoved;
+        public delegate void ItemRemovedEventHandler(object sender, ProductModel data);
+
+        void OnShoppingCardItemAdded(ProductModel data)
+        {
+            if (ShoppingCardItemAdded != null)
+            {
+                ShoppingCardItemAdded(this, data);
+            }
+        }
+        public event ItemAddedEventHandler ShoppingCardItemAdded;
+        public delegate void ItemAddedEventHandler(object sender, ProductModel data);
+
+        void OnFavoritRemoved(ProductModel data)
+        {
+            if (FavoritRemoved != null)
+            {
+                FavoritRemoved(this, data);
+            }
+        }
+        public event FavoritRemovedEventHandler FavoritRemoved;
+        public delegate void FavoritRemovedEventHandler(object sender, ProductModel data);
+
+        void OnFavoritAdded(ProductModel data)
+        {
+            if (FavoritAdded != null)
+            {
+                FavoritAdded(this, data);
+            }
+        }
+        public event FavoritAddedEventHandler FavoritAdded;
+        public delegate void FavoritAddedEventHandler(object sender, ProductModel data);
     }
 }

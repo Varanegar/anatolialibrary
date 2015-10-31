@@ -23,10 +23,10 @@ namespace AnatoliAndroid.Fragments
     {
         public FavoritsListFragment()
         {
-            _listAdapter.DataRemoved += _listAdapter_DataRemoved;
+            _listAdapter.FavoritRemoved += _listAdapter_FavoritRemoved;
         }
 
-        void _listAdapter_DataRemoved(object sender, ProductModel item)
+        void _listAdapter_FavoritRemoved(object sender, ProductModel item)
         {
             _listAdapter.List.Remove(item);
             _listView.InvalidateViews();
