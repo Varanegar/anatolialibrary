@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:text="Medium Text"
+    p1:textAppearance="?android:attr/textAppearanceMedium"
+    p1:layout_width="match_parent"
+    p1:layout_height="40dp"
+    p1:id="@+id/ddTextView"
+    p1:gravity="right"
+    p1:layoutDirection="rtl"
+    p1:padding="5dp"
+    p1:paddingRight="10dp"
+    p1:background="@android:drawable/screen_background_light_transparent" />
