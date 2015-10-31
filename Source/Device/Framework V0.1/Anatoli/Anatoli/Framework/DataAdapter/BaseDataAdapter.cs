@@ -52,10 +52,12 @@ namespace Anatoli.Framework.DataAdapter
             }
             try
             {
-                var connection = AnatoliClient.GetInstance().DbClient.GetConnection();
-                var command = connection.CreateCommand(localParameters.GetCommand());
-                var result = command.ExecuteQuery<DataModel>();
-                return result;
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var command = connection.CreateCommand(localParameters.GetCommand());
+                    var result = command.ExecuteQuery<DataModel>();
+                    return result;
+                }
             }
             catch (Exception e)
             {
@@ -93,16 +95,19 @@ namespace Anatoli.Framework.DataAdapter
 
         public static DataModel LocalRead(DBQuery parameters)
         {
-            var connection = AnatoliClient.GetInstance().DbClient.GetConnection();
-            var query = connection.CreateCommand(parameters.GetCommand());
             try
             {
-                var qResult = query.ExecuteQuery<DataModel>();
-                if (qResult.Count > 0)
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
-                    return qResult.First<DataModel>();
+                    var query = connection.CreateCommand(parameters.GetCommand());
+
+                    var qResult = query.ExecuteQuery<DataModel>();
+                    if (qResult.Count > 0)
+                    {
+                        return qResult.First<DataModel>();
+                    }
+                    return null;
                 }
-                return null;
             }
             catch (Exception)
             {
@@ -134,17 +139,20 @@ namespace Anatoli.Framework.DataAdapter
         }
         public static int LocalUpdate(DBQuery dbQuery)
         {
-            var connection = AnatoliClient.GetInstance().DbClient.GetConnection();
-            var query = connection.CreateCommand(dbQuery.GetCommand());
             try
             {
-                var qResult = query.ExecuteNonQuery();
-                return qResult;
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var query = connection.CreateCommand(dbQuery.GetCommand());
+                    var qResult = query.ExecuteNonQuery();
+                    return qResult;
+                }
             }
             catch (Exception)
             {
                 throw;
             }
+
         }
 
         internal static List<DataModel> GetListStatic(DBQuery dbQuery, RemoteQuery remoteQuery)
@@ -176,16 +184,18 @@ namespace Anatoli.Framework.DataAdapter
                     }
                 }
             }
-            try
+            using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
             {
-                var connection = AnatoliClient.GetInstance().DbClient.GetConnection();
-                var command = connection.CreateCommand(dbQuery.GetCommand());
-                var result = command.ExecuteQuery<DataModel>();
-                return result;
-            }
-            catch (Exception)
-            {
-                throw;
+                try
+                {
+                    var command = connection.CreateCommand(dbQuery.GetCommand());
+                    var result = command.ExecuteQuery<DataModel>();
+                    return result;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
     }
