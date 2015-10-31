@@ -81,13 +81,14 @@ namespace AnatoliAndroid.Activities
             _searchEditText.Adapter = _autoCompleteAdapter;
             _searchEditText.TextChanged += async (s, e) =>
                 {
-                    if (e.AfterCount > 3)
+                    if (e.AfterCount >= 3)
                     {
                         if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
                         {
-                            _autoCompleteOptions = (await ProductManager.GetSuggests(_searchEditText.Text, 20)).ToArray();
-                            if (_autoCompleteOptions != null)
+                            var options = (await ProductManager.GetSuggests(_searchEditText.Text, 20));
+                            if (options != null)
                             {
+                                _autoCompleteOptions = options.ToArray();
                                 _autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, _autoCompleteOptions);
                                 _searchEditText.Adapter = _autoCompleteAdapter;
                                 _searchEditText.Invalidate();
