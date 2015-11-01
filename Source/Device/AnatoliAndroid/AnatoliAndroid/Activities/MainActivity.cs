@@ -17,6 +17,7 @@ using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.ListAdapters;
 using System.Threading.Tasks;
+using Android.Locations;
 
 namespace AnatoliAndroid.Activities
 {
@@ -45,7 +46,7 @@ namespace AnatoliAndroid.Activities
         ArrayAdapter _autoCompleteAdapter;
         string[] _autoCompleteOptions;
         bool _searchBar = false;
-
+        LocationManager _locationManager;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -77,7 +78,7 @@ namespace AnatoliAndroid.Activities
 
             _searchEditText = _toolbar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
             _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
-            _autoCompleteAdapter = new ArrayAdapter(this, Resource.Layout.AutoCompleteDropDownLayout, _autoCompleteOptions);            
+            _autoCompleteAdapter = new ArrayAdapter(this, Resource.Layout.AutoCompleteDropDownLayout, _autoCompleteOptions);
             _searchEditText.Adapter = _autoCompleteAdapter;
             _searchEditText.TextChanged += async (s, e) =>
                 {
@@ -148,6 +149,8 @@ namespace AnatoliAndroid.Activities
             _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
             _drawerListView.ItemClick += _drawerListView_ItemClick;
             AnatoliApp.Initialize(this);
+            _locationManager = (LocationManager)GetSystemService(LocationService);
+            AnatoliApp.GetInstance().LocationManager = _locationManager;
         }
 
         async Task Search(string value)
@@ -313,7 +316,6 @@ namespace AnatoliAndroid.Activities
         }
 
         public event EventHandler NetworkStatusChanged;
-
         public NetworkStatusBroadcastReceiver _broadcastReceiver { get; set; }
     }
 

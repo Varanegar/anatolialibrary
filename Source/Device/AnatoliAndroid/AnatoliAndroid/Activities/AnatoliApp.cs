@@ -16,6 +16,7 @@ namespace AnatoliAndroid.Activities
     {
         private static AnatoliApp instance;
         private Activity _activity;
+        public Android.Locations.LocationManager LocationManager;
 
         private static Stack<StackItem> _stack;
         public Type GetCurrentFragmentType()

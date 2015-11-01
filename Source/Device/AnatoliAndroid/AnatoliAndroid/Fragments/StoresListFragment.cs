@@ -15,11 +15,30 @@ using Anatoli.Framework.Model;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using Android.Locations;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
     class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, StoreDataModel>
     {
+
+        public StoresListFragment()
+        {
+            _listAdapter.StoreSelected += (store) =>
+                {
+                    foreach (var item in _listAdapter.List)
+                    {
+                        if (item != store)
+                            item.selected = 0;
+                        else
+                            item.selected = 1;
+                    }
+                    _listAdapter.NotifyDataSetChanged();
+                };
+        }
+
+
         protected override List<QueryParameter> CreateQueryParameters()
         {
             var parameters = new List<QueryParameter>();
@@ -35,5 +54,6 @@ namespace AnatoliAndroid.Fragments
         {
             return Configuration.WebService.Stores.StoresView;
         }
+
     }
 }

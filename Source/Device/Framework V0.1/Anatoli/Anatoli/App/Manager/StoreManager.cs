@@ -26,6 +26,20 @@ namespace Anatoli.App.Manager
         //{
         //    return await GetNextAsync(string.Format("SELECT * FROM stores_products INNER JOIN stores WHERE stores.store_id == stores_products.store_id AND product_id = {0} LIMIT {1},{2}", productId.ToString(), index.ToString(), (index + offset).ToString()), null);
         //}
-      
+        public static async Task<bool> SelectAsync(StoreDataModel store)
+        {
+            UpdateCommand command1 = new UpdateCommand("stores", new BasicParam("selected", "0"));
+            UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new SearchFilterParam("store_id", store.store_id.ToString()));
+            try
+            {
+                int clear = await LocalUpdateAsync(command1);
+                int result = await LocalUpdateAsync(command2);
+                return (result > 0) ? true : false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
