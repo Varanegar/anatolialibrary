@@ -78,6 +78,7 @@
             p1:paddingLeft="5dp"
             p1:paddingRight="5dp"
             p1:paddingTop="1dp"
-            p1:paddingBottom="1dp" />
+            p1:paddingBottom="1dp"
+            p1:singleLine="true" />
     </RelativeLayout>
 </LinearLayout>

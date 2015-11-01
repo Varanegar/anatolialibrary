@@ -79,6 +79,7 @@ namespace AnatoliAndroid.Activities
             _searchEditText = _toolbar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
             _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
             _autoCompleteAdapter = new ArrayAdapter(this, Resource.Layout.AutoCompleteDropDownLayout, _autoCompleteOptions);
+
             _searchEditText.Adapter = _autoCompleteAdapter;
             _searchEditText.TextChanged += async (s, e) =>
                 {
