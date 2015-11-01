@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AnatoliAndroid;
 
 namespace AnatoliAndroid.Activities
 {
@@ -16,6 +17,7 @@ namespace AnatoliAndroid.Activities
     {
         private static AnatoliApp instance;
         private Activity _activity;
+        public TextView ToolbarTextView { get; set; }
         public Android.Locations.LocationManager LocationManager;
 
         private static Stack<StackItem> _stack;
@@ -60,6 +62,7 @@ namespace AnatoliAndroid.Activities
             }
             transaction.Replace(Resource.Id.content_frame, fragment, tag);
             transaction.Commit();
+            ToolbarTextView.Text = fragment.GetTitle();
             _stack.Push(new StackItem(tag, fragment.GetType()));
             return fragment;
         }
@@ -73,6 +76,7 @@ namespace AnatoliAndroid.Activities
                 var fragment = Activator.CreateInstance(stackItem.FragmentType);
                 transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
                 transaction.Commit();
+                ToolbarTextView.Text = (fragment as Fragment).GetTitle();
                 return true;
             }
             catch (Exception)
@@ -91,5 +95,6 @@ namespace AnatoliAndroid.Activities
                 this.FragmentType = FragmentType;
             }
         }
+
     }
 }

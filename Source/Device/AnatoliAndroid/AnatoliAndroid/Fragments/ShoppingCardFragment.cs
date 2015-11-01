@@ -20,6 +20,7 @@ using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("سبد خرید")]
     class ShoppingCardFragment : Fragment
     {
         ListView _itemsListView;

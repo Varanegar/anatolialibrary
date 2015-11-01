@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +19,7 @@ using Anatoli.Framework.DataAdapter;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("علاقه مندی ها")]
     class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
         public FavoritsListFragment()

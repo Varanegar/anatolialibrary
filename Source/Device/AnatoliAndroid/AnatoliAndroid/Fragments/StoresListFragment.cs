@@ -20,6 +20,7 @@ using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("«‰ Œ«» ›—Ê‘ê«Â")]
     class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, StoreDataModel>
     {
 

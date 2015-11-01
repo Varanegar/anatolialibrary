@@ -15,6 +15,7 @@ using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("Ê—Êœ")]
     public class LoginFragment : Fragment
     {
         EditText _userNameEditText;

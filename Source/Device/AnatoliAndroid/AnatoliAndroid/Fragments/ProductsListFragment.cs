@@ -17,6 +17,7 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("„Õ’Ê·« ")]
     class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
         int cat_id = 0;

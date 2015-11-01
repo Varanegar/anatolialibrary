@@ -13,7 +13,7 @@ using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.Fragments
 {
-    
+    [FragmentTitle("ثبت نام")]
     public class RegisterFragment : Fragment
     {
         EditText _userNameEditText;

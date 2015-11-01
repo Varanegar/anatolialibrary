@@ -152,6 +152,7 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.Initialize(this);
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+            AnatoliApp.GetInstance().ToolbarTextView = _toolbarTextView;
         }
 
         async Task Search(string value)
@@ -207,7 +208,6 @@ namespace AnatoliAndroid.Activities
         {
             var selectedItem = _menuItems[e.Position];
             _drawerListView.SetItemChecked(e.Position, true);
-            _toolbarTextView.Text = selectedItem.Name;
             if (selectedItem.GetType() == typeof(DrawerMainItem))
             {
                 switch (selectedItem.ItemId)
@@ -271,6 +271,7 @@ namespace AnatoliAndroid.Activities
                     _menuItems = categories;
                     _drawerListView.Adapter = new DrawerMenuItems(_menuItems, this);
                     _drawerListView.InvalidateViews();
+                    _toolbarTextView.Text = selectedItem.Name;
                 }
                 else
                 {
