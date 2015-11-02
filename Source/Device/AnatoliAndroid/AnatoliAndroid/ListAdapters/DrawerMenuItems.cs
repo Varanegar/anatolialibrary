@@ -48,7 +48,10 @@ namespace AnatoliAndroid.ListAdapters
             ImageView itemImageView = convertView.FindViewById<ImageView>(Resource.Id.itemIconImageView);
             RelativeLayout relativeLayout = convertView.FindViewById<RelativeLayout>(Resource.Id.relativeLayout1);
             itemTextView.Text = item.Name;
-            itemImageView.SetImageResource(item.ImageResId);
+            if (item.ImageResId != -1)
+                itemImageView.SetImageResource(item.ImageResId);
+            else
+                itemImageView.Visibility = ViewStates.Invisible;
             if (item.GetType() == typeof(DrawerMainItem))
             {
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.MainMenu)
@@ -75,7 +78,7 @@ namespace AnatoliAndroid.ListAdapters
     {
 
         public DrawerPCItem(int p1, string p2)
-            : base(p1, p2)
+            : base(p1, p2, -1)
         {
         }
 
