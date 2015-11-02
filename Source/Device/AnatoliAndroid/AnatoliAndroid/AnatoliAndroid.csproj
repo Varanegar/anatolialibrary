@@ -118,6 +118,7 @@
     <Compile Include="Fragments\EditShippingInfoFragment.cs" />
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
+    <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
     <Compile Include="Fragments\RegisterFragment.cs" />
@@ -185,6 +186,7 @@
     <AndroidResource Include="Resources\layout\AutoCompleteDropDownLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ProfileLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
