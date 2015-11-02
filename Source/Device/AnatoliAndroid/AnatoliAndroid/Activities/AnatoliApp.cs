@@ -20,12 +20,12 @@ namespace AnatoliAndroid.Activities
         public TextView ToolbarTextView { get; set; }
         public Android.Locations.LocationManager LocationManager;
 
-        private static Stack<StackItem> _stack;
+        private static LinkedList<StackItem> _list;
         public Type GetCurrentFragmentType()
         {
             try
             {
-                return _stack.Peek().FragmentType;
+                return _list.Last<StackItem>().FragmentType;
             }
             catch (Exception)
             {
@@ -42,7 +42,7 @@ namespace AnatoliAndroid.Activities
         public static void Initialize(Activity activity)
         {
             instance = new AnatoliApp(activity);
-            _stack = new Stack<StackItem>();
+            _list = new LinkedList<StackItem>();
         }
         private AnatoliApp()
         {
@@ -63,7 +63,18 @@ namespace AnatoliAndroid.Activities
             transaction.Replace(Resource.Id.content_frame, fragment, tag);
             transaction.Commit();
             ToolbarTextView.Text = fragment.GetTitle();
-            _stack.Push(new StackItem(tag, fragment.GetType()));
+            foreach (var item in _list)
+            {
+                if (item.FragmentType == fragment.GetType())
+                {
+                    if (item != _list.First())
+                    {
+                        _list.Remove(item);
+                        break;
+                    }
+                }
+            }
+            _list.AddLast(new StackItem(tag, fragment.GetType()));
             return fragment;
         }
         public bool BackFragment()
@@ -71,8 +82,8 @@ namespace AnatoliAndroid.Activities
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
-                var stackItem = _stack.Pop();
-                stackItem = _stack.Peek();
+                _list.RemoveLast();
+                var stackItem = _list.Last<StackItem>();
                 var fragment = Activator.CreateInstance(stackItem.FragmentType);
                 transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
                 transaction.Commit();
