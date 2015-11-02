@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +12,11 @@ using Android.Widget;
 using AnatoliAndroid.Fragments;
 using AnatoliAndroid.Activities;
 using Anatoli.App.Manager;
+using Anatoli.App.Model.AnatoliUser;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("����")]
+    [FragmentTitle("ورود")]
     public class LoginFragment : Fragment
     {
         EditText _userNameEditText;
@@ -49,14 +50,32 @@ namespace AnatoliAndroid.Fragments
         }
         async void loginButton_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
+            //if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
+            //{
+            //    _loginResultTextView.Text = "Please input user name and password";
+            //    return;
+            //}
+            //AnatoliUserManager um = new AnatoliUserManager();
+            //var user = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+            var user = new AnatoliUserModel();
+            user.Email = "aliasghar.toraby@gmail.com";
+            user.FirstName = "علی اصغر ";
+            user.LastName = "ترابی پاریزی";
+            user.Tel = "09122073285";
+            user.UserId = "io237tr";
+            user.UserName = "a.toraby";
+            if (user != null)
             {
-                _loginResultTextView.Text = "Please input user name and password";
-                return;
+                try
+                {
+                    await AnatoliUserManager.SaveUserInfoAsync(user);
+                    var u = await AnatoliUserManager.ReadUserInfoAsync();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            AnatoliUserManager um = new AnatoliUserManager();
-            var user = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-
         }
     }
 }

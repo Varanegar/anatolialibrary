@@ -26,6 +26,8 @@ namespace AnatoliAndroid
 		
 		public static void UpdateIdValues()
 		{
+			global::PCLCrypto.Resource.String.ApplicationName = global::AnatoliAndroid.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::AnatoliAndroid.Resource.String.Hello;
 		}
 		
 		public partial class Animation
