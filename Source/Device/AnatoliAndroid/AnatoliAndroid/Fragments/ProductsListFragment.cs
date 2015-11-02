@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +17,7 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("ãÍÕæáÇÊ")]
+    [FragmentTitle("Ø¯Ø³ØªÙ‡ Ø¨Ù†Ø¯ÛŒ Ú©Ø§Ù„Ø§")]
     class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
     {
         int cat_id = 0;
