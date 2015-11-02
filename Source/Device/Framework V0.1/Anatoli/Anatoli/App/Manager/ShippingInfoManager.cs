@@ -19,6 +19,12 @@ namespace Anatoli.App.Manager
             SelectQuery dbQuery = new SelectQuery("shipping_info", f);
             return GetItem(dbQuery);
         }
+        public static async Task<ShippingInfoModel> GetDefaultAsync()
+        {
+            SearchFilterParam f = new SearchFilterParam("default_shipping", "1");
+            SelectQuery dbQuery = new SelectQuery("shipping_info", f);
+            return await GetItemAsync(dbQuery);
+        }
         public static async Task<bool> NewShippingAddress(string address, string name, string tel)
         {
             UpdateCommand command1 = new UpdateCommand("shipping_info", new BasicParam("default_shipping", "0"));

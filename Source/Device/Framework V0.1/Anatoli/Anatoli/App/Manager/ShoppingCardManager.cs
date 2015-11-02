@@ -48,5 +48,10 @@ namespace Anatoli.App.Manager
             DBQuery query = new SelectQuery("shopping_card_view");
             return GetList(query, null);
         }
+        public static async Task<List<ProductModel>> GetAllItemsAsync()
+        {
+            DBQuery query = new SelectQuery("shopping_card_view");
+            return await GetListAsync(query, null);
+        }
     }
 }

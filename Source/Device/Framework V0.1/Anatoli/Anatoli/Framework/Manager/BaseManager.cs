@@ -59,6 +59,15 @@ namespace Anatoli.Framework.Manager
             var list = BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery);
             return list;
         }
+        public static async Task<List<DataModel>> GetListAsync(DBQuery dbQuery, RemoteQuery remoteQuery)
+        {
+            if (dbQuery == null && remoteQuery == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var list = await Task.Run(() => { return BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery); });
+            return list;
+        }
         public static async Task<DataModel> GetItemAsync(DBQuery query)
         {
             return await Task.Run(() => { return BaseDataAdapter<DataModel>.GetItem(query, null); });

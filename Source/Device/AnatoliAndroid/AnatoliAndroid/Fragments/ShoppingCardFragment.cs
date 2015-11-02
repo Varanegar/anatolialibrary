@@ -61,33 +61,7 @@ namespace AnatoliAndroid.Fragments
                     var timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
                     _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, timeOptions);
                 };
-
-
-            _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
-            _listAdapter = new ProductsListAdapter();
-            _listAdapter.List = ShoppingCardManager.GetAllItems();
-            _listAdapter.NotifyDataSetChanged();
-            _listAdapter.DataChanged += (s) =>
-            {
-                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
-            };
-            _listAdapter.ShoppingCardItemRemoved += (s, item) =>
-            {
-                _listAdapter.List.Remove(item);
-                _itemsListView.InvalidateViews();
-            };
-            _itemsListView.Adapter = _listAdapter;
-            if (_listAdapter.Count == 0)
-            {
-                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
-            }
-
-            var shippingInfo = ShippingInfoManager.GetDefault();
-            if (shippingInfo != null)
-            {
-                _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
-                _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
-            }
+           
             _editAddressImageView.Click += (s, e) =>
                 {
                     var transaction = FragmentManager.BeginTransaction();
@@ -104,9 +78,35 @@ namespace AnatoliAndroid.Fragments
                 };
             return view;
         }
+        public async override void OnStart()
+        {
+            base.OnStart();
+            _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
+            _listAdapter = new ProductsListAdapter();
+            _listAdapter.List = await ShoppingCardManager.GetAllItemsAsync();
+            _listAdapter.NotifyDataSetChanged();
+            _listAdapter.DataChanged += (s) =>
+            {
+                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
+            };
+            _listAdapter.ShoppingCardItemRemoved += (s, item) =>
+            {
+                _listAdapter.List.Remove(item);
+                _itemsListView.InvalidateViews();
+            };
+            _itemsListView.Adapter = _listAdapter;
+            if (_listAdapter.Count == 0)
+            {
+                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
+            }
 
-
-
+            var shippingInfo = await ShippingInfoManager.GetDefaultAsync();
+            if (shippingInfo != null)
+            {
+                _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
+                _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
+            }
+        }
 
     }
 }
