@@ -91,6 +91,11 @@ namespace AnatoliAndroid.Activities
             {
                 _list.RemoveLast();
                 var stackItem = _list.Last<StackItem>();
+                if (stackItem.FragmentType == typeof(AnatoliAndroid.Fragments.LoginFragment) && AnatoliUser != null)
+                {
+                    _list.RemoveLast();
+                    stackItem = _list.Last<StackItem>();
+                }
                 var fragment = Activator.CreateInstance(stackItem.FragmentType);
                 transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
                 transaction.Commit();
