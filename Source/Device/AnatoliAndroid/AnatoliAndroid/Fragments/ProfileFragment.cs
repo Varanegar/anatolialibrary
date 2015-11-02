@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -23,7 +24,6 @@ namespace AnatoliAndroid.Fragments
         TextView _emailTextView;
         TextView _telTextView;
         TextView _addressTextView;
-        AnatoliUserModel _user;
         ShippingInfoModel _shippingInfo;
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -43,14 +43,13 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
-            _user = await AnatoliUserManager.ReadUserInfoAsync();
             _shippingInfo = ShippingInfoManager.GetDefault();
-            if (_user != null)
+            if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
-                _firstNameTextView.Text = _user.FirstName;
-                _lastNameTextView.Text = _user.LastName;
-                _emailTextView.Text = _user.Email;
-                _telTextView.Text = _user.Tel;
+                _firstNameTextView.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
+                _lastNameTextView.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
+                _emailTextView.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
+                _telTextView.Text = AnatoliApp.GetInstance().AnatoliUser.Tel;
             }
             if (_shippingInfo != null)
             {

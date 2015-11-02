@@ -50,32 +50,32 @@ namespace AnatoliAndroid.Fragments
         }
         async void loginButton_Click(object sender, EventArgs e)
         {
-            //if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
-            //{
-            //    _loginResultTextView.Text = "Please input user name and password";
-            //    return;
-            //}
-            //AnatoliUserManager um = new AnatoliUserManager();
-            //var user = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-            var user = new AnatoliUserModel();
-            user.Email = "aliasghar.toraby@gmail.com";
-            user.FirstName = "علی اصغر ";
-            user.LastName = "ترابی پاریزی";
-            user.Tel = "09122073285";
-            user.UserId = "io237tr";
-            user.UserName = "a.toraby";
-            if (user != null)
+            if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
+            {
+                _loginResultTextView.Text = "Please input user name and password";
+                return;
+            }
+            _loginButton.Enabled = false;
+            AnatoliUserManager um = new AnatoliUserManager();
+            AnatoliApp.GetInstance().AnatoliUser = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+            if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
                 try
                 {
-                    await AnatoliUserManager.SaveUserInfoAsync(user);
-                    var u = await AnatoliUserManager.ReadUserInfoAsync();
+                    await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    AnatoliApp.GetInstance().RefreshMenuItems();
+                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
                 }
                 catch (Exception)
                 {
                     throw;
                 }
             }
+            else
+            {
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, "Login failed", ToastLength.Short);
+            }
+            _loginButton.Enabled = true;
         }
     }
 }

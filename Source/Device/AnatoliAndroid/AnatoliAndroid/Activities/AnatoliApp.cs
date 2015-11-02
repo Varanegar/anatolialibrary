@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AnatoliAndroid;
+using Anatoli.App.Model.AnatoliUser;
+using AnatoliAndroid.ListAdapters;
 
 namespace AnatoliAndroid.Activities
 {
@@ -19,7 +21,10 @@ namespace AnatoliAndroid.Activities
         private Activity _activity;
         public TextView ToolbarTextView { get; set; }
         public Android.Locations.LocationManager LocationManager;
-
+        public AnatoliUserModel AnatoliUser;
+        public List<DrawerItemType> AnatoliMenuItems;
+        ListView _drawerListView;
+        public ListView DrawerListView { get { return _drawerListView; } }
         private static LinkedList<StackItem> _list;
         public Type GetCurrentFragmentType()
         {
@@ -39,9 +44,9 @@ namespace AnatoliAndroid.Activities
                 throw new NullReferenceException();
             return instance;
         }
-        public static void Initialize(Activity activity)
+        public static void Initialize(Activity activity, AnatoliUserModel user, ListView drawerListView)
         {
-            instance = new AnatoliApp(activity);
+            instance = new AnatoliApp(activity, user, drawerListView);
             _list = new LinkedList<StackItem>();
         }
         private AnatoliApp()
@@ -49,9 +54,11 @@ namespace AnatoliAndroid.Activities
 
         }
 
-        private AnatoliApp(Activity activity)
+        private AnatoliApp(Activity activity, AnatoliUserModel user, ListView drawerListView)
         {
             _activity = activity;
+            AnatoliUser = user;
+            _drawerListView = drawerListView;
         }
         public FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag) where FragmentType : Android.App.Fragment, new()
         {
@@ -94,6 +101,69 @@ namespace AnatoliAndroid.Activities
             {
                 return false;
             }
+        }
+        public void RefreshMenuItems(List<DrawerItemType> items = null)
+        {
+            if (items != null)
+            {
+                AnatoliMenuItems = items;
+                _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);
+                _drawerListView.InvalidateViews();
+                return;
+            }
+            var mainItems = new List<DrawerItemType>();
+            var categoriesMenuEntry = new DrawerMainItem();
+            categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
+            categoriesMenuEntry.Name = "دسته بندی کالا";
+            categoriesMenuEntry.ImageResId = Resource.Drawable.GroupIcon;
+            var shoppingCardMenuEntry = new DrawerMainItem();
+            shoppingCardMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
+            shoppingCardMenuEntry.Name = "سبد خرید";
+            shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
+            var storesMenuEntry = new DrawerMainItem();
+            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
+            storesMenuEntry.Name = "انتخاب فروشگاه";
+            storesMenuEntry.ImageResId = Resource.Drawable.Store;
+            var favoritsMenuEntry = new DrawerMainItem();
+            favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
+            favoritsMenuEntry.Name = "علاقه مندی ها";
+            favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
+            mainItems.Add(categoriesMenuEntry);
+            mainItems.Add(favoritsMenuEntry);
+            mainItems.Add(shoppingCardMenuEntry);
+            mainItems.Add(storesMenuEntry);
+
+            if (AnatoliUser != null)
+            {
+                var profileMenuEntry = new DrawerMainItem();
+                profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+                profileMenuEntry.Name = "مشخصات من";
+                profileMenuEntry.ImageResId = Resource.Drawable.Profile;
+                mainItems.Add(profileMenuEntry);
+
+                var logoutMenuEntry = new DrawerMainItem();
+                logoutMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Logout;
+                logoutMenuEntry.Name = "خروج";
+                logoutMenuEntry.ImageResId = Resource.Drawable.Profile;
+                mainItems.Add(logoutMenuEntry);
+            }
+            else
+            {
+                var loginMenuEntry = new DrawerMainItem();
+                loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
+                loginMenuEntry.Name = "ورود";
+                loginMenuEntry.ImageResId = Resource.Drawable.Profile;
+                mainItems.Add(loginMenuEntry);
+            }
+
+            var helpMenuEntry = new DrawerMainItem();
+            helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
+            helpMenuEntry.Name = "راهنما";
+            helpMenuEntry.ImageResId = Resource.Drawable.Help;
+            mainItems.Add(helpMenuEntry);
+            AnatoliMenuItems = mainItems;
+            _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);
+            _drawerListView.InvalidateViews();
         }
 
         public class StackItem
