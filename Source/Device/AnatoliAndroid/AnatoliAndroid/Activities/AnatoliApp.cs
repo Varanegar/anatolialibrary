@@ -134,10 +134,6 @@ namespace AnatoliAndroid.Activities
             favoritsMenuEntry.Name = "علاقه مندی ها";
             favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
             mainItems.Add(favoritsMenuEntry);
-            
-           
-            
-
             if (AnatoliUser != null)
             {
                 var msgMenuEntry = new DrawerMainItem();
@@ -157,8 +153,6 @@ namespace AnatoliAndroid.Activities
                 logoutMenuEntry.Name = "خروج";
                 logoutMenuEntry.ImageResId = Resource.Drawable.Exit;
                 mainItems.Add(logoutMenuEntry);
-
-               
             }
             else
             {

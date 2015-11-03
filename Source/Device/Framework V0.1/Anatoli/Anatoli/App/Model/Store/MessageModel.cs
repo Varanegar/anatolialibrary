@@ -15,5 +15,7 @@ namespace Anatoli.App.Model.Store
         public string time { get; set; }
         public int new_flag { get; set; }
         public string store_name { get; set; }
+        public int msg_id { get; set; }
+        public bool IsNewMsg { get { return (new_flag == 1) ? true : false; } }
     }
 }

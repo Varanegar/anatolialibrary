@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +17,18 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
+    [FragmentTitle("پیغام ها")]
     class MessagesListFragment : BaseListFragment<MessageManager, MessageListAdapter, MessageModel>
     {
+        public MessagesListFragment()
+        {
+            _listAdapter.MessageDeleted += (item) =>
+                {
+                    _listAdapter.List.Remove(item);
+                    _listAdapter.NotifyDataSetChanged();
+                    _listView.InvalidateViews();
+                };
+        }
         protected override List<Anatoli.Framework.AnatoliBase.QueryParameter> CreateQueryParameters()
         {
             return new List<QueryParameter>();
