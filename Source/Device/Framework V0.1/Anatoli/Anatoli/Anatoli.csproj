@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
+    <Compile Include="App\Manager\MessageManager.cs" />
     <Compile Include="App\Manager\ShippingInfoManager.cs" />
     <Compile Include="App\Manager\ShoppingCardManager.cs" />
     <Compile Include="App\Manager\ProductManager.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="App\Model\Product\ProductImage.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
     <Compile Include="App\Model\Product\ProductModelUpdateResult.cs" />
+    <Compile Include="App\Model\Store\MessageModel.cs" />
     <Compile Include="App\Model\Store\StoreDataModel.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />

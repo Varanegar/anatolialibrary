@@ -121,25 +121,31 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
             categoriesMenuEntry.Name = "دسته بندی کالا";
             categoriesMenuEntry.ImageResId = Resource.Drawable.GroupIcon;
+            mainItems.Add(categoriesMenuEntry);
+
             var shoppingCardMenuEntry = new DrawerMainItem();
             shoppingCardMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
             shoppingCardMenuEntry.Name = "سبد خرید";
             shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
-            var storesMenuEntry = new DrawerMainItem();
-            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = "انتخاب فروشگاه";
-            storesMenuEntry.ImageResId = Resource.Drawable.Store;
+            mainItems.Add(shoppingCardMenuEntry);
+
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
             favoritsMenuEntry.Name = "علاقه مندی ها";
             favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
-            mainItems.Add(categoriesMenuEntry);
             mainItems.Add(favoritsMenuEntry);
-            mainItems.Add(shoppingCardMenuEntry);
-            mainItems.Add(storesMenuEntry);
+            
+           
+            
 
             if (AnatoliUser != null)
             {
+                var msgMenuEntry = new DrawerMainItem();
+                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                msgMenuEntry.Name = "پیغام ها";
+                msgMenuEntry.ImageResId = Resource.Drawable.Messages;
+                mainItems.Add(msgMenuEntry);
+
                 var profileMenuEntry = new DrawerMainItem();
                 profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
                 profileMenuEntry.Name = "مشخصات من";
@@ -149,17 +155,25 @@ namespace AnatoliAndroid.Activities
                 var logoutMenuEntry = new DrawerMainItem();
                 logoutMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Logout;
                 logoutMenuEntry.Name = "خروج";
-                logoutMenuEntry.ImageResId = Resource.Drawable.Profile;
+                logoutMenuEntry.ImageResId = Resource.Drawable.Exit;
                 mainItems.Add(logoutMenuEntry);
+
+               
             }
             else
             {
                 var loginMenuEntry = new DrawerMainItem();
                 loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
                 loginMenuEntry.Name = "ورود";
-                loginMenuEntry.ImageResId = Resource.Drawable.Profile;
+                loginMenuEntry.ImageResId = Resource.Drawable.Login;
                 mainItems.Add(loginMenuEntry);
             }
+
+            var storesMenuEntry = new DrawerMainItem();
+            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
+            storesMenuEntry.Name = "انتخاب فروشگاه";
+            storesMenuEntry.ImageResId = Resource.Drawable.Store;
+            mainItems.Add(storesMenuEntry);
 
             var helpMenuEntry = new DrawerMainItem();
             helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
