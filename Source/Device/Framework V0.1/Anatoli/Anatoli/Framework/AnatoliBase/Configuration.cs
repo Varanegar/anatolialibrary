@@ -11,6 +11,7 @@ namespace Anatoli.Framework.AnatoliBase
     {
         public static readonly string parseAppId = "wUAgTsRuLdin0EvsBhPniG40O24i2nEGVFl8R5OI";
         public static readonly string parseDotNetKey = "G7guVuyx35bb4fBOwo7BVhlG2L2E2qKLQI0sLAe0";
+        public static readonly string userInfoFile = "userInfo";
         public struct WebService
         {
             public static readonly string PortalAddress = "http://79.175.166.186/";

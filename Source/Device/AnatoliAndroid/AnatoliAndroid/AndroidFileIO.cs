@@ -59,5 +59,11 @@ namespace AnatoliAndroid
             string filePath = System.IO.Path.Combine(path, fileName);
             return System.IO.File.ReadAllBytes(filePath);
         }
+
+
+        public void DeleteFile(string path, string fileName)
+        {
+            System.IO.File.Delete(System.IO.Path.Combine(path, fileName));
+        }
     }
 }

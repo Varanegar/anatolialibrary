@@ -161,7 +161,7 @@ namespace AnatoliAndroid.Activities
         }
 
 
-        void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        async void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var selectedItem = AnatoliApp.GetInstance().AnatoliMenuItems[e.Position];
             AnatoliApp.GetInstance().DrawerListView.SetItemChecked(e.Position, true);
@@ -212,6 +212,16 @@ namespace AnatoliAndroid.Activities
                     case DrawerMainItem.DrawerMainItems.Messages:
                         _messagesFragment = new MessagesListFragment();
                         AnatoliApp.GetInstance().SetFragment<MessagesListFragment>(_messagesFragment, "messages_fragment");
+                        _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        break;
+                    case DrawerMainItem.DrawerMainItems.Logout:
+                        bool result = await AnatoliUserManager.LogoutAsync();
+                        if (result)
+                        {
+                            AnatoliApp.GetInstance().AnatoliUser = null;
+                            AnatoliApp.GetInstance().RefreshMenuItems();
+                            AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
+                        }
                         _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     default:

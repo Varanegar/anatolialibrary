@@ -13,5 +13,6 @@ namespace Anatoli.Framework.AnatoliBase
         bool WriteAllBytes(byte[] content, string path, string fileName);
         string ReadAllText(string path, string fileName);
         byte[] ReadAllBytes(string path, string fileName);
+        void DeleteFile(string path, string fileName);
     }
 }

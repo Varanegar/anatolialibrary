@@ -61,7 +61,7 @@ namespace Anatoli.App.Manager
             bool wResult = await Task.Run(() =>
                 {
                     var cipherText = Crypto.EncryptAES(content);
-                    bool result = AnatoliClient.GetInstance().FileIO.WriteAllBytes(cipherText, AnatoliClient.GetInstance().FileIO.GetDataLoction(), "userInfo");
+                    bool result = AnatoliClient.GetInstance().FileIO.WriteAllBytes(cipherText, AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.userInfoFile);
                     return result;
                 });
         }
@@ -72,12 +72,12 @@ namespace Anatoli.App.Manager
             {
                 byte[] cipherText = await Task.Run(() =>
                 {
-                    byte[] result = AnatoliClient.GetInstance().FileIO.ReadAllBytes(AnatoliClient.GetInstance().FileIO.GetDataLoction(), "userInfo");
+                    byte[] result = AnatoliClient.GetInstance().FileIO.ReadAllBytes(AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.userInfoFile);
                     return result;
                 });
                 byte[] plainText = Crypto.DecryptAES(cipherText);
-                string userInfo = Encoding.Unicode.GetString(plainText,0,plainText.Length);
-                string[] userInfoFields = userInfo.Split(new string[]{Environment.NewLine},StringSplitOptions.None);
+                string userInfo = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
+                string[] userInfoFields = userInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 AnatoliUserModel user = new AnatoliUserModel();
                 user.Email = userInfoFields[0];
                 user.FirstName = userInfoFields[1];
@@ -90,6 +90,24 @@ namespace Anatoli.App.Manager
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public static async Task<bool> LogoutAsync()
+        {
+            var fileIO = AnatoliClient.GetInstance().FileIO;
+            try
+            {
+                await Task.Run(() =>
+                    {
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
+                    }
+                    );
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
