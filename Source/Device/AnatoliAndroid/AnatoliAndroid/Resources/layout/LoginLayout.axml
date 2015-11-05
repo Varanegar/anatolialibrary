@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/AnatoliDialog">
-    <EditText
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userNameEditText"
         android:hint="نام کاربری (تلفن همراه)"
+        local:customFont="Fonts/anatoli.ttf"
         style="@style/AnatoliTextField" />
-    <EditText
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordEditText"
         android:inputType="textPassword"
         android:hint="کلمه عبور"
+        local:customFont="Fonts/anatoli.ttf"
         style="@style/AnatoliTextField" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout1">
-        <Switch
+        <AnatoliAndroid.Components.AnatoliSwitch
             android:id="@+id/saveSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            local:customFont="Fonts/anatoli.ttf"
             android:text="مرا به خاطر بسپار" />
     </RelativeLayout>
-    <Button
+    <AnatoliAndroid.Components.AnatoliButton
         android:text="ورود"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
+        local:customFont="Fonts/anatoli.ttf"
         style="@style/AnatoliButton.Green" />
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,31 +52,36 @@
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:indeterminate="true" />
+                android:indeterminate="true"
+                android:maxHeight="70dp"
+                android:minHeight="30dp" />
         </RelativeLayout>
-        <TextView
+        <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginResultTextView"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
+            local:customFont="Fonts/anatoli.ttf"
             android:textColor="@color/red" />
     </RelativeLayout>
-    <TextView
+    <AnatoliAndroid.Components.AnatoliTextView
         android:text="کلمه عبور را فراموش کرده ام!"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fgTextView"
         android:gravity="center_horizontal"
+        local:customFont="Fonts/anatoli.ttf"
         android:layout_margin="10dp" />
-    <TextView
+    <AnatoliAndroid.Components.AnatoliTextView
         android:text="ثبت نام"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/registerTextView"
         android:gravity="center_horizontal"
+        local:customFont="Fonts/anatoli.ttf"
         android:layout_margin="10dp" />
 </LinearLayout>

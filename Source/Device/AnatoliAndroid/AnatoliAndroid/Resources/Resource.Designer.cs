@@ -313,6 +313,9 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0100a4
 			public const int controlBackground = 2130772132;
 			
+			// aapt resource value: 0x7f0100cb
+			public const int customFont = 2130772171;
+			
 			// aapt resource value: 0x7f01000f
 			public const int customNavigationLayout = 2130771983;
 			
@@ -3521,6 +3524,12 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 2
 			public const int CompoundButton_buttonTintMode = 2;
+			
+			public static int[] CustomFonts = new int[] {
+					2130772171};
+			
+			// aapt resource value: 0
+			public const int CustomFonts_customFont = 0;
 			
 			public static int[] DrawerArrowToggle = new int[] {
 					2130772007,
