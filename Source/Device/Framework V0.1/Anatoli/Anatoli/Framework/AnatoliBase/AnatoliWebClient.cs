@@ -82,15 +82,17 @@ namespace Anatoli.Framework.AnatoliBase
                 {
                     tclient.Timeout = new TimeSpan(0, 0, 30);
                     var oauthresult = await tclient.RequestResourceOwnerPasswordAsync(parameters.UserName, parameters.Password, parameters.Scope);
+                    if (oauthresult.AccessToken == null)
+                        return null;
                     _tokenInfo = new AnatoliTokenInfo();
                     _tokenInfo.AccessToken = oauthresult.AccessToken;
                     _tokenInfo.ExpiresIn = oauthresult.ExpiresIn;
                     SaveTokenInfoToFile(_tokenInfo);
                     return _tokenInfo;
                 }
-                catch
+                catch (Exception e)
                 {
-                    throw;
+                    throw e;
                 }
             }
         }
