@@ -13,7 +13,7 @@ namespace Anatoli.App.Manager
 {
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
-        public async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
+        public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
             var tk = await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
             if (tk != null)
@@ -26,12 +26,12 @@ namespace Anatoli.App.Manager
         public async Task<RegisterResult> RegisterAsync(string userName, string passWord, string confirmPassword, string firstName, string lastName, string tel, string email)
         {
             User user = new User();
-            user.Email = "hooman.ahmadi1@gmail.com";
-            user.FirstName = "hooman2";
-            user.LastName = "ahmadi3";
-            user.UserName = "hooman.ahmadi2";
-            user.Password = "Hooman.ahmadi2";
-            user.ConfirmPassword = "Hooman.ahmadi2";
+            user.Email = userName;
+            user.FirstName = userName;
+            user.LastName = userName;
+            user.UserName = userName;
+            user.Password = passWord;
+            user.ConfirmPassword = passWord;
             try
             {
                 var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(

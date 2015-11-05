@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="Hello">Hello World, Click Me!</string>
-  <string name="ApplicationName">Anatoli</string>
-  <string name="OpenDrawer">Open Drawer</string>
-  <string name="CloseDrawer">Close Drawer</string>
-  <string name="Products">Products</string>
+  <string name="ApplicationName">آناتولی</string>
+  <string name="OpenDrawer">باز کردن منو</string>
+  <string name="CloseDrawer">بستن منو</string>
+  <string name="Products">دسته بندی کالا</string>
+  <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
+  <string name="LoginFailed">ورود نا موفق</string> 
 </resources>

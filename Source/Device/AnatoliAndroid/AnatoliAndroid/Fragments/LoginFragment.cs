@@ -17,13 +17,14 @@ using Anatoli.App.Model.AnatoliUser;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("ورود")]
-    public class LoginFragment : Fragment
+    public class LoginFragment : DialogFragment
     {
         EditText _userNameEditText;
         EditText _passwordEditText;
         TextView _loginResultTextView;
         Button _loginButton;
         TextView _registerTextView;
+        Switch _saveSwitch;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -39,12 +40,14 @@ namespace AnatoliAndroid.Fragments
             _registerTextView.Click += _registerTextView_Click;
             _loginResultTextView = view.FindViewById<TextView>(Resource.Id.loginResultTextView);
             _loginButton = view.FindViewById<Button>(Resource.Id.loginButton);
+            _saveSwitch = view.FindViewById<Switch>(Resource.Id.saveSwitch);
             _loginButton.Click += loginButton_Click;
             return view;
         }
 
         void _registerTextView_Click(object sender, EventArgs e)
         {
+            Dismiss();
             var fragment = new RegisterFragment();
             AnatoliApp.GetInstance().SetFragment<RegisterFragment>(fragment, "register_fragment");
         }
@@ -52,18 +55,21 @@ namespace AnatoliAndroid.Fragments
         {
             if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
-                _loginResultTextView.Text = "Please input user name and password";
+                _loginResultTextView.Text = Resources.GetText(Resource.String.EneterUserNamePass);
                 return;
             }
             _loginButton.Enabled = false;
-            AnatoliUserManager um = new AnatoliUserManager();
-            AnatoliApp.GetInstance().AnatoliUser = await um.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+            AnatoliApp.GetInstance().AnatoliUser = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
             if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
                 try
                 {
-                    await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    if (_saveSwitch.Checked)
+                    {
+                        await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    }
                     AnatoliApp.GetInstance().RefreshMenuItems();
+                    Dismiss();
                     AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
                 }
                 catch (Exception)
@@ -73,7 +79,7 @@ namespace AnatoliAndroid.Fragments
             }
             else
             {
-                Toast.MakeText(AnatoliApp.GetInstance().Activity, "Login failed", ToastLength.Short);
+                _loginResultTextView.Text = Resources.GetText(Resource.String.LoginFailed);
             }
             _loginButton.Enabled = true;
         }

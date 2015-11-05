@@ -3,46 +3,59 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dp">
-    <TextView
-        android:text="نام کاربری:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+    style="@style/AnatoliDialog">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/userNameEditText" />
-    <TextView
-        android:text="رمز عبور:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
+        android:id="@+id/userNameEditText"
+        android:hint="نام کاربری (تلفن همراه)"
+        style="@style/AnatoliTextField" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordEditText"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:hint="کلمه عبور"
+        style="@style/AnatoliTextField" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1">
+        <Switch
+            android:id="@+id/saveSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="مرا به خاطر بسپار" />
+    </RelativeLayout>
     <Button
         android:text="ورود"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/loginButton" />
+        android:id="@+id/loginButton"
+        style="@style/AnatoliButton.Green" />
     <TextView
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loginResultTextView"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:textColor="@color/red" />
+    <TextView
+        android:text="کلمه عبور را فراموش کرده ام!"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fgTextView"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp" />
     <TextView
         android:text="ثبت نام"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/registerTextView"
         android:gravity="center_horizontal"
-        android:textColor="@android:color/holo_green_dark" />
+        android:layout_margin="10dp" />
 </LinearLayout>

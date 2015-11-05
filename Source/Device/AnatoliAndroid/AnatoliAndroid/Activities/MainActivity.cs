@@ -192,8 +192,9 @@ namespace AnatoliAndroid.Activities
                         _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Login:
+                        var transaction = FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
-                        AnatoliApp.GetInstance().SetFragment<LoginFragment>(loginFragment, "login_fragment");
+                        loginFragment.Show(transaction, "shipping_dialog");
                         _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.MainMenu:
