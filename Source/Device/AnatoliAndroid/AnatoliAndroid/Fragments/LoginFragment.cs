@@ -25,6 +25,7 @@ namespace AnatoliAndroid.Fragments
         Button _loginButton;
         TextView _registerTextView;
         Switch _saveSwitch;
+        RelativeLayout _loadingPanel;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -41,6 +42,7 @@ namespace AnatoliAndroid.Fragments
             _loginResultTextView = view.FindViewById<TextView>(Resource.Id.loginResultTextView);
             _loginButton = view.FindViewById<Button>(Resource.Id.loginButton);
             _saveSwitch = view.FindViewById<Switch>(Resource.Id.saveSwitch);
+            _loadingPanel = view.FindViewById<RelativeLayout>(Resource.Id.loadingPanel);
             _loginButton.Click += loginButton_Click;
             return view;
         }
@@ -59,6 +61,8 @@ namespace AnatoliAndroid.Fragments
                 return;
             }
             _loginButton.Enabled = false;
+            _loginResultTextView.Text = "";
+            _loadingPanel.Visibility = ViewStates.Visible;
             AnatoliApp.GetInstance().AnatoliUser = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
             if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
@@ -82,6 +86,7 @@ namespace AnatoliAndroid.Fragments
                 _loginResultTextView.Text = Resources.GetText(Resource.String.LoginFailed);
             }
             _loginButton.Enabled = true;
+            _loadingPanel.Visibility = ViewStates.Invisible;
         }
     }
 }

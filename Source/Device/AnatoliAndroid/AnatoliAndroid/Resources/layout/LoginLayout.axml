@@ -34,14 +34,30 @@
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
         style="@style/AnatoliButton.Green" />
-    <TextView
-        android:textAppearance="?android:attr/textAppearanceSmall"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/loginResultTextView"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:textColor="@color/red" />
+        android:id="@+id/statusRelativeLayout">
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="invisible">
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginResultTextView"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textColor="@color/red" />
+    </RelativeLayout>
     <TextView
         android:text="کلمه عبور را فراموش کرده ام!"
         android:textAppearance="?android:attr/textAppearanceSmall"
