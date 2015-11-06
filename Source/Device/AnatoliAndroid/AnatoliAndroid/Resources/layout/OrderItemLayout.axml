@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:weightSum="2"
+    android:orientation="horizontal"
+    style="@style/AnatoliPage">
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="تاریخ:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView7"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            local:customFont="Fonts/anatoli.ttf"
+            android:id="@+id/dateTextView" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="مبلغ:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            local:customFont="Fonts/anatoli.ttf"
+            android:id="@+id/priceTextView" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="شماره سفارش:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/orderNoTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="نام فروشگاه:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/storeNameTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="وضعیت سفارش:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/orderStatusTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="right" />
+    </LinearLayout>
+</LinearLayout>

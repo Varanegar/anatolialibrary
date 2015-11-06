@@ -123,6 +123,7 @@
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
+    <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Fragments\ProductsListFragment.cs" />
     <Compile Include="ListAdapters\BaseListAdapter.cs" />
     <Compile Include="ListAdapters\MessageListAdapter.cs" />
+    <Compile Include="ListAdapters\OrdersListAdapter.cs" />
     <Compile Include="ListAdapters\StoresListAdapter.cs" />
     <Compile Include="ListAdapters\ProductsListAdapter.cs" />
     <Compile Include="Activities\MainActivity.cs" />
@@ -198,6 +200,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MessageItemLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\OrderItemLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -327,6 +332,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Attr.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\orders.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\Framework V0.1\Anatoli\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

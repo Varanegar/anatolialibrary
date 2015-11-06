@@ -39,6 +39,7 @@ namespace AnatoliAndroid.Activities
         ShoppingCardFragment _shoppingCardFragment;
         ProfileFragment _profileFragment;
         MessagesListFragment _messagesFragment;
+        OrdersListFragment _ordersFragment;
         ProductManager _pm;
         Toolbar _toolbar;
         RelativeLayout _searchBarLayout;
@@ -213,6 +214,11 @@ namespace AnatoliAndroid.Activities
                     case DrawerMainItem.DrawerMainItems.Messages:
                         _messagesFragment = new MessagesListFragment();
                         AnatoliApp.GetInstance().SetFragment<MessagesListFragment>(_messagesFragment, "messages_fragment");
+                        _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        break;
+                    case DrawerMainItem.DrawerMainItems.Orders:
+                        _ordersFragment = new OrdersListFragment();
+                        AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(_ordersFragment, "orders_fragment");
                         _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:

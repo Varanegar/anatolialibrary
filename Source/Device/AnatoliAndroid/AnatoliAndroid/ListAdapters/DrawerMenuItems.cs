@@ -102,6 +102,7 @@ namespace AnatoliAndroid.ListAdapters
             public const int Favorits = 7;
             public const int Logout = 8;
             public const int Messages = 9;
+            public const int Orders = 10;
         }
     }
 }
