@@ -41,7 +41,11 @@ namespace AnatoliAndroid.Fragments
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
             _checkoutImageView = view.FindViewById<ImageView>(Resource.Id.checkoutImageView);
-
+            _checkoutImageView.Click += async (s, e) =>
+                {
+                    await OrderManager.SaveOrder();
+                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                };
             if (DateTime.Now.ToLocalTime().Hour < 16)
                 _dateOptions = new DateOption[] { new DateOption("ÇãÑæÒ", ShippingInfoManager.ShippingDateOptions.Today), new DateOption("ÝÑÏÇ", ShippingInfoManager.ShippingDateOptions.Tommorow) };
             else
@@ -62,9 +66,15 @@ namespace AnatoliAndroid.Fragments
                 {
                     _deliveryAddress.Text = address + " " + name;
                     if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text))
+                    {
                         _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
+                        _checkoutImageView.Enabled = false;
+                    }
                     else
+                    {
                         _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
+                        _checkoutImageView.Enabled = true;
+                    }
                 };
                 editShippingDialog.Show(transaction, "shipping_dialog");
             };
@@ -81,6 +91,11 @@ namespace AnatoliAndroid.Fragments
             {
                 _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
                 _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
+            }
+            else
+            {
+                _checkoutImageView.Enabled = false;
+                _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
             }
         }
     }
