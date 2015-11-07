@@ -125,6 +125,7 @@
     <Compile Include="Fragments\MessagesListFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
+    <Compile Include="Fragments\ShippingInfoFragment.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
     <Compile Include="Fragments\RegisterFragment.cs" />
@@ -203,6 +204,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\OrderItemLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ShippingInfoLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

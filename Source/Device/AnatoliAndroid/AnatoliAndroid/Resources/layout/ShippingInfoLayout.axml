@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout1"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    style="@style/AnatoliPage">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addressRelativeLayout"
+        android:background="@android:drawable/edit_text"
+        android:layout_margin="5dp">
+        <ImageView
+            android:id="@+id/editAddressImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/edit"
+            android:layout_margin="5dp" />
+        <TextView
+            android:id="@+id/addressTextView"
+            android:minHeight="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/editAddressImageView"
+            android:layout_width="wrap_content"
+            android:minWidth="100dp"
+            android:layout_margin="5dp"
+            android:gravity="right"
+            android:maxHeight="100dp"
+            android:padding="5dp"
+            android:hint="آدرس تحویل:" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/deliveryDateLinearLayout"
+        android:padding="10dp">
+        <TextView
+            android:text="زمان تحویل:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView2"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/dateSpinner"
+            android:layout_toLeftOf="@id/textView2"
+            android:gravity="center_vertical"
+            android:paddingRight="20dp" />
+        <TextView
+            android:text="ساعت:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/dateSpinner"
+            android:id="@+id/textView3"
+            android:gravity="center_vertical"
+            android:paddingRight="20dp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/timeSpinner"
+            android:gravity="center_vertical"
+            android:paddingRight="20dp"
+            android:layout_toLeftOf="@id/textView3" />
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:weightSum="2"
+        android:gravity="center_horizontal"
+        android:layout_gravity="bottom">
+        <ImageView
+            android:src="@drawable/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/callImageView"
+            android:layout_weight="1"
+            android:minHeight="30dp"
+            android:maxWidth="30dp"
+            android:layout_gravity="bottom" />
+        <ImageView
+            android:src="@drawable/checkoutgray"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/checkoutImageView"
+            android:layout_weight="1"
+            android:minHeight="30dp"
+            android:maxWidth="30dp"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+</LinearLayout>
