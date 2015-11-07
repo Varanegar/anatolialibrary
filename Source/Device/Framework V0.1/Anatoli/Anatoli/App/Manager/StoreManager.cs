@@ -29,7 +29,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> SelectAsync(StoreDataModel store)
         {
             UpdateCommand command1 = new UpdateCommand("stores", new BasicParam("selected", "0"));
-            UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new SearchFilterParam("store_id", store.store_id.ToString()));
+            UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new EqFilterParam("store_id", store.store_id.ToString()));
             try
             {
                 int clear = await LocalUpdateAsync(command1);
@@ -39,6 +39,20 @@ namespace Anatoli.App.Manager
             catch (Exception)
             {
                 return false;
+            }
+        }
+        public static async Task<StoreDataModel> GetDefault()
+        {
+            SelectQuery query = new SelectQuery("stores", new EqFilterParam("selected", "1"));
+            try
+            {
+                var store = await GetItemAsync(query);
+                return store;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
