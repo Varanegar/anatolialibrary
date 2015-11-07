@@ -80,6 +80,14 @@ namespace Anatoli.Framework.AnatoliBase
 
         }
     }
+    public class EqFilterParam : SearchFilterParam
+    {
+        public EqFilterParam(string Name, string Value)
+            : base(Name, Value)
+        {
+
+        }
+    }
     public class CategoryFilterParam : FilterParam
     {
 
@@ -159,6 +167,8 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 if (item.GetType() == typeof(SearchFilterParam))
                     SearchFilters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(EqFilterParam))
+                    SearchFilters.Add(item as EqFilterParam);
                 if (item.GetType() == typeof(CategoryFilterParam))
                     CategoryFilters.Add(item as CategoryFilterParam);
                 else if (item.GetType() == typeof(SortParam))
@@ -177,6 +187,8 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 if (item.GetType() == typeof(SearchFilterParam))
                     SearchFilters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(EqFilterParam))
+                    SearchFilters.Add(item as EqFilterParam);
                 if (item.GetType() == typeof(CategoryFilterParam))
                     CategoryFilters.Add(item as CategoryFilterParam);
                 else if (item.GetType() == typeof(SortParam))
@@ -190,7 +202,11 @@ namespace Anatoli.Framework.AnatoliBase
             string q = string.Format(" SELECT * FROM  {0} ", DBTableName);
             if (SearchFilters.Count == 1)
             {
-                q += string.Format(" WHERE {0} LIKE '%{1}%' ", SearchFilters.First<FilterParam>().Name, SearchFilters.First<FilterParam>().Value);
+
+                if (SearchFilters.First<FilterParam>().GetType() == typeof(EqFilterParam))
+                    q += string.Format(" WHERE {0} = '{1}' ", SearchFilters.First<FilterParam>().Name, SearchFilters.First<FilterParam>().Value);
+                else
+                    q += string.Format(" WHERE {0} LIKE '%{1}%' ", SearchFilters.First<FilterParam>().Name, SearchFilters.First<FilterParam>().Value);
             }
             else if (SearchFilters.Count > 1)
             {
@@ -198,10 +214,15 @@ namespace Anatoli.Framework.AnatoliBase
                 for (int i = 0; i < SearchFilters.Count - 1; i++)
                 {
                     var filter = SearchFilters[i];
-                    q += string.Format(" {0} LIKE '%{1}%' and ", filter.Name, filter.Value);
-                    // todo : and should be added
+                    if (filter.GetType() == typeof(EqFilterParam))
+                        q += string.Format(" {0} = '{1}' and ", filter.Name, filter.Value);
+                    else
+                        q += string.Format(" {0} LIKE '%{1}%' and ", filter.Name, filter.Value);
                 }
-                q += string.Format(" {0} LIKE '%{1}%' )", SearchFilters.Last<FilterParam>().Name, SearchFilters.Last<FilterParam>().Value);
+                if (SearchFilters.Last<FilterParam>().GetType() == typeof(EqFilterParam))
+                    q += string.Format(" {0} = '{1}' )", SearchFilters.Last<FilterParam>().Name, SearchFilters.Last<FilterParam>().Value);
+                else
+                    q += string.Format(" {0} LIKE '%{1}%' )", SearchFilters.Last<FilterParam>().Name, SearchFilters.Last<FilterParam>().Value);
             }
 
             if (CategoryFilters.Count == 1)
@@ -272,17 +293,31 @@ namespace Anatoli.Framework.AnatoliBase
         List<SearchFilterParam> _parameters;
         public override string GetCommand()
         {
-
-            string q = string.Format(" DELETE FROM {0} WHERE ", DBTableName);
+            string q = string.Format(" DELETE FROM {0} ", DBTableName);
+            if (_parameters.Count == 0)
+                return q;
+            q += " WHERE ";
             if (_parameters.Count == 1)
             {
-                q += String.Format("{0}={1}", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
+                if (_parameters.First<SearchFilterParam>().GetType() == typeof(EqFilterParam))
+                    q += String.Format("{0}={1}", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
+                else
+                    q += String.Format("{0} LIKE '%{1}%'", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
                 return q;
             }
-            q += String.Format("{0}={1}", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
-            for (int i = 0; i < _parameters.Count - 1; i++)
+            if (_parameters.Count > 1)
             {
-                q += String.Format(" AND {0}={1}", _parameters[i].Name, _parameters[i].Value);
+                if (_parameters.First<SearchFilterParam>().GetType() == typeof(EqFilterParam))
+                    q += String.Format("{0}={1}", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
+                else
+                    q += String.Format("{0} LIKE '%{1}%' ", _parameters.First<SearchFilterParam>().Name, _parameters.First<SearchFilterParam>().Value);
+                for (int i = 0; i < _parameters.Count - 1; i++)
+                {
+                    if (_parameters[i].GetType() == typeof(EqFilterParam))
+                        q += String.Format(" AND {0}={1}", _parameters[i].Name, _parameters[i].Value);
+                    else
+                        q += String.Format(" AND {0} LIKE '%{1}%' ", _parameters[i].Name, _parameters[i].Value);
+                }
             }
             return q;
         }
@@ -327,6 +362,58 @@ namespace Anatoli.Framework.AnatoliBase
 
         }
     }
+    public class InsertAllCommand : DBQuery
+    {
+        List<List<BasicParam>> _rows;
+        public InsertAllCommand(string DBTableName, List<List<BasicParam>> rows)
+            : base(DBTableName)
+        {
+            _rows = rows;
+        }
+        public override string GetCommand()
+        {
+
+            string q = string.Format(" INSERT INTO {0} (", DBTableName);
+            string v = " VALUES ";
+            var parameters = _rows.First<List<BasicParam>>();
+            if (parameters.Count == 1)
+            {
+                q += String.Format("{0}) ", parameters.First<BasicParam>().Name);
+            }
+            else
+            {
+                q += String.Format("{0}", parameters.First<BasicParam>().Name);
+                for (int i = 1; i < parameters.Count - 1; i++)
+                {
+                    q += String.Format(",{0}", parameters[i].Name);
+                }
+                q += String.Format(",{0})", parameters.Last<BasicParam>().Name);
+            }
+
+            for (int i = 0; i < _rows.Count - 1; i++)
+            {
+                parameters = _rows[i];
+                v += String.Format(" ('{0}'", parameters.First<BasicParam>().Value);
+                for (int j = 1; j < parameters.Count - 1; j++)
+                {
+                    v += String.Format(",'{0}'", parameters[j].Value);
+                }
+
+                v += String.Format(",'{0}'),", parameters.Last<BasicParam>().Value);
+            }
+
+            parameters = _rows.Last<List<BasicParam>>();
+            v += String.Format(" ('{0}'", parameters.First<BasicParam>().Value);
+            for (int j = 1; j < parameters.Count - 1; j++)
+            {
+                v += String.Format(",'{0}'", parameters[j].Value);
+            }
+
+            v += String.Format(",'{0}')", parameters.Last<BasicParam>().Value);
+            return q + v;
+
+        }
+    }
     public class UpdateCommand : DBQuery
     {
         public UpdateCommand(string DBTableName, params QueryParameter[] parameters)
@@ -338,6 +425,8 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 if (item.GetType() == typeof(SearchFilterParam))
                     _searchParameters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(EqFilterParam))
+                    _searchParameters.Add(item as EqFilterParam);
                 if (item.GetType() == typeof(BasicParam))
                     _valueParameters.Add(item as BasicParam);
             }
@@ -368,15 +457,24 @@ namespace Anatoli.Framework.AnatoliBase
             }
             if (_searchParameters.Count == 1)
             {
-                q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
+                if (_searchParameters.First<SearchFilterParam>().GetType() == typeof(EqFilterParam))
+                    q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
+                else
+                    q += String.Format(" WHERE {0} LIKE '%{1}%'", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
                 return q;
             }
             else if (_searchParameters.Count > 1)
             {
-                q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
+                if (_searchParameters.First<SearchFilterParam>().GetType() == typeof(EqFilterParam))
+                    q += String.Format(" WHERE {0}={1}", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
+                else
+                    q += String.Format(" WHERE {0} LIKE '%{1}%' ", _searchParameters.First<SearchFilterParam>().Name, _searchParameters.First<SearchFilterParam>().Value);
                 for (int i = 1; i < _searchParameters.Count - 1; i++)
                 {
-                    q += String.Format(" and {0}={1}", _searchParameters[i].Name, _searchParameters[i].Value);
+                    if (_searchParameters[i].GetType() == typeof(EqFilterParam))
+                        q += String.Format(" and {0}={1}", _searchParameters[i].Name, _searchParameters[i].Value);
+                    else
+                        q += String.Format(" and {0} LIKE '%{1}%'", _searchParameters[i].Name, _searchParameters[i].Value);
                 }
             }
             return q;
