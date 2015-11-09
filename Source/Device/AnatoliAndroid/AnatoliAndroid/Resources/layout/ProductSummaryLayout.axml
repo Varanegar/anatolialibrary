@@ -59,7 +59,8 @@
         p1:layout_height="wrap_content"
         p1:id="@+id/linearLayout1"
         p1:layout_alignParentLeft="true"
-        p1:layout_marginLeft="15dp">
+        p1:layout_marginLeft="15dp"
+        p1:layout_toLeftOf="@id/productSummaryInfoLinearLayout">
         <ImageView
             p1:src="@drawable/addproductimage"
             p1:layout_width="40dp"
