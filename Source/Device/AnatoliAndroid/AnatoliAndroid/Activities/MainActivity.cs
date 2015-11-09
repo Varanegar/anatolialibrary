@@ -131,6 +131,7 @@ namespace AnatoliAndroid.Activities
         void _searchBarImageView_Click(object sender, EventArgs e)
         {
             _searchBarLayout.Visibility = ViewStates.Gone;
+            _searchEditText.Text = "";
             _toolbarLayout.Visibility = ViewStates.Visible;
             _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
