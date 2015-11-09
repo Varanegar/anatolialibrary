@@ -75,7 +75,11 @@ namespace AnatoliAndroid.Activities
             _searchBarImageView.Click += _searchBarImageView_Click;
 
             _searchButtonImageView = _toolbar.FindViewById<ImageView>(Resource.Id.searchButtonImageView);
-            _searchButtonImageView.Click += async (s, e) => { await Search(_searchEditText.Text); };
+            _searchButtonImageView.Click += async (s, e) =>
+            {
+                _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                await Search(_searchEditText.Text);
+            };
 
             _searchEditText = _toolbar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
             _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
@@ -128,6 +132,7 @@ namespace AnatoliAndroid.Activities
         {
             _searchBarLayout.Visibility = ViewStates.Gone;
             _toolbarLayout.Visibility = ViewStates.Visible;
+            _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 
         void shoppingCardImageView_Click(object sender, EventArgs e)
@@ -138,6 +143,7 @@ namespace AnatoliAndroid.Activities
 
         void searchImageView_Click(object sender, EventArgs e)
         {
+            _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
             if (_searchBar)
             {
 
@@ -297,6 +303,11 @@ namespace AnatoliAndroid.Activities
         public override void OnBackPressed()
         {
             //            base.OnBackPressed();
+            if (_drawerLayout.IsDrawerOpen(AnatoliApp.GetInstance().DrawerListView))
+            {
+                _drawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                return;
+            }
             if (!AnatoliApp.GetInstance().BackFragment())
             {
                 // todo : prompt for exit;
