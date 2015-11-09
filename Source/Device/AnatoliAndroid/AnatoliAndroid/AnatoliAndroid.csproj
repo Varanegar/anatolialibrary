@@ -117,6 +117,7 @@
     <Compile Include="Components\AnatoliEditText.cs" />
     <Compile Include="Components\AnatoliSwitch.cs" />
     <Compile Include="Components\AnatoliTextView.cs" />
+    <Compile Include="Components\TypeFaceProvider.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Fragments\EditShippingInfoFragment.cs" />

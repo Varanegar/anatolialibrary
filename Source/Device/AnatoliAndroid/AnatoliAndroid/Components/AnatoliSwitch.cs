@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using AnatoliAndroid;
+using Android.Graphics;
 
 namespace AnatoliAndroid.Components
 {
@@ -47,7 +48,7 @@ namespace AnatoliAndroid.Components
         {
             try
             {
-                SetTypeface(Android.Graphics.Typeface.CreateFromAsset(Context.Assets, asset), Android.Graphics.TypefaceStyle.Normal);
+                SetTypeface(TypeFaceProvider.GetTypeFace(Context, asset), TypefaceStyle.Normal);
             }
             catch (Exception e)
             {
