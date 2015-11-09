@@ -274,7 +274,15 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().RefreshMenuItems();
             _productsListF = new ProductsListFragment();
             //FragmentManager.BeginTransaction().Replace(Resource.Id.content_frame, _productsListF).Commit();
-            AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
+            try
+            {
+                await StoreManager.GetDefault();
+                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
+            }
+            catch (Exception)
+            {
+                AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
+            }
 
 
         }

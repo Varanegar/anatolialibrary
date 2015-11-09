@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,13 +43,24 @@ namespace AnatoliAndroid.Fragments
             _checkoutImageView = view.FindViewById<ImageView>(Resource.Id.checkoutImageView);
             _checkoutImageView.Click += async (s, e) =>
                 {
-                    await OrderManager.SaveOrder();
-                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                    try
+                    {
+                        await OrderManager.SaveOrder();
+                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.GetType() == typeof(StoreManager.NullStoreException))
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "لطفا ابتدا یک فروشگاه را انتخاب نمایید", ToastLength.Short);
+                        }
+                    }
+
                 };
             if (DateTime.Now.ToLocalTime().Hour < 16)
-                _dateOptions = new DateOption[] { new DateOption("�����", ShippingInfoManager.ShippingDateOptions.Today), new DateOption("����", ShippingInfoManager.ShippingDateOptions.Tommorow) };
+                _dateOptions = new DateOption[] { new DateOption("امروز", ShippingInfoManager.ShippingDateOptions.Today), new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
             else
-                _dateOptions = new DateOption[] { new DateOption("����", ShippingInfoManager.ShippingDateOptions.Tommorow) };
+                _dateOptions = new DateOption[] { new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
             _delivaryDate.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _dateOptions);
             _delivaryDate.ItemSelected += (s, e) =>
             {

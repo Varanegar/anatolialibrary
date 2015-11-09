@@ -17,38 +17,36 @@ namespace Anatoli.App.Manager
             try
             {
                 var store = await StoreManager.GetDefault();
-                if (store != null)
+                InsertCommand command = new InsertCommand("orders", new BasicParam("store_id", store.store_id.ToString()),
+                    new BasicParam("order_status", "0"),
+                    new BasicParam("order_date", DateTime.Now.ToLocalTime().ToString())
+                    );
+                var result = await LocalUpdateAsync(command);
+                if (result > 0)
                 {
-                    InsertCommand command = new InsertCommand("orders", new BasicParam("store_id", store.store_id.ToString()),
-                        new BasicParam("order_status", "0"),
-                        new BasicParam("order_date", DateTime.Now.ToLocalTime().ToString())
-                        );
-                    var result = await LocalUpdateAsync(command);
-                    if (result > 0)
+                    var latestOrder = await GetLatestOrder();
+                    List<List<BasicParam>> parametres = new List<List<BasicParam>>();
+                    var items = await ShoppingCardManager.GetAllItemsAsync();
+                    foreach (var item in items)
                     {
-                        var latestOrder = await GetLatestOrder();
-                        List<List<BasicParam>> parametres = new List<List<BasicParam>>();
-                        var items = await ShoppingCardManager.GetAllItemsAsync();
-                        foreach (var item in items)
-                        {
-                            var p = new List<BasicParam>();
-                            p.Add(new BasicParam("order_id", latestOrder.order_id));
-                            p.Add(new BasicParam("product_id", item.product_id.ToString()));
-                            p.Add(new BasicParam("product_count", item.count.ToString()));
-                            p.Add(new BasicParam("product_price", item.price.ToString()));
-                            parametres.Add(p);
-                        }
-                        InsertAllCommand command2 = new InsertAllCommand("order_items", parametres);
-                        var r = await LocalUpdateAsync(command2);
-                        if (r > 0)
-                        {
-                            await ShoppingCardManager.ClearAsync();
-                            return true;
-                        }
+                        var p = new List<BasicParam>();
+                        p.Add(new BasicParam("order_id", latestOrder.order_id));
+                        p.Add(new BasicParam("product_id", item.product_id.ToString()));
+                        p.Add(new BasicParam("product_count", item.count.ToString()));
+                        p.Add(new BasicParam("product_price", item.price.ToString()));
+                        parametres.Add(p);
+                    }
+                    InsertAllCommand command2 = new InsertAllCommand("order_items", parametres);
+                    var r = await LocalUpdateAsync(command2);
+                    if (r > 0)
+                    {
+                        await ShoppingCardManager.ClearAsync();
+                        return true;
                     }
                 }
                 return false;
             }
+
             catch (Exception)
             {
                 throw;

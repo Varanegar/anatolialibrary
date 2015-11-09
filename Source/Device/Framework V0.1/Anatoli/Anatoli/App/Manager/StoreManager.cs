@@ -47,6 +47,8 @@ namespace Anatoli.App.Manager
             try
             {
                 var store = await GetItemAsync(query);
+                if (store == null)
+                    throw new NullStoreException();
                 return store;
             }
             catch (Exception)
@@ -54,6 +56,9 @@ namespace Anatoli.App.Manager
 
                 throw;
             }
+        }
+        public class NullStoreException : Exception
+        {
         }
     }
 }
