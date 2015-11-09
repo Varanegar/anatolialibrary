@@ -75,13 +75,11 @@
         android:gravity="center_horizontal"
         local:customFont="Fonts/anatoli.ttf"
         android:layout_margin="10dp" />
-    <AnatoliAndroid.Components.AnatoliTextView
+    <AnatoliAndroid.Components.AnatoliButton
         android:text="ثبت نام"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerTextView"
-        android:gravity="center_horizontal"
+        android:id="@+id/registerButton"
         local:customFont="Fonts/anatoli.ttf"
-        android:layout_margin="10dp" />
+        style="@style/AnatoliButton.Blue" />
 </LinearLayout>

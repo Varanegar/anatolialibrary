@@ -23,7 +23,7 @@ namespace AnatoliAndroid.Fragments
         EditText _passwordEditText;
         TextView _loginResultTextView;
         Button _loginButton;
-        TextView _registerTextView;
+        Button _registerButton;
         Switch _saveSwitch;
         RelativeLayout _loadingPanel;
         public override void OnCreate(Bundle savedInstanceState)
@@ -37,8 +37,8 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.LoginLayout, container, false);
             _userNameEditText = view.FindViewById<EditText>(Resource.Id.userNameEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
-            _registerTextView = view.FindViewById<TextView>(Resource.Id.registerTextView);
-            _registerTextView.Click += _registerTextView_Click;
+            _registerButton = view.FindViewById<Button>(Resource.Id.registerButton);
+            _registerButton.Click += _registerTextView_Click;
             _loginResultTextView = view.FindViewById<TextView>(Resource.Id.loginResultTextView);
             _loginButton = view.FindViewById<Button>(Resource.Id.loginButton);
             _saveSwitch = view.FindViewById<Switch>(Resource.Id.saveSwitch);

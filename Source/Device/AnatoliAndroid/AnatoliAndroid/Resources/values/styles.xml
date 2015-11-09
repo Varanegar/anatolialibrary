@@ -47,6 +47,9 @@
   <style name="AnatoliButton.Green">
     <item name="android:background">@drawable/greenbutton</item>
   </style>
+  <style name="AnatoliButton.Blue">
+    <item name="android:background">@drawable/bluebutton</item>
+  </style>
   <style name="AnatoliTextField">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
