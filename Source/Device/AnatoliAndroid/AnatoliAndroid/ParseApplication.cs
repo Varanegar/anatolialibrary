@@ -12,6 +12,7 @@ using Android.Widget;
 using Parse;
 using Anatoli.App;
 using Anatoli.Framework.AnatoliBase;
+using Android.Net;
 
 namespace AnatoliAndroid
 {
@@ -27,10 +28,14 @@ namespace AnatoliAndroid
         {
             base.OnCreate();
 
-            // Initialize the Parse client with your Application ID and .NET Key found on
-            // your Parse dashboard
-            ParseClient.Initialize(Configuration.parseAppId, Configuration.parseDotNetKey);
-            ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
+            var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
+            AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
+            if (AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                ParseClient.Initialize(Configuration.parseAppId, Configuration.parseDotNetKey);
+                ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
+            }
+
         }
     }
 }

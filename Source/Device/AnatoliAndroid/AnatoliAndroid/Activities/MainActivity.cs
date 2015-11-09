@@ -268,8 +268,7 @@ namespace AnatoliAndroid.Activities
         protected async override void OnPostCreate(Bundle savedInstanceState)
         {
             base.OnPostCreate(savedInstanceState);
-            var cn = (ConnectivityManager)GetSystemService(ConnectivityService);
-            AnatoliClient.GetInstance(new AndroidWebClient(cn), new SQLiteAndroid(), new AndroidFileIO());
+            
 
             var user = await AnatoliUserManager.ReadUserInfoAsync();
             ListView drawerListView = FindViewById<ListView>(Resource.Id.drawer_list);
