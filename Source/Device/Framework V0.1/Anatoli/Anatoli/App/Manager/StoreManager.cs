@@ -51,10 +51,9 @@ namespace Anatoli.App.Manager
                     throw new NullStoreException();
                 return store;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
         }
         public class NullStoreException : Exception

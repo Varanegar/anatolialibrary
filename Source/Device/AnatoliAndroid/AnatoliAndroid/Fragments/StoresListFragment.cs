@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,7 @@ using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("ÇäÊÎÇÈ İÑæÔÇå")]
+    [FragmentTitle("Ø§Ù†ØªØ®Ø§Ø¨ ÙØ±ÙˆØ´Ú¯Ø§Ù‡")]
     class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, StoreDataModel>
     {
 

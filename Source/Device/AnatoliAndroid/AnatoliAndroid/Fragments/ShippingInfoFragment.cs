@@ -46,13 +46,16 @@ namespace AnatoliAndroid.Fragments
                     try
                     {
                         await OrderManager.SaveOrder();
-                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                        OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
+                        var transaction = FragmentManager.BeginTransaction();
+                        dialog.Show(transaction, "order_saved_dialog");
+                        AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(new OrdersListFragment(), "orders_fragment");
                     }
                     catch (Exception ex)
                     {
                         if (ex.GetType() == typeof(StoreManager.NullStoreException))
                         {
-                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "لطفا ابتدا یک فروشگاه را انتخاب نمایید", ToastLength.Short);
+                            AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
                         }
                     }
 
@@ -65,8 +68,8 @@ namespace AnatoliAndroid.Fragments
             _delivaryDate.ItemSelected += (s, e) =>
             {
                 var selectedDateOption = _dateOptions[_delivaryDate.SelectedItemPosition];
-                var timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
-                _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, timeOptions);
+                _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
+                _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
             };
 
             _editAddressImageView.Click += (s, e) =>
@@ -108,6 +111,19 @@ namespace AnatoliAndroid.Fragments
                 _checkoutImageView.Enabled = false;
                 _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
             }
+        }
+    }
+    public class OrderSavedDialogFragment : DialogFragment
+    {
+        public override Dialog OnCreateDialog(Bundle savedInstanceState)
+        {
+            var builder = new AlertDialog.Builder(Activity)
+                .SetMessage("سفارش شما با موفقیت ثبت گردید. برای اطلاع از وضعیت سفارش خود به بخش پیغام ها یا سفارشات قبلی مراجعه نمایید")
+                .SetPositiveButton("Ok", (sender, args) =>
+                {
+                })
+                .SetTitle("ثبت سفارش");
+            return builder.Create();
         }
     }
 }
