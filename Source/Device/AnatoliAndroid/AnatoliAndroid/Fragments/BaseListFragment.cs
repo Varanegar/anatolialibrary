@@ -21,14 +21,15 @@ namespace AnatoliAndroid.Fragments
     abstract class BaseListFragment<BaseDataManager, DataListAdapter, ListTools, DataModel> : Fragment
         where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
         where DataListAdapter : BaseListAdapter<BaseDataManager, DataModel>, new()
-        where ListTools : ListToolsFragment, new()
+        where ListTools : ListToolsDialog, new()
         where DataModel : BaseDataModel, new()
     {
         protected View _view;
         protected ListView _listView;
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
-        protected Fragment _toolsFragment;
+        protected ListTools _toolsDialogFragment;
+        protected ImageView _listToolsImageView;
         private bool _firstShow = true;
         protected Tuple<string, string> _searchKeyWord;
         public BaseListFragment()
@@ -36,7 +37,7 @@ namespace AnatoliAndroid.Fragments
         {
             _listAdapter = new DataListAdapter();
             _dataManager = new BaseDataManager();
-            _toolsFragment = new ListTools();
+            _toolsDialogFragment = new ListTools();
         }
         public async Task Search(string key, string value)
         {
@@ -51,15 +52,25 @@ namespace AnatoliAndroid.Fragments
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            base.OnCreateView(inflater, container, savedInstanceState);
-
             _view = inflater.Inflate(
                 Resource.Layout.ItemsListLayout, container, false);
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
-            FragmentManager.BeginTransaction().Replace(Resource.Id.listToolsFrameLayout, _toolsFragment).Commit();
-            HideToolbar();
+
+            _listToolsImageView = _view.FindViewById<ImageView>(Resource.Id.listToolsImageView);
+
+            if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
+            {
+                _listToolsImageView.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                _listToolsImageView.Click += (s, e) =>
+                {
+                    ShowTools();
+                };
+            }
             return _view;
         }
         public async override void OnCreate(Bundle savedInstanceState)
@@ -99,13 +110,14 @@ namespace AnatoliAndroid.Fragments
         protected abstract string GetTableName();
         protected abstract string GetWebServiceUri();
 
-        public void HideToolbar()
+        public void HideTools()
         {
-            FragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Hide(_toolsFragment).Commit();
+            _toolsDialogFragment.Dismiss();
         }
-        public void ShowToolbar()
+        public void ShowTools()
         {
-            FragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(_toolsFragment).Commit();
+            var transaction = FragmentManager.BeginTransaction();
+            _toolsDialogFragment.Show(transaction, "tools_dialog");
         }
     }
 }

@@ -146,5 +146,19 @@ namespace Anatoli.App.Manager
             return output;
         }
 
+
+        public static async Task<bool> RemoveFavoritsAll()
+        {
+            UpdateCommand command = new UpdateCommand("products", new BasicParam("favorit", "0"));
+            try
+            {
+                var result = await LocalUpdateAsync(command);
+                return (result > 0) ? true : false;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

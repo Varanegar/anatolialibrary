@@ -16,7 +16,7 @@ using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
-    class OrdersListFragment : BaseListFragment<OrderManager, OrdersListAdapter, ListToolsFragment, OrderModel>
+    class OrdersListFragment : BaseListFragment<OrderManager, OrdersListAdapter, NoListToolsDialog, OrderModel>
     {
         protected override List<Anatoli.Framework.AnatoliBase.QueryParameter> CreateQueryParameters()
         {

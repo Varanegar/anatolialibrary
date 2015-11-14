@@ -21,7 +21,7 @@ using AnatoliAndroid.Activities;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("انتخاب فروشگاه")]
-    class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter,ListToolsFragment, StoreDataModel>
+    class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter,NoListToolsDialog, StoreDataModel>
     {
 
         public StoresListFragment()

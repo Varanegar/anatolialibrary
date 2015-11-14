@@ -13,16 +13,12 @@ using Android.Widget;
 
 namespace AnatoliAndroid.Fragments
 {
-    public class ListToolsFragment : Fragment
+    public class NoListToolsDialog : ListToolsDialog
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-        }
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            return base.OnCreateView(inflater, container, savedInstanceState);
         }
     }
 }
