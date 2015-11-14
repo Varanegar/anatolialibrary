@@ -18,7 +18,7 @@ using Anatoli.Framework.AnatoliBase;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("پیغام ها")]
-    class MessagesListFragment : BaseListFragment<MessageManager, MessageListAdapter, MessageModel>
+    class MessagesListFragment : BaseListFragment<MessageManager, MessageListAdapter,ListToolsFragment, MessageModel>
     {
         public MessagesListFragment()
         {

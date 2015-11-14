@@ -129,6 +129,7 @@
     <Compile Include="Fragments\EditShippingInfoFragment.cs" />
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
+    <Compile Include="Fragments\ListToolsFragment.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />

@@ -3,21 +3,10 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <RelativeLayout
-        android:minWidth="25dp"
-        android:minHeight="45dp"
+    <FrameLayout
+        android:id="@+id/listToolsFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listToolsRelativeLayout"
-        android:padding="5dp">
-        <TextView
-            android:text="List tools"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listToolsTextView"
-            android:visibility="gone" />
-    </RelativeLayout>
+        android:layout_height="wrap_content" />
     <ListView
         android:minWidth="25px"
         android:minHeight="25px"

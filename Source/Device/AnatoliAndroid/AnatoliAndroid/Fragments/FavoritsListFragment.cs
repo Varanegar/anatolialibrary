@@ -20,7 +20,7 @@ using Anatoli.Framework.DataAdapter;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("علاقه مندی ها")]
-    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
+    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter,ListToolsFragment, ProductModel>
     {
         public FavoritsListFragment()
         {
