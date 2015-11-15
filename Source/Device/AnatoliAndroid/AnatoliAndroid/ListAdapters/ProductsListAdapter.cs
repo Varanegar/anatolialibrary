@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,7 +86,7 @@ namespace AnatoliAndroid.ListAdapters
                     }
                 };
             productNameTextView.Text = item.product_name;
-            productPriceTextView.Text = string.Format(" {0} ÊæãÇä", item.price);
+            productPriceTextView.Text = string.Format(" {0} ØªÙˆÙ…Ø§Ù†", item.price);
             return convertView;
         }
 

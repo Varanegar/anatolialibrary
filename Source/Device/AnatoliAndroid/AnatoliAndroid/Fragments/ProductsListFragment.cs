@@ -18,7 +18,7 @@ using Anatoli.Framework.AnatoliBase;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("دسته بندی کالا")]
-    class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
+    class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter,NoListToolsDialog, ProductModel>
     {
         int cat_id = 0;
         protected override List<QueryParameter> CreateQueryParameters()

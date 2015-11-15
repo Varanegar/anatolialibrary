@@ -16,15 +16,23 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.Manager;
 using Anatoli.Framework.DataAdapter;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("علاقه مندی ها")]
-    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, ProductModel>
+    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, FavoritsDialogTools, ProductModel>
     {
         public FavoritsListFragment()
         {
             _listAdapter.FavoritRemoved += _listAdapter_FavoritRemoved;
+            _toolsDialogFragment.FavoritsRemoved += _toolsFragment_FavoritsRemoved;
+        }
+        void _toolsFragment_FavoritsRemoved()
+        {
+            _listAdapter.List.RemoveAll((p) => { return true; });
+            _listView.InvalidateViews();
+            Toast.MakeText(AnatoliApp.GetInstance().Activity, "لیست علاقه مندی ها پاک شد", ToastLength.Short);
         }
 
         void _listAdapter_FavoritRemoved(object sender, ProductModel item)
