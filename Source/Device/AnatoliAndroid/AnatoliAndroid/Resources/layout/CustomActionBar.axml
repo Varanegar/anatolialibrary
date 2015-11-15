@@ -19,11 +19,18 @@
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true" />
         <ImageView
+            p1:src="@drawable/menuitemwhite"
+            p1:layout_width="40dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/menuImageView"
+            p1:layout_alignParentLeft="true"
+            p1:layout_centerVertical="true" />
+        <ImageView
             p1:src="@drawable/ShoppingCard"
             p1:layout_width="50dp"
             p1:layout_height="50dp"
             p1:id="@+id/shoppingCardImageView"
-            p1:layout_alignParentLeft="true"
+            p1:layout_toRightOf="@id/menuImageView"
             p1:layout_centerVertical="true" />
         <TextView
             p1:text="Anatoli"
@@ -39,8 +46,7 @@
             p1:layout_width="50dp"
             p1:layout_height="50dp"
             p1:id="@+id/searchImageView"
-            p1:layout_toRightOf="@id/shoppingCardImageView"
-            p1:layout_centerVertical="true" />
+            p1:layout_toRightOf="@id/shoppingCardImageView" />
     </RelativeLayout>
     <RelativeLayout
         p1:id="@+id/searchRelativeLayout"
