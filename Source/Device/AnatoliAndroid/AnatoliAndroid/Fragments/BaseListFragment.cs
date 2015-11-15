@@ -15,6 +15,7 @@ using Anatoli.Framework.DataAdapter;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -58,17 +59,18 @@ namespace AnatoliAndroid.Fragments
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
 
-            _listToolsImageView = _view.FindViewById<ImageView>(Resource.Id.listToolsImageView);
+
 
             if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
             {
-                _listToolsImageView.Visibility = ViewStates.Gone;
+                AnatoliApp.GetInstance().HideMenuIcon();
             }
             else
             {
-                _listToolsImageView.Click += (s, e) =>
+                AnatoliApp.GetInstance().ShowMenuIcon();
+                AnatoliApp.GetInstance().MenuClicked = () =>
                 {
-                    ShowTools();
+                    _toolsDialogFragment.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
                 };
             }
             return _view;

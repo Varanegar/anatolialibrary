@@ -11,13 +11,4 @@
         p1:layout_width="match_parent"
         p1:layout_height="match_parent"
         p1:id="@+id/itemsListView" />
-    <ImageView
-        p1:layout_width="60dp"
-        p1:layout_height="60dp"
-        p1:background="@drawable/menuitemcircle"
-        p1:id="@+id/listToolsImageView"
-        p1:layout_gravity="center_horizontal"
-        p1:layout_alignParentBottom="true"
-        p1:layout_centerHorizontal="true"
-        p1:layout_margin="10dp" />
 </RelativeLayout>

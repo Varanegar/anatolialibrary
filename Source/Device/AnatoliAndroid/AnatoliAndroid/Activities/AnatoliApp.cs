@@ -37,6 +37,24 @@ namespace AnatoliAndroid.Activities
         ImageView _searchBarImageView;
         ImageView _searchButtonImageView;
         ImageView _toolBarImageView;
+        ImageView _menuIconImageView;
+        public void HideMenuIcon()
+        {
+            _menuIconImageView.Visibility = ViewStates.Gone;
+        }
+        public void ShowMenuIcon()
+        {
+            _menuIconImageView.Visibility = ViewStates.Visible;
+        }
+        public delegate void ProcessMenu();
+        public ProcessMenu MenuClicked;
+        void OnMenuClick()
+        {
+            if (MenuClicked != null)
+            {
+                MenuClicked();
+            }
+        }
         TextView _toolBarTextView;
         AutoCompleteTextView _searchEditText;
         ArrayAdapter _autoCompleteAdapter;
@@ -91,7 +109,7 @@ namespace AnatoliAndroid.Activities
                 await Search(_searchEditText.Text);
             };
 
-            
+
             _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
             _autoCompleteAdapter = new ArrayAdapter(_activity, Resource.Layout.AutoCompleteDropDownLayout, _autoCompleteOptions);
 
@@ -121,6 +139,9 @@ namespace AnatoliAndroid.Activities
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _toolBarTextView.Text = "دسته بندی کالا";
 
+            _menuIconImageView = ToolBar.FindViewById<ImageView>(Resource.Id.menuImageView);
+
+            _menuIconImageView.Click += (s, e) => { OnMenuClick(); };
         }
 
         async System.Threading.Tasks.Task Search(string value)
