@@ -13,10 +13,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/removeAllFavoritsButton"
         android:layout_gravity="right"
+        local:customFont="Fonts/anatoli.ttf"
         android:layout_margin="5dp" />
     <AnatoliAndroid.Components.AnatoliButton
         android:text="اشتراک گزاری لیست علاقه مندی ها"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        local:customFont="Fonts/anatoli.ttf"
         android:id="@+id/button1" />
 </LinearLayout>

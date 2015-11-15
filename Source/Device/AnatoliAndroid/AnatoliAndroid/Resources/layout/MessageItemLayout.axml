@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     p1:orientation="horizontal"
     p1:layout_width="match_parent"
     p1:layout_height="wrap_content"
@@ -19,13 +20,14 @@
         p1:layout_height="match_parent"
         p1:id="@+id/relativeLayout1"
         p1:layout_weight="20">
-        <TextView
+        <AnatoliAndroid.Components.AnatoliTextView
             p1:text="متن پیام"
             p1:textAppearance="?android:attr/textAppearanceMedium"
             p1:layout_width="match_parent"
             p1:layout_height="wrap_content"
             p1:id="@+id/contentTextView"
             p1:minHeight="40dp"
+            local:customFont="Fonts/anatoli.ttf"
             p1:gravity="right" />
         <LinearLayout
             p1:orientation="horizontal"
@@ -37,26 +39,29 @@
             p1:layout_alignParentBottom="true"
             p1:layout_below="@id/contentTextView"
             p1:weightSum="3">
-            <TextView
+            <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="Small Text"
                 p1:textAppearance="?android:attr/textAppearanceSmall"
                 p1:layout_width="wrap_content"
                 p1:layout_height="match_parent"
                 p1:id="@+id/timeTextView"
+                local:customFont="Fonts/anatoli.ttf"
                 p1:layout_weight="1" />
-            <TextView
+            <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="Small Text"
                 p1:textAppearance="?android:attr/textAppearanceSmall"
                 p1:layout_width="wrap_content"
                 p1:layout_height="match_parent"
                 p1:id="@+id/dateTextView"
+                local:customFont="Fonts/anatoli.ttf"
                 p1:layout_weight="1" />
-            <TextView
+            <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="Small Text"
                 p1:textAppearance="?android:attr/textAppearanceSmall"
                 p1:layout_width="wrap_content"
                 p1:layout_height="match_parent"
                 p1:id="@+id/storeNameTextView"
+                local:customFont="Fonts/anatoli.ttf"
                 p1:layout_weight="1" />
         </LinearLayout>
     </RelativeLayout>
