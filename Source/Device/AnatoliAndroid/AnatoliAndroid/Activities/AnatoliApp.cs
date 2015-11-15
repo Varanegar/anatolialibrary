@@ -42,7 +42,7 @@ namespace AnatoliAndroid.Activities
         ArrayAdapter _autoCompleteAdapter;
         string[] _autoCompleteOptions;
         bool _searchBar = false;
-
+        public bool SearchBarEnabled { get { return _searchBar; } }
 
         ProductsListFragment _productsListF;
         StoresListFragment _storesListF;
@@ -54,12 +54,26 @@ namespace AnatoliAndroid.Activities
 
         ProductManager _pm;
 
-        public void DrawToolbar()
+        public void CloseSearchBar()
         {
-            _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
-            _toolBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.toolbarRelativeLayout);
             _searchBarLayout.Visibility = ViewStates.Gone;
             _toolBarLayout.Visibility = ViewStates.Visible;
+            _searchEditText.Text = "";
+            _searchBar = false;
+        }
+        public void OpenSearchBar()
+        {
+            _toolBarLayout.Visibility = ViewStates.Gone;
+            _searchBarLayout.Visibility = ViewStates.Visible;
+            _searchBar = true;
+        }
+        public void DrawToolbar()
+        {
+            _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
+
+            _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
+            _toolBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.toolbarRelativeLayout);
+            CloseSearchBar();
 
             _toolBarImageView = ToolBar.FindViewById<ImageView>(Resource.Id.toolbarImageView);
             _toolBarImageView.Click += toolbarImageView_Click;
@@ -77,7 +91,7 @@ namespace AnatoliAndroid.Activities
                 await Search(_searchEditText.Text);
             };
 
-            _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
+            
             _autoCompleteOptions = new String[] { "نوشیدنی", "لبنیات", "پروتئینی", "خواربار", "روغن", "پنیر", "شیر", "ماست", "کره", "دوغ", "گوشت" };
             _autoCompleteAdapter = new ArrayAdapter(_activity, Resource.Layout.AutoCompleteDropDownLayout, _autoCompleteOptions);
 
@@ -122,9 +136,7 @@ namespace AnatoliAndroid.Activities
         }
         void _searchBarImageView_Click(object sender, EventArgs e)
         {
-            _searchBarLayout.Visibility = ViewStates.Gone;
-            _searchEditText.Text = "";
-            _toolBarLayout.Visibility = ViewStates.Visible;
+            CloseSearchBar();
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 
@@ -143,8 +155,7 @@ namespace AnatoliAndroid.Activities
             }
             else
             {
-                _toolBarLayout.Visibility = ViewStates.Gone;
-                _searchBarLayout.Visibility = ViewStates.Visible;
+                OpenSearchBar();
             }
         }
 

@@ -79,6 +79,11 @@ namespace AnatoliAndroid.Activities
                 AnatoliApp.GetInstance().DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                 return;
             }
+            if (AnatoliApp.GetInstance().SearchBarEnabled)
+            {
+                AnatoliApp.GetInstance().CloseSearchBar();
+                return;
+            }
             if (!AnatoliApp.GetInstance().BackFragment())
             {
                 if (!exit)
