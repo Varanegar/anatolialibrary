@@ -22,4 +22,10 @@
         p1:layout_marginRight="10dp"
         local:customFont="Fonts/anatoli.ttf"
         p1:layout_centerVertical="true" />
+    <View
+        p1:layout_width="match_parent"
+        p1:layout_height="1dp"
+        p1:layout_toLeftOf="@id/itemIconImageView"
+        p1:id="@+id/horizontalLineView"
+        p1:background="@color/lgray" />
 </RelativeLayout>
