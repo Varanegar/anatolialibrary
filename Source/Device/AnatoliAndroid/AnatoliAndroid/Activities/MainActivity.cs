@@ -52,6 +52,7 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             AnatoliApp.GetInstance().RefreshMenuItems();
+            AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
             try
             {
                 await StoreManager.GetDefault();

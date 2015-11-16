@@ -26,13 +26,30 @@
             p1:id="@+id/menuImageView"
             p1:layout_alignParentLeft="true"
             p1:layout_centerVertical="true" />
-        <ImageView
-            p1:src="@drawable/ShoppingCard"
-            p1:layout_width="50dp"
-            p1:layout_height="50dp"
-            p1:id="@+id/shoppingCardImageView"
+        <RelativeLayout
+            p1:id="@+id/shoppingbarRelativeLayout"
+            p1:layout_width="wrap_content"
             p1:layout_toRightOf="@id/menuImageView"
-            p1:layout_centerVertical="true" />
+            p1:layout_height="50dp">
+            <ImageView
+                p1:src="@drawable/ShoppingCard"
+                p1:layout_width="50dp"
+                p1:layout_height="50dp"
+                p1:id="@+id/shoppingCardImageView"
+                p1:layout_centerVertical="true"
+                p1:layout_centerInParent="true" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                p1:text="0"
+                p1:layout_width="15dp"
+                p1:layout_height="15dp"
+                p1:id="@+id/shoppingCardTextView"
+                p1:gravity="center"
+                local:customFont="Fonts/anatoli.ttf"
+                p1:layout_centerHorizontal="true"
+                p1:background="@drawable/circle"
+                p1:layout_marginTop="4dp"
+                p1:layout_marginLeft="8dp" />
+        </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
             p1:text="Anatoli"
             p1:layout_width="wrap_content"
@@ -48,7 +65,7 @@
             p1:layout_width="50dp"
             p1:layout_height="50dp"
             p1:id="@+id/searchImageView"
-            p1:layout_toRightOf="@id/shoppingCardImageView" />
+            p1:layout_toRightOf="@id/shoppingbarRelativeLayout" />
     </RelativeLayout>
     <RelativeLayout
         p1:id="@+id/searchRelativeLayout"

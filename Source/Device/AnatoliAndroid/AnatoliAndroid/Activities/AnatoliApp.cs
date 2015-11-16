@@ -38,6 +38,8 @@ namespace AnatoliAndroid.Activities
         ImageView _searchButtonImageView;
         ImageView _toolBarImageView;
         ImageView _menuIconImageView;
+        TextView _shoppingCardTextView;
+        public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
         public void HideMenuIcon()
         {
             _menuIconImageView.Visibility = ViewStates.Gone;
@@ -85,9 +87,11 @@ namespace AnatoliAndroid.Activities
             _searchBarLayout.Visibility = ViewStates.Visible;
             _searchBar = true;
         }
-        public void DrawToolbar()
+        public void CreateToolbar()
         {
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
+
+            _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
 
             _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
             _toolBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.toolbarRelativeLayout);
@@ -227,7 +231,7 @@ namespace AnatoliAndroid.Activities
             _drawerListView = drawerListView;
             _drawerListView.ItemClick += _drawerListView_ItemClick;
             ToolBar = toolbar;
-            DrawToolbar();
+            CreateToolbar();
             _pm = new ProductManager();
         }
         async void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)

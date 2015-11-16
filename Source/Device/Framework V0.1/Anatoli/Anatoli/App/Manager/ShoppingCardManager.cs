@@ -34,7 +34,8 @@ namespace Anatoli.App.Manager
 
         public static double GetTotalPrice()
         {
-            DBQuery query = new SelectQuery("shopping_card_view");
+            SelectQuery query = new SelectQuery("shopping_card_view");
+            query.Unlimited = true;
             var result = GetList(query, null);
             double p = 0;
             foreach (var item in result)
@@ -45,19 +46,38 @@ namespace Anatoli.App.Manager
         }
         public static List<ProductModel> GetAllItems()
         {
-            DBQuery query = new SelectQuery("shopping_card_view");
+            SelectQuery query = new SelectQuery("shopping_card_view");
+            query.Unlimited = true;
             return GetList(query, null);
         }
         public static async Task<List<ProductModel>> GetAllItemsAsync()
         {
-            DBQuery query = new SelectQuery("shopping_card_view");
-            return await GetListAsync(query, null);
+            SelectQuery query = new SelectQuery("shopping_card_view");
+            query.Unlimited = true;
+            var list = await GetListAsync(query, null);
+            return list;
         }
 
         internal static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
             return (await LocalUpdateAsync(command) > 0) ? true : false;
+        }
+
+        public static async Task<int> GetItemsCountAsync()
+        {
+            var list = await GetAllItemsAsync();
+            if (list != null)
+            {
+                int count = 0;
+                foreach (var item in list)
+                {
+                    count += item.count;
+                }
+                return count;
+            }
+            else
+                return 0;
         }
     }
 }

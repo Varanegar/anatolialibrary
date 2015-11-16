@@ -66,7 +66,10 @@ namespace Anatoli.Framework.Manager
                 throw new ArgumentNullException();
             }
             var list = await Task.Run(() => { return BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery); });
-            return list;
+            if (list.Count == 0)
+                return new List<DataModel>();
+            else
+                return list;
         }
         public static async Task<DataModel> GetItemAsync(DBQuery query)
         {

@@ -188,13 +188,14 @@ namespace Anatoli.Framework.DataAdapter
             {
                 try
                 {
+                    var result = new List<DataModel>();
                     var command = connection.CreateCommand(dbQuery.GetCommand());
-                    var result = command.ExecuteQuery<DataModel>();
+                    result = command.ExecuteQuery<DataModel>();
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw;
+                    throw e;
                 }
             }
         }

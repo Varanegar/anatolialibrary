@@ -70,6 +70,7 @@ namespace AnatoliAndroid.ListAdapters
                     item.count++;
                     NotifyDataSetChanged();
                     OnDataChanged();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 }
             };
             productRemoveButton.Click += async (o, e) =>
@@ -83,6 +84,7 @@ namespace AnatoliAndroid.ListAdapters
                         }
                         NotifyDataSetChanged();
                         OnDataChanged();
+                        AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     }
                 };
             productNameTextView.Text = item.product_name;

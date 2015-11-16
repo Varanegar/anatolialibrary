@@ -155,6 +155,10 @@ namespace Anatoli.Framework.AnatoliBase
         List<SearchFilterParam> SearchFilters;
         List<CategoryFilterParam> CategoryFilters;
         List<SortParam> Sorts;
+        /// <summary>
+        /// Not Recommended for big result sets
+        /// </summary>
+        public bool Unlimited { get; set; }
         public SelectQuery(string dataTableName, params QueryParameter[] options)
             : base(dataTableName)
         {
@@ -275,9 +279,12 @@ namespace Anatoli.Framework.AnatoliBase
                     q += string.Format(" {0} DESC", Sorts.Last<SortParam>().FieldName);
             }
             // todo : add filters and order by on several fields
-            q += string.Format(" LIMIT {0},{1}", Index.ToString(), Limit.ToString());
+            if (!Unlimited)
+                q += string.Format(" LIMIT {0},{1}", Index.ToString(), Limit.ToString());
             return q;
         }
+
+
     }
     public class DeleteCommand : DBQuery
     {
