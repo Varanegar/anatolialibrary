@@ -50,14 +50,34 @@ namespace AnatoliAndroid.ListAdapters
             itemTextView.Text = item.Name;
             if (item.ImageResId != -1)
                 itemImageView.SetImageResource(item.ImageResId);
-            else
-                itemImageView.Visibility = ViewStates.Invisible;
+            else if (item.GetType() == typeof(DrawerPCItem))
+            {
+                var pcItem = item as DrawerPCItem;
+                if (pcItem.ItemType == DrawerPCItem.ItemTypes.Parent)
+                {
+                    itemImageView.SetImageResource(Resource.Drawable.SearchBack);
+                }
+                else
+                {
+                    itemImageView.Visibility = ViewStates.Invisible;
+                    if (pcItem.ItemType == DrawerPCItem.ItemTypes.Leaf)
+                    {
+                        convertView.SetBackgroundResource(Resource.Color.lllgray);
+                    }
+                }
+            }
+
             if (item.GetType() == typeof(DrawerMainItem))
             {
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.MainMenu)
                 {
-                    relativeLayout.SetBackgroundColor(Android.Graphics.Color.Gray);
+                    relativeLayout.SetBackgroundResource(Resource.Color.llgray);
                 }
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Login || item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
+                {
+                    relativeLayout.SetBackgroundResource(Resource.Color.llgray);
+                }
+
             }
             return convertView;
         }
@@ -76,12 +96,19 @@ namespace AnatoliAndroid.ListAdapters
     }
     class DrawerPCItem : DrawerItemType
     {
+        public ItemTypes ItemType;
 
-        public DrawerPCItem(int p1, string p2)
-            : base(p1, p2, -1)
+        public DrawerPCItem(int itemId, string itemName, ItemTypes type = ItemTypes.Normal)
+            : base(itemId, itemName, -1)
         {
+            ItemType = type;
         }
-
+        public enum ItemTypes
+        {
+            Parent = 0,
+            Normal,
+            Leaf
+        }
     }
     class DrawerMainItem : DrawerItemType
     {
@@ -103,6 +130,7 @@ namespace AnatoliAndroid.ListAdapters
             public const int Logout = 8;
             public const int Messages = 9;
             public const int Orders = 10;
+            public const int Avatar = 11;
         }
     }
 }

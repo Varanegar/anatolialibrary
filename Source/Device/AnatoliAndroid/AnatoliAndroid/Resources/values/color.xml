@@ -9,4 +9,8 @@
   <color name="dblue">#2446A0</color>
   <color name="ddblue">#203B85</color>
   <color name="lgray">#E0E0E0</color>
+  <color name="llgray">#E1E2E3</color>
+  <color name="lllgray">#EEEFEF</color>
+
+
 </resources>

@@ -18,7 +18,7 @@ using Anatoli.Framework.AnatoliBase;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("دسته بندی کالا")]
-    class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter,NoListToolsDialog, ProductModel>
+    class ProductsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
         int cat_id = 0;
         protected override List<QueryParameter> CreateQueryParameters()
@@ -26,13 +26,13 @@ namespace AnatoliAndroid.Fragments
             var parameters = new List<QueryParameter>();
             parameters.Add(new SortParam("order_count", SortTypes.DESC));
             ProductManager pm = new ProductManager();
-            var ids = pm.GetCategories(cat_id);
+            var ids = CategoryManager.GetCategories(cat_id);
             parameters.Add(new CategoryFilterParam("cat_id", cat_id.ToString()));
             if (ids != null)
             {
                 foreach (var item in ids)
                 {
-                    parameters.Add(new CategoryFilterParam("cat_id", item.Item1.ToString()));
+                    parameters.Add(new CategoryFilterParam("cat_id", item.catId.ToString()));
                 }
             }
 

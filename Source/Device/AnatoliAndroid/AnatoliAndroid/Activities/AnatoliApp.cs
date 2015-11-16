@@ -248,12 +248,14 @@ namespace AnatoliAndroid.Activities
                             _productsListF.ExitSearchMode();
                             _productsListF.SetCatId(0);
                         }
-                        var temp = _pm.GetCategories(0);
+                        var temp = CategoryManager.GetCategories(0);
                         var categories = new List<DrawerItemType>();
                         categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                        var current = CategoryManager.GetParentCategory(0);
+                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
                         foreach (var item in temp)
                         {
-                            var it = new DrawerPCItem(item.Item1, item.Item2);
+                            var it = new DrawerPCItem(item.catId, item.name);
                             categories.Add(it);
                         }
                         AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -312,15 +314,34 @@ namespace AnatoliAndroid.Activities
             }
             else
             {
-                var temp = _pm.GetCategories(selectedItem.ItemId);
+
+                if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
+                {
+                    _productsListF.SetCatId(selectedItem.ItemId);
+                    AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
+                    DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                    return;
+                }
+                var temp = CategoryManager.GetCategories(selectedItem.ItemId);
                 if (temp != null)
                 {
                     _productsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
                     categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                    var parent = CategoryManager.GetParentCategory(selectedItem.ItemId);
+
+                    var current = CategoryManager.GetCategoryInfo(selectedItem.ItemId);
+                    if (current.catId != parent.catId)
+                    {
+                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Parent));
+                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
+                    }
+                    else
+                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Leaf));
+
                     foreach (var item in temp)
                     {
-                        var it = new DrawerPCItem(item.Item1, item.Item2);
+                        var it = new DrawerPCItem(item.catId, item.name);
                         categories.Add(it);
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -328,6 +349,7 @@ namespace AnatoliAndroid.Activities
                 }
                 else
                 {
+                    AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                 }
 
@@ -394,7 +416,29 @@ namespace AnatoliAndroid.Activities
                 _drawerListView.InvalidateViews();
                 return;
             }
+
             var mainItems = new List<DrawerItemType>();
+            if (AnatoliUser != null)
+            {
+
+                var avatarMenuEntry = new DrawerMainItem();
+                avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
+                avatarMenuEntry.Name = AnatoliUser.UserName;
+                avatarMenuEntry.ImageResId = Resource.Drawable.Avatar;
+                mainItems.Add(avatarMenuEntry);
+
+            }
+            else
+            {
+                var loginMenuEntry = new DrawerMainItem();
+                loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
+                loginMenuEntry.Name = "ورود";
+                loginMenuEntry.ImageResId = Resource.Drawable.Login;
+                mainItems.Add(loginMenuEntry);
+            }
+
+
+
             var categoriesMenuEntry = new DrawerMainItem();
             categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
             categoriesMenuEntry.Name = "دسته بندی کالا";
@@ -436,25 +480,6 @@ namespace AnatoliAndroid.Activities
             storesMenuEntry.Name = "انتخاب فروشگاه";
             storesMenuEntry.ImageResId = Resource.Drawable.Store;
             mainItems.Add(storesMenuEntry);
-
-            if (AnatoliUser != null)
-            {
-
-                var profileMenuEntry = new DrawerMainItem();
-                profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
-                profileMenuEntry.Name = "مشخصات من";
-                profileMenuEntry.ImageResId = Resource.Drawable.Profile;
-                mainItems.Add(profileMenuEntry);
-
-            }
-            else
-            {
-                var loginMenuEntry = new DrawerMainItem();
-                loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
-                loginMenuEntry.Name = "ورود";
-                loginMenuEntry.ImageResId = Resource.Drawable.Login;
-                mainItems.Add(loginMenuEntry);
-            }
 
             var helpMenuEntry = new DrawerMainItem();
             helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
