@@ -2,8 +2,8 @@
   <color name="red">#FF0000</color>
   <color name="white">#FFFFFF</color>
   <color name="lgreen">#558B2F</color>
-  <color name="dgreen">#33691E</color>
-  <color name="ddgreen">#255A10</color>
+  <color name="dgreen">#558B2F</color>
+  <color name="ddgreen">#33691E</color>
   <color name="black">#000000</color>
   <color name="gray">#B3B3B3</color>
   <color name="dblue">#2446A0</color>

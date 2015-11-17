@@ -9,9 +9,9 @@
     <item name="windowActionBar">false</item>
     <!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
     <!-- colorPrimary is used for the default action bar background -->
-    <item name="colorPrimary">#558B2F</item>
+    <item name="colorPrimary">@color/dgreen</item>
     <!-- colorPrimaryDark is used for the status bar -->
-    <item name="colorPrimaryDark">#33691E</item>
+    <item name="colorPrimaryDark">@color/ddgreen</item>
     <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
     <item name="colorAccent">#FF4081</item>
@@ -37,12 +37,13 @@
     <item name="android:padding">20dp</item>
   </style>
   <style name="AnatoliButton" parent="android:Widget.Button">
-    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textColor">@color/white</item>
     <item name="android:typeface">monospace</item>
     <item name="android:padding">5dp</item>
     <item name="android:layout_margin">10dp</item>
+    <item name="android:maxWidth">50dp</item>
   </style>
   <style name="AnatoliButton.Green">
     <item name="android:background">@drawable/greenbutton</item>
@@ -59,5 +60,5 @@
     <item name="android:layout_margin">3dp</item>
   </style>
 
-  
+
 </resources>

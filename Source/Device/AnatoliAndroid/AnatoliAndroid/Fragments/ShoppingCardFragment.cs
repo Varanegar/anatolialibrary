@@ -39,6 +39,7 @@ namespace AnatoliAndroid.Fragments
             _itemsListView = view.FindViewById<ListView>(Resource.Id.shoppingCardListView);
             _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
+            _checkoutButton.UpdateWidth();
             _checkoutButton.Click += (s, e) =>
                 {
                     AnatoliApp.GetInstance().SetFragment<ShippingInfoFragment>(new ShippingInfoFragment(), "shipping_fragment");

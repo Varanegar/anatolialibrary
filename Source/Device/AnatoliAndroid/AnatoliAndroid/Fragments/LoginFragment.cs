@@ -38,9 +38,11 @@ namespace AnatoliAndroid.Fragments
             _userNameEditText = view.FindViewById<EditText>(Resource.Id.userNameEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _registerButton = view.FindViewById<Button>(Resource.Id.registerButton);
+            _registerButton.UpdateWidth();
             _registerButton.Click += _registerTextView_Click;
             _loginResultTextView = view.FindViewById<TextView>(Resource.Id.loginResultTextView);
             _loginButton = view.FindViewById<Button>(Resource.Id.loginButton);
+            _loginButton.UpdateWidth();
             _saveSwitch = view.FindViewById<Switch>(Resource.Id.saveSwitch);
             _loadingPanel = view.FindViewById<RelativeLayout>(Resource.Id.loadingPanel);
             _loginButton.Click += loginButton_Click;

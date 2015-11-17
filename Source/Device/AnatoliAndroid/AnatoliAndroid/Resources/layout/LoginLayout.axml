@@ -34,11 +34,12 @@
     </RelativeLayout>
     <AnatoliAndroid.Components.AnatoliButton
         android:text="ورود"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
         local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliButton.Green" />
+        style="@style/AnatoliButton.Green"
+        android:layout_gravity="center_horizontal" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,9 +78,10 @@
         android:layout_margin="10dp" />
     <AnatoliAndroid.Components.AnatoliButton
         android:text="ثبت نام"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/registerButton"
         local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliButton.Blue" />
+        style="@style/AnatoliButton.Blue"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

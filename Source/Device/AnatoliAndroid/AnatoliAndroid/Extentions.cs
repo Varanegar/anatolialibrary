@@ -23,5 +23,13 @@ namespace AnatoliAndroid
             else
                 return "";
         }
+
+        public static void UpdateWidth(this Button button)
+        {
+            Android.Util.DisplayMetrics metrics = new Android.Util.DisplayMetrics();
+            AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
+            button.SetWidth(2 * (metrics.WidthPixels / 3));
+        }
+
     }
 }
