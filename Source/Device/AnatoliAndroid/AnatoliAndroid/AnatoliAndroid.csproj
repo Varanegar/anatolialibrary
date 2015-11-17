@@ -356,12 +356,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\MenuItemCircle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\MenuItemCircleGray.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\menu\" />
   </ItemGroup>
   <ItemGroup>

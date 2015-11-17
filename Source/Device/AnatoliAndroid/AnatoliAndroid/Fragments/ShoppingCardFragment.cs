@@ -25,6 +25,7 @@ namespace AnatoliAndroid.Fragments
     {
         ListView _itemsListView;
         TextView _factorPrice;
+        TextView _itemCountTextView;
         ProductsListAdapter _listAdapter;
         Button _checkoutButton;
 
@@ -38,6 +39,7 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.ShoppingCardLayout, container, false);
             _itemsListView = view.FindViewById<ListView>(Resource.Id.shoppingCardListView);
             _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
+            _itemCountTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
             _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
             _checkoutButton.UpdateWidth();
             _checkoutButton.Click += (s, e) =>
@@ -49,13 +51,15 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
-            _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
+            _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+            _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();
             _listAdapter.List = await ShoppingCardManager.GetAllItemsAsync();
             _listAdapter.NotifyDataSetChanged();
-            _listAdapter.DataChanged += (s) =>
+            _listAdapter.DataChanged += async (s) =>
             {
-                _factorPrice.Text = ShoppingCardManager.GetTotalPrice().ToString() + " تومان";
+                _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+                _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
                 if (_listAdapter.Count == 0)
                     _checkoutButton.Enabled = false;
                 else

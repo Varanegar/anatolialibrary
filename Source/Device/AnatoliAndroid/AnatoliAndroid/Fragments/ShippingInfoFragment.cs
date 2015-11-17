@@ -18,11 +18,14 @@ namespace AnatoliAndroid.Fragments
     public class ShippingInfoFragment : Fragment
     {
         TextView _deliveryAddress;
-
+        TextView _factorePriceTextView;
+        TextView _deliveryTelTextView;
+        TextView _storeTelTextView;
+        TextView _countTextView;
         Spinner _delivaryDate;
         Spinner _deliveryTime;
         ImageView _editAddressImageView;
-        ImageView _checkoutImageView;
+        Button _checkoutButton;
         ImageView _callImageView;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
@@ -35,13 +38,19 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ShippingInfoLayout, container, false);
-            _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
 
+            _countTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
+            _callImageView = view.FindViewById<ImageView>(Resource.Id.callImageView);
+            _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
+            _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
+            _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
+            _deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
-            _checkoutImageView = view.FindViewById<ImageView>(Resource.Id.checkoutImageView);
-            _checkoutImageView.Click += async (s, e) =>
+            _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
+            _checkoutButton.UpdateWidth();
+            _checkoutButton.Click += async (s, e) =>
                 {
                     try
                     {
@@ -79,15 +88,14 @@ namespace AnatoliAndroid.Fragments
                 editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
                 {
                     _deliveryAddress.Text = address + " " + name;
-                    if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text))
+                    _deliveryTelTextView.Text = tel;
+                    if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryTelTextView.Text))
                     {
-                        _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
-                        _checkoutImageView.Enabled = false;
+                        _checkoutButton.Enabled = false;
                     }
                     else
                     {
-                        _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
-                        _checkoutImageView.Enabled = true;
+                        _checkoutButton.Enabled = true;
                     }
                 };
                 editShippingDialog.Show(transaction, "shipping_dialog");
@@ -104,13 +112,33 @@ namespace AnatoliAndroid.Fragments
             if (shippingInfo != null)
             {
                 _deliveryAddress.Text = shippingInfo.address + " " + shippingInfo.name;
-                _checkoutImageView.SetImageResource(Resource.Drawable.Checkout);
+                _deliveryTelTextView.Text = shippingInfo.tel;
+                _checkoutButton.Enabled = true;
             }
             else
             {
-                _checkoutImageView.Enabled = false;
-                _checkoutImageView.SetImageResource(Resource.Drawable.CheckoutGray);
+                _checkoutButton.Enabled = false;
             }
+            _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+            _countTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
+            string tel = (await StoreManager.GetDefault()).store_tel;
+            if (String.IsNullOrEmpty(tel))
+            {
+                _storeTelTextView.Text = "نا مشخص";
+                _callImageView.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                _storeTelTextView.Text = tel;
+                _callImageView.Visibility = ViewStates.Visible;
+                _callImageView.Click += (s, e) =>
+                    {
+                        var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
+                        var intent = new Intent(Intent.ActionDial, uri);
+                        StartActivity(intent);
+                    };
+            }
+
         }
     }
     public class OrderSavedDialogFragment : DialogFragment

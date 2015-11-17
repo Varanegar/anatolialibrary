@@ -32,11 +32,11 @@ namespace Anatoli.App.Manager
             return await LocalUpdateAsync(query) > 0 ? true : false;
         }
 
-        public static double GetTotalPrice()
+        public async static Task<double> GetTotalPriceAsync()
         {
             SelectQuery query = new SelectQuery("shopping_card_view");
             query.Unlimited = true;
-            var result = GetList(query, null);
+            var result = await GetListAsync(query, null);
             double p = 0;
             foreach (var item in result)
             {

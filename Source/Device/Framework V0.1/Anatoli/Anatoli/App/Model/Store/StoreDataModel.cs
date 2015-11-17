@@ -17,5 +17,6 @@ namespace Anatoli.App.Model.Store
         public string store_province { get; set; }
         public int store_id { get; set; }
         public int selected { get; set; }
+        public string store_tel { get; set; }
     }
 }
