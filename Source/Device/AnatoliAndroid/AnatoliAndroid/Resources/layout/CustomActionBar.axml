@@ -42,6 +42,7 @@
                 p1:text="0"
                 p1:layout_width="15dp"
                 p1:layout_height="15dp"
+                p1:textColor="@color/white"
                 p1:id="@+id/shoppingCardTextView"
                 p1:gravity="center"
                 local:customFont="Fonts/anatoli.ttf"
