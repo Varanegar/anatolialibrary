@@ -1608,9 +1608,6 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0018
 			public const int beginning = 2131427352;
 			
-			// aapt resource value: 0x7f0b005f
-			public const int button1 = 2131427423;
-			
 			// aapt resource value: 0x7f0b006f
 			public const int button2 = 2131427439;
 			
@@ -1985,6 +1982,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f0b004c
 			public const int select_dialog_listview = 2131427404;
+			
+			// aapt resource value: 0x7f0b005f
+			public const int shareFavortisButton = 2131427423;
 			
 			// aapt resource value: 0x7f0b00b5
 			public const int shippingAddressRelativeLayout = 2131427509;

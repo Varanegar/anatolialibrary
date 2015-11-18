@@ -26,7 +26,11 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreateView(inflater, container, savedInstanceState);
             _view = inflater.Inflate(Resource.Layout.FavoritsToolsLayout, container, false);
+
+            var shareButton = _view.FindViewById<Button>(Resource.Id.shareFavortisButton);
+            shareButton.UpdateWidth();
             var removeAllButton = _view.FindViewById<Button>(Resource.Id.removeAllFavoritsButton);
+            removeAllButton.UpdateWidth();
             removeAllButton.Click += async (s, e) =>
                 {
                     var result = await ProductManager.RemoveFavoritsAll();
