@@ -33,6 +33,7 @@ namespace AnatoliAndroid.Fragments
             _nameEditText = view.FindViewById<EditText>(Resource.Id.nameEditText);
             _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
             _button = view.FindViewById<Button>(Resource.Id.saveButton);
+            _button.UpdateWidth();
             _button.Click += async (s, e) =>
                 {
                     if (await ShippingInfoManager.NewShippingAddress(_addressEditText.Text, _nameEditText.Text, _telEditText.Text))

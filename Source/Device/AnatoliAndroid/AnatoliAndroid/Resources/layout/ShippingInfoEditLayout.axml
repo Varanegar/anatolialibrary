@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <EditText
-        android:inputType="textMultiLine"
+    android:layout_height="fill_parent"
+    style="@style/AnatoliDialog">
+    <AnatoliAndroid.Components.AnatoliEditText
+        android:inputType="textImeMultiLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/addressEditText"
-        android:minHeight="200dp"
-        android:padding="5dp"
+        android:imeOptions="actionNext"
+        style="@style/AnatoliTextField"
         android:hint="آدرس" />
-    <EditText
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameEditText"
-        android:hint="نام گیرنده" />
-    <EditText
+        local:customFont="Fonts/anatoli.ttf"
+        android:hint="نام گیرنده"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        style="@style/AnatoliTextField" />
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/telEditText"
-        android:hint="شماره تماس" />
-    <Button
+        local:customFont="Fonts/anatoli.ttf"
+        android:imeOptions="actionDone"
+        android:hint="شماره تماس"
+        style="@style/AnatoliTextField"
+        android:inputType="phone" />
+    <AnatoliAndroid.Components.AnatoliButton
         android:text="ثبت"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/saveButton" />
+        android:id="@+id/saveButton"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliButton.Green" />
 </LinearLayout>
