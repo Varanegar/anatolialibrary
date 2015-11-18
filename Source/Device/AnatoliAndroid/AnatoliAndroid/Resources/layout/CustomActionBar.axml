@@ -40,16 +40,16 @@
                 p1:layout_centerInParent="true" />
             <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="0"
-                p1:layout_width="15dp"
-                p1:layout_height="15dp"
+                p1:textSize="12dp"
+                p1:layout_width="18dp"
+                p1:layout_height="18dp"
                 p1:textColor="@color/white"
                 p1:id="@+id/shoppingCardTextView"
                 p1:gravity="center"
                 local:customFont="Fonts/anatoli.ttf"
-                p1:layout_centerHorizontal="true"
                 p1:background="@drawable/circle"
                 p1:layout_marginTop="4dp"
-                p1:layout_marginLeft="8dp" />
+                p1:layout_marginLeft="17dp" />
         </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
             p1:text="Anatoli"
