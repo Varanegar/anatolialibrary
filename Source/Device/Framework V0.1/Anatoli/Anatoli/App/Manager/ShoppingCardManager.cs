@@ -22,10 +22,10 @@ namespace Anatoli.App.Manager
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
             return await LocalUpdateAsync(query) > 0 ? true : false;
         }
-        public static async Task<bool> RemoveProductAsync(ProductModel item)
+        public static async Task<bool> RemoveProductAsync(ProductModel item, bool all = false)
         {
             DBQuery query = null;
-            if (item.count <= 1)
+            if (item.count <= 1 || all)
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
