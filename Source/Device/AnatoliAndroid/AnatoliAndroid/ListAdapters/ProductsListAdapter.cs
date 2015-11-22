@@ -12,6 +12,8 @@ using Android.Widget;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Manager;
+using Koush;
+
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -32,6 +34,10 @@ namespace AnatoliAndroid.ListAdapters
             TextView productPriceTextView = convertView.FindViewById<TextView>(Resource.Id.productPriceTextView);
             _productCountTextView = convertView.FindViewById<TextView>(Resource.Id.productCountTextView);
             ImageView productIimageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+            if (!String.IsNullOrEmpty(item.image))
+                UrlImageViewHelper.SetUrlDrawable(productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            else
+                productIimageView.SetImageResource(Resource.Drawable.igmart);
             ImageView productAddButton = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
             ImageView productRemoveButton = convertView.FindViewById<ImageView>(Resource.Id.removeProductImageView);
             _favoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);

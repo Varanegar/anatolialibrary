@@ -79,7 +79,8 @@
             p1:id="@+id/productSummaryImageView"
             p1:background="@android:drawable/gallery_thumb"
             p1:layout_margin="5dp"
-            p1:layout_toLeftOf="@id/addToFavoritsImageView" />
+            p1:layout_toLeftOf="@id/addToFavoritsImageView"
+            p1:scaleType="fitCenter" />
         <LinearLayout
             p1:orientation="vertical"
             p1:minWidth="100dp"
