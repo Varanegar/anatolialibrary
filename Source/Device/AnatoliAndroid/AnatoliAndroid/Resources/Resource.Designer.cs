@@ -1585,7 +1585,7 @@ namespace AnatoliAndroid
 			public const int activity_chooser_view_content = 2131427364;
 			
 			// aapt resource value: 0x7f0b0091
-			public const int addProductImageView = 2131427473;
+			public const int addProductButton = 2131427473;
 			
 			// aapt resource value: 0x7f0b0097
 			public const int addToFavoritsImageView = 2131427479;
@@ -1924,7 +1924,7 @@ namespace AnatoliAndroid
 			public const int removeAllFavoritsButton = 2131427423;
 			
 			// aapt resource value: 0x7f0b0095
-			public const int removeProductImageView = 2131427477;
+			public const int removeProductButton = 2131427477;
 			
 			// aapt resource value: 0x7f0b0096
 			public const int rightRelativeLayout = 2131427478;
