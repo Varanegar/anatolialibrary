@@ -58,7 +58,7 @@ namespace Anatoli.App.Manager
             return list;
         }
 
-        internal static async Task<bool> ClearAsync()
+        public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
             return (await LocalUpdateAsync(command) > 0) ? true : false;

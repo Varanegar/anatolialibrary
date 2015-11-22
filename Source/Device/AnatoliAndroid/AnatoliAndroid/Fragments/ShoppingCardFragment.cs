@@ -28,10 +28,20 @@ namespace AnatoliAndroid.Fragments
         TextView _itemCountTextView;
         ProductsListAdapter _listAdapter;
         Button _checkoutButton;
+        ShoppingCardListToolsFragment _toolsDialog;
 
         public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _toolsDialog = new ShoppingCardListToolsFragment();
+            _toolsDialog.ShoppingCardCleared += () =>
+            {
+                _listAdapter.List.Clear();
+                _listAdapter.NotifyDataSetChanged();
+                _itemsListView.InvalidateViews();
+                _listAdapter.OnDataChanged();
+                AnatoliApp.GetInstance().ShoppingCardItemCount.Text = "0";
+            };
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -51,6 +61,11 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
+            AnatoliApp.GetInstance().ShowMenuIcon();
+            AnatoliApp.GetInstance().MenuClicked = () =>
+            {
+                _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
+            };
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();

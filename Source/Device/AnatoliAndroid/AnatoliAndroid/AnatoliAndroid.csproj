@@ -144,6 +144,7 @@
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="Fragments\ShippingInfoFragment.cs" />
+    <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
     <Compile Include="Fragments\RegisterFragment.cs" />
@@ -230,6 +231,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DrawerSubItemLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ShoppingCardToolsLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
