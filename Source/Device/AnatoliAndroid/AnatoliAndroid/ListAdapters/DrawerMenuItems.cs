@@ -38,12 +38,21 @@ namespace AnatoliAndroid.ListAdapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
             DrawerItemType item = null;
             if (_list != null)
                 item = _list[position];
             else
-                return convertView;
+                return _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
+            if (item.GetType() == typeof(DrawerMainItem))
+            {
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Login || item.ItemId == DrawerMainItem.DrawerMainItems.Logout || item.ItemId == DrawerMainItem.DrawerMainItems.ProductCategries || item.ItemId == DrawerMainItem.DrawerMainItems.Help)
+                    convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
+                else
+                    convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerSubItemLayout, null);
+            }
+            else
+                convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerSubItemLayout, null);
+
             TextView itemTextView = convertView.FindViewById<TextView>(Resource.Id.itemTextView);
             ImageView itemImageView = convertView.FindViewById<ImageView>(Resource.Id.itemIconImageView);
             RelativeLayout relativeLayout = convertView.FindViewById<RelativeLayout>(Resource.Id.relativeLayout1);
@@ -73,7 +82,7 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     relativeLayout.SetBackgroundResource(Resource.Color.llgray);
                 }
-                if (item.ItemId == DrawerMainItem.DrawerMainItems.Login || item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
                 {
                     relativeLayout.SetBackgroundResource(Resource.Color.llgray);
                 }

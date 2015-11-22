@@ -17,6 +17,7 @@ using Android.Net;
 namespace AnatoliAndroid
 {
     [Application(Name = "anatoliandroid.ParseApplication")]
+    
     public class ParseApplication : Application
     {
         public ParseApplication(IntPtr javaReference, JniHandleOwnership transfer)

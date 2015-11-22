@@ -23,9 +23,10 @@
         local:customFont="Fonts/anatoli.ttf"
         p1:layout_centerVertical="true" />
     <View
-        p1:layout_width="match_parent"
-        p1:layout_height="2dp"
+        p1:layout_width="150dp"
+        p1:layout_height="1dp"
         p1:background="@color/llgray"
         p1:id="@+id/border"
-        p1:layout_below="@id/itemIconImageView" />
+        p1:layout_below="@id/itemIconImageView"
+        p1:layout_toLeftOf="@id/itemIconImageView" />
 </RelativeLayout>

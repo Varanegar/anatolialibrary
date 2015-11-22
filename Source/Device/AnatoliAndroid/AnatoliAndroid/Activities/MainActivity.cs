@@ -26,10 +26,28 @@ namespace AnatoliAndroid.Activities
     {
         Toolbar _toolbar;
         LocationManager _locationManager;
-
+        public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
+            HockeyApp.TraceWriter.Initialize();
+            // Wire up Unhandled Expcetion handler from Android
+            AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+                {
+                    // Use the trace writer to log exceptions so HockeyApp finds them
+                    HockeyApp.TraceWriter.WriteTrace(args.Exception);
+                    args.Handled = true;
+                };
+            AppDomain.CurrentDomain.UnhandledException +=
+            (sender, args) => HockeyApp.TraceWriter.WriteTrace(args.ExceptionObject);
+
+            // Wire up the unobserved task exception handler
+            TaskScheduler.UnobservedTaskException +=
+                (sender, args) => HockeyApp.TraceWriter.WriteTrace(args.Exception);
+
+
             SetContentView(Resource.Layout.Main);
 
             _broadcastReceiver = new NetworkStatusBroadcastReceiver();

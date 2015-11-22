@@ -12,6 +12,7 @@
 	<uses-permission android:name="com.varanegar.anatoliandroid.permission.C2D_MESSAGE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<application android:icon="@drawable/Icon" android:label="آناتولی" android:theme="@style/MyTheme">
 		<receiver android:name="parse.ParsePushBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
 			<intent-filter>

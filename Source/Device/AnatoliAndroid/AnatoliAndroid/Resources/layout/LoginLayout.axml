@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userNameEditText"
-        android:hint="نام کاربری (تلفن همراه)"
+        android:hint="نام کاربری (تلفن همراه یا ایمیل)"
         local:customFont="Fonts/anatoli.ttf"
         style="@style/AnatoliTextField" />
     <AnatoliAndroid.Components.AnatoliEditText
