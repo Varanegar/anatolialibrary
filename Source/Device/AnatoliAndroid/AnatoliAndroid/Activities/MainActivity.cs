@@ -54,8 +54,11 @@ namespace AnatoliAndroid.Activities
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver, new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-            //Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
 
+            if (Build.VERSION.SdkInt > Build.VERSION_CODES.Lollipop)
+            {
+                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+            }
             _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(_toolbar);
         }

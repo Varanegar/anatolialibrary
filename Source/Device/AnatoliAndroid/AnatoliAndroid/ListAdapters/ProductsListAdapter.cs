@@ -12,6 +12,8 @@ using Android.Widget;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Manager;
+using Koush;
+
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -19,7 +21,6 @@ namespace AnatoliAndroid.ListAdapters
     {
         TextView _productCountTextView;
         ImageView _favoritsImageView;
-
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
             convertView = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
@@ -32,8 +33,12 @@ namespace AnatoliAndroid.ListAdapters
             TextView productPriceTextView = convertView.FindViewById<TextView>(Resource.Id.productPriceTextView);
             _productCountTextView = convertView.FindViewById<TextView>(Resource.Id.productCountTextView);
             ImageView productIimageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-            ImageView productAddButton = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
-            ImageView productRemoveButton = convertView.FindViewById<ImageView>(Resource.Id.removeProductImageView);
+            if (!String.IsNullOrEmpty(item.image))
+                UrlImageViewHelper.SetUrlDrawable(productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            else
+                productIimageView.SetImageResource(Resource.Drawable.igmart);
+            Button productAddButton = convertView.FindViewById<Button>(Resource.Id.addProductButton);
+            Button productRemoveButton = convertView.FindViewById<Button>(Resource.Id.removeProductButton);
             _favoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
 
             if (item.IsFavorit)
@@ -87,10 +92,34 @@ namespace AnatoliAndroid.ListAdapters
                         AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     }
                 };
+            productRemoveButton.LongClick += async (s, e) =>
+                {
+                    int a = await ShoppingCardManager.GetItemsCountAsync();
+                    if (await ShoppingCardManager.RemoveProductAsync(item, true))
+                    {
+                        OnShoppingCardItemRemoved(item);
+                        int b = await ShoppingCardManager.GetItemsCountAsync();
+                        for (int i = a; i >= b; i--)
+                        {
+                            await System.Threading.Tasks.Task.Delay(100);
+                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = i.ToString();
+                            if (item.count > 0)
+                            {
+                                item.count--;
+                                NotifyDataSetChanged();
+                                OnDataChanged();
+                            }
+
+                        }
+                    }
+                };
+
             productNameTextView.Text = item.product_name;
             productPriceTextView.Text = string.Format(" {0} تومان", item.price);
             return convertView;
         }
+
+
 
         void OnShoppingCardItemRemoved(ProductModel data)
         {
