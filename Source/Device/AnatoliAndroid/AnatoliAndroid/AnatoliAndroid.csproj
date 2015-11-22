@@ -78,8 +78,9 @@
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Parse.Android">
-      <HintPath>..\..\packages\Parse\Parse.Android\Parse.Android.dll</HintPath>
+    <Reference Include="Parse.Android, Version=1.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Parse.Android.dll</HintPath>
     </Reference>
     <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
