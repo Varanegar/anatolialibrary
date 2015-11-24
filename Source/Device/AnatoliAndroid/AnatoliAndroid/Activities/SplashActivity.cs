@@ -21,5 +21,11 @@ namespace AnatoliAndroid.Activities
             StartActivity(typeof(MainActivity));
             // Create your application here
         }
+        protected override void OnStart()
+        {
+            base.OnStart();
+            Java.Lang.Thread.Sleep(2000);
+        }
+
     }
 }
