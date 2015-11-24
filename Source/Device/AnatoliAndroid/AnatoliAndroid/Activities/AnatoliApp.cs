@@ -481,6 +481,16 @@ namespace AnatoliAndroid.Activities
             storesMenuEntry.ImageResId = Resource.Drawable.Store;
             mainItems.Add(storesMenuEntry);
 
+            if (AnatoliUser != null)
+            {
+                var profileMenuEntry = new DrawerMainItem();
+                profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+                profileMenuEntry.Name = "مشخصات من";
+                profileMenuEntry.ImageResId = Resource.Drawable.Profile;
+                mainItems.Add(profileMenuEntry);
+
+            }
+
             var helpMenuEntry = new DrawerMainItem();
             helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
             helpMenuEntry.Name = "راهنما";
