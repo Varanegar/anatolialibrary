@@ -79,5 +79,15 @@ namespace Anatoli.App.Manager
             else
                 return 0;
         }
+
+        public static async Task<bool> UpdateProductCountAsyc(ProductModel item)
+        {
+            DBQuery query = null;
+            if (item.count == 0)
+                query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
+            else
+                query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
+            return await LocalUpdateAsync(query) > 0 ? true : false;
+        }
     }
 }
