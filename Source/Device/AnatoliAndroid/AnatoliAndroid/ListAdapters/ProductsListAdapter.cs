@@ -13,6 +13,7 @@ using Anatoli.App.Model.Product;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Manager;
 using Koush;
+using System.Threading.Tasks;
 
 
 namespace AnatoliAndroid.ListAdapters
@@ -20,55 +21,102 @@ namespace AnatoliAndroid.ListAdapters
     class ProductsListAdapter : BaseListAdapter<ProductManager, ProductModel>
     {
         TextView _productCountTextView;
-        ImageView _favoritsImageView;
+        public ImageView _favoritsImageView;
+        TextView _productNameTextView;
+        TextView _productPriceTextView;
+        ImageView _productIimageView;
+        Button _productAddButton;
+        Button _productRemoveButton;
+        OnTouchListener _addTouchlistener;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
-            convertView = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+
+            var view = (convertView ?? _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null));
+
             ProductModel item = null;
             if (List != null)
-                item = List[position];
+                item = this[position];
             else
-                return convertView;
-            TextView productNameTextView = convertView.FindViewById<TextView>(Resource.Id.productNameTextView);
-            TextView productPriceTextView = convertView.FindViewById<TextView>(Resource.Id.productPriceTextView);
-            _productCountTextView = convertView.FindViewById<TextView>(Resource.Id.productCountTextView);
-            ImageView productIimageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                return view;
+            if (convertView == null)
+            {
+                _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
+                _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
+                _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
+                _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                _productAddButton = view.FindViewById<Button>(Resource.Id.addProductButton);
+                _productRemoveButton = view.FindViewById<Button>(Resource.Id.removeProductButton);
+                _favoritsImageView = view.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
+
+                _addTouchlistener = new OnTouchListener();
+                _productAddButton.SetOnTouchListener(_addTouchlistener);
+
+
+                view.SetTag(Resource.Id.addToFavoritsImageView, _favoritsImageView);
+                view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
+                view.SetTag(Resource.Id.removeProductButton, _productRemoveButton);
+                view.SetTag(Resource.Id.addProductButton, _productAddButton);
+                view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
+                view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
+                view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
+
+            }
+            else
+            {
+                _favoritsImageView = (ImageView)view.GetTag(Resource.Id.addToFavoritsImageView);
+                _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
+                _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
+                _productRemoveButton = (Button)view.GetTag(Resource.Id.removeProductButton);
+                _productAddButton = (Button)view.GetTag(Resource.Id.addProductButton);
+                _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
+                _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
+            }
+
             if (!String.IsNullOrEmpty(item.image))
-                UrlImageViewHelper.SetUrlDrawable(productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                UrlImageViewHelper.SetUrlDrawable(_productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
             else
-                productIimageView.SetImageResource(Resource.Drawable.igmart);
-            Button productAddButton = convertView.FindViewById<Button>(Resource.Id.addProductButton);
-            Button productRemoveButton = convertView.FindViewById<Button>(Resource.Id.removeProductButton);
-            _favoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
+                _productIimageView.SetImageResource(Resource.Drawable.igmart);
+
 
             if (item.IsFavorit)
-            {
                 _favoritsImageView.SetImageResource(Resource.Drawable.Favorits);
-                _favoritsImageView.Click += async (s, e) =>
-                {
-                    if (await ProductManager.RemoveFavorit(item.product_id) == true)
-                    {
-                        item.favorit = 0;
-                        NotifyDataSetChanged();
-                        OnFavoritRemoved(item);
-                    }
-                };
-            }
             else
-            {
-                _favoritsImageView.Click += async (s, e) =>
-                {
-                    if (await ProductManager.AddToFavorits(item) == true)
-                    {
-                        item.favorit = 1;
-                        NotifyDataSetChanged();
-                        OnFavoritAdded(item);
-                    }
-                };
-            }
-            _productCountTextView.Text = item.count.ToString();
+                _favoritsImageView.SetImageResource(Resource.Drawable.FavoritsGray);
 
-            productAddButton.Click += async (o, e) =>
+            _productCountTextView.Text = item.count.ToString();
+            _productNameTextView.Text = item.product_name;
+            _productPriceTextView.Text = string.Format(" {0} تومان", item.price);
+
+
+
+
+
+            var _favoritsTouchlistener = new OnTouchListener();
+            _favoritsImageView.SetOnTouchListener(_favoritsTouchlistener);
+            _favoritsTouchlistener.Click += async (s, e) =>
+            {
+                if (this[position].IsFavorit)
+                {
+                    if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
+                    {
+                        this[position].favorit = 0;
+                        NotifyDataSetChanged();
+                        OnFavoritRemoved(this[position]);
+                    }
+                }
+                else
+                {
+                    if (await ProductManager.AddToFavorits(this[position]) == true)
+                    {
+                        this[position].favorit = 1;
+                        NotifyDataSetChanged();
+                        OnFavoritAdded(this[position]);
+                    }
+                }
+            };
+
+
+            _addTouchlistener.Click += async (s, e) =>
             {
                 if (await ShoppingCardManager.AddProductAsync(item))
                 {
@@ -78,48 +126,30 @@ namespace AnatoliAndroid.ListAdapters
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 }
             };
-            productRemoveButton.Click += async (o, e) =>
+
+            var _removeTouchlistener = new OnTouchListener();
+            _productRemoveButton.SetOnTouchListener(_removeTouchlistener);
+            _removeTouchlistener.Click += async (s, e) =>
+            {
+                if (await ShoppingCardManager.RemoveProductAsync(item))
                 {
-                    if (await ShoppingCardManager.RemoveProductAsync(item))
-                    {
-                        item.count--;
-                        if (item.count == 0)
-                        {
-                            OnShoppingCardItemRemoved(item);
-                        }
-                        NotifyDataSetChanged();
-                        OnDataChanged();
-                        AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                    }
-                };
-            productRemoveButton.LongClick += async (s, e) =>
-                {
-                    int a = await ShoppingCardManager.GetItemsCountAsync();
-                    if (await ShoppingCardManager.RemoveProductAsync(item, true))
+                    item.count--;
+                    if (item.count == 0)
                     {
                         OnShoppingCardItemRemoved(item);
-                        int b = await ShoppingCardManager.GetItemsCountAsync();
-                        for (int i = a; i >= b; i--)
-                        {
-                            await System.Threading.Tasks.Task.Delay(100);
-                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = i.ToString();
-                            if (item.count > 0)
-                            {
-                                item.count--;
-                                NotifyDataSetChanged();
-                                OnDataChanged();
-                            }
-
-                        }
                     }
-                };
+                    NotifyDataSetChanged();
+                    OnDataChanged();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                }
+            };
 
-            productNameTextView.Text = item.product_name;
-            productPriceTextView.Text = string.Format(" {0} تومان", item.price);
-            return convertView;
+
+
+
+
+            return view;
         }
-
-
 
         void OnShoppingCardItemRemoved(ProductModel data)
         {
@@ -160,5 +190,60 @@ namespace AnatoliAndroid.ListAdapters
         }
         public event FavoritAddedEventHandler FavoritAdded;
         public delegate void FavoritAddedEventHandler(object sender, ProductModel data);
+
+        class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
+        {
+            long _downTime;
+            long _upTime;
+            public bool OnTouch(View v, MotionEvent e)
+            {
+                switch (e.Action)
+                {
+                    case MotionEventActions.Up:
+                        _upTime = Now();
+                        if ((_upTime - _downTime) > 1000)
+                            OnLongClick();
+                        else
+                            OnClick();
+                        break;
+                    case MotionEventActions.Down:
+                        _downTime = Now();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+
+            void OnClick()
+            {
+                if (Click != null)
+                {
+                    Click.Invoke(this, new EventArgs());
+                }
+            }
+            public event EventHandler Click;
+
+            void OnLongClick()
+            {
+                if (LongClick != null)
+                {
+                    LongClick.Invoke(this, new EventArgs());
+                }
+            }
+            public event EventHandler LongClick;
+
+            long Now()
+            {
+                long milliseconds = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                return milliseconds;
+            }
+        }
+
+
+
+
+
+
     }
 }
