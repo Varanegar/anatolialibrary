@@ -28,6 +28,7 @@ namespace AnatoliAndroid.ListAdapters
         Button _productAddButton;
         Button _productRemoveButton;
         OnTouchListener _addTouchlistener;
+        RelativeLayout _productSummaryRelativeLayout;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -47,9 +48,9 @@ namespace AnatoliAndroid.ListAdapters
                 _productAddButton = view.FindViewById<Button>(Resource.Id.addProductButton);
                 _productRemoveButton = view.FindViewById<Button>(Resource.Id.removeProductButton);
                 _favoritsImageView = view.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
+                _productSummaryRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.productSummaryRelativeLayout);
 
-                _addTouchlistener = new OnTouchListener();
-                _productAddButton.SetOnTouchListener(_addTouchlistener);
+                
 
 
                 view.SetTag(Resource.Id.addToFavoritsImageView, _favoritsImageView);
@@ -59,7 +60,7 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
                 view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
                 view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-
+                view.SetTag(Resource.Id.productSummaryRelativeLayout, _productSummaryRelativeLayout);
             }
             else
             {
@@ -70,6 +71,7 @@ namespace AnatoliAndroid.ListAdapters
                 _productAddButton = (Button)view.GetTag(Resource.Id.addProductButton);
                 _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
                 _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
+                _productSummaryRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.productSummaryRelativeLayout);
             }
 
             if (!String.IsNullOrEmpty(item.image))
@@ -115,7 +117,8 @@ namespace AnatoliAndroid.ListAdapters
                 }
             };
 
-
+            _addTouchlistener = new OnTouchListener();
+            _productAddButton.SetOnTouchListener(_addTouchlistener);
             _addTouchlistener.Click += async (s, e) =>
             {
                 if (await ShoppingCardManager.AddProductAsync(item))
@@ -144,7 +147,12 @@ namespace AnatoliAndroid.ListAdapters
                 }
             };
 
-
+            OnTouchListener listener = new OnTouchListener();
+            _productSummaryRelativeLayout.SetOnTouchListener(listener);
+            listener.Swipe += (s, e) =>
+            {
+                Console.WriteLine("swipe on product: " + item.product_name);
+            };
 
 
 
@@ -194,6 +202,8 @@ namespace AnatoliAndroid.ListAdapters
         class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
         {
             long _downTime;
+            float _downX;
+            float _downY;
             long _upTime;
             public bool OnTouch(View v, MotionEvent e)
             {
@@ -203,11 +213,24 @@ namespace AnatoliAndroid.ListAdapters
                         _upTime = Now();
                         if ((_upTime - _downTime) > 1000)
                             OnLongClick();
+                        else if ((_upTime - _downTime) > 100)
+                        {
+                            Console.WriteLine("x= " + (e.GetX() - _downX).ToString() + " y= " + (e.GetY() - _downY).ToString());
+                            if (e.GetX() - _downX < -200)
+                            {
+                                if (Math.Abs(e.GetY() - _downY) < 100)
+                                {
+                                    OnSwipe();
+                                }
+                            }
+                        }
                         else
                             OnClick();
                         break;
                     case MotionEventActions.Down:
                         _downTime = Now();
+                        _downX = e.GetX();
+                        _downY = e.GetY();
                         break;
                     default:
                         break;
@@ -233,16 +256,21 @@ namespace AnatoliAndroid.ListAdapters
             }
             public event EventHandler LongClick;
 
+            void OnSwipe()
+            {
+                if (Swipe != null)
+                {
+                    Swipe.Invoke(this, new EventArgs());
+                }
+            }
+            public event EventHandler Swipe;
+
             long Now()
             {
                 long milliseconds = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 return milliseconds;
             }
         }
-
-
-
-
 
 
     }
