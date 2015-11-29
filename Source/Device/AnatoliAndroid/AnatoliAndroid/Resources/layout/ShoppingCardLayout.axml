@@ -1,64 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cheesebaron.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    style="@style/AnatoliPage">
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    local:shadowHeight="4dp"
+    local:collapsedHeight="90dp"
+    android:gravity="bottom">
+<!-- Main content -->
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relativeLayout1">
-        <AnatoliAndroid.Components.AnatoliButton
-            android:text="تکمیل خرید"
-            android:id="@+id/checkoutButton"
-            style="@style/AnatoliButton.Green"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/priceRelativeLayout"
-            android:layout_above="@id/checkoutButton"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:padding="5dp">
-            <AnatoliAndroid.Components.AnatoliTextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="تعداد آیتم:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:id="@+id/countTitleTextView"
-                local:customFont="Fonts/anatoli.ttf" />
-            <AnatoliAndroid.Components.AnatoliTextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:id="@+id/itemCountTextView"
-                local:customFont="Fonts/anatoli.ttf" />
-            <AnatoliAndroid.Components.AnatoliTextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="مبلغ قابل پرداخت:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/countTitleTextView"
-                android:id="@+id/priceTitleTextView"
-                local:customFont="Fonts/anatoli.ttf" />
-            <AnatoliAndroid.Components.AnatoliTextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:id="@+id/factorPriceTextView"
-                android:layout_below="@id/itemCountTextView"
-                local:customFont="Fonts/anatoli.ttf" />
-        </RelativeLayout>
+        android:id="@+id/cardItemsRelativeLayout">
         <com.fortysevendeg.swipelistview.SwipeListView
             android:listSelector="#00000000"
             local:swipeFrontView="@+id/front"
@@ -72,7 +27,240 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/shoppingCardListView"
-            android:layout_above="@id/priceRelativeLayout"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
-</LinearLayout>
+<!-- Sliding panel -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/shippingRelativeLayout"
+        style="@style/AnatoliPage">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sliderRelativeLayout"
+            android:layout_alignParentTop="true">
+            <ImageView
+                android:layout_width="match_parent"
+                android:id="@+id/slideupImageView"
+                android:src="@drawable/slideup"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="30dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/slidedownImageView"
+                android:src="@drawable/slidedown"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/countRelativeLayout"
+            android:layout_below="@id/sliderRelativeLayout"
+            android:layout_marginBottom="5dp">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="تعداد آیتم :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/countTitleTextView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                local:customFont="Fonts/anatoli.ttf" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/itemCountTextView"
+                local:customFont="Fonts/anatoli.ttf" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/priceRelativeLayout"
+            android:layout_below="@id/countRelativeLayout"
+            android:layout_marginBottom="5dp">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="مبلغ قابل پرداخت :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/priceTitleTextView"
+                local:customFont="Fonts/anatoli.ttf" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/factorPriceTextView"
+                local:customFont="Fonts/anatoli.ttf" />
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/lgray"
+                android:layout_below="@id/factorPriceTextView"
+                android:layout_marginTop="10dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/shippingAddressRelativeLayout"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/priceRelativeLayout">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="آدرس تحویل :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/addressTitleTextView"
+                local:customFont="Fonts/anatoli.ttf" />
+            <ImageView
+                android:id="@+id/editAddressImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:id="@+id/addressTextView"
+                android:minHeight="70dp"
+                android:layout_below="@id/addressTitleTextView"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:minWidth="100dp"
+                android:layout_margin="5dp"
+                android:gravity="right"
+                android:maxHeight="100dp"
+                android:padding="5dp"
+                local:customFont="Fonts/anatoli.ttf" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/telRelativeLayout"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/shippingAddressRelativeLayout"
+            android:layout_height="wrap_content">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/addressTextView"
+                android:id="@+id/telTitleTextView"
+                android:text="شماره تماس :"
+                local:customFont="Fonts/anatoli.ttf" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/telTitleTextView"
+                android:id="@+id/telTextView"
+                local:customFont="Fonts/anatoli.ttf" />
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="15dp"
+                android:layout_below="@id/telTitleTextView"
+                android:background="@color/lgray"
+                android:layout_marginTop="10dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/deliveryDateLinearLayout"
+            android:layout_below="@id/telRelativeLayout"
+            android:layout_marginBottom="10dp">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:text="تاریخ تحویل :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textView2"
+                local:customFont="Fonts/anatoli.ttf"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/dateSpinner"
+                android:layout_toLeftOf="@id/textView2"
+                android:gravity="center_vertical"
+                android:paddingRight="20dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/deliveryTimeLinearLayout"
+            android:layout_below="@id/deliveryDateLinearLayout"
+            android:layout_marginBottom="5dp">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:text="ساعت تحویل :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:id="@+id/textView3"
+                android:gravity="center_vertical"
+                local:customFont="Fonts/anatoli.ttf" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/timeSpinner"
+                android:gravity="center_vertical"
+                android:paddingRight="20dp"
+                android:layout_toLeftOf="@id/textView3" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/storeTelRelativeLayout"
+            android:layout_below="@id/deliveryTimeLinearLayout"
+            android:layout_marginBottom="5dp">
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/storeTelTitleTextView"
+                android:layout_centerVertical="true"
+                android:text="شماره تماس فروشگاه :"
+                local:customFont="Fonts/anatoli.ttf" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/storeTelTitleTextView"
+                android:id="@+id/storeTelTextView"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                local:customFont="Fonts/anatoli.ttf" />
+            <ImageView
+                android:id="@+id/callImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/phone"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
+        <AnatoliAndroid.Components.AnatoliButton
+            android:text="تایید و پرداخت"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkoutButton"
+            android:layout_alignParentBottom="true"
+            local:customFont="Fonts/anatoli.ttf"
+            style="@style/AnatoliButton.Green"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</cheesebaron.slidinguppanel.SlidingUpPanelLayout>
