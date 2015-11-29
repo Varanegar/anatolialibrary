@@ -21,7 +21,7 @@ using AnatoliAndroid.Activities;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("علاقه مندی ها")]
-    class FavoritsListFragment : BaseListFragment<ProductManager, ProductsListAdapter, FavoritsDialogTools, ProductModel>
+    class FavoritsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, FavoritsDialogTools, ProductModel>
     {
         public FavoritsListFragment()
         {

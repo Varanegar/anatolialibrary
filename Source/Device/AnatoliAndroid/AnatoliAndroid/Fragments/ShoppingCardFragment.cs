@@ -17,6 +17,8 @@ using Anatoli.App.Model;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
+using System.Threading.Tasks;
+using FortySevenDeg.SwipeListView;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -33,6 +35,7 @@ namespace AnatoliAndroid.Fragments
         public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             _toolsDialog = new ShoppingCardListToolsFragment();
             _toolsDialog.ShoppingCardCleared += () =>
             {
@@ -93,7 +96,10 @@ namespace AnatoliAndroid.Fragments
                 Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
                 _checkoutButton.Enabled = false;
             }
-
+            _listAdapter.BackClick += async (s, p) =>
+            {
+                await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
+            };
 
         }
 

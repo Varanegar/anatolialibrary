@@ -59,13 +59,19 @@
                 android:layout_below="@id/itemCountTextView"
                 local:customFont="Fonts/anatoli.ttf" />
         </RelativeLayout>
-        <ListView
+        <com.fortysevendeg.swipelistview.SwipeListView
+            android:listSelector="#00000000"
+            local:swipeFrontView="@+id/front"
+            local:swipeBackView="@+id/back"
+            local:swipeCloseAllItemsWhenMoveList="true"
+            local:swipeMode="both"
+            local:swipeActionLeft="reveal"
+            local:swipeActionRight="reveal"
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
-            android:id="@+id/shoppingCardListView"
-            android:layout_margin="5dp"
             android:layout_height="wrap_content"
+            android:id="@+id/shoppingCardListView"
             android:layout_above="@id/priceRelativeLayout"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
