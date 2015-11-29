@@ -116,6 +116,11 @@ namespace AnatoliAndroid.ListAdapters
             _favoritsImageView.SetOnTouchListener(_favoritsTouchlistener);
             _favoritsTouchlistener.Click += async (s, e) =>
             {
+                if (AnatoliApp.GetInstance().AnatoliUser == null)
+                {
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "لطفا ابتدا وارد حساب کاربری خود شوید", ToastLength.Short).Show();
+                    return;
+                }
                 if (this[position].IsFavorit)
                 {
                     if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
