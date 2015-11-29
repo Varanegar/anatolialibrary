@@ -452,16 +452,13 @@ namespace AnatoliAndroid.Activities
                 msgMenuEntry.Name = "پیغام ها";
                 msgMenuEntry.ImageResId = Resource.Drawable.Messages;
                 mainItems.Add(msgMenuEntry);
-            }
 
-            var favoritsMenuEntry = new DrawerMainItem();
-            favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-            favoritsMenuEntry.Name = "علاقه مندی ها";
-            favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
-            mainItems.Add(favoritsMenuEntry);
+                var favoritsMenuEntry = new DrawerMainItem();
+                favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
+                favoritsMenuEntry.Name = "علاقه مندی ها";
+                favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
+                mainItems.Add(favoritsMenuEntry);
 
-            if (AnatoliUser != null)
-            {
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
                 ordersMenuEntry.Name = "سفارشات قبلی";
