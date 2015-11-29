@@ -3,21 +3,40 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainRelativeLayout"
+    android:id="@+id/shippingRelativeLayout"
     style="@style/AnatoliPage">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sliderRelativeLayout"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/slideupImageView"
+            android:src="@drawable/slideup"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="30dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/slidedownImageView"
+            android:src="@drawable/slidedown"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/countRelativeLayout"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/sliderRelativeLayout"
         android:layout_marginBottom="5dp">
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="تعداد آیتم :"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:id="@+id/countTitleTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             local:customFont="Fonts/anatoli.ttf" />
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"

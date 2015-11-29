@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,7 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
+using FortySevenDeg.SwipeListView;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -51,16 +52,19 @@ namespace AnatoliAndroid.Fragments
         {
             _searchKeyWord = null;
         }
+        protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            var view = inflater.Inflate(
+                Resource.Layout.ItemsListLayout, container, false);
+            return view;
+        }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            _view = inflater.Inflate(
-                Resource.Layout.ItemsListLayout, container, false);
+            _view = InflateLayout(inflater, container, savedInstanceState);
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
-
-
-
+            
             if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
             {
                 AnatoliApp.GetInstance().HideMenuIcon();
@@ -108,6 +112,7 @@ namespace AnatoliAndroid.Fragments
             }
             _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters), new RemoteQuery(GetWebServiceUri(), parameters));
         }
+
         protected abstract List<QueryParameter> CreateQueryParameters();
         protected abstract string GetTableName();
         protected abstract string GetWebServiceUri();
