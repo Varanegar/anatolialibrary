@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,8 +64,7 @@ namespace AnatoliAndroid.Fragments
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
-
-
+            
             if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
             {
                 AnatoliApp.GetInstance().HideMenuIcon();

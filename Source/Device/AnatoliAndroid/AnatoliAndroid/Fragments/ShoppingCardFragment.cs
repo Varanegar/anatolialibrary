@@ -30,21 +30,21 @@ namespace AnatoliAndroid.Fragments
         TextView _itemCountTextView;
         ProductsListAdapter _listAdapter;
         Button _checkoutButton;
-        ShoppingCardListToolsFragment _toolsDialog;
+        //ShoppingCardListToolsFragment _toolsDialog;
 
         public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            _toolsDialog = new ShoppingCardListToolsFragment();
-            _toolsDialog.ShoppingCardCleared += () =>
-            {
-                _listAdapter.List.Clear();
-                _listAdapter.NotifyDataSetChanged();
-                _itemsListView.InvalidateViews();
-                _listAdapter.OnDataChanged();
-                AnatoliApp.GetInstance().ShoppingCardItemCount.Text = "0";
-            };
+            //_toolsDialog = new ShoppingCardListToolsFragment();
+            //_toolsDialog.ShoppingCardCleared += () =>
+            //{
+            //    _listAdapter.List.Clear();
+            //    _listAdapter.NotifyDataSetChanged();
+            //    _itemsListView.InvalidateViews();
+            //    _listAdapter.OnDataChanged();
+            //    AnatoliApp.GetInstance().ShoppingCardItemCount.Text = "0";
+            //};
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -64,11 +64,11 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
-            AnatoliApp.GetInstance().ShowMenuIcon();
-            AnatoliApp.GetInstance().MenuClicked = () =>
-            {
-                _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
-            };
+            AnatoliApp.GetInstance().HideMenuIcon();
+            //AnatoliApp.GetInstance().MenuClicked = () =>
+            //{
+            //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
+            //};
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();
@@ -89,6 +89,7 @@ namespace AnatoliAndroid.Fragments
                 _itemsListView.InvalidateViews();
                 if (_listAdapter.Count == 0)
                     _checkoutButton.Enabled = false;
+                Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "حذف شد", ToastLength.Short).Show();
             };
             _itemsListView.Adapter = _listAdapter;
             if (_listAdapter.Count == 0)

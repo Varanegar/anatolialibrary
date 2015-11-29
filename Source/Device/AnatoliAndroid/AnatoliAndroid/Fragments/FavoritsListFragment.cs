@@ -21,12 +21,12 @@ using AnatoliAndroid.Activities;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("علاقه مندی ها")]
-    class FavoritsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, FavoritsDialogTools, ProductModel>
+    class FavoritsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
         public FavoritsListFragment()
         {
             _listAdapter.FavoritRemoved += _listAdapter_FavoritRemoved;
-            _toolsDialogFragment.FavoritsRemoved += _toolsFragment_FavoritsRemoved;
+            //_toolsDialogFragment.FavoritsRemoved += _toolsFragment_FavoritsRemoved;
         }
         void _toolsFragment_FavoritsRemoved()
         {
