@@ -44,6 +44,7 @@ namespace AnatoliAndroid.Activities
         {
             _menuIconImageView.Visibility = ViewStates.Gone;
         }
+
         public void ShowMenuIcon()
         {
             _menuIconImageView.Visibility = ViewStates.Visible;
@@ -355,6 +356,15 @@ namespace AnatoliAndroid.Activities
 
             }
         }
+        internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag,Tuple<string,string> parameter) where FragmentType : Android.App.Fragment, new()
+        {
+            if (fragment == null)
+                fragment = new FragmentType();
+            Bundle bundle = new Bundle();
+            bundle.PutString(parameter.Item1, parameter.Item2);
+            fragment.Arguments = bundle;
+            return SetFragment(fragment, tag);
+        }
         public FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag) where FragmentType : Android.App.Fragment, new()
         {
             var transaction = _activity.FragmentManager.BeginTransaction();
@@ -452,13 +462,15 @@ namespace AnatoliAndroid.Activities
                 msgMenuEntry.Name = "پیغام ها";
                 msgMenuEntry.ImageResId = Resource.Drawable.Messages;
                 mainItems.Add(msgMenuEntry);
+            }
+            var favoritsMenuEntry = new DrawerMainItem();
+            favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
+            favoritsMenuEntry.Name = "علاقه مندی ها";
+            favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
+            mainItems.Add(favoritsMenuEntry);
 
-                var favoritsMenuEntry = new DrawerMainItem();
-                favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-                favoritsMenuEntry.Name = "علاقه مندی ها";
-                favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
-                mainItems.Add(favoritsMenuEntry);
-
+            if (AnatoliUser != null)
+            {
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
                 ordersMenuEntry.Name = "سفارشات قبلی";
