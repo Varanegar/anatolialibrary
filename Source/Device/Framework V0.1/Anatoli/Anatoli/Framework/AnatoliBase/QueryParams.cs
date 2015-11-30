@@ -150,6 +150,18 @@ namespace Anatoli.Framework.AnatoliBase
         public abstract string GetCommand();
         public string DBTableName { get; set; }
     }
+    public class StringQuery : DBQuery
+    {
+        string _query;
+        public StringQuery(string query) : base(null)
+        {
+            _query = query;
+        }
+        public override string GetCommand()
+        {
+            return _query;
+        }
+    }
     public class SelectQuery : DBQuery
     {
         List<SearchFilterParam> SearchFilters;
