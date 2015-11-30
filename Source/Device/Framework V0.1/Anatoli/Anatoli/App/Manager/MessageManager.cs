@@ -20,9 +20,17 @@ namespace Anatoli.App.Manager
             return (result > 0) ? true : false;
         }
 
-        public static async void SetViewFlag(int id)
+        public static async void SetViewFlag(List<int> ids)
         {
-            UpdateCommand command = new UpdateCommand("messages", new EqFilterParam("msg_id", id.ToString()), new BasicParam("new_flag", "0"));
+            string q = "UPDATE messages SET new_flag=1 WHERE ";
+            
+            foreach (var item in ids)
+            {
+                q += " msg_id=" + item.ToString() + " OR";
+            }
+            q += " 1=0";
+
+            StringQuery command = new StringQuery(q);
             var result = await LocalUpdateAsync(command);
         }
     }
