@@ -18,8 +18,9 @@ using Anatoli.Framework.AnatoliBase;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("پیغام ها")]
-    class MessagesListFragment : BaseListFragment<MessageManager, MessageListAdapter,NoListToolsDialog, MessageModel>
+    class MessagesListFragment : BaseSwipeListFragment<MessageManager, MessageListAdapter,NoListToolsDialog, MessageModel>
     {
+        List<int> msgIds;
         public MessagesListFragment()
         {
             _listAdapter.MessageDeleted += (item) =>
@@ -28,6 +29,15 @@ namespace AnatoliAndroid.Fragments
                     _listAdapter.NotifyDataSetChanged();
                     _listView.InvalidateViews();
                 };
+            msgIds = new List<int>();
+            _listAdapter.MessageView += (msgId) =>
+            {
+                if (!msgIds.Contains(msgId))
+                {
+                    msgIds.Add(msgId);
+                    _listView.InvalidateViews();
+                }
+            };
         }
         protected override List<Anatoli.Framework.AnatoliBase.QueryParameter> CreateQueryParameters()
         {
@@ -42,6 +52,12 @@ namespace AnatoliAndroid.Fragments
         protected override string GetWebServiceUri()
         {
             return "None";
+        }
+
+        public override void OnDetach()
+        {
+            base.OnDetach();
+            MessageManager.SetViewFlag(msgIds);
         }
     }
 }

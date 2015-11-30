@@ -11,10 +11,11 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.Store;
+using AnatoliAndroid.Fragments;
 
 namespace AnatoliAndroid.ListAdapters
 {
-    class MessageListAdapter : BaseListAdapter<MessageManager, MessageModel>
+    class MessageListAdapter : BaseSwipeListAdapter<MessageManager, MessageModel>
     {
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
@@ -28,26 +29,28 @@ namespace AnatoliAndroid.ListAdapters
             TextView storeNameTextView = convertView.FindViewById<TextView>(Resource.Id.storeNameTextView);
             TextView dateTextView = convertView.FindViewById<TextView>(Resource.Id.dateTextView);
             TextView timeTextView = convertView.FindViewById<TextView>(Resource.Id.timeTextView);
-            ImageView deleteImageView = convertView.FindViewById<ImageView>(Resource.Id.deleteImageView);
+            Button removeButton = convertView.FindViewById<Button>(Resource.Id.removeButton);
+
             contentTextView.Text = item.content;
             storeNameTextView.Text = item.store_name;
             dateTextView.Text = item.date;
             timeTextView.Text = item.time;
-            MessageManager.SetViewFlag(item.msg_id);
+            //MessageManager.SetViewFlag(item.msg_id);
             if (item.IsNewMsg)
             {
-                contentTextView.SetTypeface(null, Android.Graphics.TypefaceStyle.Bold);
-                storeNameTextView.SetTypeface(null, Android.Graphics.TypefaceStyle.Bold);
-                dateTextView.SetTypeface(null, Android.Graphics.TypefaceStyle.Bold);
-                timeTextView.SetTypeface(null, Android.Graphics.TypefaceStyle.Bold);
+                item.new_flag = 0;
+                NotifyDataSetChanged();
+                OnMessageView(item.msg_id);
             }
-            deleteImageView.Click += async (s, e) =>
+            
+            removeButton.Click += async (s, e) =>
                 {
                     if (await MessageManager.DeleteAsync(item.msg_id))
                     {
                         OnMessageDeleted(item);
                     }
                 };
+
             return convertView;
         }
 
@@ -60,5 +63,14 @@ namespace AnatoliAndroid.ListAdapters
         }
         public event MessageDeletedHandler MessageDeleted;
         public delegate void MessageDeletedHandler(MessageModel item);
+        void OnMessageView(int id)
+        {
+            if (MessageView != null)
+            {
+                MessageView.Invoke(id);
+            }
+        }
+        public event MessageViewHandler MessageView;
+        public delegate void MessageViewHandler(int msgId);
     }
 }

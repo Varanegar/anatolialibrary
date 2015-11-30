@@ -151,6 +151,7 @@
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
     <Compile Include="Fragments\NoListToolsDialog.cs" />
+    <Compile Include="Fragments\OnTouchListener.cs" />
     <Compile Include="Fragments\OrderDetailFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />

@@ -16,6 +16,7 @@ using Koush;
 using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using AnatoliAndroid.Activities;
+using AnatoliAndroid.Fragments;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -209,57 +210,5 @@ namespace AnatoliAndroid.ListAdapters
         }
         public event FavoritAddedEventHandler FavoritAdded;
         public delegate void FavoritAddedEventHandler(object sender, ProductModel data);
-
-        
-        class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
-        {
-            long _downTime;
-            long _upTime;
-            public bool OnTouch(View v, MotionEvent e)
-            {
-                switch (e.Action)
-                {
-                    case MotionEventActions.Up:
-                        _upTime = Now();
-                        if ((_upTime - _downTime) > 1000)
-                            OnLongClick();
-                        else
-                            OnClick();
-                        break;
-                    case MotionEventActions.Down:
-                        _downTime = Now();
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-
-            void OnClick()
-            {
-                if (Click != null)
-                {
-                    Click.Invoke(this, new EventArgs());
-                }
-            }
-            public event EventHandler Click;
-
-            void OnLongClick()
-            {
-                if (LongClick != null)
-                {
-                    LongClick.Invoke(this, new EventArgs());
-                }
-            }
-            public event EventHandler LongClick;
-
-            long Now()
-            {
-                long milliseconds = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                return milliseconds;
-            }
-        }
-
-
     }
 }
