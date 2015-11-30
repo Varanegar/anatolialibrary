@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +32,17 @@ namespace AnatoliAndroid.Fragments
         protected override string GetWebServiceUri()
         {
             return "none";
+        }
+        public override void OnResume()
+        {
+            base.OnResume();
+            EmptyList += (s, e) =>
+            {
+                if (_listAdapter.List.Count == 0)
+                {
+                    Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "هیچ سفارشی ثبت نشده است", ToastLength.Short).Show();
+                }
+            };
         }
     }
 }

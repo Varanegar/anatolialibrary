@@ -151,9 +151,9 @@
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
     <Compile Include="Fragments\NoListToolsDialog.cs" />
+    <Compile Include="Fragments\OrderDetailFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
-    <Compile Include="Fragments\ShippingInfoFragment.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
@@ -248,6 +248,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\shippingInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\OrderViewLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\OrderItemModelLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

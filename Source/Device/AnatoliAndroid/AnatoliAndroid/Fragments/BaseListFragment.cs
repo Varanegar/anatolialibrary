@@ -86,6 +86,10 @@ namespace AnatoliAndroid.Fragments
             {
                 SetParameters();
                 _listAdapter.List = await _dataManager.GetNextAsync();
+                if (_listAdapter.Count == 0)
+                {
+                    OnEmptyList();
+                }
                 _listAdapter.NotifyDataSetChanged();
             }
             _firstShow = false;
@@ -126,5 +130,13 @@ namespace AnatoliAndroid.Fragments
             var transaction = FragmentManager.BeginTransaction();
             _toolsDialogFragment.Show(transaction, "tools_dialog");
         }
+        void OnEmptyList()
+        {
+            if (EmptyList != null)
+            {
+                EmptyList.Invoke(this,new EventArgs());
+            }
+        }
+        public event EventHandler EmptyList;
     }
 }

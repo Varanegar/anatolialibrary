@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.Store;
+using AnatoliAndroid.Activities;
+using AnatoliAndroid.Fragments;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -29,11 +31,17 @@ namespace AnatoliAndroid.ListAdapters
             TextView priceTextView = convertView.FindViewById<TextView>(Resource.Id.priceTextView);
             TextView orderIdTextView = convertView.FindViewById<TextView>(Resource.Id.orderNoTextView);
             TextView orderStatusTextView = convertView.FindViewById<TextView>(Resource.Id.orderStatusTextView);
+            ImageView infoImageView = convertView.FindViewById<ImageView>(Resource.Id.infoImageView);
+            infoImageView.Click += (s,e) =>
+             {
+                 AnatoliApp.GetInstance().SetFragment<OrderDetailFragment>(null, "order_detail_fragment",new Tuple<string,string>("order_id", item.order_id));
+             };
             dateTextView.Text = item.order_date;
             storeNameTextView.Text = item.store_name;
             priceTextView.Text = item.order_price.ToString();
             orderIdTextView.Text = item.order_id;
             orderStatusTextView.Text = item.order_status.ToString();
+            
             return convertView;
         }
     }

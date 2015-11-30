@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/front"
+        android:tag="front"
+        style="@style/ListFrontContent">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rightRelativeLayout"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/linearLayout1">
+            <ImageView
+                android:src="@drawable/favoritsgray"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/addToFavoritsImageView"
+                android:layout_centerVertical="true" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/productSummaryImageView"
+                android:background="@android:drawable/gallery_thumb"
+                android:layout_margin="5dp"
+                android:layout_toLeftOf="@id/addToFavoritsImageView"
+                android:scaleType="fitCenter" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:minWidth="100dp"
+                android:minHeight="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/productSummaryInfoLinearLayout"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:layout_toLeftOf="@id/productSummaryImageView">
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:text="Product Name"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/productNameTextView"
+                    android:maxWidth="170dp"
+                    android:minWidth="100dp"
+                    android:layout_gravity="right"
+                    local:customFont="Fonts/anatoli.ttf"
+                    android:gravity="right" />
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:minWidth="25px"
+                    android:minHeight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/productCountRelativeLayout"
+                    android:layout_marginRight="0.0dp">
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        android:text="0"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/productCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        local:customFont="Fonts/anatoli.ttf"
+                        android:layout_alignParentRight="true" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        android:text="عدد"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/productCountLabelTextView"
+                        local:customFont="Fonts/anatoli.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/productCountTextView" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        android:text="Price"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/productPriceTextView"
+                        android:textColor="@android:color/holo_red_light"
+                        android:layout_toLeftOf="@id/productCountLabelTextView"
+                        local:customFont="Fonts/anatoli.ttf" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <ImageView
+            android:src="@drawable/checkout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/addProductImageView"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+</FrameLayout>

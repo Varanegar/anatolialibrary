@@ -168,6 +168,7 @@ namespace AnatoliAndroid.Fragments
             //{
             //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
             //};
+            
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();
