@@ -13,6 +13,21 @@ namespace Anatoli.App.Manager
 {
     public class ShoppingCardManager : BaseManager<BaseDataAdapter<ProductModel>, ProductModel>
     {
+        public static async Task<ProductModel> GetItemAsync(int id)
+        {
+            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString()));
+            return await GetItemAsync(query);
+        }
+        public static async Task<bool> AddProductAsync(int productId, int count)
+        {
+            DBQuery query = null;
+            var item = await GetItemAsync(productId);
+            if (item == null || item.count == 0)
+                query = new InsertCommand("shopping_card", new BasicParam("count", (count).ToString()), new BasicParam("product_id", productId.ToString()));
+            else
+                query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
+            return await LocalUpdateAsync(query) > 0 ? true : false;
+        }
         public static async Task<bool> AddProductAsync(ProductModel item)
         {
             DBQuery query = null;

@@ -52,6 +52,13 @@ namespace Anatoli.App.Manager
                 throw;
             }
         }
+
+        public static async Task<OrderModel> GetOrderAsync(string orderId)
+        {
+            SelectQuery query = new SelectQuery("orders_view", new EqFilterParam("order_id", orderId));
+            return await GetItemAsync(query);
+        }
+
         public static async Task<OrderModel> GetLatestOrder()
         {
             SelectQuery query = new SelectQuery("orders", new SortParam("order_id", SortTypes.DESC));
