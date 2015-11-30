@@ -31,6 +31,7 @@ namespace AnatoliAndroid.ListAdapters
             TextView timeTextView = convertView.FindViewById<TextView>(Resource.Id.timeTextView);
             Button removeButton = convertView.FindViewById<Button>(Resource.Id.removeButton);
 
+            removeButton.UpdateWidth();
             contentTextView.Text = item.content;
             storeNameTextView.Text = item.store_name;
             dateTextView.Text = item.date;
