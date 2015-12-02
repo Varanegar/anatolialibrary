@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Configs;
 using Anatoli.DataAccess.Models;
+using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess
 {
@@ -31,7 +32,6 @@ namespace Anatoli.DataAccess
         public DbSet<DiscountCode> DiscountCodes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBase> ProductBases { get; set; }
-        //public DbSet<ProductBaseProductMap> ProductBaseProductMaps { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
@@ -53,6 +53,17 @@ namespace Anatoli.DataAccess
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+
+
+        #region Identity
+        public DbSet<Principal> Principals { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PrincipalPermission> PrincipalPermissions { get; set; }
+        #endregion
+
         #endregion
 
         #region ctors
@@ -62,7 +73,7 @@ namespace Anatoli.DataAccess
         }
 
         public AnatoliDbContext()
-            : base("Name=AnatoliConnectionString")//this is the connection string name
+            : base("Name=AnatoliConnectionString")
         {
         }
         #endregion
@@ -81,6 +92,12 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new StoreCalendarConfig());
             modelBuilder.Configurations.Add(new StoreConfig());
             modelBuilder.Configurations.Add(new StoreValidRegionInfoConfig());
+           
+
+            modelBuilder.Configurations.Add(new UserConfig());
+            modelBuilder.Configurations.Add(new GroupConfig());
+            modelBuilder.Configurations.Add(new RoleConfig());
+            modelBuilder.Configurations.Add(new PrincipalPermissionConfig());
         }
     }
 }

@@ -146,6 +146,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\FileManager.cs" />
+    <Compile Include="Classes\IFileManager.cs" />
+    <Compile Include="Classes\ObjectTypes.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\App\Basket\BasketValueController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
@@ -159,6 +162,7 @@
     <Compile Include="Controllers\Gateway\Store\StoreController.cs" />
     <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Controllers\Base\OrdersController.cs" />
+    <Compile Include="Controllers\ImageManager\ImageManagerController.cs" />
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
@@ -203,6 +207,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Images\Products\25aa3216-3025-441a-b328-0b30fe3c5268\" />
     <Folder Include="Controllers\Sample\" />
   </ItemGroup>
   <ItemGroup>
@@ -221,7 +226,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59822</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
