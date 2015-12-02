@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApp", "TestApp", "{C897
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc-Web", "Mvc-Web\Mvc-Web.csproj", "{5423B484-5B58-4EB3-97D1-229E85DC2CDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnatoliUnitTests", "AnatoliUnitTests\AnatoliUnitTests.csproj", "{58A467A1-D24E-4652-A622-2C2075C09E45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,11 +55,16 @@ Global
 		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A467A1-D24E-4652-A622-2C2075C09E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A467A1-D24E-4652-A622-2C2075C09E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A467A1-D24E-4652-A622-2C2075C09E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A467A1-D24E-4652-A622-2C2075C09E45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5423B484-5B58-4EB3-97D1-229E85DC2CDD} = {C89776FD-09E5-4963-9E89-E768CF0CB08B}
+		{58A467A1-D24E-4652-A622-2C2075C09E45} = {C89776FD-09E5-4963-9E89-E768CF0CB08B}
 	EndGlobalSection
 EndGlobal

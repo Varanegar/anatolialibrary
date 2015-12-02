@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 
 namespace Anatoli.DataAccess.Interfaces
@@ -7,10 +9,16 @@ namespace Anatoli.DataAccess.Interfaces
     public interface IRepository<T> where T : class
     {
         IQueryable<T> GetQuery();
-        T GetById(Guid id);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
-        void Delete(Guid id);
+        Task<T> GetByIdAsync(Guid id);
+        Task<ICollection<T>> GetAllAsync();
+        Task<T> FindAsync(Expression<Func<T, bool>> match);
+        Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
+        Task<T> AddAsync(T entity);
+        Task<T> UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
+        Task DeleteAsync(Guid id);
+        void EntryModified(T entity);
+        Task SaveChangesAsync();
+        Task<int> CountAsync();
     }
 }

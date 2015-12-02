@@ -36,7 +36,6 @@ namespace Anatoli.DataAccess
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
         public DbSet<ProductRate> ProductRates { get; set; }
-        public DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public DbSet<ProductSupplierGuarantee> ProductSupplierGuarantees { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }

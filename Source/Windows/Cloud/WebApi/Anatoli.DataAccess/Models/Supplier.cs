@@ -9,5 +9,7 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> SupplierUniqueId { get; set; }
         public string SupplierName { get; set; }
         public Nullable<int> SupplierMainAppId { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

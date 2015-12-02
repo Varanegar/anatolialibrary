@@ -9,11 +9,14 @@ namespace Anatoli.DataAccess.Repositories
 {
     public class ProductRepository : AnatoliRepository<Product>, IProductRepository
     {
+        #region Ctors
+        public ProductRepository() : this(new AnatoliDbContext()) { }
         public ProductRepository(DbContext context)
             : base(context)
         {
         }
+        #endregion
 
-        //new custom methods could be added in here
+        //notice: new custom methods could be added in here
     }
 }

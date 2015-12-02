@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Data.Entity;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using System.Data.Entity.Validation;
@@ -8,8 +10,14 @@ using System.Data.Entity.Infrastructure;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class AnatoliRepository<T> : IDisposable, IRepository<T> where T : class
+    public abstract class AnatoliRepository<T> : IDisposable, IRepository<T> where T : class
     {
+        #region Properties
+        protected DbContext DbContext { get; set; }
+        protected DbSet<T> DbSet { get; set; }
+        #endregion
+
+        #region Ctors
         public AnatoliRepository(DbContext dbContext)
         {
             if (dbContext == null)
@@ -18,23 +26,33 @@ namespace Anatoli.DataAccess.Repositories
             DbContext = dbContext;
 
             DbSet = DbContext.Set<T>();
+
+            DbContext.Database.Log = Console.Write;
         }
+        #endregion
 
-        protected DbContext DbContext { get; set; }
-
-        protected DbSet<T> DbSet { get; set; }
-
+        #region Methods
         public virtual IQueryable<T> GetQuery()
         {
             return DbSet;
         }
-
-        public virtual T GetById(Guid id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            return DbSet.Find(id);
+            return await DbSet.FindAsync(id);
         }
-
-        public virtual void Add(T entity)
+        public virtual async Task<ICollection<T>> GetAllAsync()
+        {
+            return await DbSet.ToListAsync();
+        }
+        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        {
+            return await DbSet.SingleOrDefaultAsync(match);
+        }
+        public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
+        {
+            return await DbSet.Where(match).ToListAsync();
+        }
+        public virtual async Task<T> AddAsync(T entity)
         {
             var dbEntityEntry = DbContext.Entry(entity);
 
@@ -42,9 +60,12 @@ namespace Anatoli.DataAccess.Repositories
                 dbEntityEntry.State = EntityState.Added;
             else
                 DbSet.Add(entity);
-        }
 
-        public virtual void Update(T entity)
+            var factory = Task<T>.Factory;
+
+            return await factory.StartNew(() => entity);
+        }
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
 
@@ -52,40 +73,42 @@ namespace Anatoli.DataAccess.Repositories
                 DbSet.Attach(entity);
 
             dbEntityEntry.State = EntityState.Modified;
-        }
 
-        public virtual void Delete(T entity)
+            var factory = Task<T>.Factory;
+
+            return await factory.StartNew(() => entity);
+        }
+        public virtual async Task DeleteAsync(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
+
             if (dbEntityEntry.State != EntityState.Deleted)
                 dbEntityEntry.State = EntityState.Deleted;
             else
                 DbSet.Attach(entity);
 
-            DbSet.Remove(entity);
-        }
+            var factory = Task.Factory;
 
-        public virtual void Delete(Guid id)
+            await factory.StartNew(() => DbSet.Remove(entity));
+        }
+        public virtual async Task DeleteAsync(Guid id)
         {
-            var entity = GetById(id);
+            var entity = GetByIdAsync(id);
 
-            if (entity == null) return; // not found; assume already deleted.
+            if (entity == null)
+                return; // not found; assume already deleted.
 
-            Delete(entity);
+            await DeleteAsync(entity.Result);
         }
-
         public virtual void EntryModified(T entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
         }
-
-        //CodeSmell: this method should be moved to unit of work layer.
-        public virtual void SaveChanges()
+        public virtual async Task SaveChangesAsync()
         {
             try
             {
-                DbContext.SaveChanges();
-
+               await DbContext.SaveChangesAsync();
             }
             catch (DbEntityValidationException e)
             {
@@ -101,16 +124,20 @@ namespace Anatoli.DataAccess.Repositories
                 }
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
         }
+        public virtual async Task<int> CountAsync()
+        {
+            return await DbSet.CountAsync();
+        }
+        #endregion
 
         public void Dispose()
         {
             DbContext.Dispose();
         }
     }
-
 }

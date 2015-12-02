@@ -63,14 +63,12 @@
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
-    <Compile Include="Configs\ProductSupplierConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\RoleConfig.cs" />
     <Compile Include="Configs\StoreCalendarConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\StoreValidRegionInfoConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
-    <Compile Include="Interfaces\IProductSupplierRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\201511282115275_InitAnatoliDB.cs" />
@@ -80,6 +78,10 @@
     <Compile Include="Migrations\201512020749110_AddingAnatoliIdentityModels.cs" />
     <Compile Include="Migrations\201512020749110_AddingAnatoliIdentityModels.Designer.cs">
       <DependentUpon>201512020749110_AddingAnatoliIdentityModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512021725031_ChangingProductSuplier.cs" />
+    <Compile Include="Migrations\201512021725031_ChangingProductSuplier.Designer.cs">
+      <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -116,7 +118,6 @@
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
-    <Compile Include="Models\ProductSupplier.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
     <Compile Include="Models\PurchaseOrderClearance.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Repositories\AnatoliUserStore.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
-    <Compile Include="Repositories\ProductSupplierRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512020749110_AddingAnatoliIdentityModels.resx">
       <DependentUpon>201512020749110_AddingAnatoliIdentityModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512021725031_ChangingProductSuplier.resx">
+      <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

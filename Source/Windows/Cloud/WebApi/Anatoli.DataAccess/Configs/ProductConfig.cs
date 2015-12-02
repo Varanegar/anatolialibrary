@@ -35,6 +35,15 @@ namespace Anatoli.DataAccess.Configs
                     cs.ToTable("ProductBase_ProductMap");
                 });
 
+            this.HasMany<Supplier>(s => s.Suppliers)
+                .WithMany(c => c.Products)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("ProductId");
+                    cs.MapRightKey("SuplierID");
+                    cs.ToTable("ProductSupliers");
+                });
+
             this.HasMany<StoreActivePriceList>(sap => sap.StoreActivePriceLists)
                 .WithRequired(p => p.Product);
 

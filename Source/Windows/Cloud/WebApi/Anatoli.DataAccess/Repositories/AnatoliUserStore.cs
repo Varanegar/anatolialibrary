@@ -24,29 +24,23 @@ namespace Anatoli.DataAccess.Repositories
         #endregion
 
         #region User Store
-        public Task CreateAsync(User user)
+        public async Task CreateAsync(User user)
         {
-            UserRepository.Add(user);
+          await  UserRepository.AddAsync(user);
 
-            UserRepository.SaveChanges();
-
-            return Task.FromResult(0);
+          await UserRepository.SaveChangesAsync();            
         }
 
-        public Task DeleteAsync(User user)
+        public async Task DeleteAsync(User user)
         {
-            UserRepository.Delete(user);
+            await UserRepository.DeleteAsync(user);
 
-            UserRepository.SaveChanges();
-
-            return Task.FromResult(0);
+            await UserRepository.SaveChangesAsync();
         }
 
         public Task<User> FindByIdAsync(Guid userId)
         {
-            var model = UserRepository.GetById(userId);
-
-            return Task<User>.FromResult(model);
+            return UserRepository.GetByIdAsync(userId);
         }
 
         public Task<User> FindByNameAsync(string userName)
@@ -56,13 +50,11 @@ namespace Anatoli.DataAccess.Repositories
             return Task<User>.FromResult(model);
         }
 
-        public Task UpdateAsync(User user)
+        public async Task UpdateAsync(User user)
         {
             UserRepository.EntryModified(user);
 
-            UserRepository.SaveChanges();
-
-            return Task.FromResult(0);
+            await UserRepository.SaveChangesAsync();                       
         }
         #endregion
 
