@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201512021725031_ChangingProductSuplier.Designer.cs">
       <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512042021241_AddingIsRemovedField.cs" />
+    <Compile Include="Migrations\201512042021241_AddingIsRemovedField.Designer.cs">
+      <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -151,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512021725031_ChangingProductSuplier.resx">
       <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512042021241_AddingIsRemovedField.resx">
+      <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

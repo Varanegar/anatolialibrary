@@ -1,9 +1,7 @@
-﻿using Aantoli.Framework.Entity.Base;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using Aantoli.Framework.Entity.Base;
 
 namespace Aantoli.Common.Entity.Gateway.Product
 {
@@ -25,5 +23,4 @@ namespace Aantoli.Common.Entity.Gateway.Product
         public string Desctription { get; set; }
         public ProductSupplierListEntity SupplierInfoList { get; set; }
     }
-
 }

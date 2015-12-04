@@ -13,7 +13,8 @@ namespace Anatoli.DataAccess.Models
         public int Number_ID { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdate { get; set; }
-     
+        public bool IsRemoved { get; set; }
+
         public virtual Principal AddedBy { get; set; }
         public virtual Principal LastModifiedBy { get; set; }
         public virtual Principal PrivateLabelOwner { get; set; }
