@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}</ProjectGuid>
+    <ProjectGuid>{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Anatoli.Business</RootNamespace>
-    <AssemblyName>Anatoli.Business</AssemblyName>
+    <RootNamespace>Anatoli.ViewModels</RootNamespace>
+    <AssemblyName>Anatoli.ViewModels</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,25 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBusinessDomain.cs" />
-    <Compile Include="ProductDomain.cs" />
-    <Compile Include="Proxy\AnatoliProxy.cs" />
-    <Compile Include="Proxy\Concretes\ManufactureProxy.cs" />
-    <Compile Include="Proxy\Concretes\ProductGroupProxy.cs" />
-    <Compile Include="Proxy\Concretes\SupplierProxy.cs" />
-    <Compile Include="Proxy\Interfaces\IAnatoliProxy.cs" />
-    <Compile Include="Proxy\Concretes\ProductProxy.cs" />
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Product\ManufactureViewModel.cs" />
+    <Compile Include="Product\ProductGroupViewModel.cs" />
+    <Compile Include="Product\ProductViewModel.cs" />
+    <Compile Include="Product\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Anatoli.DataAccess\Anatoli.DataAccess.csproj">
-      <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
-      <Name>Anatoli.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
-      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
-      <Name>Anatoli.ViewModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

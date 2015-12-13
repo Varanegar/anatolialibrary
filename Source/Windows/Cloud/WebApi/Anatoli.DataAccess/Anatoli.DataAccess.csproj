@@ -87,6 +87,10 @@
     <Compile Include="Migrations\201512042021241_AddingIsRemovedField.Designer.cs">
       <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512121918032_AddinManufacture.cs" />
+    <Compile Include="Migrations\201512121918032_AddinManufacture.Designer.cs">
+      <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="Models\Identity\PrincipalPermission.cs" />
     <Compile Include="Models\Identity\Role.cs" />
     <Compile Include="Models\Identity\User.cs" />
+    <Compile Include="Models\Manufacture.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductBase.cs" />
     <Compile Include="Models\ProductBaseProductMap.cs" />
@@ -158,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512042021241_AddingIsRemovedField.resx">
       <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512121918032_AddinManufacture.resx">
+      <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

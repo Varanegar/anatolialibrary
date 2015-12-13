@@ -15,6 +15,8 @@ namespace Anatoli.DataAccess.Models
         public Nullable<decimal> PackWeight { get; set; }
         public Nullable<long> TaxCategoryValueId { get; set; }
         public Nullable<int> MainSupplierId { get; set; }
+        public string Desctription { get; set; }
+
         //public int ProductBaseId { get; set; }
         //public Nullable<Guid> ProductGroupId { get; set; }
 
@@ -27,6 +29,8 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<StoreActivePriceList> StoreActivePriceLists { get; set; }
         public virtual ICollection<CharValue> CharValues { get; set; }
         public virtual ICollection<Supplier> Suppliers { get; set; }
+        public virtual Manufacture Manufacture { get; set; }
+
 
     }
 }
