@@ -52,6 +52,16 @@ namespace Anatoli.DataAccess.Repositories
         {
             return await DbSet.Where(match).ToListAsync();
         }
+
+        public virtual void Add(T entity)
+        {
+            var dbEntityEntry = DbContext.Entry(entity);
+
+            if (dbEntityEntry.State != EntityState.Detached)
+                dbEntityEntry.State = EntityState.Added;
+            else
+                DbSet.Add(entity);
+        }
         public virtual async Task<T> AddAsync(T entity)
         {
             var dbEntityEntry = DbContext.Entry(entity);
@@ -103,6 +113,31 @@ namespace Anatoli.DataAccess.Repositories
         public virtual void EntryModified(T entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
+        }
+        public virtual void SaveChanges()
+        {
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public virtual async Task SaveChangesAsync()
         {

@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.DataAccess", "Anatoli.DataAccess\Anatoli.DataAccess.csproj", "{507DB6C2-A55A-4557-8DD6-7187C868ACA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApp", "TestApp", "{C89776FD-09E5-4963-9E89-E768CF0CB08B}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc-Web", "Mvc-Web\Mvc-Web.csproj", "{5423B484-5B58-4EB3-97D1-229E85DC2CDD}"
 EndProject

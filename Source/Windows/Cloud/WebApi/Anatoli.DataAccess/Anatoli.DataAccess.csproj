@@ -69,6 +69,7 @@
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\StoreValidRegionInfoConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Interfaces\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\201511282115275_InitAnatoliDB.cs" />
@@ -90,6 +91,10 @@
     <Compile Include="Migrations\201512121918032_AddinManufacture.cs" />
     <Compile Include="Migrations\201512121918032_AddinManufacture.Designer.cs">
       <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.cs" />
+    <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.Designer.cs">
+      <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -148,6 +153,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Repositories\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\PrincipalRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512121918032_AddinManufacture.resx">
       <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512131554004_RemoveProductBaseRelation.resx">
+      <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

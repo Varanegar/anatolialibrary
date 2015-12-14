@@ -20,7 +20,7 @@ namespace Anatoli.DataAccess.Models
         //public int ProductBaseId { get; set; }
         //public Nullable<Guid> ProductGroupId { get; set; }
 
-        public virtual ProductBase ProductBase { get; set; }
+        //public virtual ProductBase ProductBase { get; set; }
         public virtual ProductGroup ProductGroup { get; set; }
         //public virtual ICollection<ProductBaseProductMap> ProductBaseProductMaps { get; set; }
         public virtual ICollection<ProductComment> ProductComments { get; set; }

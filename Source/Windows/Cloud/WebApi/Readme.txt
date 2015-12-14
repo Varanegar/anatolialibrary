@@ -2,5 +2,8 @@ Add-Migration
 Update-Database –Verbose
 
 
-{"Entities in 'AnatoliDbContext.Products' participate in the 'Product_ProductBase' relationship. 0 related 'Product_ProductBase_Target' were found.
- 1 'Product_ProductBase_Target' is expected."}
+http://localhost:59822/api/v0/sample/FakeProductManager/GetProducts
+http://localhost:59822/api/v0/sample/FakeProductManager/AddProduct
+http://localhost:59822/api/v0/sample/FakeAccountManager/GetCurrentUser
+http://localhost:59822/api/v0/sample/FakeAccountManager/SignUp?userName=Ah&pass=123456&email=Ah@yahi.ir&fullName=Mohammadreza
+http://localhost:59822/api/v0/sample/FakeAccountManager/Login?userName=Moj&pass=123456
