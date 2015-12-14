@@ -33,8 +33,8 @@
             p1:layout_height="50dp">
             <ImageView
                 p1:src="@drawable/ic_shopping_cart_white_24dp"
-                p1:layout_width="50dp"
-                p1:layout_height="50dp"
+                p1:layout_width="24dp"
+                p1:layout_height="24dp"
                 p1:id="@+id/shoppingCardImageView"
                 p1:layout_centerVertical="true"
                 p1:layout_centerInParent="true" />
