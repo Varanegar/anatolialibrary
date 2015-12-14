@@ -1628,8 +1628,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f02005c
 			public const int Messages = 2130837596;
 			
-			// aapt resource value: 0x7f02006d
-			public const int notification_template_icon_bg = 2130837613;
+			// aapt resource value: 0x7f02006e
+			public const int notification_template_icon_bg = 2130837614;
 			
 			// aapt resource value: 0x7f02005d
 			public const int orders = 2130837597;
@@ -1678,6 +1678,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f02006c
 			public const int Store = 2130837612;
+			
+			// aapt resource value: 0x7f02006d
+			public const int textcorner = 2130837613;
 			
 			static Drawable()
 			{
@@ -2272,7 +2275,7 @@ namespace AnatoliAndroid
 			public const int storeNameTextView = 2131427458;
 			
 			// aapt resource value: 0x7f0b00df
-			public const int storeStatusImageView = 2131427551;
+			public const int storeStatusTextView = 2131427551;
 			
 			// aapt resource value: 0x7f0b00e0
 			public const int storeSummaryInfoLinearLayout = 2131427552;

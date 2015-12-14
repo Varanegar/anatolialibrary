@@ -43,13 +43,19 @@ namespace AnatoliAndroid.ListAdapters
             }
             TextView storeNameTextView = convertView.FindViewById<TextView>(Resource.Id.storeNameTextView);
             TextView storeAddressTextView = convertView.FindViewById<TextView>(Resource.Id.storeAddressTextView);
-            ImageView storeStatusImageView = convertView.FindViewById<ImageView>(Resource.Id.storeStatusImageView);
+            TextView storeStatusTextView = convertView.FindViewById<TextView>(Resource.Id.storeStatusTextView);
             // todo : add store close open 
             int r = new Random().Next(0, 10);
             if (r > 5)
-                storeStatusImageView.SetImageResource(Resource.Drawable.sopen);
+            {
+                storeStatusTextView.Text = "»«“ «”  !";
+                storeStatusTextView.SetTextColor(Android.Graphics.Color.Green);
+            }
             else
-                storeStatusImageView.SetImageResource(Resource.Drawable.sclose);
+            {
+                storeStatusTextView.Text = "»” Â «”  !";
+                storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
+            }
             storeNameTextView.Text = item.store_name;
             storeAddressTextView.Text = item.store_address;
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);

@@ -465,65 +465,64 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ImageResId = Resource.Drawable.GroupIcon;
             mainItems.Add(categoriesMenuEntry);
 
-            if (AnatoliUser != null)
-            {
-                var msgMenuEntry = new DrawerMainItem();
-                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-                msgMenuEntry.Name = "پیغام ها";
-                msgMenuEntry.ImageResId = Resource.Drawable.Messages;
-                mainItems.Add(msgMenuEntry);
-            }
+            //if (AnatoliUser != null)
+            //{
+            //    var msgMenuEntry = new DrawerMainItem();
+            //    msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+            //    msgMenuEntry.Name = "پیغام ها";
+            //    msgMenuEntry.ImageResId = Resource.Drawable.Messages;
+            //    mainItems.Add(msgMenuEntry);
+            //}
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-            favoritsMenuEntry.Name = "علاقه مندی ها";
+            favoritsMenuEntry.Name = "لیست من";
             favoritsMenuEntry.ImageResId = Resource.Drawable.Favorits;
             mainItems.Add(favoritsMenuEntry);
+
+            var storesMenuEntry = new DrawerMainItem();
+            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
+            storesMenuEntry.Name = "فروشگاه من";
+            mainItems.Add(storesMenuEntry);
 
             if (AnatoliUser != null)
             {
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
                 ordersMenuEntry.Name = "سفارشات قبلی";
-                ordersMenuEntry.ImageResId = Resource.Drawable.orders;
                 mainItems.Add(ordersMenuEntry);
             }
 
-            var shoppingCardMenuEntry = new DrawerMainItem();
-            shoppingCardMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
-            shoppingCardMenuEntry.Name = "سبد خرید";
-            shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
-            mainItems.Add(shoppingCardMenuEntry);
+            //var shoppingCardMenuEntry = new DrawerMainItem();
+            //shoppingCardMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ShoppingCard;
+            //shoppingCardMenuEntry.Name = "سبد خرید";
+            //shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
+            //mainItems.Add(shoppingCardMenuEntry);
 
-            var storesMenuEntry = new DrawerMainItem();
-            storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = "انتخاب فروشگاه";
-            storesMenuEntry.ImageResId = Resource.Drawable.Store;
-            mainItems.Add(storesMenuEntry);
+            
 
-            if (AnatoliUser != null)
-            {
-                var profileMenuEntry = new DrawerMainItem();
-                profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
-                profileMenuEntry.Name = "مشخصات من";
-                profileMenuEntry.ImageResId = Resource.Drawable.Profile;
-                mainItems.Add(profileMenuEntry);
+            //if (AnatoliUser != null)
+            //{
+            //    var profileMenuEntry = new DrawerMainItem();
+            //    profileMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+            //    profileMenuEntry.Name = "مشخصات من";
+            //    profileMenuEntry.ImageResId = Resource.Drawable.Profile;
+            //    mainItems.Add(profileMenuEntry);
 
-            }
+            //}
 
             var helpMenuEntry = new DrawerMainItem();
             helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
             helpMenuEntry.Name = "راهنما";
-            helpMenuEntry.ImageResId = Resource.Drawable.Help;
             mainItems.Add(helpMenuEntry);
 
-            if (AnatoliUser != null)
-            {
-                var logoutMenuEntry = new DrawerMainItem();
-                logoutMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Logout;
-                logoutMenuEntry.Name = "خروج";
-                logoutMenuEntry.ImageResId = Resource.Drawable.Exit;
-                mainItems.Add(logoutMenuEntry);
-            }
+            //if (AnatoliUser != null)
+            //{
+            //    var logoutMenuEntry = new DrawerMainItem();
+            //    logoutMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Logout;
+            //    logoutMenuEntry.Name = "خروج";
+            //    logoutMenuEntry.ImageResId = Resource.Drawable.Exit;
+            //    mainItems.Add(logoutMenuEntry);
+            //}
 
             AnatoliMenuItems = mainItems;
             _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);

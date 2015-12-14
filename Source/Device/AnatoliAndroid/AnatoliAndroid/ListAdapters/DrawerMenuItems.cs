@@ -45,15 +45,19 @@ namespace AnatoliAndroid.ListAdapters
                 return _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
             if (item.GetType() == typeof(DrawerMainItem))
             {
-                if (item.ItemId == DrawerMainItem.DrawerMainItems.Login || item.ItemId == DrawerMainItem.DrawerMainItems.Logout || item.ItemId == DrawerMainItem.DrawerMainItems.ProductCategries || item.ItemId == DrawerMainItem.DrawerMainItems.Help)
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Login || item.ItemId == DrawerMainItem.DrawerMainItems.Favorits)
                     convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
                 else
                     convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerSubItemLayout, null);
             }
             else
-                convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerSubItemLayout, null);
+                convertView = _context.LayoutInflater.Inflate(Resource.Layout.DrawerItemLayout, null);
+
 
             TextView itemTextView = convertView.FindViewById<TextView>(Resource.Id.itemTextView);
+            if (item.GetType() == typeof(DrawerMainItem) && item.ItemId == DrawerMainItem.DrawerMainItems.Login)
+                itemTextView.SetTextColor(Android.Graphics.Color.Green);
+
             ImageView itemImageView = convertView.FindViewById<ImageView>(Resource.Id.itemIconImageView);
             RelativeLayout relativeLayout = convertView.FindViewById<RelativeLayout>(Resource.Id.relativeLayout1);
             itemTextView.Text = item.Name;
@@ -73,7 +77,18 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         convertView.SetBackgroundResource(Resource.Color.lllgray);
                     }
+                    else
+                    {
+                        itemImageView.LayoutParameters.Width = 200;
+                        itemImageView.RequestLayout();
+                    }
                 }
+            }
+            else
+            {
+                itemImageView.Visibility = ViewStates.Invisible;
+                itemImageView.LayoutParameters.Width = 5;
+                itemImageView.RequestLayout();
             }
 
             if (item.GetType() == typeof(DrawerMainItem))
@@ -96,7 +111,7 @@ namespace AnatoliAndroid.ListAdapters
         public int ItemId { get; set; }
         public string Name { get; set; }
         public int ImageResId { get; set; }
-        public DrawerItemType(int itemId = 0, string name = "Menu Item", int imageResId = Resource.Drawable.MenuItem)
+        public DrawerItemType(int itemId = 0, string name = "Menu Item", int imageResId = -1)
         {
             ItemId = itemId;
             Name = name;

@@ -33,6 +33,5 @@ namespace AnatoliAndroid
             width = ((float)width > pixels) ? (int)Math.Round(pixels) : width;
             button.SetWidth(width);
         }
-
     }
 }
