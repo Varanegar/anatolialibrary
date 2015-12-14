@@ -14,6 +14,7 @@ using Anatoli.App.Model.Product;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -21,6 +22,11 @@ namespace AnatoliAndroid.Fragments
     class ProductsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
         int cat_id = 0;
+        public override void OnStart()
+        {
+            base.OnStart();
+            AnatoliApp.GetInstance().ShowSearchIcon();
+        }
         protected override List<QueryParameter> CreateQueryParameters()
         {
             var parameters = new List<QueryParameter>();

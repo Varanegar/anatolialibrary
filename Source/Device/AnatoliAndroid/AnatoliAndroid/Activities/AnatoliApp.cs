@@ -49,6 +49,16 @@ namespace AnatoliAndroid.Activities
         {
             _menuIconImageView.Visibility = ViewStates.Visible;
         }
+
+        public void HideSearchIcon()
+        {
+            _searchImageView.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowSearchIcon()
+        {
+            _searchImageView.Visibility = ViewStates.Visible;
+        }
         public delegate void ProcessMenu();
         public ProcessMenu MenuClicked;
         void OnMenuClick()

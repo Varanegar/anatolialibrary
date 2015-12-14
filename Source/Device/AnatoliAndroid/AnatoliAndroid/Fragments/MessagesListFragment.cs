@@ -14,6 +14,7 @@ using Anatoli.App.Model.Store;
 using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -58,6 +59,11 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnDetach();
             MessageManager.SetViewFlag(msgIds);
+        }
+        public override void OnStart()
+        {
+            base.OnStart();
+            AnatoliApp.GetInstance().HideSearchIcon();
         }
     }
 }

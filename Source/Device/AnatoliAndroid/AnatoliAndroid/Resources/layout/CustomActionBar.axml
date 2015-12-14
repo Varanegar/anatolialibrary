@@ -66,6 +66,7 @@
             p1:layout_width="50dp"
             p1:layout_height="50dp"
             p1:id="@+id/searchImageView"
+            p1:visibility="gone"
             p1:layout_toRightOf="@id/shoppingbarRelativeLayout" />
     </RelativeLayout>
     <RelativeLayout

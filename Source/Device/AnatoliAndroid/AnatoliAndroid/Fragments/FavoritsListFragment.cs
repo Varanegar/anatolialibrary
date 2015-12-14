@@ -23,6 +23,11 @@ namespace AnatoliAndroid.Fragments
     [FragmentTitle("علاقه مندی ها")]
     class FavoritsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
+        public override void OnStart()
+        {
+            base.OnStart();
+            AnatoliApp.GetInstance().HideSearchIcon();
+        }
         public FavoritsListFragment()
         {
             _listAdapter.FavoritRemoved += _listAdapter_FavoritRemoved;

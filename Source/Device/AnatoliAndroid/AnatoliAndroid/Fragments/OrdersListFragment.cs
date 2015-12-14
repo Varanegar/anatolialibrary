@@ -13,6 +13,7 @@ using Anatoli.App.Manager;
 using Anatoli.App.Model.Store;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -43,6 +44,11 @@ namespace AnatoliAndroid.Fragments
                     Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "هیچ سفارشی ثبت نشده است", ToastLength.Short).Show();
                 }
             };
+        }
+        public override void OnStart()
+        {
+            base.OnStart();
+            AnatoliApp.GetInstance().HideSearchIcon();
         }
     }
 }

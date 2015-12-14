@@ -55,6 +55,10 @@ namespace AnatoliAndroid.Fragments
         {
             return Configuration.WebService.Stores.StoresView;
         }
-
+        public override void OnStart()
+        {
+            base.OnStart();
+            AnatoliApp.GetInstance().HideSearchIcon();
+        }
     }
 }

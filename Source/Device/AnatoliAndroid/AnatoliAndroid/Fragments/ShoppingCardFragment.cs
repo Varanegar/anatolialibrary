@@ -164,6 +164,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
+            AnatoliApp.GetInstance().HideSearchIcon();
             //AnatoliApp.GetInstance().MenuClicked = () =>
             //{
             //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
