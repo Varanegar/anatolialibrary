@@ -2013,8 +2013,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0089
 			public const int media_actions = 2131427465;
 			
-			// aapt resource value: 0x7f0b0057
-			public const int menuImageView = 2131427415;
+			// aapt resource value: 0x7f0b0058
+			public const int menuImageView = 2131427416;
 			
 			// aapt resource value: 0x7f0b001a
 			public const int middle = 2131427354;
@@ -2151,8 +2151,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0060
 			public const int searchEditText = 2131427424;
 			
-			// aapt resource value: 0x7f0b005c
-			public const int searchImageView = 2131427420;
+			// aapt resource value: 0x7f0b0056
+			public const int searchImageView = 2131427414;
 			
 			// aapt resource value: 0x7f0b005d
 			public const int searchRelativeLayout = 2131427421;
@@ -2205,17 +2205,17 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00bd
 			public const int shippingRelativeLayout = 2131427517;
 			
-			// aapt resource value: 0x7f0b0059
-			public const int shoppingCardImageView = 2131427417;
+			// aapt resource value: 0x7f0b005a
+			public const int shoppingCardImageView = 2131427418;
 			
 			// aapt resource value: 0x7f0b00d9
 			public const int shoppingCardListView = 2131427545;
 			
-			// aapt resource value: 0x7f0b005a
-			public const int shoppingCardTextView = 2131427418;
+			// aapt resource value: 0x7f0b005b
+			public const int shoppingCardTextView = 2131427419;
 			
-			// aapt resource value: 0x7f0b0058
-			public const int shoppingbarRelativeLayout = 2131427416;
+			// aapt resource value: 0x7f0b0059
+			public const int shoppingbarRelativeLayout = 2131427417;
 			
 			// aapt resource value: 0x7f0b003d
 			public const int shortcut = 2131427389;
@@ -2349,14 +2349,14 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0074
 			public const int toolbar = 2131427444;
 			
-			// aapt resource value: 0x7f0b0056
-			public const int toolbarImageView = 2131427414;
+			// aapt resource value: 0x7f0b0057
+			public const int toolbarImageView = 2131427415;
 			
 			// aapt resource value: 0x7f0b0055
 			public const int toolbarRelativeLayout = 2131427413;
 			
-			// aapt resource value: 0x7f0b005b
-			public const int toolbarTextView = 2131427419;
+			// aapt resource value: 0x7f0b005c
+			public const int toolbarTextView = 2131427420;
 			
 			// aapt resource value: 0x7f0b0032
 			public const int topPanel = 2131427378;

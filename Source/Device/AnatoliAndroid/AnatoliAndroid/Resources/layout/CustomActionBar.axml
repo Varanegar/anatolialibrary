@@ -13,6 +13,12 @@
         p1:layout_width="match_parent"
         p1:layout_height="50dp">
         <ImageView
+            p1:src="@drawable/Search"
+            p1:layout_width="50dp"
+            p1:layout_height="50dp"
+            p1:id="@+id/searchImageView"
+            p1:layout_alignParentLeft="true" />
+        <ImageView
             p1:src="@drawable/Menu"
             p1:layout_width="50dp"
             p1:layout_height="50dp"
@@ -29,7 +35,7 @@
         <RelativeLayout
             p1:id="@+id/shoppingbarRelativeLayout"
             p1:layout_width="wrap_content"
-            p1:layout_toRightOf="@id/menuImageView"
+            p1:layout_toRightOf="@id/searchImageView"
             p1:layout_height="50dp">
             <ImageView
                 p1:src="@drawable/ic_shopping_cart_white_24dp"
@@ -61,13 +67,6 @@
             p1:layout_toLeftOf="@id/toolbarImageView"
             local:customFont="Fonts/anatoli.ttf"
             p1:padding="2dp" />
-        <ImageView
-            p1:src="@drawable/Search"
-            p1:layout_width="50dp"
-            p1:layout_height="50dp"
-            p1:id="@+id/searchImageView"
-            p1:visibility="gone"
-            p1:layout_toRightOf="@id/shoppingbarRelativeLayout" />
     </RelativeLayout>
     <RelativeLayout
         p1:id="@+id/searchRelativeLayout"
