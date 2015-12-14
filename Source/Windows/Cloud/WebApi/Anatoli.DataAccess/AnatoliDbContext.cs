@@ -31,7 +31,7 @@ namespace Anatoli.DataAccess
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductBase> ProductBases { get; set; }
+        //public DbSet<ProductBase> ProductBases { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }

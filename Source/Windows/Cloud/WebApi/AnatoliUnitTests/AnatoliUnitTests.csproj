@@ -86,6 +86,10 @@
       <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
       <Name>Anatoli.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
+      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
+      <Name>Anatoli.ViewModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

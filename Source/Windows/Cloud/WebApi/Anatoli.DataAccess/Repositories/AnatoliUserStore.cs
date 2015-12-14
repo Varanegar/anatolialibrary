@@ -14,8 +14,10 @@ namespace Anatoli.DataAccess.Repositories
         #endregion
 
         #region Ctors
-        public AnatoliUserStore()
-            : this(new UserRepository(new AnatoliDbContext()))
+        public AnatoliUserStore() : this(new AnatoliDbContext()) { }
+
+        public AnatoliUserStore(AnatoliDbContext dbc)
+            : this(new UserRepository(dbc))
         { }
         public AnatoliUserStore(UserRepository userRepository)
         {

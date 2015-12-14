@@ -15,9 +15,10 @@ namespace Anatoli.Business
         IProductRepository ProductRepository { get; set; }
         Guid PrivateLabelOwnerId { get; }
 
-        Task<List<TOut>> GetAll(Guid storeId);
-        Task<List<TOut>> GetAllChangedAfter(Guid storeId, DateTime selectedDate);
-        Task Publish(List<TOut> productEntities);
-        Task Delete(List<TOut> productEntities);
+        Task<List<TOut>> GetAll();
+        Task<List<TOut>> GetAllChangedAfter(DateTime selectedDate);
+        Task PublishAsync(List<TOut> ProductViewModels);
+        void Publish(List<TOut> ProductViewModels);
+        Task Delete(List<TOut> ProductViewModels);
     }
 }

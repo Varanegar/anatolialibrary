@@ -11,6 +11,8 @@
     <AssemblyName>Anatoli.Business</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,25 +52,35 @@
     <Compile Include="IBusinessDomain.cs" />
     <Compile Include="ProductDomain.cs" />
     <Compile Include="Proxy\AnatoliProxy.cs" />
+    <Compile Include="Proxy\Concretes\ManufactureProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\SupplierProxy.cs" />
     <Compile Include="Proxy\Interfaces\IAnatoliProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Aantoli.Common.Entity\Aantoli.Common.Entity\Aantoli.Common.Entity.csproj">
-      <Project>{172c4199-551d-486d-a096-9d60eb06f7c1}</Project>
-      <Name>Aantoli.Common.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\Anatoli.Framework\Anatoli.Framework\Anatoli.Framework.csproj">
-      <Project>{58bbceaf-cd30-4906-ba07-774929a88b50}</Project>
-      <Name>Anatoli.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Anatoli.DataAccess\Anatoli.DataAccess.csproj">
       <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
       <Name>Anatoli.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
+      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
+      <Name>Anatoli.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
