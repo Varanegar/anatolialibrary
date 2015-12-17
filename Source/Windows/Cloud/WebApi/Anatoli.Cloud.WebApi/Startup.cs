@@ -1,5 +1,6 @@
 ﻿using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.Cloud.WebApi.Providers;
+using Anatoli.DataAccess;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
@@ -40,7 +41,7 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(AnatoliDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 

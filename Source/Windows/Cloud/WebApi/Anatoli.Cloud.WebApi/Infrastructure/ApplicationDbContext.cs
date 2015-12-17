@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Anatoli.Cloud.WebApi.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

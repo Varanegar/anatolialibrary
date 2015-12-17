@@ -39,6 +39,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -54,10 +60,12 @@
     <Compile Include="Proxy\AnatoliProxy.cs" />
     <Compile Include="Proxy\Concretes\ManufactureProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\StoreProxy.cs" />
     <Compile Include="Proxy\Concretes\SupplierProxy.cs" />
     <Compile Include="Proxy\Interfaces\IAnatoliProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreDomain.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Anatoli.DataAccess\Anatoli.DataAccess.csproj">

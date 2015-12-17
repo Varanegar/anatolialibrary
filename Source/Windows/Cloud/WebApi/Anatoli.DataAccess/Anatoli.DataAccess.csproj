@@ -42,6 +42,9 @@
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -71,6 +74,7 @@
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IStoreRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\201511282115275_InitAnatoliDB.cs" />
     <Compile Include="Migrations\201511282115275_InitAnatoliDB.Designer.cs">
@@ -95,6 +99,14 @@
     <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.cs" />
     <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.Designer.cs">
       <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.cs" />
+    <Compile Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.Designer.cs">
+      <DependentUpon>201512170756398_ChangingUserModelToIdentiyUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512170932314_ChangeUserModel.cs" />
+    <Compile Include="Migrations\201512170932314_ChangeUserModel.Designer.cs">
+      <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -155,6 +167,7 @@
     <Compile Include="Repositories\AnatoliUserStore.cs" />
     <Compile Include="Repositories\PrincipalRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\StoreRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +188,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512131554004_RemoveProductBaseRelation.resx">
       <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.resx">
+      <DependentUpon>201512170756398_ChangingUserModelToIdentiyUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512170932314_ChangeUserModel.resx">
+      <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

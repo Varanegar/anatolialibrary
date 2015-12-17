@@ -1,4 +1,5 @@
 ﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace Anatoli.Cloud.WebApi.Validators
 {
-    public class MyCustomUserValidator : UserValidator<ApplicationUser>
+    public class MyCustomUserValidator : UserValidator<User>
     {
 
         List<string> _allowedEmailDomains = new List<string> { "outlook.com", "hotmail.com", "gmail.com", "yahoo.com" };
@@ -18,7 +19,7 @@ namespace Anatoli.Cloud.WebApi.Validators
         {
         }
 
-        public override async Task<IdentityResult> ValidateAsync(ApplicationUser user)
+        public override async Task<IdentityResult> ValidateAsync(User user)
         {
             IdentityResult result = await base.ValidateAsync(user);
 

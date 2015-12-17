@@ -38,6 +38,7 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
+            throw new InvalidOperationException();
             return await DbSet.FindAsync(id);
         }
         public virtual async Task<ICollection<T>> GetAllAsync()
@@ -46,7 +47,9 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
         {
-            return await DbSet.SingleOrDefaultAsync(match);
+            var model = await DbSet.SingleOrDefaultAsync(match);
+
+            return model;
         }
         public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {

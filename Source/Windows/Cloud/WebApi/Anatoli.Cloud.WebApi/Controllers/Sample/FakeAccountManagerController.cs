@@ -16,7 +16,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
     public class FakeAccountManagerController : ApiController
     {
         #region Properties
-        public UserManager<User, Guid> UserManager { get; private set; }
+        public UserManager<User> UserManager { get; private set; }
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -30,12 +30,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
         #region Ctors
         public FakeAccountManagerController() : this(new AnatoliDbContext()) { }
         public FakeAccountManagerController(AnatoliDbContext dbc)
-            : this(new UserManager<User, Guid>(new AnatoliUserStore(dbc)))
+            : this(new UserManager<User>(new AnatoliUserStore(dbc)))
         {
             _dbc = dbc;
         }
 
-        public FakeAccountManagerController(UserManager<User, Guid> userManager)
+        public FakeAccountManagerController(UserManager<User> userManager)
         {
             UserManager = userManager;
         }
@@ -60,7 +60,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
             var _id = Guid.NewGuid();
             var user = new User
             {
-                Id = _id,
+                Id = _id.ToString(),
                 PrivateLabelOwner = privateLabelOwner,
                 AddedBy = privateLabelOwner,
                 Number_ID = new Random(DateTime.Now.Millisecond).Next(),
@@ -113,7 +113,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
         [Authorize]
         public async Task<string> GetCurrentUser()
         {
-            var user = await UserManager.FindByIdAsync(Guid.Parse(User.Identity.GetUserId()));
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             return user.FullName;
         }

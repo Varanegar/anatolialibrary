@@ -29,7 +29,7 @@ namespace AnatoliUnitTests
             var _id = Guid.NewGuid();
             var model = await userReposirtory.AddAsync(new User
             {
-                Id = _id,
+                Id = _id.ToString(),
                 PrivateLabelOwner = privateLabelOwner,
                 AddedBy = privateLabelOwner,
                 Number_ID = 123,
@@ -67,7 +67,7 @@ namespace AnatoliUnitTests
             var _id = Guid.NewGuid();
             var model = new User
             {
-                Id = _id,
+                Id = _id.ToString(),
                 PrivateLabelOwner = privateLabelOwner,
                 AddedBy = privateLabelOwner,
                 Number_ID = 123,
@@ -82,7 +82,7 @@ namespace AnatoliUnitTests
 
             };
 
-            var userStore = new AnatoliUserStore(userReposirtory);
+            var userStore = new AnatoliUserStore(dbc);
             //model.Password = await userStore.GetPasswordHashAsync(model);
             await userStore.CreateAsync(model);
 
