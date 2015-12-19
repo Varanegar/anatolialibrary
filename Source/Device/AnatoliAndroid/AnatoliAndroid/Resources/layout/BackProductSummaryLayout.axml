@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_margin="5dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativeLayout2"
+                android:layout_marginBottom="5dp">
+                <ImageButton
+                    android:text="Button"
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/favoritsButton"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_mylist_orange_24dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true" />
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:text="افزودن به فهرست من"
+                    android:gravity="center_vertical"
+                    android:textSize="10dp"
+                    android:textColor="@color/orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@id/favoritsButton"
+                    android:id="@+id/favoritsTextView"
+                    android:layout_marginRight="5dp"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:id="@+id/relativeLayout3"
+                android:layout_width="100dp">
+                <ImageButton
+                    android:text="Button"
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/removeAllProductsButton"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_delete_red_24dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true" />
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:text="حذف کالا"
+                    android:gravity="center_vertical"
+                    android:textSize="10dp"
+                    android:textColor="@color/red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@id/removeAllProductsButton"
+                    android:id="@+id/textView2"
+                    android:layout_marginRight="5dp"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/linearLayout1"
+            android:id="@+id/relativeLayout4">
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/bproductImageView"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bproductNameTextView"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/bproductImageView"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
