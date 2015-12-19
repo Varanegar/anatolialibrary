@@ -43,6 +43,7 @@
     <Compile Include="Product\ManufactureViewModel.cs" />
     <Compile Include="Product\ProductGroupViewModel.cs" />
     <Compile Include="Product\ProductViewModel.cs" />
+    <Compile Include="Product\StoreViewModel.cs" />
     <Compile Include="Product\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

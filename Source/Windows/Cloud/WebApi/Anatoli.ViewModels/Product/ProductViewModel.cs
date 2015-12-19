@@ -24,4 +24,5 @@ namespace Anatoli.ViewModels.Product
         public ProductGroupViewModel ProductGroup { get; set; }
         public ManufactureViewModel Manufacture { get; set; }
     }
+    
 }

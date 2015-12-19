@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using Anatoli.DataAccess.Configs;
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Models.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Anatoli.DataAccess
 {
-    public class AnatoliDbContext : DbContext
+    public class AnatoliDbContext : IdentityDbContext<User>
     {
         #region Properties
         public DbSet<BaseType> BaseTypes { get; set; }
@@ -31,7 +32,6 @@ namespace Anatoli.DataAccess
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
         public DbSet<Product> Products { get; set; }
-        //public DbSet<ProductBase> ProductBases { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
@@ -56,8 +56,7 @@ namespace Anatoli.DataAccess
 
         #region Identity
         public DbSet<Principal> Principals { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        //public DbSet<Role> Roles { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<PrincipalPermission> PrincipalPermissions { get; set; }
@@ -72,8 +71,10 @@ namespace Anatoli.DataAccess
         }
 
         public AnatoliDbContext()
-            : base("Name=AnatoliConnectionString")
+            : base("Name=AnatoliConnectionString", throwIfV1Schema: false)
         {
+            //Configuration.ProxyCreationEnabled = false;
+            //Configuration.LazyLoadingEnabled = false;
         }
         #endregion
 
@@ -95,8 +96,17 @@ namespace Anatoli.DataAccess
 
             modelBuilder.Configurations.Add(new UserConfig());
             modelBuilder.Configurations.Add(new GroupConfig());
-            modelBuilder.Configurations.Add(new RoleConfig());
+           // modelBuilder.Configurations.Add(new RoleConfig());
             modelBuilder.Configurations.Add(new PrincipalPermissionConfig());
+
+            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
+            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+        }
+
+        public static AnatoliDbContext Create()
+        {
+            return new AnatoliDbContext();
         }
     }
 }

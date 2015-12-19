@@ -12,7 +12,7 @@ namespace Anatoli.Business
         where TOut : class, new()
     {
         IAnatoliProxy<TSource, TOut> Proxy { get; set; }
-        IProductRepository ProductRepository { get; set; }
+        IRepository<TSource> Repository { get; set; }
         Guid PrivateLabelOwnerId { get; }
 
         Task<List<TOut>> GetAll();

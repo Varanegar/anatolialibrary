@@ -1,4 +1,5 @@
-﻿using Anatoli.Cloud.Gateway.Business.Region;
+﻿using Anatoli.Business;
+using Anatoli.Cloud.Gateway.Business.Region;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("productlist")]
-        public IHttpActionResult GetProducts()
+        public async Task<IHttpActionResult> GetProducts()
         {
-            return Ok(ProductCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var productDomain = new ProductDomain(owner);
+            var result = await productDomain.GetAll();
+
+            return  Ok(result);
+           
+            // return Ok(ProductCloudHandler.GetInstance().GetSampleData());
         }
 
         [Authorize(Roles = "AuthorizedApp")]

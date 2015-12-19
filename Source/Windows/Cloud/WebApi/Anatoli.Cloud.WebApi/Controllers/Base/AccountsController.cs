@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
+using Anatoli.DataAccess.Models.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -59,52 +61,71 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        //[Authorize(Roles = "AuthorizedApp")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(CreateUserBindingModel createUserModel)
         {
-
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var user = new ApplicationUser()
-            {
-                UserName = createUserModel.Username,
-                Email = createUserModel.Email,
-                EmailConfirmed = true,
-                FirstName = createUserModel.FirstName,
-                LastName = createUserModel.LastName,
-                Level = 3,
-                JoinDate = DateTime.Now.Date,
-            };
+                var id = Guid.NewGuid();
+                var user = new User()
+                {
+                    Id = id.ToString(),
+                    UserName = createUserModel.Username,
+                    Email = createUserModel.Email,
+                    EmailConfirmed = true,
+                    CreatedDate = DateTime.Now,
+                    PhoneNumber = createUserModel.Mobile,
+                    PrivateLabelOwner = new Principal { Id = createUserModel.PrivateOwnerId },
+                    Principal = new Principal { Id = id, Title = createUserModel.FullName }
+                };
+
+                var addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
+
+                if (!addUserResult.Succeeded)
+                    return GetErrorResult(addUserResult);
+
+                var adminUser = this.AppUserManager.FindByName(user.UserName);
+
+                if (this.AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
+                {
+                    this.AppRoleManager.Create(new IdentityRole
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "User"
+                    });
+
+                    this.AppRoleManager.Create(new IdentityRole
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = createUserModel.RoleName
+                    });
+                }
+
+                this.AppUserManager.AddToRoles(adminUser.Id, new string[] { "User", createUserModel.RoleName });
 
 
-            IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
-
-            if (!addUserResult.Succeeded)
-            {
-                return GetErrorResult(addUserResult);
-            }
-
-            var adminUser = this.AppUserManager.FindByName(user.UserName);
-
-            this.AppUserManager.AddToRoles(adminUser.Id, new string[] { "User"});
-
-            /*
-            string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                /*
+                string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             
-             * var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
+                 * var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
 
-            await this.AppUserManager.SendEmailAsync(user.Id,
-                                                    "Confirm your account",
-                                                    "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-            */
-            Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+                await this.AppUserManager.SendEmailAsync(user.Id,
+                                                        "Confirm your account",
+                                                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                */
+                Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
-            return Created(locationHeader, TheModelFactory.Create(user));
+                return Created(locationHeader, TheModelFactory.Create(user));
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
         }
 
         [AllowAnonymous]
@@ -172,10 +193,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
 
             return NotFound();
-          
+
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/roles")]
         [HttpPut]
         public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
@@ -187,12 +208,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 return NotFound();
             }
-            
+
             var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
 
             var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
 
-            if (rolesNotExists.Count() > 0) {
+            if (rolesNotExists.Count() > 0)
+            {
 
                 ModelState.AddModelError("", string.Format("Roles '{0}' does not exixts in the system", string.Join(",", rolesNotExists)));
                 return BadRequest(ModelState);
@@ -221,14 +243,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/assignclaims")]
         [HttpPut]
-        public async Task<IHttpActionResult> AssignClaimsToUser([FromUri] string id, [FromBody] List<ClaimBindingModel> claimsToAssign) {
+        public async Task<IHttpActionResult> AssignClaimsToUser([FromUri] string id, [FromBody] List<ClaimBindingModel> claimsToAssign)
+        {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-             var appUser = await this.AppUserManager.FindByIdAsync(id);
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
 
             if (appUser == null)
             {
@@ -237,14 +260,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             foreach (ClaimBindingModel claimModel in claimsToAssign)
             {
-                if (appUser.Claims.Any(c => c.ClaimType == claimModel.Type)) {
-                   
+                if (appUser.Claims.Any(c => c.ClaimType == claimModel.Type))
+                {
+
                     await this.AppUserManager.RemoveClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
                 }
 
                 await this.AppUserManager.AddClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
             }
-            
+
             return Ok();
         }
 

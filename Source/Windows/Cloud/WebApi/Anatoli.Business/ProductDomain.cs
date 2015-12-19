@@ -16,7 +16,7 @@ namespace Anatoli.Business
     {
         #region Properties
         public IAnatoliProxy<Product, ProductViewModel> Proxy { get; set; }
-        public IProductRepository ProductRepository { get; set; }
+        public IRepository<Product> Repository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Anatoli.Business
         public ProductDomain(IProductRepository productRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy)
         {
             Proxy = proxy;
-            ProductRepository = productRepository;
+            Repository = productRepository;
             PrincipalRepository = principalRepository;
         }
         #endregion
@@ -41,14 +41,14 @@ namespace Anatoli.Business
         #region Methods
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var products = await ProductRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
             return Proxy.Convert(products.ToList()); ;
         }
 
         public async Task<List<ProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
-            var products = await ProductRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
+            var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
 
             return Proxy.Convert(products.ToList()); ;
         }
@@ -73,24 +73,25 @@ namespace Anatoli.Business
                 //}
                 //else
                 //{
-                item.Suppliers.ToList().ForEach(itm =>
-                {
-                    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                });
-                                
-                item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                //item.Suppliers.ToList().ForEach(itm =>
+                //{
+                //    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                //    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
+                //});
 
-                item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
+                //item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
 
-                item.ProductGroup.ProductGroup2 = null;
+                //item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
+                //item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
 
-                ProductRepository.Add(item);
+                //item.ProductGroup.ProductGroup2 = null;
+
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                Repository.Add(item);
                 //}
             });
 
-            ProductRepository.SaveChanges();
+            Repository.SaveChanges();
             //});
         }
         public async Task PublishAsync(List<ProductViewModel> ProductViewModels)
@@ -123,10 +124,10 @@ namespace Anatoli.Business
 
                 item.ProductGroup.ProductGroup2 = null;
 
-                ProductRepository.AddAsync(item);
+                Repository.AddAsync(item);
                 //}
             });
-            await ProductRepository.SaveChangesAsync();
+            await Repository.SaveChangesAsync();
         }
 
         public async Task Delete(List<ProductViewModel> ProductViewModels)
@@ -137,11 +138,12 @@ namespace Anatoli.Business
 
                 products.ForEach(item =>
                 {
-                    var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                    ProductRepository.DeleteAsync(product);
+                    var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                   
+                    Repository.DeleteAsync(product);
                 });
-                ProductRepository.SaveChangesAsync();
 
+                Repository.SaveChangesAsync();
             });
         }
         #endregion

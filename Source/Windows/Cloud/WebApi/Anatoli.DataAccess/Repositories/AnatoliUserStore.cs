@@ -1,36 +1,48 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Models.Identity;
-using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class AnatoliUserStore : IUserStore<User, Guid>, IUserPasswordStore<User, Guid>, IDisposable
+    public class AnatoliUserStore : UserStore<User, IdentityRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, IUserStore<User>, IDisposable
+
+        //IUserStore<User>, IUserPasswordStore<User>, IDisposable
     {
         #region Properties
         UserRepository UserRepository { get; set; }
         #endregion
 
         #region Ctors
-        public AnatoliUserStore() : this(new AnatoliDbContext()) { }
-
-        public AnatoliUserStore(AnatoliDbContext dbc)
-            : this(new UserRepository(dbc))
-        { }
-        public AnatoliUserStore(UserRepository userRepository)
+        public AnatoliUserStore(AnatoliDbContext context)
+            : base(context)
         {
-            UserRepository = userRepository;
+
+            UserRepository = new UserRepository(Context);
         }
+
+        //public AnatoliUserStore(AnatoliDbContext dbc)
+        //    : this(new UserRepository(dbc))
+        //{ }
+        //public AnatoliUserStore(UserRepository userRepository)
+        //{
+        //    UserRepository = userRepository;
+        //}
         #endregion
 
         #region User Store
         public async Task CreateAsync(User user)
         {
-          await  UserRepository.AddAsync(user);
+            user.CreatedDate = user.LastUpdate = user.LastEntry = DateTime.Now;
 
-          await UserRepository.SaveChangesAsync();            
+            user.PrivateLabelOwner = new PrincipalRepository(Context).FindAsync(p => p.Id == user.PrivateLabelOwner.Id).Result;
+
+            await UserRepository.AddAsync(user);
+
+            await UserRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(User user)
@@ -40,23 +52,25 @@ namespace Anatoli.DataAccess.Repositories
             await UserRepository.SaveChangesAsync();
         }
 
-        public Task<User> FindByIdAsync(Guid userId)
+        public async Task<User> FindByIdAsync(string userId)
         {
-            return UserRepository.GetByIdAsync(userId);
+            var model = await UserRepository.FindAsync(p => p.Id == userId);
+
+            return model;
         }
 
-        public Task<User> FindByNameAsync(string userName)
+        public async Task<User> FindByNameAsync(string userName)
         {
-            var model = UserRepository.GetQuery().Where(p => p.UserName == userName).FirstOrDefault();
+            var model = await UserRepository.FindAsync(p => p.UserName == userName);
 
-            return Task<User>.FromResult(model);
+            return model;
         }
 
         public async Task UpdateAsync(User user)
         {
             UserRepository.EntryModified(user);
 
-            await UserRepository.SaveChangesAsync();                       
+            await UserRepository.SaveChangesAsync();
         }
         #endregion
 

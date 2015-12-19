@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.DataAccess.Models.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -8,12 +9,12 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
 {
     public static class ExtendedClaimsProvider
     {
-        public static IEnumerable<Claim> GetClaims(ApplicationUser user)
+        public static IEnumerable<Claim> GetClaims(User user)
         {
           
             List<Claim> claims = new List<Claim>();
 
-            var daysInWork =  (DateTime.Now.Date - user.JoinDate).TotalDays;
+            var daysInWork =  (DateTime.Now.Date - user.CreatedDate).TotalDays;
 
             if (daysInWork > 90)
             {

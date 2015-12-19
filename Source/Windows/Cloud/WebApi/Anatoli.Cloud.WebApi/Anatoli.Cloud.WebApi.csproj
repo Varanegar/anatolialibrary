@@ -165,10 +165,8 @@
     <Compile Include="Controllers\ImageManager\ImageManagerController.cs" />
     <Compile Include="Controllers\Sample\FakeAccountManagerController.cs" />
     <Compile Include="Controllers\Sample\FakeProductManagerController.cs" />
-    <Compile Include="Infrastructure\ApplicationDbContext.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
-    <Compile Include="Infrastructure\ApplicationUser.cs" />
     <Compile Include="Infrastructure\ApplicationUserManager.cs" />
     <Compile Include="Infrastructure\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Infrastructure\ExtendedClaimsProvider.cs" />

@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
+using Anatoli.DataAccess.Models.Identity;
+using Microsoft.AspNet.Identity;
 
 namespace Anatoli.Cloud.WebApi.Providers
 {
@@ -23,34 +25,48 @@ namespace Anatoli.Cloud.WebApi.Providers
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
 
-            var allowedOrigin = "*";
-
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-            if (user == null)
+            try
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                return;
-            }
+                var allowedOrigin = "*";
 
-            if (!user.EmailConfirmed)
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+
+                var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+
+                var user = await userManager.FindAsync(context.UserName, context.Password);
+
+                if (user == null)
+                {
+                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    return;
+                }
+
+                if (!user.EmailConfirmed)
+                {
+                    context.SetError("invalid_grant", "User did not confirm email.");
+                    return;
+                }
+
+                ClaimsIdentity oAuthIdentity = await GenerateUserIdentityAsync(user, userManager, "JWT");
+                oAuthIdentity.AddClaims(ExtendedClaimsProvider.GetClaims(user));
+                oAuthIdentity.AddClaims(RolesFromClaims.CreateRolesBasedOnClaims(oAuthIdentity));
+
+                var ticket = new AuthenticationTicket(oAuthIdentity, null);
+
+                context.Validated(ticket);
+            }
+            catch (Exception ex)
             {
-                context.SetError("invalid_grant", "User did not confirm email.");
-                return;
+                throw;
             }
+           
+        }
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(User user, UserManager<User> manager, string authenticationType)
+        {
+            var userIdentity = await manager.CreateIdentityAsync(user, authenticationType);
+            // Add custom user claims here
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
-            oAuthIdentity.AddClaims(ExtendedClaimsProvider.GetClaims(user));
-            oAuthIdentity.AddClaims(RolesFromClaims.CreateRolesBasedOnClaims(oAuthIdentity));
-           
-            var ticket = new AuthenticationTicket(oAuthIdentity, null);
-            
-            context.Validated(ticket);
-           
+            return userIdentity;
         }
     }
 }

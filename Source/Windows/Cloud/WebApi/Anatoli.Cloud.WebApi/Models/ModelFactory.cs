@@ -1,4 +1,5 @@
 ﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -21,25 +22,26 @@ namespace Anatoli.Cloud.WebApi.Models
             _AppUserManager = appUserManager;
         }
 
-        public UserReturnModel Create(ApplicationUser appUser)
+        public UserReturnModel Create(User appUser)
         {
             return new UserReturnModel
             {
                 Url = _UrlHelper.Link("GetUserById", new { id = appUser.Id }),
                 Id = appUser.Id,
                 UserName = appUser.UserName,
-                FullName = string.Format("{0} {1}", appUser.FirstName, appUser.LastName),
+                FullName = appUser.FullName,
                 Email = appUser.Email,
                 EmailConfirmed = appUser.EmailConfirmed,
-                Level = appUser.Level,
-                JoinDate = appUser.JoinDate,
+                CreateDate = appUser.CreatedDate,
+                Mobile = appUser.PhoneNumber,
                 Roles = _AppUserManager.GetRolesAsync(appUser.Id).Result,
                 Claims = _AppUserManager.GetClaimsAsync(appUser.Id).Result
             };
 
         }
 
-        public RoleReturnModel Create(IdentityRole appRole) {
+        public RoleReturnModel Create(IdentityRole appRole)
+        {
 
             return new RoleReturnModel
            {
@@ -60,8 +62,8 @@ namespace Anatoli.Cloud.WebApi.Models
         public string FullName { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
-        public int Level { get; set; }
-        public DateTime JoinDate { get; set; }
+        public string Mobile { get; set; }
+        public DateTime CreateDate { get; set; }
         public IList<string> Roles { get; set; }
         public IList<System.Security.Claims.Claim> Claims { get; set; }
 
