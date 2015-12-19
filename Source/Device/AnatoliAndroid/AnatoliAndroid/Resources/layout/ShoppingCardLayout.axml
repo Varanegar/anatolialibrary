@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/lgray"
+                android:background="@color/lightgray"
                 android:layout_below="@id/factorPriceTextView"
                 android:layout_marginTop="10dp" />
         </RelativeLayout>
@@ -125,7 +125,7 @@
                 android:id="@+id/editAddressImageView"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/edit"
+                android:src="@drawable/ic_mode_edit_white_24dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" />
             <AnatoliAndroid.Components.AnatoliTextView
@@ -171,7 +171,7 @@
                 android:layout_height="2dp"
                 android:layout_marginBottom="15dp"
                 android:layout_below="@id/telTitleTextView"
-                android:background="@color/lgray"
+                android:background="@color/lightgray"
                 android:layout_marginTop="10dp" />
         </RelativeLayout>
         <RelativeLayout
@@ -248,7 +248,7 @@
                 android:id="@+id/callImageView"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/phone"
+                android:src="@drawable/ic_call_white_24dp"
                 android:layout_marginRight="10dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true" />

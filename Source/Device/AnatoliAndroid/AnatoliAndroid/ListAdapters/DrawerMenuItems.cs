@@ -68,14 +68,14 @@ namespace AnatoliAndroid.ListAdapters
                 var pcItem = item as DrawerPCItem;
                 if (pcItem.ItemType == DrawerPCItem.ItemTypes.Parent)
                 {
-                    itemImageView.SetImageResource(Resource.Drawable.SearchBack);
+                    itemImageView.SetImageResource(Resource.Drawable.ic_clear_white_24dp);
                 }
                 else
                 {
                     itemImageView.Visibility = ViewStates.Invisible;
                     if (pcItem.ItemType == DrawerPCItem.ItemTypes.Leaf)
                     {
-                        convertView.SetBackgroundResource(Resource.Color.lllgray);
+                        convertView.SetBackgroundResource(Resource.Color.gray);
                     }
                     else
                     {
@@ -95,11 +95,11 @@ namespace AnatoliAndroid.ListAdapters
             {
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.MainMenu)
                 {
-                    relativeLayout.SetBackgroundResource(Resource.Color.llgray);
+                    relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
                 }
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
                 {
-                    relativeLayout.SetBackgroundResource(Resource.Color.llgray);
+                    relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
                 }
 
             }

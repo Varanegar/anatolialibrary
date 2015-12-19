@@ -24,7 +24,7 @@
     <View
         p1:layout_width="match_parent"
         p1:layout_height="2dp"
-        p1:background="@color/lllgray"
+        p1:background="@color/lightgray"
         p1:id="@+id/border"
         p1:layout_below="@id/itemIconImageView" />
 </RelativeLayout>

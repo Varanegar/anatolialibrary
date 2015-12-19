@@ -3,10 +3,10 @@
   <item android:state_pressed="true" >
     <shape>
       <solid
-          android:color="@color/ddgreen" />
+          android:color="@color/green" />
       <stroke
           android:width="1dp"
-          android:color="@color/ddgreen" />
+          android:color="@color/green" />
       <corners
           android:radius="2dp" />
       <padding
@@ -19,10 +19,10 @@
   <item android:state_enabled="false" >
     <shape>
       <solid
-          android:color="@color/gray" />
+          android:color="@color/lightgray" />
       <stroke
           android:width="1dp"
-          android:color="@color/gray" />
+          android:color="@color/lightgray" />
       <corners
           android:radius="2dp" />
       <padding
@@ -35,10 +35,10 @@
   <item>
     <shape>
       <solid
-          android:color="@color/dgreen" />
+          android:color="@color/lightgreen" />
       <stroke
           android:width="1dp"
-          android:color="@color/dgreen" />
+          android:color="@color/lightgreen" />
       <corners
           android:radius="2dp" />
       <padding

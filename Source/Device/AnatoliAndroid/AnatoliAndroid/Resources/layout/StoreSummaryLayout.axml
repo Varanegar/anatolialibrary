@@ -16,7 +16,7 @@
       p1:layout_width="match_parent"
       p1:layout_height="2dp"
       p1:id="@+id/horizontalLineView"
-      p1:background="@color/lgray" />
+      p1:background="@color/lightgray" />
   <AnatoliAndroid.Components.AnatoliTextView
            p1:text="نام فروشگاه"
            p1:textAppearance="?android:attr/textAppearanceSmall"
@@ -57,7 +57,7 @@
         p1:layout_height="wrap_content"
         p1:id="@+id/footerRelativeLayout">
       <ImageView
-          p1:src="@drawable/map"
+          p1:src="@drawable/ic_edit_location_white_24dp"
           p1:id="@+id/mapIconImageView"
           p1:layout_width="20dp"
           p1:layout_alignParentRight="true"

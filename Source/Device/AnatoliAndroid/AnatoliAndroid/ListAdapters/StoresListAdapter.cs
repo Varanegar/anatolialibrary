@@ -39,7 +39,7 @@ namespace AnatoliAndroid.ListAdapters
             };
             if (item.selected == 1)
             {
-                convertView.SetBackgroundResource(Resource.Color.lgreen);
+                convertView.SetBackgroundResource(Resource.Color.lightgreen);
             }
             TextView storeNameTextView = convertView.FindViewById<TextView>(Resource.Id.storeNameTextView);
             TextView storeAddressTextView = convertView.FindViewById<TextView>(Resource.Id.storeAddressTextView);

@@ -80,9 +80,9 @@ namespace AnatoliAndroid.ListAdapters
 
 
             if (item.IsFavorit)
-                _favoritsImageView.SetImageResource(Resource.Drawable.Favorits);
+                _favoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
             else
-                _favoritsImageView.SetImageResource(Resource.Drawable.FavoritsGray);
+                _favoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
 
             _productCountTextView.Text = item.count.ToString();
             _productNameTextView.Text = item.product_name;

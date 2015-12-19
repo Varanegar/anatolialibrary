@@ -65,7 +65,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             local:customFont="Fonts/anatoli.ttf"
-            android:textColor="@color/red" />
+            android:textColor="@color/orange" />
     </RelativeLayout>
     <AnatoliAndroid.Components.AnatoliTextView
         android:text="کلمه عبور را فراموش کرده ام!"

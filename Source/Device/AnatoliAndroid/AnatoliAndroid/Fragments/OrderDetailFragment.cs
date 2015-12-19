@@ -128,9 +128,9 @@ namespace AnatoliAndroid.Fragments
                 ImageView addProductImageView = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
                 ImageView addToFavoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
                 if (item.IsFavorit)
-                    addToFavoritsImageView.SetImageResource(Resource.Drawable.Favorits);
+                    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
                 else
-                    addToFavoritsImageView.SetImageResource(Resource.Drawable.FavoritsGray);
+                    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
                 productPriceTextView.Text = " ("+item.item_price.ToString()+" تومان) ";
                 productCountTextView.Text = item.item_count.ToString();
                 productNameTextView.Text = item.product_name;
