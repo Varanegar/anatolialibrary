@@ -1575,79 +1575,85 @@ namespace AnatoliAndroid
 			public const int ic_check_box_white_24dp = 2130837579;
 			
 			// aapt resource value: 0x7f02004c
-			public const int ic_clear_white_24dp = 2130837580;
+			public const int ic_clear_blue_24dp = 2130837580;
 			
 			// aapt resource value: 0x7f02004d
-			public const int ic_done_all_white_24dp = 2130837581;
+			public const int ic_clear_white_24dp = 2130837581;
 			
 			// aapt resource value: 0x7f02004e
-			public const int ic_done_white_24dp = 2130837582;
+			public const int ic_done_all_white_24dp = 2130837582;
 			
 			// aapt resource value: 0x7f02004f
-			public const int ic_edit_location_white_24dp = 2130837583;
+			public const int ic_done_white_24dp = 2130837583;
 			
 			// aapt resource value: 0x7f020050
-			public const int ic_exit_to_app_white_24dp = 2130837584;
+			public const int ic_edit_location_white_24dp = 2130837584;
 			
 			// aapt resource value: 0x7f020051
-			public const int ic_info_white_24dp = 2130837585;
+			public const int ic_exit_to_app_white_24dp = 2130837585;
 			
 			// aapt resource value: 0x7f020052
-			public const int ic_list_white_24dp = 2130837586;
+			public const int ic_info_white_24dp = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int ic_location_on_white_24dp = 2130837587;
+			public const int ic_list_white_24dp = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int ic_login_to_app_white_24dp = 2130837588;
+			public const int ic_location_on_white_24dp = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int ic_mode_edit_white_24dp = 2130837589;
+			public const int ic_login_to_app_white_24dp = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int ic_notifications_white_24dp = 2130837590;
+			public const int ic_mode_edit_white_24dp = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int ic_reorder_white_24dp = 2130837591;
+			public const int ic_notifications_white_24dp = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int ic_search_white_24dp = 2130837592;
+			public const int ic_reorder_white_24dp = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int ic_shopping_cart_white_24dp = 2130837593;
+			public const int ic_search_blue_24dp = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int Icon = 2130837594;
+			public const int ic_search_white_24dp = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int igicon = 2130837595;
+			public const int ic_shopping_cart_white_24dp = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int igmart = 2130837596;
-			
-			// aapt resource value: 0x7f020064
-			public const int notification_template_icon_bg = 2130837604;
+			public const int Icon = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int orangebutton = 2130837597;
+			public const int igicon = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int RemoveProductImage = 2130837598;
+			public const int igmart = 2130837598;
+			
+			// aapt resource value: 0x7f020066
+			public const int notification_template_icon_bg = 2130837606;
 			
 			// aapt resource value: 0x7f02005f
-			public const int slidedown = 2130837599;
+			public const int orangebutton = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int slideup = 2130837600;
+			public const int RemoveProductImage = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int splash = 2130837601;
+			public const int slidedown = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int splashscreen = 2130837602;
+			public const int slideup = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int textcorner = 2130837603;
+			public const int splash = 2130837603;
+			
+			// aapt resource value: 0x7f020064
+			public const int splashscreen = 2130837604;
+			
+			// aapt resource value: 0x7f020065
+			public const int textcorner = 2130837605;
 			
 			static Drawable()
 			{
