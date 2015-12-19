@@ -2,14 +2,17 @@
 <RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     p1:layout_width="match_parent"
-    p1:layout_height="60dp"
-    p1:id="@+id/relativeLayout1">
+    p1:layout_height="56dp"
+    p1:id="@+id/relativeLayout1"
+    p1:minHeight="56dp">
     <ImageView
         p1:src="@android:drawable/ic_menu_gallery"
-        p1:layout_width="50dp"
-        p1:layout_height="50dp"
+        p1:layout_width="24dp"
+        p1:layout_height="24dp"
         p1:id="@+id/itemIconImageView"
-        p1:layout_alignParentRight="true" />
+        p1:layout_alignParentRight="true"
+        p1:layout_centerVertical="true"
+        p1:layout_margin="10dp" />
     <AnatoliAndroid.Components.AnatoliTextView
         p1:text="Medium Text"
         p1:textAppearance="?android:attr/textAppearanceMedium"
@@ -21,5 +24,4 @@
         p1:layout_marginRight="10dp"
         local:customFont="Fonts/anatoli.ttf"
         p1:layout_centerVertical="true" />
-    
 </RelativeLayout>

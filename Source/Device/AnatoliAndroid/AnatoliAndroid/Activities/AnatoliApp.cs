@@ -444,7 +444,7 @@ namespace AnatoliAndroid.Activities
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
                 avatarMenuEntry.Name = AnatoliUser.UserName;
-                avatarMenuEntry.ImageResId = Resource.Drawable.ic_account_circle_white_24dp;
+                avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
                 mainItems.Add(avatarMenuEntry);
 
             }
@@ -453,7 +453,7 @@ namespace AnatoliAndroid.Activities
                 var loginMenuEntry = new DrawerMainItem();
                 loginMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Login;
                 loginMenuEntry.Name = "ورود";
-                loginMenuEntry.ImageResId = Resource.Drawable.ic_login_to_app_white_24dp;
+                loginMenuEntry.ImageResId = Resource.Drawable.ic_log_in_green_24dp;
                 mainItems.Add(loginMenuEntry);
             }
 
@@ -462,7 +462,7 @@ namespace AnatoliAndroid.Activities
             var categoriesMenuEntry = new DrawerMainItem();
             categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
             categoriesMenuEntry.Name = "دسته بندی کالا";
-            categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_white_24dp;
+            categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
             //if (AnatoliUser != null)
@@ -476,7 +476,7 @@ namespace AnatoliAndroid.Activities
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
             favoritsMenuEntry.Name = "لیست من";
-            favoritsMenuEntry.ImageResId = Resource.Drawable.ic_assignment_white_24dp;
+            favoritsMenuEntry.ImageResId = Resource.Drawable.ic_mylist_orange_24dp;
             mainItems.Add(favoritsMenuEntry);
 
             var storesMenuEntry = new DrawerMainItem();
@@ -510,10 +510,10 @@ namespace AnatoliAndroid.Activities
 
             //}
 
-            var helpMenuEntry = new DrawerMainItem();
-            helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
-            helpMenuEntry.Name = "راهنما";
-            mainItems.Add(helpMenuEntry);
+            //var helpMenuEntry = new DrawerMainItem();
+            //helpMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Help;
+            //helpMenuEntry.Name = "راهنما";
+            //mainItems.Add(helpMenuEntry);
 
             //if (AnatoliUser != null)
             //{

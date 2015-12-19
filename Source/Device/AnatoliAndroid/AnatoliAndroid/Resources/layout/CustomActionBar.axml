@@ -40,7 +40,7 @@
             p1:layout_toRightOf="@id/searchImageView"
             p1:layout_height="50dp">
             <ImageView
-                p1:src="@drawable/ic_shopping_cart_white_24dp"
+                p1:src="@drawable/ic_shoppingcard_on_white_24dp"
                 p1:layout_width="24dp"
                 p1:layout_height="24dp"
                 p1:id="@+id/shoppingCardImageView"
