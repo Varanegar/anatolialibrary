@@ -798,32 +798,32 @@ namespace AnatoliAndroid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f0a0050
-			public const int abc_background_cache_hint_selector_material_dark = 2131361872;
-			
 			// aapt resource value: 0x7f0a0051
-			public const int abc_background_cache_hint_selector_material_light = 2131361873;
+			public const int abc_background_cache_hint_selector_material_dark = 2131361873;
 			
 			// aapt resource value: 0x7f0a0052
-			public const int abc_color_highlight_material = 2131361874;
+			public const int abc_background_cache_hint_selector_material_light = 2131361874;
+			
+			// aapt resource value: 0x7f0a0053
+			public const int abc_color_highlight_material = 2131361875;
 			
 			// aapt resource value: 0x7f0a0000
 			public const int abc_input_method_navigation_guard = 2131361792;
 			
-			// aapt resource value: 0x7f0a0053
-			public const int abc_primary_text_disable_only_material_dark = 2131361875;
-			
 			// aapt resource value: 0x7f0a0054
-			public const int abc_primary_text_disable_only_material_light = 2131361876;
+			public const int abc_primary_text_disable_only_material_dark = 2131361876;
 			
 			// aapt resource value: 0x7f0a0055
-			public const int abc_primary_text_material_dark = 2131361877;
+			public const int abc_primary_text_disable_only_material_light = 2131361877;
 			
 			// aapt resource value: 0x7f0a0056
-			public const int abc_primary_text_material_light = 2131361878;
+			public const int abc_primary_text_material_dark = 2131361878;
 			
 			// aapt resource value: 0x7f0a0057
-			public const int abc_search_url_text = 2131361879;
+			public const int abc_primary_text_material_light = 2131361879;
+			
+			// aapt resource value: 0x7f0a0058
+			public const int abc_search_url_text = 2131361880;
 			
 			// aapt resource value: 0x7f0a0001
 			public const int abc_search_url_text_normal = 2131361793;
@@ -834,11 +834,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0003
 			public const int abc_search_url_text_selected = 2131361795;
 			
-			// aapt resource value: 0x7f0a0058
-			public const int abc_secondary_text_material_dark = 2131361880;
-			
 			// aapt resource value: 0x7f0a0059
-			public const int abc_secondary_text_material_light = 2131361881;
+			public const int abc_secondary_text_material_dark = 2131361881;
+			
+			// aapt resource value: 0x7f0a005a
+			public const int abc_secondary_text_material_light = 2131361882;
 			
 			// aapt resource value: 0x7f0a0004
 			public const int accent_material_dark = 2131361796;
@@ -846,8 +846,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0005
 			public const int accent_material_light = 2131361797;
 			
-			// aapt resource value: 0x7f0a0048
-			public const int background_app = 2131361864;
+			// aapt resource value: 0x7f0a0049
+			public const int background_app = 2131361865;
 			
 			// aapt resource value: 0x7f0a0006
 			public const int background_floating_material_dark = 2131361798;
@@ -855,11 +855,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0007
 			public const int background_floating_material_light = 2131361799;
 			
-			// aapt resource value: 0x7f0a0049
-			public const int background_list_back = 2131361865;
-			
 			// aapt resource value: 0x7f0a004a
-			public const int background_list_front = 2131361866;
+			public const int background_list_back = 2131361866;
+			
+			// aapt resource value: 0x7f0a004b
+			public const int background_list_front = 2131361867;
 			
 			// aapt resource value: 0x7f0a0008
 			public const int background_material_dark = 2131361800;
@@ -867,8 +867,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0009
 			public const int background_material_light = 2131361801;
 			
-			// aapt resource value: 0x7f0a004e
-			public const int background_new_tag = 2131361870;
+			// aapt resource value: 0x7f0a004f
+			public const int background_new_tag = 2131361871;
 			
 			// aapt resource value: 0x7f0a003d
 			public const int black = 2131361853;
@@ -882,11 +882,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0040
 			public const int blue3 = 2131361856;
 			
-			// aapt resource value: 0x7f0a0044
-			public const int bluegray = 2131361860;
+			// aapt resource value: 0x7f0a0043
+			public const int bluegray = 2131361859;
 			
-			// aapt resource value: 0x7f0a0045
-			public const int bluegray2 = 2131361861;
+			// aapt resource value: 0x7f0a0044
+			public const int bluegray2 = 2131361860;
 			
 			// aapt resource value: 0x7f0a000a
 			public const int bright_foreground_disabled_material_dark = 2131361802;
@@ -912,6 +912,9 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0011
 			public const int button_material_light = 2131361809;
 			
+			// aapt resource value: 0x7f0a0047
+			public const int darkgray = 2131361863;
+			
 			// aapt resource value: 0x7f0a0012
 			public const int dim_foreground_disabled_material_dark = 2131361810;
 			
@@ -929,9 +932,6 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f0a0017
 			public const int foreground_material_light = 2131361815;
-			
-			// aapt resource value: 0x7f0a0041
-			public const int gray = 2131361857;
 			
 			// aapt resource value: 0x7f0a003c
 			public const int green = 2131361852;
@@ -954,8 +954,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a003b
 			public const int lightgreen = 2131361851;
 			
-			// aapt resource value: 0x7f0a004d
-			public const int line = 2131361869;
+			// aapt resource value: 0x7f0a004e
+			public const int line = 2131361870;
 			
 			// aapt resource value: 0x7f0a001c
 			public const int material_blue_grey_800 = 2131361820;
@@ -993,11 +993,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0027
 			public const int material_grey_900 = 2131361831;
 			
-			// aapt resource value: 0x7f0a0042
-			public const int orange = 2131361858;
+			// aapt resource value: 0x7f0a0041
+			public const int orange = 2131361857;
 			
-			// aapt resource value: 0x7f0a0043
-			public const int orange2 = 2131361859;
+			// aapt resource value: 0x7f0a0042
+			public const int orange2 = 2131361858;
 			
 			// aapt resource value: 0x7f0a0028
 			public const int primary_dark_material_dark = 2131361832;
@@ -1023,8 +1023,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a002f
 			public const int primary_text_disabled_material_light = 2131361839;
 			
-			// aapt resource value: 0x7f0a0047
-			public const int red = 2131361863;
+			// aapt resource value: 0x7f0a0048
+			public const int red = 2131361864;
 			
 			// aapt resource value: 0x7f0a0030
 			public const int ripple_material_dark = 2131361840;
@@ -1050,11 +1050,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0037
 			public const int switch_thumb_disabled_material_light = 2131361847;
 			
-			// aapt resource value: 0x7f0a005a
-			public const int switch_thumb_material_dark = 2131361882;
-			
 			// aapt resource value: 0x7f0a005b
-			public const int switch_thumb_material_light = 2131361883;
+			public const int switch_thumb_material_dark = 2131361883;
+			
+			// aapt resource value: 0x7f0a005c
+			public const int switch_thumb_material_light = 2131361884;
 			
 			// aapt resource value: 0x7f0a0038
 			public const int switch_thumb_normal_material_dark = 2131361848;
@@ -1062,14 +1062,17 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0a0039
 			public const int switch_thumb_normal_material_light = 2131361849;
 			
+			// aapt resource value: 0x7f0a004d
+			public const int text_description = 2131361869;
+			
+			// aapt resource value: 0x7f0a0050
+			public const int text_new_tag = 2131361872;
+			
 			// aapt resource value: 0x7f0a004c
-			public const int text_description = 2131361868;
+			public const int text_title = 2131361868;
 			
-			// aapt resource value: 0x7f0a004f
-			public const int text_new_tag = 2131361871;
-			
-			// aapt resource value: 0x7f0a004b
-			public const int text_title = 2131361867;
+			// aapt resource value: 0x7f0a0045
+			public const int textgray = 2131361861;
 			
 			// aapt resource value: 0x7f0a003a
 			public const int white = 2131361850;
@@ -2673,8 +2676,26 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050012
 			public const int Hello = 2131034130;
 			
+			// aapt resource value: 0x7f05001c
+			public const int LastOrders = 2131034140;
+			
+			// aapt resource value: 0x7f05001e
+			public const int Login = 2131034142;
+			
 			// aapt resource value: 0x7f050019
 			public const int LoginFailed = 2131034137;
+			
+			// aapt resource value: 0x7f05001f
+			public const int MainMenu = 2131034143;
+			
+			// aapt resource value: 0x7f05001d
+			public const int Messages = 2131034141;
+			
+			// aapt resource value: 0x7f05001a
+			public const int MyList = 2131034138;
+			
+			// aapt resource value: 0x7f05001b
+			public const int MyStore = 2131034139;
 			
 			// aapt resource value: 0x7f050015
 			public const int OpenDrawer = 2131034133;

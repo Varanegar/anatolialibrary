@@ -6,5 +6,15 @@
   <string name="CloseDrawer">بستن منو</string>
   <string name="Products">دسته بندی کالا</string>
   <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
-  <string name="LoginFailed">ورود نا موفق</string> 
+  <string name="LoginFailed">ورود نا موفق</string>
+
+
+  <string name="MyList">فهرست من</string>
+  <string name="MyStore">فروشگاه من</string>
+  <string name="LastOrders">سفارشات قبلی</string>
+  <string name="Messages">پیام های من</string>
+  <string name="Login">ورود</string>
+  <string name="MainMenu">منوی اصلی</string>
+
+
 </resources>

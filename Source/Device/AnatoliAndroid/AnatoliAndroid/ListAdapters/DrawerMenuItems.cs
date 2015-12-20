@@ -75,7 +75,7 @@ namespace AnatoliAndroid.ListAdapters
                     itemImageView.Visibility = ViewStates.Invisible;
                     if (pcItem.ItemType == DrawerPCItem.ItemTypes.Leaf)
                     {
-                        convertView.SetBackgroundResource(Resource.Color.gray);
+                        convertView.SetBackgroundResource(Resource.Color.lightgray);
                     }
                     else
                     {

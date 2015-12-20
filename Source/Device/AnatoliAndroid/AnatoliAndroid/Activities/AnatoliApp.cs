@@ -465,17 +465,16 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
-            //if (AnatoliUser != null)
-            //{
-            //    var msgMenuEntry = new DrawerMainItem();
-            //    msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-            //    msgMenuEntry.Name = "پیغام ها";
-            //    msgMenuEntry.ImageResId = Resource.Drawable.Messages;
-            //    mainItems.Add(msgMenuEntry);
-            //}
+            if (AnatoliUser != null)
+            {
+                var msgMenuEntry = new DrawerMainItem();
+                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                msgMenuEntry.Name = "پیام های من";
+                mainItems.Add(msgMenuEntry);
+            }
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-            favoritsMenuEntry.Name = "لیست من";
+            favoritsMenuEntry.Name = "فهرست من";
             favoritsMenuEntry.ImageResId = Resource.Drawable.ic_mylist_orange_24dp;
             mainItems.Add(favoritsMenuEntry);
 
