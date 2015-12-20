@@ -188,10 +188,18 @@ namespace AnatoliAndroid.Activities
         {
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.ProductsListFragment))
             {
+                if (_productsListF == null)
+                {
+                    _productsListF = _currentFragment as ProductsListFragment;
+                }
                 await _productsListF.Search("product_name", value);
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
             {
+                if (_storesListF == null)
+                {
+                    _storesListF = _currentFragment as StoresListFragment;
+                }
                 await _storesListF.Search("store_name", value);
             }
         }
@@ -237,6 +245,7 @@ namespace AnatoliAndroid.Activities
                 return null;
             }
         }
+        Fragment _currentFragment;
         public Activity Activity { get { return _activity; } }
         public static AnatoliApp GetInstance()
         {
@@ -416,6 +425,7 @@ namespace AnatoliAndroid.Activities
                 }
             }
             _list.AddLast(new StackItem(tag, fragment.GetType()));
+            _currentFragment = fragment;
             return fragment;
         }
         public bool BackFragment()
