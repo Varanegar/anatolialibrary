@@ -45,7 +45,7 @@
                 p1:layout_height="24dp"
                 p1:id="@+id/shoppingCardImageView"
                 p1:layout_centerVertical="true"
-                p1:layout_centerInParent="true" />
+                p1:layout_marginLeft="4dp" />
             <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="0"
                 p1:textSize="12dp"
@@ -57,7 +57,20 @@
                 local:customFont="Fonts/anatoli.ttf"
                 p1:background="@drawable/circle"
                 p1:layout_marginTop="4dp"
-                p1:layout_marginLeft="17dp" />
+                p1:layout_marginLeft="23dp" />
+            <AnatoliAndroid.Components.AnatoliTextView
+                p1:text="150،248 تومان"
+                p1:textSize="9dp"
+                p1:layout_height="wrap_content"
+                p1:textColor="@color/black"
+                p1:id="@+id/shoppingPriceTextView"
+                p1:gravity="center_vertical"
+                local:customFont="Fonts/anatoli.ttf"
+                p1:background="@drawable/rwrectangle"
+                p1:layout_marginRight="0dp"
+                p1:layout_marginLeft="25dp"
+                p1:layout_width="wrap_content"
+                p1:layout_marginTop="22dp" />
         </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
             p1:text="Anatoli"
