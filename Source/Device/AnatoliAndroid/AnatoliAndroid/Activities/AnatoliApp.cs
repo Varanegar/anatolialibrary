@@ -171,11 +171,17 @@ namespace AnatoliAndroid.Activities
             };
             _searchEditText.ItemClick += async (s, e) => { await Search(_searchEditText.Text); };
             _shoppingCardImageView = ToolBar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
-            _shoppingCardImageView.Click += shoppingCardImageView_Click;
-
+            var shoppingbarRelativeLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.shoppingbarRelativeLayout);
+            shoppingbarRelativeLayout.Click += shoppingbarRelativeLayout_Click;
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _menuIconImageView = ToolBar.FindViewById<ImageView>(Resource.Id.menuImageView);
             _menuIconImageView.Click += (s, e) => { OnMenuClick(); };
+        }
+
+        void shoppingbarRelativeLayout_Click(object sender, EventArgs e)
+        {
+            SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
+            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 
         async System.Threading.Tasks.Task Search(string value)
@@ -192,12 +198,6 @@ namespace AnatoliAndroid.Activities
         void _searchBarImageView_Click(object sender, EventArgs e)
         {
             CloseSearchBar();
-            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-        }
-
-        void shoppingCardImageView_Click(object sender, EventArgs e)
-        {
-            SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 

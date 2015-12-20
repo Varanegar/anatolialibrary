@@ -107,10 +107,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/telRelativeLayout"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
         android:layout_below="@id/shippingAddressRelativeLayout"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp"
+        android:layout_marginEnd="5dp">
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
@@ -127,14 +126,30 @@
             android:layout_toLeftOf="@id/telTitleTextView"
             android:id="@+id/telTextView"
             local:customFont="Fonts/anatoli.ttf" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/telTitleTextView"
+            android:id="@+id/nameTitleTextView"
+            android:text="نام گیرنده :"
+            local:customFont="Fonts/anatoli.ttf" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/nameTitleTextView"
+            android:id="@+id/nameTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:layout_below="@id/telTextView" />
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginBottom="15dp"
-            android:layout_below="@id/telTitleTextView"
             android:background="@color/lightgray"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -219,7 +234,7 @@
             android:layout_alignParentLeft="true" />
     </RelativeLayout>
     <AnatoliAndroid.Components.AnatoliButton
-        android:text="تایید و پرداخت"
+        android:text="تایید"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/checkoutButton"

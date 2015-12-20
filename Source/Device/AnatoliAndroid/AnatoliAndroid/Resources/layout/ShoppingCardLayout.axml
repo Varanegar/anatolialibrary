@@ -24,21 +24,21 @@
             local:swipeActionRight="reveal"
             android:minWidth="25px"
             android:minHeight="25px"
+            android:layout_marginBottom="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/shoppingCardListView"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
 <!-- Sliding panel -->
-  <RelativeLayout
+    <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayoutSlider">
-    <include
+        <include
             android:id="@+id/shippingInfo"
             layout="@layout/shippingInfoLayout" />
-  </RelativeLayout>
-  
-   </cheesebaron.slidinguppanel.SlidingUpPanelLayout>
+    </RelativeLayout>
+</cheesebaron.slidinguppanel.SlidingUpPanelLayout>
