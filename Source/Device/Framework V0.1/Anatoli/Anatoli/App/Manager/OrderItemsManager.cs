@@ -17,6 +17,7 @@ namespace Anatoli.App.Manager
             StringQuery query = new StringQuery(String.Format(@"SELECT orders.order_id as order_id,
 order_items.product_price * order_items.product_count as item_price,
 products.product_name as product_name,
+products.image as image,
 products.favorit as favorit,
 order_items.product_count as item_count,
 order_items.product_id as product_id,

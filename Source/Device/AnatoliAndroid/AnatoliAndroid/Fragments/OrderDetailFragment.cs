@@ -14,6 +14,7 @@ using Anatoli.App.Model.Store;
 using Anatoli.App.Manager;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
+using Koush;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -36,11 +37,11 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.OrderViewLayout, null);
-             _dateTextView = view.FindViewById<TextView>(Resource.Id.dateTextView);
-             _storeNameTextView = view.FindViewById<TextView>(Resource.Id.storeNameTextView);
-             _priceTextView = view.FindViewById<TextView>(Resource.Id.priceTextView);
-             _orderIdTextView = view.FindViewById<TextView>(Resource.Id.orderNoTextView);
-             _orderStatusTextView = view.FindViewById<TextView>(Resource.Id.orderStatusTextView);
+            _dateTextView = view.FindViewById<TextView>(Resource.Id.dateTextView);
+            _storeNameTextView = view.FindViewById<TextView>(Resource.Id.storeNameTextView);
+            _priceTextView = view.FindViewById<TextView>(Resource.Id.priceTextView);
+            _orderIdTextView = view.FindViewById<TextView>(Resource.Id.orderNoTextView);
+            _orderStatusTextView = view.FindViewById<TextView>(Resource.Id.orderStatusTextView);
             _itemsListView = view.FindViewById<ListView>(Resource.Id.itemsListView);
             _addAllButton = view.FindViewById<Button>(Resource.Id.addAllButton);
             _addAllButton.UpdateWidth();
@@ -81,7 +82,8 @@ namespace AnatoliAndroid.Fragments
                 }
                 AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                Toast.MakeText(AnatoliApp.GetInstance().Activity,String.Format("{0} آیتم به سبد خرید اضافه شد",a.ToString()), ToastLength.Short).Show();
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, String.Format("{0} آیتم به سبد خرید اضافه شد", a.ToString()), ToastLength.Short).Show();
+                AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(null, "shopping_fragment");
             };
         }
 
@@ -127,42 +129,52 @@ namespace AnatoliAndroid.Fragments
                 TextView productPriceTextView = convertView.FindViewById<TextView>(Resource.Id.productPriceTextView);
                 TextView productNameTextView = convertView.FindViewById<TextView>(Resource.Id.productNameTextView);
                 ImageView addProductImageView = convertView.FindViewById<ImageView>(Resource.Id.addProductImageView);
-                ImageView addToFavoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
-                if (item.IsFavorit)
-                    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
+                ImageView productSummaryImageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                if (!String.IsNullOrEmpty(item.image))
+                {
+                    UrlImageViewHelper.SetUrlDrawable(productSummaryImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                }
                 else
-                    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
-                productPriceTextView.Text = " ("+item.item_price.ToString()+" تومان) ";
+                {
+                    productSummaryImageView.SetImageResource(Resource.Drawable.igmart);
+                }
+
+                //ImageView addToFavoritsImageView = convertView.FindViewById<ImageView>(Resource.Id.addToFavoritsImageView);
+                //if (item.IsFavorit)
+                //    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
+                //else
+                //    addToFavoritsImageView.SetImageResource(Resource.Drawable.ic_assignment_white_24dp);
+                productPriceTextView.Text = " (" + item.item_price.ToString() + " تومان) ";
                 productCountTextView.Text = item.item_count.ToString();
                 productNameTextView.Text = item.product_name;
-                addProductImageView.Click += async (s,e) =>
+                addProductImageView.Click += async (s, e) =>
                 {
                     await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count);
                     AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                     Toast.MakeText(_context, "به سبد خرید اضافه شد", ToastLength.Short).Show();
                 };
-                addToFavoritsImageView.Click += async (s, e) =>
-                {
-                    if (item.IsFavorit)
-                    {
-                        if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
-                        {
-                            this[position].favorit = 0;
-                            NotifyDataSetChanged();
-                            OnDataChanged();
-                        }
-                    }
-                    else
-                    {
-                        if (await ProductManager.AddToFavorits(this[position].product_id) == true)
-                        {
-                            this[position].favorit = 1;
-                            NotifyDataSetChanged();
-                            OnDataChanged();
-                        }
-                    }
-                };
+                //addToFavoritsImageView.Click += async (s, e) =>
+                //{
+                //    if (item.IsFavorit)
+                //    {
+                //        if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
+                //        {
+                //            this[position].favorit = 0;
+                //            NotifyDataSetChanged();
+                //            OnDataChanged();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (await ProductManager.AddToFavorits(this[position].product_id) == true)
+                //        {
+                //            this[position].favorit = 1;
+                //            NotifyDataSetChanged();
+                //            OnDataChanged();
+                //        }
+                //    }
+                //};
                 return convertView;
             }
 
