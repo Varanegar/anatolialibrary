@@ -59,7 +59,7 @@
                 p1:layout_marginTop="4dp"
                 p1:layout_marginLeft="23dp" />
             <AnatoliAndroid.Components.AnatoliTextView
-                p1:text="150،248 تومان"
+                p1:text="0 تومان"
                 p1:textSize="9dp"
                 p1:layout_height="wrap_content"
                 p1:textColor="@color/black"
@@ -70,7 +70,8 @@
                 p1:layout_marginRight="0dp"
                 p1:layout_marginLeft="25dp"
                 p1:layout_width="wrap_content"
-                p1:layout_marginTop="22dp" />
+                p1:layout_marginTop="22dp"
+                p1:visibility="invisible" />
         </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
             p1:text="Anatoli"

@@ -115,6 +115,7 @@ namespace AnatoliAndroid.Fragments
                     dialog.Show(transaction, "order_saved_dialog");
                     AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(new OrdersListFragment(), "orders_fragment");
                     AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                    AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 }
                 catch (Exception ex)
                 {

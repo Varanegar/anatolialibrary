@@ -39,7 +39,22 @@ namespace AnatoliAndroid.Activities
         ImageView _toolBarImageView;
         ImageView _menuIconImageView;
         TextView _shoppingCardTextView;
+        TextView _shoppingPriceTextView;
+        double _price;
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
+        public void SetTotalPrice(double price)
+        {
+            _price = price;
+            if (!_shoppingCardTextView.Text.Equals("0"))
+                _shoppingPriceTextView.Visibility = ViewStates.Visible;
+            else
+                _shoppingPriceTextView.Visibility = ViewStates.Invisible;
+            _shoppingPriceTextView.Text = _price.ToString() + " تومان";
+        }
+        public double GetTotalPrice()
+        {
+            return _price;
+        }
         public void HideMenuIcon()
         {
             _menuIconImageView.Visibility = ViewStates.Gone;
@@ -110,7 +125,7 @@ namespace AnatoliAndroid.Activities
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
 
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
-
+            _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
             _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
             _toolBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.toolbarRelativeLayout);
             CloseSearchBar();

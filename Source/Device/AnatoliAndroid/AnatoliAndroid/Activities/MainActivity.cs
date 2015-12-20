@@ -74,6 +74,7 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             AnatoliApp.GetInstance().RefreshMenuItems();
             AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+            AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
             try
             {
                 await StoreManager.GetDefault();

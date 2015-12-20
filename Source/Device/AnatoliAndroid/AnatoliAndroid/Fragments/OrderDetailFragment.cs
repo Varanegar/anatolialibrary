@@ -80,6 +80,7 @@ namespace AnatoliAndroid.Fragments
 
                 }
                 AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 Toast.MakeText(AnatoliApp.GetInstance().Activity,String.Format("{0} آیتم به سبد خرید اضافه شد",a.ToString()), ToastLength.Short).Show();
             };
         }
@@ -138,6 +139,7 @@ namespace AnatoliAndroid.Fragments
                 {
                     await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count);
                     AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                    AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                     Toast.MakeText(_context, "به سبد خرید اضافه شد", ToastLength.Short).Show();
                 };
                 addToFavoritsImageView.Click += async (s, e) =>
