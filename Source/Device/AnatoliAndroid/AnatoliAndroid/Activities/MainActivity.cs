@@ -112,7 +112,7 @@ namespace AnatoliAndroid.Activities
                 if (!exit)
                 {
                     exit = true;
-                    Toast.MakeText(this, "Please press back again to exit", ToastLength.Short).Show();
+                    Toast.MakeText(this, "برای خروج دوباره دکمه بازگشت را فشار دهید", ToastLength.Short).Show();
                 }
                 else
                     Finish();

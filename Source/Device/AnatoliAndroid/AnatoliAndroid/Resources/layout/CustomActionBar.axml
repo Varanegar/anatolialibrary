@@ -92,13 +92,13 @@
         p1:padding="1dp"
         p1:paddingRight="20dp">
         <ImageView
-            p1:src="@drawable/ic_clear_blue_24dp"
-            p1:layout_width="24dp"
+            p1:src="@drawable/ic_exit_gray_24dp"
+            p1:layout_width="14dp"
             p1:layout_height="match_parent"
             p1:id="@+id/searchbarImageView"
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true"
-            p1:layout_margin="0dp" />
+            p1:layout_marginRight="15dp" />
         <ImageView
             p1:src="@drawable/ic_search_blue_24dp"
             p1:layout_width="24dp"
@@ -106,7 +106,7 @@
             p1:id="@+id/searchButtonImageView"
             p1:layout_alignParentLeft="true"
             p1:layout_centerVertical="true"
-            p1:layout_margin="0dp" />
+            p1:layout_marginLeft="10dp" />
         <AutoCompleteTextView
             p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
