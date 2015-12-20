@@ -48,7 +48,7 @@ namespace Anatoli.App.Manager
 
         public static TimeOption[] GetAvailableDeliveryTimes(DateTime now, ShippingInfoManager.ShippingDateOptions dateOption)
         {
-            TimeOption[] times = null;
+            TimeOption[] times = new TimeOption[]{};
             if (dateOption == ShippingInfoManager.ShippingDateOptions.Today)
             {
                 if (now.Hour < 16)
