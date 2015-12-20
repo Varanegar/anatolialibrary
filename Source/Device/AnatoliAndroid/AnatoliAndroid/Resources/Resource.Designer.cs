@@ -2664,6 +2664,9 @@ namespace AnatoliAndroid
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f050022
+			public const int AddToList = 2131034146;
+			
 			// aapt resource value: 0x7f050013
 			public const int ApplicationName = 2131034131;
 			
@@ -2675,6 +2678,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f050012
 			public const int Hello = 2131034130;
+			
+			// aapt resource value: 0x7f050020
+			public const int ItemRemoved = 2131034144;
 			
 			// aapt resource value: 0x7f05001c
 			public const int LastOrders = 2131034140;
@@ -2702,6 +2708,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f050017
 			public const int Products = 2131034135;
+			
+			// aapt resource value: 0x7f050021
+			public const int RemoveFromList = 2131034145;
 			
 			// aapt resource value: 0x7f050000
 			public const int abc_action_bar_home_description = 2131034112;

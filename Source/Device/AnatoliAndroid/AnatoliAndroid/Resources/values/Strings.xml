@@ -16,5 +16,8 @@
   <string name="Login">ورود</string>
   <string name="MainMenu">منوی اصلی</string>
 
+  <string name="ItemRemoved">حذف شد !</string>
+  <string name="RemoveFromList">حذف از فهرست من</string>
+  <string name="AddToList">افزودن به فهرست من</string>
 
 </resources>

@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
+using Android.Content.Res;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -105,11 +106,11 @@ namespace AnatoliAndroid.ListAdapters
 
             if (item.IsFavorit)
             {
-                _favoritsTextView.Text = "حذف از فهرست من";
+                _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.RemoveFromList);
             }
             else
             {
-                _favoritsTextView.Text = "افزدون به فهرست من";
+                _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
             }
 
             _productCountTextView.Text = item.count.ToString() + " عدد";
@@ -147,6 +148,7 @@ namespace AnatoliAndroid.ListAdapters
                     NotifyDataSetChanged();
                     OnDataChanged();
                     OnShoppingCardItemRemoved(item);
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.ItemRemoved, ToastLength.Short).Show();
                 }
             };
 

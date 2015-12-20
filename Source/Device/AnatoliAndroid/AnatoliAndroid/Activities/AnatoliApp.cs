@@ -84,7 +84,14 @@ namespace AnatoliAndroid.Activities
         OrdersListFragment _ordersFragment;
 
         ProductManager _pm;
-
+        /// <summary>
+        /// Shortcut for AnatoliApp.GetInstance().Activity.Resources
+        /// </summary>
+        /// <returns></returns>
+        public static Android.Content.Res.Resources GetResources()
+        {
+            return AnatoliApp.GetInstance().Activity.Resources;
+        }
         public void CloseSearchBar()
         {
             _searchBarLayout.Visibility = ViewStates.Gone;
@@ -152,10 +159,7 @@ namespace AnatoliAndroid.Activities
             _shoppingCardImageView.Click += shoppingCardImageView_Click;
 
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
-            _toolBarTextView.Text = "دسته بندی کالا";
-
             _menuIconImageView = ToolBar.FindViewById<ImageView>(Resource.Id.menuImageView);
-
             _menuIconImageView.Click += (s, e) => { OnMenuClick(); };
         }
 
@@ -261,7 +265,7 @@ namespace AnatoliAndroid.Activities
                         }
                         var temp = CategoryManager.GetCategories(0);
                         var categories = new List<DrawerItemType>();
-                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
                         var current = CategoryManager.GetParentCategory(0);
                         categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
                         foreach (var item in temp)
@@ -338,7 +342,7 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
-                    categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                    categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
                     var parent = CategoryManager.GetParentCategory(selectedItem.ItemId);
 
                     var current = CategoryManager.GetCategoryInfo(selectedItem.ItemId);
@@ -366,7 +370,7 @@ namespace AnatoliAndroid.Activities
 
             }
         }
-        internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag,Tuple<string,string> parameter) where FragmentType : Android.App.Fragment, new()
+        internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag, Tuple<string, string> parameter) where FragmentType : Android.App.Fragment, new()
         {
             if (fragment == null)
                 fragment = new FragmentType();
@@ -461,7 +465,7 @@ namespace AnatoliAndroid.Activities
 
             var categoriesMenuEntry = new DrawerMainItem();
             categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
-            categoriesMenuEntry.Name = "دسته بندی کالا";
+            categoriesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Products);
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
@@ -469,25 +473,25 @@ namespace AnatoliAndroid.Activities
             {
                 var msgMenuEntry = new DrawerMainItem();
                 msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-                msgMenuEntry.Name = "پیام های من";
+                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
                 mainItems.Add(msgMenuEntry);
             }
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-            favoritsMenuEntry.Name = "فهرست من";
+            favoritsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyList);
             favoritsMenuEntry.ImageResId = Resource.Drawable.ic_mylist_orange_24dp;
             mainItems.Add(favoritsMenuEntry);
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = "فروشگاه من";
+            storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);
 
             if (AnatoliUser != null)
             {
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
-                ordersMenuEntry.Name = "سفارشات قبلی";
+                ordersMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.LastOrders);
                 mainItems.Add(ordersMenuEntry);
             }
 
@@ -497,7 +501,7 @@ namespace AnatoliAndroid.Activities
             //shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
             //mainItems.Add(shoppingCardMenuEntry);
 
-            
+
 
             //if (AnatoliUser != null)
             //{
