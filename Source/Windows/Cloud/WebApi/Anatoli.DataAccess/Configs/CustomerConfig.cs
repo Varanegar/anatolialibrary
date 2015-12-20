@@ -12,6 +12,9 @@ namespace Anatoli.DataAccess.Configs
         {
             this.HasMany<CustomerShipAddress>(csa => csa.CustomerShipAddresses)
                 .WithRequired(c => c.Customer);
+
+            this.HasMany<Basket>(csa => csa.CustomerBaskets)
+                .WithRequired(c => c.Customer);
         }
     }
 }

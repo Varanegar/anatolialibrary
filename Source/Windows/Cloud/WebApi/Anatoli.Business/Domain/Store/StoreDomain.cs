@@ -4,18 +4,18 @@ using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
-using Anatoli.ViewModels.Product;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
+using Anatoli.ViewModels.StoreModels;
 
-namespace Anatoli.Business
+namespace Anatoli.Business.Domain
 {
     public class StoreDomain : IBusinessDomain<Store, StoreViewModel>
         {
 
-          #region Properties
+            #region Properties
             public IAnatoliProxy<Store, StoreViewModel> Proxy { get; set; }
             public IRepository<Store> Repository { get; set; }
             public IPrincipalRepository PrincipalRepository { get; set; }

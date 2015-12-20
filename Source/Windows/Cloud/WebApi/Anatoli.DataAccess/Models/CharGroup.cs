@@ -7,6 +7,5 @@ namespace Anatoli.DataAccess.Models
     {
         public int CharGroupCode { get; set; }
         public string CharGroupName { get; set; }
-        //public Guid CharGroupId { get; set; }
     }
 }

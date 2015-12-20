@@ -66,6 +66,20 @@ namespace Anatoli.DataAccess.Repositories
             return model;
         }
 
+        public async Task<User> FindByPhoneAsync(string phone)
+        {
+            var model = await UserRepository.FindAsync(p => p.PhoneNumber == phone);
+
+            return model;
+        }
+
+        public async Task<User> FindByEmailAsync(string email)
+        {
+            var model = await UserRepository.FindAsync(p => p.Email == email);
+
+            return model;
+        }
+
         public async Task UpdateAsync(User user)
         {
             UserRepository.EntryModified(user);

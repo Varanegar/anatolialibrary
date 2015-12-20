@@ -5,7 +5,6 @@ namespace Anatoli.DataAccess.Models
     
     public class PurchaseOrder : BaseModel
     {        
-        //public int PurchaseOrderId { get; set; }
         public Guid OrderUniqueId { get; set; }
         public long ActionSourceValueId { get; set; }
         public string DeviceIMEI { get; set; }

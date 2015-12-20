@@ -73,7 +73,9 @@
     <Compile Include="Configs\StoreValidRegionInfoConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\IPrincipalRepository.cs" />
+    <Compile Include="Interfaces\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IBasketRepository.cs" />
     <Compile Include="Interfaces\IStoreRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\201511282115275_InitAnatoliDB.cs" />
@@ -108,6 +110,18 @@
     <Compile Include="Migrations\201512170932314_ChangeUserModel.Designer.cs">
       <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512201344507_FialDataModelEdit-1.cs" />
+    <Compile Include="Migrations\201512201344507_FialDataModelEdit-1.Designer.cs">
+      <DependentUpon>201512201344507_FialDataModelEdit-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512201736087_FialDataModelEdit-2.cs" />
+    <Compile Include="Migrations\201512201736087_FialDataModelEdit-2.Designer.cs">
+      <DependentUpon>201512201736087_FialDataModelEdit-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512201756239_FialDataModelEdit-3.cs" />
+    <Compile Include="Migrations\201512201756239_FialDataModelEdit-3.Designer.cs">
+      <DependentUpon>201512201756239_FialDataModelEdit-3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -138,8 +152,6 @@
     <Compile Include="Models\Identity\User.cs" />
     <Compile Include="Models\Manufacture.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductBase.cs" />
-    <Compile Include="Models\ProductBaseProductMap.cs" />
     <Compile Include="Models\ProductComment.cs" />
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ProductPicture.cs" />
@@ -166,7 +178,9 @@
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Repositories\AnatoliUserStore.cs" />
     <Compile Include="Repositories\PrincipalRepository.cs" />
+    <Compile Include="Repositories\ProductGroupRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\BasketRepository.cs" />
     <Compile Include="Repositories\StoreRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
@@ -194,6 +208,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512170932314_ChangeUserModel.resx">
       <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512201344507_FialDataModelEdit-1.resx">
+      <DependentUpon>201512201344507_FialDataModelEdit-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512201736087_FialDataModelEdit-2.resx">
+      <DependentUpon>201512201736087_FialDataModelEdit-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512201756239_FialDataModelEdit-3.resx">
+      <DependentUpon>201512201756239_FialDataModelEdit-3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

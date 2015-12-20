@@ -40,11 +40,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="Product\ManufactureViewModel.cs" />
-    <Compile Include="Product\ProductGroupViewModel.cs" />
-    <Compile Include="Product\ProductViewModel.cs" />
-    <Compile Include="Product\StoreViewModel.cs" />
-    <Compile Include="Product\SupplierViewModel.cs" />
+    <Compile Include="BasketModels\BasketItemViewModel.cs" />
+    <Compile Include="BasketModels\BasketViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerViewModel.cs" />
+    <Compile Include="ProductModels\ManufactureViewModel.cs" />
+    <Compile Include="ProductModels\ProductGroupViewModel.cs" />
+    <Compile Include="ProductModels\ProductViewModel.cs" />
+    <Compile Include="StoreModels\StoreViewModel.cs" />
+    <Compile Include="ProductModels\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

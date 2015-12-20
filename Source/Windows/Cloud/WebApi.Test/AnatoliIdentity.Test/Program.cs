@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -40,7 +41,7 @@ namespace ClientApp
                 //Console.WriteLine(json8);
                 //return;
 
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("hooman.ahmadi2", "Hooman.ahmadi2").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09128501330", "Hooman.ahmadi2").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     Console.WriteLine(oauthresult.AccessToken);
@@ -51,6 +52,16 @@ namespace ClientApp
                     content.Headers.ContentType = new MediaTypeHeaderValue("ap[ndplication/json");
                      * */
                     client.SetBearerToken(oauthresult.AccessToken);
+
+                    var requestContent = new MultipartFormDataContent();
+                    //    here you can specify boundary if you need---^
+                    var imageContent = new ByteArrayContent(File.ReadAllBytes(@"c:\resid-2.jpg"));
+                    imageContent.Headers.ContentType =
+                        MediaTypeHeaderValue.Parse("image/jpeg");
+
+                    requestContent.Add(imageContent, "resid-2", "resid-2.jpg");
+                    var response = client.PostAsync(servserURI + "/api/v0/imageManager/Save?token=" + Guid.NewGuid().ToString(), requestContent).Result;
+
 
                     var result = client.GetAsync(servserURI + "/api/gateway/product/chargroups").Result;
                     var json = result.Content.ReadAsStringAsync().Result;

@@ -4,13 +4,13 @@ using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
-using Anatoli.ViewModels.Product;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
+using Anatoli.ViewModels.ProductModels;
 
-namespace Anatoli.Business
+namespace Anatoli.Business.Domain
 {
     public class ProductDomain : IBusinessDomain<Product, ProductViewModel>
     {

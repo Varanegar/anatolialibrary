@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Anatoli.ViewModels.Product
+namespace Anatoli.ViewModels.StoreModels
 {
     public class StoreViewModel : BaseViewModel
     {

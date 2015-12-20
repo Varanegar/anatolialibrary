@@ -19,7 +19,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class AccountsController : BaseApiController
     {
 
-        //[Authorize(Roles="Admin")]
+        [Authorize(Roles="Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {

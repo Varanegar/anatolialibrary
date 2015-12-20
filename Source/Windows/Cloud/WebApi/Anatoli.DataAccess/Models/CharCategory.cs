@@ -5,7 +5,6 @@ namespace Anatoli.DataAccess.Models
     
     public class CharCategory : BaseModel
     {
-        //public int CharCategoryId { get; set; }
         public string CharCategoryName { get; set; }
         public int ParentId { get; set; }
         public int NLeft { get; set; }

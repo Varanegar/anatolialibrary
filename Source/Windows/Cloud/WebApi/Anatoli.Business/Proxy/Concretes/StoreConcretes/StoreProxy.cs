@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
-using Anatoli.ViewModels.Product;
 using Anatoli.Business.Proxy.Interfaces;
+using Anatoli.ViewModels.StoreModels;
 
 namespace Anatoli.Business.Proxy.Concretes
 {

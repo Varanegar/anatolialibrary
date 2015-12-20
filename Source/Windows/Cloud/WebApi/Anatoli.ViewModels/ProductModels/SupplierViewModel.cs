@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Anatoli.ViewModels.Product
+namespace Anatoli.ViewModels.ProductModels
 {
-    public class ManufactureViewModel : BaseViewModel
+    public class SupplierViewModel : BaseViewModel
     {
         public string Name { get; set; }
     }

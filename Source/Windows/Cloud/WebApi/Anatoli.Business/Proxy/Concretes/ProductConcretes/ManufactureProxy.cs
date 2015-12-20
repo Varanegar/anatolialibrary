@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
-using Anatoli.ViewModels.Product;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
+using Anatoli.ViewModels.ProductModels;
 
-namespace Anatoli.Business.Proxy.Concretes
+namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
 {
     public class ManufactureProxy : AnatoliProxy<Manufacture, ManufactureViewModel>, IAnatoliProxy<Manufacture, ManufactureViewModel>
     {
