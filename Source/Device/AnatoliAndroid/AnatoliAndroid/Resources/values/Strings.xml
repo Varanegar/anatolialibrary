@@ -19,5 +19,8 @@
   <string name="ItemRemoved">حذف شد !</string>
   <string name="RemoveFromList">حذف از فهرست من</string>
   <string name="AddToList">افزودن به فهرست من</string>
-
+  <string name="RemoveFromBasket">حذف از سبد خرید</string>
+  <string name="TotalItems">جمع سفارشات : </string>
+  <string name="TotalPrice">جمع مبلغ : </string>
+  
 </resources>

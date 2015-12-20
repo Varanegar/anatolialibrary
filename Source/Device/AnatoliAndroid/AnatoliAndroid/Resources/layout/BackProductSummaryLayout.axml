@@ -51,7 +51,6 @@
                 android:id="@+id/relativeLayout3"
                 android:layout_width="100dp">
                 <ImageButton
-                    android:text="Button"
                     android:layout_width="18dp"
                     android:layout_height="20dp"
                     android:id="@+id/removeAllProductsButton"
@@ -60,7 +59,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_centerVertical="true" />
                 <AnatoliAndroid.Components.AnatoliTextView
-                    android:text="حذف کالا"
+                    android:text="@string/RemoveFromBasket"
                     android:gravity="center_vertical"
                     android:textSize="10dp"
                     android:textColor="@color/red"

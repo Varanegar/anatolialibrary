@@ -25,13 +25,12 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/countRelativeLayout"
-        android:layout_below="@id/sliderRelativeLayout"
-        android:layout_marginBottom="5dp">
+        android:layout_below="@id/sliderRelativeLayout">
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="تعداد آیتم :"
+            android:text="@string/TotalItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/countTitleTextView"
@@ -42,47 +41,40 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:id="@+id/itemCountTextView"
-            local:customFont="Fonts/anatoli.ttf" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/priceRelativeLayout"
-        android:layout_below="@id/countRelativeLayout"
-        android:layout_marginBottom="5dp">
+            local:customFont="Fonts/anatoli.ttf"
+            android:layout_toLeftOf="@id/countTitleTextView" />
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="مبلغ قابل پرداخت :"
+            android:textColor="@color/green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/priceTitleTextView"
-            local:customFont="Fonts/anatoli.ttf" />
-        <AnatoliAndroid.Components.AnatoliTextView
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:id="@+id/factorPriceTextView"
-            local:customFont="Fonts/anatoli.ttf" />
+            local:customFont="Fonts/anatoli.ttf"
+            android:layout_alignParentLeft="true" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TotalPrice"
+            android:textColor="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/priceTitleTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:layout_toRightOf="@id/factorPriceTextView" />
         <View
             android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginBottom="15dp"
             android:background="@color/lightgray"
-            android:layout_below="@id/factorPriceTextView"
-            android:layout_marginTop="10dp" />
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:id="@+id/shippingAddressRelativeLayout"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
-        android:layout_below="@id/priceRelativeLayout">
+        android:layout_below="@id/countRelativeLayout">
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="آدرس تحویل :"
@@ -149,7 +141,8 @@
         android:layout_height="50dp"
         android:id="@+id/deliveryDateLinearLayout"
         android:layout_below="@id/telRelativeLayout"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
         <AnatoliAndroid.Components.AnatoliTextView
             android:text="تاریخ تحویل :"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -158,14 +151,16 @@
             android:id="@+id/textView2"
             local:customFont="Fonts/anatoli.ttf"
             android:layout_alignParentRight="true"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:visibility="gone" />
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/dateSpinner"
             android:layout_toLeftOf="@id/textView2"
             android:gravity="center_vertical"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            android:visibility="gone" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
