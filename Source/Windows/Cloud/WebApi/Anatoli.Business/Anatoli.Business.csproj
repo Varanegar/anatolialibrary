@@ -56,7 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
+    <Compile Include="Domain\Product\CharTypeDomain.cs" />
+    <Compile Include="Domain\Product\CharGroupDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\CharGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\CharValueProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\CharTypeProxy.cs" />
     <Compile Include="Proxy\IBusinessDomain.cs" />
     <Compile Include="Domain\Product\ProductDomain.cs" />
     <Compile Include="Proxy\AnatoliProxy.cs" />

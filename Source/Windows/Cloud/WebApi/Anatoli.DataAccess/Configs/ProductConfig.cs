@@ -35,7 +35,7 @@ namespace Anatoli.DataAccess.Configs
                 {
                     cs.MapLeftKey("ProductId");
                     cs.MapRightKey("CharValueID");
-                    cs.ToTable("ProductBase_ProductMap");
+                    cs.ToTable("ProductChars");
                 });
 
             this.HasMany<Supplier>(s => s.Suppliers)

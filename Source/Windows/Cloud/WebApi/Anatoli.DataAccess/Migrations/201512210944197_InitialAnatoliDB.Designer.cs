@@ -7,13 +7,13 @@ namespace Anatoli.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class FialDataModelEdit1 : IMigrationMetadata
+    public sealed partial class InitialAnatoliDB : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(FialDataModelEdit1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialAnatoliDB));
         
         string IMigrationMetadata.Id
         {
-            get { return "201512201344507_FialDataModelEdit-1"; }
+            get { return "201512210944197_InitialAnatoliDB"; }
         }
         
         string IMigrationMetadata.Source

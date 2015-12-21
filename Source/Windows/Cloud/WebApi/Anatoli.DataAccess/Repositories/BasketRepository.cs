@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Repositories
     {
         #region Ctors
         public BasketRepository() : this(new AnatoliDbContext()) { }
-        public BasketRepository(DbContext context)
+        public BasketRepository(AnatoliDbContext context)
             : base(context)
         {
         }

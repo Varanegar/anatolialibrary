@@ -23,6 +23,8 @@ namespace Anatoli.ViewModels.ProductModels
         public List<SupplierViewModel> Suppliers { get; set; }
         public ProductGroupViewModel ProductGroup { get; set; }
         public ManufactureViewModel Manufacture { get; set; }
+
+        public List<CharValueViewModel> CharValues { get; set; }
     }
     
 }

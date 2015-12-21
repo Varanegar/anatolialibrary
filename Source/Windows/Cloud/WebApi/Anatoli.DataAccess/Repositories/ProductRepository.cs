@@ -12,7 +12,7 @@ namespace Anatoli.DataAccess.Repositories
     {
         #region Ctors
         public ProductRepository() : this(new AnatoliDbContext()) { }
-        public ProductRepository(DbContext context)
+        public ProductRepository(AnatoliDbContext context)
             : base(context)
         {
         }

@@ -18,7 +18,7 @@ namespace Anatoli.Business
         Task<List<TOut>> GetAll();
         Task<List<TOut>> GetAllChangedAfter(DateTime selectedDate);
         Task PublishAsync(List<TOut> ProductViewModels);
-        void Publish(List<TOut> ProductViewModels);
+        //void Publish(List<TOut> ProductViewModels);
         Task Delete(List<TOut> ProductViewModels);
     }
 }

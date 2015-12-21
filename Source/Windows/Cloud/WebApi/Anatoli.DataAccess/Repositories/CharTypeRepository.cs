@@ -8,11 +8,11 @@ using Anatoli.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class ProductGroupRepository : AnatoliRepository<ProductGroup>, IProductGroupRepository
+    public class CharTypeRepository : AnatoliRepository<CharType>, ICharTypeRepository
     {
         #region Ctors
-        public ProductGroupRepository() : this(new AnatoliDbContext()) { }
-        public ProductGroupRepository(AnatoliDbContext context)
+        public CharTypeRepository() : this(new AnatoliDbContext()) { }
+        public CharTypeRepository(AnatoliDbContext context)
             : base(context)
         {
         }
@@ -32,7 +32,7 @@ namespace Anatoli.DataAccess.Repositories
 
             await SaveChangesAsync();
         }
-        public override async Task DeleteAsync(ProductGroup entity)
+        public override async Task DeleteAsync(CharType entity)
         {
             await DeleteAsync(entity.Id);
         }
