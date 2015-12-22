@@ -322,7 +322,7 @@ namespace AnatoliAndroid.Activities
                         AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
-                    case DrawerMainItem.DrawerMainItems.Profile:
+                    case DrawerMainItem.DrawerMainItems.Avatar:
                         _profileFragment = new ProfileFragment();
                         AnatoliApp.GetInstance().SetFragment<ProfileFragment>(_profileFragment, "profile_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
@@ -494,13 +494,7 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
-            if (AnatoliUser != null)
-            {
-                var msgMenuEntry = new DrawerMainItem();
-                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
-                mainItems.Add(msgMenuEntry);
-            }
+            
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
             favoritsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyList);
@@ -514,6 +508,11 @@ namespace AnatoliAndroid.Activities
 
             if (AnatoliUser != null)
             {
+                var msgMenuEntry = new DrawerMainItem();
+                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
+                mainItems.Add(msgMenuEntry);
+
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
                 ordersMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.LastOrders);

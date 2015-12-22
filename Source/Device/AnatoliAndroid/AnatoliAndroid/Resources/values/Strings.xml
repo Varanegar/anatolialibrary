@@ -22,5 +22,15 @@
   <string name="RemoveFromBasket">حذف از سبد خرید</string>
   <string name="TotalItems">جمع سفارشات : </string>
   <string name="TotalPrice">جمع مبلغ : </string>
-  
+
+  <string name="FirstName">نام</string>
+  <string name="LastName">نام خانوادگی</string>
+  <string name="Email">پست الکترونیک</string>
+  <string name="Tel">تلفن همراه</string>
+  <string name="Address">آدرس</string>
+  <string name="Province">استان</string>
+  <string name="City">شهر</string>
+  <string name="District">محله</string>
+  <string name="Zone">منطقه</string>
+  <string name="Save">ثبت</string>
 </resources>
