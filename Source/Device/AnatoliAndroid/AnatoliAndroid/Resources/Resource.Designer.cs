@@ -2050,7 +2050,7 @@ namespace AnatoliAndroid
 			public const int media_actions = 2131427483;
 			
 			// aapt resource value: 0x7f0b0062
-			public const int menuImageView = 2131427426;
+			public const int menuImageButton = 2131427426;
 			
 			// aapt resource value: 0x7f0b001a
 			public const int middle = 2131427354;
@@ -2200,13 +2200,13 @@ namespace AnatoliAndroid
 			public const int scrollView = 2131427382;
 			
 			// aapt resource value: 0x7f0b006a
-			public const int searchButtonImageView = 2131427434;
+			public const int searchButtonImageButton = 2131427434;
 			
 			// aapt resource value: 0x7f0b006b
 			public const int searchEditText = 2131427435;
 			
 			// aapt resource value: 0x7f0b0060
-			public const int searchImageView = 2131427424;
+			public const int searchImageButton = 2131427424;
 			
 			// aapt resource value: 0x7f0b0068
 			public const int searchRelativeLayout = 2131427432;
@@ -2242,7 +2242,7 @@ namespace AnatoliAndroid
 			public const int search_voice_btn = 2131427409;
 			
 			// aapt resource value: 0x7f0b0069
-			public const int searchbarImageView = 2131427433;
+			public const int searchbarImageButton = 2131427433;
 			
 			// aapt resource value: 0x7f0b0052
 			public const int select_dialog_listview = 2131427410;
@@ -2263,7 +2263,7 @@ namespace AnatoliAndroid
 			public const int shippingRelativeLayout = 2131427526;
 			
 			// aapt resource value: 0x7f0b0064
-			public const int shoppingCardImageView = 2131427428;
+			public const int shoppingCardImageButton = 2131427428;
 			
 			// aapt resource value: 0x7f0b00e6
 			public const int shoppingCardListView = 2131427558;
@@ -2410,7 +2410,7 @@ namespace AnatoliAndroid
 			public const int toolbar = 2131427463;
 			
 			// aapt resource value: 0x7f0b0061
-			public const int toolbarImageView = 2131427425;
+			public const int toolbarImageButton = 2131427425;
 			
 			// aapt resource value: 0x7f0b005f
 			public const int toolbarRelativeLayout = 2131427423;
