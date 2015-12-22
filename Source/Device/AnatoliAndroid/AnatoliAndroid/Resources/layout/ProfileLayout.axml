@@ -3,7 +3,8 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/AnatoliPage">
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -24,7 +25,8 @@
                 android:hint="@string/FirstName"
                 local:customFont="Fonts/anatoli.ttf"
                 style="@style/AnatoliTextField"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName" />
             <AnatoliAndroid.Components.AnatoliEditText
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
@@ -33,7 +35,8 @@
                 android:hint="@string/LastName"
                 local:customFont="Fonts/anatoli.ttf"
                 style="@style/AnatoliTextField"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName" />
             <AnatoliAndroid.Components.AnatoliEditText
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
@@ -42,7 +45,8 @@
                 android:hint="@string/Email"
                 local:customFont="Fonts/anatoli.ttf"
                 style="@style/AnatoliTextField"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress" />
             <AnatoliAndroid.Components.AnatoliEditText
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
@@ -51,7 +55,8 @@
                 android:hint="@string/Tel"
                 local:customFont="Fonts/anatoli.ttf"
                 style="@style/AnatoliTextField"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:inputType="phone" />
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,8 +95,9 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         android:text="@string/District"
                         android:layout_column="1"
-                        android:layout_weight="1"
-                        android:id="@+id/districtTextView" />
+                        android:id="@+id/districtTextView"
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField" />
                     <Spinner
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_column="2"
@@ -100,8 +106,9 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         android:text="@string/Zone"
                         android:layout_column="3"
-                        android:layout_weight="1"
-                        android:id="@+id/zoneTextView" />
+                        android:id="@+id/zoneTextView"
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField" />
                 </TableRow>
             </TableLayout>
             <AnatoliAndroid.Components.AnatoliEditText
@@ -112,7 +119,9 @@
                 android:hint="@string/Address"
                 local:customFont="Fonts/anatoli.ttf"
                 style="@style/AnatoliTextField"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionDone"
+                android:inputType="textImeMultiLine"
+                android:minHeight="90dp" />
             <AnatoliAndroid.Components.AnatoliButton
                 android:text="@string/Save"
                 android:layout_width="match_parent"
