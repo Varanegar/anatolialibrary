@@ -2154,9 +2154,6 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0056
 			public const int relativeLayout2 = 2131427414;
 			
-			// aapt resource value: 0x7f0b0059
-			public const int relativeLayout3 = 2131427417;
-			
 			// aapt resource value: 0x7f0b005c
 			public const int relativeLayout4 = 2131427420;
 			
@@ -2171,6 +2168,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f0b005a
 			public const int removeAllProductsButton = 2131427418;
+			
+			// aapt resource value: 0x7f0b0059
+			public const int removeAllRelativeLayout = 2131427417;
 			
 			// aapt resource value: 0x7f0b0090
 			public const int removeButton = 2131427472;
