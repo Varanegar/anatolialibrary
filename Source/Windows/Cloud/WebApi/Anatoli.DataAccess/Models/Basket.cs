@@ -7,7 +7,7 @@ namespace Anatoli.DataAccess.Models
     {       
         public int BasketTypeValueId { get; set; }
         public string BasketName { get; set; }
-        public Nullable<int> CustomerId { get; set; }
+        public Customer Customer { get; set; }
 
         public virtual ICollection<BasketItem> BasketItems { get; set; }
         public virtual ICollection<BasketNote> BasketNotes { get; set; }

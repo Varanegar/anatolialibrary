@@ -7,8 +7,6 @@ namespace Anatoli.DataAccess.Models
     {
         public byte[] Picture { get; set; }
         public int PictureTypeValueId { get; set; }
-        //public Guid ProductPictureId { get; set; }
-        //public Nullable<Guid> ProductId { get; set; }
     
         public virtual Product Product { get; set; }
     }

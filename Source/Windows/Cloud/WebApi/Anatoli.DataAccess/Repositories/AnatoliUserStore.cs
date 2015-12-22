@@ -14,6 +14,7 @@ namespace Anatoli.DataAccess.Repositories
     {
         #region Properties
         UserRepository UserRepository { get; set; }
+        AnatoliDbContext context { get; set; }
         #endregion
 
         #region Ctors
@@ -21,7 +22,7 @@ namespace Anatoli.DataAccess.Repositories
             : base(context)
         {
 
-            UserRepository = new UserRepository(Context);
+            UserRepository = new UserRepository(context);
         }
 
         //public AnatoliUserStore(AnatoliDbContext dbc)
@@ -38,7 +39,7 @@ namespace Anatoli.DataAccess.Repositories
         {
             user.CreatedDate = user.LastUpdate = user.LastEntry = DateTime.Now;
 
-            user.PrivateLabelOwner = new PrincipalRepository(Context).FindAsync(p => p.Id == user.PrivateLabelOwner.Id).Result;
+            user.PrivateLabelOwner = new PrincipalRepository(context).FindAsync(p => p.Id == user.PrivateLabelOwner.Id).Result;
 
             await UserRepository.AddAsync(user);
 
@@ -62,6 +63,20 @@ namespace Anatoli.DataAccess.Repositories
         public async Task<User> FindByNameAsync(string userName)
         {
             var model = await UserRepository.FindAsync(p => p.UserName == userName);
+
+            return model;
+        }
+
+        public async Task<User> FindByPhoneAsync(string phone)
+        {
+            var model = await UserRepository.FindAsync(p => p.PhoneNumber == phone);
+
+            return model;
+        }
+
+        public async Task<User> FindByEmailAsync(string email)
+        {
+            var model = await UserRepository.FindAsync(p => p.Email == email);
 
             return model;
         }

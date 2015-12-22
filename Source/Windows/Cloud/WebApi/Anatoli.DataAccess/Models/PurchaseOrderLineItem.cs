@@ -5,11 +5,8 @@ namespace Anatoli.DataAccess.Models
     
     public class PurchaseOrderLineItem : BaseModel
     {
-        //public int PurchaseOrderLineItemId { get; set; }
-        //public int PurchaseOrderId { get; set; }
-        public Nullable<int> ProductId { get; set; }
-        public int FinalProductId { get; set; }
-        public Nullable<int> ProductBaseId { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Product FinalProduct { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Qty { get; set; }
         public decimal Discount { get; set; }

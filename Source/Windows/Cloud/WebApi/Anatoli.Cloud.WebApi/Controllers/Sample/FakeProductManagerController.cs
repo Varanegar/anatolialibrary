@@ -3,8 +3,9 @@ using System.Linq;
 using System.Web.Http;
 using Anatoli.Business;
 using System.Threading.Tasks;
-using Anatoli.ViewModels.Product;
 using System.Collections.Generic;
+using Anatoli.Business.Domain;
+using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers.Sample
 {

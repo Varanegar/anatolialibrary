@@ -13,12 +13,12 @@ namespace Anatoli.DataAccess.Repositories
     public abstract class AnatoliRepository<T> : IDisposable, IRepository<T> where T : class
     {
         #region Properties
-        protected DbContext DbContext { get; set; }
+        public AnatoliDbContext DbContext { get; set; }
         protected DbSet<T> DbSet { get; set; }
         #endregion
 
         #region Ctors
-        public AnatoliRepository(DbContext dbContext)
+        public AnatoliRepository(AnatoliDbContext dbContext)
         {
             if (dbContext == null)
                 throw new ArgumentNullException("Null DbContext");
@@ -69,7 +69,7 @@ namespace Anatoli.DataAccess.Repositories
         {
             var dbEntityEntry = DbContext.Entry(entity);
 
-            if (dbEntityEntry.State != EntityState.Detached)
+            if (dbEntityEntry.State == EntityState.Detached)
                 dbEntityEntry.State = EntityState.Added;
             else
                 DbSet.Add(entity);

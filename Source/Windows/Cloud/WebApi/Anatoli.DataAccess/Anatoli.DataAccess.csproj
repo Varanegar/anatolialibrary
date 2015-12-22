@@ -59,6 +59,7 @@
     <Compile Include="Configs\BaseModelConfig.cs" />
     <Compile Include="Configs\BasketConfig.cs" />
     <Compile Include="Configs\CalendarTemplateConfig.cs" />
+    <Compile Include="Configs\CharGroupConfig.cs" />
     <Compile Include="Configs\CharTypeConfig.cs" />
     <Compile Include="Configs\CharValueConfig.cs" />
     <Compile Include="Configs\CustomerConfig.cs" />
@@ -72,41 +73,17 @@
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\StoreValidRegionInfoConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Interfaces\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\IPrincipalRepository.cs" />
+    <Compile Include="Interfaces\ICharGroupRepository.cs" />
+    <Compile Include="Interfaces\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IBasketRepository.cs" />
     <Compile Include="Interfaces\IStoreRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
-    <Compile Include="Migrations\201511282115275_InitAnatoliDB.cs" />
-    <Compile Include="Migrations\201511282115275_InitAnatoliDB.Designer.cs">
-      <DependentUpon>201511282115275_InitAnatoliDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512020749110_AddingAnatoliIdentityModels.cs" />
-    <Compile Include="Migrations\201512020749110_AddingAnatoliIdentityModels.Designer.cs">
-      <DependentUpon>201512020749110_AddingAnatoliIdentityModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512021725031_ChangingProductSuplier.cs" />
-    <Compile Include="Migrations\201512021725031_ChangingProductSuplier.Designer.cs">
-      <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512042021241_AddingIsRemovedField.cs" />
-    <Compile Include="Migrations\201512042021241_AddingIsRemovedField.Designer.cs">
-      <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512121918032_AddinManufacture.cs" />
-    <Compile Include="Migrations\201512121918032_AddinManufacture.Designer.cs">
-      <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.cs" />
-    <Compile Include="Migrations\201512131554004_RemoveProductBaseRelation.Designer.cs">
-      <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.cs" />
-    <Compile Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.Designer.cs">
-      <DependentUpon>201512170756398_ChangingUserModelToIdentiyUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512170932314_ChangeUserModel.cs" />
-    <Compile Include="Migrations\201512170932314_ChangeUserModel.Designer.cs">
-      <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
+    <Compile Include="Migrations\201512210944197_InitialAnatoliDB.cs" />
+    <Compile Include="Migrations\201512210944197_InitialAnatoliDB.Designer.cs">
+      <DependentUpon>201512210944197_InitialAnatoliDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -119,9 +96,7 @@
     <Compile Include="Models\CalendarTemplate.cs" />
     <Compile Include="Models\CalendarTemplateHoliday.cs" />
     <Compile Include="Models\CalendarTemplateOpenTime.cs" />
-    <Compile Include="Models\CharCategory.cs" />
     <Compile Include="Models\CharGroup.cs" />
-    <Compile Include="Models\CharGroupTypeInfo.cs" />
     <Compile Include="Models\CharType.cs" />
     <Compile Include="Models\CharValue.cs" />
     <Compile Include="Models\CityRegion.cs" />
@@ -138,8 +113,6 @@
     <Compile Include="Models\Identity\User.cs" />
     <Compile Include="Models\Manufacture.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductBase.cs" />
-    <Compile Include="Models\ProductBaseProductMap.cs" />
     <Compile Include="Models\ProductComment.cs" />
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ProductPicture.cs" />
@@ -165,36 +138,14 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Repositories\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\CharTypeRepository.cs" />
     <Compile Include="Repositories\PrincipalRepository.cs" />
+    <Compile Include="Repositories\CharGroupRepository.cs" />
+    <Compile Include="Repositories\ProductGroupRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\BasketRepository.cs" />
     <Compile Include="Repositories\StoreRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511282115275_InitAnatoliDB.resx">
-      <DependentUpon>201511282115275_InitAnatoliDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512020749110_AddingAnatoliIdentityModels.resx">
-      <DependentUpon>201512020749110_AddingAnatoliIdentityModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512021725031_ChangingProductSuplier.resx">
-      <DependentUpon>201512021725031_ChangingProductSuplier.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512042021241_AddingIsRemovedField.resx">
-      <DependentUpon>201512042021241_AddingIsRemovedField.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512121918032_AddinManufacture.resx">
-      <DependentUpon>201512121918032_AddinManufacture.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512131554004_RemoveProductBaseRelation.resx">
-      <DependentUpon>201512131554004_RemoveProductBaseRelation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512170756398_ChangingUserModelToIdentiyUser.resx">
-      <DependentUpon>201512170756398_ChangingUserModelToIdentiyUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512170932314_ChangeUserModel.resx">
-      <DependentUpon>201512170932314_ChangeUserModel.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -202,7 +153,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201512210944197_InitialAnatoliDB.resx">
+      <DependentUpon>201512210944197_InitialAnatoliDB.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

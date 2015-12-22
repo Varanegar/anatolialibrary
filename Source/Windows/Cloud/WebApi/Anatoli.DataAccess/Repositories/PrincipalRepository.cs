@@ -10,7 +10,7 @@ namespace Anatoli.DataAccess.Repositories
     public class PrincipalRepository : AnatoliRepository<Principal>, IPrincipalRepository
     {
         public PrincipalRepository() : this(new AnatoliDbContext()) { }
-        public PrincipalRepository(DbContext context)
+        public PrincipalRepository(AnatoliDbContext context)
             : base(context)
         {
         }

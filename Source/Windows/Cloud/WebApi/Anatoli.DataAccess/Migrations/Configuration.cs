@@ -1,18 +1,18 @@
 namespace Anatoli.DataAccess.Migrations
 {
     using System;
-    using System.Linq;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<AnatoliDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Anatoli.DataAccess.AnatoliDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AnatoliDbContext context)
+        protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

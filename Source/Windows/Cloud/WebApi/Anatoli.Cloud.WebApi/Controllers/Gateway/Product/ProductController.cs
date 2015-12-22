@@ -1,5 +1,7 @@
 ﻿using Anatoli.Business;
+using Anatoli.Business.Domain;
 using Anatoli.Cloud.Gateway.Business.Region;
+using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/product")]
     public class ProductController : ApiController
     {
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "User")]
         [Route("chargroups")]
-        public IHttpActionResult GetCharGroups()
+        public async Task<IHttpActionResult> GetCharGroups()
         {
-            return Ok(ProductCharGroupCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var charGroupDomain = new CharGroupDomain(owner);
+            var result = await charGroupDomain.GetAll();
+
+            return Ok(result);
+        }
+
+        //[Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "User")]
+        [Route("chargroups/save")]
+        public async Task<IHttpActionResult> SaveCharGroups(List<CharGroupViewModel> data)
+        {
+            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var charGroupDomain = new CharGroupDomain(owner);
+            await charGroupDomain.PublishAsync(data);
+            return Ok();
         }
 
         [Authorize(Roles = "AuthorizedApp")]

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Anatoli.ViewModels.Product;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Anatoli.Business;
+using Anatoli.Business.Domain;
+using Anatoli.ViewModels.ProductModels;
 
 namespace AnatoliUnitTests
 {

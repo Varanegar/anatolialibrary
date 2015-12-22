@@ -10,13 +10,16 @@ namespace Anatoli.DataAccess.Configs
     {
         public ProductConfig()
         {
-            //this.HasRequired<ProductBase>(pb => pb.ProductBase)
-            //    .WithMany(p => p.Products);
-
             this.HasOptional<ProductGroup>(pg => pg.ProductGroup)
                 .WithMany(m => m.Products);
 
             this.HasMany<ProductPicture>(pp => pp.ProductPictures)
+                .WithRequired(p => p.Product);
+
+            this.HasMany<BasketItem>(pp => pp.BasketItems)
+                .WithRequired(p => p.Product);
+
+            this.HasMany<PurchaseOrderLineItem>(pr => pr.PurchaseOrderLineItems)
                 .WithRequired(p => p.Product);
 
             this.HasMany<ProductRate>(pr => pr.ProductRates)
@@ -32,7 +35,7 @@ namespace Anatoli.DataAccess.Configs
                 {
                     cs.MapLeftKey("ProductId");
                     cs.MapRightKey("CharValueID");
-                    cs.ToTable("ProductBase_ProductMap");
+                    cs.ToTable("ProductChars");
                 });
 
             this.HasMany<Supplier>(s => s.Suppliers)

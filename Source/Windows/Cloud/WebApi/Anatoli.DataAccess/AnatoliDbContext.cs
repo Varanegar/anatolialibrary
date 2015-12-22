@@ -20,9 +20,7 @@ namespace Anatoli.DataAccess
         public DbSet<CalendarTemplate> CalendarTemplates { get; set; }
         public DbSet<CalendarTemplateHoliday> CalendarTemplateHolidays { get; set; }
         public DbSet<CalendarTemplateOpenTime> CalendarTemplateOpenTimes { get; set; }
-        public DbSet<CharCategory> CharCategories { get; set; }
         public DbSet<CharGroup> CharGroups { get; set; }
-        public DbSet<CharGroupTypeInfo> CharGroupTypeInfoes { get; set; }
         public DbSet<CharType> CharTypes { get; set; }
         public DbSet<CharValue> CharValues { get; set; }
         public DbSet<CityRegion> CityRegions { get; set; }

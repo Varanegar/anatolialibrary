@@ -39,8 +39,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             try
             {
                 var httpRequest = HttpContext.Current.Request;
-                Guid _token;
-                Guid.TryParse(httpRequest.Form["token"], out _token);
+                Guid _token = Guid.Empty;
+                if (httpRequest.Form["token"] != null )
+                    Guid.TryParse(httpRequest.Form["token"], out _token);
+
+                if(token != "")
+                    Guid.TryParse(token, out _token);
 
                 if (httpRequest.Files.Count > 0)
                     foreach (string file in httpRequest.Files)

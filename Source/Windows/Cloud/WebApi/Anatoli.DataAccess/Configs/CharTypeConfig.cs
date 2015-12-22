@@ -10,8 +10,17 @@ namespace Anatoli.DataAccess.Configs
     {
         public CharTypeConfig()
         {
-            this.HasMany<CharGroupTypeInfo>(ct => ct.CharGroupTypeInfoes)
-                .WithOptional(c => c.CharType);
+            this.HasMany<CharGroup>(s => s.CharGroups)
+                .WithMany(c => c.CharTypes)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("CharTypeId");
+                    cs.MapRightKey("CharGroupID");
+                    cs.ToTable("CharGroupTypes");
+                });
+
+            this.HasMany<CharValue>(pc => pc.CharValues)
+                .WithRequired(p => p.CharType);
         }
     }
 }

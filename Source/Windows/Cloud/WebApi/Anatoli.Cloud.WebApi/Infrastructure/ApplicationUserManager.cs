@@ -8,6 +8,8 @@ using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Repositories;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Anatoli.Cloud.WebApi.Infrastructure
 {
@@ -18,6 +20,29 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
         }
 
+         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password)
+        {
+            var username = usernameOrEmailOrPhone;
+            if (usernameOrEmailOrPhone.Contains("@"))
+            {
+                var userForEmail = await FindByEmailAsync(usernameOrEmailOrPhone);
+                if (userForEmail != null)
+                {
+                    username = userForEmail.UserName;
+                }
+            }
+            else if (usernameOrEmailOrPhone.Contains("09"))
+            {
+                var context = AnatoliDbContext.Create();
+                var userForPhone = await new AnatoliUserStore(context).FindByPhoneAsync(usernameOrEmailOrPhone);
+                if (userForPhone != null)
+                {
+                    username = userForPhone.UserName;
+                }
+            }
+            return await FindAsync(username, password);
+        }
+    
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var appDbContext = context.Get<AnatoliDbContext>();

@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Repositories
     {
         #region Ctors
         public UserRepository() : this(new AnatoliDbContext()) { }
-        public UserRepository(DbContext context)
+        public UserRepository(AnatoliDbContext context)
             : base(context)
         {
         }

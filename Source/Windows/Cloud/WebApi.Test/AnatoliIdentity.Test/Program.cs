@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,41 +21,26 @@ namespace ClientApp
                 //string servserURI = "http://79.175.166.186/";
                 string servserURI = "http://localhost:59822/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
-
                 var client = new HttpClient();
-                //User user = new User();
-                //user.Email = "hooman.ahmadi1@gmail.com";
-                //user.FullName = "hooman2";
-                //user.Username = "hooman.ahmadi2";
-                //user.Password = "Hooman.ahmadi2";
-                //user.ConfirmPassword = "Hooman.ahmadi2";
-                //user.PrivateOwnerId = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
-                //user.Mobile = "09128501330";
-                //user.RoleName = "AuthorizedApp";
+                /*
 
-                //string data = new JavaScriptSerializer().Serialize(user);
-                //HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                //var result8 = client.PostAsync(servserURI + "/api/accounts/create", content).Result;
-                //var json8 = result8.Content.ReadAsStringAsync().Result;
 
-                //Console.WriteLine(json8);
+                Console.WriteLine(json8);
                 //return;
-
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("hooman.ahmadi2", "Hooman.ahmadi2").Result; //, "foo bar"
+                */
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09128501330", "Hooman.ahmadi2").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
-                    Console.WriteLine(oauthresult.AccessToken);
-                    Console.WriteLine();
-                    /*
-                    HttpRequestMessage request = new HttpRequestMessage();
-                    HttpContent content = new StringContent(@"{ ""username"": ""anatoli""}");
-                    content.Headers.ContentType = new MediaTypeHeaderValue("ap[ndplication/json");
-                     * */
                     client.SetBearerToken(oauthresult.AccessToken);
 
-                    var result = client.GetAsync(servserURI + "/api/gateway/product/chargroups").Result;
-                    var json = result.Content.ReadAsStringAsync().Result;
+                    CharGroup.GetCharGroupInfo(client);
 
+                    Console.WriteLine(oauthresult.AccessToken);
+                    Console.WriteLine();
+
+
+                    
+                    /*
                     var result3 = client.GetAsync(servserURI + "/api/gateway/product/chartypes").Result;
                     var json3 = result3.Content.ReadAsStringAsync().Result;
 
@@ -79,8 +65,8 @@ namespace ClientApp
 
                     var result10 = client.GetAsync(servserURI + "/api/gateway/store/GetStoreLists?appId="+ "CB11335F-6D14-49C9-9798-AD61D02EDBE1").Result;
                     var json10 = result9.Content.ReadAsStringAsync().Result;
-
-                    Console.WriteLine(json);
+                    */
+                    //Console.WriteLine(json);
                 }
             }
             catch (Exception ex)

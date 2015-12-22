@@ -218,9 +218,7 @@
       <Name>Anatoli.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Images\Products\25aa3216-3025-441a-b328-0b30fe3c5268\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201509251908290_InitialCreate.resx">
       <DependentUpon>201509251908290_InitialCreate.cs</DependentUpon>
