@@ -6,5 +6,31 @@
   <string name="CloseDrawer">بستن منو</string>
   <string name="Products">دسته بندی کالا</string>
   <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
-  <string name="LoginFailed">ورود نا موفق</string> 
+  <string name="LoginFailed">ورود نا موفق</string>
+
+
+  <string name="MyList">فهرست من</string>
+  <string name="MyStore">فروشگاه من</string>
+  <string name="LastOrders">سفارشات قبلی</string>
+  <string name="Messages">پیام های من</string>
+  <string name="Login">ورود</string>
+  <string name="MainMenu">منوی اصلی</string>
+
+  <string name="ItemRemoved">حذف شد !</string>
+  <string name="RemoveFromList">حذف از فهرست من</string>
+  <string name="AddToList">افزودن به فهرست من</string>
+  <string name="RemoveFromBasket">حذف از سبد خرید</string>
+  <string name="TotalItems">جمع سفارشات : </string>
+  <string name="TotalPrice">جمع مبلغ : </string>
+
+  <string name="FirstName">نام</string>
+  <string name="LastName">نام خانوادگی</string>
+  <string name="Email">پست الکترونیک</string>
+  <string name="Tel">تلفن همراه</string>
+  <string name="Address">آدرس</string>
+  <string name="Province">استان</string>
+  <string name="City">شهر</string>
+  <string name="District">محله</string>
+  <string name="Zone">منطقه</string>
+  <string name="Save">ثبت</string>
 </resources>

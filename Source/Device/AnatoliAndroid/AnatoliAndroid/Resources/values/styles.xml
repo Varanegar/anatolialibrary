@@ -25,7 +25,7 @@
   <style name="AnatoliPage">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/gray</item>
+    <item name="android:textColor">@color/textgray</item>
     <item name="android:typeface">monospace</item>
     <item name="android:paddingLeft">5dp</item>
     <item name="android:paddingRight">5dp</item>
@@ -35,7 +35,7 @@
   <style name="AnatoliDialog">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/gray</item>
+    <item name="android:textColor">@color/textgray</item>
     <item name="android:typeface">monospace</item>
     <item name="android:padding">20dp</item>
   </style>
@@ -60,7 +60,7 @@
   <style name="AnatoliTextField">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/gray</item>
+    <item name="android:textColor">@color/textgray</item>
     <item name="android:padding">15dp</item>
     <item name="android:layout_margin">3dp</item>
     <item name="android:gravity">right</item>

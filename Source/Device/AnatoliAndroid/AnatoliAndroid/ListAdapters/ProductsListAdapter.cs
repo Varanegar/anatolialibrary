@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
+using Android.Content.Res;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -32,7 +33,7 @@ namespace AnatoliAndroid.ListAdapters
         ImageView _bproductImageView;
         ImageButton _favoritsButton;
         ImageView _productRemoveButton;
-        ImageButton _removeAllProductsButton;
+        RelativeLayout _removeAllRelativeLayout;
         OnTouchListener _addTouchlistener;
         LinearLayout _counterLinearLayout;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
@@ -56,7 +57,7 @@ namespace AnatoliAndroid.ListAdapters
                 _bproductImageView = view.FindViewById<ImageView>(Resource.Id.bproductImageView);
                 _productAddButton = view.FindViewById<ImageView>(Resource.Id.addProductImageView);
                 _productRemoveButton = view.FindViewById<ImageView>(Resource.Id.removeProductImageView);
-                _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
+                _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                 _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
 
@@ -70,7 +71,7 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
                 view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
                 view.SetTag(Resource.Id.bproductNameTextView, _bproductNameTextView);
-                view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
+                view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
                 view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                 view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
 
@@ -86,7 +87,7 @@ namespace AnatoliAndroid.ListAdapters
                 _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
                 _bproductImageView = (ImageView)view.GetTag(Resource.Id.bproductImageView);
                 _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
-                _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
+                _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
                 _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
             }
@@ -105,11 +106,11 @@ namespace AnatoliAndroid.ListAdapters
 
             if (item.IsFavorit)
             {
-                _favoritsTextView.Text = "حذف از فهرست من";
+                _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.RemoveFromList);
             }
             else
             {
-                _favoritsTextView.Text = "افزدون به فهرست من";
+                _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
             }
 
             _productCountTextView.Text = item.count.ToString() + " عدد";
@@ -120,18 +121,25 @@ namespace AnatoliAndroid.ListAdapters
             if (item.product_name.Equals(_productNameTextView.Text))
             {
                 if (item.count > 0)
+                {
                     _counterLinearLayout.Visibility = ViewStates.Visible;
+                    _removeAllRelativeLayout.Visibility = ViewStates.Visible;
+                }
                 else
+                {
                     _counterLinearLayout.Visibility = ViewStates.Gone;
+                    _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                }
             }
 
             var removeAll = new OnTouchListener();
-            _removeAllProductsButton.SetOnTouchListener(removeAll);
+            _removeAllRelativeLayout.SetOnTouchListener(removeAll);
             removeAll.Click += async (s, e) =>
             {
                 OnBackClicked(position);
                 int a = await ShoppingCardManager.GetItemsCountAsync();
                 TextView counter = AnatoliApp.GetInstance().ShoppingCardItemCount;
+                double p = AnatoliApp.GetInstance().GetTotalPrice();
                 if (await ShoppingCardManager.RemoveProductAsync(item, true))
                 {
                     while (item.count > 0)
@@ -139,14 +147,20 @@ namespace AnatoliAndroid.ListAdapters
                         await Task.Delay(150);
                         item.count--;
                         counter.Text = (--a).ToString();
+                        p = p - item.price;
+                        AnatoliApp.GetInstance().SetTotalPrice(p);
                         NotifyDataSetChanged();
                         OnDataChanged();
                     }
                     if (item.product_name.Equals(_productNameTextView.Text))
+                    {
                         _counterLinearLayout.Visibility = ViewStates.Gone;
+                        _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                    }
                     NotifyDataSetChanged();
                     OnDataChanged();
                     OnShoppingCardItemRemoved(item);
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.ItemRemoved, ToastLength.Short).Show();
                 }
             };
 
@@ -183,15 +197,18 @@ namespace AnatoliAndroid.ListAdapters
                 if (await ShoppingCardManager.AddProductAsync(item))
                 {
                     item.count++;
+                    if (item.product_name.Equals(_productNameTextView.Text))
+                        if (item.count == 1)
+                        {
+                            _counterLinearLayout.Visibility = ViewStates.Visible;
+                            _removeAllRelativeLayout.Visibility = ViewStates.Visible;
+                        }
                     NotifyDataSetChanged();
                     OnDataChanged();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 }
-                if (item.product_name.Equals(_productNameTextView.Text))
-                    if (item.count == 1)
-                    {
-                        _counterLinearLayout.Visibility = ViewStates.Visible;
-                    }
+
             };
 
             var _removeTouchlistener = new OnTouchListener();
@@ -204,12 +221,16 @@ namespace AnatoliAndroid.ListAdapters
                     if (item.count == 0)
                     {
                         if (item.product_name.Equals(_productNameTextView.Text))
+                        {
                             _counterLinearLayout.Visibility = ViewStates.Gone;
+                            _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                        }
                         OnShoppingCardItemRemoved(item);
                     }
                     NotifyDataSetChanged();
                     OnDataChanged();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 }
             };
 

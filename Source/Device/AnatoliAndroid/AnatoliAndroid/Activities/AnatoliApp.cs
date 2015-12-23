@@ -32,32 +32,47 @@ namespace AnatoliAndroid.Activities
         public Android.Support.V4.Widget.DrawerLayout DrawerLayout;
         RelativeLayout _searchBarLayout;
         RelativeLayout _toolBarLayout;
-        ImageView _shoppingCardImageView;
-        ImageView _searchImageView;
-        ImageView _searchBarImageView;
-        ImageView _searchButtonImageView;
-        ImageView _toolBarImageView;
-        ImageView _menuIconImageView;
+        ImageButton _shoppingCardImageButton;
+        ImageButton _searchImageButton;
+        ImageButton _searchBarImageButton;
+        ImageButton _searchButtonImageButton;
+        ImageButton _toolBarImageButton;
+        ImageButton _menuIconImageButton;
         TextView _shoppingCardTextView;
+        TextView _shoppingPriceTextView;
+        double _price;
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
+        public void SetTotalPrice(double price)
+        {
+            _price = price;
+            if (!_shoppingCardTextView.Text.Equals("0"))
+                _shoppingPriceTextView.Visibility = ViewStates.Visible;
+            else
+                _shoppingPriceTextView.Visibility = ViewStates.Invisible;
+            _shoppingPriceTextView.Text = _price.ToString() + " تومان";
+        }
+        public double GetTotalPrice()
+        {
+            return _price;
+        }
         public void HideMenuIcon()
         {
-            _menuIconImageView.Visibility = ViewStates.Gone;
+            _menuIconImageButton.Visibility = ViewStates.Gone;
         }
 
         public void ShowMenuIcon()
         {
-            _menuIconImageView.Visibility = ViewStates.Visible;
+            _menuIconImageButton.Visibility = ViewStates.Visible;
         }
 
         public void HideSearchIcon()
         {
-            _searchImageView.Visibility = ViewStates.Gone;
+            _searchImageButton.Visibility = ViewStates.Gone;
         }
 
         public void ShowSearchIcon()
         {
-            _searchImageView.Visibility = ViewStates.Visible;
+            _searchImageButton.Visibility = ViewStates.Visible;
         }
         public delegate void ProcessMenu();
         public ProcessMenu MenuClicked;
@@ -84,7 +99,14 @@ namespace AnatoliAndroid.Activities
         OrdersListFragment _ordersFragment;
 
         ProductManager _pm;
-
+        /// <summary>
+        /// Shortcut for AnatoliApp.GetInstance().Activity.Resources
+        /// </summary>
+        /// <returns></returns>
+        public static Android.Content.Res.Resources GetResources()
+        {
+            return AnatoliApp.GetInstance().Activity.Resources;
+        }
         public void CloseSearchBar()
         {
             _searchBarLayout.Visibility = ViewStates.Gone;
@@ -103,22 +125,22 @@ namespace AnatoliAndroid.Activities
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
 
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
-
+            _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
             _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
             _toolBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.toolbarRelativeLayout);
             CloseSearchBar();
 
-            _toolBarImageView = ToolBar.FindViewById<ImageView>(Resource.Id.toolbarImageView);
-            _toolBarImageView.Click += toolbarImageView_Click;
+            _toolBarImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.toolbarImageButton);
+            _toolBarImageButton.Click += toolbarImageButton_Click;
 
-            _searchImageView = ToolBar.FindViewById<ImageView>(Resource.Id.searchImageView);
-            _searchImageView.Click += searchImageView_Click;
+            _searchImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.searchImageButton);
+            _searchImageButton.Click += searchImageButton_Click;
 
-            _searchBarImageView = ToolBar.FindViewById<ImageView>(Resource.Id.searchbarImageView);
-            _searchBarImageView.Click += _searchBarImageView_Click;
+            _searchBarImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.searchbarImageButton);
+            _searchBarImageButton.Click += _searchBarImageButton_Click;
 
-            _searchButtonImageView = ToolBar.FindViewById<ImageView>(Resource.Id.searchButtonImageView);
-            _searchButtonImageView.Click += async (s, e) =>
+            _searchButtonImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.searchButtonImageButton);
+            _searchButtonImageButton.Click += async (s, e) =>
             {
                 DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                 await Search(_searchEditText.Text);
@@ -148,41 +170,46 @@ namespace AnatoliAndroid.Activities
                 }
             };
             _searchEditText.ItemClick += async (s, e) => { await Search(_searchEditText.Text); };
-            _shoppingCardImageView = ToolBar.FindViewById<ImageView>(Resource.Id.shoppingCardImageView);
-            _shoppingCardImageView.Click += shoppingCardImageView_Click;
-
+            _shoppingCardImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.shoppingCardImageButton);
+            var shoppingbarRelativeLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.shoppingbarRelativeLayout);
+            shoppingbarRelativeLayout.Click += shoppingbarRelativeLayout_Click;
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
-            _toolBarTextView.Text = "دسته بندی کالا";
+            _menuIconImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.menuImageButton);
+            _menuIconImageButton.Click += (s, e) => { OnMenuClick(); };
+        }
 
-            _menuIconImageView = ToolBar.FindViewById<ImageView>(Resource.Id.menuImageView);
-
-            _menuIconImageView.Click += (s, e) => { OnMenuClick(); };
+        void shoppingbarRelativeLayout_Click(object sender, EventArgs e)
+        {
+            SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
+            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 
         async System.Threading.Tasks.Task Search(string value)
         {
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.ProductsListFragment))
             {
+                if (_productsListF == null)
+                {
+                    _productsListF = _currentFragment as ProductsListFragment;
+                }
                 await _productsListF.Search("product_name", value);
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
             {
+                if (_storesListF == null)
+                {
+                    _storesListF = _currentFragment as StoresListFragment;
+                }
                 await _storesListF.Search("store_name", value);
             }
         }
-        void _searchBarImageView_Click(object sender, EventArgs e)
+        void _searchBarImageButton_Click(object sender, EventArgs e)
         {
             CloseSearchBar();
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
 
-        void shoppingCardImageView_Click(object sender, EventArgs e)
-        {
-            SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
-            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-        }
-
-        void searchImageView_Click(object sender, EventArgs e)
+        void searchImageButton_Click(object sender, EventArgs e)
         {
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
             if (_searchBar)
@@ -195,7 +222,7 @@ namespace AnatoliAndroid.Activities
             }
         }
 
-        void toolbarImageView_Click(object sender, EventArgs e)
+        void toolbarImageButton_Click(object sender, EventArgs e)
         {
             if (DrawerLayout.IsDrawerOpen(AnatoliApp.GetInstance().DrawerListView))
             {
@@ -218,6 +245,7 @@ namespace AnatoliAndroid.Activities
                 return null;
             }
         }
+        Fragment _currentFragment;
         public Activity Activity { get { return _activity; } }
         public static AnatoliApp GetInstance()
         {
@@ -261,7 +289,7 @@ namespace AnatoliAndroid.Activities
                         }
                         var temp = CategoryManager.GetCategories(0);
                         var categories = new List<DrawerItemType>();
-                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
                         var current = CategoryManager.GetParentCategory(0);
                         categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
                         foreach (var item in temp)
@@ -294,7 +322,7 @@ namespace AnatoliAndroid.Activities
                         AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
-                    case DrawerMainItem.DrawerMainItems.Profile:
+                    case DrawerMainItem.DrawerMainItems.Avatar:
                         _profileFragment = new ProfileFragment();
                         AnatoliApp.GetInstance().SetFragment<ProfileFragment>(_profileFragment, "profile_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
@@ -338,7 +366,7 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
-                    categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, "منوی اصلی"));
+                    categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
                     var parent = CategoryManager.GetParentCategory(selectedItem.ItemId);
 
                     var current = CategoryManager.GetCategoryInfo(selectedItem.ItemId);
@@ -366,7 +394,7 @@ namespace AnatoliAndroid.Activities
 
             }
         }
-        internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag,Tuple<string,string> parameter) where FragmentType : Android.App.Fragment, new()
+        internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag, Tuple<string, string> parameter) where FragmentType : Android.App.Fragment, new()
         {
             if (fragment == null)
                 fragment = new FragmentType();
@@ -397,6 +425,7 @@ namespace AnatoliAndroid.Activities
                 }
             }
             _list.AddLast(new StackItem(tag, fragment.GetType()));
+            _currentFragment = fragment;
             return fragment;
         }
         public bool BackFragment()
@@ -461,34 +490,32 @@ namespace AnatoliAndroid.Activities
 
             var categoriesMenuEntry = new DrawerMainItem();
             categoriesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.ProductCategries;
-            categoriesMenuEntry.Name = "دسته بندی کالا";
+            categoriesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Products);
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
-            //if (AnatoliUser != null)
-            //{
-            //    var msgMenuEntry = new DrawerMainItem();
-            //    msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-            //    msgMenuEntry.Name = "پیغام ها";
-            //    msgMenuEntry.ImageResId = Resource.Drawable.Messages;
-            //    mainItems.Add(msgMenuEntry);
-            //}
+            
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
-            favoritsMenuEntry.Name = "لیست من";
+            favoritsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyList);
             favoritsMenuEntry.ImageResId = Resource.Drawable.ic_mylist_orange_24dp;
             mainItems.Add(favoritsMenuEntry);
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = "فروشگاه من";
+            storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);
 
             if (AnatoliUser != null)
             {
+                var msgMenuEntry = new DrawerMainItem();
+                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
+                mainItems.Add(msgMenuEntry);
+
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
-                ordersMenuEntry.Name = "سفارشات قبلی";
+                ordersMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.LastOrders);
                 mainItems.Add(ordersMenuEntry);
             }
 
@@ -498,7 +525,7 @@ namespace AnatoliAndroid.Activities
             //shoppingCardMenuEntry.ImageResId = Resource.Drawable.ShoppingCardRed;
             //mainItems.Add(shoppingCardMenuEntry);
 
-            
+
 
             //if (AnatoliUser != null)
             //{

@@ -20,7 +20,7 @@ using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("علاقه مندی ها")]
+    [FragmentTitle("فهرست من")]
     class FavoritsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
         public override void OnStart()

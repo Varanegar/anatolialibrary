@@ -74,6 +74,7 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             AnatoliApp.GetInstance().RefreshMenuItems();
             AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+            AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
             try
             {
                 await StoreManager.GetDefault();
@@ -111,7 +112,7 @@ namespace AnatoliAndroid.Activities
                 if (!exit)
                 {
                     exit = true;
-                    Toast.MakeText(this, "Please press back again to exit", ToastLength.Short).Show();
+                    Toast.MakeText(this, "برای خروج دوباره دکمه بازگشت را فشار دهید", ToastLength.Short).Show();
                 }
                 else
                     Finish();

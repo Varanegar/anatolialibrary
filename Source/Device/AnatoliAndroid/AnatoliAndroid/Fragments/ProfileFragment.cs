@@ -19,12 +19,18 @@ namespace AnatoliAndroid.Fragments
     [FragmentTitle("„‘Œ’«  „‰")]
     public class ProfileFragment : Fragment
     {
-        TextView _firstNameTextView;
-        TextView _lastNameTextView;
-        TextView _emailTextView;
-        TextView _telTextView;
-        TextView _addressTextView;
+        EditText _firstNameEditText;
+        EditText _lastNameEditText;
+        EditText _emailEditText;
+        EditText _telEditText;
+        EditText _addressEditText;
+        Spinner _zoneSpinner;
+        Spinner _districtSpinner;
+        Spinner _citySpinner;
+        Spinner _provinceSpinner;
         ShippingInfoModel _shippingInfo;
+        ImageButton _exitImageButton;
+        Button _saveButton;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -33,27 +39,44 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ProfileLayout, container, false);
-            _firstNameTextView = view.FindViewById<TextView>(Resource.Id.firstNameTextView);
-            _lastNameTextView = view.FindViewById<TextView>(Resource.Id.lastNameTextView);
-            _emailTextView = view.FindViewById<TextView>(Resource.Id.emailTextView);
-            _telTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
-            _addressTextView = view.FindViewById<TextView>(Resource.Id.addressTextView);
+            _firstNameEditText = view.FindViewById<EditText>(Resource.Id.firstNameEditText);
+            _lastNameEditText = view.FindViewById<EditText>(Resource.Id.lastNameEditText);
+            _emailEditText = view.FindViewById<EditText>(Resource.Id.emailEditText);
+            _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
+            _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
+            _zoneSpinner = view.FindViewById<Spinner>(Resource.Id.zoneSpinner);
+            _districtSpinner = view.FindViewById<Spinner>(Resource.Id.districtSpinner);
+            _citySpinner = view.FindViewById<Spinner>(Resource.Id.citySpinner);
+            _provinceSpinner = view.FindViewById<Spinner>(Resource.Id.provinceSpinner);
+            _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
+            _saveButton.UpdateWidth();
+            _exitImageButton = view.FindViewById<ImageButton>(Resource.Id.exitImageButton);
+            _exitImageButton.Click += async (s, e) =>
+            {
+                bool result = await AnatoliUserManager.LogoutAsync();
+                if (result)
+                {
+                    AnatoliApp.GetInstance().AnatoliUser = null;
+                    AnatoliApp.GetInstance().RefreshMenuItems();
+                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                }
+            };
             return view;
         }
-        public async override void OnStart()
+        public override void OnStart()
         {
             base.OnStart();
             _shippingInfo = ShippingInfoManager.GetDefault();
             if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
-                _firstNameTextView.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
-                _lastNameTextView.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
-                _emailTextView.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
-                _telTextView.Text = AnatoliApp.GetInstance().AnatoliUser.Tel;
+                _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
+                _lastNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
+                _emailEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
+                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Tel;
             }
             if (_shippingInfo != null)
             {
-                _addressTextView.Text = _shippingInfo.address;
+                _addressEditText.Text = _shippingInfo.address;
             }
         }
     }
