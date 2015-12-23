@@ -46,7 +46,6 @@ namespace Anatoli.DataAccess
         public DbSet<StoreCalendar> StoreCalendars { get; set; }
         public DbSet<StoreCalendarHistory> StoreCalendarHistories { get; set; }
         public DbSet<StoreDeliveryPerson> StoreDeliveryPersons { get; set; }
-        public DbSet<StoreValidRegionInfo> StoreValidRegionInfoes { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
@@ -89,7 +88,6 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new PurchaseOrderConfig());
             modelBuilder.Configurations.Add(new StoreCalendarConfig());
             modelBuilder.Configurations.Add(new StoreConfig());
-            modelBuilder.Configurations.Add(new StoreValidRegionInfoConfig());
            
 
             modelBuilder.Configurations.Add(new UserConfig());

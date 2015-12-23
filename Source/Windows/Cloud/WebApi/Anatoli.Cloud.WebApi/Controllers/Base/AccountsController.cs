@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Http;
 using System.Net.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -12,6 +11,9 @@ using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data;
+using System.Web.Http;
+using Anatoli.DataAccess;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -45,7 +47,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("user/{username}")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
@@ -61,14 +63,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        //[Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(CreateUserBindingModel createUserModel)
         {
             try
             {
+                Uri locationHeader = null;
                 if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                    return GetErrorResult(ModelState);
 
                 var id = Guid.NewGuid();
                 var user = new User()
@@ -78,53 +81,69 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     Email = createUserModel.Email,
                     EmailConfirmed = true,
                     CreatedDate = DateTime.Now,
-                    PhoneNumber = createUserModel.Mobile,
+                    PhoneNumber = createUserModel.Mobile, 
                     PrivateLabelOwner = new Principal { Id = createUserModel.PrivateOwnerId },
                     Principal = new Principal { Id = id, Title = createUserModel.FullName }
                 };
 
-                var addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
-
-                if (!addUserResult.Succeeded)
-                    return GetErrorResult(addUserResult);
-
-                var adminUser = this.AppUserManager.FindByName(user.UserName);
-
-                if (this.AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
+                using (var transaction = HttpContext.Current.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
-                    this.AppRoleManager.Create(new IdentityRole
+                    try
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "User"
-                    });
+                        var addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
 
-                    this.AppRoleManager.Create(new IdentityRole
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = createUserModel.RoleName
-                    });
-                }
+                        if (!addUserResult.Succeeded)
+                            return GetErrorResult(addUserResult);
 
-                this.AppUserManager.AddToRoles(adminUser.Id, new string[] { "User", createUserModel.RoleName });
+                        var adminUser = this.AppUserManager.FindByName(user.UserName);
+
+                        if (this.AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
+                        {
+                            this.AppRoleManager.Create(new IdentityRole
+                            {
+                                Id = Guid.NewGuid().ToString(),
+                                Name = "User"
+                            });
+
+                            this.AppRoleManager.Create(new IdentityRole
+                            {
+                                Id = Guid.NewGuid().ToString(),
+                                Name = createUserModel.RoleName
+                            });
+                        }
+
+                        if (createUserModel.RoleName != "User")
+                            this.AppUserManager.AddToRoles(user.Id, new string[] { "User", createUserModel.RoleName });
+                        else
+                            this.AppUserManager.AddToRoles(user.Id, new string[] { "User" });
 
 
-                /*
-                string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                        /*
+                        string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             
-                 * var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
+                         * var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
 
-                await this.AppUserManager.SendEmailAsync(user.Id,
-                                                        "Confirm your account",
-                                                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                */
-                Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+                        await this.AppUserManager.SendEmailAsync(user.Id,
+                                                                "Confirm your account",
+                                                                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        */
+                        locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return GetErrorResult(ex);
+                    }
+                }
 
                 return Created(locationHeader, TheModelFactory.Create(user));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return GetErrorResult(ex);
             }
         }
 

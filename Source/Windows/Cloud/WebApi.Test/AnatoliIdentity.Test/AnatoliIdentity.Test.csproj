@@ -75,10 +75,14 @@
     <Reference Include="Thinktecture.IdentityModel.Client.Net45">
       <HintPath>..\..\..\packages\Thinktecture.IdentityModel.Client.4.0.1\lib\net45\Thinktecture.IdentityModel.Client.Net45.dll</HintPath>
     </Reference>
+    <Reference Include="Thunderstruck">
+      <HintPath>..\packages\Thunderstruck.0.2.4\lib\net40-Client\Thunderstruck.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharGroup.cs" />
     <Compile Include="ImageManagement.cs" />
+    <Compile Include="ProductManagement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagement.cs" />

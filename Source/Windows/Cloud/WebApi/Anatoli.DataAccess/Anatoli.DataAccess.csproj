@@ -71,19 +71,24 @@
     <Compile Include="Configs\RoleConfig.cs" />
     <Compile Include="Configs\StoreCalendarConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
-    <Compile Include="Configs\StoreValidRegionInfoConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
-    <Compile Include="Interfaces\ICharTypeRepository.cs" />
-    <Compile Include="Interfaces\IPrincipalRepository.cs" />
-    <Compile Include="Interfaces\ICharGroupRepository.cs" />
-    <Compile Include="Interfaces\IProductGroupRepository.cs" />
+    <Compile Include="Interfaces\Customer\IBasketItemRepository.cs" />
+    <Compile Include="Interfaces\Customer\ICustomerRepository.cs" />
+    <Compile Include="Interfaces\Product\ICharValueRepository.cs" />
+    <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
+    <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
+    <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
+    <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IBasketRepository.cs" />
-    <Compile Include="Interfaces\IStoreRepository.cs" />
-    <Compile Include="Interfaces\IUserRepository.cs" />
-    <Compile Include="Migrations\201512210944197_InitialAnatoliDB.cs" />
-    <Compile Include="Migrations\201512210944197_InitialAnatoliDB.Designer.cs">
-      <DependentUpon>201512210944197_InitialAnatoliDB.cs</DependentUpon>
+    <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
+    <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
+    <Compile Include="Interfaces\Store\IStoreCalendarRepository.cs" />
+    <Compile Include="Interfaces\Store\IStoreRepository.cs" />
+    <Compile Include="Interfaces\Account\IUserRepository.cs" />
+    <Compile Include="Migrations\201512230724096_InitialDB.cs" />
+    <Compile Include="Migrations\201512230724096_InitialDB.Designer.cs">
+      <DependentUpon>201512230724096_InitialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -130,22 +135,25 @@
     <Compile Include="Models\StoreCalendar.cs" />
     <Compile Include="Models\StoreCalendarHistory.cs" />
     <Compile Include="Models\StoreDeliveryPerson.cs" />
-    <Compile Include="Models\StoreValidRegionInfo.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="MyContextInitializer.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnatoliRepository.cs" />
-    <Compile Include="Interfaces\IProductRepository.cs" />
-    <Compile Include="Repositories\AnatoliUserStore.cs" />
-    <Compile Include="Repositories\CharTypeRepository.cs" />
-    <Compile Include="Repositories\PrincipalRepository.cs" />
-    <Compile Include="Repositories\CharGroupRepository.cs" />
-    <Compile Include="Repositories\ProductGroupRepository.cs" />
-    <Compile Include="Repositories\ProductRepository.cs" />
-    <Compile Include="Repositories\BasketRepository.cs" />
-    <Compile Include="Repositories\StoreRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductRepository.cs" />
+    <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Product\CharValueRepository.cs" />
+    <Compile Include="Repositories\Product\CharTypeRepository.cs" />
+    <Compile Include="Repositories\Account\PrincipalRepository.cs" />
+    <Compile Include="Repositories\Product\CharGroupRepository.cs" />
+    <Compile Include="Repositories\Product\SupplierRepository.cs" />
+    <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
+    <Compile Include="Repositories\Product\ManufactureRepository.cs" />
+    <Compile Include="Repositories\Product\ProductRepository.cs" />
+    <Compile Include="Repositories\Customer\BasketRepository.cs" />
+    <Compile Include="Repositories\Store\StoreCalendarRepository.cs" />
+    <Compile Include="Repositories\Store\StoreRepository.cs" />
+    <Compile Include="Repositories\Account\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -154,8 +162,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512210944197_InitialAnatoliDB.resx">
-      <DependentUpon>201512210944197_InitialAnatoliDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512230724096_InitialDB.resx">
+      <DependentUpon>201512230724096_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

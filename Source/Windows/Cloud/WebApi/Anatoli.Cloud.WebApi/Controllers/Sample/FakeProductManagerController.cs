@@ -24,8 +24,8 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
             var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
             var productDomain = new ProductDomain(owner);
             var group = new ProductGroupViewModel { GroupName = "g1", ID = 1, PrivateLabelKey = owner, UniqueId = Guid.NewGuid() };
-            var suppliers = new List<SupplierViewModel> { new SupplierViewModel { ID = 1, Name = "sup1", PrivateLabelKey = owner, UniqueId = Guid.NewGuid() } };
-            var manufacture = new ManufactureViewModel { ID = 1, Name = "man1", PrivateLabelKey = owner, UniqueId = Guid.NewGuid() };
+            var suppliers = new List<SupplierViewModel> { new SupplierViewModel { ID = 1, SupplierName = "sup1", PrivateLabelKey = owner, UniqueId = Guid.NewGuid() } };
+            var manufacture = new ManufactureViewModel { ID = 1, ManufactureName = "man1", PrivateLabelKey = owner, UniqueId = Guid.NewGuid() };
 
             var models = new List<ProductViewModel>();
 

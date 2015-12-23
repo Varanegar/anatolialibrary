@@ -16,7 +16,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                Name = data.SupplierName,
+                SupplierName = data.SupplierName,
                 PrivateLabelKey = data.PrivateLabelOwner.Id
             };
         }
@@ -27,7 +27,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                SupplierName = data.Name,   
+                SupplierName = data.SupplierName,   
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey }
             };
         }

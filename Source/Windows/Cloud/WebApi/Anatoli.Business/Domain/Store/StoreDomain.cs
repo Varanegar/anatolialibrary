@@ -54,47 +54,6 @@ namespace Anatoli.Business.Domain
                 return Proxy.Convert(stores.ToList()); ;
             }
 
-            public void Publish(List<StoreViewModel> StoreViewModels)
-            {
-                //await Task.Factory.StartNew(() =>
-                //{
-                var stores = Proxy.ReverseConvert(StoreViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                stores.ForEach(item =>
-                {
-                    //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-
-
-                    //if (product != null)
-                    //{
-                    //    product.ProductName = item.ProductName;
-                    //    ProductRepository.UpdateAsync(product);
-
-                    //}
-                    //else
-                    //{
-                    //item.Suppliers.ToList().ForEach(itm =>
-                    //{
-                    //    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    //    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                    //});
-
-                    //item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-
-                    //item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                    //item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
-
-                    //item.ProductGroup.ProductGroup2 = null;
-
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                    Repository.Add(item);
-                    //}
-                });
-
-                Repository.SaveChanges();
-                //});
-            }
             public async Task PublishAsync(List<StoreViewModel> StoreViewModels)
             {
                 var stores = Proxy.ReverseConvert(StoreViewModels);
@@ -102,20 +61,26 @@ namespace Anatoli.Business.Domain
 
                 stores.ForEach(item =>
                 {
-                    //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-
-                    //if (product != null)
-                    //{
-                    //    product.ProductName = item.ProductName;
-                    //    ProductRepository.UpdateAsync(product);
-
-                    //}
-                    //else
-                    //{
-
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
+                    var currentStore = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentStore != null)
+                    {
+                        currentStore.StoreCode = item.StoreCode;
+                        currentStore.StoreName = item.StoreName;
+                        currentStore.Address = item.Address;
+                        currentStore.HasDelivery = item.HasDelivery;
+                        currentStore.HasCourier = item.HasCourier;
+                        currentStore.SupportAppOrder = item.SupportAppOrder;
+                        currentStore.SupportCallCenterOrder = item.SupportCallCenterOrder;
+                        currentStore.SupportWebOrder = item.SupportWebOrder;
+                        currentStore.Lat = item.Lat;
+                        currentStore.Lng = item.Lng;
+                    }
+                    else
+                    {
+                        item.Id = Guid.NewGuid();
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                    }
                     Repository.AddAsync(item);
-                    //}
                 });
                 await Repository.SaveChangesAsync();
             }

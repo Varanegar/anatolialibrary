@@ -13,9 +13,15 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<StoreDeliveryPerson>(cr => cr.StoreDeliveryPersons)
                 .WithRequired(svr => svr.Store);
 
-            this.HasMany<StoreValidRegionInfo>(cr => cr.StoreValidRegionInfoes)
-                .WithRequired(svr => svr.Store);
-
+            this.HasMany<CityRegion>(s => s.StoreValidRegionInfoes)
+                .WithMany(c => c.StoreValidRegionInfoes)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("StoreId");
+                    cs.MapRightKey("CityRegionID");
+                    cs.ToTable("StoreValidRegionInfoes");
+                }); 
+            
             this.HasMany<StoreActivePriceList>(cr => cr.StoreActivePriceLists)
                .WithRequired(svr => svr.Store);
 

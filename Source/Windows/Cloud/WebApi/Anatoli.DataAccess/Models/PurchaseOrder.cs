@@ -5,15 +5,11 @@ namespace Anatoli.DataAccess.Models
     
     public class PurchaseOrder : BaseModel
     {        
-        public Guid OrderUniqueId { get; set; }
         public long ActionSourceValueId { get; set; }
         public string DeviceIMEI { get; set; }
         public Nullable<DateTime> OrderDate { get; set; }
         public string OrderPDate { get; set; }
         public Nullable<TimeSpan> OrderTime { get; set; }
-        public Nullable<int> CustomeId { get; set; }
-        public Nullable<int> ShipAddressId { get; set; }
-        public Nullable<int> StoreId { get; set; }
         public long PaymentTypeValueId { get; set; }
         public string DiscountCodeId { get; set; }
         public long AppOrderNo { get; set; }
@@ -42,8 +38,10 @@ namespace Anatoli.DataAccess.Models
         public Nullable<long> CancelReasonValueId { get; set; }
         public string CancelDesc { get; set; }
         public Nullable<int> BackOfficeId { get; set; }
-        //public Nullable<int> BasketId { get; set; }
-    
+
+        public virtual CustomerShipAddress CustomerShipAddress { get; set; }
+        public virtual Store Store { get; set; }
+        public virtual Customer Customer { get; set; }
         public virtual Basket Basket { get; set; }
         public virtual ICollection<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public virtual ICollection<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }

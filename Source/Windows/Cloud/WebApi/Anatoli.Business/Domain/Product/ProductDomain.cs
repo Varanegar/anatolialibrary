@@ -53,47 +53,6 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(products.ToList()); ;
         }
 
-        public void Publish(List<ProductViewModel> ProductViewModels)
-        {
-            //await Task.Factory.StartNew(() =>
-            //{
-            var products = Proxy.ReverseConvert(ProductViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            products.ForEach(item =>
-            {
-                //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-
-
-                //if (product != null)
-                //{
-                //    product.ProductName = item.ProductName;
-                //    ProductRepository.UpdateAsync(product);
-
-                //}
-                //else
-                //{
-                //item.Suppliers.ToList().ForEach(itm =>
-                //{
-                //    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                //    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                //});
-
-                //item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-
-                //item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                //item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
-
-                //item.ProductGroup.ProductGroup2 = null;
-
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-                Repository.Add(item);
-                //}
-            });
-
-            Repository.SaveChanges();
-            //});
-        }
         public async Task PublishAsync(List<ProductViewModel> ProductViewModels)
         {
             var products = Proxy.ReverseConvert(ProductViewModels);
@@ -101,31 +60,30 @@ namespace Anatoli.Business.Domain
 
             products.ForEach(item =>
             {
-                //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                var currentProduct = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
 
-                //if (product != null)
-                //{
-                //    product.ProductName = item.ProductName;
-                //    ProductRepository.UpdateAsync(product);
-
-                //}
-                //else
-                //{
-                item.Suppliers.ToList().ForEach(itm =>
+                if (currentProduct != null)
                 {
-                    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                });
+                    currentProduct.ProductName = item.ProductName;
+                    Repository.UpdateAsync(SetCharTypeData(currentGroup, item.CharTypes.ToList(), Repository.DbContext));
+                }
+                else
+                {
+                    item.Suppliers.ToList().ForEach(itm =>
+                    {
+                        itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        itm.CreatedDate = itm.LastUpdate = DateTime.Now;
+                    });
 
-                item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
 
-                item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
+                    item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
+                    item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
 
-                item.ProductGroup.ProductGroup2 = null;
+                    item.ProductGroup.ProductGroup2 = null;
 
-                Repository.AddAsync(item);
-                //}
+                    Repository.AddAsync(item);
+                }
             });
             await Repository.SaveChangesAsync();
         }
@@ -145,6 +103,19 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+        }
+
+        public CharGroup SetCharTypeData(CharGroup data, List<CharType> charTypes, AnatoliDbContext context)
+        {
+            CharTypeDomain charTypeDomain = new CharTypeDomain(data.PrivateLabelOwner.Id, context);
+            data.CharTypes.Clear();
+            charTypes.ForEach(item =>
+            {
+                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                if (charType != null)
+                    data.CharTypes.Add(charType);
+            });
+            return data;
         }
         #endregion
     }

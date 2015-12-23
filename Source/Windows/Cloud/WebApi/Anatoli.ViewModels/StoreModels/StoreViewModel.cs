@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.ViewModels.StoreModels
 {
@@ -18,5 +19,8 @@ namespace Anatoli.ViewModels.StoreModels
         public bool SupportAppOrder { get; set; }
         public bool SupportWebOrder { get; set; }
         public bool SupportCallCenterOrder { get; set; }
+
+        public List<StoreCalendarViewModel> StoreCalendar { get; set; }
+        public List<CityRegionViewModel> StoreValidRegionInfo { get; set; }
     }
 }

@@ -11,9 +11,9 @@ namespace Anatoli.DataAccess.Models
         public string Phone { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }
-        public Nullable<int> StateId { get; set; }
-        public Nullable<int> CityId { get; set; }
-        public Nullable<int> ZoneId { get; set; }
+        public Nullable<Guid> StateGuid { get; set; }
+        public Nullable<Guid> CityGuid { get; set; }
+        public Nullable<Guid> ZoneGuid { get; set; }
         public string Address { get; set; }
         public string PostalCode { get; set; }
 
