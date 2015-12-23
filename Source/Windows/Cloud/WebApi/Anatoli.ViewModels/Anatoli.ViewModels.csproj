@@ -46,6 +46,8 @@
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
     <Compile Include="ProductModels\CharValueViewModel.cs" />
+    <Compile Include="ProductModels\ProductRateViewModel.cs" />
+    <Compile Include="ProductModels\ProductPictureViewModel.cs" />
     <Compile Include="ProductModels\ManufactureViewModel.cs" />
     <Compile Include="ProductModels\ProductGroupViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />

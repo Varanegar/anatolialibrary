@@ -36,7 +36,7 @@ namespace AnatoliUnitTests
                 TaxCategoryId = Guid.NewGuid()                
             });
 
-            productDomain.Publish(models);
+            productDomain.PublishAsync(models);
 
             
             Assert.IsTrue(true);

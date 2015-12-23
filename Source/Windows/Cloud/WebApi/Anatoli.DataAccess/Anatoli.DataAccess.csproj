@@ -78,6 +78,8 @@
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -146,6 +148,8 @@
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />
     <Compile Include="Repositories\Product\CharGroupRepository.cs" />
+    <Compile Include="Repositories\Product\ProductRateRepository.cs" />
+    <Compile Include="Repositories\Product\ProductPictureRepository.cs" />
     <Compile Include="Repositories\Product\SupplierRepository.cs" />
     <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
     <Compile Include="Repositories\Product\ManufactureRepository.cs" />
