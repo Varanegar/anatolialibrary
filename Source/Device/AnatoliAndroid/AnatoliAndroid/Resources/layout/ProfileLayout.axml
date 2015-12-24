@@ -1,135 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/AnatoliPage">
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/relativeLayout1">
+        <ImageButton
+            android:id="@+id/exitImageButton"
+            android:background="@drawable/exit"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true" />
+        <AnatoliAndroid.Components.AnatoliButton
+            android:text="@string/Save"
+            android:id="@+id/saveButton"
+            local:customFont="Fonts/anatoli.ttf"
+            style="@style/AnatoliButton.Green"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/exitImageButton"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mainLinearLayout"
+        android:layout_below="@id/relativeLayout1"
+        style="@style/AnatoliPage">
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/exitImageButton"
-                android:background="@drawable/exit" />
-            <AnatoliAndroid.Components.AnatoliEditText
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/firstNameEditText"
-                android:hint="@string/FirstName"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliTextField"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
-            <AnatoliAndroid.Components.AnatoliEditText
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastNameEditText"
-                android:hint="@string/LastName"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliTextField"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
-            <AnatoliAndroid.Components.AnatoliEditText
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/emailEditText"
-                android:hint="@string/Email"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliTextField"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
-            <AnatoliAndroid.Components.AnatoliEditText
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/telEditText"
-                android:hint="@string/Tel"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliTextField"
-                android:imeOptions="actionNext"
-                android:inputType="phone" />
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tableLayout1">
-                <TableRow
-                    android:id="@+id/tableRow1">
-                    <Spinner
-                        android:layout_column="0"
-                        android:id="@+id/citySpinner"
-                        android:layout_weight="1" />
-                    <AnatoliAndroid.Components.AnatoliTextView
-                        android:text="@string/City"
-                        android:layout_column="1"
-                        android:id="@+id/cityTextView"
-                        local:customFont="Fonts/anatoli.ttf"
-                        style="@style/AnatoliTextField" />
-                    <Spinner
-                        android:layout_column="2"
-                        android:id="@+id/provinceSpinner"
-                        android:layout_weight="1" />
-                    <AnatoliAndroid.Components.AnatoliTextView
-                        android:text="@string/Province"
-                        android:layout_column="3"
-                        android:id="@+id/provinceTextView"
-                        local:customFont="Fonts/anatoli.ttf"
-                        style="@style/AnatoliTextField" />
-                </TableRow>
-                <TableRow
-                    android:id="@+id/tableRow2"
-                    android:layout_height="wrap_content">
-                    <Spinner
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_column="0"
-                        android:id="@+id/districtSpinner"
-                        android:layout_weight="1" />
-                    <AnatoliAndroid.Components.AnatoliTextView
-                        android:text="@string/District"
-                        android:layout_column="1"
-                        android:id="@+id/districtTextView"
-                        local:customFont="Fonts/anatoli.ttf"
-                        style="@style/AnatoliTextField" />
-                    <Spinner
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_column="2"
-                        android:id="@+id/zoneSpinner"
-                        android:layout_weight="1" />
-                    <AnatoliAndroid.Components.AnatoliTextView
-                        android:text="@string/Zone"
-                        android:layout_column="3"
-                        android:id="@+id/zoneTextView"
-                        local:customFont="Fonts/anatoli.ttf"
-                        style="@style/AnatoliTextField" />
-                </TableRow>
-            </TableLayout>
-            <AnatoliAndroid.Components.AnatoliEditText
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/addressEditText"
-                android:hint="@string/Address"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliTextField"
-                android:imeOptions="actionDone"
-                android:inputType="textImeMultiLine"
-                android:minHeight="90dp" />
-            <AnatoliAndroid.Components.AnatoliButton
-                android:text="@string/Save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/saveButton"
-                local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliButton.Green"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                android:orientation="vertical">
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstNameEditText"
+                    android:hint="@string/FirstName"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:inputType="textPersonName" />
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lastNameEditText"
+                    android:hint="@string/LastName"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:inputType="textPersonName" />
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/idEditText"
+                    android:hint="@string/Id"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:inputType="number" />
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/emailEditText"
+                    android:hint="@string/Email"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress" />
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/telEditText"
+                    android:hint="@string/Tel"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:inputType="phone" />
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tableLayout1">
+                    <TableRow
+                        android:id="@+id/tableRow1">
+                        <Spinner
+                            android:layout_column="0"
+                            android:id="@+id/citySpinner"
+                            android:layout_gravity="center_vertical" />
+                        <AnatoliAndroid.Components.AnatoliTextView
+                            android:text="@string/City"
+                            android:layout_column="1"
+                            android:id="@+id/cityTextView"
+                            local:customFont="Fonts/anatoli.ttf"
+                            style="@style/AnatoliTextField" />
+                        <Spinner
+                            android:layout_column="2"
+                            android:id="@+id/provinceSpinner"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical" />
+                        <AnatoliAndroid.Components.AnatoliTextView
+                            android:text="@string/Province"
+                            android:layout_column="3"
+                            android:id="@+id/provinceTextView"
+                            local:customFont="Fonts/anatoli.ttf"
+                            style="@style/AnatoliTextField"
+                            android:layout_gravity="center_vertical" />
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_column="0"
+                            android:id="@+id/districtSpinner"
+                            android:layout_gravity="center_vertical" />
+                        <AnatoliAndroid.Components.AnatoliTextView
+                            android:text="@string/District"
+                            android:layout_column="1"
+                            android:id="@+id/districtTextView"
+                            local:customFont="Fonts/anatoli.ttf"
+                            style="@style/AnatoliTextField" />
+                        <Spinner
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_column="2"
+                            android:id="@+id/zoneSpinner"
+                            android:layout_gravity="center_vertical" />
+                        <AnatoliAndroid.Components.AnatoliTextView
+                            android:text="@string/Zone"
+                            android:layout_column="3"
+                            android:id="@+id/zoneTextView"
+                            local:customFont="Fonts/anatoli.ttf"
+                            style="@style/AnatoliTextField" />
+                    </TableRow>
+                </TableLayout>
+                <AnatoliAndroid.Components.AnatoliEditText
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addressEditText"
+                    android:hint="@string/Address"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:imeOptions="actionDone"
+                    android:inputType="textImeMultiLine"
+                    android:minHeight="90dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>

@@ -5,40 +5,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/AnatoliDialog">
-    <AnatoliAndroid.Components.AnatoliEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/telEditText"
-        android:hint="تلفن همراه ( نام کاربری )"
-        android:imeOptions="actionNext"
-        android:inputType="phone"
-        local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliTextField" />
-    <AnatoliAndroid.Components.AnatoliEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/emailEditText"
-        android:hint="پست الکترونیک (اختیاری)"
-        android:imeOptions="actionNext"
-        android:inputType="textWebEmailAddress"
-        local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliTextField" />
-    <AnatoliAndroid.Components.AnatoliEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/passwordEditText"
-        android:hint="کلمه عبور"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:gravity="right"
-        local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliTextField" />
-    <AnatoliAndroid.Components.AnatoliButton
-        android:text="عضویت"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerButton"
-        android:layout_gravity="center_horizontal"
-        local:customFont="Fonts/anatoli.ttf"
-        style="@style/AnatoliButton.Blue" />
+  <AnatoliAndroid.Components.AnatoliEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/telEditText"
+      android:hint="تلفن همراه ( نام کاربری )"
+      android:imeOptions="actionNext"
+      android:inputType="phone"
+      android:singleLine="true"
+      local:customFont="Fonts/anatoli.ttf"
+      style="@style/AnatoliTextField" />
+  <AnatoliAndroid.Components.AnatoliEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/emailEditText"
+      android:hint="پست الکترونیک (اختیاری)"
+      android:imeOptions="actionNext"
+      android:inputType="textWebEmailAddress"
+      android:singleLine="true"
+      local:customFont="Fonts/anatoli.ttf"
+      style="@style/AnatoliTextField" />
+  <AnatoliAndroid.Components.AnatoliEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/passwordEditText"
+      android:hint="کلمه عبور"
+      android:imeOptions="actionDone"
+      android:inputType="textPassword"
+      android:gravity="right"
+      android:singleLine="true"
+      local:customFont="Fonts/anatoli.ttf"
+      style="@style/AnatoliTextField" />
+  <AnatoliAndroid.Components.AnatoliButton
+      android:text="عضویت"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/registerButton"
+      android:layout_gravity="center_horizontal"
+      local:customFont="Fonts/anatoli.ttf"
+      style="@style/AnatoliButton.Blue" />
 </LinearLayout>

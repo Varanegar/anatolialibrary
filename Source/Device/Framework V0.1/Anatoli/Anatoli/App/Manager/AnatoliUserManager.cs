@@ -102,6 +102,7 @@ namespace Anatoli.App.Manager
                 await Task.Run(() =>
                     {
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
                     }
                     );
                 return true;
