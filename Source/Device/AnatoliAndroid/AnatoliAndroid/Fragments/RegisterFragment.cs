@@ -39,13 +39,21 @@ namespace AnatoliAndroid.Fragments
         }
         async void _registerButton_Click(object sender, EventArgs e)
         {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+            if (String.IsNullOrEmpty(_telEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
+            {
+                alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.EneterUserNamePass));
+                alertDialog.SetTitle("خطا");
+                alertDialog.SetPositiveButton("خب", (s, ev) => { });
+                alertDialog.Show();
+                return;
+            }
             _registerButton.Enabled = false;
             AnatoliUserManager usermanager = new AnatoliUserManager();
             ProgressDialog dialog = new ProgressDialog();
             dialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
             dialog.SetCancel(() => { usermanager.CancelRegisterTask(); });
             dialog.Show();
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
 
             try
             {
