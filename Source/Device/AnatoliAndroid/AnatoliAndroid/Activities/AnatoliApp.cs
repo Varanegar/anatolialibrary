@@ -125,6 +125,7 @@ namespace AnatoliAndroid.Activities
         {
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
 
+            _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
             _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
             _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
@@ -133,6 +134,7 @@ namespace AnatoliAndroid.Activities
 
             _toolBarImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.toolbarImageButton);
             _toolBarImageButton.Click += toolbarImageButton_Click;
+            _toolBarTextView.Click += toolbarImageButton_Click;
 
             _searchImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.searchImageButton);
             _searchImageButton.Click += searchImageButton_Click;
@@ -174,7 +176,7 @@ namespace AnatoliAndroid.Activities
             _shoppingCardImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.shoppingCardImageButton);
             var shoppingbarRelativeLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.shoppingbarRelativeLayout);
             shoppingbarRelativeLayout.Click += shoppingbarRelativeLayout_Click;
-            _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
+            _shoppingCardImageButton.Click += shoppingbarRelativeLayout_Click;
             _menuIconImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.menuImageButton);
             _menuIconImageButton.Click += (s, e) => { OnMenuClick(); };
         }
