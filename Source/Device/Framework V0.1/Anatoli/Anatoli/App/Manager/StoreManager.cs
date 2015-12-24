@@ -41,7 +41,7 @@ namespace Anatoli.App.Manager
                 return false;
             }
         }
-        public static async Task<StoreDataModel> GetDefault()
+        public static async Task<StoreDataModel> GetDefaultAsync()
         {
             SelectQuery query = new SelectQuery("stores", new EqFilterParam("selected", "1"));
             try

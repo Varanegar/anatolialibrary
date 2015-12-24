@@ -41,6 +41,7 @@ namespace AnatoliAndroid.Activities
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
         double _price;
+        public string DefaultStore;
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
         public void SetTotalPrice(double price)
         {
@@ -494,7 +495,7 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
-            
+
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
             favoritsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyList);
@@ -503,7 +504,10 @@ namespace AnatoliAndroid.Activities
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
+            if (DefaultStore != null)
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStore + " ) ";
+            else
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);
 
             if (AnatoliUser != null)

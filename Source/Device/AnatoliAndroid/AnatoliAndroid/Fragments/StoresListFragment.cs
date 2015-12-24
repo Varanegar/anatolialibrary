@@ -21,7 +21,7 @@ using AnatoliAndroid.Activities;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("انتخاب فروشگاه")]
-    class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter,NoListToolsDialog, StoreDataModel>
+    class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, NoListToolsDialog, StoreDataModel>
     {
 
         public StoresListFragment()
@@ -35,6 +35,8 @@ namespace AnatoliAndroid.Fragments
                         else
                             item.selected = 1;
                     }
+                    AnatoliApp.GetInstance().DefaultStore = store.store_name;
+                    AnatoliApp.GetInstance().RefreshMenuItems();
                     _listAdapter.NotifyDataSetChanged();
                 };
         }

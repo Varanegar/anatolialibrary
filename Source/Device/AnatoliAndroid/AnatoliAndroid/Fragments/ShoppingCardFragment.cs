@@ -175,7 +175,7 @@ namespace AnatoliAndroid.Fragments
 
             try
             {
-                string tel = (await StoreManager.GetDefault()).store_tel;
+                string tel = (await StoreManager.GetDefaultAsync()).store_tel;
                 if (String.IsNullOrEmpty(tel))
                 {
                     _storeTelTextView.Text = "نا مشخص";
