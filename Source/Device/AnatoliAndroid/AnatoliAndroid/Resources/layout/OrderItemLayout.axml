@@ -11,20 +11,14 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:paddingLeft="5dp">
-        <ImageView
-            android:id="@+id/infoImageView"
-            android:src="@android:drawable/ic_menu_info_details"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true" />
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/infoImageView"
             local:customFont="Fonts/anatoli.ttf"
             android:id="@+id/dateTextView"
-            android:layout_marginTop="10dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_height="wrap_content"
