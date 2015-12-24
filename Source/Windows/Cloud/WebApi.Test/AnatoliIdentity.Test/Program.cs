@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Thinktecture.IdentityModel.Client;
+using Thunderstruck;
 
 
 namespace ClientApp
@@ -23,6 +25,7 @@ namespace ClientApp
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
 
+                var storeData = StoreManagement.GetStoreInfo();
                 //ProductManagement.ProductGroupTest();
 
                 var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"

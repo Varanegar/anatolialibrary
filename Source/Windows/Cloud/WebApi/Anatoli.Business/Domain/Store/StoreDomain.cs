@@ -9,6 +9,7 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
+using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
@@ -74,6 +75,8 @@ namespace Anatoli.Business.Domain
                         currentStore.SupportWebOrder = item.SupportWebOrder;
                         currentStore.Lat = item.Lat;
                         currentStore.Lng = item.Lng;
+                        currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), Repository.DbContext);
+                        currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), Repository.DbContext);
                     }
                     else
                     {
@@ -101,6 +104,31 @@ namespace Anatoli.Business.Domain
                     Repository.SaveChangesAsync();
                 });
             }
+
+            public Store SetStoreCalendarData(Store data, List<StoreCalendar> storeCalendars, AnatoliDbContext context)
+            {
+                data.StoreCalendars.Clear();
+                storeCalendars.ForEach(item =>
+                {
+                    item.PrivateLabelOwner = data.PrivateLabelOwner;
+                    item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                    data.StoreCalendars.Add(item);
+                });
+                return data;
+            }
+
+            public Store SetStoreRegionData(Store data, List<CityRegion> storeRegions, AnatoliDbContext context)
+            {
+                data.StoreValidRegionInfoes.Clear();
+                storeRegions.ForEach(item =>
+                {
+                    item.PrivateLabelOwner = data.PrivateLabelOwner;
+                    item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                    data.StoreValidRegionInfoes.Add(item);
+                });
+                return data;
+            }
+
             #endregion
         }
 }

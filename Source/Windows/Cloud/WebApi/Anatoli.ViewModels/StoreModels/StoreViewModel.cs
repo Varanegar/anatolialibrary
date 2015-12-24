@@ -7,6 +7,7 @@ namespace Anatoli.ViewModels.StoreModels
 {
     public class StoreViewModel : BaseViewModel
     {
+        public int CenterId { get; set; }
         public int StoreCode { get; set; }
         public string StoreName { get; set; }
         public string Address { get; set; }
