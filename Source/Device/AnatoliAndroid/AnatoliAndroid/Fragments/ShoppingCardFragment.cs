@@ -34,10 +34,10 @@ namespace AnatoliAndroid.Fragments
         RelativeLayout _cardItemsRelativeLayout;
         TextView _deliveryAddress;
         TextView _factorePriceTextView;
-        TextView _deliveryTelTextView;
+        //TextView _deliveryTelTextView;
         TextView _storeTelTextView;
         TextView _countTextView;
-        TextView _nameTextView;
+        //TextView _nameTextView;
         Spinner _delivaryDate;
         Spinner _deliveryTime;
         ImageView _editAddressImageView;
@@ -100,8 +100,8 @@ namespace AnatoliAndroid.Fragments
             _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
             _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
-            _deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
-            _nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
+            //_deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
+            //_nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
@@ -147,13 +147,13 @@ namespace AnatoliAndroid.Fragments
                 var transaction = FragmentManager.BeginTransaction();
                 EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
                 editShippingDialog.SetAddress(_deliveryAddress.Text);
-                editShippingDialog.SetTel(_deliveryTelTextView.Text);
-                editShippingDialog.SetName(_nameTextView.Text);
+                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
+                //editShippingDialog.SetName(_nameTextView.Text);
                 editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
                 {
                     _deliveryAddress.Text = address;
-                    _deliveryTelTextView.Text = tel;
-                    _nameTextView.Text = name;
+                    //_deliveryTelTextView.Text = tel;
+                    //_nameTextView.Text = name;
                     _checkoutButton.Enabled = CheckCheckout();
                 };
                 editShippingDialog.Show(transaction, "shipping_dialog");
@@ -231,8 +231,8 @@ namespace AnatoliAndroid.Fragments
             if (shippingInfo != null)
             {
                 _deliveryAddress.Text = shippingInfo.address;
-                _nameTextView.Text = shippingInfo.name;
-                _deliveryTelTextView.Text = shippingInfo.tel;
+                //_nameTextView.Text = shippingInfo.name;
+                //_deliveryTelTextView.Text = shippingInfo.tel;
                 _checkoutButton.Enabled = CheckCheckout();
             }
             else
@@ -247,7 +247,7 @@ namespace AnatoliAndroid.Fragments
 
         bool CheckCheckout()
         {
-            if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryTelTextView.Text) || _listAdapter.Count == 0)
+            if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || _listAdapter.Count == 0)
                 return false;
             else
                 return true;

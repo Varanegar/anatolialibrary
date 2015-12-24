@@ -13,7 +13,7 @@
         android:imeOptions="actionNext"
         style="@style/AnatoliTextField"
         android:hint="آدرس" />
-    <AnatoliAndroid.Components.AnatoliEditText
+    <!--<AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameEditText"
@@ -30,7 +30,7 @@
         android:imeOptions="actionDone"
         android:hint="شماره تماس"
         style="@style/AnatoliTextField"
-        android:inputType="phone" />
+        android:inputType="phone" />-->
     <AnatoliAndroid.Components.AnatoliButton
         android:text="ثبت"
         android:layout_width="match_parent"
