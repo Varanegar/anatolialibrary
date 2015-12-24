@@ -138,7 +138,7 @@ namespace AnatoliAndroid.Fragments
             //    _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
             //    _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
             //};
-            
+
             _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
@@ -172,6 +172,31 @@ namespace AnatoliAndroid.Fragments
             //{
             //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
             //};
+
+            try
+            {
+                string tel = (await StoreManager.GetDefault()).store_tel;
+                if (String.IsNullOrEmpty(tel))
+                {
+                    _storeTelTextView.Text = "نا مشخص";
+                    _callImageView.Visibility = ViewStates.Invisible;
+                }
+                else
+                {
+                    _storeTelTextView.Text = tel;
+                    _callImageView.Visibility = ViewStates.Visible;
+                    _callImageView.Click += (s, e) =>
+                    {
+                        var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
+                        var intent = new Intent(Intent.ActionDial, uri);
+                        StartActivity(intent);
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+            }
 
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
@@ -216,23 +241,8 @@ namespace AnatoliAndroid.Fragments
             }
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _countTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
-            string tel = (await StoreManager.GetDefault()).store_tel;
-            if (String.IsNullOrEmpty(tel))
-            {
-                _storeTelTextView.Text = "نا مشخص";
-                _callImageView.Visibility = ViewStates.Invisible;
-            }
-            else
-            {
-                _storeTelTextView.Text = tel;
-                _callImageView.Visibility = ViewStates.Visible;
-                _callImageView.Click += (s, e) =>
-                {
-                    var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
-                    var intent = new Intent(Intent.ActionDial, uri);
-                    StartActivity(intent);
-                };
-            }
+
+
         }
 
         bool CheckCheckout()
