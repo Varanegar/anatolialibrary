@@ -13,6 +13,7 @@ using AnatoliAndroid.Fragments;
 using AnatoliAndroid.Activities;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -21,11 +22,8 @@ namespace AnatoliAndroid.Fragments
     {
         EditText _userNameEditText;
         EditText _passwordEditText;
-        TextView _loginResultTextView;
         Button _loginButton;
         Button _registerButton;
-        Switch _saveSwitch;
-        RelativeLayout _loadingPanel;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -40,11 +38,8 @@ namespace AnatoliAndroid.Fragments
             _registerButton = view.FindViewById<Button>(Resource.Id.registerButton);
             _registerButton.UpdateWidth();
             _registerButton.Click += _registerTextView_Click;
-            _loginResultTextView = view.FindViewById<TextView>(Resource.Id.loginResultTextView);
             _loginButton = view.FindViewById<Button>(Resource.Id.loginButton);
             _loginButton.UpdateWidth();
-            _saveSwitch = view.FindViewById<Switch>(Resource.Id.saveSwitch);
-            _loadingPanel = view.FindViewById<RelativeLayout>(Resource.Id.loadingPanel);
             _loginButton.Click += loginButton_Click;
             return view;
         }
@@ -52,43 +47,71 @@ namespace AnatoliAndroid.Fragments
         void _registerTextView_Click(object sender, EventArgs e)
         {
             Dismiss();
-            var fragment = new RegisterFragment();
-            AnatoliApp.GetInstance().SetFragment<RegisterFragment>(fragment, "register_fragment");
+            var transaction = Activity.FragmentManager.BeginTransaction();
+            var regFragment = new RegisterFragment();
+            regFragment.Show(transaction, "register_fragment");
         }
         async void loginButton_Click(object sender, EventArgs e)
         {
+            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+            errDialog.SetPositiveButton("خب", (s1, e1) => { });
             if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
-                _loginResultTextView.Text = Resources.GetText(Resource.String.EneterUserNamePass);
+                errDialog.SetMessage(Resources.GetText(Resource.String.EneterUserNamePass));
+                errDialog.Show();
                 return;
             }
             _loginButton.Enabled = false;
-            _loginResultTextView.Text = "";
-            _loadingPanel.Visibility = ViewStates.Visible;
-            AnatoliApp.GetInstance().AnatoliUser = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-            if (AnatoliApp.GetInstance().AnatoliUser != null)
+            ProgressDialog pDialog = new ProgressDialog();
+            try
             {
-                try
+                pDialog.SetTitle(Resources.GetText(Resource.String.Login));
+                pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
+                pDialog.Show();
+                var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+                pDialog.Dismiss();
+                if (userModel.IsValid)
                 {
-                    if (_saveSwitch.Checked)
+                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                    try
                     {
                         await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                        AnatoliApp.GetInstance().RefreshMenuItems();
+                        Dismiss();
+                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
                     }
-                    AnatoliApp.GetInstance().RefreshMenuItems();
-                    Dismiss();
-                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                    catch (Exception ex)
+                    {
+                        if (ex.GetType() == typeof(TokenException))
+                        {
+                            errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
+                            errDialog.Show();
+                        }
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    throw;
+                    errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
+                    errDialog.SetMessage(userModel.ModelStateString);
+                    errDialog.Show();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _loginResultTextView.Text = Resources.GetText(Resource.String.LoginFailed);
+                pDialog.Dismiss();
+                if (ex.GetType() == typeof(ServerUnreachable))
+                {
+                    errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
+                    errDialog.Show();
+                }
+                else if (ex.GetType() == typeof(TokenException))
+                {
+                    errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
+                    errDialog.Show();
+                }
             }
             _loginButton.Enabled = true;
-            _loadingPanel.Visibility = ViewStates.Invisible;
+
         }
     }
 }

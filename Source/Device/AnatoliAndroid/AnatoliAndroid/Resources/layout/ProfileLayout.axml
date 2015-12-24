@@ -124,11 +124,12 @@
                 android:minHeight="90dp" />
             <AnatoliAndroid.Components.AnatoliButton
                 android:text="@string/Save"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/saveButton"
                 local:customFont="Fonts/anatoli.ttf"
-                style="@style/AnatoliButton.Green" />
+                style="@style/AnatoliButton.Green"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

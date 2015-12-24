@@ -12,14 +12,29 @@ namespace Anatoli.Framework.Model
         {
 
         }
-        public string ID { get; set; }
-        public Guid UniqueId { get; set; }
-        public int SaveReason { get; set; }
-        public bool IsAdded { get; set; }
-        public bool IsDeleted { get; set; }
-        public bool IsModified { get; set; }
-        public bool IsUnchanged { get; set; }
         public bool IsSaveRequired { get; set; }
         public bool ReadOnly { get { return false; } }
+        public bool IsValid { get { return (String.IsNullOrEmpty(message)) ? true : false; } private set { IsValid = value; } }
+        public string message { get; set; }
+        public string ModelStateString
+        {
+            get
+            {
+                string str = "";
+                if (ModelState != null)
+                {
+                    foreach (var item in ModelState)
+                    {
+                        foreach (var item2 in item.Value)
+                        {
+                            str += item2 + Environment.NewLine;
+                        }
+                    }
+                }
+                return str;
+            }
+        }
+        public Dictionary<string, string[]> ModelState { get; set; }
+
     }
 }

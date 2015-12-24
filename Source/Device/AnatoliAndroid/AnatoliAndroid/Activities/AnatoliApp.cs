@@ -472,7 +472,7 @@ namespace AnatoliAndroid.Activities
 
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
-                avatarMenuEntry.Name = AnatoliUser.UserName;
+                avatarMenuEntry.Name = AnatoliUser.FullName;
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
                 mainItems.Add(avatarMenuEntry);
 

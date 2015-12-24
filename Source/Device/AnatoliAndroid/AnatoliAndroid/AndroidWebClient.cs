@@ -28,32 +28,5 @@ namespace AnatoliAndroid
         {
             return _cm.ActiveNetworkInfo == null ? false : _cm.ActiveNetworkInfo.IsConnected;
         }
-
-        public override AnatoliTokenInfo LoadTokenInfoFromFile()
-        {
-            var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            var path = Path.Combine(documents, "tk.info");
-            var info = new FileInfo(path);
-            if (info.Exists)
-            {
-                var lines = File.ReadAllLines(path);
-                AnatoliTokenInfo tk = new AnatoliTokenInfo();
-                tk.AccessToken = Crypto.DecryptStringAES(lines[0], "Ae2@l0)m4!ws");
-                tk.ExpiresIn = long.Parse(lines[1]);
-                return tk;
-            }
-            return null;
-        }
-
-        public async override void SaveTokenInfoToFile(AnatoliTokenInfo tokenInfo)
-        {
-            var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            var path = Path.Combine(documents, "tk.info");
-            using (var stream = File.CreateText(path))
-            {
-                await stream.WriteLineAsync(Crypto.EncryptStringAES(tokenInfo.AccessToken, "Ae2@l0)m4!ws"));
-                await stream.WriteLineAsync(tokenInfo.ExpiresIn.ToString());
-            }
-        }
     }
 }

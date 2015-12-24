@@ -72,7 +72,7 @@ namespace AnatoliAndroid.Fragments
                 _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
                 _lastNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
                 _emailEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
-                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Tel;
+                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Mobile;
             }
             if (_shippingInfo != null)
             {

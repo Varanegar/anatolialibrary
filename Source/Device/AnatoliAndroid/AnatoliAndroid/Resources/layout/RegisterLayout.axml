@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <EditText
+    android:layout_height="fill_parent"
+    style="@style/AnatoliDialog">
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/userNameEditText"
-        android:hint="نام کاربری" />
-    <EditText
+        android:id="@+id/telEditText"
+        android:hint="تلفن همراه ( نام کاربری )"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliTextField" />
+    <AnatoliAndroid.Components.AnatoliEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailEditText"
+        android:hint="پست الکترونیک (اختیاری)"
+        android:imeOptions="actionNext"
+        android:inputType="textWebEmailAddress"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliTextField" />
+    <AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordEditText"
-        android:hint="کلمه عبور" />
-    <EditText
-        android:layout_width="match_parent"
+        android:hint="کلمه عبور"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:gravity="right"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliTextField" />
+    <AnatoliAndroid.Components.AnatoliButton
+        android:text="عضویت"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/confirmPassEditText"
-        android:hint="تکرار کلمه عبور" />
-    <Button
-        android:text="ثبت نام"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerButton" />
-    <TextView
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerResultTextView"
-        android:gravity="center_horizontal" />
+        android:id="@+id/registerButton"
+        android:layout_gravity="center_horizontal"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliButton.Blue" />
 </LinearLayout>
