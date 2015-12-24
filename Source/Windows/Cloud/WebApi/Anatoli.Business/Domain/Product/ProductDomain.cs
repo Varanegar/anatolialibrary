@@ -53,47 +53,6 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(products.ToList()); ;
         }
 
-        public void Publish(List<ProductViewModel> ProductViewModels)
-        {
-            //await Task.Factory.StartNew(() =>
-            //{
-            var products = Proxy.ReverseConvert(ProductViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            products.ForEach(item =>
-            {
-                //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-
-
-                //if (product != null)
-                //{
-                //    product.ProductName = item.ProductName;
-                //    ProductRepository.UpdateAsync(product);
-
-                //}
-                //else
-                //{
-                //item.Suppliers.ToList().ForEach(itm =>
-                //{
-                //    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                //    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                //});
-
-                //item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-
-                //item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                //item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
-
-                //item.ProductGroup.ProductGroup2 = null;
-
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-                Repository.Add(item);
-                //}
-            });
-
-            Repository.SaveChanges();
-            //});
-        }
         public async Task PublishAsync(List<ProductViewModel> ProductViewModels)
         {
             var products = Proxy.ReverseConvert(ProductViewModels);
@@ -101,31 +60,37 @@ namespace Anatoli.Business.Domain
 
             products.ForEach(item =>
             {
-                //var product = ProductRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                var currentProduct = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
 
-                //if (product != null)
-                //{
-                //    product.ProductName = item.ProductName;
-                //    ProductRepository.UpdateAsync(product);
-
-                //}
-                //else
-                //{
-                item.Suppliers.ToList().ForEach(itm =>
+                if (currentProduct != null)
                 {
-                    itm.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    itm.CreatedDate = itm.LastUpdate = DateTime.Now;
-                });
+                    currentProduct.ProductName = item.ProductName;
+                    currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
+                    currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
+                    currentProduct = SetMainSupplierData(currentProduct, item.MainSupplier, Repository.DbContext);
+                    currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
+                    currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
+                    currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
+                    Repository.UpdateAsync(currentProduct);
+                }
+                else
+                {
+                    item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
+                    item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
+                    item = SetMainSupplierData(item, item.MainSupplier, Repository.DbContext);
+                    item = SetManucfatureData(item, item.Manufacture, Repository.DbContext);
+                    item = SetProductGroupData(item, item.ProductGroup, Repository.DbContext);
+                    item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
 
-                item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
 
-                item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
+                    item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
+                    item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
 
-                item.ProductGroup.ProductGroup2 = null;
+                    item.ProductGroup.ProductGroup2 = null;
 
-                Repository.AddAsync(item);
-                //}
+                    Repository.AddAsync(item);
+                }
             });
             await Repository.SaveChangesAsync();
         }
@@ -145,6 +110,68 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+        }
+
+        public Product SetProductGroupData(Product data, ProductGroup productGroup, AnatoliDbContext context)
+        {
+            ProductGroupDomain productGroupDomain = new ProductGroupDomain(data.PrivateLabelOwner.Id, context);
+            var result = productGroupDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == productGroup.PrivateLabelOwner.Id && p.Number_ID == productGroup.Number_ID).FirstOrDefault();
+            data.ProductGroup = result;
+            return data;
+        }
+
+        public Product SetProductPictureData(Product data, List<ProductPicture> productPictures, AnatoliDbContext context)
+        {
+            data.ProductPictures.Clear();
+            productPictures.ForEach(item =>
+            {
+                item.PrivateLabelOwner = data.PrivateLabelOwner;
+                item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                data.ProductPictures.Add(item);
+            });
+            return data;
+        }
+
+        public Product SetManucfatureData(Product data, Manufacture manufacture, AnatoliDbContext context)
+        {
+            ManufactureDomain manufactureDomain = new ManufactureDomain(data.PrivateLabelOwner.Id, context);
+            var result = manufactureDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == manufacture.PrivateLabelOwner.Id && p.Number_ID == manufacture.Number_ID).FirstOrDefault();
+            data.Manufacture = result;
+            return data;
+        }
+
+        public Product SetMainSupplierData(Product data, Supplier suppliers, AnatoliDbContext context)
+        {
+            SupplierDomain supplierDomain = new SupplierDomain(data.PrivateLabelOwner.Id, context);
+            var supplier = supplierDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == suppliers.Number_ID).FirstOrDefault();
+            data.MainSupplier = supplier;
+            return data;
+        }
+
+        public Product SetSupplierData(Product data, List<Supplier> suppliers, AnatoliDbContext context)
+        {
+            SupplierDomain supplierDomain = new SupplierDomain(data.PrivateLabelOwner.Id, context);
+            data.Suppliers.Clear();
+            suppliers.ForEach(item =>
+            {
+                var supplier = supplierDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                if (supplier != null)
+                    data.Suppliers.Add(supplier);
+            });
+            return data;
+        }
+
+        public Product SetCharValueData(Product data, List<CharValue> charValues, AnatoliDbContext context)
+        {
+            CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
+            data.CharValues.Clear();
+            charValues.ForEach(item =>
+            {
+                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                if (charType != null)
+                    data.CharValues.Add(charType);
+            });
+            return data;
         }
         #endregion
     }

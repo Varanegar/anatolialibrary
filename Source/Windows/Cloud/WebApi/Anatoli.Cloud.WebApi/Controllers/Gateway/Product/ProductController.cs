@@ -14,54 +14,96 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/product")]
     public class ProductController : ApiController
     {
-        [Authorize(Roles = "User")]
+        #region Char Group
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chargroups")]
-        public async Task<IHttpActionResult> GetCharGroups()
+        public async Task<IHttpActionResult> GetCharGroups(string privateOwnerId)
         {
-            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var owner = Guid.Parse(privateOwnerId);
             var charGroupDomain = new CharGroupDomain(owner);
             var result = await charGroupDomain.GetAll();
 
             return Ok(result);
         }
 
-        //[Authorize(Roles = "AuthorizedApp")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("chargroups/save")]
-        public async Task<IHttpActionResult> SaveCharGroups(List<CharGroupViewModel> data)
+        public async Task<IHttpActionResult> SaveCharGroups(string privateOwnerId, List<CharGroupViewModel> data)
         {
-            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var owner = Guid.Parse(privateOwnerId);
             var charGroupDomain = new CharGroupDomain(owner);
             await charGroupDomain.PublishAsync(data);
             return Ok();
         }
+        #endregion
 
-        [Authorize(Roles = "AuthorizedApp")]
+        #region Char Type
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chartypes")]
-        public IHttpActionResult GetCharTypes()
+        public async Task<IHttpActionResult> GetCharTypes(string privateOwnerId)
         {
-            return Ok(ProductCharTypeCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse(privateOwnerId);
+            var charTypeDomain = new CharTypeDomain(owner);
+            var result = await charTypeDomain.GetAll();
+
+            return Ok(result);
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("productlist")]
-        public async Task<IHttpActionResult> GetProducts()
+        [Route("chartypes/save")]
+        public async Task<IHttpActionResult> SaveCharTypes(string privateOwnerId, List<CharTypeViewModel> data)
         {
-            var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
+            var owner = Guid.Parse(privateOwnerId);
+            var charTypeDomain = new CharTypeDomain(owner);
+            await charTypeDomain.PublishAsync(data);
+            return Ok();
+        }
+        #endregion
+
+        #region Products
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("products")]
+        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
             var productDomain = new ProductDomain(owner);
             var result = await productDomain.GetAll();
 
             return  Ok(result);
-           
-            // return Ok(ProductCloudHandler.GetInstance().GetSampleData());
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("productgroups")]
-        public IHttpActionResult GetProductGroups()
+        [Route("products/save")]
+        public async Task<IHttpActionResult> SaveProducts(string privateOwnerId, List<ProductViewModel> data)
         {
-            return Ok(ProductGroupCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse(privateOwnerId);
+            var productDomain = new ProductDomain(owner);
+            await productDomain.PublishAsync(data);
+            return Ok();
+        }        
+        #endregion
+
+        #region Product Groups
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("productgroups")]
+        public async Task<IHttpActionResult> GetProductGroups(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productGroupDomain = new ProductGroupDomain(owner);
+            var result = await productGroupDomain.GetAll();
+            return Ok(result);
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("productgroups/save")]
+        public async Task<IHttpActionResult> SaveProductGroups(string privateOwnerId, List<ProductGroupViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productGroupDomain = new ProductGroupDomain(owner);
+            await productGroupDomain.PublishAsync(data);
+            return Ok();
+        }        
+        #endregion
 
     }
 }

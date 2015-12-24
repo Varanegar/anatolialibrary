@@ -15,7 +15,7 @@ namespace Anatoli.DataAccess.Models
         public decimal Amount { get; set; }
         public byte IsPrize { get; set; }
         public string Comment { get; set; }
-        public Nullable<byte> AllowReplace { get; set; }
+        public byte AllowReplace { get; set; }
         public decimal Weight { get; set; }
         public decimal FinalUnitPrice { get; set; }
         public decimal FinalQty { get; set; }

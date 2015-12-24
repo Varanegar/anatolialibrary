@@ -9,5 +9,6 @@ namespace Anatoli.ViewModels
         public int ID { get; set; }
         public Guid UniqueId { get; set; }
         public Guid PrivateLabelKey { get; set; }
+
     }
 }

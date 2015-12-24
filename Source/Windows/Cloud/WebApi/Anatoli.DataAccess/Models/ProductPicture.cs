@@ -5,9 +5,10 @@ namespace Anatoli.DataAccess.Models
     
     public class ProductPicture : BaseModel
     {
-        public byte[] Picture { get; set; }
-        public int PictureTypeValueId { get; set; }
+        public Guid PictureTypeValueGuid { get; set; }
+        public bool IsDefault { get; set; }
     
         public virtual Product Product { get; set; }
+        public string ProductPictureName { get; set; }
     }
 }

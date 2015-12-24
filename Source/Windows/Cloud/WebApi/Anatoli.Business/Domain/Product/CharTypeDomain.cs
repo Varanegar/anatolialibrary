@@ -60,22 +60,22 @@ namespace Anatoli.Business.Domain
 
             charTypes.ForEach(item =>
             {
-/*
                 item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentGroup = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentGroup != null)
+                var currentType = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                if (currentType != null)
                 {
-                    currentGroup.CharTypeCode = item.CharTypeCode;
-                    currentGroup.CharTypeName = item.CharTypeName;
+                    currentType.CharTypeDesc = item.CharTypeDesc;
+                    currentType.DefaultCharValueGuid = item.DefaultCharValueGuid;
 
-                    Repository.UpdateAsync(SetCharTypeData(currentGroup, item.CharTypes));
+                    Repository.UpdateAsync(SetCharValueData(currentType, item.CharValues.ToList(), Repository.DbContext));
                 }
                 else
                 {
+                    item.Id = Guid.NewGuid();
                     item.CreatedDate = item.LastUpdate = DateTime.Now;
 
-                    Repository.AddAsync(SetCharTypeData(item, item.CharTypes));
-                }*/
+                    Repository.AddAsync(SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext));
+                }
             });
             await Repository.SaveChangesAsync();
         }
@@ -95,6 +95,19 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+        }
+
+        public CharType SetCharValueData(CharType data, List<CharValue> charValues, AnatoliDbContext context)
+        {
+            CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
+            data.CharValues.Clear();
+            charValues.ForEach(item =>
+            {
+                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                if (charType != null)
+                    data.CharValues.Add(charType);
+            });
+            return data;
         }
         #endregion
     }

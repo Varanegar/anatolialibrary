@@ -40,15 +40,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="BasketModels\BasketItemViewModel.cs" />
-    <Compile Include="BasketModels\BasketViewModel.cs" />
+    <Compile Include="BaseModels\BasketItemViewModel.cs" />
+    <Compile Include="BaseModels\BasketViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
     <Compile Include="ProductModels\CharValueViewModel.cs" />
+    <Compile Include="ProductModels\ProductRateViewModel.cs" />
+    <Compile Include="ProductModels\ProductPictureViewModel.cs" />
     <Compile Include="ProductModels\ManufactureViewModel.cs" />
     <Compile Include="ProductModels\ProductGroupViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
+    <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="StoreModels\StoreCalendarViewModel.cs" />
     <Compile Include="StoreModels\StoreViewModel.cs" />
     <Compile Include="ProductModels\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -31,20 +31,12 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
                     username = userForEmail.UserName;
                 }
             }
-            else if (usernameOrEmailOrPhone.Contains("09"))
-            {
-                var context = AnatoliDbContext.Create();
-                var userForPhone = await new AnatoliUserStore(context).FindByPhoneAsync(usernameOrEmailOrPhone);
-                if (userForPhone != null)
-                {
-                    username = userForPhone.UserName;
-                }
-            }
             return await FindAsync(username, password);
         }
     
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
+            
             var appDbContext = context.Get<AnatoliDbContext>();
             var appUserManager = new ApplicationUserManager(new AnatoliUserStore(appDbContext));
 
@@ -52,17 +44,17 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
             appUserManager.UserValidator = new UserValidator<User>(appUserManager)
             {
                 AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true
+                //RequireUniqueEmail = true
             };
 
             // Configure validation logic for passwords
             appUserManager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequiredLength = 4,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = false,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
             
             appUserManager.EmailService = new Anatoli.Cloud.WebApi.Services.EmailService();

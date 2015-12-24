@@ -37,13 +37,13 @@ namespace Anatoli.Cloud.WebApi.Providers
 
                 if (user == null)
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    context.SetError("خطا در ورود به سیستم", "نام کاربری یا کلمه عبور اشتباه است");
                     return;
                 }
 
                 if (!user.EmailConfirmed)
                 {
-                    context.SetError("invalid_grant", "User did not confirm email.");
+                    context.SetError("خطا در ورود به سیستم", "تایید نام کاربری دریافت نشده است");
                     return;
                 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Thinktecture.IdentityModel.Client;
+using Thunderstruck;
 
 
 namespace ClientApp
@@ -19,21 +21,23 @@ namespace ClientApp
             try
             {
                 //string servserURI = "http://79.175.166.186/";
-                string servserURI = "http://localhost:59822/";
+                string servserURI = "http://localhost/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
-                /*
 
+                var storeData = StoreManagement.GetStoreInfo();
+                //ProductManagement.ProductGroupTest();
 
-                Console.WriteLine(json8);
-                //return;
-                */
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09128501330", "Hooman.ahmadi2").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+                    UserManagement.TestUserInfo(client, servserURI);
 
-                    CharGroup.GetCharGroupInfo(client);
+                    //var result9 = client.GetAsync(servserURI + "/api/accounts/user/09122073285").Result;
+                    //var json9 = result9.Content.ReadAsStringAsync().Result;
+
+                    //CharGroup.GetCharGroupInfo(client);
 
                     Console.WriteLine(oauthresult.AccessToken);
                     Console.WriteLine();
@@ -60,8 +64,6 @@ namespace ClientApp
                     var json2 = result2.Content.ReadAsStringAsync().Result;
 
 
-                    var result9 = client.GetAsync(servserURI + "/api/accounts/user/anatoli").Result;
-                    var json9 = result9.Content.ReadAsStringAsync().Result;
 
                     var result10 = client.GetAsync(servserURI + "/api/gateway/store/GetStoreLists?appId="+ "CB11335F-6D14-49C9-9798-AD61D02EDBE1").Result;
                     var json10 = result9.Content.ReadAsStringAsync().Result;
@@ -86,7 +88,7 @@ namespace ClientApp
 
         public string Mobile { get; set; }
 
-        public string RoleName { get; set; }
+        //public string RoleName { get; set; }
 
         public Guid PrivateOwnerId { get; set; }
 

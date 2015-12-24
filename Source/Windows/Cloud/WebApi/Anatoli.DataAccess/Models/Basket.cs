@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
       
     public class Basket : BaseModel
     {       
-        public int BasketTypeValueId { get; set; }
+        public Guid BasketTypeValueGuid { get; set; }
         public string BasketName { get; set; }
         public Customer Customer { get; set; }
 

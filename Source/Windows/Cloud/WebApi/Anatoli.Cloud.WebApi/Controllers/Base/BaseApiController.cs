@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web.Http;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Http.ModelBinding;
+using System.Web.Http.Results;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -49,6 +51,33 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        protected IHttpActionResult GetErrorResult(ModelStateDictionary modelState)
+        {
+            
+            return BadRequest(modelState);
+        }
+        protected IHttpActionResult GetErrorResult(string error)
+        {
+            if (error == null)
+            {
+                return InternalServerError();
+            }
+            ModelState.AddModelError("", error);
+            return BadRequest(ModelState);
+
+        }
+
+        protected IHttpActionResult GetErrorResult(Exception ex)
+        {
+            if (ex == null)
+            {
+                return InternalServerError();
+            }
+            ModelState.AddModelError("", ex);
+            return BadRequest(ModelState);
+
+        }
+
         protected IHttpActionResult GetErrorResult(IdentityResult result)
         {
             if (result == null)
@@ -69,7 +98,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
+                    return BadRequest(ModelState);
                 }
 
                 return BadRequest(ModelState);

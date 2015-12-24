@@ -6,6 +6,6 @@ namespace Anatoli.ViewModels.ProductModels
 {
     public class SupplierViewModel : BaseViewModel
     {
-        public string Name { get; set; }
+        public string SupplierName { get; set; }
     }
 }

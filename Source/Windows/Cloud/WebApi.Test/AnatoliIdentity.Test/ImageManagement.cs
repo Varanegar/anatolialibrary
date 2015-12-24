@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Thunderstruck;
 
 namespace ClientApp
 {
@@ -23,5 +25,19 @@ namespace ClientApp
             var response = client.PostAsync(servserURI + "/api/v0/imageManager/Save?token=" + Guid.NewGuid().ToString(), requestContent).Result;
 
         }
+
+        public static void ProductPicture()
+        {
+            using (var context = new DataContext())
+            {
+                using (IDataReader dr = context.Query("select * from users"))
+                {
+                    while (dr.Read())
+                    {
+                    }
+                }
+            }
+        }
+
     }
 }

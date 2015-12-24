@@ -8,7 +8,7 @@ namespace Anatoli.Cloud.WebApi.Models
 {
     public class CreateUserBindingModel
     {
-        [Required]
+        //[Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -28,7 +28,7 @@ namespace Anatoli.Cloud.WebApi.Models
         public Guid PrivateOwnerId { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

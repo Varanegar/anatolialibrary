@@ -34,8 +34,8 @@ namespace Anatoli.Cloud.WebApi.Models
                 EmailConfirmed = appUser.EmailConfirmed,
                 CreateDate = appUser.CreatedDate,
                 Mobile = appUser.PhoneNumber,
-                Roles = _AppUserManager.GetRolesAsync(appUser.Id).Result,
-                Claims = _AppUserManager.GetClaimsAsync(appUser.Id).Result
+                //Roles = _AppUserManager.GetRolesAsync(appUser.Id).Result,
+                //Claims = _AppUserManager.GetClaimsAsync(appUser.Id).Result
             };
 
         }
@@ -64,8 +64,8 @@ namespace Anatoli.Cloud.WebApi.Models
         public bool EmailConfirmed { get; set; }
         public string Mobile { get; set; }
         public DateTime CreateDate { get; set; }
-        public IList<string> Roles { get; set; }
-        public IList<System.Security.Claims.Claim> Claims { get; set; }
+        //public IList<string> Roles { get; set; }
+        //public IList<System.Security.Claims.Claim> Claims { get; set; }
 
     }
 
