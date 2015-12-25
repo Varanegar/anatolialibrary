@@ -45,6 +45,12 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Parse">
+      <HintPath>..\packages\Parse.1.6.2\lib\net45\Parse.dll</HintPath>
+    </Reference>
+    <Reference Include="Parse.NetFx45">
+      <HintPath>..\packages\Parse.1.6.2\lib\net45\Parse.NetFx45.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -67,6 +73,8 @@
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
+    <Compile Include="Parse\IPushNotificationProvider.cs" />
+    <Compile Include="Parse\ParseNotificationProvider.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketItemProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketProxy.cs" />
