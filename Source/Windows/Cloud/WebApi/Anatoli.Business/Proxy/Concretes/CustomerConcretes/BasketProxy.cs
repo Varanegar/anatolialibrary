@@ -13,6 +13,19 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
     {
         public IAnatoliProxy<BasketItem, BasketItemViewModel> BasketItemProxy { get; set; }
 
+        #region Ctors
+        public BasketProxy() :
+            this(AnatoliProxy<BasketItem, BasketItemViewModel>.Create()
+            )
+        { }
+
+        public BasketProxy(IAnatoliProxy<BasketItem, BasketItemViewModel> basketItemProxy
+            )
+        {
+            BasketItemProxy = basketItemProxy;
+        }
+        #endregion
+
         public override BasketViewModel Convert(Basket data)
         {
             return new BasketViewModel
@@ -21,6 +34,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 UniqueId = data.Id,
                 PrivateLabelKey = data.PrivateLabelOwner.Id,
                 BasketName = data.BasketName,
+                BasketTypeValueId = data.BasketTypeValueGuid,
 
                 BasketItems = (data.BasketItems == null) ? null : BasketItemProxy.Convert(data.BasketItems.ToList()),
             };
@@ -33,6 +47,8 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 BasketName = data.BasketName,
+                BasketTypeValueGuid = data.BasketTypeValueId,
+
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
 
                 BasketItems = (data.BasketItems == null) ? null : BasketItemProxy.ReverseConvert(data.BasketItems),
