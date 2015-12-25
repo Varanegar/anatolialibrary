@@ -12,6 +12,7 @@ namespace Anatoli.Framework.Model
         {
 
         }
+        public string Id { get; set; }
         public bool IsSaveRequired { get; set; }
         public bool ReadOnly { get { return false; } }
         public bool IsValid { get { return (String.IsNullOrEmpty(message)) ? true : false; } private set { IsValid = value; } }

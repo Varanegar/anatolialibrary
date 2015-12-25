@@ -60,7 +60,8 @@ namespace Anatoli.App.Manager
             string content = user.Email + Environment.NewLine + user.FullName +
                 Environment.NewLine + user.Mobile +
                 Environment.NewLine + user.Username +
-                Environment.NewLine;
+                Environment.NewLine + user.Id +
+                Environment.NewLine + user.PrivateOwnerId;
             bool wResult = await Task.Run(() =>
                 {
                     var cipherText = Crypto.EncryptAES(content);
@@ -86,7 +87,24 @@ namespace Anatoli.App.Manager
                 user.FullName = userInfoFields[1];
                 user.Mobile = userInfoFields[2];
                 user.Username = userInfoFields[3];
+                user.Id = userInfoFields[4];
+                user.PrivateOwnerId = userInfoFields[5];
                 return user;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<AnatoliUserModel> DownloadUserInfoAsync(AnatoliUserModel user)
+        {
+            try
+            {
+                var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl,
+                    new Tuple<string, string>("Id", user.Id),
+                    new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
+                return userModel;
             }
             catch (Exception)
             {

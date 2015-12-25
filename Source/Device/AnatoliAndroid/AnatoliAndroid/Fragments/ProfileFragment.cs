@@ -13,6 +13,7 @@ using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using AnatoliAndroid.Activities;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -65,10 +66,19 @@ namespace AnatoliAndroid.Fragments
             };
             return view;
         }
-        public override void OnStart()
+        public async override void OnStart()
         {
             base.OnStart();
             _shippingInfo = ShippingInfoManager.GetDefault();
+            if (AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                var userModel = await AnatoliUserManager.DownloadUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                if (userModel.IsValid)
+                {
+                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                }
+            }
+
             if (AnatoliApp.GetInstance().AnatoliUser != null)
             {
                 _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;

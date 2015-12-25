@@ -23,7 +23,8 @@ namespace Anatoli.Framework.AnatoliBase
         }
         public struct WebService
         {
-            public static readonly string PortalAddress = "http://79.175.166.186/";
+            //public static readonly string PortalAddress = "http://79.175.166.186/";
+            public static readonly string PortalAddress = "http://192.168.201.217/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
             public struct Products
             {
@@ -43,6 +44,8 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 public static readonly string UserCreateUrl = "/api/accounts/create";
                 public static readonly string UserAuthUrl = "/api/accounts/create";
+                public static readonly string ViewProfileUrl = "/api/gateway/customer/customers";
+                public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
                 public static readonly string ShoppingCard = "";
             }
         }
