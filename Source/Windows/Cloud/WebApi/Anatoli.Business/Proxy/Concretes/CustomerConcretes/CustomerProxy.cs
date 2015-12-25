@@ -34,6 +34,16 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 PrivateLabelKey = data.PrivateLabelOwner.Id,
+                CustomerCode = data.CustomerCode,
+                CustomerName = data.CustomerName,
+                Phone = data.Phone,
+                Mobile = data.Mobile,
+                Address = data.Address,
+                PostalCode = data.PostalCode,
+                NationalCode = data.NationalCode,
+                BirthDay = data.BirthDay,
+                Email = data.Email,
+
 
                 Baskets = (data.CustomerBaskets == null) ? null : BasketProxy.Convert(data.CustomerBaskets.ToList()),
             };
@@ -46,6 +56,16 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
+
+                CustomerCode = data.CustomerCode,
+                CustomerName = data.CustomerName,
+                Phone = data.Phone,
+                Mobile = data.Mobile,
+                Address = data.Address,
+                PostalCode = data.PostalCode,
+                NationalCode = data.NationalCode,
+                BirthDay = data.BirthDay,
+                Email = data.Email,
 
                 CustomerBaskets = (data.Baskets == null) ? null : data.Baskets != null ? BasketProxy.ReverseConvert(data.Baskets.ToList()) : null,
             };

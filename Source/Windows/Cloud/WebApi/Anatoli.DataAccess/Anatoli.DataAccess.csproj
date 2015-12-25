@@ -66,6 +66,7 @@
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
+    <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\RoleConfig.cs" />
@@ -88,9 +89,25 @@
     <Compile Include="Interfaces\Store\IStoreCalendarRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreRepository.cs" />
     <Compile Include="Interfaces\Account\IUserRepository.cs" />
-    <Compile Include="Migrations\201512230724096_InitialDB.cs" />
-    <Compile Include="Migrations\201512230724096_InitialDB.Designer.cs">
-      <DependentUpon>201512230724096_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201512241841529_IntialDB.cs" />
+    <Compile Include="Migrations\201512241841529_IntialDB.Designer.cs">
+      <DependentUpon>201512241841529_IntialDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512251012481_UpdateCustomerInfo.cs" />
+    <Compile Include="Migrations\201512251012481_UpdateCustomerInfo.Designer.cs">
+      <DependentUpon>201512251012481_UpdateCustomerInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512251101551_UpdateCustomerInfo-2.cs" />
+    <Compile Include="Migrations\201512251101551_UpdateCustomerInfo-2.Designer.cs">
+      <DependentUpon>201512251101551_UpdateCustomerInfo-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512251104136_UpdateCustomerInfo-3.cs" />
+    <Compile Include="Migrations\201512251104136_UpdateCustomerInfo-3.Designer.cs">
+      <DependentUpon>201512251104136_UpdateCustomerInfo-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512251128472_UpdateCustomerInfo-4.cs" />
+    <Compile Include="Migrations\201512251128472_UpdateCustomerInfo-4.Designer.cs">
+      <DependentUpon>201512251128472_UpdateCustomerInfo-4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -144,6 +161,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Customer\CustomerRepository.cs" />
     <Compile Include="Repositories\Product\CharValueRepository.cs" />
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />
@@ -166,8 +184,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512230724096_InitialDB.resx">
-      <DependentUpon>201512230724096_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512241841529_IntialDB.resx">
+      <DependentUpon>201512241841529_IntialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251012481_UpdateCustomerInfo.resx">
+      <DependentUpon>201512251012481_UpdateCustomerInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251101551_UpdateCustomerInfo-2.resx">
+      <DependentUpon>201512251101551_UpdateCustomerInfo-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251104136_UpdateCustomerInfo-3.resx">
+      <DependentUpon>201512251104136_UpdateCustomerInfo-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251128472_UpdateCustomerInfo-4.resx">
+      <DependentUpon>201512251128472_UpdateCustomerInfo-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

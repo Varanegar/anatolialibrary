@@ -25,7 +25,9 @@ namespace ClientApp
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
 
-                var storeData = StoreManagement.GetStoreInfo();
+                //var storeData = StoreManagement.GetStoreInfo();
+                //var storeOnHand = StoreManagement.GetStoreActiveOnhand();
+                //var storePriceList = StoreManagement.GetStorePriceList();
                 //ProductManagement.ProductGroupTest();
 
                 var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
@@ -33,41 +35,8 @@ namespace ClientApp
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
                     UserManagement.TestUserInfo(client, servserURI);
-
-                    //var result9 = client.GetAsync(servserURI + "/api/accounts/user/09122073285").Result;
-                    //var json9 = result9.Content.ReadAsStringAsync().Result;
-
-                    //CharGroup.GetCharGroupInfo(client);
-
-                    Console.WriteLine(oauthresult.AccessToken);
-                    Console.WriteLine();
-
-
-                    
-                    /*
-                    var result3 = client.GetAsync(servserURI + "/api/gateway/product/chartypes").Result;
-                    var json3 = result3.Content.ReadAsStringAsync().Result;
-
-                    var result4 = client.GetAsync(servserURI + "/api/gateway/product/productlist").Result;
-                    var json4 = result4.Content.ReadAsStringAsync().Result;
-
-                    var result5 = client.GetAsync(servserURI + "/api/gateway/product/productgroups").Result;
-                    var json5 = result5.Content.ReadAsStringAsync().Result;
-
-                    var result6 = client.GetAsync(servserURI + "/api/gateway/base/region/cityregion").Result;
-                    var json6 = result6.Content.ReadAsStringAsync().Result;
-
-                    var result7 = client.GetAsync(servserURI + "/api/gateway/basedata/basevalues").Result;
-                    var json7 = result7.Content.ReadAsStringAsync().Result;
-
-                    var result2 = client.GetAsync(servserURI + "/api/gateway/base/manufacture/manufactures").Result;
-                    var json2 = result2.Content.ReadAsStringAsync().Result;
-
-
-
-                    var result10 = client.GetAsync(servserURI + "/api/gateway/store/GetStoreLists?appId="+ "CB11335F-6D14-49C9-9798-AD61D02EDBE1").Result;
-                    var json10 = result9.Content.ReadAsStringAsync().Result;
-                    */
+                    //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
+                    BasketManagement.GetCustomerBaskets(client, servserURI);
                     //Console.WriteLine(json);
                 }
             }
@@ -88,7 +57,7 @@ namespace ClientApp
 
         public string Mobile { get; set; }
 
-        //public string RoleName { get; set; }
+        public string RoleName { get; set; }
 
         public Guid PrivateOwnerId { get; set; }
 
@@ -97,3 +66,36 @@ namespace ClientApp
         public string ConfirmPassword { get; set; }
     }
 }
+
+
+
+//var result9 = client.GetAsync(servserURI + "/api/accounts/user/09122073285").Result;
+//var json9 = result9.Content.ReadAsStringAsync().Result;
+
+//CharGroup.GetCharGroupInfo(client);
+
+
+/*
+var result3 = client.GetAsync(servserURI + "/api/gateway/product/chartypes").Result;
+var json3 = result3.Content.ReadAsStringAsync().Result;
+
+var result4 = client.GetAsync(servserURI + "/api/gateway/product/productlist").Result;
+var json4 = result4.Content.ReadAsStringAsync().Result;
+
+var result5 = client.GetAsync(servserURI + "/api/gateway/product/productgroups").Result;
+var json5 = result5.Content.ReadAsStringAsync().Result;
+
+var result6 = client.GetAsync(servserURI + "/api/gateway/base/region/cityregion").Result;
+var json6 = result6.Content.ReadAsStringAsync().Result;
+
+var result7 = client.GetAsync(servserURI + "/api/gateway/basedata/basevalues").Result;
+var json7 = result7.Content.ReadAsStringAsync().Result;
+
+var result2 = client.GetAsync(servserURI + "/api/gateway/base/manufacture/manufactures").Result;
+var json2 = result2.Content.ReadAsStringAsync().Result;
+
+
+
+var result10 = client.GetAsync(servserURI + "/api/gateway/store/GetStoreLists?appId="+ "CB11335F-6D14-49C9-9798-AD61D02EDBE1").Result;
+var json10 = result9.Content.ReadAsStringAsync().Result;
+*/

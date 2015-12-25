@@ -15,14 +15,14 @@ namespace ClientApp
         {
             User user = new User();
 
-            user.Email = "anatoli-mobile-app2@varanegar.com";
-            user.FullName = "anatoli-mobile-app2";
-            user.Username = "091257932212";
-            user.Password = "pass211";
-            user.ConfirmPassword = "pass211";
+            user.Email = "anatoli-mobile-app8@varanegar.com";
+            user.FullName = "091257932218";
+            user.Username = "091257932218";
+            user.Password = "pass2113";
+            user.ConfirmPassword = "pass2113";
             user.PrivateOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
-            user.Mobile = "091257932212";
-            //user.RoleName = "User";
+            user.Mobile = "091257932218";
+            user.RoleName = "User";
             
             string data = new JavaScriptSerializer().Serialize(user);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");

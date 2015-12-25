@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Models
         public int NLevel { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<Guid> ParentId { get; set; }
-    
+
         public virtual ICollection<Store> StoreValidRegionInfoes { get; set; }
+        public virtual ICollection<Customer> CustomerInfos { get; set; }
     }
 }

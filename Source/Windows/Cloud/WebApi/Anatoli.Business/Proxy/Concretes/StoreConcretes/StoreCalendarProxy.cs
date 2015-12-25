@@ -19,8 +19,8 @@ namespace Anatoli.Business.Proxy.Concretes
 
                     PDate = data.PDate,
                     Date = data.Date,
-                    FromTime = data.FromTime,
-                    ToTime = data.ToTime,
+                    FromTimeString = data.FromTime.ToString(),
+                    ToTimeString = data.ToTime.ToString(),
                     Description = data.Description,
                 };
         }
