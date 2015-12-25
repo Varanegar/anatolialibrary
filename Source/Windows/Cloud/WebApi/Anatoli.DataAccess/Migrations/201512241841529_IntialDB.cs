@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialDB : DbMigration
+    public partial class IntialDB : DbMigration
     {
         public override void Up()
         {
@@ -232,9 +232,6 @@ namespace Anatoli.DataAccess.Migrations
                         Phone = c.String(),
                         Mobile = c.String(),
                         Email = c.String(),
-                        StateGuid = c.Guid(),
-                        CityGuid = c.Guid(),
-                        ZoneGuid = c.Guid(),
                         Address = c.String(),
                         PostalCode = c.String(),
                         Number_ID = c.Int(nullable: false),
@@ -244,14 +241,17 @@ namespace Anatoli.DataAccess.Migrations
                         AddedBy_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
+                        RegionInfo_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.CityRegions", t => t.RegionInfo_Id)
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id);
+                .Index(t => t.PrivateLabelOwner_Id)
+                .Index(t => t.RegionInfo_Id);
             
             CreateTable(
                 "dbo.CustomerShipAddresses",
@@ -292,175 +292,123 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.Customer_Id);
             
             CreateTable(
-                "dbo.PurchaseOrders",
+                "dbo.CityRegions",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        ActionSourceValueId = c.Long(nullable: false),
-                        DeviceIMEI = c.String(),
-                        OrderDate = c.DateTime(),
-                        OrderPDate = c.String(),
-                        OrderTime = c.Time(precision: 7),
-                        PaymentTypeValueId = c.Long(nullable: false),
-                        DiscountCodeId = c.String(),
-                        AppOrderNo = c.Long(nullable: false),
-                        DiscountAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add1Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add2Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ShippingCost = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        TotalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        OtherAdd = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        OtherSub = c.Decimal(precision: 18, scale: 2),
-                        Comment = c.String(),
-                        DeliveryTypeValueId = c.Long(nullable: false),
-                        DeliveryDate = c.DateTime(),
-                        DeliveryPDate = c.String(),
-                        DeliveryFromTime = c.Time(precision: 7),
-                        DeliveryToTime = c.Time(precision: 7),
-                        PurchaseOrderStatusValueId = c.Long(nullable: false),
-                        DiscountFinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add1FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add2FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ShippingFinalCost = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        TotalFinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        OtherFinalAdd = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        OtherFinalSub = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        IsCancelled = c.Byte(),
-                        CancelReasonValueId = c.Long(),
-                        CancelDesc = c.String(),
-                        BackOfficeId = c.Int(),
+                        GroupName = c.String(),
+                        NLeft = c.Int(nullable: false),
+                        NRight = c.Int(nullable: false),
+                        NLevel = c.Int(nullable: false),
+                        Priority = c.Int(),
+                        ParentId = c.Guid(),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
-                        Basket_Id = c.Guid(),
-                        Customer_Id = c.Guid(),
-                        CustomerShipAddress_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        Store_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Baskets", t => t.Basket_Id)
-                .ForeignKey("dbo.Customers", t => t.Customer_Id)
-                .ForeignKey("dbo.CustomerShipAddresses", t => t.CustomerShipAddress_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.Stores", t => t.Store_Id)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.Basket_Id)
-                .Index(t => t.Customer_Id)
-                .Index(t => t.CustomerShipAddress_Id)
+                .Index(t => t.LastModifiedBy_Id)
+                .Index(t => t.PrivateLabelOwner_Id);
+            
+            CreateTable(
+                "dbo.Stores",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        StoreCode = c.Int(nullable: false),
+                        StoreName = c.String(),
+                        Address = c.String(),
+                        Lat = c.Long(nullable: false),
+                        Lng = c.Long(nullable: false),
+                        HasDelivery = c.Byte(nullable: false),
+                        GradeValueId = c.Int(),
+                        StoreTemplateId = c.Int(),
+                        HasCourier = c.Byte(nullable: false),
+                        SupportAppOrder = c.Byte(nullable: false),
+                        SupportWebOrder = c.Byte(nullable: false),
+                        SupportCallCenterOrder = c.Byte(nullable: false),
+                        StoreStatusTypeId = c.Byte(),
+                        Number_ID = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(nullable: false),
+                        LastUpdate = c.DateTime(nullable: false),
+                        IsRemoved = c.Boolean(nullable: false),
+                        AddedBy_Id = c.Guid(),
+                        LastModifiedBy_Id = c.Guid(),
+                        PrivateLabelOwner_Id = c.Guid(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .Index(t => t.AddedBy_Id)
+                .Index(t => t.LastModifiedBy_Id)
+                .Index(t => t.PrivateLabelOwner_Id);
+            
+            CreateTable(
+                "dbo.StoreActions",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        StoreActionValueId = c.Long(nullable: false),
+                        ActionDate = c.DateTime(nullable: false),
+                        ActionPDate = c.String(),
+                        ActionTime = c.Time(precision: 7),
+                        ActionDesc = c.String(),
+                        ActionDataId = c.Int(),
+                        Number_ID = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(nullable: false),
+                        LastUpdate = c.DateTime(nullable: false),
+                        IsRemoved = c.Boolean(nullable: false),
+                        AddedBy_Id = c.Guid(),
+                        LastModifiedBy_Id = c.Guid(),
+                        PrivateLabelOwner_Id = c.Guid(),
+                        Store_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
+                .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id)
                 .Index(t => t.Store_Id);
             
             CreateTable(
-                "dbo.PurchaseOrderClearances",
+                "dbo.StoreActiveOnHands",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        DeliveryPersonId = c.Int(nullable: false),
-                        ClearanceStatusTypeId = c.Int(nullable: false),
-                        Number_ID = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                        LastUpdate = c.DateTime(nullable: false),
-                        IsRemoved = c.Boolean(nullable: false),
-                        AddedBy_Id = c.Guid(),
-                        LastModifiedBy_Id = c.Guid(),
-                        PrivateLabelOwner_Id = c.Guid(),
-                        PurchaseOrder_Id = c.Guid(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
-                .Index(t => t.AddedBy_Id)
-                .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.PurchaseOrder_Id);
-            
-            CreateTable(
-                "dbo.PurchaseOrderHistories",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        PurchaseOrderStatusValueId = c.Long(),
-                        StatusDate = c.DateTime(),
-                        StatusPDate = c.String(),
-                        StatusTime = c.Time(precision: 7),
-                        PurchaseOrderStatusDataId = c.Int(),
-                        CreateBy = c.Guid(),
-                        CreateDate = c.DateTime(),
-                        Number_ID = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                        LastUpdate = c.DateTime(nullable: false),
-                        IsRemoved = c.Boolean(nullable: false),
-                        AddedBy_Id = c.Guid(),
-                        LastModifiedBy_Id = c.Guid(),
-                        PrivateLabelOwner_Id = c.Guid(),
-                        PurchaseOrder_Id = c.Guid(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
-                .Index(t => t.AddedBy_Id)
-                .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.PurchaseOrder_Id);
-            
-            CreateTable(
-                "dbo.PurchaseOrderLineItems",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        UnitPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Qty = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Discount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add1 = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Add2 = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        IsPrize = c.Byte(nullable: false),
-                        Comment = c.String(),
-                        AllowReplace = c.Byte(nullable: false),
-                        Weight = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalUnitPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalQty = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalDiscount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalAdd1 = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalAdd2 = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        FinalIsPrize = c.Byte(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
-                        Product_Id = c.Guid(nullable: false),
-                        FinalProduct_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        PurchaseOrder_Id = c.Guid(nullable: false),
+                        Product_Id = c.Guid(),
+                        Store_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Products", t => t.FinalProduct_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Products", t => t.Product_Id)
+                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.Product_Id)
-                .Index(t => t.FinalProduct_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.PurchaseOrder_Id);
+                .Index(t => t.Product_Id)
+                .Index(t => t.Store_Id);
             
             CreateTable(
                 "dbo.Products",
@@ -684,8 +632,9 @@ namespace Anatoli.DataAccess.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Picture = c.Binary(),
-                        PictureTypeValueId = c.Int(nullable: false),
+                        PictureTypeValueGuid = c.Guid(nullable: false),
+                        IsDefault = c.Boolean(nullable: false),
+                        ProductPictureName = c.String(),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -735,104 +684,126 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.Product_Id);
             
             CreateTable(
-                "dbo.StoreActivePriceLists",
+                "dbo.PurchaseOrderLineItems",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Price = c.Decimal(precision: 18, scale: 2),
+                        UnitPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Qty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Discount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add1 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add2 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        IsPrize = c.Byte(nullable: false),
+                        Comment = c.String(),
+                        AllowReplace = c.Byte(nullable: false),
+                        Weight = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalUnitPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalQty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalDiscount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalAdd1 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalAdd2 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinalIsPrize = c.Byte(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
+                        FinalProduct_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        Store_Id = c.Guid(nullable: false),
+                        PurchaseOrder_Id = c.Guid(nullable: false),
                         Product_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Products", t => t.FinalProduct_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
+                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
                 .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
                 .Index(t => t.AddedBy_Id)
+                .Index(t => t.FinalProduct_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.Store_Id)
+                .Index(t => t.PurchaseOrder_Id)
                 .Index(t => t.Product_Id);
             
             CreateTable(
-                "dbo.Stores",
+                "dbo.PurchaseOrders",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        StoreName = c.String(),
-                        Address = c.String(),
-                        Lat = c.Decimal(precision: 18, scale: 2),
-                        Lng = c.Decimal(precision: 18, scale: 2),
-                        HasDelivery = c.Byte(),
-                        GradeValueId = c.Int(),
-                        StoreTemplateId = c.Int(),
-                        HasCourier = c.Byte(),
-                        SupportAppOrder = c.Byte(),
-                        SupportWebOrder = c.Byte(),
-                        SupportCallCenterOrder = c.Byte(),
-                        StoreStatusTypeId = c.Byte(),
+                        ActionSourceValueId = c.Long(nullable: false),
+                        DeviceIMEI = c.String(),
+                        OrderDate = c.DateTime(),
+                        OrderPDate = c.String(),
+                        OrderTime = c.Time(precision: 7),
+                        PaymentTypeValueId = c.Long(nullable: false),
+                        DiscountCodeId = c.String(),
+                        AppOrderNo = c.Long(nullable: false),
+                        DiscountAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add1Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add2Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        ShippingCost = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        TotalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OtherAdd = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OtherSub = c.Decimal(precision: 18, scale: 2),
+                        Comment = c.String(),
+                        DeliveryTypeValueId = c.Long(nullable: false),
+                        DeliveryDate = c.DateTime(),
+                        DeliveryPDate = c.String(),
+                        DeliveryFromTime = c.Time(precision: 7),
+                        DeliveryToTime = c.Time(precision: 7),
+                        PurchaseOrderStatusValueId = c.Long(nullable: false),
+                        DiscountFinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add1FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Add2FinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        ShippingFinalCost = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        TotalFinalAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OtherFinalAdd = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OtherFinalSub = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        IsCancelled = c.Byte(),
+                        CancelReasonValueId = c.Long(),
+                        CancelDesc = c.String(),
+                        BackOfficeId = c.Int(),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
+                        Basket_Id = c.Guid(),
+                        Customer_Id = c.Guid(),
+                        CustomerShipAddress_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
+                        Store_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Baskets", t => t.Basket_Id)
+                .ForeignKey("dbo.Customers", t => t.Customer_Id)
+                .ForeignKey("dbo.CustomerShipAddresses", t => t.CustomerShipAddress_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.Stores", t => t.Store_Id)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id);
-            
-            CreateTable(
-                "dbo.StoreActions",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        StoreActionValueId = c.Long(nullable: false),
-                        ActionDate = c.DateTime(nullable: false),
-                        ActionPDate = c.String(),
-                        ActionTime = c.Time(precision: 7),
-                        ActionDesc = c.String(),
-                        ActionDataId = c.Int(),
-                        Number_ID = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                        LastUpdate = c.DateTime(nullable: false),
-                        IsRemoved = c.Boolean(nullable: false),
-                        AddedBy_Id = c.Guid(),
-                        LastModifiedBy_Id = c.Guid(),
-                        PrivateLabelOwner_Id = c.Guid(),
-                        Store_Id = c.Guid(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
-                .Index(t => t.AddedBy_Id)
+                .Index(t => t.Basket_Id)
+                .Index(t => t.Customer_Id)
+                .Index(t => t.CustomerShipAddress_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id)
                 .Index(t => t.Store_Id);
             
             CreateTable(
-                "dbo.StoreActiveOnHands",
+                "dbo.PurchaseOrderClearances",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        ProductId = c.Int(nullable: false),
-                        ProductGuid = c.Guid(nullable: false),
-                        Qty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        DeliveryPersonId = c.Int(nullable: false),
+                        ClearanceStatusTypeId = c.Int(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -840,16 +811,110 @@ namespace Anatoli.DataAccess.Migrations
                         AddedBy_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
+                        PurchaseOrder_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
+                .Index(t => t.AddedBy_Id)
+                .Index(t => t.LastModifiedBy_Id)
+                .Index(t => t.PrivateLabelOwner_Id)
+                .Index(t => t.PurchaseOrder_Id);
+            
+            CreateTable(
+                "dbo.PurchaseOrderHistories",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        PurchaseOrderStatusValueId = c.Long(),
+                        StatusDate = c.DateTime(),
+                        StatusPDate = c.String(),
+                        StatusTime = c.Time(precision: 7),
+                        PurchaseOrderStatusDataId = c.Int(),
+                        CreateBy = c.Guid(),
+                        CreateDate = c.DateTime(),
+                        Number_ID = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(nullable: false),
+                        LastUpdate = c.DateTime(nullable: false),
+                        IsRemoved = c.Boolean(nullable: false),
+                        AddedBy_Id = c.Guid(),
+                        LastModifiedBy_Id = c.Guid(),
+                        PrivateLabelOwner_Id = c.Guid(),
+                        PurchaseOrder_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
+                .Index(t => t.AddedBy_Id)
+                .Index(t => t.LastModifiedBy_Id)
+                .Index(t => t.PrivateLabelOwner_Id)
+                .Index(t => t.PurchaseOrder_Id);
+            
+            CreateTable(
+                "dbo.PurchaseOrderPayments",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        PurchaseOrderGiftCardId = c.Int(nullable: false),
+                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        PaymentTypeValueId = c.Long(nullable: false),
+                        GiftCardId = c.Int(),
+                        BankAccountId = c.String(),
+                        PaymentTrackingNo = c.String(),
+                        PayTypeValueId = c.Long(nullable: false),
+                        InAppPayment = c.Byte(nullable: false),
+                        PayDate = c.DateTime(nullable: false),
+                        PayPDate = c.String(),
+                        PayTime = c.Time(nullable: false, precision: 7),
+                        Number_ID = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(nullable: false),
+                        LastUpdate = c.DateTime(nullable: false),
+                        IsRemoved = c.Boolean(nullable: false),
+                        AddedBy_Id = c.Guid(),
+                        LastModifiedBy_Id = c.Guid(),
+                        PrivateLabelOwner_Id = c.Guid(),
+                        PurchaseOrder_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
+                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
+                .Index(t => t.AddedBy_Id)
+                .Index(t => t.LastModifiedBy_Id)
+                .Index(t => t.PrivateLabelOwner_Id)
+                .Index(t => t.PurchaseOrder_Id);
+            
+            CreateTable(
+                "dbo.StoreActivePriceLists",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Number_ID = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(nullable: false),
+                        LastUpdate = c.DateTime(nullable: false),
+                        IsRemoved = c.Boolean(nullable: false),
+                        AddedBy_Id = c.Guid(),
+                        LastModifiedBy_Id = c.Guid(),
+                        PrivateLabelOwner_Id = c.Guid(),
+                        Product_Id = c.Guid(nullable: false),
                         Store_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
                 .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id)
+                .Index(t => t.Product_Id)
                 .Index(t => t.Store_Id);
             
             CreateTable(
@@ -1039,68 +1104,6 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id);
-            
-            CreateTable(
-                "dbo.CityRegions",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        GroupName = c.String(),
-                        NLeft = c.Int(nullable: false),
-                        NRight = c.Int(nullable: false),
-                        NLevel = c.Int(nullable: false),
-                        Priority = c.Int(),
-                        ParentId = c.Guid(),
-                        Number_ID = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                        LastUpdate = c.DateTime(nullable: false),
-                        IsRemoved = c.Boolean(nullable: false),
-                        AddedBy_Id = c.Guid(),
-                        LastModifiedBy_Id = c.Guid(),
-                        PrivateLabelOwner_Id = c.Guid(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .Index(t => t.AddedBy_Id)
-                .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id);
-            
-            CreateTable(
-                "dbo.PurchaseOrderPayments",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        PurchaseOrderGiftCardId = c.Int(nullable: false),
-                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        PaymentTypeValueId = c.Long(nullable: false),
-                        GiftCardId = c.Int(),
-                        BankAccountId = c.String(),
-                        PaymentTrackingNo = c.String(),
-                        PayTypeValueId = c.Long(nullable: false),
-                        InAppPayment = c.Byte(nullable: false),
-                        PayDate = c.DateTime(nullable: false),
-                        PayPDate = c.String(),
-                        PayTime = c.Time(nullable: false, precision: 7),
-                        Number_ID = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                        LastUpdate = c.DateTime(nullable: false),
-                        IsRemoved = c.Boolean(nullable: false),
-                        AddedBy_Id = c.Guid(),
-                        LastModifiedBy_Id = c.Guid(),
-                        PrivateLabelOwner_Id = c.Guid(),
-                        PurchaseOrder_Id = c.Guid(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.PurchaseOrders", t => t.PurchaseOrder_Id, cascadeDelete: true)
-                .Index(t => t.AddedBy_Id)
-                .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.PurchaseOrder_Id);
             
             CreateTable(
                 "dbo.Clearances",
@@ -1351,19 +1354,6 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.CharValueID);
             
             CreateTable(
-                "dbo.StoreValidRegionInfoes",
-                c => new
-                    {
-                        StoreId = c.Guid(nullable: false),
-                        CityRegionID = c.Guid(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.StoreId, t.CityRegionID })
-                .ForeignKey("dbo.Stores", t => t.StoreId, cascadeDelete: true)
-                .ForeignKey("dbo.CityRegions", t => t.CityRegionID, cascadeDelete: true)
-                .Index(t => t.StoreId)
-                .Index(t => t.CityRegionID);
-            
-            CreateTable(
                 "dbo.ProductSupliers",
                 c => new
                     {
@@ -1375,6 +1365,19 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.Suppliers", t => t.SuplierID, cascadeDelete: true)
                 .Index(t => t.ProductId)
                 .Index(t => t.SuplierID);
+            
+            CreateTable(
+                "dbo.StoreValidRegionInfoes",
+                c => new
+                    {
+                        StoreId = c.Guid(nullable: false),
+                        CityRegionID = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.StoreId, t.CityRegionID })
+                .ForeignKey("dbo.Stores", t => t.StoreId, cascadeDelete: true)
+                .ForeignKey("dbo.CityRegions", t => t.CityRegionID, cascadeDelete: true)
+                .Index(t => t.StoreId)
+                .Index(t => t.CityRegionID);
             
         }
         
@@ -1410,23 +1413,10 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.Clearances", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrders", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.PurchaseOrderPayments", "PurchaseOrder_Id", "dbo.PurchaseOrders");
-            DropForeignKey("dbo.PurchaseOrderPayments", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderPayments", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderPayments", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderLineItems", "PurchaseOrder_Id", "dbo.PurchaseOrders");
-            DropForeignKey("dbo.PurchaseOrderLineItems", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderLineItems", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderLineItems", "FinalProduct_Id", "dbo.Products");
-            DropForeignKey("dbo.ProductSupliers", "SuplierID", "dbo.Suppliers");
-            DropForeignKey("dbo.ProductSupliers", "ProductId", "dbo.Products");
-            DropForeignKey("dbo.StoreActivePriceLists", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.Baskets", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.Baskets", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreValidRegionInfoes", "CityRegionID", "dbo.CityRegions");
             DropForeignKey("dbo.StoreValidRegionInfoes", "StoreId", "dbo.Stores");
-            DropForeignKey("dbo.CityRegions", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.CityRegions", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.CityRegions", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreDeliveryPersons", "Store_Id", "dbo.Stores");
             DropForeignKey("dbo.StoreDeliveryPersons", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreDeliveryPersons", "LastModifiedBy_Id", "dbo.Principals");
@@ -1457,20 +1447,38 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreCalendars", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "Store_Id", "dbo.Stores");
             DropForeignKey("dbo.StoreActiveOnHands", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActiveOnHands", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActiveOnHands", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActiveOnHands", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActions", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActions", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActions", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActions", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.Stores", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.Stores", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.Stores", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnHands", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.ProductSupliers", "SuplierID", "dbo.Suppliers");
+            DropForeignKey("dbo.ProductSupliers", "ProductId", "dbo.Products");
+            DropForeignKey("dbo.StoreActivePriceLists", "Product_Id", "dbo.Products");
             DropForeignKey("dbo.StoreActivePriceLists", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.PurchaseOrderLineItems", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.PurchaseOrders", "Store_Id", "dbo.Stores");
+            DropForeignKey("dbo.PurchaseOrderPayments", "PurchaseOrder_Id", "dbo.PurchaseOrders");
+            DropForeignKey("dbo.PurchaseOrderPayments", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderPayments", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderPayments", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderLineItems", "PurchaseOrder_Id", "dbo.PurchaseOrders");
+            DropForeignKey("dbo.PurchaseOrderHistories", "PurchaseOrder_Id", "dbo.PurchaseOrders");
+            DropForeignKey("dbo.PurchaseOrderHistories", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderHistories", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderHistories", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderClearances", "PurchaseOrder_Id", "dbo.PurchaseOrders");
+            DropForeignKey("dbo.PurchaseOrderClearances", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderClearances", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderClearances", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrders", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrders", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrders", "CustomerShipAddress_Id", "dbo.CustomerShipAddresses");
+            DropForeignKey("dbo.PurchaseOrders", "Customer_Id", "dbo.Customers");
+            DropForeignKey("dbo.PurchaseOrders", "Basket_Id", "dbo.Baskets");
+            DropForeignKey("dbo.PurchaseOrders", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderLineItems", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderLineItems", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.PurchaseOrderLineItems", "FinalProduct_Id", "dbo.Products");
+            DropForeignKey("dbo.PurchaseOrderLineItems", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductRates", "Product_Id", "dbo.Products");
             DropForeignKey("dbo.ProductRates", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductRates", "LastModifiedBy_Id", "dbo.Principals");
@@ -1514,23 +1522,20 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.CharValues", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "Product_Id", "dbo.Products");
             DropForeignKey("dbo.Products", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderLineItems", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderHistories", "PurchaseOrder_Id", "dbo.PurchaseOrders");
-            DropForeignKey("dbo.PurchaseOrderHistories", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderHistories", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderHistories", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderClearances", "PurchaseOrder_Id", "dbo.PurchaseOrders");
-            DropForeignKey("dbo.PurchaseOrderClearances", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderClearances", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrderClearances", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrders", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrders", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.PurchaseOrders", "CustomerShipAddress_Id", "dbo.CustomerShipAddresses");
-            DropForeignKey("dbo.PurchaseOrders", "Customer_Id", "dbo.Customers");
-            DropForeignKey("dbo.PurchaseOrders", "Basket_Id", "dbo.Baskets");
-            DropForeignKey("dbo.PurchaseOrders", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.Baskets", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.Baskets", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnHands", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnHands", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnHands", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActions", "Store_Id", "dbo.Stores");
+            DropForeignKey("dbo.StoreActions", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActions", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActions", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.Stores", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.Stores", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.Stores", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.CityRegions", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.CityRegions", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.Customers", "RegionInfo_Id", "dbo.CityRegions");
+            DropForeignKey("dbo.CityRegions", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.Customers", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.Customers", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.CustomerShipAddresses", "Customer_Id", "dbo.Customers");
@@ -1563,10 +1568,10 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.Permissions", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.PrincipalPermissions", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.PrincipalPermissions", "AddedBy_Id", "dbo.Principals");
-            DropIndex("dbo.ProductSupliers", new[] { "SuplierID" });
-            DropIndex("dbo.ProductSupliers", new[] { "ProductId" });
             DropIndex("dbo.StoreValidRegionInfoes", new[] { "CityRegionID" });
             DropIndex("dbo.StoreValidRegionInfoes", new[] { "StoreId" });
+            DropIndex("dbo.ProductSupliers", new[] { "SuplierID" });
+            DropIndex("dbo.ProductSupliers", new[] { "ProductId" });
             DropIndex("dbo.ProductChars", new[] { "CharValueID" });
             DropIndex("dbo.ProductChars", new[] { "ProductId" });
             DropIndex("dbo.CharGroupTypes", new[] { "CharGroupID" });
@@ -1599,13 +1604,6 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.Clearances", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.Clearances", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Clearances", new[] { "AddedBy_Id" });
-            DropIndex("dbo.PurchaseOrderPayments", new[] { "PurchaseOrder_Id" });
-            DropIndex("dbo.PurchaseOrderPayments", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.PurchaseOrderPayments", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.PurchaseOrderPayments", new[] { "AddedBy_Id" });
-            DropIndex("dbo.CityRegions", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.CityRegions", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.CityRegions", new[] { "AddedBy_Id" });
             DropIndex("dbo.DeliveryPersons", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.DeliveryPersons", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.DeliveryPersons", new[] { "AddedBy_Id" });
@@ -1634,22 +1632,36 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.StoreCalendars", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreCalendars", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.StoreCalendars", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "Store_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActions", new[] { "Store_Id" });
-            DropIndex("dbo.StoreActions", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.StoreActions", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.StoreActions", new[] { "AddedBy_Id" });
-            DropIndex("dbo.Stores", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.Stores", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.Stores", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActivePriceLists", new[] { "Product_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "Store_Id" });
+            DropIndex("dbo.StoreActivePriceLists", new[] { "Product_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "AddedBy_Id" });
+            DropIndex("dbo.PurchaseOrderPayments", new[] { "PurchaseOrder_Id" });
+            DropIndex("dbo.PurchaseOrderPayments", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.PurchaseOrderPayments", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.PurchaseOrderPayments", new[] { "AddedBy_Id" });
+            DropIndex("dbo.PurchaseOrderHistories", new[] { "PurchaseOrder_Id" });
+            DropIndex("dbo.PurchaseOrderHistories", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.PurchaseOrderHistories", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.PurchaseOrderHistories", new[] { "AddedBy_Id" });
+            DropIndex("dbo.PurchaseOrderClearances", new[] { "PurchaseOrder_Id" });
+            DropIndex("dbo.PurchaseOrderClearances", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.PurchaseOrderClearances", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.PurchaseOrderClearances", new[] { "AddedBy_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "Store_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "CustomerShipAddress_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "Customer_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "Basket_Id" });
+            DropIndex("dbo.PurchaseOrders", new[] { "AddedBy_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "Product_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "PurchaseOrder_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "FinalProduct_Id" });
+            DropIndex("dbo.PurchaseOrderLineItems", new[] { "AddedBy_Id" });
             DropIndex("dbo.ProductRates", new[] { "Product_Id" });
             DropIndex("dbo.ProductRates", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.ProductRates", new[] { "LastModifiedBy_Id" });
@@ -1688,31 +1700,26 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.Products", new[] { "MainSupplier_Id" });
             DropIndex("dbo.Products", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Products", new[] { "AddedBy_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "PurchaseOrder_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "FinalProduct_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "Product_Id" });
-            DropIndex("dbo.PurchaseOrderLineItems", new[] { "AddedBy_Id" });
-            DropIndex("dbo.PurchaseOrderHistories", new[] { "PurchaseOrder_Id" });
-            DropIndex("dbo.PurchaseOrderHistories", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.PurchaseOrderHistories", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.PurchaseOrderHistories", new[] { "AddedBy_Id" });
-            DropIndex("dbo.PurchaseOrderClearances", new[] { "PurchaseOrder_Id" });
-            DropIndex("dbo.PurchaseOrderClearances", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.PurchaseOrderClearances", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.PurchaseOrderClearances", new[] { "AddedBy_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "Store_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "CustomerShipAddress_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "Customer_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "Basket_Id" });
-            DropIndex("dbo.PurchaseOrders", new[] { "AddedBy_Id" });
+            DropIndex("dbo.StoreActiveOnHands", new[] { "Store_Id" });
+            DropIndex("dbo.StoreActiveOnHands", new[] { "Product_Id" });
+            DropIndex("dbo.StoreActiveOnHands", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.StoreActiveOnHands", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.StoreActiveOnHands", new[] { "AddedBy_Id" });
+            DropIndex("dbo.StoreActions", new[] { "Store_Id" });
+            DropIndex("dbo.StoreActions", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.StoreActions", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.StoreActions", new[] { "AddedBy_Id" });
+            DropIndex("dbo.Stores", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.Stores", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.Stores", new[] { "AddedBy_Id" });
+            DropIndex("dbo.CityRegions", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.CityRegions", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.CityRegions", new[] { "AddedBy_Id" });
             DropIndex("dbo.CustomerShipAddresses", new[] { "Customer_Id" });
             DropIndex("dbo.CustomerShipAddresses", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CustomerShipAddresses", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.CustomerShipAddresses", new[] { "AddedBy_Id" });
+            DropIndex("dbo.Customers", new[] { "RegionInfo_Id" });
             DropIndex("dbo.Customers", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.Customers", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Customers", new[] { "AddedBy_Id" });
@@ -1746,8 +1753,8 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.BankAccounts", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.BankAccounts", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.BankAccounts", new[] { "AddedBy_Id" });
-            DropTable("dbo.ProductSupliers");
             DropTable("dbo.StoreValidRegionInfoes");
+            DropTable("dbo.ProductSupliers");
             DropTable("dbo.ProductChars");
             DropTable("dbo.CharGroupTypes");
             DropTable("dbo.IdentityRoles");
@@ -1760,8 +1767,6 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.Groups");
             DropTable("dbo.DiscountCodes");
             DropTable("dbo.Clearances");
-            DropTable("dbo.PurchaseOrderPayments");
-            DropTable("dbo.CityRegions");
             DropTable("dbo.DeliveryPersons");
             DropTable("dbo.StoreDeliveryPersons");
             DropTable("dbo.CalendarTemplateOpenTimes");
@@ -1769,10 +1774,12 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.CalendarTemplates");
             DropTable("dbo.StoreCalendarHistories");
             DropTable("dbo.StoreCalendars");
-            DropTable("dbo.StoreActiveOnHands");
-            DropTable("dbo.StoreActions");
-            DropTable("dbo.Stores");
             DropTable("dbo.StoreActivePriceLists");
+            DropTable("dbo.PurchaseOrderPayments");
+            DropTable("dbo.PurchaseOrderHistories");
+            DropTable("dbo.PurchaseOrderClearances");
+            DropTable("dbo.PurchaseOrders");
+            DropTable("dbo.PurchaseOrderLineItems");
             DropTable("dbo.ProductRates");
             DropTable("dbo.ProductPictures");
             DropTable("dbo.ProductGroups");
@@ -1783,10 +1790,10 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.CharTypes");
             DropTable("dbo.CharValues");
             DropTable("dbo.Products");
-            DropTable("dbo.PurchaseOrderLineItems");
-            DropTable("dbo.PurchaseOrderHistories");
-            DropTable("dbo.PurchaseOrderClearances");
-            DropTable("dbo.PurchaseOrders");
+            DropTable("dbo.StoreActiveOnHands");
+            DropTable("dbo.StoreActions");
+            DropTable("dbo.Stores");
+            DropTable("dbo.CityRegions");
             DropTable("dbo.CustomerShipAddresses");
             DropTable("dbo.Customers");
             DropTable("dbo.BasketNotes");

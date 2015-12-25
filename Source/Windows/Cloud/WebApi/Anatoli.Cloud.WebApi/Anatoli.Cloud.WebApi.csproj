@@ -151,11 +151,11 @@
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
-    <Compile Include="Controllers\App\Basket\BasketValueController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />
+    <Compile Include="Controllers\Gateway\Customer\BasketController.cs" />
     <Compile Include="Controllers\Gateway\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />

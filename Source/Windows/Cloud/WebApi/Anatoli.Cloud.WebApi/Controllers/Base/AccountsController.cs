@@ -14,6 +14,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data;
 using System.Web.Http;
 using Anatoli.DataAccess;
+using Anatoli.Business.Domain;
+using Anatoli.ViewModels.CustomerModels;
+using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -86,7 +89,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     Principal = new Principal { Id = id, Title = createUserModel.FullName }
                 };
 
-                using (var transaction = HttpContext.Current.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                using (var transaction = Request.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
                     try
                     {
@@ -94,8 +97,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                         if (!addUserResult.Succeeded)
                             return GetErrorResult(addUserResult);
-
-                        var adminUser = this.AppUserManager.FindByName(user.UserName);
 
                         if (this.AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
                         {
@@ -112,22 +113,29 @@ namespace Anatoli.Cloud.WebApi.Controllers
                             });
                         }
 
-                        if (createUserModel.RoleName != "User")
-                            this.AppUserManager.AddToRoles(user.Id, new string[] { "User", createUserModel.RoleName });
-                        else
-                            this.AppUserManager.AddToRoles(user.Id, new string[] { "User" });
+                        //if (createUserModel.RoleName != "User")
+                        //    this.AppUserManager.AddToRoles(user.Id, new string[] { "User", createUserModel.RoleName });
+                        //else
+                        this.AppUserManager.AddToRoles(user.Id, new string[] { "User" });
 
 
 
-                        /*
-                        string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            
-                         * var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
+                        var customerDomain = new CustomerDomain(createUserModel.PrivateOwnerId, Request.GetOwinContext().Get<AnatoliDbContext>());
+                        var customer = new CustomerViewModel()
+                        {
+                            Mobile = createUserModel.Mobile,
+                            UniqueId = Guid.Parse(user.Id),
+                            Email = createUserModel.Email,
+                        };
 
-                        await this.AppUserManager.SendEmailAsync(user.Id,
-                                                                "Confirm your account",
-                                                                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                        */
+                        customer.Baskets = new List<BasketViewModel>();
+                        customer.Baskets.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId));
+                        customer.Baskets.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId));
+
+                        List<CustomerViewModel> customerList = new List<CustomerViewModel>();
+                        customerList.Add(customer);
+                        await customerDomain.PublishAsync(customerList);
+
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
                         transaction.Commit();
                     }

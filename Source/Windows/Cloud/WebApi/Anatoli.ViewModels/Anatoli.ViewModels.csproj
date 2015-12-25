@@ -52,7 +52,9 @@
     <Compile Include="ProductModels\ProductGroupViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="StoreModels\StoreActivePriceListViewModel.cs" />
     <Compile Include="StoreModels\StoreCalendarViewModel.cs" />
+    <Compile Include="StoreModels\StoreActiveOnhandViewModel.cs" />
     <Compile Include="StoreModels\StoreViewModel.cs" />
     <Compile Include="ProductModels\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public BasketConfig()
         {
             this.HasMany<BasketItem>(bi => bi.BasketItems)
-                .WithRequired(c => c.Basket);
+                .WithRequired(c => c.Basket)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<BasketNote>(bn => bn.BasketNotes)
                 .WithRequired(c => c.Basket);
