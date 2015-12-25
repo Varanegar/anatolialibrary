@@ -21,8 +21,8 @@ namespace Anatoli.ViewModels.ProductModels
         public Guid TaxCategoryId { get; set; }
 
         public List<SupplierViewModel> Suppliers { get; set; }
-        public ProductGroupViewModel ProductGroup { get; set; }
-        public ManufactureViewModel Manufacture { get; set; }
+        public string ProductGroupIdString { get; set; }
+        public string ManufactureIdString { get; set; }
 
         public List<CharValueViewModel> CharValues { get; set; }
         public List<ProductPictureViewModel> ProductPictures { get; set; }

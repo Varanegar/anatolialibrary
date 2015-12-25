@@ -36,7 +36,8 @@ namespace ClientApp
                     client.SetBearerToken(oauthresult.AccessToken);
                     //UserManagement.TestUserInfo(client, servserURI);
                     //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
-                    BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
+                    //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
+                    CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //Console.WriteLine(json);
                 }
             }

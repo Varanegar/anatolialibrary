@@ -28,9 +28,9 @@ namespace AnatoliUnitTests
                 UniqueId = Guid.NewGuid(),
                 ProductName = "p" + 1,
                 PrivateLabelKey = owner,
-                ProductGroup = group,
+                //ProductGroup = group,
                 Suppliers = suppliers,
-                Manufacture = manufacture,
+                //Manufacture = manufacture,
                 PackUnitId = Guid.NewGuid(),
                 ProductTypeId = Guid.NewGuid(),
                 TaxCategoryId = Guid.NewGuid()                
@@ -63,9 +63,9 @@ namespace AnatoliUnitTests
                 UniqueId = Guid.NewGuid(),
                 ProductName = "p" + 1,
                 PrivateLabelKey = owner,
-                ProductGroup = group,
+                //ProductGroup = group,
                 Suppliers = suppliers,
-                Manufacture = manufacture,
+                //Manufacture = manufacture,
                 PackUnitId = Guid.NewGuid(),
                 ProductTypeId = Guid.NewGuid(),
                 TaxCategoryId = Guid.NewGuid()

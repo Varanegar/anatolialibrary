@@ -32,5 +32,6 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
             };
         }
+
     }
 }

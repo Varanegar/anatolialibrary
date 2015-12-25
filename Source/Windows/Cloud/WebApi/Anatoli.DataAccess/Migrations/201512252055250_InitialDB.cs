@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class IntialDB : DbMigration
+    public partial class InitialDB : DbMigration
     {
         public override void Up()
         {
@@ -141,27 +141,27 @@ namespace Anatoli.DataAccess.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        ProductId = c.Guid(nullable: false),
                         Qty = c.Int(),
                         Comment = c.String(),
+                        BasketId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
-                        Basket_Id = c.Guid(nullable: false),
-                        Product_Id = c.Guid(nullable: false),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Baskets", t => t.Basket_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Baskets", t => t.BasketId, cascadeDelete: true)
+                .ForeignKey("dbo.Products", t => t.ProductId, cascadeDelete: true)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .Index(t => t.ProductId)
+                .Index(t => t.BasketId)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.Basket_Id)
-                .Index(t => t.Product_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id);
             
@@ -172,22 +172,22 @@ namespace Anatoli.DataAccess.Migrations
                         Id = c.Guid(nullable: false),
                         BasketTypeValueGuid = c.Guid(nullable: false),
                         BasketName = c.String(),
+                        CustomerId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
-                        Customer_Id = c.Guid(nullable: false),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.Customers", t => t.Customer_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .Index(t => t.CustomerId)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.Customer_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id);
             
@@ -234,6 +234,7 @@ namespace Anatoli.DataAccess.Migrations
                         Email = c.String(),
                         Address = c.String(),
                         PostalCode = c.String(),
+                        NationalCode = c.String(),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -388,6 +389,8 @@ namespace Anatoli.DataAccess.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Qty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        StoreId = c.Guid(nullable: false),
+                        ProductId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -395,20 +398,18 @@ namespace Anatoli.DataAccess.Migrations
                         AddedBy_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        Product_Id = c.Guid(),
-                        Store_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.Products", t => t.Product_Id)
-                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Products", t => t.ProductId, cascadeDelete: true)
+                .ForeignKey("dbo.Stores", t => t.StoreId, cascadeDelete: true)
+                .Index(t => t.StoreId)
+                .Index(t => t.ProductId)
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.Product_Id)
-                .Index(t => t.Store_Id);
+                .Index(t => t.PrivateLabelOwner_Id);
             
             CreateTable(
                 "dbo.Products",
@@ -424,6 +425,8 @@ namespace Anatoli.DataAccess.Migrations
                         PackWeight = c.Decimal(precision: 18, scale: 2),
                         TaxCategoryValueId = c.Long(),
                         Desctription = c.String(),
+                        ProductGroupId = c.Guid(nullable: false),
+                        ManufactureId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -431,23 +434,21 @@ namespace Anatoli.DataAccess.Migrations
                         AddedBy_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         MainSupplier_Id = c.Guid(),
-                        Manufacture_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        ProductGroup_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Suppliers", t => t.MainSupplier_Id)
-                .ForeignKey("dbo.Manufactures", t => t.Manufacture_Id)
+                .ForeignKey("dbo.Manufactures", t => t.ManufactureId, cascadeDelete: true)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.ProductGroups", t => t.ProductGroup_Id)
+                .ForeignKey("dbo.ProductGroups", t => t.ProductGroupId, cascadeDelete: true)
+                .Index(t => t.ProductGroupId)
+                .Index(t => t.ManufactureId)
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.MainSupplier_Id)
-                .Index(t => t.Manufacture_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.ProductGroup_Id);
+                .Index(t => t.PrivateLabelOwner_Id);
             
             CreateTable(
                 "dbo.CharValues",
@@ -457,22 +458,22 @@ namespace Anatoli.DataAccess.Migrations
                         CharValueText = c.String(),
                         CharValueFromAmount = c.Decimal(precision: 18, scale: 2),
                         CharValueToAmount = c.Decimal(precision: 18, scale: 2),
+                        CharTypeId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
                         IsRemoved = c.Boolean(nullable: false),
                         AddedBy_Id = c.Guid(),
-                        CharType_Id = c.Guid(nullable: false),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
-                .ForeignKey("dbo.CharTypes", t => t.CharType_Id, cascadeDelete: true)
+                .ForeignKey("dbo.CharTypes", t => t.CharTypeId, cascadeDelete: true)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
+                .Index(t => t.CharTypeId)
                 .Index(t => t.AddedBy_Id)
-                .Index(t => t.CharType_Id)
                 .Index(t => t.LastModifiedBy_Id)
                 .Index(t => t.PrivateLabelOwner_Id);
             
@@ -895,6 +896,8 @@ namespace Anatoli.DataAccess.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        StoreId = c.Guid(nullable: false),
+                        ProductId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -902,20 +905,18 @@ namespace Anatoli.DataAccess.Migrations
                         AddedBy_Id = c.Guid(),
                         LastModifiedBy_Id = c.Guid(),
                         PrivateLabelOwner_Id = c.Guid(),
-                        Product_Id = c.Guid(nullable: false),
-                        Store_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Principals", t => t.AddedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Principals", t => t.PrivateLabelOwner_Id)
-                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Stores", t => t.Store_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Products", t => t.ProductId, cascadeDelete: true)
+                .ForeignKey("dbo.Stores", t => t.StoreId, cascadeDelete: true)
+                .Index(t => t.StoreId)
+                .Index(t => t.ProductId)
                 .Index(t => t.AddedBy_Id)
                 .Index(t => t.LastModifiedBy_Id)
-                .Index(t => t.PrivateLabelOwner_Id)
-                .Index(t => t.Product_Id)
-                .Index(t => t.Store_Id);
+                .Index(t => t.PrivateLabelOwner_Id);
             
             CreateTable(
                 "dbo.StoreCalendars",
@@ -1445,12 +1446,12 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreCalendars", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreCalendars", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreCalendars", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActivePriceLists", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActiveOnhands", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActiveOnhands", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.StoreActivePriceLists", "StoreId", "dbo.Stores");
+            DropForeignKey("dbo.StoreActiveOnhands", "StoreId", "dbo.Stores");
+            DropForeignKey("dbo.StoreActiveOnhands", "ProductId", "dbo.Products");
             DropForeignKey("dbo.ProductSupliers", "SuplierID", "dbo.Suppliers");
             DropForeignKey("dbo.ProductSupliers", "ProductId", "dbo.Products");
-            DropForeignKey("dbo.StoreActivePriceLists", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.StoreActivePriceLists", "ProductId", "dbo.Products");
             DropForeignKey("dbo.StoreActivePriceLists", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "AddedBy_Id", "dbo.Principals");
@@ -1487,7 +1488,7 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.ProductPictures", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductPictures", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductPictures", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.Products", "ProductGroup_Id", "dbo.ProductGroups");
+            DropForeignKey("dbo.Products", "ProductGroupId", "dbo.ProductGroups");
             DropForeignKey("dbo.ProductGroups", "ProductGroup2_Id", "dbo.ProductGroups");
             DropForeignKey("dbo.ProductGroups", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductGroups", "LastModifiedBy_Id", "dbo.Principals");
@@ -1497,7 +1498,7 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.ProductComments", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.ProductComments", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.Products", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.Products", "Manufacture_Id", "dbo.Manufactures");
+            DropForeignKey("dbo.Products", "ManufactureId", "dbo.Manufactures");
             DropForeignKey("dbo.Manufactures", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.Manufactures", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.Manufactures", "AddedBy_Id", "dbo.Principals");
@@ -1512,7 +1513,7 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.CharValues", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.CharTypes", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.CharTypes", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.CharValues", "CharType_Id", "dbo.CharTypes");
+            DropForeignKey("dbo.CharValues", "CharTypeId", "dbo.CharTypes");
             DropForeignKey("dbo.CharGroupTypes", "CharGroupID", "dbo.CharGroups");
             DropForeignKey("dbo.CharGroupTypes", "CharTypeId", "dbo.CharTypes");
             DropForeignKey("dbo.CharGroups", "PrivateLabelOwner_Id", "dbo.Principals");
@@ -1520,7 +1521,7 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.CharGroups", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.CharTypes", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.CharValues", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.BasketItems", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.BasketItems", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Products", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActiveOnhands", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActiveOnhands", "LastModifiedBy_Id", "dbo.Principals");
@@ -1542,13 +1543,13 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.CustomerShipAddresses", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.CustomerShipAddresses", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.CustomerShipAddresses", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.Baskets", "Customer_Id", "dbo.Customers");
+            DropForeignKey("dbo.Baskets", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.Customers", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketNotes", "Basket_Id", "dbo.Baskets");
             DropForeignKey("dbo.BasketNotes", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketNotes", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketNotes", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.BasketItems", "Basket_Id", "dbo.Baskets");
+            DropForeignKey("dbo.BasketItems", "BasketId", "dbo.Baskets");
             DropForeignKey("dbo.Baskets", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BaseValues", "PrivateLabelOwner_Id", "dbo.Principals");
@@ -1632,11 +1633,11 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.StoreCalendars", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreCalendars", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.StoreCalendars", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActivePriceLists", new[] { "Store_Id" });
-            DropIndex("dbo.StoreActivePriceLists", new[] { "Product_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.StoreActivePriceLists", new[] { "AddedBy_Id" });
+            DropIndex("dbo.StoreActivePriceLists", new[] { "ProductId" });
+            DropIndex("dbo.StoreActivePriceLists", new[] { "StoreId" });
             DropIndex("dbo.PurchaseOrderPayments", new[] { "PurchaseOrder_Id" });
             DropIndex("dbo.PurchaseOrderPayments", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.PurchaseOrderPayments", new[] { "LastModifiedBy_Id" });
@@ -1692,19 +1693,19 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.CharTypes", new[] { "AddedBy_Id" });
             DropIndex("dbo.CharValues", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CharValues", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.CharValues", new[] { "CharType_Id" });
             DropIndex("dbo.CharValues", new[] { "AddedBy_Id" });
-            DropIndex("dbo.Products", new[] { "ProductGroup_Id" });
+            DropIndex("dbo.CharValues", new[] { "CharTypeId" });
             DropIndex("dbo.Products", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.Products", new[] { "Manufacture_Id" });
             DropIndex("dbo.Products", new[] { "MainSupplier_Id" });
             DropIndex("dbo.Products", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Products", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActiveOnhands", new[] { "Store_Id" });
-            DropIndex("dbo.StoreActiveOnhands", new[] { "Product_Id" });
+            DropIndex("dbo.Products", new[] { "ManufactureId" });
+            DropIndex("dbo.Products", new[] { "ProductGroupId" });
             DropIndex("dbo.StoreActiveOnhands", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActiveOnhands", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.StoreActiveOnhands", new[] { "AddedBy_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "ProductId" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "StoreId" });
             DropIndex("dbo.StoreActions", new[] { "Store_Id" });
             DropIndex("dbo.StoreActions", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActions", new[] { "LastModifiedBy_Id" });
@@ -1729,13 +1730,13 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.BasketNotes", new[] { "AddedBy_Id" });
             DropIndex("dbo.Baskets", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.Baskets", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.Baskets", new[] { "Customer_Id" });
             DropIndex("dbo.Baskets", new[] { "AddedBy_Id" });
+            DropIndex("dbo.Baskets", new[] { "CustomerId" });
             DropIndex("dbo.BasketItems", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.BasketItems", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.BasketItems", new[] { "Product_Id" });
-            DropIndex("dbo.BasketItems", new[] { "Basket_Id" });
             DropIndex("dbo.BasketItems", new[] { "AddedBy_Id" });
+            DropIndex("dbo.BasketItems", new[] { "BasketId" });
+            DropIndex("dbo.BasketItems", new[] { "ProductId" });
             DropIndex("dbo.BaseValues", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.BaseValues", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.BaseValues", new[] { "AddedBy_Id" });

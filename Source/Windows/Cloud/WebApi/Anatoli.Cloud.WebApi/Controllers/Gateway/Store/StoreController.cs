@@ -24,6 +24,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var result = await storeDomain.GetAll();
             return Ok(result);
         }
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storeOnhand/{id:guid}")]
+        public async Task<IHttpActionResult> GetStoreOnhands(string privateOwnerId, string id)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreActiveOnhandDomain(owner);
+            var result = await storeDomain.GetAllByStoreId(id);
+            return Ok(result);
+        }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storeOnhand/save")]

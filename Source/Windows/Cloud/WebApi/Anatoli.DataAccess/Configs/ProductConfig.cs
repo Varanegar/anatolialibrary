@@ -10,9 +10,10 @@ namespace Anatoli.DataAccess.Configs
     {
         public ProductConfig()
         {
+            /*
             this.HasOptional<ProductGroup>(pg => pg.ProductGroup)
                 .WithMany(m => m.Products);
-
+            */
             this.HasMany<ProductPicture>(pp => pp.ProductPictures)
                 .WithRequired(p => p.Product);
 

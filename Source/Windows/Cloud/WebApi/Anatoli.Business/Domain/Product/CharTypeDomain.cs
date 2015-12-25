@@ -17,6 +17,7 @@ namespace Anatoli.Business.Domain
         #region Properties
         public IAnatoliProxy<CharType, CharTypeViewModel> Proxy { get; set; }
         public IRepository<CharType> Repository { get; set; }
+        public IRepository<CharValue> CharValueRepository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
 
@@ -26,14 +27,15 @@ namespace Anatoli.Business.Domain
         CharTypeDomain() { }
         public CharTypeDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public CharTypeDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new CharTypeRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<CharType, CharTypeViewModel>.Create())
+            : this(new CharTypeRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<CharType, CharTypeViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public CharTypeDomain(ICharTypeRepository CharTypeRepository, IPrincipalRepository principalRepository, IAnatoliProxy<CharType, CharTypeViewModel> proxy)
+        public CharTypeDomain(ICharTypeRepository charTypeRepository, ICharValueRepository charValueRepository, IPrincipalRepository principalRepository, IAnatoliProxy<CharType, CharTypeViewModel> proxy)
         {
             Proxy = proxy;
-            Repository = CharTypeRepository;
+            Repository = charTypeRepository;
+            CharValueRepository = charValueRepository;
             PrincipalRepository = principalRepository;
         }
         #endregion
@@ -55,29 +57,39 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<CharTypeViewModel> CharTypeViewModels)
         {
-            var charTypes = Proxy.ReverseConvert(CharTypeViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            charTypes.ForEach(item =>
+            try
             {
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentType = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentType != null)
-                {
-                    currentType.CharTypeDesc = item.CharTypeDesc;
-                    currentType.DefaultCharValueGuid = item.DefaultCharValueGuid;
+                var charTypes = Proxy.ReverseConvert(CharTypeViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                    Repository.UpdateAsync(SetCharValueData(currentType, item.CharValues.ToList(), Repository.DbContext));
-                }
-                else
+                foreach (CharType item in charTypes)
                 {
-                    item.Id = Guid.NewGuid();
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-
-                    Repository.AddAsync(SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext));
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    if (currentType != null)
+                    {
+                        currentType.CharTypeDesc = item.CharTypeDesc;
+                        currentType.DefaultCharValueGuid = item.DefaultCharValueGuid;
+                        currentType = await SetCharValueData(currentType, item.CharValues.ToList(), Repository.DbContext);
+                        await Repository.UpdateAsync(currentType);
+                    }
+                    else
+                    {
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        item.CharValues.ToList().ForEach(itemDetail =>
+                        {
+                            itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
+                            itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
+                        });
+                        await Repository.AddAsync(item);
+                    }
                 }
-            });
-            await Repository.SaveChangesAsync();
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Delete(List<CharTypeViewModel> CharTypeViewModels)
@@ -97,15 +109,30 @@ namespace Anatoli.Business.Domain
             });
         }
 
-        public CharType SetCharValueData(CharType data, List<CharValue> charValues, AnatoliDbContext context)
+        public async Task<CharType> SetCharValueData(CharType data, List<CharValue> charValues, AnatoliDbContext context)
         {
-            CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
-            data.CharValues.Clear();
-            charValues.ForEach(item =>
+            await Task.Factory.StartNew(() =>
             {
-                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (charType != null)
-                    data.CharValues.Add(charType);
+                CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
+                foreach (CharValue item in charValues)
+                {
+                    var count = data.CharValues.ToList().Count(u => u.Id == item.Id);
+                    if (count == 0)
+                    {
+                        item.CharTypeId = data.Id;
+                        item.PrivateLabelOwner = data.PrivateLabelOwner;
+                        item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                        CharValueRepository.AddAsync(item);
+                    }
+                    else
+                    {
+                        var currentCharValue = CharValueRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                        currentCharValue.CharValueText = item.CharValueText;
+                        currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
+                        currentCharValue.CharValueToAmount = item.CharValueToAmount;
+                        CharValueRepository.UpdateAsync(currentCharValue);
+                    }
+                }
             });
             return data;
         }

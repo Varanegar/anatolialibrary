@@ -9,6 +9,7 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
+using EntityFramework.Extensions;
 
 namespace Anatoli.Business.Domain
 {
@@ -64,23 +65,14 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<StoreActiveOnhandViewModel> StoreActiveOnhandViewModels)
         {
+            await DeleteAllOnhandInfo();
             var storeActiveOnhands = Proxy.ReverseConvert(StoreActiveOnhandViewModels);
             var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
             storeActiveOnhands.ForEach(item =>
             {
-                var currentStoreActiveOnhands = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentStoreActiveOnhands != null)
-                {
-                    currentStoreActiveOnhands.StoreId = item.StoreId;
-                    currentStoreActiveOnhands.ProductId = item.ProductId;
-                    currentStoreActiveOnhands.Qty = item.Qty;
-                }
-                else
-                {
-                    item.Id = Guid.NewGuid();
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                }
+                item.Id = Guid.NewGuid();
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
                 Repository.AddAsync(item);
             });
             await Repository.SaveChangesAsync();
@@ -90,7 +82,7 @@ namespace Anatoli.Business.Domain
         {
             await Task.Factory.StartNew(() =>
                 {
-                    Repository.DbContext.StoreActiveOnhands.dele
+                    Repository.DbContext.Database.ExecuteSqlCommand("delete from StoreActiveOnahnd");
                 });
         }
 

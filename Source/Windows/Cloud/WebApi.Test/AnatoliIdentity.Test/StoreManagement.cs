@@ -1,5 +1,6 @@
 ﻿using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StoreModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;

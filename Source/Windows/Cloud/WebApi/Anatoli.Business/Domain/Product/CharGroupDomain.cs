@@ -56,30 +56,31 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<CharGroupViewModel> CharGroupViewModels)
         {
-            var charGroups = Proxy.ReverseConvert(CharGroupViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            charGroups.ForEach(item =>
+            try
             {
+                var charGroups = Proxy.ReverseConvert(CharGroupViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentGroup = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentGroup != null)
+                await DeleteAllGroups();
+                charGroups.ForEach(item =>
                 {
-                    currentGroup.CharGroupCode = item.CharGroupCode;
-                    currentGroup.CharGroupName = item.CharGroupName;
-                    
-                    Repository.UpdateAsync(SetCharTypeData(currentGroup, item.CharTypes.ToList(), Repository.DbContext));
-                }
-                else
-                {
-                    item.Id = Guid.NewGuid();
+
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     item.CreatedDate = item.LastUpdate = DateTime.Now;
+                    item.CharTypes.ToList().ForEach(itemDetail =>
+                    {
+                        itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
+                        itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
+                    });
+                    Repository.AddAsync(item);
+                });
+                await Repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-                    Repository.AddAsync(SetCharTypeData(item, item.CharTypes.ToList(), Repository.DbContext));
-                }
-            });
-            await Repository.SaveChangesAsync();
         }
 
         public async Task Delete(List<CharGroupViewModel> CharGroupViewModels)
@@ -99,18 +100,15 @@ namespace Anatoli.Business.Domain
             });
         }
 
-        public CharGroup SetCharTypeData(CharGroup data, List<CharType> charTypes, AnatoliDbContext context)
+        private async Task DeleteAllGroups()
         {
-            CharTypeDomain charTypeDomain = new CharTypeDomain(data.PrivateLabelOwner.Id, context);
-            data.CharTypes.Clear();
-            charTypes.ForEach(item =>
+            await Task.Factory.StartNew(() =>
             {
-                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (charType != null)
-                    data.CharTypes.Add(charType);
+                Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroupTypes");
+                Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroups");
             });
-            return data;
         }
+
         #endregion
     }
 }

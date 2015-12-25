@@ -35,9 +35,9 @@ namespace Anatoli.Cloud.WebApi.Controllers.Sample
                 UniqueId = Guid.NewGuid(),
                 ProductName = "p" + 1,
                 PrivateLabelKey = owner,
-                ProductGroup = group,
+                //ProductGroupIdString = group,
                 Suppliers = suppliers,
-                Manufacture = manufacture,
+                //Manufacture = manufacture,
                 PackUnitId = Guid.NewGuid(),
                 ProductTypeId = Guid.NewGuid(),
                 TaxCategoryId = Guid.NewGuid()

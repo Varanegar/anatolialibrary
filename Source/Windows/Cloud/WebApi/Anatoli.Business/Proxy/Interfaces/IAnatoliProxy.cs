@@ -10,6 +10,7 @@ namespace Anatoli.Business.Proxy.Interfaces
     {
         TOut Convert(TSource data);
         TSource ReverseConvert(TOut data);
+        TSource ReverseConvert(string id, Guid PrivateLabelKey);
 
         List<TOut> Convert(List<TSource> data);
         List<TSource> ReverseConvert(List<TOut> data);

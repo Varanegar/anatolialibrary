@@ -91,25 +91,9 @@
     <Compile Include="Interfaces\Store\IStoreActivePriceListRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreRepository.cs" />
     <Compile Include="Interfaces\Account\IUserRepository.cs" />
-    <Compile Include="Migrations\201512241841529_IntialDB.cs" />
-    <Compile Include="Migrations\201512241841529_IntialDB.Designer.cs">
-      <DependentUpon>201512241841529_IntialDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512251012481_UpdateCustomerInfo.cs" />
-    <Compile Include="Migrations\201512251012481_UpdateCustomerInfo.Designer.cs">
-      <DependentUpon>201512251012481_UpdateCustomerInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512251101551_UpdateCustomerInfo-2.cs" />
-    <Compile Include="Migrations\201512251101551_UpdateCustomerInfo-2.Designer.cs">
-      <DependentUpon>201512251101551_UpdateCustomerInfo-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512251104136_UpdateCustomerInfo-3.cs" />
-    <Compile Include="Migrations\201512251104136_UpdateCustomerInfo-3.Designer.cs">
-      <DependentUpon>201512251104136_UpdateCustomerInfo-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512251128472_UpdateCustomerInfo-4.cs" />
-    <Compile Include="Migrations\201512251128472_UpdateCustomerInfo-4.Designer.cs">
-      <DependentUpon>201512251128472_UpdateCustomerInfo-4.cs</DependentUpon>
+    <Compile Include="Migrations\201512252055250_InitialDB.cs" />
+    <Compile Include="Migrations\201512252055250_InitialDB.Designer.cs">
+      <DependentUpon>201512252055250_InitialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -189,20 +173,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512241841529_IntialDB.resx">
-      <DependentUpon>201512241841529_IntialDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512251012481_UpdateCustomerInfo.resx">
-      <DependentUpon>201512251012481_UpdateCustomerInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512251101551_UpdateCustomerInfo-2.resx">
-      <DependentUpon>201512251101551_UpdateCustomerInfo-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512251104136_UpdateCustomerInfo-3.resx">
-      <DependentUpon>201512251104136_UpdateCustomerInfo-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512251128472_UpdateCustomerInfo-4.resx">
-      <DependentUpon>201512251128472_UpdateCustomerInfo-4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512252055250_InitialDB.resx">
+      <DependentUpon>201512252055250_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Product : BaseModel
     {
@@ -15,6 +16,10 @@ namespace Anatoli.DataAccess.Models
         public Nullable<long> TaxCategoryValueId { get; set; }
         public virtual Supplier MainSupplier { get; set; }
         public string Desctription { get; set; }
+        [ForeignKey("ProductGroup")]
+        public Guid ProductGroupId { get; set; }
+        [ForeignKey("Manufacture")]
+        public Guid ManufactureId { get; set; }
 
         public virtual ProductGroup ProductGroup { get; set; }
         public virtual ICollection<ProductComment> ProductComments { get; set; }
