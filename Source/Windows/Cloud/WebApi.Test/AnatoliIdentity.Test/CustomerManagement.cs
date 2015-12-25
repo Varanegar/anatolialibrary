@@ -25,6 +25,7 @@ namespace ClientApp
         public static void UpdateCustomerFromServer(HttpClient client, string servserURI)
         {
             var obj = GetCustomerFromServer(client, servserURI);
+
             //obj.Baskets.RemoveAt(1);
             string data = new JavaScriptSerializer().Serialize(obj);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");

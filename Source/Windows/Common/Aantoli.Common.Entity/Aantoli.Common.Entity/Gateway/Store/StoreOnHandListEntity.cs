@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aantoli.Common.Entity.Gateway.Store
 {
-    public class StoreOnHandListEntity : BaseListEntity<StoreOnHandEntity>
+    public class StoreOnhandListEntity : BaseListEntity<StoreOnhandEntity>
     {
     }
 }

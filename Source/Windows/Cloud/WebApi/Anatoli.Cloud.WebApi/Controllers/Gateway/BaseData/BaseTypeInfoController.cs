@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
 using Aantoli.Common.Entity.Gateway.BaseValue;
-using Anatoli.Cloud.Gateway.Business.BaseValue;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -22,7 +21,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("basevalues")]
         public IHttpActionResult GetBaseValues()
         {
-            return Ok(BaseValueTypeCloudHandler.GetInstance().GetSampleData());
+            return Ok();
         }
     }
 }

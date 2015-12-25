@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Common.Gateway.DataAccess.Store
 {
-    public class StoreOnHandDataAdapter : BaseDataAdapter<StoreOnHandListEntity, StoreOnHandEntity>
+    public class StoreOnhandDataAdapter : BaseDataAdapter<StoreOnhandListEntity, StoreOnhandEntity>
     {
     }
 }

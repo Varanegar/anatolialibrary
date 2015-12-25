@@ -383,7 +383,7 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.Store_Id);
             
             CreateTable(
-                "dbo.StoreActiveOnHands",
+                "dbo.StoreActiveOnhands",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -1446,8 +1446,8 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreCalendars", "LastModifiedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreCalendars", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActivePriceLists", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActiveOnHands", "Store_Id", "dbo.Stores");
-            DropForeignKey("dbo.StoreActiveOnHands", "Product_Id", "dbo.Products");
+            DropForeignKey("dbo.StoreActiveOnhands", "Store_Id", "dbo.Stores");
+            DropForeignKey("dbo.StoreActiveOnhands", "Product_Id", "dbo.Products");
             DropForeignKey("dbo.ProductSupliers", "SuplierID", "dbo.Suppliers");
             DropForeignKey("dbo.ProductSupliers", "ProductId", "dbo.Products");
             DropForeignKey("dbo.StoreActivePriceLists", "Product_Id", "dbo.Products");
@@ -1522,9 +1522,9 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.CharValues", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "Product_Id", "dbo.Products");
             DropForeignKey("dbo.Products", "AddedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActiveOnHands", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActiveOnHands", "LastModifiedBy_Id", "dbo.Principals");
-            DropForeignKey("dbo.StoreActiveOnHands", "AddedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnhands", "PrivateLabelOwner_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnhands", "LastModifiedBy_Id", "dbo.Principals");
+            DropForeignKey("dbo.StoreActiveOnhands", "AddedBy_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActions", "Store_Id", "dbo.Stores");
             DropForeignKey("dbo.StoreActions", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreActions", "LastModifiedBy_Id", "dbo.Principals");
@@ -1700,11 +1700,11 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.Products", new[] { "MainSupplier_Id" });
             DropIndex("dbo.Products", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Products", new[] { "AddedBy_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "Store_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "Product_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.StoreActiveOnHands", new[] { "AddedBy_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "Store_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "Product_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "PrivateLabelOwner_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.StoreActiveOnhands", new[] { "AddedBy_Id" });
             DropIndex("dbo.StoreActions", new[] { "Store_Id" });
             DropIndex("dbo.StoreActions", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActions", new[] { "LastModifiedBy_Id" });
@@ -1790,7 +1790,7 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.CharTypes");
             DropTable("dbo.CharValues");
             DropTable("dbo.Products");
-            DropTable("dbo.StoreActiveOnHands");
+            DropTable("dbo.StoreActiveOnhands");
             DropTable("dbo.StoreActions");
             DropTable("dbo.Stores");
             DropTable("dbo.CityRegions");

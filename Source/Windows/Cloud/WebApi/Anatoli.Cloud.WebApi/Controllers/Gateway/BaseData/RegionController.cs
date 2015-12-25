@@ -1,5 +1,4 @@
-﻿using Anatoli.Cloud.Gateway.Business.Region;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +14,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("cityregion")]
         public IHttpActionResult Get()
         {
-            return Ok(CityRegionCloudHandler.GetInstance().GetSampleData());
+            return Ok();
         }
     }
 }

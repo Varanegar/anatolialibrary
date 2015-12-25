@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
@@ -65,6 +66,8 @@
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
+    <Compile Include="Domain\Store\StorePriceListDomain.cs" />
+    <Compile Include="Domain\Store\StoreOnHandDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketItemProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />

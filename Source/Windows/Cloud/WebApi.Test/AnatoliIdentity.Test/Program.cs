@@ -21,7 +21,7 @@ namespace ClientApp
             try
             {
                 //string servserURI = "http://79.175.166.186/";
-                string servserURI = "http://localhost/";
+                string servserURI = "http://localhost:59822/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
 
@@ -34,9 +34,9 @@ namespace ClientApp
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
-                    UserManagement.TestUserInfo(client, servserURI);
+                    //UserManagement.TestUserInfo(client, servserURI);
                     //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
-                    BasketManagement.GetCustomerBaskets(client, servserURI);
+                    BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
                     //Console.WriteLine(json);
                 }
             }

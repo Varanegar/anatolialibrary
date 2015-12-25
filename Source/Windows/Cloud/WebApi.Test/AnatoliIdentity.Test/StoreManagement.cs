@@ -5,14 +5,29 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using Thunderstruck;
 
 namespace ClientApp
 {
     public static class StoreManagement
     {
+        public static void UploadStoreDataToServer(HttpClient client, string servserURI)
+        {
+            var storeInfo = GetStoreInfo();
+
+            //obj.Baskets.RemoveAt(1);
+            string data = new JavaScriptSerializer().Serialize(storeInfo);
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            var result8 = client.PostAsync(servserURI + "/api/gateway/customer/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+        }
+
         public static List<StoreViewModel> GetStoreInfo()
         {
             List<StoreViewModel> storeList = new List<StoreViewModel>();
