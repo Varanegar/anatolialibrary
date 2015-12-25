@@ -34,10 +34,10 @@ namespace AnatoliAndroid.Fragments
         RelativeLayout _cardItemsRelativeLayout;
         TextView _deliveryAddress;
         TextView _factorePriceTextView;
-        TextView _deliveryTelTextView;
+        //TextView _deliveryTelTextView;
         TextView _storeTelTextView;
         TextView _countTextView;
-        TextView _nameTextView;
+        //TextView _nameTextView;
         Spinner _delivaryDate;
         Spinner _deliveryTime;
         ImageView _editAddressImageView;
@@ -100,8 +100,8 @@ namespace AnatoliAndroid.Fragments
             _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
             _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
-            _deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
-            _nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
+            //_deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
+            //_nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
@@ -138,7 +138,7 @@ namespace AnatoliAndroid.Fragments
             //    _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
             //    _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
             //};
-            
+
             _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
@@ -147,13 +147,13 @@ namespace AnatoliAndroid.Fragments
                 var transaction = FragmentManager.BeginTransaction();
                 EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
                 editShippingDialog.SetAddress(_deliveryAddress.Text);
-                editShippingDialog.SetTel(_deliveryTelTextView.Text);
-                editShippingDialog.SetName(_nameTextView.Text);
+                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
+                //editShippingDialog.SetName(_nameTextView.Text);
                 editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
                 {
                     _deliveryAddress.Text = address;
-                    _deliveryTelTextView.Text = tel;
-                    _nameTextView.Text = name;
+                    //_deliveryTelTextView.Text = tel;
+                    //_nameTextView.Text = name;
                     _checkoutButton.Enabled = CheckCheckout();
                 };
                 editShippingDialog.Show(transaction, "shipping_dialog");
@@ -172,6 +172,31 @@ namespace AnatoliAndroid.Fragments
             //{
             //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
             //};
+
+            try
+            {
+                string tel = (await StoreManager.GetDefaultAsync()).store_tel;
+                if (String.IsNullOrEmpty(tel))
+                {
+                    _storeTelTextView.Text = "نا مشخص";
+                    _callImageView.Visibility = ViewStates.Invisible;
+                }
+                else
+                {
+                    _storeTelTextView.Text = tel;
+                    _callImageView.Visibility = ViewStates.Visible;
+                    _callImageView.Click += (s, e) =>
+                    {
+                        var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
+                        var intent = new Intent(Intent.ActionDial, uri);
+                        StartActivity(intent);
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+            }
 
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
@@ -206,8 +231,8 @@ namespace AnatoliAndroid.Fragments
             if (shippingInfo != null)
             {
                 _deliveryAddress.Text = shippingInfo.address;
-                _nameTextView.Text = shippingInfo.name;
-                _deliveryTelTextView.Text = shippingInfo.tel;
+                //_nameTextView.Text = shippingInfo.name;
+                //_deliveryTelTextView.Text = shippingInfo.tel;
                 _checkoutButton.Enabled = CheckCheckout();
             }
             else
@@ -216,28 +241,13 @@ namespace AnatoliAndroid.Fragments
             }
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _countTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
-            string tel = (await StoreManager.GetDefault()).store_tel;
-            if (String.IsNullOrEmpty(tel))
-            {
-                _storeTelTextView.Text = "نا مشخص";
-                _callImageView.Visibility = ViewStates.Invisible;
-            }
-            else
-            {
-                _storeTelTextView.Text = tel;
-                _callImageView.Visibility = ViewStates.Visible;
-                _callImageView.Click += (s, e) =>
-                {
-                    var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
-                    var intent = new Intent(Intent.ActionDial, uri);
-                    StartActivity(intent);
-                };
-            }
+
+
         }
 
         bool CheckCheckout()
         {
-            if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryTelTextView.Text) || _listAdapter.Count == 0)
+            if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || _listAdapter.Count == 0)
                 return false;
             else
                 return true;

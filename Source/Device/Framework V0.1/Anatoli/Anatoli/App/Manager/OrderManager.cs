@@ -16,7 +16,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var store = await StoreManager.GetDefault();
+                var store = await StoreManager.GetDefaultAsync();
                 InsertCommand command = new InsertCommand("orders", new BasicParam("store_id", store.store_id.ToString()),
                     new BasicParam("order_status", "0"),
                     new BasicParam("order_date", DateTime.Now.ToLocalTime().ToString())

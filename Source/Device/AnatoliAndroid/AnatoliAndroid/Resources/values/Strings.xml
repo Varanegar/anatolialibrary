@@ -33,4 +33,11 @@
   <string name="District">محله</string>
   <string name="Zone">منطقه</string>
   <string name="Save">ثبت</string>
+  <string name="Id">کد ملی</string>
+  
+  <string name="PleaseWait">لطفا صبور باشید</string>
+  <string name="SaveSuccess">عضویت انجام شد</string>
+  <string name="Cancel">انصراف</string>
+  <string name="ServerUnreachable">خطا در برقراری ارتباط</string>
+  <string name="AuthenticationFailed">نام کاربری یا کلمه عبور نادرست است</string>
 </resources>

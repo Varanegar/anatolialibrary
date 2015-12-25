@@ -39,7 +39,7 @@
             p1:layout_width="wrap_content"
             p1:layout_toRightOf="@id/searchImageButton"
             p1:layout_height="50dp"
-            p1:layout_marginLeft="10dp">
+            p1:layout_marginLeft="15dp">
             <ImageButton
                 p1:background="@drawable/ic_shoppingcard_on_white_24dp"
                 p1:layout_width="24dp"

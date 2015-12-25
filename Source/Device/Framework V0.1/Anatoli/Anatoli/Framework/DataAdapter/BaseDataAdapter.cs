@@ -35,6 +35,7 @@ namespace Anatoli.Framework.DataAdapter
                     try
                     {
                         var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseListResult<DataModel>>(
+                            TokenType.UserToken,
                         remoteParameters.WebServiceEndpoint,
                         remoteParameters.Params.ToArray()
                         );
@@ -119,6 +120,7 @@ namespace Anatoli.Framework.DataAdapter
             try
             {
                 var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseModelResult<DataModel>>(
+                    TokenType.UserToken,
                 parameters.WebServiceEndpoint,
                 parameters.Params.ToArray()
                 );
@@ -169,6 +171,7 @@ namespace Anatoli.Framework.DataAdapter
                     try
                     {
                         var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<BaseListResult<DataModel>>(
+                            TokenType.UserToken,
                         remoteQuery.WebServiceEndpoint,
                         remoteQuery.Params.ToArray()
                         );

@@ -24,6 +24,7 @@ namespace AnatoliAndroid.Fragments
         EditText _emailEditText;
         EditText _telEditText;
         EditText _addressEditText;
+        EditText _idEditText;
         Spinner _zoneSpinner;
         Spinner _districtSpinner;
         Spinner _citySpinner;
@@ -42,6 +43,7 @@ namespace AnatoliAndroid.Fragments
             _firstNameEditText = view.FindViewById<EditText>(Resource.Id.firstNameEditText);
             _lastNameEditText = view.FindViewById<EditText>(Resource.Id.lastNameEditText);
             _emailEditText = view.FindViewById<EditText>(Resource.Id.emailEditText);
+            _idEditText = view.FindViewById<EditText>(Resource.Id.idEditText);
             _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
             _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
             _zoneSpinner = view.FindViewById<Spinner>(Resource.Id.zoneSpinner);
@@ -72,7 +74,7 @@ namespace AnatoliAndroid.Fragments
                 _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
                 _lastNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
                 _emailEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
-                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Tel;
+                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Mobile;
             }
             if (_shippingInfo != null)
             {

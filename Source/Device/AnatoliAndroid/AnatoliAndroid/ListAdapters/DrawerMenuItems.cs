@@ -79,7 +79,7 @@ namespace AnatoliAndroid.ListAdapters
                     }
                     else
                     {
-                        itemImageView.LayoutParameters.Width = 200;
+                        itemImageView.LayoutParameters.Width += 50;
                         itemImageView.RequestLayout();
                     }
                 }

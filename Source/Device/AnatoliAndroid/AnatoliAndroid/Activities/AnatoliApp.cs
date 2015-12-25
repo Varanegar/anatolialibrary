@@ -41,6 +41,7 @@ namespace AnatoliAndroid.Activities
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
         double _price;
+        public string DefaultStore;
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
         public void SetTotalPrice(double price)
         {
@@ -124,6 +125,7 @@ namespace AnatoliAndroid.Activities
         {
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
 
+            _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
             _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
             _searchBarLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.searchRelativeLayout);
@@ -132,6 +134,7 @@ namespace AnatoliAndroid.Activities
 
             _toolBarImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.toolbarImageButton);
             _toolBarImageButton.Click += toolbarImageButton_Click;
+            _toolBarTextView.Click += toolbarImageButton_Click;
 
             _searchImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.searchImageButton);
             _searchImageButton.Click += searchImageButton_Click;
@@ -173,7 +176,7 @@ namespace AnatoliAndroid.Activities
             _shoppingCardImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.shoppingCardImageButton);
             var shoppingbarRelativeLayout = ToolBar.FindViewById<RelativeLayout>(Resource.Id.shoppingbarRelativeLayout);
             shoppingbarRelativeLayout.Click += shoppingbarRelativeLayout_Click;
-            _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
+            _shoppingCardImageButton.Click += shoppingbarRelativeLayout_Click;
             _menuIconImageButton = ToolBar.FindViewById<ImageButton>(Resource.Id.menuImageButton);
             _menuIconImageButton.Click += (s, e) => { OnMenuClick(); };
         }
@@ -472,7 +475,7 @@ namespace AnatoliAndroid.Activities
 
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
-                avatarMenuEntry.Name = AnatoliUser.UserName;
+                avatarMenuEntry.Name = AnatoliUser.FullName;
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
                 mainItems.Add(avatarMenuEntry);
 
@@ -494,7 +497,7 @@ namespace AnatoliAndroid.Activities
             categoriesMenuEntry.ImageResId = Resource.Drawable.ic_list_orange_24dp;
             mainItems.Add(categoriesMenuEntry);
 
-            
+
             var favoritsMenuEntry = new DrawerMainItem();
             favoritsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Favorits;
             favoritsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyList);
@@ -503,7 +506,10 @@ namespace AnatoliAndroid.Activities
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
+            if (DefaultStore != null)
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStore + " ) ";
+            else
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);
 
             if (AnatoliUser != null)

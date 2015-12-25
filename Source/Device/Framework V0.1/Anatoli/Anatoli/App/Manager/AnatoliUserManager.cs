@@ -15,32 +15,31 @@ namespace Anatoli.App.Manager
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
-            var tk = await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
-            if (tk != null)
-            {
-                var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>("/api/accounts/user/anatoli");
-                return userModel;
-            }
-            return null;
+            await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
+            return userModel;
         }
-        public async Task<RegisterResult> RegisterAsync(string userName, string passWord, string confirmPassword, string firstName, string lastName, string tel, string email)
+        public async Task<RegisterResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
         {
-            User user = new User();
-            user.Email = userName;
-            user.FirstName = userName;
-            user.LastName = userName;
-            user.UserName = userName;
+            AnatoliUserModel user = new AnatoliUserModel();
+            if (!String.IsNullOrEmpty(email))
+            {
+                user.Email = email.Trim();
+            }
+            user.Username = tel;
             user.Password = passWord;
             user.ConfirmPassword = passWord;
+            user.Mobile = tel;
             try
             {
                 var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(
+                    TokenType.AppToken,
                 Configuration.WebService.Users.UserCreateUrl,
                 user
                 );
-                ParseObject userParseObject = new ParseObject("AnatoliUser");
-                userParseObject.Add("UserId", result.UserId);
-                await userParseObject.SaveAsync();
+                //ParseObject userParseObject = new ParseObject("AnatoliUser");
+                //userParseObject.Add("UserId", result.UserId);
+                //await userParseObject.SaveAsync();
                 return result;
             }
             catch (Exception e)
@@ -48,15 +47,19 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
+        public void CancelRegisterTask()
+        {
+            throw new NotImplementedException();
+        }
         public static async Task SaveUserInfoAsync(AnatoliUserModel user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException("Could not save null user!");
             }
-            string content = user.Email + Environment.NewLine + user.FirstName +
-                Environment.NewLine + user.LastName + Environment.NewLine + user.Tel +
-                Environment.NewLine + user.UserId + Environment.NewLine + user.UserName +
+            string content = user.Email + Environment.NewLine + user.FullName +
+                Environment.NewLine + user.Mobile +
+                Environment.NewLine + user.Username +
                 Environment.NewLine;
             bool wResult = await Task.Run(() =>
                 {
@@ -80,11 +83,9 @@ namespace Anatoli.App.Manager
                 string[] userInfoFields = userInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 AnatoliUserModel user = new AnatoliUserModel();
                 user.Email = userInfoFields[0];
-                user.FirstName = userInfoFields[1];
-                user.LastName = userInfoFields[2];
-                user.Tel = userInfoFields[3];
-                user.UserId = userInfoFields[4];
-                user.UserName = userInfoFields[5];
+                user.FullName = userInfoFields[1];
+                user.Mobile = userInfoFields[2];
+                user.Username = userInfoFields[3];
                 return user;
             }
             catch (Exception)
@@ -101,6 +102,7 @@ namespace Anatoli.App.Manager
                 await Task.Run(() =>
                     {
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
                     }
                     );
                 return true;
@@ -111,15 +113,6 @@ namespace Anatoli.App.Manager
             }
         }
 
-        internal class User
-        {
-            public string UserName { get; set; }
-            public string LastName { get; set; }
-            public string FirstName { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string ConfirmPassword { get; set; }
-        }
 
     }
 }

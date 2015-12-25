@@ -36,6 +36,7 @@ namespace AnatoliAndroid.ListAdapters
         RelativeLayout _removeAllRelativeLayout;
         OnTouchListener _addTouchlistener;
         LinearLayout _counterLinearLayout;
+        RelativeLayout _relativeLayout4;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -60,6 +61,7 @@ namespace AnatoliAndroid.ListAdapters
                 _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                 _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
+                _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
 
 
                 view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
@@ -74,6 +76,7 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
                 view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                 view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
+                view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
 
             }
             else
@@ -90,6 +93,7 @@ namespace AnatoliAndroid.ListAdapters
                 _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
                 _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
+                _relativeLayout4 = (RelativeLayout)view.GetTag(Resource.Id.relativeLayout4);
             }
 
             if (!String.IsNullOrEmpty(item.image))
@@ -170,6 +174,7 @@ namespace AnatoliAndroid.ListAdapters
             _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
             _favoritsTouchlistener.Click += async (s, e) =>
             {
+                OnBackClicked(position);
                 if (this[position].IsFavorit)
                 {
                     if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
@@ -188,6 +193,7 @@ namespace AnatoliAndroid.ListAdapters
                         OnFavoritAdded(this[position]);
                     }
                 }
+
             };
 
             _addTouchlistener = new OnTouchListener();
@@ -232,6 +238,11 @@ namespace AnatoliAndroid.ListAdapters
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 }
+            };
+
+            _relativeLayout4.Click += (s, e) =>
+            {
+                OnBackClicked(position);
             };
 
 

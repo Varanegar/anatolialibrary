@@ -72,12 +72,20 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+            try
+            {
+                AnatoliApp.GetInstance().DefaultStore = (await StoreManager.GetDefaultAsync()).store_name;
+            }
+            catch (Exception)
+            {
+
+            }
             AnatoliApp.GetInstance().RefreshMenuItems();
             AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
             AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
             try
             {
-                await StoreManager.GetDefault();
+                await StoreManager.GetDefaultAsync();
                 AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
             }
             catch (Exception)
