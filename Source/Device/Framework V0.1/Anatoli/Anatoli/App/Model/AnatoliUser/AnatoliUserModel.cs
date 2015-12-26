@@ -19,6 +19,5 @@ namespace Anatoli.App.Model.AnatoliUser
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }
         public string RoleName { get { return "User"; } set { RoleName = value; } }
-        public string PrivateOwnerId { get { return "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"; } set { PrivateOwnerId = value; } }
     }
 }

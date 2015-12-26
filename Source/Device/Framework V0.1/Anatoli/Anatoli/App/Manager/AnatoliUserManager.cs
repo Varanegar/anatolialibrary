@@ -9,6 +9,7 @@ using Anatoli.Framework.AnatoliBase;
 using Parse;
 using Anatoli.Framework.DataAdapter;
 using PCLCrypto;
+using Anatoli.App.Model;
 namespace Anatoli.App.Manager
 {
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
@@ -57,11 +58,10 @@ namespace Anatoli.App.Manager
             {
                 throw new ArgumentNullException("Could not save null user!");
             }
-            string content = user.Email + Environment.NewLine + user.FullName +
-                Environment.NewLine + user.Mobile +
+            string content = user.Email +
                 Environment.NewLine + user.Username +
-                Environment.NewLine + user.Id +
-                Environment.NewLine + user.PrivateOwnerId;
+                Environment.NewLine + user.UniqueId +
+                Environment.NewLine + user.Id;
             bool wResult = await Task.Run(() =>
                 {
                     var cipherText = Crypto.EncryptAES(content);
@@ -84,11 +84,9 @@ namespace Anatoli.App.Manager
                 string[] userInfoFields = userInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 AnatoliUserModel user = new AnatoliUserModel();
                 user.Email = userInfoFields[0];
-                user.FullName = userInfoFields[1];
-                user.Mobile = userInfoFields[2];
-                user.Username = userInfoFields[3];
-                user.Id = userInfoFields[4];
-                user.PrivateOwnerId = userInfoFields[5];
+                user.Username = userInfoFields[1];
+                user.UniqueId = userInfoFields[2];
+                user.Id = userInfoFields[3];
                 return user;
             }
             catch (Exception)
@@ -97,19 +95,21 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<AnatoliUserModel> DownloadUserInfoAsync(AnatoliUserModel user)
+        public static async Task<CustomerViewModel> DownloadUserInfoAsync(AnatoliUserModel user)
         {
-            try
-            {
-                var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl,
-                    new Tuple<string, string>("Id", user.Id),
-                    new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
-                return userModel;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl,
+                new Tuple<string, string>("Id", user.Id),
+                new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
+            return userModel;
+        }
+
+        public static async Task<CustomerViewModel> UploadUserInfoAsync(CustomerViewModel user)
+        {
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.SaveProfileUrl + "?PrivateOwnerId=" + user.PrivateOwnerId,
+                user
+                );
+            return userModel;
+
         }
 
         public static async Task<bool> LogoutAsync()

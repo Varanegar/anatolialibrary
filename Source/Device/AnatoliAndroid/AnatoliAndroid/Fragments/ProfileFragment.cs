@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +14,11 @@ using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using AnatoliAndroid.Activities;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.App.Model;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("������ ��")]
+    [FragmentTitle("مشخصات من")]
     public class ProfileFragment : Fragment
     {
         EditText _firstNameEditText;
@@ -33,6 +34,7 @@ namespace AnatoliAndroid.Fragments
         ShippingInfoModel _shippingInfo;
         ImageButton _exitImageButton;
         Button _saveButton;
+        CustomerViewModel _customerViewModel;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -53,6 +55,39 @@ namespace AnatoliAndroid.Fragments
             _provinceSpinner = view.FindViewById<Spinner>(Resource.Id.provinceSpinner);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
             _saveButton.UpdateWidth();
+            _saveButton.Click += async (s, e) =>
+            {
+                CustomerViewModel vm = new CustomerViewModel();
+                vm.Address = _addressEditText.Text;
+                vm.Email = _emailEditText.Text;
+                vm.Id = AnatoliApp.GetInstance().AnatoliUser.Id;
+                vm.UniqueId = AnatoliApp.GetInstance().AnatoliUser.UniqueId;
+                vm.Mobile = _telEditText.Text;
+                vm.NationalCode = _idEditText.Text;
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                try
+                {
+                    var result = await AnatoliUserManager.UploadUserInfoAsync(vm);
+                    if (result.IsValid)
+                    {
+                        errDialog.SetTitle("");
+                        errDialog.SetMessage("اطلاعات بروزرسانی شد");
+                        errDialog.Show();
+                    }
+                    else
+                    {
+                        errDialog.SetTitle("خطا");
+                        errDialog.SetMessage(result.ModelStateString);
+                        errDialog.Show();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errDialog.SetMessage(ex.Message);
+                    errDialog.SetTitle("خطا");
+                    errDialog.Show();
+                }
+            };
             _exitImageButton = view.FindViewById<ImageButton>(Resource.Id.exitImageButton);
             _exitImageButton.Click += async (s, e) =>
             {
@@ -72,21 +107,29 @@ namespace AnatoliAndroid.Fragments
             _shippingInfo = ShippingInfoManager.GetDefault();
             if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
-                var userModel = await AnatoliUserManager.DownloadUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                if (userModel.IsValid)
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+
+                try
                 {
-                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                    var userModel = await AnatoliUserManager.DownloadUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    if (userModel.IsValid)
+                    {
+                        _customerViewModel = userModel;
+                        _firstNameEditText.Text = _customerViewModel.CustomerName;
+                        _lastNameEditText.Text = _customerViewModel.CustomerName;
+                        _idEditText.Text = _customerViewModel.NationalCode;
+                        _addressEditText.Text = _customerViewModel.Address;
+                        _emailEditText.Text = _customerViewModel.Email;
+                        _telEditText.Text = _customerViewModel.Mobile;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errDialog.SetMessage(ex.Message);
+                    errDialog.Show();
                 }
             }
-
-            if (AnatoliApp.GetInstance().AnatoliUser != null)
-            {
-                _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
-                _lastNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
-                _emailEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
-                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Mobile;
-            }
-            if (_shippingInfo != null)
+            else if (_shippingInfo != null)
             {
                 _addressEditText.Text = _shippingInfo.address;
             }

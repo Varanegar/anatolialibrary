@@ -122,6 +122,21 @@ namespace Anatoli.Framework.AnatoliBase
             }
             return request;
         }
+        RestRequest CreateRequest(AnatoliTokenInfo tokenInfo, string requestUrl, HttpMethod method, Object obj, params Tuple<string, string>[] parameters)
+        {
+            var request = new RestRequest(requestUrl, method);
+            request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
+            request.AddHeader("Accept", "application/json");
+            foreach (var item in parameters)
+            {
+                Parameter p = new Parameter();
+                p.Name = item.Item1;
+                p.Value = item.Item2;
+                request.AddParameter(p);
+            }
+            request.AddJsonBody(obj);
+            return request;
+        }
 
         RestRequest CreateRequest(AnatoliTokenInfo tokenInfo, string requestUrl, HttpMethod method, object obj)
         {
@@ -176,6 +191,14 @@ namespace Anatoli.Framework.AnatoliBase
             RestRequest request;
             var token = await GetTokenAsync(tokenType);
             request = CreateRequest(token, requestUri, HttpMethod.Post, obj);
+            return await ExecRequestAsync<Result>(client, request);
+        }
+        public async Task<Result> SendPostRequestAsync<Result>(TokenType tokenType, string requestUri, object obj, params Tuple<string, string>[] parameters)
+        {
+            var client = new RestClient(Configuration.WebService.PortalAddress);
+            RestRequest request;
+            var token = await GetTokenAsync(tokenType);
+            request = CreateRequest(token, requestUri, HttpMethod.Post, obj, parameters);
             return await ExecRequestAsync<Result>(client, request);
         }
         public async Task<Result> SendGetRequestAsync<Result>(TokenType tokenType, string requestUri, params Tuple<string, string>[] parameters)
