@@ -25,7 +25,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("baskets/save")]
+        [Route("save")]
         public async Task<IHttpActionResult> SaveBasket(string privateOwnerId, List<BasketViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);

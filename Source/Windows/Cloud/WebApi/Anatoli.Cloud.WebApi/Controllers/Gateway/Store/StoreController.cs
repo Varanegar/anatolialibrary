@@ -1,6 +1,5 @@
 ﻿using Anatoli.Business;
 using Anatoli.Business.Domain;
-using Anatoli.Cloud.Gateway.Business.Store;
 using Anatoli.ViewModels.StoreModels;
 using System;
 using System.Collections.Generic;
@@ -14,24 +13,64 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/store")]
     public class StoreController : ApiController
     {
+
+        #region Store On Hand List
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("storeonhand")]
-        public IHttpActionResult GetStoreOnHand()
+        [Route("storeOnhand")]
+        public async Task<IHttpActionResult> GetStoreOnhands(string privateOwnerId)
         {
-            return Ok(StoreOnHandCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreActiveOnhandDomain(owner);
+            var result = await storeDomain.GetAll();
+            return Ok(result);
+        }
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storeOnhand/{id:guid}")]
+        public async Task<IHttpActionResult> GetStoreOnhands(string privateOwnerId, string id)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreActiveOnhandDomain(owner);
+            var result = await storeDomain.GetAllByStoreId(id);
+            return Ok(result);
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("storepricelist")]
-        public IHttpActionResult GetStorePriceLists()
+        [Route("storeOnhand/save")]
+        public async Task<IHttpActionResult> SaveStoreOnhands(string privateOwnerId, List<StoreViewModel> data)
         {
-            return Ok(StoreProductPriceListsCloudHandler.GetInstance().GetSampleData());
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreDomain(owner);
+            await storeDomain.PublishAsync(data);
+            return Ok();
         }
+        #endregion
+
+        #region Store Price List
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storepricelist")]
+        public async Task<IHttpActionResult> GetStorePriceLists(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreDomain(owner);
+            var result = await storeDomain.GetAll();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storepricelist/save")]
+        public async Task<IHttpActionResult> SavePriceLists(string privateOwnerId, List<StoreViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var storeDomain = new StoreDomain(owner);
+            await storeDomain.PublishAsync(data);
+            return Ok();
+        }
+        #endregion
 
         #region Store List
         [Authorize(Roles = "AuthorizedApp")]
         [Route("stores")]
-        public async Task<IHttpActionResult> GetStoreLists(string privateOwnerId)
+        public async Task<IHttpActionResult> GetStores(string privateOwnerId)
         {
             var owner = Guid.Parse(privateOwnerId);
             var storeDomain = new StoreDomain(owner);
@@ -41,7 +80,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("stores/save")]
-        public async Task<IHttpActionResult> SaveProductGroups(string privateOwnerId, List<StoreViewModel> data)
+        public async Task<IHttpActionResult> SaveStores(string privateOwnerId, List<StoreViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
             var storeDomain = new StoreDomain(owner);
@@ -53,7 +92,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Store Calendar
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storecalendar")]
-        public async Task<IHttpActionResult> GetStoreCalendarLists(string privateOwnerId)
+        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId)
         {
             var owner = Guid.Parse(privateOwnerId);
             var storeCalendarDomain = new StoreCalendarDomain(owner);

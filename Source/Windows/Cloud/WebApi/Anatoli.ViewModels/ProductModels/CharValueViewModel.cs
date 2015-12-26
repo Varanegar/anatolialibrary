@@ -9,7 +9,7 @@ namespace Anatoli.ViewModels.ProductModels
     public class CharValueViewModel : BaseViewModel
     {
         public string CharValueText { get; set; }
-        public Nullable<decimal> CharValueFromAmount { get; set; }
-        public Nullable<decimal> CharValueToAmount { get; set; }
+        public decimal? CharValueFromAmount { get; set; }
+        public decimal? CharValueToAmount { get; set; }
     }
 }

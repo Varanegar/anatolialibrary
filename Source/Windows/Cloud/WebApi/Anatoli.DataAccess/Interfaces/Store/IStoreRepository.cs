@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Anatoli.DataAccess.Interfaces
 {
-    public interface IStoreCalendarRepository : IRepository<StoreCalendar>
+    public interface IStoreRepository : IRepository<Store>
     {
     }
 }

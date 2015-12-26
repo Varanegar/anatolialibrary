@@ -202,10 +202,6 @@
       <Project>{58bbceaf-cd30-4906-ba07-774929a88b50}</Project>
       <Name>Anatoli.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Gateway\Anatoli.Cloud.Gateway\Anatoli.Cloud.Gateway\Anatoli.Cloud.Gateway.csproj">
-      <Project>{92900471-76c0-4eb1-a8b9-2558dd4568ba}</Project>
-      <Name>Anatoli.Cloud.Gateway</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Anatoli.Business\Anatoli.Business.csproj">
       <Project>{dff1618b-521d-4dd3-9485-fbe4c41eaf42}</Project>
       <Name>Anatoli.Business</Name>

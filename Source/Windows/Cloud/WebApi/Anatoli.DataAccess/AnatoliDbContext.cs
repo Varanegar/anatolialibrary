@@ -41,7 +41,7 @@ namespace Anatoli.DataAccess
         public DbSet<PurchaseOrderPayment> PurchaseOrderPayments { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<StoreAction> StoreActions { get; set; }
-        public DbSet<StoreActiveOnHand> StoreActiveOnHands { get; set; }
+        public DbSet<StoreActiveOnhand> StoreActiveOnhands { get; set; }
         public DbSet<StoreActivePriceList> StoreActivePriceLists { get; set; }
         public DbSet<StoreCalendar> StoreCalendars { get; set; }
         public DbSet<StoreCalendarHistory> StoreCalendarHistories { get; set; }

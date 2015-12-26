@@ -22,7 +22,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 PrivateLabelKey = data.PrivateLabelOwner.Id,
                 Comment = data.Comment,
                 Qty = data.Qty,
-                Product = (data.Product == null)? null: ProductProxy.Convert(data.Product),
+                ProductId = (data.Product == null)? Guid.Empty: data.Product.Id,
             };
         }
 
@@ -34,7 +34,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 Id = data.UniqueId,
                 Comment = data.Comment,
                 Qty = data.Qty,
-                Product = (data.Product == null) ? null : ProductProxy.ReverseConvert(data.Product),
+                ProductId = data.ProductId,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
             };

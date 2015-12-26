@@ -92,7 +92,8 @@ namespace Anatoli.Business.Domain
                         if(item.Id == null || item.Id == Guid.Empty)
                             item.Id = Guid.NewGuid();
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        item = SetBasketData(item, item.CustomerBaskets.ToList(), Repository.DbContext);
+                        if (item.CustomerBaskets != null)
+                            item = SetBasketData(item, item.CustomerBaskets.ToList(), Repository.DbContext);
                         Repository.AddAsync(item);
                     }
                 });
@@ -132,6 +133,7 @@ namespace Anatoli.Business.Domain
                     item = SetBasketItemData(item, item.BasketItems.ToList(), context);
 
                 item.Id = Guid.NewGuid();
+
                 data.CustomerBaskets.Add(item);
 
             });

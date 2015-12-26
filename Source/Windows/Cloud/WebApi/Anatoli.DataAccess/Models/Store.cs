@@ -21,7 +21,7 @@ namespace Anatoli.DataAccess.Models
         public Nullable<byte> StoreStatusTypeId { get; set; }
     
         public virtual ICollection<StoreAction> StoreActions { get; set; }
-        public virtual ICollection<StoreActiveOnHand> StoreActiveOnHands { get; set; }
+        public virtual ICollection<StoreActiveOnhand> StoreActiveOnhands { get; set; }
         public virtual ICollection<StoreActivePriceList> StoreActivePriceLists { get; set; }
         public virtual ICollection<StoreCalendar> StoreCalendars { get; set; }
         public virtual ICollection<StoreDeliveryPerson> StoreDeliveryPersons { get; set; }

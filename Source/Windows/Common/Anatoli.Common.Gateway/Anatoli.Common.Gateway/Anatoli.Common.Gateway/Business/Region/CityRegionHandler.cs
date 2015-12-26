@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Common.Gateway.Business.Region
 {
-    public class CityRegionHandler : BaseHandler<CityRegionDataAdapter, CityRegionListEntity, CityRegionEntity>
+    public class CityRegiOnhandler : BaseHandler<CityRegionDataAdapter, CityRegionListEntity, CityRegionEntity>
     {
     }
 }

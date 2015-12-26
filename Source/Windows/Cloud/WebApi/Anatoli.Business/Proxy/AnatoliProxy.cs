@@ -2,12 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 using Anatoli.Business.Proxy.Interfaces;
+using Anatoli.DataAccess.Models;
+using Anatoli.ViewModels;
+using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.Business.Proxy
 {
     public abstract class AnatoliProxy<TSource, TOut> : IAnatoliProxy<TSource, TOut>
-        where TSource : class, new()
-        where TOut : class,new()
+        where TSource : BaseModel, new()
+        where TOut : BaseViewModel, new()
     {
 
         public abstract TOut Convert(TSource data);
@@ -34,6 +37,16 @@ namespace Anatoli.Business.Proxy
             });
 
             return result;
+        }
+        public virtual TSource ReverseConvert(string id, Guid PrivateLabelKey)
+        {
+            return new TSource
+            {
+                Number_ID = 0,
+                Id = Guid.Parse(id),
+
+                PrivateLabelOwner = new Principal { Id = PrivateLabelKey },
+            };
         }
 
 

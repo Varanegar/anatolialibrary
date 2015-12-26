@@ -59,8 +59,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
 
                 PrivateLabelKey = data.PrivateLabelOwner.Id,
 
-                Manufacture = (data.Manufacture == null) ? null : ManufactureProxy.Convert(data.Manufacture),
-                ProductGroup = (data.ProductGroup == null) ? null : ProductGroupProxy.Convert(data.ProductGroup),
+                ManufactureIdString  = (data.Manufacture == null) ? null : data.Manufacture.Id.ToString(),
+                ProductGroupIdString  = (data.ProductGroup == null) ? null : data.ProductGroup.Id.ToString(),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.Convert(data.Suppliers.ToList()),
             };
         }
@@ -79,8 +79,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 StoreProductName = data.StoreProductName,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
-                Manufacture = (data.Manufacture == null) ? null : ManufactureProxy.ReverseConvert(data.Manufacture),
-                ProductGroup = (data.ProductGroup == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroup),
+                Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateLabelKey),
+                ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateLabelKey),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
             };
         }

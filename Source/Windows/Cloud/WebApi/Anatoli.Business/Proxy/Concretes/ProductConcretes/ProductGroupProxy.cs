@@ -18,7 +18,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 UniqueId = data.Id,
                 PrivateLabelKey = data.PrivateLabelOwner.Id,
                 ParentId = data.ProductGroup2 != null ? data.ProductGroup2.Number_ID : -1,
-                ParentUniqueId = data.ProductGroup2 != null ? data.ProductGroup2.Id : Guid.Empty,
+                ParentUniqueIdString = data.ProductGroup2 != null ? data.ProductGroup2.Id.ToString() : Guid.Empty.ToString(),
                 NRight = data.NRight,
                 NLevel = data.NLevel,
                 NLeft = data.NLeft,
@@ -40,7 +40,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 GroupName = data.GroupName,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
-                ProductGroup2 = new ProductGroup { Id = data.ParentUniqueId, Number_ID = data.ParentId },
+                ProductGroup2 = new ProductGroup { Id = Guid.Parse(data.ParentUniqueIdString), Number_ID = data.ParentId },
             };
         }
     }
