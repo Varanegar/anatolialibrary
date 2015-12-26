@@ -57,17 +57,14 @@ namespace AnatoliAndroid.Fragments
             _saveButton.UpdateWidth();
             _saveButton.Click += async (s, e) =>
             {
-                CustomerViewModel vm = new CustomerViewModel();
-                vm.Address = _addressEditText.Text;
-                vm.Email = _emailEditText.Text;
-                vm.Id = AnatoliApp.GetInstance().AnatoliUser.Id;
-                vm.UniqueId = AnatoliApp.GetInstance().AnatoliUser.UniqueId;
-                vm.Mobile = _telEditText.Text;
-                vm.NationalCode = _idEditText.Text;
+                _customerViewModel.Address = _addressEditText.Text;
+                _customerViewModel.Email = _emailEditText.Text;
+                _customerViewModel.Mobile = _telEditText.Text;
+                _customerViewModel.NationalCode = _idEditText.Text;
                 AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 try
                 {
-                    var result = await AnatoliUserManager.UploadUserInfoAsync(vm);
+                    var result = await AnatoliUserManager.UploadUserInfoAsync(_customerViewModel);
                     if (result.IsValid)
                     {
                         errDialog.SetTitle("");
