@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +13,12 @@ using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using AnatoliAndroid.Activities;
+using Anatoli.Framework.AnatoliBase;
+using Anatoli.App.Model;
 
 namespace AnatoliAndroid.Fragments
 {
-    [FragmentTitle("������ ��")]
+    [FragmentTitle("مشخصات من")]
     public class ProfileFragment : Fragment
     {
         EditText _firstNameEditText;
@@ -32,6 +34,7 @@ namespace AnatoliAndroid.Fragments
         ShippingInfoModel _shippingInfo;
         ImageButton _exitImageButton;
         Button _saveButton;
+        CustomerViewModel _customerViewModel;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,6 +55,36 @@ namespace AnatoliAndroid.Fragments
             _provinceSpinner = view.FindViewById<Spinner>(Resource.Id.provinceSpinner);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
             _saveButton.UpdateWidth();
+            _saveButton.Click += async (s, e) =>
+            {
+                _customerViewModel.Address = _addressEditText.Text;
+                _customerViewModel.Email = _emailEditText.Text;
+                _customerViewModel.Mobile = _telEditText.Text;
+                _customerViewModel.NationalCode = _idEditText.Text;
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                try
+                {
+                    var result = await AnatoliUserManager.UploadUserInfoAsync(_customerViewModel);
+                    if (result.IsValid)
+                    {
+                        errDialog.SetTitle("");
+                        errDialog.SetMessage("اطلاعات بروزرسانی شد");
+                        errDialog.Show();
+                    }
+                    else
+                    {
+                        errDialog.SetTitle("خطا");
+                        errDialog.SetMessage(result.ModelStateString);
+                        errDialog.Show();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errDialog.SetMessage(ex.Message);
+                    errDialog.SetTitle("خطا");
+                    errDialog.Show();
+                }
+            };
             _exitImageButton = view.FindViewById<ImageButton>(Resource.Id.exitImageButton);
             _exitImageButton.Click += async (s, e) =>
             {
@@ -65,18 +98,35 @@ namespace AnatoliAndroid.Fragments
             };
             return view;
         }
-        public override void OnStart()
+        public async override void OnStart()
         {
             base.OnStart();
             _shippingInfo = ShippingInfoManager.GetDefault();
-            if (AnatoliApp.GetInstance().AnatoliUser != null)
+            if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
-                _firstNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.FirstName;
-                _lastNameEditText.Text = AnatoliApp.GetInstance().AnatoliUser.LastName;
-                _emailEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Email;
-                _telEditText.Text = AnatoliApp.GetInstance().AnatoliUser.Mobile;
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+
+                try
+                {
+                    var userModel = await AnatoliUserManager.DownloadUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    if (userModel.IsValid)
+                    {
+                        _customerViewModel = userModel;
+                        _firstNameEditText.Text = _customerViewModel.CustomerName;
+                        _lastNameEditText.Text = _customerViewModel.CustomerName;
+                        _idEditText.Text = _customerViewModel.NationalCode;
+                        _addressEditText.Text = _customerViewModel.Address;
+                        _emailEditText.Text = _customerViewModel.Email;
+                        _telEditText.Text = _customerViewModel.Mobile;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errDialog.SetMessage(ex.Message);
+                    errDialog.Show();
+                }
             }
-            if (_shippingInfo != null)
+            else if (_shippingInfo != null)
             {
                 _addressEditText.Text = _shippingInfo.address;
             }

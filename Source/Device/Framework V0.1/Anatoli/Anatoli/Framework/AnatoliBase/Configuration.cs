@@ -43,6 +43,8 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 public static readonly string UserCreateUrl = "/api/accounts/create";
                 public static readonly string UserAuthUrl = "/api/accounts/create";
+                public static readonly string ViewProfileUrl = "/api/gateway/customer/customers";
+                public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
                 public static readonly string ShoppingCard = "";
             }
         }
