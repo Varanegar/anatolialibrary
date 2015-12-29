@@ -356,7 +356,11 @@ namespace AnatoliAndroid.Activities
             }
             else
             {
-
+                if (_productsListF != null)
+                {
+                    _productsListF.ExitSearchMode();
+                    _productsListF.SetCatId(0);
+                }
                 if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
                 {
                     _productsListF.SetCatId(selectedItem.ItemId);

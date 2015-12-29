@@ -48,12 +48,12 @@ namespace AnatoliAndroid.ListAdapters
             int r = new Random().Next(0, 10);
             if (r > 5)
             {
-                storeStatusTextView.Text = "»«“ «”  !";
+                storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Open);
                 storeStatusTextView.SetTextColor(Android.Graphics.Color.Green);
             }
             else
             {
-                storeStatusTextView.Text = "»” Â «”  !";
+                storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Close);
                 storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
             }
             storeNameTextView.Text = item.store_name;

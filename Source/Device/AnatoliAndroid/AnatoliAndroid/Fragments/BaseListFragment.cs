@@ -112,7 +112,9 @@ namespace AnatoliAndroid.Fragments
             var parameters = CreateQueryParameters();
             if (_searchKeyWord != null)
             {
-                parameters.Add(new SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2));
+                var p = new SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2);
+                parameters.Clear();
+                parameters.Add(p);
             }
             _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters), new RemoteQuery(GetWebServiceUri(), parameters));
         }
