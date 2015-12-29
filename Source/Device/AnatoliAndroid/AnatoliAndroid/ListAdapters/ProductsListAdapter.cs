@@ -29,10 +29,10 @@ namespace AnatoliAndroid.ListAdapters
         TextView _bproductNameTextView;
         TextView _favoritsTextView;
         ImageView _productIimageView;
-        ImageView _productAddButton;
+        ImageButton _productAddButton;
         ImageView _bproductImageView;
         ImageButton _favoritsButton;
-        ImageView _productRemoveButton;
+        ImageButton _productRemoveButton;
         RelativeLayout _removeAllRelativeLayout;
         OnTouchListener _addTouchlistener;
         LinearLayout _counterLinearLayout;
@@ -56,8 +56,8 @@ namespace AnatoliAndroid.ListAdapters
                 _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
                 _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
                 _bproductImageView = view.FindViewById<ImageView>(Resource.Id.bproductImageView);
-                _productAddButton = view.FindViewById<ImageView>(Resource.Id.addProductImageView);
-                _productRemoveButton = view.FindViewById<ImageView>(Resource.Id.removeProductImageView);
+                _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addProductImageView);
+                _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
                 _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                 _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
@@ -85,8 +85,8 @@ namespace AnatoliAndroid.ListAdapters
                 _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
                 _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
                 _bproductNameTextView = (TextView)view.GetTag(Resource.Id.bproductNameTextView);
-                _productRemoveButton = (ImageView)view.GetTag(Resource.Id.removeProductImageView);
-                _productAddButton = (ImageView)view.GetTag(Resource.Id.addProductImageView);
+                _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
+                _productAddButton = (ImageButton)view.GetTag(Resource.Id.addProductImageView);
                 _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
                 _bproductImageView = (ImageView)view.GetTag(Resource.Id.bproductImageView);
                 _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);

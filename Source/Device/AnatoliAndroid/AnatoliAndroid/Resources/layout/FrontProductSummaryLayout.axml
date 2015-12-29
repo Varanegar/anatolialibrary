@@ -34,14 +34,14 @@
                 local:customFont="Fonts/anatoli.ttf"
                 android:layout_width="40dp"
                 android:layout_height="35dp" />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="45dp"
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/removeProductImageView"
                 android:layout_centerVertical="true"
                 android:src="@drawable/removeproductimage"
                 android:background="@drawable/graybutton"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:layout_margin="0dp" />
         </LinearLayout>
         <ImageView
@@ -59,14 +59,15 @@
         android:id="@+id/rightRelativeLayout"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/relativeLayout2">
-        <ImageView
+        <ImageButton
             android:src="@drawable/ic_shoppingcard_blue_24dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/addProductImageView"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent" />
         <LinearLayout
             android:orientation="vertical"
             android:minWidth="100dp"

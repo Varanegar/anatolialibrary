@@ -13,20 +13,24 @@
         p1:layout_width="match_parent"
         p1:layout_height="50dp">
         <ImageButton
-            p1:background="@drawable/ic_search_white_24dp"
-            p1:layout_width="24dp"
-            p1:layout_height="24dp"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
             p1:layout_centerVertical="true"
             p1:id="@+id/searchImageButton"
-            p1:layout_alignParentLeft="true" />
+            p1:layout_alignParentLeft="true"
+            p1:src="@drawable/ic_search_white_24dp"
+            p1:scaleType="centerInside"
+            p1:background="@android:color/transparent" />
         <ImageButton
-            p1:background="@drawable/ic_reorder_white_24dp"
-            p1:layout_width="24dp"
-            p1:layout_height="24dp"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
             p1:id="@+id/toolbarImageButton"
             p1:layout_margin="10dp"
             p1:layout_alignParentRight="true"
-            p1:layout_centerVertical="true" />
+            p1:layout_centerVertical="true"
+            p1:src="@drawable/ic_reorder_white_24dp"
+            p1:scaleType="centerInside"
+            p1:background="@android:color/transparent" />
         <ImageButton
             p1:background="@drawable/ic_reorder_white_24dp"
             p1:layout_width="24dp"
@@ -41,12 +45,14 @@
             p1:layout_height="50dp"
             p1:layout_marginLeft="15dp">
             <ImageButton
-                p1:background="@drawable/ic_shoppingcard_on_white_24dp"
-                p1:layout_width="24dp"
-                p1:layout_height="24dp"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
                 p1:id="@+id/shoppingCardImageButton"
                 p1:layout_centerVertical="true"
-                p1:layout_marginLeft="4dp" />
+                p1:layout_marginLeft="4dp"
+                p1:src="@drawable/ic_shoppingcard_on_white_24dp"
+                p1:scaleType="centerInside"
+                p1:background="@android:color/transparent" />
             <AnatoliAndroid.Components.AnatoliTextView
                 p1:text="0"
                 p1:textSize="12dp"
@@ -93,21 +99,25 @@
         p1:padding="1dp"
         p1:paddingRight="20dp">
         <ImageButton
-            p1:background="@drawable/ic_exit_gray_24dp"
-            p1:layout_width="14dp"
-            p1:layout_height="14dp"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
             p1:id="@+id/searchbarImageButton"
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true"
-            p1:layout_marginRight="15dp" />
+            p1:layout_marginRight="15dp"
+            p1:src="@drawable/ic_exit_gray_24dp"
+            p1:scaleType="centerInside"
+            p1:background="@android:color/transparent" />
         <ImageButton
-            p1:background="@drawable/ic_search_blue_24dp"
-            p1:layout_width="24dp"
-            p1:layout_height="24dp"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
             p1:id="@+id/searchButtonImageButton"
             p1:layout_alignParentLeft="true"
             p1:layout_centerVertical="true"
-            p1:layout_marginLeft="10dp" />
+            p1:layout_marginLeft="10dp"
+            p1:src="@drawable/ic_search_blue_24dp"
+            p1:scaleType="centerInside"
+            p1:background="@android:color/transparent" />
         <AutoCompleteTextView
             p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
