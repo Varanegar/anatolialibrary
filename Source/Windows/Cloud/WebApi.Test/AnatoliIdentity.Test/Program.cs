@@ -11,7 +11,6 @@ using System.Web.Script.Serialization;
 using Thinktecture.IdentityModel.Client;
 using Thunderstruck;
 
-
 namespace ClientApp
 {
     class Program
@@ -34,11 +33,17 @@ namespace ClientApp
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+                    //ProductManagement.UploadProductGroupToServer(client, servserURI);
+                    ProductManagement.UploadProductToServer(client, servserURI);
+                    //ProductManagement.UploadSupplierToServer(client, servserURI);
+                    //ProductManagement.UploadManufactureToServer(client, servserURI);
+                    //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
+                    //StoreManagement.UploadStoreDataToServer(client, servserURI);
+                    //CharGroupManagement.SaveCharTypeInfoToServer(client, servserURI);
+                    //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //UserManagement.TestUserInfo(client, servserURI);
                     //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
                     //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
-                    CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
-                    //Console.WriteLine(json);
                 }
             }
             catch (Exception ex)
@@ -48,6 +53,7 @@ namespace ClientApp
         }
     }
 
+    #region User
     public class User
     {
         public string Email { get; set; }
@@ -66,15 +72,13 @@ namespace ClientApp
 
         public string ConfirmPassword { get; set; }
     }
+    #endregion
 }
-
-
 
 //var result9 = client.GetAsync(servserURI + "/api/accounts/user/09122073285").Result;
 //var json9 = result9.Content.ReadAsStringAsync().Result;
 
 //CharGroup.GetCharGroupInfo(client);
-
 
 /*
 var result3 = client.GetAsync(servserURI + "/api/gateway/product/chartypes").Result;

@@ -16,10 +16,13 @@ namespace Anatoli.ViewModels.BaseModels
             set
             {
                 this.uniqueIdString = value;
-                this.UniqueId = Guid.Parse(value);
+                if (value != null)
+                    this.UniqueId = Guid.Parse(value);
             }
         }
-        public Guid ParentId { get; set; }
+
+        public string ParentUniqueIdString { get; set; }
+        public int ParentId { get; set; }
         public string GroupName { get; set; }
         public int NLeft { get; set; }
         public int NRight { get; set; }

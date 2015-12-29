@@ -14,13 +14,15 @@ namespace Anatoli.DataAccess.Models
         public Nullable<decimal> PackVolume { get; set; }
         public Nullable<decimal> PackWeight { get; set; }
         public Nullable<long> TaxCategoryValueId { get; set; }
-        public virtual Supplier MainSupplier { get; set; }
         public string Desctription { get; set; }
         [ForeignKey("ProductGroup")]
         public Guid ProductGroupId { get; set; }
         [ForeignKey("Manufacture")]
         public Guid ManufactureId { get; set; }
+        //[ForeignKey("MainSupplier")]
+        //public Guid MainSuppliereId { get; set; }
 
+        public virtual Supplier MainSupplier { get; set; }
         public virtual ProductGroup ProductGroup { get; set; }
         public virtual ICollection<ProductComment> ProductComments { get; set; }
         public virtual ICollection<ProductPicture> ProductPictures { get; set; }

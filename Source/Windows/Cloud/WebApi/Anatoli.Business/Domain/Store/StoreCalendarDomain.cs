@@ -40,6 +40,14 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
+        public async Task<List<StoreCalendarViewModel>> GetCalendarByStoreId(string storeId)
+        {
+            Guid storeGuid = Guid.Parse(storeId); 
+            var storeCalendars = await Repository.FindAllAsync(p => p.Id == storeGuid);
+
+            return Proxy.Convert(storeCalendars.ToList());
+        }
+
         public async Task<List<StoreCalendarViewModel>> GetAll()
         {
             var storeCalendars = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);

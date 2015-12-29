@@ -12,7 +12,7 @@ namespace Anatoli.ViewModels.StoreModels
         public string ToTimeString { get; set; }
         public TimeSpan FromTime { 
             get {
-                var ts = TimeSpan.ParseExact(FromTimeString, @"h\:m",
+                var ts = TimeSpan.ParseExact(FromTimeString, @"h\:m\:s",
                              CultureInfo.InvariantCulture);
                 return ts;
             }
@@ -21,7 +21,7 @@ namespace Anatoli.ViewModels.StoreModels
         {
             get
             {
-                var ts = TimeSpan.ParseExact(ToTimeString, @"h\:m",
+                var ts = TimeSpan.ParseExact(ToTimeString, @"h\:m\:s",
                              CultureInfo.InvariantCulture);
                 return ts;
             }

@@ -33,7 +33,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateLabelKey = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner.Id,
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,
                 Phone = data.Phone,
@@ -55,7 +55,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
+                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,

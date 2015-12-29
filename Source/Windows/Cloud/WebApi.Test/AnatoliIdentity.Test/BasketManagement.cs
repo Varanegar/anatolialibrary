@@ -27,12 +27,6 @@ namespace ClientApp
         public static void UpdateCustomerBasketFromServer(HttpClient client, string servserURI)
         {
             var obj = GetCustomerBaskets(client, servserURI);
-            BasketItemViewModel bb = new BasketItemViewModel();
-            bb.Comment = "asdsad";
-            bb.Qty = 10;
-            bb.ProductId = Guid.Parse("941c74b3-0ea4-4a65-9666-1f6bd0b9d630");
-            obj[0].BasketItems.Add(bb);
-            //obj.Baskets.RemoveAt(1);
             string data = new JavaScriptSerializer().Serialize(obj);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
             var result8 = client.PostAsync(servserURI + "/api/gateway/basket/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;

@@ -9,13 +9,13 @@ using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
-    [RoutePrefix("api/gateway/base")]
+    [RoutePrefix("api/gateway/base/manufacture")]
     public class ManufactureController : ApiController
     {
         #region Products
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("manufacture")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        [Route("manufactures")]
+        public async Task<IHttpActionResult> GetManufactures(string privateOwnerId)
         {
             var owner = Guid.Parse(privateOwnerId);
             var manufactureDomain = new ManufactureDomain(owner);
@@ -25,7 +25,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("manufacture/save")]
+        [Route("save")]
         public async Task<IHttpActionResult> SaveManufactures(string privateOwnerId, List<ManufactureViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);

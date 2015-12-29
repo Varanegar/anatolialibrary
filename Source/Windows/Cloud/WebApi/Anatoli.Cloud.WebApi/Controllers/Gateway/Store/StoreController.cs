@@ -79,7 +79,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("stores/save")]
+        [Route("save")]
         public async Task<IHttpActionResult> SaveStores(string privateOwnerId, List<StoreViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
@@ -92,7 +92,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Store Calendar
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storecalendar")]
-        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId)
+        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId, string id)
         {
             var owner = Guid.Parse(privateOwnerId);
             var storeCalendarDomain = new StoreCalendarDomain(owner);

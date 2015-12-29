@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Anatoli.Business.Domain;
+using Anatoli.ViewModels.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +13,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class RegionController : ApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("cityregion")]
-        public IHttpActionResult Get()
+        [Route("cityregions")]
+        public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId)
         {
-            return Ok();
+            var owner = Guid.Parse(privateOwnerId);
+            var cityRegionDomain = new CityRegionDomain(owner);
+            var result = await cityRegionDomain.GetAll();
+
+            return Ok(result);
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("save")]
+        public async Task<IHttpActionResult> SaveCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var cityRegionDomain = new CityRegionDomain(owner);
+            await cityRegionDomain.PublishAsync(data);
+            return Ok();
+        }        
+
     }
 }

@@ -17,15 +17,16 @@ namespace ClientApp
         {
             var dataList = GetCharGroupInfo();
 
-            var result = client.GetAsync(servserURI + "/api/gateway/product/chargroups").Result;
-            var json = result.Content.ReadAsStringAsync().Result;
-
             string jsonData = new JavaScriptSerializer().Serialize(dataList);
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var result8 = client.PostAsync(servserURI + "/api/gateway/product/chargroups/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
         }
-
+        public static void ReadCharGroupInfoFromServer(HttpClient client, string servserURI)
+        {
+            var result = client.GetAsync(servserURI + "/api/gateway/product/chargroups?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json = result.Content.ReadAsStringAsync().Result;
+        }
         public static List<CharGroupViewModel> GetCharGroupInfo()
         {
             List<CharGroupViewModel> charGroups = new List<CharGroupViewModel>();
@@ -44,7 +45,6 @@ namespace ClientApp
             }
             return charGroups;
         }
-
         public static void SaveCharTypeInfoToServer(HttpClient client, string servserURI)
         {
             var dataList = GetCharTypeInfo();
@@ -61,7 +61,6 @@ namespace ClientApp
             var result = client.GetAsync(servserURI + "/api/gateway/product/chargroups").Result;
             var json = result.Content.ReadAsStringAsync().Result;
         }
-
         public static List<CharTypeViewModel> GetCharTypeInfo()
         {
             List<CharTypeViewModel> charTypes = new List<CharTypeViewModel>();

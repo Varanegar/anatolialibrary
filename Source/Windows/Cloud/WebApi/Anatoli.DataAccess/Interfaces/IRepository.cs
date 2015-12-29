@@ -17,6 +17,7 @@ namespace Anatoli.DataAccess.Interfaces
         Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
         void Add(T entity);
         Task<T> AddAsync(T entity);
+        void Update(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task DeleteAsync(Guid id);
