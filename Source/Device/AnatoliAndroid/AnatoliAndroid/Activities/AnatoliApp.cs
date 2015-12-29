@@ -189,6 +189,8 @@ namespace AnatoliAndroid.Activities
 
         async System.Threading.Tasks.Task Search(string value)
         {
+            if (String.IsNullOrEmpty(value))
+                return;
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.ProductsListFragment))
             {
                 if (_productsListF == null)
