@@ -78,6 +78,15 @@ namespace Anatoli.DataAccess.Repositories
 
             return await factory.StartNew(() => entity);
         }
+        public virtual void Update(T entity)
+        {
+            DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+            if (dbEntityEntry.State == EntityState.Detached)
+                DbSet.Attach(entity);
+
+            dbEntityEntry.State = EntityState.Modified;
+        }
         public virtual async Task<T> UpdateAsync(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);

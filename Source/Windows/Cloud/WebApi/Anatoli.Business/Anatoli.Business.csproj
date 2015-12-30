@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Base\CityRegionDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />
+    <Compile Include="Proxy\Concretes\Base\CityRegionProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketItemProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketProxy.cs" />

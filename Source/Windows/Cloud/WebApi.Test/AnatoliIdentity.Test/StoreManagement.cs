@@ -16,6 +16,16 @@ namespace ClientApp
 {
     public static class StoreManagement
     {
+        public static List<CityRegionViewModel> GetStoreFromServer(HttpClient client, string servserURI)
+        {
+            //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
+            var result8 = client.GetAsync(servserURI + "/api/gateway/store/stores?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<CityRegionViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
+
         public static void UploadStoreDataToServer(HttpClient client, string servserURI)
         {
             var storeInfo = GetStoreInfo();
@@ -23,7 +33,7 @@ namespace ClientApp
             //obj.Baskets.RemoveAt(1);
             string data = new JavaScriptSerializer().Serialize(storeInfo);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "/api/gateway/customer/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            var result8 = client.PostAsync(servserURI + "/api/gateway/store/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
             var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
@@ -34,14 +44,14 @@ namespace ClientApp
             List<StoreViewModel> storeList = new List<StoreViewModel>();
             using (var context = new DataContext())
             {
-                var data = context.All<StoreViewModel>("SELECT CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center where centertypeid=3 order by centerId");
+                var data = context.All<StoreViewModel>("SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center where centertypeid=3 order by centerId");
                 storeList = data.ToList();
                 storeList.ForEach(item =>
                     {
                         var ts = TimeSpan.ParseExact("0:0", @"h\:m",
                              CultureInfo.InvariantCulture);
 
-                        var storeCalendar = context.All<StoreCalendarViewModel>("select DayTimeWorkingId as ID, WorkingDate as PDate, dbo.ToMiladi(WorkingDate), FromHour as FromTimeString, ToHour as ToTimeString from DayTimeWorking where CenterId = " + item.CenterId);
+                        var storeCalendar = context.All<StoreCalendarViewModel>("select Convert(uniqueidentifier, uniqueId) as uniqueId,  DayTimeWorkingId as ID, WorkingDate as PDate, dbo.ToMiladi(WorkingDate) as Date, FromHour as FromTimeString, '23:59' as ToTimeString from DayTimeWorking where CenterId = " + item.CenterId);
                         item.StoreCalendar = storeCalendar.ToList();
 
                         var storeValidRegion = context.All<CityRegionViewModel>(@"select DeliveryRegionTreeId as ID, CityRegionID as UniqueIdString from (

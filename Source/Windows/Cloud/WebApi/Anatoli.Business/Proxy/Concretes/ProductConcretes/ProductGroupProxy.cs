@@ -16,20 +16,22 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateLabelKey = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner.Id,
                 ParentId = data.ProductGroup2 != null ? data.ProductGroup2.Number_ID : -1,
                 ParentUniqueIdString = data.ProductGroup2 != null ? data.ProductGroup2.Id.ToString() : Guid.Empty.ToString(),
                 NRight = data.NRight,
                 NLevel = data.NLevel,
                 NLeft = data.NLeft,
                 GroupName = data.GroupName,
+                IsRemoved = data.IsRemoved,
+
                 //CharGroupId
             };
         }
 
         public override ProductGroup ReverseConvert(ProductGroupViewModel data)
         {
-            return new ProductGroup
+            ProductGroup pg = new ProductGroup()
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
@@ -38,10 +40,18 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 NLevel = data.NLevel,
                 NLeft = data.NLeft,
                 GroupName = data.GroupName,
+                IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
-                ProductGroup2 = new ProductGroup { Id = Guid.Parse(data.ParentUniqueIdString), Number_ID = data.ParentId },
+                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
             };
+
+            if (data.ParentUniqueIdString != null && data.ParentUniqueIdString != "")
+                pg.ProductGroup2Id = Guid.Parse(data.ParentUniqueIdString);
+
+            if (data.UniqueIdString != null && data.UniqueIdString != "")
+                pg.Id = Guid.Parse(data.UniqueIdString);
+            
+            return pg;
         }
     }
 }

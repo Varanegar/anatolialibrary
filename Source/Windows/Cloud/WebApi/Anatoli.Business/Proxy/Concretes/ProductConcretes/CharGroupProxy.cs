@@ -30,7 +30,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateLabelKey = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner.Id,
                 CharGroupCode = data.CharGroupCode,
                 CharGroupName = data.CharGroupName,
 
@@ -48,7 +48,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 CharGroupCode = data.CharGroupCode,
                 CharGroupName = data.CharGroupName,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
+                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
                 CharTypes = CharTypeProxy.ReverseConvert(data.CharTypes.ToList()),
             };

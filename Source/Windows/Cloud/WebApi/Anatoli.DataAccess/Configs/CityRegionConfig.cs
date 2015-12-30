@@ -12,6 +12,9 @@ namespace Anatoli.DataAccess.Configs
         {
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithRequired(p => p.RegionInfo);
+
+            this.HasMany<CityRegion>(pg => pg.CityRegion1)
+                .WithOptional(pg => pg.CityRegion2);
         }
     }
 }

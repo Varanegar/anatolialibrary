@@ -32,7 +32,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateLabelKey = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner.Id,
                 BasketName = data.BasketName,
                 BasketTypeValueId = data.BasketTypeValueGuid,
 
@@ -49,7 +49,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 BasketName = data.BasketName,
                 BasketTypeValueGuid = data.BasketTypeValueId,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
+                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
                 BasketItems = (data.BasketItems == null) ? null : BasketItemProxy.ReverseConvert(data.BasketItems),
             };

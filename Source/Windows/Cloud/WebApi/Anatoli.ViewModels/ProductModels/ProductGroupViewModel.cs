@@ -16,5 +16,7 @@ namespace Anatoli.ViewModels.ProductModels
         public int NLevel { get; set; }
         //public Guid CharGroupId { get; set; }
         public string CharGroupIdString { get; set; }
+
+        public bool IsRemoved { get; set; }
     }
 }

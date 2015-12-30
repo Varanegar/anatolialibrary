@@ -53,36 +53,41 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(productGroups.ToList()); ;
         }
 
-        public void Publish(List<ProductGroupViewModel> ProductGroupViewModels)
-        {
-            //await Task.Factory.StartNew(() =>
-            //{
-            var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            productGroups.ForEach(item =>
-            {
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-                Repository.Add(item);
-            });
-
-            Repository.SaveChanges();
-        }
         public async Task PublishAsync(List<ProductGroupViewModel> ProductGroupViewModels)
         {
-            var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            productGroups.ForEach(item =>
+            try
             {
+                var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                var currentGroupList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                foreach (ProductGroup item in productGroups)
+                {
+                    var currentGroup = currentGroupList.Find(t => t.Id == item.Id);
+                    if (currentGroup != null)
+                    {
+                        currentGroup.LastUpdate = DateTime.Now;
+                        currentGroup.GroupName = item.GroupName;
+                        currentGroup.NLeft = item.NLeft;
+                        currentGroup.NRight = item.NRight;
+                        currentGroup.NLevel = item.NLevel;
+                        currentGroup.ProductGroup2Id = item.ProductGroup2Id;
+                        Repository.Update(currentGroup);
+                    }
+                    else
+                    {
+                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        Repository.Add(item);
+                    }
 
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-
-                Repository.AddAsync(item);
-            });
-            await Repository.SaveChangesAsync();
+                }
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task Delete(List<ProductGroupViewModel> ProductGroupViewModels)

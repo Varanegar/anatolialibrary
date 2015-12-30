@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     
     public class StoreCalendar : BaseModel
     {
@@ -11,7 +12,8 @@ namespace Anatoli.DataAccess.Models
         public TimeSpan ToTime { get; set; }
         public Nullable<Guid> CalendarTypeValueId { get; set; }
         public string Description { get; set; }
-    
+        [ForeignKey("Store")]
+        public Guid StoreId { get; set; }
         public virtual Store Store { get; set; }
         public virtual ICollection<StoreCalendarHistory> StoreCalendarHistories { get; set; }
     }

@@ -63,11 +63,14 @@ namespace Anatoli.Business.Domain
                 item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                 var currentSupplier = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
                 if (currentSupplier != null)
+                {
                     currentSupplier.SupplierName = item.SupplierName;
+                    Repository.UpdateAsync(currentSupplier);
+                }
                 else
                 {
-                    item.Id = Guid.NewGuid();
                     item.CreatedDate = item.LastUpdate = DateTime.Now;
+                    Repository.AddAsync(item);
                 }
             });
 

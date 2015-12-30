@@ -16,7 +16,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateLabelKey = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner.Id,
                 CharValueText = data.CharValueText,
                 CharValueFromAmount = data.CharValueFromAmount,
                 CharValueToAmount = data.CharValueToAmount,
@@ -34,7 +34,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 CharValueFromAmount = data.CharValueFromAmount,
                 CharValueToAmount = data.CharValueToAmount,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateLabelKey },
+                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
             };
         }
     }

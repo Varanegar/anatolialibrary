@@ -72,7 +72,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("products/save")]
+        [Route("save")]
         public async Task<IHttpActionResult> SaveProducts(string privateOwnerId, List<ProductViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
