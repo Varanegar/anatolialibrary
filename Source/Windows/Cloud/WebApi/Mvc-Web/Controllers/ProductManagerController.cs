@@ -44,11 +44,46 @@ namespace Mvc_Web.Controllers
             public Store Store { get; set; }
 
         }
+        public class RequestReview
+        {
+            public Guid Id { get; set; }
+            public string ModifiedBy { get; set; }
+            public string ModifiedDate { get; set; }
+            public string ProductName
+            {
+                get
+                {
+                    return Product.ProductName;
+                }
+            }
+            public int ModifiedLargeUnit { get; set; }
+            public int ModifiedSmallUnit { get; set; }
+            public int LargeUnit { get; set; }
+            public int SmallUnit { get; set; }
+            public Product Product { get; set; }
+            public StoreRequest StoreRequest { get; set; }
+        }
+        public class RequestReviewDetail
+        {
+            public Guid Id { get; set; }
+            public string ProductName
+            {
+                get
+                {
+                    return Product.ProductName;
+                }
+            }
+            public int Number { get; set; }
+            public Product Product { get; set; }
+            public RequestReview RequestReview { get; set; }
+        }
+
         public class RequestModel
         {
             public string StoreId { get; set; }
             public string ProductId { get; set; }
             public string StoreRequestId { get; set; }
+            public string RequestReviewId { get; set; }
         }
         #endregion
 
@@ -57,6 +92,8 @@ namespace Mvc_Web.Controllers
         public static List<Product> Products { get; set; }
         public static List<ProductRequest> ProductRequestsHistory { get; set; }
         public static List<StoreRequest> StoreRequests { get; set; }
+        public static List<RequestReview> RequestReviews { get; set; }
+        public static List<RequestReviewDetail> RequestReviewDetails { get; set; }
         #endregion
 
         #region Ctors
@@ -87,20 +124,44 @@ namespace Mvc_Web.Controllers
                         ModifiedBy = "درخواست دهنده " + (new Random((int)DateTime.Now.Ticks).Next(1, 5)),
                         LargeUnit = new Random((int)DateTime.Now.Ticks).Next(1, 50),
                         SmallUnit = new Random((int)DateTime.Now.Ticks).Next(1, 50),
-                        ModifiedDate = DateTime.Now.ToString(),
+                        ModifiedDate = DateTime.Now.ToShortDateString(),
                         Product = Products[new Random((int)DateTime.Now.Ticks).Next(0, 49)]
                     });
 
                 StoreRequests = new List<StoreRequest>();
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 2; i++)
                     StoreRequests.Add(new StoreRequest
                     {
                         Id = Guid.NewGuid(),
                         RequestDate = DateTime.Now.ToShortDateString(),
                         RequestNumber = new Random((int)DateTime.Now.Ticks).Next(1, 10203040).ToString(),
                         State = "فوری",
-
                         Store = Stores[new Random((int)DateTime.Now.Ticks).Next(0, 4)]
+                    });
+
+                RequestReviews = new List<RequestReview>();
+                for (int i = 0; i < 1; i++)
+                    RequestReviews.Add(new RequestReview
+                    {
+                        Id = Guid.NewGuid(),
+                        ModifiedBy = "درخواست دهنده " + (new Random((int)DateTime.Now.Ticks).Next(1, 5)),
+                        ModifiedDate = DateTime.Now.ToShortDateString(),
+                        ModifiedLargeUnit = new Random((int)DateTime.Now.Ticks).Next(1, 50),
+                        ModifiedSmallUnit = new Random((int)DateTime.Now.Ticks).Next(1, 50),
+                        Product = Products[new Random((int)DateTime.Now.Ticks).Next(0, 49)],
+                        StoreRequest = StoreRequests[new Random((int)DateTime.Now.Ticks).Next(0, 1)],
+                        LargeUnit = 5,
+                        SmallUnit = 10
+                    });
+
+                RequestReviewDetails = new List<RequestReviewDetail>();
+                for (int i = 0; i < 10; i++)
+                    RequestReviewDetails.Add(new RequestReviewDetail
+                    {
+                        Id = Guid.NewGuid(),
+                        Product = Products[new Random((int)DateTime.Now.Ticks).Next(0, 49)],
+                        Number=5,
+                        RequestReview = RequestReviews[new Random((int)DateTime.Now.Ticks).Next(0, 1)],
                     });
             }
         }
@@ -178,10 +239,47 @@ namespace Mvc_Web.Controllers
         {
             var model = StoreRequests.Where(p => p.Id == Guid.Parse(data.StoreRequestId))
                                      .Select(s => new { StoreName = s.Store.Name, s.RequestNumber, s.RequestDate, s.State })
-                                     .ToList();
+                                     .FirstOrDefault();
 
             return Request.CreateResponse(HttpStatusCode.OK, model);
         }
+
+        [HttpPost, Route("GetRequestReview")]
+        public HttpResponseMessage GetRequestReview([FromBody] RequestModel data)
+        {
+            var model = new List<RequestReview>();
+
+            if (!string.IsNullOrEmpty(data.StoreRequestId))
+                model = RequestReviews.Where(p => p.StoreRequest.Id == Guid.Parse(data.StoreRequestId)).ToList();
+
+            return Request.CreateResponse(HttpStatusCode.OK, model);
+        }
+
+        [HttpPost, Route("UpdateRequestReview")]
+        public HttpResponseMessage UpdateRequestReview([FromBody] List<RequestReview> models)
+        {
+            models.ForEach(itm =>
+            {
+                var indx = RequestReviews.FindIndex(p => p.Id == itm.Id);
+
+                RequestReviews[indx] = itm;
+            });
+
+            return Request.CreateResponse(HttpStatusCode.OK, RequestReviews);
+        }
+
+        [HttpPost, Route("GetRequestReviewDetail")]
+        public HttpResponseMessage GetRequestReviewDetail([FromBody] RequestModel data)
+        {
+            var model = new List<RequestReviewDetail>();
+
+            if (!string.IsNullOrEmpty(data.RequestReviewId))
+                model = RequestReviewDetails.Where(p => p.RequestReview.Id == Guid.Parse(data.RequestReviewId)).ToList();
+
+            return Request.CreateResponse(HttpStatusCode.OK, model);
+        }
+
+
         #endregion
     }
 }
