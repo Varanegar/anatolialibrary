@@ -24,6 +24,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
+        [Route("cityregions/after")]
+        public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId, string dateAfter)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var cityRegionDomain = new CityRegionDomain(owner);
+            var validDate = DateTime.Parse(dateAfter);
+            var result = await cityRegionDomain.GetAllChangedAfter(validDate);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
         {

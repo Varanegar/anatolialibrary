@@ -32,26 +32,24 @@ namespace ClientApp
             using (var context = new DataContext())
             {
                 context.Execute(@"IF OBJECT_ID('tempdb..#GroupRec') IS NOT NULL drop table  #GroupRec
-                    select p.ProductGroupTreeId, p.ParentId, p.Title, p.uniqueid, p2.uniqueid as Parentuniqueid, g.UniqueId  as CharGroupId
+                    select p.ProductGroupTreeSiteId as ProductGroupTreeId, p.ParentId, p.Title, p.uniqueid, p2.uniqueid as Parentuniqueid, null  as CharGroupId
 		                     into #GroupRec
-		                     from ProductGroupTree AS p INNER JOIN
-                                             ProductGroupTree AS p2 ON p.ParentId = p2.ProductGroupTreeId LEFT OUTER JOIN
-                                             ProductSpecificityG AS g ON p.ProductSpecificityGID = g.ProductSpecificityGId
-		                     where p.parentid = p2.ProductGroupTreeId");
+		                     from ProductGroupTreeSite AS p INNER JOIN
+                                             ProductGroupTreeSite AS p2 ON p.ParentId = p2.ProductGroupTreeSiteId 
+		                     where p.parentid = p2.ProductGroupTreeSiteId");
 		        var data = context.All<ProductGroupViewModel>(@"
                     WITH ProductGroupTreeLevels AS
                     (
                         SELECT
-                            p.ProductGroupTreeId,
+                            p.ProductGroupTreeSiteId as ProductGroupTreeId,
 		                    p.ParentId,
 		                    p.Title,
 		                    p.uniqueid,
 		                    convert(varchar(66),null) as Parentuniqueid,
-		                    g.uniqueId as CharGroupId,
-                            CONVERT(VARCHAR(MAX), p.ProductGroupTreeId) AS thePath,
+		                    null as CharGroupId,
+                            CONVERT(VARCHAR(MAX), p.ProductGroupTreeSiteId) AS thePath,
                             1 AS Level
-	                    FROM            ProductGroupTree AS p LEFT OUTER JOIN
-                                             ProductSpecificityG AS g ON p.ProductSpecificityGID = g.ProductSpecificityGId
+	                    FROM            ProductGroupTreeSite AS p 
                         WHERE p.ParentId IS NULL 
 
                         UNION ALL
@@ -152,8 +150,9 @@ namespace ClientApp
         public static void UploadProductToServer(HttpClient client, string servserURI)
         {
             var manufacture = GetProductInfo();
-
-            string data = new JavaScriptSerializer().Serialize(manufacture);
+            var js = new JavaScriptSerializer();
+            js.MaxJsonLength = Int32.MaxValue;
+            string data = js.Serialize(manufacture);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
             var result8 = client.PostAsync(servserURI + "/api/gateway/product/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
@@ -165,16 +164,22 @@ namespace ClientApp
             List<ProductViewModel> manufacture = new List<ProductViewModel>();
             using (var context = new DataContext())
             {
-                var data = context.All<ProductViewModel>(@"SELECT        p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, p.PackWeight, 
+                var data = context.All<ProductViewModel>(@"SELECT p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, p.PackWeight, 
                     p.Description, null  as PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
                     WHEN 2 THEN CONVERT(uniqueidentifier, '594120A7-1312-45B2-883B-605000D33D0F') WHEN 3 THEN CONVERT(uniqueidentifier, 
                     '9DA7C343-CE14-4CBB-81AE-709E075D4E10') END AS ProductTypeId, pg.UniqueId as ProductGroupIdString, m.UniqueId as ManufactureIdString
                     FROM            Product AS p LEFT OUTER JOIN
                     Manufacturer AS m ON p.ManufacturerId = m.ManufacturerId LEFT OUTER JOIN
-                    ProductGroup AS pg ON p.ProductGroupId = pg.ProductGroupId");
+                    ProductGroupTreeSite AS pg ON p.ProductGroupTreeSiteId = pg.ProductGroupTreeSiteId
+                    ");
                 data.ToList().ForEach(item =>
                     {
-
+                        var productSuppllier = context.All<SupplierViewModel>(@"select CONVERT(uniqueidentifier, s.uniqueId) as uniqueId from SupplierProduct as sp, supplier as s, product as p 
+	                        where sp.SupplierId = s.SupplierId and p.ProductId = sp.ProductId and sp.ProductId='" + item.ID + "'");
+                        item.Suppliers = productSuppllier.ToList();
+                        var productValue = context.All<CharValueViewModel>(@"select CONVERT(uniqueidentifier, pv.uniqueId) as uniqueId from ProductSpecificRel as ps , product as p, ProductSpecificityValue as pv
+	                            where ps.ProductSpecificityValueId = pv.ProductSpecificityValueId and p.productId = ps.ProductID and p.productId ='" + item.ID + "'");
+                        item.CharValues = productValue.ToList();
                     });
                 manufacture = data.ToList();
                 
@@ -182,5 +187,31 @@ namespace ClientApp
             return manufacture;
         }
         #endregion
+
+        internal static List<ProductViewModel> DownloadProductFromServer(HttpClient client, string servserURI)
+        {
+            var result8 = client.GetAsync(servserURI + "/api/gateway/product/products?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<ProductViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
+        internal static List<ProductViewModel> DownloadSupplierFromServer(HttpClient client, string servserURI)
+        {
+            var result8 = client.GetAsync(servserURI + "/api/gateway/base/manufacture/manufactures?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<ProductViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
+
+        internal static List<ProductViewModel> DownloadProductRateFromServer(HttpClient client, string servserURI)
+        {
+            var result8 = client.GetAsync(servserURI + "/api/gateway/productrate/productrateavgs/after?dateAfter=2012-01-01&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<ProductViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
     }
 }

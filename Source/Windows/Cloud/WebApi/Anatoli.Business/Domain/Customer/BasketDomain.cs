@@ -13,7 +13,7 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class BasketDomain : IBusinessDomain<Basket, BasketViewModel>
+    public class BasketDomain : BusinessDomain<BasketViewModel>, IBusinessDomain<Basket, BasketViewModel>
     {
         #region Properties
         public IAnatoliProxy<Basket, BasketViewModel> Proxy { get; set; }
@@ -77,6 +77,7 @@ namespace Anatoli.Business.Domain
                     if (currentBasket != null)
                     {
                         currentBasket.BasketName = item.BasketName;
+                        currentBasket.LastUpdate = DateTime.Now;
                         currentBasket = await SetBasketItemData(currentBasket, item.BasketItems.ToList(), Repository.DbContext);
                         await Repository.UpdateAsync(currentBasket);
                     }
@@ -98,6 +99,7 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
         }

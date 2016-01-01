@@ -25,6 +25,8 @@ namespace Anatoli.Cloud.WebApi
     {
         public void Configuration(IAppBuilder app)
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             HttpConfiguration httpConfig = new HttpConfiguration();
 
             ConfigureOAuthTokenGeneration(app);

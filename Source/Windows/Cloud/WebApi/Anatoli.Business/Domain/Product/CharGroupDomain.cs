@@ -13,7 +13,7 @@ using System.Data.Entity;
 
 namespace Anatoli.Business.Domain
 {
-    public class CharGroupDomain : IBusinessDomain<CharGroup, CharGroupViewModel>
+    public class CharGroupDomain : BusinessDomain<CharGroupViewModel>, IBusinessDomain<CharGroup, CharGroupViewModel>
     {
         #region Properties
         public IAnatoliProxy<CharGroup, CharGroupViewModel> Proxy { get; set; }
@@ -62,20 +62,32 @@ namespace Anatoli.Business.Domain
             {
                 var charGroups = Proxy.ReverseConvert(CharGroupViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                var currentGroups = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+                var currentTypes = CharTypeRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
-                await DeleteAllGroups();
                 foreach(CharGroup item in charGroups)
                 {
-
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                    var currentCharGroup = await SetCharTypeData(item, item.CharTypes.ToList(), Repository.DbContext);
-                    await Repository.AddAsync(currentCharGroup);
+                    var currentGroup = currentGroups.Find(p => p.Id == item.Id);
+                    if (currentGroup != null)
+                    {
+                        currentGroup.CharGroupCode = item.CharGroupCode;
+                        currentGroup.CharGroupName = item.CharGroupName;
+                        currentGroup.LastUpdate = DateTime.Now;
+                        currentGroup = await SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
+                    }
+                    else
+                    {
+                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        var currentCharGroup = await SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
+                        await Repository.AddAsync(currentCharGroup);
+                    }
                 };
                 await Repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
 
@@ -107,12 +119,12 @@ namespace Anatoli.Business.Domain
             });
         }
 
-        public async Task<CharGroup> SetCharTypeData(CharGroup data, List<CharType> charTypes, AnatoliDbContext context)
+        public async Task<CharGroup> SetCharTypeData(CharGroup data, List<CharType> charTypes, List<CharType> currentCharTypes)
         {
             data.CharTypes.Clear();
             foreach(CharType item in charTypes)
             {
-                var charType = await CharTypeRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefaultAsync();
+                var charType = currentCharTypes.Find(p => p.Id == item.Id);
                 if (charType != null)
                 {
                     data.CharTypes.Add(charType);

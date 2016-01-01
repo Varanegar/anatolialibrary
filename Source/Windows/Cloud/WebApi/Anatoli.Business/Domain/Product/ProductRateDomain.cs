@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductRateDomain : IBusinessDomain<ProductRate, ProductRateViewModel>
+    public class ProductRateDomain : BusinessDomain<ProductRateViewModel>, IBusinessDomain<ProductRate, ProductRateViewModel>
     {
         #region Properties
         public IAnatoliProxy<ProductRate, ProductRateViewModel> Proxy { get; set; }
@@ -46,6 +46,44 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(productRates.ToList()); ;
         }
 
+        public async Task<List<ProductRateViewModel>> GetAllAvg()
+        {
+            Repository.DbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            var productRates = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+
+            var resulDict = productRates
+                        .GroupBy(f => f.ProductId)
+                        .Select(g => new { ProductId = g.Key, Avg = g.Average(n => n.Value) })
+                        .Select(row => new ProductRateViewModel { Avg = row.Avg, ProductGuid = row.ProductId });
+            return resulDict.ToList();
+        }
+
+        public async Task<List<ProductRateViewModel>> GetAllAvgChangeAfter(DateTime selectedDate)
+        {
+            var productRates = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var changedProducts = Repository.DbContext.ProductRates
+                            .Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate)
+                            .Select(m => m.ProductId)
+                            .Distinct();
+            Repository.DbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            var resulDict = productRates
+                        .Where(w => changedProducts.Contains(w.ProductId))
+                        .GroupBy(f => f.ProductId)
+                        .Select(g => new { ProductId = g.Key, Avg = g.Average(n => n.Value) })
+                        .Select(row => new ProductRateViewModel { Avg = row.Avg, ProductGuid = row.ProductId });
+
+            return resulDict.ToList();
+        }
+
+
+        public async Task<List<ProductRateViewModel>> GetAllByProductId(string productId)
+        {
+            Guid productGuid = Guid.Parse(productId);
+            var productRates = await Repository.FindAllAsync(p => p.Id == productGuid);
+
+            return Proxy.Convert(productRates.ToList()); ;
+        }
+
         public async Task<List<ProductRateViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             var productRates = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
@@ -55,30 +93,38 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<ProductRateViewModel> ProductRateViewModels)
         {
-            var ProductRates = Proxy.ReverseConvert(ProductRateViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            ProductRates.ForEach(item =>
+            try
             {
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentProductRate = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentProductRate != null)
-                {
-                    currentProductRate.RateBy = item.RateBy;
-                    currentProductRate.RateByName = item.RateByName;
-                    currentProductRate.RateDate = item.RateDate;
-                    currentProductRate.RateTime = item.RateTime;
-                    currentProductRate.Value = item.Value;
+                var ProductRates = Proxy.ReverseConvert(ProductRateViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                    currentProductRate = SetProductData(currentProductRate, item.Product, Repository.DbContext);
-
-                }
-                else
+                ProductRates.ForEach(item =>
                 {
-                    item.Id = Guid.NewGuid();
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                }
-            });
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentProductRate = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentProductRate != null)
+                    {
+                        currentProductRate.RateBy = item.RateBy;
+                        currentProductRate.RateByName = item.RateByName;
+                        currentProductRate.RateDate = item.RateDate;
+                        currentProductRate.RateTime = item.RateTime;
+                        currentProductRate.Value = item.Value;
+
+                        currentProductRate = SetProductData(currentProductRate, item.Product, Repository.DbContext);
+
+                    }
+                    else
+                    {
+                        item.Id = Guid.NewGuid();
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
 
             await Repository.SaveChangesAsync();
         }

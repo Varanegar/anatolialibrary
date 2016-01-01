@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.ViewModels.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -13,30 +14,81 @@ namespace ClientApp
 {
     public class ImageManagement
     {
-        public static void TestImageManagement(HttpClient client, string servserURI)
+        public static void UploadCenterPicture(HttpClient client, string servserURI)
         {
-            var requestContent = new MultipartFormDataContent();
-            //    here you can specify boundary if you need---^
-            var imageContent = new ByteArrayContent(File.ReadAllBytes(@"c:\resid-2.jpg"));
-            imageContent.Headers.ContentType =
-                MediaTypeHeaderValue.Parse("image/jpeg");
-
-            requestContent.Add(imageContent, "resid-2", "resid-2.jpg");
-            var response = client.PostAsync(servserURI + "/api/v0/imageManager/Save?token=" + Guid.NewGuid().ToString(), requestContent).Result;
-
+            var dataList = CenterPictures();
+            UploadPictures(client, servserURI, dataList);
         }
 
-        public static void ProductPicture()
+        public static void UploadProductPicture(HttpClient client, string servserURI)
         {
+            var dataList = ProductPictures();
+            UploadPictures(client, servserURI, dataList);
+        }
+        public static void UploadProductGroupPicture(HttpClient client, string servserURI)
+        {
+            var dataList = ProductSiteGroupPictures();
+            UploadPictures(client, servserURI, dataList); 
+        }
+
+        private static void UploadPictures(HttpClient client, string servserURI, List<ItemImageViewModel> dataList)
+        {
+            dataList.ForEach(item =>
+                {
+                    var requestContent = new MultipartFormDataContent();
+                    var imageContent = new ByteArrayContent(item.image);
+                    imageContent.Headers.ContentType =
+                        MediaTypeHeaderValue.Parse("image/jpeg");
+
+                    requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
+                    var response = client.PostAsync(servserURI + "/api/imageManager/Save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                }
+            );
+        }
+
+        public static List<ItemImageViewModel> CenterPictures()
+        {
+            List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
             using (var context = new DataContext())
             {
-                using (IDataReader dr = context.Query("select * from users"))
-                {
-                    while (dr.Read())
-                    {
-                    }
-                }
+                var data = context.All<ItemImageViewModel>(@"select center.UniqueId as baseDataId, centerimageId as ID,  convert(uniqueidentifier, CenterImage.uniqueid) as uniqueid, CenterImage as image, CenterImageName as ImageName,
+                                                    '9CED6F7E-D08E-40D7-94BF-A6950EE23915' as ImageType from CenterImage, Center
+													where Center.CenterId = CenterImage.CenterId and CenterTypeId = 3");
+                imageList = data.ToList();
+
             }
+
+            return imageList;
+        }
+
+        public static List<ItemImageViewModel> ProductPictures()
+        {
+            List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
+            using (var context = new DataContext())
+            {
+                var data = context.All<ItemImageViewModel>(@"select Product.UniqueId as baseDataId, ProductimageId as ID,  convert(uniqueidentifier, ProductImage.uniqueid) as uniqueid, ProductImage as image, ProductImageName as ImageName,
+                                                    '635126C3-D648-4575-A27C-F96C595CDAC5' as ImageType from ProductImage, Product
+													where Product.ProductId = ProductImage.ProductId ");
+                imageList = data.ToList();
+
+            }
+
+            return imageList;
+        }
+
+        public static List<ItemImageViewModel> ProductSiteGroupPictures()
+        {
+            List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
+            using (var context = new DataContext())
+            {
+                var data = context.All<ItemImageViewModel>(@"select ProductGroupTreeSite.UniqueId as baseDataId, ProductGroupTreeSiteimageId as ID,  convert(uniqueidentifier, ProductGroupTreeSiteImage.uniqueid) as uniqueid, ProductGroupTreeSiteImage as image, ProductGroupTreeSiteImageName as ImageName,
+                                                    '149E61EF-C4DC-437D-8BC9-F6037C0A1ED1' as ImageType from ProductGroupTreeSiteImage, ProductGroupTreeSite
+													where ProductGroupTreeSite.ProductGroupTreeSiteId = ProductGroupTreeSiteImage.ProductGroupTreeSiteId  ");
+                imageList = data.ToList();
+
+            }
+
+            return imageList;
         }
 
     }

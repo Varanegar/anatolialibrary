@@ -11,10 +11,25 @@ namespace Anatoli.DataAccess.Configs
         public CityRegionConfig()
         {
             this.HasMany<Customer>(pp => pp.CustomerInfos)
-                .WithRequired(p => p.RegionInfo);
+                .WithOptional(p => p.RegionInfo)
+                .HasForeignKey( p => p.RegionInfoId);
 
-            this.HasMany<CityRegion>(pg => pg.CityRegion1)
-                .WithOptional(pg => pg.CityRegion2);
+            this.HasMany<Customer>(pp => pp.CustomerInfos)
+                .WithOptional(p => p.RegionLevel1)
+                .HasForeignKey(P => P.RegionLevel1Id);
+
+            this.HasMany<Customer>(pp => pp.CustomerInfos)
+                .WithOptional(p => p.RegionLevel2)
+                .HasForeignKey(P => P.RegionLevel2Id);
+
+            this.HasMany<Customer>(pp => pp.CustomerInfos)
+                .WithOptional(p => p.RegionLevel3)
+                .HasForeignKey(P => P.RegionLevel3Id);
+
+            this.HasMany<Customer>(pp => pp.CustomerInfos)
+                .WithOptional(p => p.RegionLevel4)
+                .HasForeignKey(P => P.RegionLevel4Id);
+
         }
     }
 }

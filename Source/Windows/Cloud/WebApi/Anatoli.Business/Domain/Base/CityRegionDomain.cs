@@ -13,7 +13,7 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CityRegionDomain : IBusinessDomain<CityRegion, CityRegionViewModel>
+    public class CityRegionDomain : BusinessDomain<CityRegionViewModel>, IBusinessDomain<CityRegion, CityRegionViewModel>
     {
         #region Properties
         public IAnatoliProxy<CityRegion, CityRegionViewModel> Proxy { get; set; }
@@ -67,14 +67,20 @@ namespace Anatoli.Business.Domain
                     var currentCityRegion = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentCityRegion != null)
                     {
-                        currentCityRegion.LastUpdate = DateTime.Now;
-                        //currentCityRegion.CharGroupId = item.CharGroupId;
-                        currentCityRegion.GroupName = item.GroupName;
-                        currentCityRegion.NLeft = item.NLeft;
-                        currentCityRegion.NRight = item.NRight;
-                        currentCityRegion.NLevel = item.NLevel;
-                        currentCityRegion.CityRegion2Id = item.CityRegion2Id;
-                        await Repository.UpdateAsync(currentCityRegion);
+                        if (currentCityRegion.GroupName != item.GroupName ||
+                            currentCityRegion.NLeft != item.NLeft ||
+                            currentCityRegion.NRight != item.NRight ||
+                            currentCityRegion.NLevel != item.NLevel ||
+                            currentCityRegion.CityRegion2Id != item.CityRegion2Id)
+                        {
+                            currentCityRegion.LastUpdate = DateTime.Now;
+                            currentCityRegion.GroupName = item.GroupName;
+                            currentCityRegion.NLeft = item.NLeft;
+                            currentCityRegion.NRight = item.NRight;
+                            currentCityRegion.NLevel = item.NLevel;
+                            currentCityRegion.CityRegion2Id = item.CityRegion2Id;
+                            await Repository.UpdateAsync(currentCityRegion);
+                        }
                     }
                     else
                     {
@@ -87,6 +93,7 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
         }

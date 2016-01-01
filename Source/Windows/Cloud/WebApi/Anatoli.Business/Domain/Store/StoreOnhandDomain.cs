@@ -13,9 +13,8 @@ using EntityFramework.Extensions;
 
 namespace Anatoli.Business.Domain
 {
-    public class StoreActiveOnhandDomain : IBusinessDomain<StoreActiveOnhand, StoreActiveOnhandViewModel>
+    public class StoreActiveOnhandDomain : BusinessDomain<StoreActiveOnhandViewModel>, IBusinessDomain<StoreActiveOnhand, StoreActiveOnhandViewModel>
     {
-
         #region Properties
         public IAnatoliProxy<StoreActiveOnhand, StoreActiveOnhandViewModel> Proxy { get; set; }
         public IRepository<StoreActiveOnhand> Repository { get; set; }
@@ -55,37 +54,58 @@ namespace Anatoli.Business.Domain
 
             return Proxy.Convert(storeActiveOnhands.ToList());
         }
-
         public async Task<List<StoreActiveOnhandViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             var storeActiveOnhands = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
 
             return Proxy.Convert(storeActiveOnhands.ToList()); ;
         }
+        public async Task<List<StoreActiveOnhandViewModel>> GetAllByStoreIdChangedAfter(string id, DateTime selectedDate)
+        {
+            Guid storeGuid = Guid.Parse(id);
+            var storeActiveOnhands = await Repository.FindAllAsync(p => p.StoreId == storeGuid && p.LastUpdate >= selectedDate);
+
+            return Proxy.Convert(storeActiveOnhands.ToList()); ;
+        }
 
         public async Task PublishAsync(List<StoreActiveOnhandViewModel> StoreActiveOnhandViewModels)
         {
-            await DeleteAllOnhandInfo();
-            var storeActiveOnhands = Proxy.ReverseConvert(StoreActiveOnhandViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            storeActiveOnhands.ForEach(item =>
+            try
             {
-                item.Id = Guid.NewGuid();
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-                Repository.AddAsync(item);
-            });
-            await Repository.SaveChangesAsync();
-        }
+                var storeActiveOnhands = Proxy.ReverseConvert(StoreActiveOnhandViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-        public async Task DeleteAllOnhandInfo()
-        {
-            await Task.Factory.StartNew(() =>
+                var currentStoreAciveOnHands = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+
+                storeActiveOnhands.ForEach(item =>
                 {
-                    Repository.DbContext.Database.ExecuteSqlCommand("delete from StoreActiveOnahnd");
+                    var currentStoreAciveOnHand = currentStoreAciveOnHands.Find(p => p.StoreId == item.StoreId && p.ProductId == item.ProductId);
+                    if (currentStoreAciveOnHand != null)
+                    {
+                        if (currentStoreAciveOnHand.Qty != item.Qty)
+                        {
+                            currentStoreAciveOnHand.Qty = item.Qty;
+                            currentStoreAciveOnHand.LastUpdate = DateTime.Now;
+                            Repository.Update(currentStoreAciveOnHand);
+                        }
+                    }
+                    else
+                    {
+                        item.Id = Guid.NewGuid();
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        Repository.Add(item);
+                    }
                 });
-        }
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
 
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
+        }
         public async Task Delete(List<StoreActiveOnhandViewModel> storeCalendarViewModels)
         {
             await Task.Factory.StartNew(() =>
@@ -103,5 +123,6 @@ namespace Anatoli.Business.Domain
             });
         }
         #endregion
+
     }
 }

@@ -24,6 +24,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("suppliers/after")]
+        public async Task<IHttpActionResult> GetSuppliers(string privateOwnerId, string dateAfter)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var supplierDomain = new SupplierDomain(owner);
+            var validDate = DateTime.Parse(dateAfter);
+            var result = await supplierDomain.GetAllChangedAfter(validDate);
+
+            return Ok(result);
+        }
+
         [Authorize(Roles = "AuthorizedApp")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveSuppliers(string privateOwnerId, List<SupplierViewModel> data)

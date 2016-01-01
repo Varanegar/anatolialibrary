@@ -10,7 +10,6 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
-using Aantoli.Common.Entity.Gateway.BaseValue;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

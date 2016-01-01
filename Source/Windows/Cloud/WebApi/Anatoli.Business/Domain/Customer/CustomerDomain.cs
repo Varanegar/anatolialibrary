@@ -13,8 +13,9 @@ using Anatoli.ViewModels.CustomerModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CustomerDomain : IBusinessDomain<Customer, CustomerViewModel>
+    public class CustomerDomain : BusinessDomain<CustomerViewModel>, IBusinessDomain<Customer, CustomerViewModel>
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
         public IAnatoliProxy<Customer, CustomerViewModel> Proxy { get; set; }
         public IRepository<Customer> Repository { get; set; }
@@ -75,17 +76,28 @@ namespace Anatoli.Business.Domain
                     var currentCustomer = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Id == item.Id).FirstOrDefault();
                     if (currentCustomer != null)
                     {
-                        currentCustomer.CustomerCode = item.CustomerCode;
-                        currentCustomer.CustomerName = item.CustomerName;
-                        currentCustomer.Phone = item.Phone;
-                        currentCustomer.Email = item.Email;
-                        currentCustomer.Address = item.Address;
-                        currentCustomer.BirthDay = item.BirthDay;
-                        currentCustomer.Mobile = item.Mobile;
-                        currentCustomer.PostalCode = item.PostalCode;
-                        currentCustomer.NationalCode = item.NationalCode;
-                        //currentCustomer = SetBasketData(currentCustomer, item.CustomerBaskets.ToList(), Repository.DbContext);
-                        Repository.UpdateAsync(currentCustomer);
+                        if (currentCustomer.CustomerCode != item.CustomerCode ||
+                                currentCustomer.CustomerName != item.CustomerName ||
+                                currentCustomer.Phone != item.Phone ||
+                                currentCustomer.Email != item.Email ||
+                                currentCustomer.Address != item.Address ||
+                                currentCustomer.BirthDay != item.BirthDay ||
+                                currentCustomer.Mobile != item.Mobile ||
+                                currentCustomer.PostalCode != item.PostalCode ||
+                                currentCustomer.NationalCode != item.NationalCode)
+                        {
+                            currentCustomer.CustomerCode = item.CustomerCode;
+                            currentCustomer.CustomerName = item.CustomerName;
+                            currentCustomer.Phone = item.Phone;
+                            currentCustomer.Email = item.Email;
+                            currentCustomer.Address = item.Address;
+                            currentCustomer.BirthDay = item.BirthDay;
+                            currentCustomer.Mobile = item.Mobile;
+                            currentCustomer.PostalCode = item.PostalCode;
+                            currentCustomer.NationalCode = item.NationalCode;
+                            currentCustomer.LastUpdate = DateTime.Now;
+                            Repository.UpdateAsync(currentCustomer);
+                        }
                     }
                     else
                     {
@@ -101,6 +113,7 @@ namespace Anatoli.Business.Domain
             }
             catch (Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
         }

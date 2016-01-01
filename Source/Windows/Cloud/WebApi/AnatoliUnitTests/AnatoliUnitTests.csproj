@@ -80,14 +80,6 @@
     <Compile Include="RepositoryTests\UserRepositoryUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Aantoli.Common.Entity\Aantoli.Common.Entity\Aantoli.Common.Entity.csproj">
-      <Project>{172c4199-551d-486d-a096-9d60eb06f7c1}</Project>
-      <Name>Aantoli.Common.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\Anatoli.Framework\Anatoli.Framework\Anatoli.Framework.csproj">
-      <Project>{58bbceaf-cd30-4906-ba07-774929a88b50}</Project>
-      <Name>Anatoli.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Anatoli.Business\Anatoli.Business.csproj">
       <Project>{dff1618b-521d-4dd3-9485-fbe4c41eaf42}</Project>
       <Name>Anatoli.Business</Name>

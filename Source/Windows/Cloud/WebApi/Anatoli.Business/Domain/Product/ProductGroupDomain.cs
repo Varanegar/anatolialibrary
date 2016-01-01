@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductGroupDomain : IBusinessDomain<ProductGroup, ProductGroupViewModel>
+    public class ProductGroupDomain : BusinessDomain<ProductGroupViewModel>, IBusinessDomain<ProductGroup, ProductGroupViewModel>
     {
         #region Properties
         public IAnatoliProxy<ProductGroup, ProductGroupViewModel> Proxy { get; set; }
@@ -66,13 +66,21 @@ namespace Anatoli.Business.Domain
                     var currentGroup = currentGroupList.Find(t => t.Id == item.Id);
                     if (currentGroup != null)
                     {
-                        currentGroup.LastUpdate = DateTime.Now;
-                        currentGroup.GroupName = item.GroupName;
-                        currentGroup.NLeft = item.NLeft;
-                        currentGroup.NRight = item.NRight;
-                        currentGroup.NLevel = item.NLevel;
-                        currentGroup.ProductGroup2Id = item.ProductGroup2Id;
-                        Repository.Update(currentGroup);
+                        if (currentGroup.GroupName != item.GroupName ||
+                                currentGroup.NLeft != item.NLeft ||
+                                currentGroup.NRight != item.NRight ||
+                                currentGroup.NLevel != item.NLevel ||
+                                currentGroup.ProductGroup2Id != item.ProductGroup2Id)
+                        {
+
+                            currentGroup.LastUpdate = DateTime.Now;
+                            currentGroup.GroupName = item.GroupName;
+                            currentGroup.NLeft = item.NLeft;
+                            currentGroup.NRight = item.NRight;
+                            currentGroup.NLevel = item.NLevel;
+                            currentGroup.ProductGroup2Id = item.ProductGroup2Id;
+                            Repository.Update(currentGroup);
+                        }
                     }
                     else
                     {
@@ -86,6 +94,7 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
         }

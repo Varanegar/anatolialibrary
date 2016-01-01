@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductPictureDomain : IBusinessDomain<ProductPicture, ProductPictureViewModel>
+    public class ProductPictureDomain : BusinessDomain<ProductPictureViewModel>, IBusinessDomain<ProductPicture, ProductPictureViewModel>
     {
         #region Properties
         public IAnatoliProxy<ProductPicture, ProductPictureViewModel> Proxy { get; set; }

@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductDomain : IBusinessDomain<Product, ProductViewModel>
+    public class ProductDomain : BusinessDomain<ProductViewModel>, IBusinessDomain<Product, ProductViewModel>
     {
         #region Properties
         public IAnatoliProxy<Product, ProductViewModel> Proxy { get; set; }
@@ -49,9 +49,17 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            try
+            {
+                var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
-            return Proxy.Convert(products.ToList()); ;
+                return Proxy.Convert(products.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll ", ex);
+            }
+            return null;
         }
 
         public async Task<List<ProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
@@ -63,6 +71,7 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<ProductViewModel> ProductViewModels)
         {
+            log.Info("PublishAsync " + ProductViewModels.Count);
             try
             {
                 var products = Proxy.ReverseConvert(ProductViewModels);
@@ -78,6 +87,7 @@ namespace Anatoli.Business.Domain
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.ProductGroupId = item.ProductGroupId;
                         currentProduct.ManufactureId = item.ManufactureId;
+                        currentProduct.MainSuppliereId = item.MainSuppliereId;
                         currentProduct.Desctription = item.Desctription;
                         currentProduct.PackUnitValueId = item.PackUnitValueId;
                         currentProduct.PackVolume = item.PackVolume;
@@ -87,38 +97,38 @@ namespace Anatoli.Business.Domain
                         currentProduct.ProductTypeValueId = item.ProductTypeValueId;
                         currentProduct.StoreProductName = item.StoreProductName;
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
+                        currentProduct.LastUpdate = DateTime.Now;
 
-                        currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
-                        currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
+                        if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
+                        if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
+                        if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
                         currentProduct = SetMainSupplierData(currentProduct, item.MainSupplier, Repository.DbContext);
-                        currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
+                        currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
+                        currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
                         Repository.Update(currentProduct);
                     }
                     else
                     {
-                        item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
-                        item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
+                        if(item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
+                        if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
                         item = SetMainSupplierData(item, item.MainSupplier, Repository.DbContext);
                         item = SetManucfatureData(item, item.Manufacture, Repository.DbContext);
                         item = SetProductGroupData(item, item.ProductGroup, Repository.DbContext);
-                        item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
-
-                        item.PrivateLabelOwner = item.Manufacture.PrivateLabelOwner = item.ProductGroup.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-
-                        item.CreatedDate = item.LastUpdate = item.Manufacture.CreatedDate =
-                        item.Manufacture.LastUpdate = item.ProductGroup.CreatedDate = item.ProductGroup.LastUpdate = DateTime.Now;
-
-                        item.ProductGroup.ProductGroup2 = null;
+                        if (item.ProductPictures != null) item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
+                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
 
                         Repository.Add(item);
                     }
                 });
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                log.Info("PublishAsync ", ex);
                 throw ex;
             }
+            log.Info("PublishAsync Finish" + ProductViewModels.Count);
         }
 
         public async Task Delete(List<ProductViewModel> ProductViewModels)
@@ -130,7 +140,7 @@ namespace Anatoli.Business.Domain
                 products.ForEach(item =>
                 {
                     var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                   
+
                     Repository.DeleteAsync(product);
                 });
 
@@ -141,15 +151,19 @@ namespace Anatoli.Business.Domain
         public Product SetProductGroupData(Product data, ProductGroup productGroup, AnatoliDbContext context)
         {
             if (productGroup == null) return data;
-            ProductGroupDomain productGroupDomain = new ProductGroupDomain(data.PrivateLabelOwner.Id, context);
-            var result = productGroupDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == productGroup.PrivateLabelOwner.Id && p.Number_ID == productGroup.Number_ID).FirstOrDefault();
-            data.ProductGroup = result;
+            var result = ProductGroupRepository.GetQuery().Where(p => p.Id == productGroup.Id).FirstOrDefault();
+            if (result != null)
+            {
+                data.ProductGroup = result;
+                data.ProductGroupId = result.Id;
+            }
             return data;
         }
 
         public Product SetProductPictureData(Product data, List<ProductPicture> productPictures, AnatoliDbContext context)
         {
             if (productPictures == null) return data;
+            Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductPictures where ProductId='" + data.Id +"'");
             data.ProductPictures.Clear();
             productPictures.ForEach(item =>
             {
@@ -163,30 +177,33 @@ namespace Anatoli.Business.Domain
         public Product SetManucfatureData(Product data, Manufacture manufacture, AnatoliDbContext context)
         {
             if (manufacture == null) return data;
-            ManufactureDomain manufactureDomain = new ManufactureDomain(data.PrivateLabelOwner.Id, context);
-            var result = manufactureDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == manufacture.PrivateLabelOwner.Id && p.Number_ID == manufacture.Number_ID).FirstOrDefault();
-            data.Manufacture = result;
+            var result = ManufactureRepository.GetQuery().Where(p => p.Id == manufacture.Id).FirstOrDefault();
+            if (result != null)
+            {
+                data.Manufacture = result;
+                data.ManufactureId = result.Id;
+            }
             return data;
         }
 
         public Product SetMainSupplierData(Product data, Supplier suppliers, AnatoliDbContext context)
         {
             if (suppliers == null) return data;
-            SupplierDomain supplierDomain = new SupplierDomain(data.PrivateLabelOwner.Id, context);
-            var supplier = supplierDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == suppliers.Number_ID).FirstOrDefault();
-            data.MainSupplier = supplier;
-            return data;
+            var supplier = SupplierRepository.GetQuery().Where(p => p.Id == suppliers.Id).FirstOrDefault();
+            {
+                data.MainSupplier = supplier;
+                data.MainSuppliereId = supplier.Id;
+            } return data;
         }
 
         public Product SetSupplierData(Product data, List<Supplier> suppliers, AnatoliDbContext context)
         {
             if (suppliers == null) return data;
-            Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductSupliers where ProductId=" + data.Id);
-            SupplierDomain supplierDomain = new SupplierDomain(data.PrivateLabelOwner.Id, context);
+            //Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductSupliers where ProductId='" + data.Id + "'");
             data.Suppliers.Clear();
             suppliers.ForEach(item =>
             {
-                var supplier = supplierDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                var supplier = SupplierRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                 if (supplier != null)
                     data.Suppliers.Add(supplier);
             });
@@ -196,11 +213,11 @@ namespace Anatoli.Business.Domain
         public Product SetCharValueData(Product data, List<CharValue> charValues, AnatoliDbContext context)
         {
             if (charValues == null) return data;
-            CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
+            //Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductChars where ProductId='" + data.Id + "'");
             data.CharValues.Clear();
             charValues.ForEach(item =>
             {
-                var charType = charTypeDomain.Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                var charType = CharValueRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Id == item.Id).FirstOrDefault();
                 if (charType != null)
                     data.CharValues.Add(charType);
             });

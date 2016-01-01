@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class SupplierDomain : IBusinessDomain<Supplier, SupplierViewModel>
+    public class SupplierDomain : BusinessDomain<SupplierViewModel>, IBusinessDomain<Supplier, SupplierViewModel>
     {
         #region Properties
         public IAnatoliProxy<Supplier, SupplierViewModel> Proxy { get; set; }
@@ -55,26 +55,38 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<SupplierViewModel> supplierViewModels)
         {
-            var suppliers = Proxy.ReverseConvert(supplierViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            suppliers.ForEach(item =>
+            try
             {
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentSupplier = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentSupplier != null)
-                {
-                    currentSupplier.SupplierName = item.SupplierName;
-                    Repository.UpdateAsync(currentSupplier);
-                }
-                else
-                {
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                    Repository.AddAsync(item);
-                }
-            });
+                var suppliers = Proxy.ReverseConvert(supplierViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-            await Repository.SaveChangesAsync();
+                suppliers.ForEach(item =>
+                {
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentSupplier = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentSupplier != null)
+                    {
+                        if (currentSupplier.SupplierName != item.SupplierName)
+                        {
+                            currentSupplier.SupplierName = item.SupplierName;
+                            currentSupplier.LastUpdate = DateTime.Now;
+                            Repository.UpdateAsync(currentSupplier);
+                        }
+                    }
+                    else
+                    {
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        Repository.AddAsync(item);
+                    }
+                });
+
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
         }
 
         public async Task Delete(List<SupplierViewModel> supplierViewModels)

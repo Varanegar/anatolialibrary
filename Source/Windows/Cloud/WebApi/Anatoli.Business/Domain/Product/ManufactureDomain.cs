@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ManufactureDomain : IBusinessDomain<Manufacture, ManufactureViewModel>
+    public class ManufactureDomain : BusinessDomain<ManufactureViewModel>, IBusinessDomain<Manufacture, ManufactureViewModel>
     {
         #region Properties
         public IAnatoliProxy<Manufacture, ManufactureViewModel> Proxy { get; set; }
@@ -55,26 +55,38 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<ManufactureViewModel> manufactureViewModels)
         {
-            var manufactures = Proxy.ReverseConvert(manufactureViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            manufactures.ForEach(item =>
+            try
             {
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentManufacture = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentManufacture != null)
-                {
-                    currentManufacture.ManufactureName = item.ManufactureName;
-                    Repository.UpdateAsync(currentManufacture);
-                }
-                else
-                {
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                    Repository.AddAsync(item);
-                }
-            });
+                var manufactures = Proxy.ReverseConvert(manufactureViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-            await Repository.SaveChangesAsync();
+                manufactures.ForEach(item =>
+                {
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentManufacture = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentManufacture != null)
+                    {
+                        if (currentManufacture.ManufactureName != item.ManufactureName)
+                        {
+                            currentManufacture.ManufactureName = item.ManufactureName;
+                            currentManufacture.LastUpdate = DateTime.Now;
+                            Repository.UpdateAsync(currentManufacture);
+                        }
+                    }
+                    else
+                    {
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        Repository.AddAsync(item);
+                    }
+                });
+
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
         }
 
         public async Task Delete(List<ManufactureViewModel> manufactureViewModels)

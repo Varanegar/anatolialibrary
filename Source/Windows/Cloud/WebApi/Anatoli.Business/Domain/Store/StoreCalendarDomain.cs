@@ -12,9 +12,8 @@ using Anatoli.ViewModels.StoreModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StoreCalendarDomain : IBusinessDomain<StoreCalendar, StoreCalendarViewModel>
+    public class StoreCalendarDomain : BusinessDomain<StoreCalendarViewModel>, IBusinessDomain<StoreCalendar, StoreCalendarViewModel>
     {
-
         #region Properties
         public IAnatoliProxy<StoreCalendar, StoreCalendarViewModel> Proxy { get; set; }
         public IRepository<StoreCalendar> Repository { get; set; }
@@ -64,28 +63,43 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<StoreCalendarViewModel> StoreCalendarViewModels)
         {
-            var storeCalendars = Proxy.ReverseConvert(StoreCalendarViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            storeCalendars.ForEach(item =>
+            try
             {
-                var currentStoreCalendars = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentStoreCalendars != null)
+                var storeCalendars = Proxy.ReverseConvert(StoreCalendarViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+
+                storeCalendars.ForEach(item =>
                 {
-                    currentStoreCalendars.Date = item.Date;
-                    currentStoreCalendars.PDate = item.PDate;
-                    currentStoreCalendars.ToTime = item.ToTime;
-                    currentStoreCalendars.FromTime = item.FromTime;
-                    currentStoreCalendars.Description = item.Description;
-                }
-                else
-                {
-                    item.Id = Guid.NewGuid();
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                }
-                Repository.AddAsync(item);
-            });
-            await Repository.SaveChangesAsync();
+                    var currentStoreCalendars = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentStoreCalendars != null)
+                    {
+                        if (currentStoreCalendars.Date != item.Date ||
+                            currentStoreCalendars.PDate != item.PDate ||
+                            currentStoreCalendars.ToTime != item.ToTime ||
+                            currentStoreCalendars.FromTime != item.FromTime ||
+                            currentStoreCalendars.Description != item.Description)
+                        {
+                            currentStoreCalendars.Date = item.Date;
+                            currentStoreCalendars.PDate = item.PDate;
+                            currentStoreCalendars.ToTime = item.ToTime;
+                            currentStoreCalendars.FromTime = item.FromTime;
+                            currentStoreCalendars.Description = item.Description;
+                            currentStoreCalendars.LastUpdate = DateTime.Now;
+                            Repository.Update(item);
+                        }
+                    }
+                    else
+                    {
+                        item.Id = Guid.NewGuid();
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        Repository.Add(item);
+                    }
+                });
+                await Repository.SaveChangesAsync();
+            }catch(Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+            }
         }
 
         public async Task Delete(List<StoreCalendarViewModel> storeCalendarViewModels)

@@ -68,13 +68,26 @@ namespace ClientApp
             return storeList;
         }
 
+        public static void UploadStoreOnHandDataToServer(HttpClient client, string servserURI)
+        {
+            var storeInfo = GetStoreActiveOnhand();
+
+            //obj.Baskets.RemoveAt(1);
+            string data = new JavaScriptSerializer().Serialize(storeInfo);
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            var result8 = client.PostAsync(servserURI + "/api/gateway/store/storeOnhand/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+        }
+
         public static List<StoreActiveOnhandViewModel> GetStoreActiveOnhand()
         {
             List<StoreActiveOnhandViewModel> storeOnhandList = new List<StoreActiveOnhandViewModel>();
             using(var context = new DataContext())
             {
-                var fiscalYear = context.First<int>(@"select FiscalYearId from FiscalYear where StartDate <= dbo.ToShamsi(getdate()) and enddate>= dbo.ToShamsi(getdate())");
-                var data = context.All<StoreActiveOnhandViewModel>(@"select Product.UniqueId as ProductGuid, Qty, Center.UniqueId as StoreGuid from (      
+                var fiscalYear = context.GetValue<int>(@"select FiscalYearId from FiscalYear where StartDate <= dbo.ToShamsi(getdate()) and enddate>= dbo.ToShamsi(getdate())");
+                var data = context.All<StoreActiveOnhandViewModel>(@"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Center.UniqueId) as StoreGuid from (      
                       SELECT  ProductId,sum(Qty) as  Qty,CenterId    
                       FROM         
                       (        
@@ -84,7 +97,7 @@ namespace ClientApp
                         FROM InvVoucher iv           
                        INNER JOIN InvVoucherDetail id ON iv.InvVoucherId=id.InvVoucherId          
                        INNER JOIN InvVoucherType vt ON vt.InvVoucherTypeId=iv.InvVoucherTypeId         
-                       where fiscalYearId = 10       
+                       where fiscalYearId = " + fiscalYear + @"    
                       UNION ALL          
              
                       SELECT s.FiscalYearId,s.StockId,sd.ProductId     
@@ -124,12 +137,25 @@ namespace ClientApp
                       GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
                       ) A 
                     group by FiscalYearId, ProductId,CenterId
-                    ) as onhand, Product, Center where onhand.ProductId = Product.ProductId and Center.centerid = onhand.CenterId");
+                    ) as onhand, Product, Center where onhand.ProductId = Product.ProductId and Center.centerid = onhand.CenterId and centertypeid = 3");
 
                 storeOnhandList = data.ToList();
             }
 
             return storeOnhandList;
+        }
+
+        public static void UploadStorePriceListDataToServer(HttpClient client, string servserURI)
+        {
+            var storeInfo = GetStorePriceList();
+
+            //obj.Baskets.RemoveAt(1);
+            string data = new JavaScriptSerializer().Serialize(storeInfo);
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            var result8 = client.PostAsync(servserURI + "/api/gateway/store/storepricelist/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
         }
 
         public static List<StoreActivePriceListViewModel> GetStorePriceList()
@@ -159,7 +185,8 @@ namespace ClientApp
 				                        and p.ProductId = Product.ProductId
 				                        and p.CustomerId is null and CustomerGroupId is null and p.CenterGroupId is null 
 
-                        select price, StoreGuidString, ProductGuidString from #CenterPrice
+                        select price, convert(uniqueidentifier, StoreGuidString) as StoreGuid, convert(uniqueidentifier, ProductGuidString) as ProductGuid from #CenterPrice
+                            where StoreGuidString in (select uniqueid FROM Center where centertypeid=3) 
                         ");
 
                 storeOnhandList = data.ToList();

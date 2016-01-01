@@ -47,8 +47,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Log4Net.Async">
+      <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\..\..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -158,6 +162,7 @@
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />
     <Compile Include="Controllers\Gateway\Customer\BasketController.cs" />
     <Compile Include="Controllers\Gateway\Customer\CustomerController.cs" />
+    <Compile Include="Controllers\Gateway\Product\ProductRateController.cs" />
     <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
@@ -165,8 +170,6 @@
     <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Controllers\Base\OrdersController.cs" />
     <Compile Include="Controllers\ImageManager\ImageManagerController.cs" />
-    <Compile Include="Controllers\Sample\FakeAccountManagerController.cs" />
-    <Compile Include="Controllers\Sample\FakeProductManagerController.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
     <Compile Include="Infrastructure\ApplicationUserManager.cs" />
@@ -191,18 +194,6 @@
     <Compile Include="Validators\MyCustomUserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Aantoli.Common.Entity\Aantoli.Common.Entity\Aantoli.Common.Entity.csproj">
-      <Project>{172c4199-551d-486d-a096-9d60eb06f7c1}</Project>
-      <Name>Aantoli.Common.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Common\Anatoli.Common.Gateway\Anatoli.Common.Gateway\Anatoli.Common.Gateway\Anatoli.Common.Gateway.csproj">
-      <Project>{e08d16df-778d-4d8a-ab6e-9e1fcb70a2f4}</Project>
-      <Name>Anatoli.Common.Gateway</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\Anatoli.Framework\Anatoli.Framework\Anatoli.Framework.csproj">
-      <Project>{58bbceaf-cd30-4906-ba07-774929a88b50}</Project>
-      <Name>Anatoli.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Anatoli.Business\Anatoli.Business.csproj">
       <Project>{dff1618b-521d-4dd3-9485-fbe4c41eaf42}</Project>
       <Name>Anatoli.Business</Name>
@@ -210,6 +201,18 @@
     <ProjectReference Include="..\Anatoli.DataAccess\Anatoli.DataAccess.csproj">
       <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
       <Name>Anatoli.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.PMC.Business\Anatoli.PMC.Business.csproj">
+      <Project>{47d02eb7-3284-4b5d-8d27-9a190fb95980}</Project>
+      <Name>Anatoli.PMC.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.PMC.DataAccess\Anatoli.PMC.DataAccess.csproj">
+      <Project>{1f2144a0-f98c-4d81-a738-dccd8e4e1c59}</Project>
+      <Name>Anatoli.PMC.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.PMC.ViewModels\Anatoli.PMC.ViewModels.csproj">
+      <Project>{e22af1cb-59a4-4182-9d05-d71d9f459764}</Project>
+      <Name>Anatoli.PMC.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
       <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>

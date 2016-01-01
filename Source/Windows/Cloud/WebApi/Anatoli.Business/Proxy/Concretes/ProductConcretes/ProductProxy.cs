@@ -14,6 +14,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
         public IAnatoliProxy<Manufacture, ManufactureViewModel> ManufactureProxy { get; set; }
         public IAnatoliProxy<ProductGroup, ProductGroupViewModel> ProductGroupProxy { get; set; }
         public IAnatoliProxy<Supplier, SupplierViewModel> SupplierProxy { get; set; }
+        public IAnatoliProxy<CharValue, CharValueViewModel> CharValueProxy { get; set; }
 
         #endregion
 
@@ -21,18 +22,21 @@ namespace Anatoli.Business.Proxy.ProductConcretes
         public ProductProxy() :
             this(AnatoliProxy<Manufacture, ManufactureViewModel>.Create(),
                  AnatoliProxy<ProductGroup, ProductGroupViewModel>.Create(),
+                 AnatoliProxy<CharValue, CharValueViewModel>.Create(),
                  AnatoliProxy<Supplier, SupplierViewModel>.Create()
             )
         { }
 
         public ProductProxy(IAnatoliProxy<Manufacture, ManufactureViewModel> manufactureProxy,
                             IAnatoliProxy<ProductGroup, ProductGroupViewModel> productGroupProxy,
+                            IAnatoliProxy<CharValue, CharValueViewModel> charValueProxy,
                             IAnatoliProxy<Supplier, SupplierViewModel> supplierProxy
             )
         {
             ManufactureProxy = manufactureProxy;
             ProductGroupProxy = productGroupProxy;
             SupplierProxy = supplierProxy;
+            CharValueProxy = charValueProxy;
         }
         #endregion
 
@@ -62,6 +66,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ManufactureIdString  = (data.Manufacture == null) ? null : data.Manufacture.Id.ToString(),
                 ProductGroupIdString  = (data.ProductGroup == null) ? null : data.ProductGroup.Id.ToString(),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.Convert(data.Suppliers.ToList()),
+                CharValues = (data.CharValues == null) ? null : CharValueProxy.Convert(data.CharValues.ToList()),
             };
         }
 
@@ -82,6 +87,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
                 ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateOwnerId),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
+                CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
+
             };
         }
         #endregion

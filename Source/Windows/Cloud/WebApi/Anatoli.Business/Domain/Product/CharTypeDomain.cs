@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CharTypeDomain : IBusinessDomain<CharType, CharTypeViewModel>
+    public class CharTypeDomain : BusinessDomain<CharTypeViewModel>, IBusinessDomain<CharType, CharTypeViewModel>
     {
         #region Properties
         public IAnatoliProxy<CharType, CharTypeViewModel> Proxy { get; set; }
@@ -61,15 +61,17 @@ namespace Anatoli.Business.Domain
             {
                 var charTypes = Proxy.ReverseConvert(CharTypeViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                var currentTypes = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
                 foreach (CharType item in charTypes)
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var currentType = currentTypes.Find(p => p.Id == item.Id);
                     if (currentType != null)
                     {
                         currentType.CharTypeDesc = item.CharTypeDesc;
                         currentType.DefaultCharValueGuid = item.DefaultCharValueGuid;
+                        currentType.LastUpdate = DateTime.Now;
                         currentType = await SetCharValueData(currentType, item.CharValues.ToList(), Repository.DbContext);
                         await Repository.UpdateAsync(currentType);
                     }
@@ -88,6 +90,7 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
+                log.Error("PublishAsync", ex);
                 throw ex;
             }
         }
@@ -113,7 +116,6 @@ namespace Anatoli.Business.Domain
         {
             await Task.Factory.StartNew(() =>
             {
-                CharValueDomain charTypeDomain = new CharValueDomain(data.PrivateLabelOwner.Id, context);
                 foreach (CharValue item in charValues)
                 {
                     var count = data.CharValues.ToList().Count(u => u.Id == item.Id);
@@ -122,15 +124,21 @@ namespace Anatoli.Business.Domain
                         item.CharTypeId = data.Id;
                         item.PrivateLabelOwner = data.PrivateLabelOwner;
                         item.CreatedDate = item.LastUpdate = data.CreatedDate;
-                        CharValueRepository.AddAsync(item);
+                        CharValueRepository.Add(item);
                     }
                     else
                     {
                         var currentCharValue = CharValueRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                        currentCharValue.CharValueText = item.CharValueText;
-                        currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
-                        currentCharValue.CharValueToAmount = item.CharValueToAmount;
-                        CharValueRepository.UpdateAsync(currentCharValue);
+                        if (currentCharValue.CharValueText != item.CharValueText ||
+                            currentCharValue.CharValueFromAmount != item.CharValueFromAmount ||
+                            currentCharValue.CharValueToAmount != item.CharValueToAmount)
+                        {
+                            currentCharValue.CharValueText = item.CharValueText;
+                            currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
+                            currentCharValue.CharValueToAmount = item.CharValueToAmount;
+                            currentCharValue.LastUpdate = DateTime.Now;
+                            CharValueRepository.Update(currentCharValue);
+                        }
                     }
                 }
             });

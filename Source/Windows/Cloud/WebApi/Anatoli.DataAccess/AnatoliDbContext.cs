@@ -49,6 +49,7 @@ namespace Anatoli.DataAccess
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<ItemImage> Images { get; set; }
 
 
         #region Identity
@@ -80,6 +81,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new ProductConfig());
             modelBuilder.Configurations.Add(new BasketConfig());
             modelBuilder.Configurations.Add(new CalendarTemplateConfig());
+            modelBuilder.Configurations.Add(new CharGroupConfig());
             modelBuilder.Configurations.Add(new CharTypeConfig());
             modelBuilder.Configurations.Add(new CharValueConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
@@ -88,6 +90,9 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new PurchaseOrderConfig());
             modelBuilder.Configurations.Add(new StoreCalendarConfig());
             modelBuilder.Configurations.Add(new StoreConfig());
+            modelBuilder.Configurations.Add(new ManufactureConfig());
+            modelBuilder.Configurations.Add(new CityRegionConfig());
+
            
 
             modelBuilder.Configurations.Add(new UserConfig());

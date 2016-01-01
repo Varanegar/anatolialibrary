@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
-    public enum ObjectTypes
+    public enum ImageTypes
     {
-        Products
+        Thumbail,
+        Original,
+        Fix320x320
     }
 }

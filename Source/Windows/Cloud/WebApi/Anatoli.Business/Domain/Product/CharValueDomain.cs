@@ -12,7 +12,7 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CharValueDomain : IBusinessDomain<CharValue, CharValueViewModel>
+    public class CharValueDomain : BusinessDomain<CharValueViewModel>, IBusinessDomain<CharValue, CharValueViewModel>
     {
         #region Properties
         public IAnatoliProxy<CharValue, CharValueViewModel> Proxy { get; set; }
@@ -55,27 +55,44 @@ namespace Anatoli.Business.Domain
 
         public async Task PublishAsync(List<CharValueViewModel> charViewModels)
         {
-            var charValues = Proxy.ReverseConvert(charViewModels);
-            var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-            charValues.ForEach(item =>
+            try
             {
-                item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentCharValue = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
-                if (currentCharValue != null)
-                {
-                    currentCharValue.CharValueText = item.CharValueText;
-                    currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
-                    currentCharValue.CharValueToAmount = item.CharValueToAmount;
-                }
-                else
-                {
-                    item.Id = Guid.NewGuid();
-                    item.CreatedDate = item.LastUpdate = DateTime.Now;
-                }
-            });
+                var charValues = Proxy.ReverseConvert(charViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-            await Repository.SaveChangesAsync();
+                charValues.ForEach(item =>
+                {
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentCharValue = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    if (currentCharValue != null)
+                    {
+                        if (currentCharValue.CharValueText != item.CharValueText ||
+                                currentCharValue.CharValueFromAmount != item.CharValueFromAmount ||
+                                currentCharValue.CharValueToAmount != item.CharValueToAmount
+                            )
+                        {
+                            currentCharValue.CharValueText = item.CharValueText;
+                            currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
+                            currentCharValue.CharValueToAmount = item.CharValueToAmount;
+                            currentCharValue.LastUpdate = DateTime.Now;
+                            Repository.Update(currentCharValue);
+                        }
+                    }
+                    else
+                    {
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        Repository.Add(item);
+                    }
+                });
+
+                await Repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
         }
 
         public async Task Delete(List<CharValueViewModel> charViewModels)

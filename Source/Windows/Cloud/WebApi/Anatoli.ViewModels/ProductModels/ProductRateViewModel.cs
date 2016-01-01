@@ -11,5 +11,7 @@ namespace Anatoli.ViewModels.ProductModels
         public string RateByName { get; set; }
         public DateTime RateDate { get; set; }
         public TimeSpan RateTime { get; set; }
+        public double Avg { get; set; }
+        public Guid? ProductGuid { get; set; }
     }
 }

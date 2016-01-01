@@ -12,12 +12,15 @@ using System.Net.Http.Headers;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels.BaseModels;
+using Anatoli.Business.Domain;
 
 namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 {
-    [RoutePrefix("api/v0/imageManager")]
+    [RoutePrefix("api/imageManager")]
     public class ImageManagerController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
         public IFileManager FileManager { get; set; }
         #endregion
@@ -33,11 +36,38 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         #endregion
 
         #region Actions
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("images")]
+        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productDomain = new ItemImageDomain(owner);
+            var result = await productDomain.GetAll();
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("images/after")]
+        public async Task<IHttpActionResult> GetProducts(string privateOwnerId, string dateAfter)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productDomain = new ItemImageDomain(owner);
+            var validDate = DateTime.Parse(dateAfter);
+            var result = await productDomain.GetAllChangedAfter(validDate);
+
+            return Ok(result);
+        }
+
         [HttpPost, Route("Save")]
-        public async Task<string> SaveImage(string token = "")
+        public async Task<string> SaveImage(string token, string imagetype, string privateOwnerId, string imageId)
         {
             try
             {
+
+                var owner = Guid.Parse(privateOwnerId);
+                var itemImageDomain = new ItemImageDomain(owner);
+
                 var httpRequest = HttpContext.Current.Request;
                 Guid _token = Guid.Empty;
                 if (httpRequest.Form["token"] != null )
@@ -46,14 +76,28 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                 if(token != "")
                     Guid.TryParse(token, out _token);
 
-                if (httpRequest.Files.Count > 0)
+                List<ItemImageViewModel> dataList = new List<ItemImageViewModel>();
+                if (httpRequest.Files.Count > 0){
                     foreach (string file in httpRequest.Files)
                     {
                         HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
 
-                        await FileManager.Save(postedFile, ObjectTypes.Products, _token.ToString());
+                        await FileManager.Save(postedFile, imagetype, _token.ToString(), file);
+
+                        ItemImageViewModel imageViewModel = new ItemImageViewModel()
+                            {
+                                BaseDataId = token,
+                                UniqueId = Guid.Parse(imageId),
+                                ImageType = imagetype,
+                                ImageName = file,
+                            };
+                        dataList.Add(imageViewModel);
                     }
 
+                    await itemImageDomain.PublishAsync(dataList);
+
+                }
+
                 return "";
             }
             catch (Exception ex)
@@ -62,93 +106,52 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                 //todo: log error!
             }
         }
-        [HttpPost, Route("Remove")]
-        public async Task<string> RemoveImages(string[] fileNames)
-        {
-            try
-            {
-                if (fileNames != null)
-                    foreach (var fullName in fileNames)
-                        await FileManager.Remove("", ObjectTypes.Products, fullName);
+        //[HttpPost, Route("Remove")]
+        //public async Task<string> RemoveImages(string[] fileNames, string imageType)
+        //{
+        //    try
+        //    {
+        //        if (fileNames != null)
+        //            foreach (var fullName in fileNames)
+        //                await FileManager.Remove("", imageType, fullName);
 
-                // Return an empty string to signify success
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return "Invalid Operation!";
+        //        // Return an empty string to signify success
+        //        return "";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return "Invalid Operation!";
 
-                //todo: log error!
-            }
-        }
-        [HttpGet, Route("Names")]
-        public List<string> GetImageNames(string token)
-        {
-            return FileManager.GetFileNames(token, ObjectTypes.Products);
-        }
+        //        //todo: log error!
+        //    }
+        //}
+        //[HttpGet, Route("Names")]
+        //public List<string> GetImageNames(string token, string imageType)
+        //{
+        //    return FileManager.GetFileNames(token, imageType);
+        //}
 
-        [HttpGet, Route("Image")]
-        public HttpResponseMessage GetImage(string filename, string token = "", int width = 0, int height = 0)
-        {
-            string filepath = new FileManager().GetPath(token, ObjectTypes.Products, filename);
+        //[HttpGet, Route("Image")]
+        //public HttpResponseMessage GetImage(string filename, string imageType, string token = "", int width = 0, int height = 0)
+        //{
+        //    string filepath = new FileManager().GetPath(token, imageType, filename);
 
-            var imgActual = Scale(Image.FromFile(filepath), width, height);
+        //    var imgActual = new FileManager().Scale(Image.FromFile(filepath), width, height);
 
-            var ms = new MemoryStream();
+        //    var ms = new MemoryStream();
 
-            imgActual.Save(ms, ImageFormat.Png);
+        //    imgActual.Save(ms, ImageFormat.Png);
 
-            var result = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new ByteArrayContent(ms.ToArray())
-            };
+        //    var result = new HttpResponseMessage(HttpStatusCode.OK)
+        //    {
+        //        Content = new ByteArrayContent(ms.ToArray())
+        //    };
 
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
+        //    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
 
-            return result;
-        }
-        private Image Scale(Image imgPhoto, int Width = 0, int Height = 0)
-        {
-            float sourceWidth = imgPhoto.Width,
-                    sourceHeight = imgPhoto.Height,
-                    destHeight = imgPhoto.Height,
-                    destWidth = imgPhoto.Width;
+        //    return result;
+        //}
 
-            // force resize, might distort image
-            if (Width != 0 && Height != 0)
-            {
-                destWidth = Width;
-                destHeight = Height;
-            }
-            // change size proportially depending on width or height
-            else if (Height != 0)
-            {
-                destWidth = (float)(Height * sourceWidth) / sourceHeight;
-                destHeight = Height;
-            }
-            else if (Width != 0)
-            {
-                destWidth = Width;
-                destHeight = (float)(sourceHeight * Width / sourceWidth);
-            }
-
-            Bitmap bmPhoto = new Bitmap((int)destWidth, (int)destHeight);//,
-            // PixelFormat.Format32bppPArgb);
-
-            bmPhoto.SetResolution(imgPhoto.HorizontalResolution, imgPhoto.VerticalResolution);
-
-            Graphics grPhoto = Graphics.FromImage(bmPhoto);
-            grPhoto.InterpolationMode = InterpolationMode.Default;//HighQualityBicubic;
-
-            grPhoto.DrawImage(imgPhoto,
-                new Rectangle(0, 0, (int)destWidth, (int)destHeight),
-                new Rectangle(0, 0, (int)sourceWidth, (int)sourceHeight),
-                GraphicsUnit.Pixel);
-
-            grPhoto.Dispose();
-
-            return bmPhoto;
-        }
         #endregion
     }
 }

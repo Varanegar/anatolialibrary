@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Anatoli.PMC.ViewModels.Order
+{
+    public class Sell : PMCBaseViewModel
+    {
+        public int SellId { get; set; }
+        public int InvoiceNo { get; set; }
+        public string InvoiceDate { get; set; }
+        public string InvoiceDateTime { get; set; }
+        public bool IsCanceled { get; set; }
+        public int CustomerId { get; set; }
+        public int StockId { get; set; }
+        public int SalesmanId { get; set; }
+        public int FiscalYearId { get; set; }
+        public int SellTypeId { get; set; }
+        public int PayTypeId { get; set; }
+        public decimal Amount { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public decimal NetAmount { get; set; }
+        public decimal PayableAmount { get; set; }
+        public decimal RemainAmount { get; set; }
+        public decimal DiscountAmount2 { get; set; }
+        public decimal FreightCustomerAmount { get; set; }
+        public int SLId { get; set; }
+        public int CenterId { get; set; }
+        public string RequestDateTime { get; set; }
+        public string Comment { get; set; }
+        public decimal ManualDiscount { get; set; }
+        public decimal Freight { get; set; }
+        public decimal SettlementAmount { get; set; }
+        public string SettlementDate { get; set; }
+        public int PrintCount { get; set; }
+        public string DeliveryNo { get; set; }
+        public string DeliveryDate { get; set; }
+        public int DeliveryStatusId { get; set; }
+        public int SellStatusId { get; set; }
+    }
+}

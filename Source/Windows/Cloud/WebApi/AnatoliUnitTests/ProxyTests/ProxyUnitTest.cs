@@ -4,7 +4,6 @@ using Anatoli.Business;
 using Anatoli.Business.Proxy;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
-using Aantoli.Common.Entity.Gateway.Product;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AnatoliUnitTests.ProxyTests
