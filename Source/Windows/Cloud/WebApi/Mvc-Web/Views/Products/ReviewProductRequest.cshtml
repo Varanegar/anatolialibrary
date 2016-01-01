@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "بازنگری درخواست ها";
+}
+
+<div class="container">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+    <div class="row">
+        <div class="col-lg-3 k-rtl">
+            <div class="requests-grid"></div>
+        </div>
+        <div class="col-lg-9" data-bind="visible: shouldShowRequestInfo">
+            <div class="row">
+                <div class=" requests-info">
+                    <div class="row">
+                        <div class="col-md-3">فروشگاه:</div>
+                        <div class="col-md-3">
+                            <input type="text" name="test" data-bind="value: storeRequestInfo.StoreName" />
+                            <span data-bind="text: storeRequestInfo.StoreName"></span>
+                            {{storeRequestInfo.StoreName}}
+                        </div>
+                        <div class="col-md-3">تاریخ:</div>
+                        <div class="col-md-3">
+                            <span data-bind="text: storeRequestInfo.RequestDate"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">شماره درخواست:</div>
+                        <div class="col-md-3">
+                            <span data-bind="text: storeRequestInfo.RequestNumber"></span>
+                        </div>
+                        <div class="col-md-3">وضعیت:</div>
+                        <div class="col-md-3">
+                            <span data-bind="text: storeRequestInfo.State"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="request-review-grid"></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="request-details-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var crudServiceBaseUrl = "/api/ProductManager/";
+        var storeRequestsUrl = crudServiceBaseUrl + "GetStoreRequests",
+            storeRequestInfoUrl = crudServiceBaseUrl + 'GetStoreRequestInfo',
+            productsUrl = crudServiceBaseUrl + 'GetProducts';
+
+        function ReviewProductRequestViewModel() {
+            // Data
+            var self = this;
+
+            self.chosenStoreRequest = ko.observable();
+            self.storeRequestInfo = ko.observable();
+            self.shouldShowRequestInfo = ko.observable(false);
+
+            self.initStoreRequestsGrid = function () {
+                dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: storeRequestsUrl,
+                            dataType: "json",
+                            contentType: "application/json",
+                            type: "POST"
+                        },
+                        parameterMap: function (options, operation) {
+                            if (operation == "read")
+                                return kendo.stringify(options);
+                        }
+                    },
+                    batch: true,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { editable: false, nullable: true },
+                                StoreName: { type: "string" },
+                                RequestDate: { type: "string" },
+                                RequestNumber: { type: "string" }
+                            }
+                        }
+                    }
+                });
+
+                $(".requests-grid").kendoGrid({
+                    dataSource: dataSource,
+                    selectable: "row",
+                    navigatable: true,
+                    pageable: true,
+                    sortable: true,
+                    height: 550,
+                    change: function (arg) {
+                        var grid = this;
+                        var model = grid.dataItem(grid.select());
+
+                        self.chosenStoreRequest(model);
+                        self.refreshStoreRequestInfo()
+                    },
+                    columns: [
+                        { field: "RequestNumber", title: "شماره درخواست", width: 120 },
+                        { field: "StoreName", title: "نام فروشگاه", width: 100 },
+                        { field: "RequestDate", title: "تاریخ درخواست", width: 100 },
+                    ],
+                    editable: false
+                });
+            };
+
+            self.refreshStoreRequestInfo = function () {
+                $.ajax({
+                    type: "POST",
+                    url: storeRequestInfoUrl,
+                    data: { storeRequestId: self.chosenStoreRequest().Id },
+                    dataType: "json",
+                    success: function (data) {
+                        ko.mapping.fromJS(data, self.storeRequestInfo);
+
+                        self.shouldShowRequestInfo(true)
+                    }
+                });
+                //$.post(storeRequestInfoUrl, { storeRequestId: self.chosenStoreRequest().Id }, function (data) {
+                //    ko.mapping.fromJS(data, self.storeRequestInfo);
+                //})
+                // .then(function () {
+                //     self.shouldShowRequestInfo(true)
+                // }, function () { });
+            };
+
+            self.initStoreRequestsGrid();
+        };
+
+        $(function () {
+            ko.applyBindings(new ReviewProductRequestViewModel());
+        });
+    </script>
+}

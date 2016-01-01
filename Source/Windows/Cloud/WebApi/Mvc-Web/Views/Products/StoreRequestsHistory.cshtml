@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "سوابق درخواست ها";
+}
+
+<style>
+    .products {
+        height: 450px;
+        overflow-y: scroll;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="container store-request-history">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="stores">
+                    <select class="form-control" data-bind="options: stores,
+                       optionsText: 'Name',
+                       value: chosenStore,
+                       optionsCaption: 'انتخاب نمایید...'">
+                    </select>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="products">
+                    <div class="list-group" data-bind="foreach: products">
+                        <a href="#" class="list-group-item" data-bind="text: ProductName,
+                                   css: { active:  $data == $root.chosenProduct() },
+                                   click: $root.refreshHistory">
+                        </a>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 k-rtl">
+            <div class="history-grid"></div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        var storesUrl = '/api/ProductManager/GetStores';
+        var productsUrl = '/api/ProductManager/GetProducts';
+
+        function ProductHistoryManagerViewModel() {
+            // Data
+            var self = this;
+            self.chosenStore = ko.observable();
+            self.chosenProduct = ko.observable();
+
+            self.stores = ko.observableArray([]);
+            self.products = ko.observableArray([]);
+
+            self.chosenStore.subscribe(function (newValue) {
+                self.refreshProducts(newValue)
+            }, self);
+
+            self.refreshStores = function () {
+                $.get(storesUrl, {}, self.stores);
+            };
+
+            self.refreshProducts = function (data) {
+
+                $.post(productsUrl, { StoreId: data.Id }, self.products)
+                .then(function () {
+                    if (self.products().length > 0)
+                        self.refreshHistory(self.products()[0], true);
+                },
+                function (ex) {
+                    console.log(ex.message);
+                });
+
+
+            };
+
+            self.refreshHistory = function (data, initGrid_flag) {
+                self.chosenProduct(data);
+
+                if (initGrid_flag)
+                    self.initGrid(self.chosenStore().Id);
+                else {
+                    $('.history-grid').data("kendoGrid").dataSource.read();
+                    $('.history-grid').data("kendoGrid").refresh();
+                }
+            };
+
+            self.initGrid = function (id) {
+                var crudServiceBaseUrl = "/api/ProductManager/",
+                dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "GetProductRequestsHistory",
+                            dataType: "json",
+                            contentType: "application/json",
+                            type: "POST",
+                            data: { ProductId: self.chosenProduct().Id }
+                        },
+                        
+                        parameterMap: function (options, operation) {
+                            options.ProductId = self.chosenProduct().Id;
+                            if (operation == "read")
+                                return kendo.stringify(options);
+                        }
+                    },
+                    batch: true,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { editable: false, nullable: true },
+                                ModifiedBy: { type: "string" },
+                                ModifiedDate: { type: "string" },
+                                LargeUnit: { type: "number" },
+                                SmallUnit: { type: "number" }
+                            }
+                        }
+                    }
+                });
+
+                $(".history-grid").kendoGrid({
+                    dataSource: dataSource,
+                    navigatable: true,
+                    pageable: true,
+                    height: 550,
+                    columns: [
+                        { field: "ModifiedBy", title: "نام کاربر" },
+                        { field: "ModifiedDate", title: "تاریخ تغییر" },
+                        { field: "LargeUnit", title: "تعداد واحد بزرگ", width: 150 },
+                        { field: "SmallUnit", title: "تعداد واحد کوچک", width: 150 },
+                    ],
+                    editable: false
+                });
+            };
+
+            self.refreshStores();
+        };
+
+        $(function () {
+            ko.applyBindings(new ProductHistoryManagerViewModel());
+        });
+    </script>
+}
