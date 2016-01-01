@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.PMC.ViewModels.EVC
 {
-    public class EVCViewModel : PMCBaseViewModel
+    public class PMCEvcViewModel : PMCBaseViewModel
     {
         public int EVCId { get; set; }
         public decimal ChargeAmount { get; set; }
@@ -20,6 +20,6 @@ namespace Anatoli.PMC.ViewModels.EVC
         public int? SalesmanId { get; set; }
         public int? CenterId { get; set; }
         public string DateOf { get; set; }
-        public List<EVCDetailViewModel> EVCDetail { get; set; }
+        public List<PMCEvcDetailViewModel> EVCDetail { get; set; }
     }
 }

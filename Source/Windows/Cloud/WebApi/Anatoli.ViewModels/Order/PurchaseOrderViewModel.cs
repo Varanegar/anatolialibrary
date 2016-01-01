@@ -41,7 +41,7 @@ namespace Anatoli.ViewModels.Order
         public bool IsCancelled { get; set; }
         public string CancelReason { get; set; }
 
-        List<PurchaseOrderLineItem> LineItem = new List<PurchaseOrderLineItem>();
+        public List<PurchaseOrderLineItemViewModel> LineItems = new List<PurchaseOrderLineItemViewModel>();
 
     }
 }

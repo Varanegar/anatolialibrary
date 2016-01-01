@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.ViewModels.Order
 {
-    public class PurchaseOrderLineItem : BaseViewModel
+    public class PurchaseOrderLineItemViewModel : BaseViewModel
     {
         public Guid  ProductId { get; set; }
         public decimal UnitPrice { get; set; }

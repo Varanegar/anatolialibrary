@@ -46,14 +46,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Thunderstruck">
-      <HintPath>..\packages\Thunderstruck.0.2.4\lib\net40-Client\Thunderstruck.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAdapter\BaseAdapter.cs" />
     <Compile Include="DataAdapter\CharGroupAdapter.cs" />
     <Compile Include="DataAdapter\CityRegionAdapter.cs" />
+    <Compile Include="DataAdapter\EVCAdapter.cs" />
     <Compile Include="DataAdapter\ManufactureAdapter.cs" />
     <Compile Include="DataAdapter\ImageAdapter.cs" />
     <Compile Include="DataAdapter\ProductAdapter.cs" />
@@ -61,12 +59,23 @@
     <Compile Include="DataAdapter\StoreAdapter.cs" />
     <Compile Include="DataAdapter\SupplierAdapter.cs" />
     <Compile Include="Helpers\DBQuery.cs" />
+    <Compile Include="Helpers\Entity\GetId.cs" />
+    <Compile Include="Helpers\GeneralCommands.cs" />
+    <Compile Include="Helpers\PersianDate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Anatoli.PMC.ViewModels\Anatoli.PMC.ViewModels.csproj">
+      <Project>{e22af1cb-59a4-4182-9d05-d71d9f459764}</Project>
+      <Name>Anatoli.PMC.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
       <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
       <Name>Anatoli.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thunderstruck\Thunderstruck.csproj">
+      <Project>{0dc5ab48-1da5-4185-a18e-46c111a82454}</Project>
+      <Name>Thunderstruck</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

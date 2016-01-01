@@ -8,8 +8,8 @@ using Anatoli.PMC.Business.Proxy.Interfaces;
 namespace Anatoli.PMC.Business.Proxy
 {
     public abstract class AnatoliProxy<TSource, TOut> : IAnatoliProxy<TSource, TOut>
-        where TSource : PMCBaseViewModel, new()
-        where TOut : BaseViewModel, new()
+        where TSource : class, new()
+        where TOut : class, new()
     {
 
         public abstract TOut Convert(TSource data);

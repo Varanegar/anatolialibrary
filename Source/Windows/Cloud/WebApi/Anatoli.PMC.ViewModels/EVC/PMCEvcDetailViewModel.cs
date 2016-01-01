@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.PMC.ViewModels.EVC
 {
-    public class EVCDetailViewModel : PMCBaseViewModel
+    public class PMCEvcDetailViewModel : PMCBaseViewModel
     {
         public int EvcDetailId { get; set; }
         public decimal Amount { get; set; }

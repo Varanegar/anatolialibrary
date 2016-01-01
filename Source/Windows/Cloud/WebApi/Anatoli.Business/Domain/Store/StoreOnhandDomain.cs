@@ -10,6 +10,7 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
 using EntityFramework.Extensions;
+using Anatoli.Business.Helpers;
 
 namespace Anatoli.Business.Domain
 {
@@ -66,6 +67,17 @@ namespace Anatoli.Business.Domain
             var storeActiveOnhands = await Repository.FindAllAsync(p => p.StoreId == storeGuid && p.LastUpdate >= selectedDate);
 
             return Proxy.Convert(storeActiveOnhands.ToList()); ;
+        }
+        public async Task<List<StoreActiveOnhandViewModel>> GetAllByStoreIdOnLine(string id)
+        {
+            var returnData = new List<StoreActiveOnhandViewModel>();
+            
+            await Task.Factory.StartNew(() =>
+            {
+                returnData = GetOnlineData(WebApiURIHelper.GetStoreOnHandLocalURI, "id=" + id);
+            });
+            
+            return returnData;
         }
 
         public async Task PublishAsync(List<StoreActiveOnhandViewModel> StoreActiveOnhandViewModels)

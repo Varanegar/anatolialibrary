@@ -11,14 +11,8 @@ using System.Threading.Tasks;
 
 namespace Anatoli.PMC.Business.Domain.Store
 {
-    public class PMCStoreOnHandDomain : IPMCBusinessDomain<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>
+    public class PMCStoreOnHandDomain : PMCBusinessDomain<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>, IPMCBusinessDomain<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region Properties
-        public IAnatoliProxy<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel> Proxy { get; set; }
-        #endregion
-
         #region Ctors
         public PMCStoreOnHandDomain()
             : this(AnatoliProxy<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>.Create())
@@ -52,16 +46,6 @@ namespace Anatoli.PMC.Business.Domain.Store
         {
             var storeActiveOnhands = StoreAdapter.GetAllStoreOnHandsByStoreId(DateTime.MinValue, storeId);
             return storeActiveOnhands;
-        }
-
-        public Task PublishAsync(List<StoreActiveOnhandViewModel> BaseViewModels)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(List<StoreActiveOnhandViewModel> BaseViewModels)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

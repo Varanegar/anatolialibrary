@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.PMC.ViewModels", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.PMC.Business", "Anatoli.PMC.Business\Anatoli.PMC.Business.csproj", "{47D02EB7-3284-4B5D-8D27-9A190FB95980}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thunderstruck", "Thunderstruck\Thunderstruck.csproj", "{0DC5AB48-1DA5-4185-A18E-46C111A82454}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{47D02EB7-3284-4B5D-8D27-9A190FB95980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D02EB7-3284-4B5D-8D27-9A190FB95980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D02EB7-3284-4B5D-8D27-9A190FB95980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
