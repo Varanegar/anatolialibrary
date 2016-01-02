@@ -22,7 +22,7 @@ using Android.Locations;
 namespace AnatoliAndroid.Activities
 {
     [Activity(Label = "آناتولی", Icon = "@drawable/icon")]
-    public class MainActivity : ActionBarActivity
+    public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;
         LocationManager _locationManager;
@@ -54,6 +54,12 @@ namespace AnatoliAndroid.Activities
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver, new IntentFilter(ConnectivityManager.ConnectivityAction));
 
+            _locBroadCastReciever = new LocationManagerBroadcastReceiver();
+            _locBroadCastReciever.LocationManagerStatusChanged += (s, e) =>
+            {
+                AnatoliApp.GetInstance().StartLocationUpdates();
+            };
+            Application.Context.RegisterReceiver(_locBroadCastReciever, new IntentFilter(LocationManager.ProvidersChangedAction));
 
             if (Build.VERSION.SdkInt > Build.VERSION_CODES.Lollipop)
             {
@@ -131,6 +137,33 @@ namespace AnatoliAndroid.Activities
 
         public event EventHandler NetworkStatusChanged;
         public NetworkStatusBroadcastReceiver _broadcastReceiver { get; set; }
+        public LocationManagerBroadcastReceiver _locBroadCastReciever { get; set; }
+
+        public void OnLocationChanged(Location location)
+        {
+            AnatoliApp.GetInstance().SetLocation(location);
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+            
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+            
+        }
+
+        public void OnStatusChanged(string provider, Availability status, Bundle extras)
+        {
+            if (status == Availability.TemporarilyUnavailable || status == Availability.OutOfService)
+            {
+                Toast.MakeText(this, provider + "در حال حاضر دسترسی به موقعیت مکانی شما امکان پذیر نمی باشد", ToastLength.Short).Show();
+            }
+        }
+
+
+
     }
 
     [BroadcastReceiver()]
@@ -143,6 +176,19 @@ namespace AnatoliAndroid.Activities
         {
             if (ConnectionStatusChanged != null)
                 ConnectionStatusChanged(this, EventArgs.Empty);
+        }
+    }
+
+    [BroadcastReceiver()]
+    public class LocationManagerBroadcastReceiver : BroadcastReceiver
+    {
+
+        public event EventHandler LocationManagerStatusChanged;
+
+        public override void OnReceive(Context context, Intent intent)
+        {
+            if (LocationManagerStatusChanged != null)
+                LocationManagerStatusChanged(this, EventArgs.Empty);
         }
     }
 

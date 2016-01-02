@@ -18,5 +18,7 @@ namespace Anatoli.App.Model.Store
         public int store_id { get; set; }
         public int selected { get; set; }
         public string store_tel { get; set; }
+        public string location { get; set; }
+        public float distance { get; set; }
     }
 }

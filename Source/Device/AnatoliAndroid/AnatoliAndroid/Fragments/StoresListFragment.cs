@@ -61,6 +61,43 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideSearchIcon();
+            AnatoliApp.GetInstance().StartLocationUpdates();
+            AnatoliApp.GetInstance().LocationChanged += StoresListFragment_LocationChanged;
+        }
+
+        void StoresListFragment_LocationChanged(Location location)
+        {
+            Toast.MakeText(AnatoliApp.GetInstance().Activity, location.Longitude.ToString(), ToastLength.Short).Show();
+            UpdateDistances(location);
+        }
+        public void UpdateDistances(Location location)
+        {
+            
+            if (!String.IsNullOrEmpty(_item.location))
+            {
+                try
+                {
+                    string[] l = _item.location.Split(new char[] { ',' });
+                    double langitude = double.Parse(l[0]);
+                    double latitude = double.Parse(l[1]);
+                    Location loc = new Location("destination");
+                    loc.Latitude = latitude;
+                    loc.Longitude = langitude;
+                    var dist = location.DistanceTo(loc);
+                    _distance = dist.ToString();
+                    NotifyDataSetChanged();
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+        }
+        public override void OnPause()
+        {
+            base.OnPause();
+            AnatoliApp.GetInstance().StopLocationUpdates();
+            AnatoliApp.GetInstance().LocationChanged -= StoresListFragment_LocationChanged;
         }
     }
 }

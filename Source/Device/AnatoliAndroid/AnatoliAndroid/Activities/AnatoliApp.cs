@@ -15,6 +15,7 @@ using AnatoliAndroid.ListAdapters;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.Fragments;
 using Anatoli.App.Manager;
+using Android.Locations;
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -579,5 +580,64 @@ namespace AnatoliAndroid.Activities
             }
         }
 
+        string _locationProvider = "";
+        
+        public void StartLocationUpdates()
+        {
+            try
+            {
+                Criteria criteriaForLocationService = new Criteria
+                {
+                    Accuracy = Accuracy.Fine,
+                    PowerRequirement = Power.Medium
+                };
+                _locationProvider = LocationManager.GetBestProvider(criteriaForLocationService, true);
+                if (!String.IsNullOrEmpty(_locationProvider))
+                {
+                    LocationManager.RequestLocationUpdates(_locationProvider, 0, 0, (ILocationListener)_activity);
+                    if (_locationProvider != LocationManager.GpsProvider)
+                    {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
+                        alert.SetMessage("برای فاصله یابی دقیق از فروشگاه ها gps دستگاه خود را روشن نمایید");
+                        alert.SetPositiveButton("روشن کردن gps", (s, e) =>
+                        {
+                            Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+                            _activity.StartActivity(callGPSSettingIntent);
+                        });
+                        alert.SetNegativeButton("بی خیال", (s, e) => { });
+                        alert.Show();
+                    }
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        public void StopLocationUpdates()
+        {
+            LocationManager.RemoveUpdates((ILocationListener)_activity);
+        }
+
+        public void SetLocation(Location location)
+        {
+            OnLocationChanged(location);
+        }
+
+        void OnLocationChanged(Location location)
+        {
+            if (LocationChanged != null)
+            {
+                LocationChanged.Invoke(location);
+            }
+        }
+        public event LocationChangedEventHandler LocationChanged;
+        public delegate void LocationChangedEventHandler(Location location);
     }
 }
