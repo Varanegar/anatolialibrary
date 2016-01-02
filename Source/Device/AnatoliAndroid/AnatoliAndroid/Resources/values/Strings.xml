@@ -42,6 +42,8 @@
   
   <string name="Open">باز است !</string>
   <string name="Close">بسته است !</string>
+  <string name="Meter">متر</string>
+  <string name="KMeter">کیلومتر</string>
   
   <string name="PleaseWait">لطفا صبور باشید</string>
   <string name="SaveSuccess">عضویت انجام شد</string>

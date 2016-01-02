@@ -21,26 +21,24 @@ namespace AnatoliAndroid.ListAdapters
 {
     class StoresListAdapter : BaseListAdapter<StoreManager, StoreDataModel>
     {
-        StoreDataModel _item = null;
-        string _distance = "äÇ ãÔÎÕ";
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
             convertView = _context.LayoutInflater.Inflate(Resource.Layout.StoreSummaryLayout, null);
 
-
+            StoreDataModel item = null;
             if (List != null)
-                _item = List[position];
+                item = List[position];
             else
                 return convertView;
             convertView.Click += async (s, e) =>
             {
-                if (await StoreManager.SelectAsync(_item) == true)
+                if (await StoreManager.SelectAsync(item) == true)
                 {
                     AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
-                    OnStoreSelected(_item);
+                    OnStoreSelected(item);
                 }
             };
-            if (_item.selected == 1)
+            if (item.selected == 1)
             {
                 convertView.SetBackgroundResource(Resource.Color.lightgray);
             }
@@ -48,21 +46,23 @@ namespace AnatoliAndroid.ListAdapters
             TextView storeAddressTextView = convertView.FindViewById<TextView>(Resource.Id.storeAddressTextView);
             TextView storeStatusTextView = convertView.FindViewById<TextView>(Resource.Id.storeStatusTextView);
             TextView _storeDistance = convertView.FindViewById<TextView>(Resource.Id.distanceTextView);
-            _storeDistance.Text = _distance;
-            // todo : add store close open 
-            int r = new Random().Next(0, 10);
-            if (r > 5)
-            {
-                storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Open);
-                storeStatusTextView.SetTextColor(Android.Graphics.Color.Green);
-            }
+
+            if (item.distance < 1500)
+                _storeDistance.Text = item.distance.ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.Meter);
             else
-            {
-                storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Close);
-                storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
-            }
-            storeNameTextView.Text = _item.store_name;
-            storeAddressTextView.Text = _item.store_address;
+                _storeDistance.Text = Math.Round((item.distance / 1000), 1).ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.KMeter);
+
+
+            // todo : add store close open 
+
+            storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Open);
+            storeStatusTextView.SetTextColor(Android.Graphics.Color.Green);
+
+            //storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Close);
+            //storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
+
+            storeNameTextView.Text = item.store_name;
+            storeAddressTextView.Text = item.store_address;
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
         }

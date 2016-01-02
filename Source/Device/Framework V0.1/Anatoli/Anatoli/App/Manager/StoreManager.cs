@@ -59,5 +59,19 @@ namespace Anatoli.App.Manager
         public class NullStoreException : Exception
         {
         }
+
+        public static async Task<bool> UpdateDistanceAsync(int store_id, float dist)
+        {
+            UpdateCommand command = new UpdateCommand("stores", new BasicParam("distance", dist.ToString()), new EqFilterParam("store_id", store_id.ToString()));
+            try
+            {
+                int result = await LocalUpdateAsync(command);
+                return (result > 0) ? true : false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

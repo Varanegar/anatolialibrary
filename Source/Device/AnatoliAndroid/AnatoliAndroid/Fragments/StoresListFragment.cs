@@ -17,13 +17,14 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using Android.Locations;
 using AnatoliAndroid.Activities;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("انتخاب فروشگاه")]
     class StoresListFragment : BaseListFragment<StoreManager, StoresListAdapter, NoListToolsDialog, StoreDataModel>
     {
-
+        Location _currentLocation;
         public StoresListFragment()
         {
             _listAdapter.StoreSelected += (store) =>
@@ -41,6 +42,29 @@ namespace AnatoliAndroid.Fragments
                 };
         }
 
+        private async void UpdateDistances()
+        {
+            if (_currentLocation == null)
+                return;
+            for (int i = _listView.FirstVisiblePosition; i < _listView.LastVisiblePosition; i++)
+            {
+                var item = _listView.Adapter.GetItem(i);
+                var store = item.Cast<StoreDataModel>();
+                if (store != null && !String.IsNullOrEmpty(store.location))
+                {
+                    Location loc = new Location("destination");
+                    string[] l = store.location.Split(new char[] { ',' });
+                    double latitude = double.Parse(l[0]);
+                    double langitude = double.Parse(l[1]);
+                    loc.Latitude = latitude;
+                    loc.Longitude = langitude;
+                    var dist = CalcDistance(_currentLocation, loc);
+                    store.distance = dist;
+                    await StoreManager.UpdateDistanceAsync(store.store_id, dist);
+                    _listAdapter.NotifyDataSetChanged();
+                }
+            }
+        }
 
         protected override List<QueryParameter> CreateQueryParameters()
         {
@@ -63,36 +87,32 @@ namespace AnatoliAndroid.Fragments
             AnatoliApp.GetInstance().HideSearchIcon();
             AnatoliApp.GetInstance().StartLocationUpdates();
             AnatoliApp.GetInstance().LocationChanged += StoresListFragment_LocationChanged;
+            _listView.Scroll += _listView_Scroll;
+            UpdateDistances();
+        }
+
+        private void _listView_Scroll(object sender, AbsListView.ScrollEventArgs e)
+        {
+            UpdateDistances();
         }
 
         void StoresListFragment_LocationChanged(Location location)
         {
-            Toast.MakeText(AnatoliApp.GetInstance().Activity, location.Longitude.ToString(), ToastLength.Short).Show();
-            UpdateDistances(location);
-        }
-        public void UpdateDistances(Location location)
-        {
-            
-            if (!String.IsNullOrEmpty(_item.location))
+            if (_currentLocation == null)
             {
-                try
-                {
-                    string[] l = _item.location.Split(new char[] { ',' });
-                    double langitude = double.Parse(l[0]);
-                    double latitude = double.Parse(l[1]);
-                    Location loc = new Location("destination");
-                    loc.Latitude = latitude;
-                    loc.Longitude = langitude;
-                    var dist = location.DistanceTo(loc);
-                    _distance = dist.ToString();
-                    NotifyDataSetChanged();
-                }
-                catch (Exception)
-                {
-
-                }
+                _currentLocation = location;
+                UpdateDistances();
             }
+            else
+                _currentLocation = location;
         }
+
+        public float CalcDistance(Location location1, Location location2)
+        {
+            var dist = location1.DistanceTo(location2);
+            return dist;
+        }
+
         public override void OnPause()
         {
             base.OnPause();

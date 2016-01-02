@@ -594,7 +594,7 @@ namespace AnatoliAndroid.Activities
                 _locationProvider = LocationManager.GetBestProvider(criteriaForLocationService, true);
                 if (!String.IsNullOrEmpty(_locationProvider))
                 {
-                    LocationManager.RequestLocationUpdates(_locationProvider, 0, 0, (ILocationListener)_activity);
+                    LocationManager.RequestLocationUpdates(_locationProvider, 10000, 100, (ILocationListener)_activity);
                     if (_locationProvider != LocationManager.GpsProvider)
                     {
                         AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
