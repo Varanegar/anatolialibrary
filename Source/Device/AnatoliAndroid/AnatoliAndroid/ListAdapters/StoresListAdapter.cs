@@ -46,12 +46,31 @@ namespace AnatoliAndroid.ListAdapters
             TextView storeAddressTextView = convertView.FindViewById<TextView>(Resource.Id.storeAddressTextView);
             TextView storeStatusTextView = convertView.FindViewById<TextView>(Resource.Id.storeStatusTextView);
             TextView _storeDistance = convertView.FindViewById<TextView>(Resource.Id.distanceTextView);
+            ImageView _mapIconImageView = convertView.FindViewById<ImageView>(Resource.Id.mapIconImageView);
 
-            if (item.distance < 1500)
+            
+            if (item.distance < 0.0005)
+                _storeDistance.Text = AnatoliApp.GetResources().GetText(Resource.String.UnknownDistance);
+            else if (item.distance < 1500)
                 _storeDistance.Text = item.distance.ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.Meter);
             else
                 _storeDistance.Text = Math.Round((item.distance / 1000), 1).ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.KMeter);
 
+            if (!String.IsNullOrEmpty(item.location))
+            {
+                _mapIconImageView.Click += (s, e) =>
+                {
+                    OpenMap(item.location);
+                };
+                storeAddressTextView.Click += (s, e) =>
+                {
+                    OpenMap(item.location);
+                };
+                _storeDistance.Click += (s, e) =>
+                {
+                    OpenMap(item.location);
+                };
+            }
 
             // todo : add store close open 
 
@@ -66,7 +85,19 @@ namespace AnatoliAndroid.ListAdapters
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
         }
+        void OpenMap(string location)
+        {
+            try
+            {
+                var geoUri = Android.Net.Uri.Parse("geo:" + location);
+                var mapIntent = new Intent(Intent.ActionView, geoUri);
+                AnatoliApp.GetInstance().Activity.StartActivity(mapIntent);
+            }
+            catch (Exception)
+            {
 
+            }
+        }
         void OnStoreSelected(StoreDataModel store)
         {
             if (StoreSelected != null)

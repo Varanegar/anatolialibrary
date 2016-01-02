@@ -2742,11 +2742,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050032
 			public const int AreYouSure = 2131034162;
 			
-			// aapt resource value: 0x7f05003e
-			public const int AuthenticationFailed = 2131034174;
+			// aapt resource value: 0x7f05003f
+			public const int AuthenticationFailed = 2131034175;
 			
-			// aapt resource value: 0x7f05003c
-			public const int Cancel = 2131034172;
+			// aapt resource value: 0x7f05003d
+			public const int Cancel = 2131034173;
 			
 			// aapt resource value: 0x7f05002d
 			public const int City = 2131034157;
@@ -2820,8 +2820,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050015
 			public const int OpenDrawer = 2131034133;
 			
-			// aapt resource value: 0x7f05003a
-			public const int PleaseWait = 2131034170;
+			// aapt resource value: 0x7f05003b
+			public const int PleaseWait = 2131034171;
 			
 			// aapt resource value: 0x7f050017
 			public const int Products = 2131034135;
@@ -2838,11 +2838,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050030
 			public const int Save = 2131034160;
 			
-			// aapt resource value: 0x7f05003b
-			public const int SaveSuccess = 2131034171;
+			// aapt resource value: 0x7f05003c
+			public const int SaveSuccess = 2131034172;
 			
-			// aapt resource value: 0x7f05003d
-			public const int ServerUnreachable = 2131034173;
+			// aapt resource value: 0x7f05003e
+			public const int ServerUnreachable = 2131034174;
 			
 			// aapt resource value: 0x7f05002a
 			public const int Tel = 2131034154;
@@ -2852,6 +2852,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f050026
 			public const int TotalPrice = 2131034150;
+			
+			// aapt resource value: 0x7f05003a
+			public const int UnknownDistance = 2131034170;
 			
 			// aapt resource value: 0x7f050035
 			public const int Updating = 2131034165;
