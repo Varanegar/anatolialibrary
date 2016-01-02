@@ -32,7 +32,7 @@ namespace AnatoliAndroid.Fragments
         Spinner _citySpinner;
         Spinner _provinceSpinner;
         ShippingInfoModel _shippingInfo;
-        ImageButton _exitImageButton;
+        TextView _exitTextView;
         Button _saveButton;
         CustomerViewModel _customerViewModel;
         public override void OnCreate(Bundle savedInstanceState)
@@ -64,7 +64,13 @@ namespace AnatoliAndroid.Fragments
                 AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 try
                 {
-                    var result = await AnatoliUserManager.UploadUserInfoAsync(_customerViewModel);
+                    ProgressDialog pDialog = new ProgressDialog();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                    pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                    pDialog.Show();
+                    var result = await CustomerManager.UploadCustomerAsync(_customerViewModel);
+                    await CustomerManager.SaveCustomerAsync(_customerViewModel);
+                    pDialog.Dismiss();
                     if (result.IsValid)
                     {
                         errDialog.SetTitle("");
@@ -85,51 +91,72 @@ namespace AnatoliAndroid.Fragments
                     errDialog.Show();
                 }
             };
-            _exitImageButton = view.FindViewById<ImageButton>(Resource.Id.exitImageButton);
-            _exitImageButton.Click += async (s, e) =>
+            _exitTextView = view.FindViewById<TextView>(Resource.Id.logoutTextView);
+            _exitTextView.Click += (s, e) =>
             {
-                bool result = await AnatoliUserManager.LogoutAsync();
-                if (result)
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.AreYouSure));
+                alert.SetPositiveButton(AnatoliApp.GetResources().GetText(Resource.String.Yes), async (s2, e2) =>
                 {
-                    AnatoliApp.GetInstance().AnatoliUser = null;
-                    AnatoliApp.GetInstance().RefreshMenuItems();
-                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
-                }
+                    bool result = await AnatoliUserManager.LogoutAsync();
+                    if (result)
+                    {
+                        AnatoliApp.GetInstance().AnatoliUser = null;
+                        AnatoliApp.GetInstance().RefreshMenuItems();
+                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                    }
+
+                });
+                alert.SetNegativeButton(AnatoliApp.GetResources().GetText(Resource.String.No), (s2, e2) => { });
+                alert.Show();
             };
             return view;
         }
         public async override void OnStart()
         {
             base.OnStart();
-            _shippingInfo = ShippingInfoManager.GetDefault();
-            if (AnatoliClient.GetInstance().WebClient.IsOnline())
+            try
             {
-                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-
-                try
+                _shippingInfo = ShippingInfoManager.GetDefault();
+                if (AnatoliClient.GetInstance().WebClient.IsOnline())
                 {
-                    var userModel = await AnatoliUserManager.DownloadUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                    if (userModel.IsValid)
+                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    ProgressDialog pDialog = new ProgressDialog();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                    pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                    pDialog.Show();
+                    try
                     {
-                        _customerViewModel = userModel;
-                        _firstNameEditText.Text = _customerViewModel.CustomerName;
-                        _lastNameEditText.Text = _customerViewModel.CustomerName;
-                        _idEditText.Text = _customerViewModel.NationalCode;
-                        _addressEditText.Text = _customerViewModel.Address;
-                        _emailEditText.Text = _customerViewModel.Email;
-                        _telEditText.Text = _customerViewModel.Mobile;
+                        var userModel = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
+                        pDialog.Dismiss();
+                        if (userModel.IsValid)
+                        {
+                            _customerViewModel = userModel;
+                            await CustomerManager.SaveCustomerAsync(_customerViewModel);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        errDialog.SetMessage(ex.Message);
+                        errDialog.Show();
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    errDialog.SetMessage(ex.Message);
-                    errDialog.Show();
+                    _customerViewModel = await CustomerManager.ReadCustomerAsync();
                 }
+                _firstNameEditText.Text = _customerViewModel.CustomerName;
+                _lastNameEditText.Text = _customerViewModel.CustomerName;
+                _idEditText.Text = _customerViewModel.NationalCode;
+                _addressEditText.Text = _customerViewModel.Address;
+                _emailEditText.Text = _customerViewModel.Email;
+                _telEditText.Text = _customerViewModel.Mobile;
             }
-            else if (_shippingInfo != null)
+            catch (Exception)
             {
-                _addressEditText.Text = _shippingInfo.address;
+
             }
+
         }
     }
 }

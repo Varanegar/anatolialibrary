@@ -14,6 +14,7 @@
   <string name="LastOrders">سفارشات قبلی</string>
   <string name="Messages">پیام های من</string>
   <string name="Login">ورود</string>
+  <string name="Logout">خروج از حساب کاربری</string>
   <string name="MainMenu">منوی اصلی</string>
 
   <string name="ItemRemoved">حذف شد !</string>
@@ -34,6 +35,10 @@
   <string name="Zone">منطقه</string>
   <string name="Save">ثبت</string>
   <string name="Id">کد ملی</string>
+  <string name="AreYouSure">آیا اطمینان دارید؟</string>
+  <string name="Yes">آره</string>
+  <string name="No">بی خیال !</string>
+  <string name="Updating">بروزرسانی</string>
   
   <string name="Open">باز است !</string>
   <string name="Close">بسته است !</string>

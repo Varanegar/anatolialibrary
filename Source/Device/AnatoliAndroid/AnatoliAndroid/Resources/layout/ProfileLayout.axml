@@ -2,36 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/AnatoliPage">
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:id="@+id/relativeLayout1">
-        <ImageButton
-            android:id="@+id/exitImageButton"
-            android:background="@drawable/exit"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_centerVertical="true" />
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
         <AnatoliAndroid.Components.AnatoliButton
             android:text="@string/Save"
             android:id="@+id/saveButton"
             local:customFont="Fonts/anatoli.ttf"
             style="@style/AnatoliButton.Green"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/exitImageButton"
-            android:layout_centerVertical="true" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="@string/Logout"
+            android:textColor="@color/red"
+            android:id="@+id/logoutTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/saveButton"
+            android:layout_centerHorizontal="true"
+            local:customFont="Fonts/anatoli.ttf" />
     </RelativeLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/relativeLayout1"
         android:id="@+id/mainLinearLayout"
-        android:layout_below="@id/relativeLayout1"
-        style="@style/AnatoliPage">
+        android:layout_alignParentTop="true">
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -102,6 +108,7 @@
                         android:id="@+id/tableRow1">
                         <Spinner
                             android:layout_column="0"
+                            android:layout_weight="1"
                             android:id="@+id/citySpinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
@@ -129,6 +136,7 @@
                         <Spinner
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_column="0"
+                            android:layout_weight="1"
                             android:id="@+id/districtSpinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
@@ -140,6 +148,7 @@
                         <Spinner
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_column="2"
+                            android:layout_weight="1"
                             android:id="@+id/zoneSpinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView

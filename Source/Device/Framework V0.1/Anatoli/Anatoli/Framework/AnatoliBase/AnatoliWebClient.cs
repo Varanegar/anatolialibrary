@@ -172,9 +172,9 @@ namespace Anatoli.Framework.AnatoliBase
 
                 await SaveTokenFileAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new TokenException();
+                throw e;
             }
         }
         public async Task<Result> SendPostRequestAsync<Result>(TokenType tokenType, string requestUri, params Tuple<string, string>[] parameters)

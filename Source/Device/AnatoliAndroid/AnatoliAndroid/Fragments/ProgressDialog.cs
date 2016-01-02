@@ -40,7 +40,10 @@ namespace AnatoliAndroid.Fragments
             if (Cancelable)
                 cancelButton.Click += cancelButton_Click;
             else
+            {
                 cancelButton.Visibility = ViewStates.Gone;
+                SetCancelable(false);
+            }
         }
 
 

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
     <Compile Include="App\Manager\CategoryManager.cs" />
+    <Compile Include="App\Manager\CustomerManager.cs" />
     <Compile Include="App\Manager\MessageManager.cs" />
     <Compile Include="App\Manager\OrderItemsManager.cs" />
     <Compile Include="App\Manager\OrderManager.cs" />
@@ -48,7 +49,7 @@
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
     <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
-    <Compile Include="App\Model\CustomerViewModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
     <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
     <Compile Include="App\Model\Product\ProductFieldModel.cs" />
     <Compile Include="App\Model\Product\ProductImage.cs" />

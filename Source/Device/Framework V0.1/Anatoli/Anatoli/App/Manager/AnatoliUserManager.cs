@@ -95,23 +95,6 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<CustomerViewModel> DownloadUserInfoAsync(AnatoliUserModel user)
-        {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl,
-                new Tuple<string, string>("Id", user.Id),
-                new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
-            return userModel;
-        }
-
-        public static async Task<CustomerViewModel> UploadUserInfoAsync(CustomerViewModel user)
-        {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.SaveProfileUrl + "?PrivateOwnerId=" + user.PrivateOwnerId,
-                user
-                );
-            return userModel;
-
-        }
-
         public static async Task<bool> LogoutAsync()
         {
             var fileIO = AnatoliClient.GetInstance().FileIO;
