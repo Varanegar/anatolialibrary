@@ -13,7 +13,7 @@
     <link href="~/Content/KendoUI/kendo.material.min.css" rel="stylesheet" />
     <link href="~/Content/KendoUI/kendo.material.mobile.min.css" rel="stylesheet" />
     @*<link href="~/Content/KendoUI/kendo.common-bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/KendoUI/kendo.bootstrap.min.css" rel="stylesheet" />*@
+        <link href="~/Content/KendoUI/kendo.bootstrap.min.css" rel="stylesheet" />*@
 
 </head>
 <body>
@@ -45,11 +45,138 @@
         </footer>
     </div>
 
+    <div class="login-form k-rtl hide">
+        <div class="row">
+            <div class="col-md-12">
+                <input class="form-control" type="text" data-bind="value: loginEmail" placeholder="نام کاربری یا ایمیل" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <input class="form-control" type="password" data-bind="value: loginPassword" placeholder="رمزعبور" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary btn-lg btn-login">
+                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ورود
+                </button>
+            </div>
+        </div>
+        <div class="row"><span class="text-danger" data-bind="text: result" /></div>
+    </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/knockout-3.4.0.js"></script>
     <script src="~/Scripts/knockout.mapping-latest.js"></script>
     <script src="~/Scripts/kendo.all.min.js"></script>
+
+    <script>
+        function LoginViewModel() {
+            var self = this;
+
+            var loginUrl = 'http://localhost:59822/Token';
+
+            var tokenKey = 'accessToken';
+
+            self.result = ko.observable();
+            self.user = ko.observable();
+            self.loginEmail = ko.observable();
+            self.loginPassword = ko.observable();
+
+            function showError(jqXHR) {
+                self.result(jqXHR.status + ': ' + jqXHR.statusText);
+            }
+
+            self.callApi = function (url, callType, callBackFunc) {
+                self.result('');
+
+                var token = sessionStorage.getItem(tokenKey);
+                var headers = {};
+
+                if (token)
+                    headers.Authorization = 'Bearer ' + token;
+                else {
+                    self.openLogin();
+                    return;
+                }
+
+                $.ajax({
+                    type: callType,
+                    url: url,
+                    headers: headers
+                }).done(function (data) {
+                    self.result(data);
+                    callBackFunc(data);
+                }).fail(showError);
+            }
+
+            var $loginForm = $(".login-form");
+            self.login = function () {
+                self.result('');
+                
+                if (self.loginEmail() == undefined || self.loginEmail() == '' || self.loginPassword() == undefined || self.loginPassword() == '') {
+                    self.result('لطفا اطلاعات کاربری خود را وارد نمایید');
+                    return;
+                }
+
+                var loginData = {
+                    grant_type: 'password',
+                    username: self.loginEmail(),
+                    password: self.loginPassword()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: loginUrl,
+                    data: loginData
+                }).done(function (data) {
+                    self.user(data.userName);
+                    // Cache the access token in session storage.
+                    sessionStorage.setItem(tokenKey, data.access_token);
+                    $loginForm.data("kendoWindow").close();
+                }).fail(showError);
+            }
+
+            self.logout = function () {
+                self.user('');
+                sessionStorage.removeItem(tokenKey)
+            }
+
+            self.openLogin = function () {
+                $loginForm.data("kendoWindow").center();
+                $loginForm.data("kendoWindow").open();
+            }
+
+            $(document).on("click", ".btn-login", function () {
+                self.login();
+            });
+
+            self.initLoginWindow = function () {
+                $loginForm.removeClass('hide');
+                if (!$loginForm.data("kendoWindow")) {
+                    $loginForm.kendoWindow({
+                        width: "450px",
+                        title: "ورود",
+                        actions: [],
+                        modal: true,
+                        visible: false,
+                        resizable: false
+                    });
+                }
+            };
+
+            self.initLoginWindow();
+        }
+
+        var accountManagerApp = new LoginViewModel();
+
+        $(function () {
+            ko.applyBindings(accountManagerApp, $(".login-form")[0]);
+        });
+
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

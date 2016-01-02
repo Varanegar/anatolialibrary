@@ -2,7 +2,7 @@
     ViewBag.Title = "بازنگری درخواست ها";
 }
 
-<div class="container">
+<div class="container request-review-page">
     <h1>@ViewBag.Title</h1>
     <hr />
     <div class="row">
@@ -51,8 +51,7 @@
             <div class="request-details-grid"></div>
         </div>
     </script>
-
-
+    
     <script>
         var crudServiceBaseUrl = "/api/ProductManager/";
         var storeRequestsUrl = crudServiceBaseUrl + "GetStoreRequests",
@@ -249,7 +248,7 @@
         };
 
         $(function () {
-            ko.applyBindings(new ReviewProductRequestViewModel());
+            ko.applyBindings(new ReviewProductRequestViewModel(), $('.request-review-page"')[0]);
         });
     </script>
 }

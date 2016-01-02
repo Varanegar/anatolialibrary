@@ -168,7 +168,7 @@ namespace Mvc_Web.Controllers
         #endregion
 
         #region Methods
-        [HttpGet]
+        [Authorize,HttpGet]
         public HttpResponseMessage GetStores()
         {
             return Request.CreateResponse(HttpStatusCode.OK, Stores);

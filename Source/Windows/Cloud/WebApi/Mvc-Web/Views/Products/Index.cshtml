@@ -3,7 +3,7 @@
 }
 
 
-<div class="container k-rtl">
+<div class="container products-page k-rtl">
     <h1>@ViewBag.Title</h1>
     <hr />
     <div class="row">
@@ -38,19 +38,16 @@
             self.products = ko.observableArray([]);
 
             self.refreshStores = function () {
-                $.get(storesUrl, {}, self.stores)
-                    .then(function () {
-                        if (self.stores().length > 0) {
-                            self.chosenStore(self.stores()[0]);
+                accountManagerApp.callApi(storesUrl, 'GET', function (data) {
+                    self.stores(data);
+                    if (self.stores().length > 0) {
+                        self.chosenStore(self.stores()[0]);
 
-                            self.initGrid(self.chosenStore().Id);
+                        self.initGrid(self.chosenStore().Id);
 
-                            self.refreshProducts(self.chosenStore());
-                        }
-                    },
-                    function (ex) {
-                        console.log(ex.message);
-                    });
+                        self.refreshProducts(self.chosenStore());
+                    }
+                });
             };
 
             self.refreshProducts = function (data) {
@@ -130,7 +127,7 @@
         };
 
         $(function () {
-            ko.applyBindings(new ProductManagerViewModel());
+            ko.applyBindings(new ProductManagerViewModel(), $(".products-page")[0]);
         });
     </script>
 }
