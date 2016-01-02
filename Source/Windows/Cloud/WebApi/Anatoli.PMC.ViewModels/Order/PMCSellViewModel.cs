@@ -45,7 +45,7 @@ namespace Anatoli.PMC.ViewModels.Order
         [Ignore]
         public string DeliveryDate { get; set; }
         [Ignore]
-        public int DeliveryStatusId { get; set; }
+        public int? DeliveryStatusId { get; set; }
         public int SellStatusId { get; set; }
         public decimal FreightCustomerAmount { get; set; }
         public List<PMCSellDetailViewModel> SellDetail { get; set; }

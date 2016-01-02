@@ -16,9 +16,9 @@ namespace Anatoli.PMC.ViewModels.EVC
         public decimal DiscountAmountX2 { get; set; }
         public decimal NetAmount { get; set; }
         public decimal Amount { get; set; }
-        public int? CustomerId { get; set; }
-        public int? SalesmanId { get; set; }
-        public int? CenterId { get; set; }
+        public int CustomerId { get; set; }
+        public int SalesmanId { get; set; }
+        public int CenterId { get; set; }
         public string DateOf { get; set; }
         public List<PMCEvcDetailViewModel> EVCDetail { get; set; }
     }

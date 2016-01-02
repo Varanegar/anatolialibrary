@@ -13,16 +13,30 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class EVCAdapter : BaseAdapter
     {
-        public static PMCEvcViewModel CalcEvcResult(PMCEvcViewModel data)
+        private static EVCAdapter instance = null;
+        public static EVCAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EVCAdapter();
+                }
+                return instance;
+            }
+        }
+        EVCAdapter() { }
+        public  PMCEvcViewModel CalcEvcResult(PMCEvcViewModel data)
         {
             var resultEvc = new PMCEvcViewModel();
-            using(var context = new DataContext(Transaction.Begin))
+            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(data.CenterId).ConnectionString;
+            using(var context = new DataContext(connectionString, Transaction.Begin))
             {
                 DateTime serverTime = GeneralCommands.GetServerDateTime(context);
                 data.DateOf = new PersianDate(serverTime) + serverTime.ToString(" HH:mm");
                 
-                var evcId = context.Execute<PMCGetIdEntity>("EXEC GetId 'Evc' , @EvcId output").Id;
-                data.EVCId = evcId;
+                var evcId =
+                data.EVCId = GeneralCommands.GetId(context, "Evc");
 
                 DataObject<PMCEvcViewModel> evcDataObject = new DataObject<PMCEvcViewModel>("Evc");
                 evcDataObject.Insert(data, context);

@@ -59,7 +59,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storeOnhandbyid/local")]
-        public async Task<IHttpActionResult> GetStoreOnlineOnhandsByStoreId(string id)
+        public async Task<IHttpActionResult> GetStoreLocalOnhandsByStoreId(string id)
         {
             var result = new List<StoreActiveOnhandViewModel>();
             await Task.Factory.StartNew(() =>

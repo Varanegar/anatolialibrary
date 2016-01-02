@@ -1,4 +1,5 @@
 ﻿using Anatoli.PMC.Business.Proxy.Interfaces;
+using Anatoli.PMC.DataAccess.Helpers.Entity;
 using Anatoli.PMC.ViewModels.EVC;
 using Anatoli.PMC.ViewModels.Order;
 using Anatoli.PMC.ViewModels.StoreModels;
@@ -28,19 +29,20 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
         }
         #endregion
 
-        public override PMCSellViewModel Convert(PMCEvcViewModel data)
+        public override PMCSellViewModel Convert(PMCEvcViewModel data, PMCStoreConfigEntity storeConfig)
         {
-            return new PMCSellViewModel()
-            {
-                SellDetail = PMCEvcDetailProxy.Convert(data.EVCDetail),
-            };
+            throw new NotImplementedException();
         }
 
-        public override PMCEvcViewModel ReverseConvert(PMCSellViewModel data)
+        public override PMCEvcViewModel ReverseConvert(PMCSellViewModel data, PMCStoreConfigEntity storeConfig)
         {
             return new PMCEvcViewModel()
             {
-                EVCDetail = PMCEvcDetailProxy.ReverseConvert(data.SellDetail),
+                CustomerId = data.CustomerId,
+                CenterId = data.CenterId,
+                SalesmanId = data.SalesmanId,
+                DateOf = data.InvoiceDateTime,
+                EVCDetail = PMCEvcDetailProxy.ReverseConvert(data.SellDetail, storeConfig),
             };
         }
     }

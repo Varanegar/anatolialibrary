@@ -11,7 +11,19 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class SupplierAdapter : BaseAdapter
     {
-        public static List<SupplierViewModel> GetAllSuppliers(DateTime lastUpload)
+        private static SupplierAdapter instance = null;
+        public static SupplierAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new SupplierAdapter();
+                }
+                return instance;
+            }
+        }
+        public  List<SupplierViewModel> GetAllSuppliers(DateTime lastUpload)
         {
             try
             {

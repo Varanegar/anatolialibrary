@@ -51,6 +51,7 @@
     <Compile Include="DataAdapter\BaseAdapter.cs" />
     <Compile Include="DataAdapter\CharGroupAdapter.cs" />
     <Compile Include="DataAdapter\CityRegionAdapter.cs" />
+    <Compile Include="DataAdapter\CustomerAdapter.cs" />
     <Compile Include="DataAdapter\EVCAdapter.cs" />
     <Compile Include="DataAdapter\ManufactureAdapter.cs" />
     <Compile Include="DataAdapter\ImageAdapter.cs" />
@@ -59,9 +60,11 @@
     <Compile Include="DataAdapter\StoreAdapter.cs" />
     <Compile Include="DataAdapter\SupplierAdapter.cs" />
     <Compile Include="Helpers\DBQuery.cs" />
-    <Compile Include="Helpers\Entity\GetId.cs" />
+    <Compile Include="Helpers\Entity\PMCGetIdEntity.cs" />
+    <Compile Include="Helpers\Entity\PMCStoreConfigEntity.cs" />
     <Compile Include="Helpers\GeneralCommands.cs" />
     <Compile Include="Helpers\PersianDate.cs" />
+    <Compile Include="Helpers\StoreConfigHeler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\PMCCustomerViewModel.cs" />
     <Compile Include="PMCBaseViewModel.cs" />
     <Compile Include="Center\PMCStoreOnhandViewModel.cs" />
     <Compile Include="EVC\PMCEvcViewModel.cs" />

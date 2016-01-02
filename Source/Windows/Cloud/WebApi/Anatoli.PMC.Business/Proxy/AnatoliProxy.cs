@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Anatoli.ViewModels;
 using Anatoli.PMC.ViewModels;
 using Anatoli.PMC.Business.Proxy.Interfaces;
+using Anatoli.PMC.DataAccess.Helpers.Entity;
 
 namespace Anatoli.PMC.Business.Proxy
 {
@@ -12,27 +13,27 @@ namespace Anatoli.PMC.Business.Proxy
         where TOut : class, new()
     {
 
-        public abstract TOut Convert(TSource data);
-        public abstract TSource ReverseConvert(TOut data);
+        public abstract TOut Convert(TSource data, PMCStoreConfigEntity storeConfig );
+        public abstract TSource ReverseConvert(TOut data, PMCStoreConfigEntity storeConfig);
 
-        public virtual List<TOut> Convert(List<TSource> data)
+        public virtual List<TOut> Convert(List<TSource> data, PMCStoreConfigEntity storeConfig)
         {
             var result = new List<TOut>();
 
             data.ForEach(itm =>
             {
-                result.Add(Convert(itm));
+                result.Add(Convert(itm, storeConfig));
             });
 
             return result;
         }
-        public virtual List<TSource> ReverseConvert(List<TOut> data)
+        public virtual List<TSource> ReverseConvert(List<TOut> data, PMCStoreConfigEntity storeConfig)
         {
             var result = new List<TSource>();
 
             data.ForEach(itm =>
             {
-                result.Add(ReverseConvert(itm));
+                result.Add(ReverseConvert(itm, storeConfig));
             });
 
             return result;

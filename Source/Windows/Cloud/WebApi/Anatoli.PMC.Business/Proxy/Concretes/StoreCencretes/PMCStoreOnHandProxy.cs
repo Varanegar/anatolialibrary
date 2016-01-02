@@ -1,4 +1,5 @@
 ﻿using Anatoli.PMC.Business.Proxy.Interfaces;
+using Anatoli.PMC.DataAccess.Helpers.Entity;
 using Anatoli.PMC.ViewModels.StoreModels;
 using Anatoli.ViewModels.StoreModels;
 using System;
@@ -11,7 +12,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.StoreCencretes
 {
     public class PMCStoreOnHandProxy : AnatoliProxy<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>, IAnatoliProxy<PMCStoreOnhandViewModel, StoreActiveOnhandViewModel>
     {
-        public override StoreActiveOnhandViewModel Convert(PMCStoreOnhandViewModel data)
+        public override StoreActiveOnhandViewModel Convert(PMCStoreOnhandViewModel data, PMCStoreConfigEntity storeConfig)
         {
             return new StoreActiveOnhandViewModel()
             {
@@ -21,7 +22,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.StoreCencretes
             };
         }
 
-        public override PMCStoreOnhandViewModel ReverseConvert(StoreActiveOnhandViewModel data)
+        public override PMCStoreOnhandViewModel ReverseConvert(StoreActiveOnhandViewModel data, PMCStoreConfigEntity storeConfig)
         {
             return new PMCStoreOnhandViewModel()
             {

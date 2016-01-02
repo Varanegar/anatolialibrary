@@ -11,7 +11,20 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class ManufactureAdapter : BaseAdapter
     {
-        public static List<ManufactureViewModel> GetAllManufactures(DateTime lastUpload)
+        private static ManufactureAdapter instance = null;
+        public static ManufactureAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ManufactureAdapter();
+                }
+                return instance;
+            }
+        }
+        ManufactureAdapter() { }
+        public  List<ManufactureViewModel> GetAllManufactures(DateTime lastUpload)
         {
             try
             {

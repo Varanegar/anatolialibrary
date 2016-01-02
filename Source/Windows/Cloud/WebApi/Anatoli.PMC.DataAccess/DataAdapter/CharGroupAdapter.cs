@@ -11,7 +11,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class CharGroupAdapter : BaseAdapter
     {
-        public static List<CharTypeViewModel> GetAllCharTypes(DateTime lastUpload)
+        public List<CharTypeViewModel> GetAllCharTypes(DateTime lastUpload)
         {
             List<CharTypeViewModel> charTypes = new List<CharTypeViewModel>();
             using (var context = new DataContext())
@@ -26,7 +26,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return charTypes;
         }
-        public static List<CharGroupViewModel> GetAllCharGroups(DateTime lastUpload)
+        public List<CharGroupViewModel> GetAllCharGroups(DateTime lastUpload)
         {
             List<CharGroupViewModel> charGroups = new List<CharGroupViewModel>();
             using (var context = new DataContext())

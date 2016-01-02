@@ -14,6 +14,9 @@ namespace Anatoli.PMC.ViewModels.EVC
         public double Qty { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ChargeAmount { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal DiscountAmountX { get; set; }
+        public int TaxCategoryId { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal AmountCalcBase { get; set; }
         public decimal NetAmount { get; set; }

@@ -35,7 +35,7 @@ namespace Anatoli.Business
         {
             var client = new HttpClient();
             client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(PrivateLabelOwnerId.ToString()));
-            var result = client.GetAsync(ConfigurationManager.AppSettings["ClientsFilePath"] + webApiURI + "?privateOwnerId="
+            var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?privateOwnerId="
                         + PrivateLabelOwnerId.ToString() + "&" + queryString).Result;
             var json = result.Content.ReadAsStringAsync().Result;
 

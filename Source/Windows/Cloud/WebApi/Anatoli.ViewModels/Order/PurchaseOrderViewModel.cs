@@ -18,7 +18,7 @@ namespace Anatoli.ViewModels.Order
         public string DeviceIMEI { get; set; }
         public Guid ActionSourceValueId { get; set; }
         public String Comment { get; set; }
-        public string AppOrderNo { get; set; }
+        public int AppOrderNo { get; set; }
         public decimal Amount { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal DiscountAmount2 { get; set; }
@@ -40,6 +40,8 @@ namespace Anatoli.ViewModels.Order
         public TimeSpan? DeliveryToTime { get; set; }
         public bool IsCancelled { get; set; }
         public string CancelReason { get; set; }
+        public decimal NetAmount { get; set; }
+        public decimal FinalNetAmount { get; set; }
 
         public List<PurchaseOrderLineItemViewModel> LineItems = new List<PurchaseOrderLineItemViewModel>();
 

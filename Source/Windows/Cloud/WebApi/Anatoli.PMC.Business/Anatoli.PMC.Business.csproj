@@ -53,10 +53,10 @@
     <Compile Include="Domain\Store\PMCStoreOnHandDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\AnatoliProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\PMCEvcDetailProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\PMCEvcProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\PMCPurchaseOrderLineItemProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\PMCPurchaseOrderProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCEvcDetailProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCEvcProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCPurchaseOrderLineItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCPurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreCencretes\PMCStoreOnHandProxy.cs" />
     <Compile Include="Proxy\Interfaces\IPMCBusinessDomain.cs" />
     <Compile Include="Proxy\Interfaces\IAnatoliProxy.cs" />

@@ -11,7 +11,20 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class ImageAdapter : BaseAdapter
     {
-        public static List<ItemImageViewModel> CenterPictures(DateTime lastUpload)
+        private static ImageAdapter instance = null;
+        public static ImageAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ImageAdapter();
+                }
+                return instance;
+            }
+        }
+        ImageAdapter() { }
+        public  List<ItemImageViewModel> CenterPictures(DateTime lastUpload)
         {
             List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
             using (var context = new DataContext())
@@ -27,7 +40,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             return imageList;
         }
 
-        public static List<ItemImageViewModel> ProductPictures(DateTime lastUpload)
+        public  List<ItemImageViewModel> ProductPictures(DateTime lastUpload)
         {
             List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
             using (var context = new DataContext())
@@ -43,7 +56,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             return imageList;
         }
 
-        public static List<ItemImageViewModel> ProductSiteGroupPictures(DateTime lastUpload)
+        public  List<ItemImageViewModel> ProductSiteGroupPictures(DateTime lastUpload)
         {
             List<ItemImageViewModel> imageList = new List<ItemImageViewModel>();
             using (var context = new DataContext())

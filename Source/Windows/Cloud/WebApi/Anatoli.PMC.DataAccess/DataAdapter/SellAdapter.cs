@@ -1,4 +1,5 @@
-﻿using Anatoli.PMC.ViewModels.Order;
+﻿using Anatoli.PMC.DataAccess.Helpers;
+using Anatoli.PMC.ViewModels.Order;
 using Anatoli.ViewModels.Order;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,24 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class SellAdapter : BaseAdapter
     {
-        public static void SavePurchaseOrder(PMCSellViewModel orderInfo)
+        private static SellAdapter instance = null;
+        public static SellAdapter Instance
         {
-            using (var context = new DataContext(Transaction.Begin))
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new SellAdapter();
+                }
+                return instance;
+            }
+        }
+        SellAdapter() { }
+        public  void SavePurchaseOrder(PMCSellViewModel orderInfo)
+        {
+            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(orderInfo.CenterId).ConnectionString;
+
+            using (var context = new DataContext(connectionString, Transaction.Begin))
             {
                 DataObject<PMCSellViewModel> sellDataObject = new DataObject<PMCSellViewModel>("Sell");
                 sellDataObject.Insert(orderInfo, context);

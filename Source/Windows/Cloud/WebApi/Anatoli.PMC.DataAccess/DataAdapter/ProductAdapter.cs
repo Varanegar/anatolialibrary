@@ -11,7 +11,29 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class ProductAdapter : BaseAdapter
     {
-        public static List<ProductViewModel> GetAllProducts(DateTime lastUpload)
+        private static ProductAdapter instance = null;
+        public static ProductAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ProductAdapter();
+                }
+                return instance;
+            }
+        }
+        ProductAdapter() { }
+
+        public int GetProductId(Guid productUniqueId)
+        {
+            return new DataContext().GetValue<int>("select productId from Product where uniqueId='" + productUniqueId.ToString() + "'");
+        }
+        public string GetProductUniqueId(int productId)
+        {
+            return new DataContext().GetValue<string>("select uniqueId from Product where productId='" + productId + "'");
+        }
+        public List<ProductViewModel> GetAllProducts(DateTime lastUpload)
         {
             List<ProductViewModel> products = new List<ProductViewModel>();
             using (var context = new DataContext())
@@ -32,7 +54,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return products;       
         }
-        public static List<ProductGroupViewModel> GetAllProductGroups(DateTime lastUpload)
+        public  List<ProductGroupViewModel> GetAllProductGroups(DateTime lastUpload)
         {
             List<ProductGroupViewModel> productGroup = new List<ProductGroupViewModel>();
             using (var context = new DataContext())

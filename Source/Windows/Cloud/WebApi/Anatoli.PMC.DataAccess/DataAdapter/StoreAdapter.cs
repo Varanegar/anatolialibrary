@@ -8,12 +8,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Thunderstruck;
 using Anatoli.PMC.DataAccess.Helpers;
+using Anatoli.PMC.DataAccess.Helpers.Entity;
 
 namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class StoreAdapter : BaseAdapter
     {
-        public static List<StoreViewModel> GetAllStores(DateTime lastUpload)
+        private static StoreAdapter instance = null;
+        public static StoreAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new StoreAdapter();
+                }
+                return instance;
+            }
+        }
+        StoreAdapter() { }
+        public List<StoreViewModel> GetAllStores(DateTime lastUpload)
         {
             try
             {
@@ -45,7 +59,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 return null;
             }
         }
-        public static List<StoreActivePriceListViewModel> GetAllStorePriceLists(DateTime lastUpload)
+        public List<StoreActivePriceListViewModel> GetAllStorePriceLists(DateTime lastUpload)
         {
             try
             {
@@ -67,15 +81,17 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 return null;
             }
         }
-        public static List<StoreActiveOnhandViewModel> GetAllStoreOnHands(DateTime lastUpload)
+        public List<StoreActiveOnhandViewModel> GetAllStoreOnHands(DateTime lastUpload)
         {
-            return GetStoreOnHands(lastUpload, "");
+            PMCStoreConfigEntity config = StoreConfigHeler.Instance.GetStoreConfig(1);
+            return GetStoreOnHands(lastUpload, "", config.ConnectionString);
         }
-        public static List<StoreActiveOnhandViewModel> GetAllStoreOnHandsByStoreId(DateTime lastUpload, string storeId)
+        public List<StoreActiveOnhandViewModel> GetAllStoreOnHandsByStoreId(DateTime lastUpload, string storeId)
         {
-            return GetStoreOnHands(lastUpload, " and StoreGuid='" + storeId +"'");
+            string connectionString = StoreConfigHeler.Instance.GetStoreConfig(storeId).ConnectionString;
+            return GetStoreOnHands(lastUpload, " and StoreGuid='" + storeId + "'", connectionString);
         }
-        private static List<StoreActiveOnhandViewModel> GetStoreOnHands(DateTime lastUpload, string dynamicWhere)
+        private List<StoreActiveOnhandViewModel> GetStoreOnHands(DateTime lastUpload, string dynamicWhere, string connectionString)
         {
             try
             {
@@ -83,7 +99,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 List<StoreActiveOnhandViewModel> storeOnhandList = new List<StoreActiveOnhandViewModel>();
-                using (var context = new DataContext())
+                using (var context = new DataContext(connectionString,Transaction.No))
                 {
                     var fiscalYear = context.First<int>(DBQuery.GetFiscalYearId());
                     var data = context.All<StoreActiveOnhandViewModel>(DBQuery.GetStoreStockOnHand(fiscalYear) + dynamicWhere);
