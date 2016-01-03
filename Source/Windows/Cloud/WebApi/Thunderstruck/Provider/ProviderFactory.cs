@@ -23,10 +23,10 @@ namespace Thunderstruck.Provider
             AddProvider("System.Data.SqlClient", typeof(SqlProvider));
         }
 
-        public SqlProvider Create(ConnectionStringSettings settings, Transaction transactionMode)
+        public SqlProvider Create(string settings, Transaction transactionMode)
         {
-            var provider = ResolveDataProvider(settings.ProviderName);
-            provider.DbConnection = CreateConnection(settings.ProviderName, settings);
+            var provider = ResolveDataProvider("System.Data.SqlClient");
+            provider.DbConnection = CreateConnection("System.Data.SqlClient", settings);
             provider.TransactionMode = transactionMode;
             return provider;
         }
@@ -47,14 +47,14 @@ namespace Thunderstruck.Provider
             throw new ThunderException(exceptionMessage);
         }
 
-        private IDbConnection CreateConnection(string providerName, ConnectionStringSettings settings)
+        private IDbConnection CreateConnection(string providerName, string connectionString)
         {
             IDbConnection connection;
 
             if (ConnectionFactory != null) connection = ConnectionFactory(providerName);
             else connection = DbProviderFactories.GetFactory(providerName).CreateConnection();
 
-            connection.ConnectionString = settings.ConnectionString;
+            connection.ConnectionString = connectionString;
 
             return connection;
         }

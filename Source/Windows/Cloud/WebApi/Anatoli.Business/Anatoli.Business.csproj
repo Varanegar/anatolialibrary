@@ -68,6 +68,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,8 +79,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ItemImageDomain.cs" />
     <Compile Include="Domain\Base\CityRegionDomain.cs" />
+    <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
     <Compile Include="Domain\Store\StorePriceListDomain.cs" />
     <Compile Include="Domain\Store\StoreOnHandDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
@@ -97,6 +101,8 @@
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />
+    <Compile Include="Proxy\Concretes\Base\BaseTypeProxy.cs" />
+    <Compile Include="Proxy\Concretes\Base\BaseValueProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\ItemImageProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\CityRegionProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketItemProxy.cs" />
@@ -107,6 +113,7 @@
     <Compile Include="Proxy\Concretes\ProductConcretes\CharTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductRateProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductPicture.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrder\PurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreConcretes\StoreActiveOnhandProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreConcretes\StoreActivePriceListProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreConcretes\StoreCalendarProxy.cs" />

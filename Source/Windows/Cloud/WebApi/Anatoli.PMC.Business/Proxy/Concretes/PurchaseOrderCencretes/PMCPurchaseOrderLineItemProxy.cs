@@ -40,9 +40,9 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
             {
                 AddPercent = null,
                 AppUserId = storeConfig.AppUserId,
+                ModifiedDate = DateTime.Now,
                 DiscountPercent = null,
                 IsPrize = false,
-                ModifiedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 PackQty = 0,
                 ProductId = currentProductId,
                 Qty = System.Convert.ToDouble(data.Qty),

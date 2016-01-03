@@ -195,5 +195,15 @@ namespace ClientApp
             return storeOnhandList;
         }
 
+        internal static List<StoreActiveOnhandViewModel> DownloadOnhandOnlineFromServer(HttpClient client, string servserURI)
+        {
+            var result8 = client.GetAsync(servserURI + "/api/gateway/store/storeOnhandbyid/online?id=23FC03FF-53F0-432C-B6F4-E560B9088D54&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<StoreActiveOnhandViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
+
+
     }
 }

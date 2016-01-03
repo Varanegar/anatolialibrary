@@ -45,6 +45,16 @@ namespace Thunderstruck
             Provider = providerFactory.Create(ConnectionSettings, transaction);
         }
 
+        public DataContext(string connectionStringName, string connectionString, Transaction transaction)
+        {
+            TransactionMode = transaction;
+
+            var connectionName = connectionStringName ?? DefaultConnectionStringName;
+            ConnectionSettings = ConnectionStringBuffer.Instance.Get(connectionName, connectionString);
+
+            var providerFactory = new ProviderFactory();
+            Provider = providerFactory.Create(ConnectionSettings, transaction);
+        }
         /// <summary>
         /// Thunderstruck data provider.
         /// </summary>
@@ -58,7 +68,7 @@ namespace Thunderstruck
         /// <summary>
         /// Connection settings of application config.
         /// </summary>
-        public ConnectionStringSettings ConnectionSettings { get; private set; }
+        public string ConnectionSettings { get; private set; }
 
         /// <summary>
         /// Defines the transaction mode of data context.

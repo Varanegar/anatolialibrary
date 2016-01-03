@@ -51,13 +51,12 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
 
         public override PMCSellViewModel ReverseConvert(PurchaseOrderViewModel data, PMCStoreConfigEntity storeConfig)
         {
-            int currentCustomerId = CustomerAdapter.Instance.GetCustomerId(data.UserId);
+            //int currentCustomerId = CustomerAdapter.Instance.GetCustomerId(data.UserId);
             int fiscalYearId = GeneralCommands.GetFiscalYearId(null);
             return new PMCSellViewModel()
             {
                 AppUserId = storeConfig.AppUserId,
                 CenterId = storeConfig.CenterId,
-                CustomerId = currentCustomerId,
                 Amount = data.Amount,
                 ChargeAmount = data.ChargeAmount,
                 Comment = data.Comment,
@@ -69,7 +68,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
                 InvoiceDate = data.OrderPDate,
                 InvoiceDateTime = data.OrderPDate,
                 ManualDiscount = 0,
-                ModifiedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                ModifiedDate = DateTime.Now,
                 NetAmount = data.NetAmount,
                 PayableAmount = data.PayableAmount,
                 RequestNo = data.AppOrderNo,

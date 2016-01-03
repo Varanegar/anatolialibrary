@@ -13,7 +13,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/basket")]
     public class CustomerController : ApiController
     {
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "User")]
         [Route("customerbaskets")]
         public async Task<IHttpActionResult> GetCustomerBasket(string privateOwnerId, string id)
         {
@@ -24,7 +24,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "User")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveBasket(string privateOwnerId, List<BasketViewModel> data)
         {
@@ -32,7 +32,28 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var basketDomain = new BasketDomain(owner);
             await basketDomain.PublishAsync(data);
             return Ok();
-        }        
+        }
 
+
+        [Authorize(Roles = "User")]
+        [Route("basketitem/save")]
+        public async Task<IHttpActionResult> SaveBasketItem(string privateOwnerId, List<BasketItemViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new BasketItemDomain(owner);
+            await basketDomain.PublishAsync(data);
+            return Ok();
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("basketitem/delete")]
+        [HttpPost]
+        public async Task<IHttpActionResult> DeleteBasketitem(string privateOwnerId, List<BasketItemViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new BasketItemDomain(owner);
+            await basketDomain.Delete(data);
+            return Ok();
+        }
     }
 }

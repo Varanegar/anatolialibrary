@@ -22,30 +22,45 @@ namespace Thunderstruck.Runtime
 
         #endregion
 
-		private Dictionary<string, ConnectionStringSettings> _buffer;
+		private Dictionary<string, string> _buffer;
 		private object _syncRoot = new object();
 
         public ConnectionStringBuffer()
         {
-            _buffer = new Dictionary<string, ConnectionStringSettings>();
+            _buffer = new Dictionary<string, string>();
         }
 
-        public ConnectionStringSettings Get(string connectionStringName)
+        public string Get(string connectionStringName)
         {
             if (!_buffer.ContainsKey(connectionStringName))
             {
-				lock (_syncRoot)
-				{
-					if (!_buffer.ContainsKey(connectionStringName))
-					{
-						_buffer.Add(connectionStringName, GetFromConfig(connectionStringName));
-					}
-				}
+                lock (_syncRoot)
+                {
+                    if (!_buffer.ContainsKey(connectionStringName))
+                    {
+                        _buffer.Add(connectionStringName, GetFromConfig(connectionStringName).ConnectionString);
+                    }
+                }
             }
 
             return _buffer[connectionStringName];
         }
 
+        public string Get(string connectionStringName, string connectionString)
+        {
+            if (!_buffer.ContainsKey(connectionStringName))
+            {
+                lock (_syncRoot)
+                {
+                    if (!_buffer.ContainsKey(connectionStringName))
+                    {
+                        _buffer.Add(connectionStringName, connectionString);
+                    }
+                }
+            }
+
+            return _buffer[connectionStringName];
+        }
         private ConnectionStringSettings GetFromConfig(string connectionName)
         {
             var setting = ConfigurationManager.ConnectionStrings[connectionName];

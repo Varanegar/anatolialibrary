@@ -11,6 +11,20 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class CityRegionAdapter : BaseAdapter
     {
+        private static CityRegionAdapter instance = null;
+        public static CityRegionAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new CityRegionAdapter();
+                }
+                return instance;
+            }
+        }
+        CityRegionAdapter() { }
+
         public List<CityRegionViewModel> GetAllCityRegions(DateTime lastUpload)
         {
             try

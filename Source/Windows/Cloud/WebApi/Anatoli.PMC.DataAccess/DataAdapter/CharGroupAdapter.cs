@@ -11,6 +11,19 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 {
     public class CharGroupAdapter : BaseAdapter
     {
+        private static CharGroupAdapter instance = null;
+        public static CharGroupAdapter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new CharGroupAdapter();
+                }
+                return instance;
+            }
+        }
+        CharGroupAdapter() { }
         public List<CharTypeViewModel> GetAllCharTypes(DateTime lastUpload)
         {
             List<CharTypeViewModel> charTypes = new List<CharTypeViewModel>();

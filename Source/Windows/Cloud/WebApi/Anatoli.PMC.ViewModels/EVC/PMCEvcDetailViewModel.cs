@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thunderstruck;
 
 namespace Anatoli.PMC.ViewModels.EVC
 {
@@ -21,6 +22,7 @@ namespace Anatoli.PMC.ViewModels.EVC
         public decimal AmountCalcBase { get; set; }
         public decimal NetAmount { get; set; }
         public int EVCID { get; set; }
+        [Ignore]
         public int DetailId { get; set; }
         public bool IsPrize { get; set; }
     }

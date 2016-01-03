@@ -23,6 +23,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 Comment = data.Comment,
                 Qty = data.Qty,
                 ProductId = (data.Product == null)? Guid.Empty: data.Product.Id,
+                BasketId = data.BasketId,
             };
         }
 
@@ -35,7 +36,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 Comment = data.Comment,
                 Qty = data.Qty,
                 ProductId = data.ProductId,
-
+                BasketId = data.BasketId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
             };
         }

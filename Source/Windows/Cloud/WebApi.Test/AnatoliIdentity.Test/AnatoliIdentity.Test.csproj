@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasketManagement.cs" />
+    <Compile Include="BaseDataManagement.cs" />
     <Compile Include="CharGroupManagement.cs" />
     <Compile Include="CityRegionManagement.cs" />
     <Compile Include="CustomerManagement.cs" />

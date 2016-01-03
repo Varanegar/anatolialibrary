@@ -30,7 +30,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         {
             var resultEvc = new PMCEvcViewModel();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(data.CenterId).ConnectionString;
-            using(var context = new DataContext(connectionString, Transaction.Begin))
+            using(var context = new DataContext(data.CenterId.ToString(), connectionString, Transaction.No))
             {
                 DateTime serverTime = GeneralCommands.GetServerDateTime(context);
                 data.DateOf = new PersianDate(serverTime) + serverTime.ToString(" HH:mm");
@@ -38,11 +38,13 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 var evcId =
                 data.EVCId = GeneralCommands.GetId(context, "Evc");
 
-                DataObject<PMCEvcViewModel> evcDataObject = new DataObject<PMCEvcViewModel>("Evc");
+                DataObject<PMCEvcViewModel> evcDataObject = new DataObject<PMCEvcViewModel>("Evc", "InvalidId");
                 evcDataObject.Insert(data, context);
-                DataObject<PMCEvcDetailViewModel> evcDetailDataObject = new DataObject<PMCEvcDetailViewModel>("EvcDetail");
+                DataObject<PMCEvcDetailViewModel> evcDetailDataObject = new DataObject<PMCEvcDetailViewModel>("EvcDetail", "InvalidId");
                 data.EVCDetail.ForEach(item =>
                     {
+                        item.EvcDetailId = GeneralCommands.GetId(context, "Evc");
+                        item.EVCID = data.EVCId;
                         evcDetailDataObject.Insert(item, context);
                     });
                 context.Execute("EXEC ApplyPrice " + evcId);
@@ -51,10 +53,10 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 context.Execute("EXEC ApplyStock " + evcId);
 
 
-                resultEvc = evcDataObject.Select.First("where EvcId='" + evcId + "'");
-                var resultEvcDetail = evcDetailDataObject.Select.All("where EvcId='" + evcId + "'");
+                resultEvc = evcDataObject.Select.With(context).First("where EvcId='" + evcId + "'");
+                var resultEvcDetail = evcDetailDataObject.Select.With(context).All("where EvcId='" + evcId + "'");
+                resultEvc.EVCDetail = new List<PMCEvcDetailViewModel>();
                 resultEvc.EVCDetail.AddRange(resultEvcDetail);
-                context.Commit();
             }
             return resultEvc;
         }

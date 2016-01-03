@@ -26,9 +26,9 @@ namespace ClientApp
             {
 
                 //string servserURI = "http://79.175.166.186/";
-                //string servserURI = "http://localhost:59822/";
+                string servserURI = "http://localhost:59822/";
                 //string servserURI = "http://localhost/";
-                string servserURI = "http://192.20.6.6/";
+                //string servserURI = "http://192.20.6.6/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromHours(1);
@@ -56,9 +56,11 @@ namespace ClientApp
                     //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
                     //StoreManagement.UploadStoreDataToServer(client, servserURI);
-                    ProductManagement.UploadProductToServer(client, servserURI);
+                    //ProductManagement.UploadProductToServer(client, servserURI);
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
                     //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
+                    //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
+                    BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
                     //UserManagement.TestUserInfo(client, servserURI);
                     //CustomerManagement.UpdateCustomerFromServer(client, servserURI);

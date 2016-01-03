@@ -36,35 +36,43 @@ namespace Anatoli.Business.Helpers
 
         public string GetInternalServerToken(string privateOwnerId)
         {
-            if ((PrivateOwnerId == null || PrivateOwnerId == "") && (privateOwnerId == null || privateOwnerId == ""))
+            try
             {
-                log.Fatal("Invalid owner in internal communication");
-                throw new Exception("Invalid App Owner");
-            }
-            else if (privateOwnerId != null && privateOwnerId != "" && privateOwnerId != PrivateOwnerId)
-            {
-                PrivateOwnerId = privateOwnerId;
-                OAuthResult = null;
-            }
-
-            if (OAuthResult == null)
-            {
-                var client = new HttpClient();
-                var oauthClient = new OAuth2Client(new Uri(ConfigurationManager.AppSettings["ClientsFilePath"] + "/oauth/token"));
-                    
-                client.Timeout = TimeSpan.FromMinutes(2);
-                OAuthResult = oauthClient.RequestResourceOwnerPasswordAsync(InternalUsername, InternalPassword, PrivateOwnerId).Result; 
+                if ((PrivateOwnerId == null || PrivateOwnerId == "") && (privateOwnerId == null || privateOwnerId == ""))
                 {
-                    if (OAuthResult.AccessToken == null || OAuthResult.AccessToken == "")
+                    log.Fatal("Invalid owner in internal communication");
+                    throw new Exception("Invalid App Owner");
+                }
+                else if (privateOwnerId != null && privateOwnerId != "" && privateOwnerId != PrivateOwnerId)
+                {
+                    PrivateOwnerId = privateOwnerId;
+                    OAuthResult = null;
+                }
+
+                if (OAuthResult == null)
+                {
+                    var client = new HttpClient();
+                    var oauthClient = new OAuth2Client(new Uri(ConfigurationManager.AppSettings["InternalServer"] + "/oauth/token"));
+
+                    client.Timeout = TimeSpan.FromMinutes(2);
+                    OAuthResult = oauthClient.RequestResourceOwnerPasswordAsync(InternalUsername, InternalPassword, PrivateOwnerId).Result;
                     {
-                        OAuthResult = null;
-                        log.Fatal("Can not login into internal servers");
-                        throw new Exception("Internal communication failed");
+                        if (OAuthResult.AccessToken == null || OAuthResult.AccessToken == "")
+                        {
+                            OAuthResult = null;
+                            log.Fatal("Can not login into internal servers");
+                            throw new Exception("Internal communication failed");
+                        }
                     }
                 }
-            }
 
-            return OAuthResult.AccessToken;
+                return OAuthResult.AccessToken;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Can not login to internal server", ex);
+                throw ex;
+            }
         }
 
 

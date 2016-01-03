@@ -2,8 +2,10 @@
 using Anatoli.PMC.Business.Proxy.Interfaces;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using Anatoli.PMC.DataAccess.Helpers;
+using Anatoli.PMC.ViewModels.Base;
 using Anatoli.PMC.ViewModels.EVC;
 using Anatoli.PMC.ViewModels.Order;
+using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.Order;
 using Anatoli.ViewModels.StoreModels;
 using System;
@@ -17,15 +19,19 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
     public class PMCPurchaseOrderDomain : PMCBusinessDomain<PMCSellViewModel, PurchaseOrderViewModel>, IPMCBusinessDomain<PMCSellViewModel, PurchaseOrderViewModel>
     {
         protected IAnatoliProxy<PMCEvcViewModel, PMCSellViewModel> EvcProxy { get; set; }
+        protected IAnatoliProxy<PMCCustomerViewModel, CustomerViewModel> CustomerProxy { get; set; }
 
         #region Ctors
         public PMCPurchaseOrderDomain()
-            : this(AnatoliProxy<PMCSellViewModel, PurchaseOrderViewModel>.Create(), AnatoliProxy<PMCEvcViewModel, PMCSellViewModel>.Create())
+            : this(AnatoliProxy<PMCSellViewModel, PurchaseOrderViewModel>.Create(), AnatoliProxy<PMCEvcViewModel, PMCSellViewModel>.Create(),
+             AnatoliProxy<PMCCustomerViewModel, CustomerViewModel>.Create())
         { }
-        public PMCPurchaseOrderDomain(IAnatoliProxy<PMCSellViewModel, PurchaseOrderViewModel> proxy, IAnatoliProxy<PMCEvcViewModel, PMCSellViewModel> evcProxy)
+        public PMCPurchaseOrderDomain(IAnatoliProxy<PMCSellViewModel, PurchaseOrderViewModel> proxy, IAnatoliProxy<PMCEvcViewModel, PMCSellViewModel> evcProxy,
+             IAnatoliProxy<PMCCustomerViewModel, CustomerViewModel> customerProxy)
         {
             Proxy = proxy;
             EvcProxy = evcProxy;
+            CustomerProxy = customerProxy;
         }
         #endregion
 
@@ -40,23 +46,42 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
             throw new NotImplementedException();
         }
 
-        public void Publish(PurchaseOrderViewModel baseViewModels)
+        public PurchaseOrderViewModel Publish(PurchaseOrderViewModel baseViewModels)
         {
+            baseViewModels = GetPerformaInvoicePreview(baseViewModels);
             var storeConfig = StoreConfigHeler.Instance.GetStoreConfig(baseViewModels.StoreGuid.ToString());
             var data = Proxy.ReverseConvert(baseViewModels, storeConfig);
-            SellAdapter.Instance.SavePurchaseOrder(data);
+
+            var customerData = CustomerProxy.ReverseConvert(baseViewModels.Customer, storeConfig);
+
+            SellAdapter.Instance.SavePurchaseOrder(data, customerData);
+            return baseViewModels;
         }
 
         public PurchaseOrderViewModel GetPerformaInvoicePreview(PurchaseOrderViewModel baseViewModels)
         {
             var storeConfig = StoreConfigHeler.Instance.GetStoreConfig(baseViewModels.StoreGuid.ToString());
             var pmcSell = Proxy.ReverseConvert(baseViewModels, storeConfig);
+
+            pmcSell.CustomerId = null;
+
             var resultEvc = EVCAdapter.Instance.CalcEvcResult(EvcProxy.ReverseConvert(pmcSell, storeConfig));
             pmcSell = SetSellDataByEvc(pmcSell, resultEvc);
             var resultPurchaseOrder = Proxy.Convert(pmcSell, storeConfig);
+            resultPurchaseOrder = SetHeaderData(resultPurchaseOrder, baseViewModels);
             return resultPurchaseOrder;
         }
 
+        private PurchaseOrderViewModel SetHeaderData(PurchaseOrderViewModel result, PurchaseOrderViewModel source)
+        {
+            result.StoreGuid = source.StoreGuid;
+            result.Customer = source.Customer;
+            result.UserId = source.UserId;
+            result.AppOrderNo = source.AppOrderNo;
+            result.Comment = source.Comment;
+            result.UniqueId = source.UniqueId;
+            return result;
+        }
         private PMCSellViewModel SetSellDataByEvc(PMCSellViewModel sellData, PMCEvcViewModel evcData)
         {
             sellData.Amount = evcData.Amount;

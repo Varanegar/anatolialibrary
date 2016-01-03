@@ -23,7 +23,7 @@ namespace Anatoli.PMC.ViewModels
         public bool IsSaveRequired { get; set; }
         [Ignore]
         public bool IsUnchanged { get; set; }
-        public string ModifiedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public int AppUserId { get; set; }
     }
 }

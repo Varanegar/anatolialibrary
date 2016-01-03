@@ -38,9 +38,12 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
         {
             return new PMCEvcViewModel()
             {
+                AppUserId = storeConfig.AppUserId,
+                ModifiedDate = DateTime.Now,
+
                 CustomerId = data.CustomerId,
                 CenterId = data.CenterId,
-                SalesmanId = data.SalesmanId,
+                //SalesmanId = data.SalesmanId,
                 DateOf = data.InvoiceDateTime,
                 EVCDetail = PMCEvcDetailProxy.ReverseConvert(data.SellDetail, storeConfig),
             };
