@@ -4,13 +4,13 @@
     android:minWidth="25px"
     android:minHeight="25px"
     android:layout_width="match_parent"
-    android:layout_height="87dp"
+    android:layout_height="90dp"
     android:id="@+id/relativeLayout1">
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="120dp"
-        android:layout_height="87dp"
+        android:layout_height="90dp"
         android:id="@+id/relativeLayout2"
         android:layout_alignParentLeft="true"
         android:layout_margin="0dp">
@@ -19,7 +19,7 @@
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="wrap_content"
-            android:layout_height="87dp"
+            android:layout_height="90dp"
             android:id="@+id/counterLinearLayout"
             android:layout_alignParentLeft="true"
             android:layout_margin="0dp">
