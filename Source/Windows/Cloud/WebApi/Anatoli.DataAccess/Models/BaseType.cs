@@ -8,5 +8,8 @@ namespace Anatoli.DataAccess.Models
         //public int BaseTypeId { get; set; }
         public string BaseTypeDesc { get; set; }
         public string BaseTypeName { get; set; }
+
+        public virtual ICollection<BaseValue> BaseValues { get; set; }
+
     }
 }

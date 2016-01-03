@@ -83,19 +83,18 @@ namespace Anatoli.Business.Domain
                     }
                     else
                     {
-                        item.Id = Guid.NewGuid();
+                        item.Id = item.Id == Guid.Empty ? Guid.NewGuid(): item.Id;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         item.BasketItems.ToList().ForEach(itemDetail =>
                             {
                                 itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
-                                itemDetail.CreatedDate = item.LastUpdate = item.CreatedDate;
-                                itemDetail.Id = Guid.NewGuid();
+                                itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
+                                itemDetail.Id = itemDetail.Id == Guid.Empty ? Guid.NewGuid() : itemDetail.Id;
                             });
                         await Repository.AddAsync(item);
                     }
                 };
                 await Repository.SaveChangesAsync();
-                
             }
             catch(Exception ex)
             {

@@ -12,17 +12,25 @@ namespace Anatoli.PMC.DataAccess.Helpers
     {
         public static DateTime GetServerDateTime(DataContext context)
         {
+            if (context == null) context = new DataContext();
             return context.GetValue<DateTime>("SELECT GETDATE() AS ServerDate");
+        }
+
+        public static string GetServerShamsiDateTime(DataContext context)
+        {
+            if (context == null) context = new DataContext();
+            return context.GetValue<string>("SELECT dbo.ToShamsi(GETDATE()) AS ServerDate");
         }
 
         public static int GetId(DataContext context, string tableName)
         {
-            return context.Execute<PMCGetIdEntity>("EXEC GetId '" + tableName + "' , @Id output").Id;
+            if (context == null) context = new DataContext();
+            return context.GetValue<int>("declare @id int EXEC GetId '" + tableName + "' , @Id output  select @id");
         }
         public static int GetFiscalYearId(DataContext context)
         {
             if (context == null) context = new DataContext();
-            return context.First<int>(DBQuery.GetFiscalYearId());
+            return context.GetValue<int>(DBQuery.GetFiscalYearId());
         }
     }
 }

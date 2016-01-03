@@ -84,14 +84,14 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         public List<StoreActiveOnhandViewModel> GetAllStoreOnHands(DateTime lastUpload)
         {
             PMCStoreConfigEntity config = StoreConfigHeler.Instance.GetStoreConfig(1);
-            return GetStoreOnHands(lastUpload, "", config.ConnectionString);
+            return GetStoreOnHands(lastUpload, "", config.ConnectionString, "center");
         }
         public List<StoreActiveOnhandViewModel> GetAllStoreOnHandsByStoreId(DateTime lastUpload, string storeId)
         {
             string connectionString = StoreConfigHeler.Instance.GetStoreConfig(storeId).ConnectionString;
-            return GetStoreOnHands(lastUpload, " and StoreGuid='" + storeId + "'", connectionString);
+            return GetStoreOnHands(lastUpload, " and Center.UniqueId='" + storeId + "'", connectionString, storeId);
         }
-        private List<StoreActiveOnhandViewModel> GetStoreOnHands(DateTime lastUpload, string dynamicWhere, string connectionString)
+        private List<StoreActiveOnhandViewModel> GetStoreOnHands(DateTime lastUpload, string dynamicWhere, string connectionString, string storeId)
         {
             try
             {
@@ -99,9 +99,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 List<StoreActiveOnhandViewModel> storeOnhandList = new List<StoreActiveOnhandViewModel>();
-                using (var context = new DataContext(connectionString,Transaction.No))
+                using (var context = new DataContext(storeId, connectionString, Transaction.No))
                 {
-                    var fiscalYear = context.First<int>(DBQuery.GetFiscalYearId());
+                    var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
                     var data = context.All<StoreActiveOnhandViewModel>(DBQuery.GetStoreStockOnHand(fiscalYear) + dynamicWhere);
 
                     storeOnhandList = data.ToList();

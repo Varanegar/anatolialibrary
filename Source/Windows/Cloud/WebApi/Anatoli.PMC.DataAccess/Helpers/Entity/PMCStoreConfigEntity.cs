@@ -21,5 +21,7 @@ namespace Anatoli.PMC.DataAccess.Helpers.Entity
         public string UniqueId { get; set; }
         [Ignore]
         public int FiscalYearId { get; set; }
+        public int CustomerGroupId { get; set; }
+        public int CustomerTypeId { get; set; }
     }
 }

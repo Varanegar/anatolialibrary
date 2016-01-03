@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
 {
-    public class PMCEvcDetailPMCSellDetailViewModelProxy : AnatoliProxy<PMCEvcDetailViewModel, PMCSellDetailViewModel>, IAnatoliProxy<PMCEvcDetailViewModel, PMCSellDetailViewModel>
+    public class PMCEvcDetailProxy : AnatoliProxy<PMCEvcDetailViewModel, PMCSellDetailViewModel>, IAnatoliProxy<PMCEvcDetailViewModel, PMCSellDetailViewModel>
     {
         public override PMCSellDetailViewModel Convert(PMCEvcDetailViewModel data, PMCStoreConfigEntity storeConfig)
         {
@@ -24,6 +24,9 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
         {
             return new PMCEvcDetailViewModel()
             {
+                AppUserId = storeConfig.AppUserId,
+                ModifiedDate = DateTime.Now,
+
                 ProductId = data.ProductId,
                 Qty = data.RequestQty,
                 DetailId = data.SellDetailId,

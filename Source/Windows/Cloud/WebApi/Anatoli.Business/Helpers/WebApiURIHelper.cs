@@ -21,5 +21,7 @@ namespace Anatoli.Business.Helpers
         public static readonly string SaveImageURI = "/api/imageManager/Save";
 
         public static readonly string GetStoreOnHandLocalURI = "/api/gateway/store/StoreOnhandById/local";
+        public static readonly string SaveOrderLocalURI = "/api/gateway/purchaseorder/local/create";
+        public static readonly string CalcPromoLocalURI = "/api/gateway/purchaseorder/local/calcpromo";
     }
 }

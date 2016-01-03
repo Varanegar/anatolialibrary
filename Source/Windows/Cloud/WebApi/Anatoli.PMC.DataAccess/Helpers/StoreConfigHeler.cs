@@ -14,7 +14,8 @@ namespace Anatoli.PMC.DataAccess.Helpers
     {
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static PMCStoreConfigEntity currentConfig = null;
-        private static List<PMCStoreConfigEntity> allStoreConfigs = new List<PMCStoreConfigEntity>();
+        public List<PMCStoreConfigEntity> AllStoreConfigs { get; private set; }
+
         private static StoreConfigHeler instance = null;
         public static StoreConfigHeler Instance
         {
@@ -32,7 +33,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
             using (DataContext context = new DataContext())
             {
                 DataObject<PMCStoreConfigEntity> configDataObject = new DataObject<PMCStoreConfigEntity>("Center");
-                allStoreConfigs= configDataObject.Select.All().ToList();
+                AllStoreConfigs= configDataObject.Select.All().ToList();
             }
         }
 
@@ -48,7 +49,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         currentConfig = configDataObject.Select.First("where centerId in (select top 1 centerid from CenterSetting)");
 
                     }
-                    currentConfig.FiscalYearId = context.First<int>(DBQuery.GetFiscalYearId());
+                    currentConfig.FiscalYearId = context.GetValue<int>(DBQuery.GetFiscalYearId());
                 }
 
                 return currentConfig;
@@ -57,15 +58,15 @@ namespace Anatoli.PMC.DataAccess.Helpers
 
         public PMCStoreConfigEntity GetStoreConfig(string storeUniqueId)
         {
-            var config = allStoreConfigs.Find(p => p.UniqueId == storeUniqueId);
-            config.FiscalYearId = new DataContext().First<int>(DBQuery.GetFiscalYearId());
+            var config = AllStoreConfigs.Find(p => p.UniqueId.ToLower() == storeUniqueId.ToLower());
+            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.GetFiscalYearId());
             return config;
         }
 
         public PMCStoreConfigEntity GetStoreConfig(int storeId)
         {
-            var config = allStoreConfigs.Find(p => p.CenterId == storeId);
-            config.FiscalYearId = new DataContext().First<int>(DBQuery.GetFiscalYearId());
+            var config = AllStoreConfigs.Find(p => p.CenterId == storeId);
+            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.GetFiscalYearId());
             return config;
         }
     }

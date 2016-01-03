@@ -21,27 +21,53 @@ namespace Anatoli.Business
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; protected set; }
 
-        protected void PostOnlineData(string webApiURI, string data)
+        protected TOut PostOnlineData(string webApiURI, string data, bool needReturnData = false)
         {
-            var client = new HttpClient();
-            client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(PrivateLabelOwnerId.ToString()));
-            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result = client.PostAsync(ConfigurationManager.AppSettings["ClientsFilePath"] + webApiURI + "?privateOwnerId="
-                        + PrivateLabelOwnerId.ToString(), content).Result;
-            return;
+            TOut returnData = new TOut();
+
+            try
+            {
+                var client = new HttpClient();
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(PrivateLabelOwnerId.ToString()));
+                HttpContent content = new  StringContent(data, Encoding.UTF8, "application/json");
+                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?privateOwnerId="
+                            + PrivateLabelOwnerId.ToString(), content).Result;
+                if (needReturnData)
+                {
+                    var json = result.Content.ReadAsStringAsync().Result;
+                    returnData = JsonConvert.DeserializeAnonymousType(json, new TOut());
+                    return returnData;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Can not post to internal server", ex);
+                throw ex;
+            }
+
         }
 
         protected List<TOut> GetOnlineData(string webApiURI, string queryString)
         {
-            var client = new HttpClient();
-            client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(PrivateLabelOwnerId.ToString()));
-            var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?privateOwnerId="
-                        + PrivateLabelOwnerId.ToString() + "&" + queryString).Result;
-            var json = result.Content.ReadAsStringAsync().Result;
+            try
+            {
+                var client = new HttpClient();
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(PrivateLabelOwnerId.ToString()));
+                var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?privateOwnerId="
+                            + PrivateLabelOwnerId.ToString() + "&" + queryString).Result;
+                var json = result.Content.ReadAsStringAsync().Result;
 
-            var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TOut>());
+                var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TOut>());
 
-            return returnData;
+                return returnData;
+            }
+            catch(Exception ex)
+            {
+                log.Error("Can not read from internal server", ex);
+                throw ex;
+            }
         }
     }
 }

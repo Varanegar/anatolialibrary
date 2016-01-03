@@ -30,7 +30,7 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            
             HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android

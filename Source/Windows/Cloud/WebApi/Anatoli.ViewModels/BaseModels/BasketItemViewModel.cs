@@ -12,5 +12,6 @@ namespace Anatoli.ViewModels.BaseModels
         public int? Qty { get; set; }
         public string Comment { get; set; }
         public Guid ProductId { get; set; }
+        public Guid BasketId { get; set; }
     }
 }

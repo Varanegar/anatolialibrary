@@ -54,6 +54,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var owner = Guid.Parse(privateOwnerId);
             var storeDomain = new StoreActiveOnhandDomain(owner);
             var result = await storeDomain.GetAllByStoreIdOnLine(id);
+            result.ForEach(item =>
+                {
+                    item.PrivateOwnerId = owner;
+                });
             return Ok(result);
         }
 

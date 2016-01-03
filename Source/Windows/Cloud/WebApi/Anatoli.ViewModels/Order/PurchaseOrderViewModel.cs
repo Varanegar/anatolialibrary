@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.ViewModels.CustomerModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,6 +43,7 @@ namespace Anatoli.ViewModels.Order
         public string CancelReason { get; set; }
         public decimal NetAmount { get; set; }
         public decimal FinalNetAmount { get; set; }
+        public CustomerViewModel Customer { get; set; }
 
         public List<PurchaseOrderLineItemViewModel> LineItems = new List<PurchaseOrderLineItemViewModel>();
 

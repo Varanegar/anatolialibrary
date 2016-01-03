@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModels\BaseTypeViewModel.cs" />
+    <Compile Include="BaseModels\BaseValueViewModel.cs" />
     <Compile Include="BaseModels\ItemImageViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BaseModels\BasketItemViewModel.cs" />

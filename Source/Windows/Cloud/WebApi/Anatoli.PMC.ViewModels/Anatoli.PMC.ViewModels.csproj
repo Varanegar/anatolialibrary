@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\PMCCustomerViewModel.cs" />
+    <Compile Include="Customer\PMCCustomerViewModel.cs" />
     <Compile Include="PMCBaseViewModel.cs" />
     <Compile Include="Center\PMCStoreOnhandViewModel.cs" />
     <Compile Include="EVC\PMCEvcViewModel.cs" />
@@ -54,6 +54,9 @@
       <Project>{0dc5ab48-1da5-4185-a18e-46c111a82454}</Project>
       <Name>Thunderstruck</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

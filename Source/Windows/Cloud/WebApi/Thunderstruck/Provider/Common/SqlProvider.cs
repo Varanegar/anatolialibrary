@@ -13,6 +13,8 @@ namespace Thunderstruck.Provider.Common
         {
             var identityQuery = String.Concat(command, "; SELECT SCOPE_IDENTITY()");
             var value = CreateDbCommand(identityQuery, commandParams).ExecuteScalar();
+            if (value == DBNull.Value)
+                return -1;
             return Convert.ToInt32(value);
         }
 

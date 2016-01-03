@@ -18,7 +18,6 @@ namespace Anatoli.ViewModels.CustomerModels
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string NationalCode { get; set; }
-
         public List<BasketViewModel> Baskets { get; set; }
     }
 }

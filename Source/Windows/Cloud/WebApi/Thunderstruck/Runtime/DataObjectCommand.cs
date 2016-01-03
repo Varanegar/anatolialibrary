@@ -26,10 +26,10 @@ namespace Thunderstruck.Runtime
             return ExecuteOnDataContext(dataContext, data =>
             {
                 var fields = GetCommaFields(data);
-                var parameters = _runtimeObject.CreateCommaParameters(data.Provider.ParameterIdentifier, _primaryKey.Name);
+                var parameters = _runtimeObject.CreateCommaParameters(data.Provider.ParameterIdentifier, (_primaryKey == null) ? null : _primaryKey.Name);
                 var command = String.Format(InsertSql, GetTableName(), fields, parameters);
                 var identity = data.ExecuteGetIdentity(command, target);
-                _primaryKey.SetValue(target, identity, null);
+                if(_primaryKey!=null)_primaryKey.SetValue(target, identity, null);
                 return identity;
             });
         }
@@ -38,8 +38,8 @@ namespace Thunderstruck.Runtime
         {
             return ExecuteOnDataContext(dataContext, data =>
             {
-                var fields = _runtimeObject.CreateCommaFieldsAndParameters(data.Provider.ParameterIdentifier, _primaryKey.Name);
-                var command = String.Format(UpdateSql, GetTableName(), fields, _primaryKey.Name, data.Provider.ParameterIdentifier);
+                var fields = _runtimeObject.CreateCommaFieldsAndParameters(data.Provider.ParameterIdentifier, (_primaryKey == null) ? null : _primaryKey.Name);
+                var command = String.Format(UpdateSql, GetTableName(), fields, (_primaryKey == null) ? null : _primaryKey.Name, data.Provider.ParameterIdentifier);
                 return data.Execute(command, target);
             });
         }
@@ -48,7 +48,7 @@ namespace Thunderstruck.Runtime
         {
             return ExecuteOnDataContext(dataContext, data =>
             {
-                var command = String.Format(DeleteSql, GetTableName(), _primaryKey.Name, data.Provider.ParameterIdentifier);
+                var command = String.Format(DeleteSql, GetTableName(), (_primaryKey == null) ? null : _primaryKey.Name, data.Provider.ParameterIdentifier);
                 return data.Execute(command, target);
             });
         }
@@ -79,7 +79,7 @@ namespace Thunderstruck.Runtime
 
         private string GetCommaFields(DataContext context)
         {
-            var fields = _runtimeObject.GetFields(removePrimaryKey: _primaryKey.Name);
+            var fields = _runtimeObject.GetFields(removePrimaryKey: (_primaryKey == null)?null:_primaryKey.Name);
             var formatedFields = fields.Select(f => String.Format(context.Provider.FieldFormat, f));
             return String.Join(", ", formatedFields);
         }
