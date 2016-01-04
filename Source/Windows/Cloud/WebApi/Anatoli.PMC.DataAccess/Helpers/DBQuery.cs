@@ -19,7 +19,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public static string GetStockQuery()
         {
             return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, stock.UniqueId StoreId, stock.Stockid as StockCode, StockName , Center.Address
-	                    FROM stock, Center where stock.centerid=Center.centerid 
+	                    FROM stock, Center where stock.centerid=Center.centerid where stockid in (11,12,13)
                     ";
         }
         public static string GetStoreCalendarQuery(int storeId) 
@@ -76,6 +76,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
 	                convert(uniqueidentifier, FiscalYear.uniqueId) as FiscalYearId,
 	                ActiveInStock as isEnable from stockproduct, product, stock, FiscalYear
 	                where stockproduct.productid = product.productid and  stock.stockid = stockproduct.stockid and FiscalYear.FiscalYearId = stockproduct.fiscalyearid
+                    and stock.stockid in (11,12,13)
                 ";
 
         }
@@ -92,7 +93,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         FROM InvVoucher iv           
                        INNER JOIN InvVoucherDetail id ON iv.InvVoucherId=id.InvVoucherId          
                        INNER JOIN InvVoucherType vt ON vt.InvVoucherTypeId=iv.InvVoucherTypeId         
-                       where fiscalYearId = " + fiscalYear + @"        
+                       where fiscalYearId = " + fiscalYear + @"    and  iv.stockid in (11,12,13)  
                       UNION ALL          
              
                       SELECT s.FiscalYearId,s.StockId,sd.ProductId     
@@ -101,7 +102,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        INNER JOIN SellDetail sd ON s.SellId=sd.SellId          
                       WHERE s.IsCanceled=0       
                        AND s.InvVoucherId IS NULL      
-                       and fiscalYearId = " + fiscalYear + @" 
+                       and fiscalYearId = " + fiscalYear + @"  and  s.stockid in (11,12,13)  
                       GROUP BY s.FiscalYearId ,s.CenterId ,s.StockId,sd.ProductId,s.InvoiceDate     
              
                 
@@ -116,7 +117,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        AND s.SalesReceiptStatusId =5     
                        AND s.IsCanceled=0        
                        AND srd.IsRemoved=0      
-                       and fiscalYearId = " + fiscalYear + @" 
+                       and fiscalYearId = " + fiscalYear + @"  and  srd.stockid in (11,12,13)  
                       GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
       
                       UNION ALL     
@@ -128,7 +129,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        AND s.SalesReceiptStatusId =4     
                        AND s.IsCanceled=0        
                        AND srd.IsRemoved=0      
-                       and fiscalYearId = " + fiscalYear + @" 
+                       and fiscalYearId = " + fiscalYear + @"  and  srd.stockid in (11,12,13)  
                       GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
                       ) A 
                     group by FiscalYearId, ProductId,StockId
@@ -249,13 +250,15 @@ namespace Anatoli.PMC.DataAccess.Helpers
         }
         public static string GetProduct()
         {
-            return @"SELECT p.QtyPerPack, p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, p.PackWeight, 
-                    p.Description, null  as PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
-                    WHEN 2 THEN CONVERT(uniqueidentifier, '594120A7-1312-45B2-883B-605000D33D0F') WHEN 3 THEN CONVERT(uniqueidentifier, 
-                    '9DA7C343-CE14-4CBB-81AE-709E075D4E10') END AS ProductTypeId, pg.UniqueId as ProductGroupIdString, m.UniqueId as ManufactureIdString
-                    FROM            Product AS p LEFT OUTER JOIN
-                    Manufacturer AS m ON p.ManufacturerId = m.ManufacturerId LEFT OUTER JOIN
-                    ProductGroupTreeSite AS pg ON p.ProductGroupTreeSiteId = pg.ProductGroupTreeSiteId
+            return @"SELECT p.QtyPerPack, p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, 
+                         p.PackWeight, p.Description, NULL AS PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
+                         WHEN 2 THEN CONVERT(uniqueidentifier, '594120A7-1312-45B2-883B-605000D33D0F') WHEN 3 THEN CONVERT(uniqueidentifier, 
+                         '9DA7C343-CE14-4CBB-81AE-709E075D4E10') END AS ProductTypeId, pg.UniqueId AS ProductGroupIdString, m.UniqueId AS ManufactureIdString, 
+                          mpg.UniqueId AS MainProductGroupIdString
+                    FROM            ProductGroupTreeSite AS pg RIGHT OUTER JOIN
+                         Product AS p LEFT OUTER JOIN
+                         ProductGroupTree AS mpg ON p.ProductGroupTreeId = mpg.ProductGroupTreeId LEFT OUTER JOIN
+                         Manufacturer AS m ON p.ManufacturerId = m.ManufacturerId ON pg.ProductGroupTreeSiteId = p.ProductGroupTreeSiteId
                     ";
         }
         public static string GetProductSupplier(int productId)

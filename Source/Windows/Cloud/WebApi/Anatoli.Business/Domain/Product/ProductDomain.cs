@@ -20,6 +20,7 @@ namespace Anatoli.Business.Domain
         public IRepository<Supplier> SupplierRepository { get; set; }
         public IRepository<CharValue> CharValueRepository { get; set; }
         public IRepository<ProductGroup> ProductGroupRepository { get; set; }
+        public IRepository<MainProductGroup> MainProductGroupRepository { get; set; }
         public IRepository<Manufacture> ManufactureRepository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
@@ -30,15 +31,16 @@ namespace Anatoli.Business.Domain
         ProductDomain() { }
         public ProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public ProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new ManufactureRepository(dbc), new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Product, ProductViewModel>.Create())
+            : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc), new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Product, ProductViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy)
+        public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IMainProductGroupRepository mainProductGroupRepository, IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy)
         {
             Proxy = proxy;
             Repository = productRepository;
             ProductGroupRepository = productGroupRepository;
+            MainProductGroupRepository = mainProductGroupRepository;
             ManufactureRepository = manufactureRepository;
             CharValueRepository = charValueRepository;
             SupplierRepository = supplierRepository;
@@ -104,15 +106,17 @@ namespace Anatoli.Business.Domain
                         currentProduct = SetMainSupplierData(currentProduct, item.MainSupplier, Repository.DbContext);
                         currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
                         currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
+                        currentProduct = SetMainProductGroupData(currentProduct, item.MainProductGroup, Repository.DbContext);
                         Repository.Update(currentProduct);
                     }
                     else
                     {
-                        if(item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
+                        if (item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
                         item = SetMainSupplierData(item, item.Suppliers.FirstOrDefault(), Repository.DbContext);
                         item = SetManucfatureData(item, item.Manufacture, Repository.DbContext);
                         item = SetProductGroupData(item, item.ProductGroup, Repository.DbContext);
+                        item = SetMainProductGroupData(item, item.MainProductGroup, Repository.DbContext);
                         if (item.ProductPictures != null) item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
                         item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
@@ -156,9 +160,30 @@ namespace Anatoli.Business.Domain
                 data.ProductGroup = result;
                 data.ProductGroupId = result.Id;
             }
+            else
+            {
+                data.ProductGroupId = null;
+                data.ProductGroup = null;
+            }
             return data;
         }
 
+        public Product SetMainProductGroupData(Product data, MainProductGroup productGroup, AnatoliDbContext context)
+        {
+            if (productGroup == null) return data;
+            var result = MainProductGroupRepository.GetQuery().Where(p => p.Id == productGroup.Id).FirstOrDefault();
+            if (result != null)
+            {
+                data.MainProductGroup = result;
+                data.MainProductGroupId = result.Id;
+            }
+            else
+            {
+                data.MainProductGroupId = null;
+                data.MainProductGroup = null;
+            }
+            return data;
+        }
         public Product SetProductPictureData(Product data, List<ProductPicture> productPictures, AnatoliDbContext context)
         {
             if (productPictures == null) return data;
@@ -182,6 +207,11 @@ namespace Anatoli.Business.Domain
                 data.Manufacture = result;
                 data.ManufactureId = result.Id;
             }
+            else
+            {
+                data.ManufactureId = null;
+                data.Manufacture = null;
+            }
             return data;
         }
 
@@ -189,10 +219,17 @@ namespace Anatoli.Business.Domain
         {
             if (suppliers == null) return data;
             var supplier = SupplierRepository.GetQuery().Where(p => p.Id == suppliers.Id).FirstOrDefault();
+            if (supplier != null)
             {
                 data.MainSupplier = supplier;
                 data.MainSuppliereId = supplier.Id;
-            } return data;
+            }
+            else
+            {
+                data.MainSupplier = null;
+                data.MainSuppliereId = null;
+            }
+            return data;
         }
 
         public Product SetSupplierData(Product data, List<Supplier> suppliers, AnatoliDbContext context)

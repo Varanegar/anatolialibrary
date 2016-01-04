@@ -118,7 +118,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 List<StockProductViewModel> StockProductList = new List<StockProductViewModel>();
-                using (var context = new DataContext(centerId, connectionString, Transaction.No))
+                using (var context = new DataContext())//centerId, connectionString, Transaction.No))
                 {
                     var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
                     var data = context.All<StockProductViewModel>(DBQuery.GetStockProducts(fiscalYear) + where);
