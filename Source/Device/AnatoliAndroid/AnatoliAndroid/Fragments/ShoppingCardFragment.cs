@@ -108,6 +108,20 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Click += async (s, e) =>
             {
+                if (AnatoliApp.GetInstance().AnatoliUser == null)
+                {
+                    AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    lAlert.SetMessage(Resource.String.PleaseLogin);
+                    lAlert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    {
+                        var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                        var loginFragment = new LoginFragment();
+                        loginFragment.Show(transaction, "shipping_dialog");
+                    });
+                    lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
+                    lAlert.Show();
+                    return;
+                }
                 try
                 {
                     await OrderManager.SaveOrder();

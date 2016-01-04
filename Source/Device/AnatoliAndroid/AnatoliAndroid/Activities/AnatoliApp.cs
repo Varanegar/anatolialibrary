@@ -16,6 +16,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.Fragments;
 using Anatoli.App.Manager;
 using Android.Locations;
+using Android.Views.InputMethods;
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -120,12 +121,32 @@ namespace AnatoliAndroid.Activities
         {
             _toolBarLayout.Visibility = ViewStates.Gone;
             _searchBarLayout.Visibility = ViewStates.Visible;
+            _searchEditText.RequestFocus();
             _searchBar = true;
+        }
+        public void ShowKeyboard(View pView)
+        {
+            pView.RequestFocus();
+
+            InputMethodManager inputMethodManager = _activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
+            inputMethodManager.ShowSoftInput(pView, ShowFlags.Forced);
+            inputMethodManager.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
+        }
+        public void HideKeyboard(View pView)
+        {
+            InputMethodManager inputMethodManager = _activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
+            inputMethodManager.HideSoftInputFromWindow(pView.WindowToken, HideSoftInputFlags.None);
         }
         public void CreateToolbar()
         {
             _searchEditText = ToolBar.FindViewById<AutoCompleteTextView>(Resource.Id.searchEditText);
-
+            _searchEditText.FocusChange += (s, e) =>
+            {
+                if (e.HasFocus)
+                    ShowKeyboard(_searchEditText);
+                else
+                    HideKeyboard(_searchEditText);
+            };
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
             _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
@@ -436,6 +457,10 @@ namespace AnatoliAndroid.Activities
             }
             _list.AddLast(new StackItem(tag, fragment.GetType()));
             _currentFragment = fragment;
+            if (_currentFragment.GetType() != typeof(ProductsListFragment))
+            {
+                RefreshMenuItems();
+            }
             return fragment;
         }
         public bool BackFragment()
@@ -581,7 +606,7 @@ namespace AnatoliAndroid.Activities
         }
 
         string _locationProvider = "";
-        
+
         public void StartLocationUpdates()
         {
             try
