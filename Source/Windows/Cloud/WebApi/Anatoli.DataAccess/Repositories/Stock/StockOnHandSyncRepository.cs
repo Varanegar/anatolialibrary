@@ -7,11 +7,11 @@ using Anatoli.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class StockStockOnHandSyncRepository : AnatoliRepository<StockOnHandSync>, IStockOnHandSyncRepository
+    public class StockOnHandSyncRepository : AnatoliRepository<StockOnHandSync>, IStockOnHandSyncRepository
     {
         #region Ctors
-        public StockStockOnHandSyncRepository() : this(new AnatoliDbContext()) { }
-        public StockStockOnHandSyncRepository(AnatoliDbContext context)
+        public StockOnHandSyncRepository() : this(new AnatoliDbContext()) { }
+        public StockOnHandSyncRepository(AnatoliDbContext context)
             : base(context)
         {
         }

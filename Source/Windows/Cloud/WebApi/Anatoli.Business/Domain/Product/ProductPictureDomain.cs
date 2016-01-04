@@ -61,7 +61,7 @@ namespace Anatoli.Business.Domain
             productPictures.ForEach(item =>
             {
                 item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                var currentProductPicture = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                var currentProductPicture = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                 if (currentProductPicture != null)
                 {
                     currentProductPicture.ProductPictureName = item.ProductPictureName;
@@ -87,7 +87,7 @@ namespace Anatoli.Business.Domain
 
                 productPictures.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
                     Repository.DeleteAsync(product);
                 });

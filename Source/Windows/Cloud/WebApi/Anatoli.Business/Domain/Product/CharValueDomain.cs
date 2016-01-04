@@ -63,7 +63,7 @@ namespace Anatoli.Business.Domain
                 charValues.ForEach(item =>
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentCharValue = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var currentCharValue = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentCharValue != null)
                     {
                         if (currentCharValue.CharValueText != item.CharValueText ||
@@ -103,7 +103,7 @@ namespace Anatoli.Business.Domain
 
                 charValues.ForEach(item =>
                 {
-                    var charValue = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var charValue = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
                     Repository.DeleteAsync(charValue);
                 });

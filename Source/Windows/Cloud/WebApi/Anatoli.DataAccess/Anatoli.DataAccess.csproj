@@ -182,6 +182,10 @@
     <Compile Include="Migrations\201601041204501_Stock-Request-5.Designer.cs">
       <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601041424205_Stock-Request-6.cs" />
+    <Compile Include="Migrations\201601041424205_Stock-Request-6.Designer.cs">
+      <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -334,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601041204501_Stock-Request-5.resx">
       <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601041424205_Stock-Request-6.resx">
+      <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

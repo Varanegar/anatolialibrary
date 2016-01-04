@@ -9,7 +9,7 @@ namespace Anatoli.ViewModels.StockModels
     {
         public bool IsEnable { get; set; }
         public Guid FiscalYearId { get; set; }
-        public Guid StoockGuid { get; set; }
+        public Guid StockGuid { get; set; }
         public Guid ProductGuid { get; set; }
         public Guid? ReorderCalcTypeId { get; set; }
         public decimal MinQty { get; set; }

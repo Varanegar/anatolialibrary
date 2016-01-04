@@ -63,7 +63,7 @@ namespace Anatoli.Business.Domain
                 suppliers.ForEach(item =>
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentSupplier = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var currentSupplier = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentSupplier != null)
                     {
                         if (currentSupplier.SupplierName != item.SupplierName)
@@ -97,7 +97,7 @@ namespace Anatoli.Business.Domain
 
                 suppliers.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
                     Repository.DeleteAsync(product);
                 });

@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
+    <Compile Include="Domain\Base\FiscalYearDomain.cs" />
     <Compile Include="Domain\Base\ItemImageDomain.cs" />
     <Compile Include="Domain\Base\CityRegionDomain.cs" />
     <Compile Include="Domain\Customer\BasketItemDomain.cs" />
@@ -90,10 +91,24 @@
     <Compile Include="Domain\Product\CharValueDomain.cs" />
     <Compile Include="Domain\Product\ProductPictureDomain.cs" />
     <Compile Include="Domain\Product\ProductRateDomain.cs" />
+    <Compile Include="Domain\Product\ProductTypeDomain.cs" />
+    <Compile Include="Domain\Product\ReorderCalcTypeDomain.cs" />
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
+    <Compile Include="Domain\Stock\StockActiveOnHandDomain.cs" />
+    <Compile Include="Domain\Stock\StockDomain.cs" />
+    <Compile Include="Domain\Stock\StockHistoryOnHandDomain.cs" />
+    <Compile Include="Domain\Stock\StockOnHandSyncDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestProductDetailDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestProductDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestRuleDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestStatusDomain.cs" />
+    <Compile Include="Domain\Stock\StockProductRequestTypeDomain.cs" />
+    <Compile Include="Domain\Stock\StockTypeDomain.cs" />
     <Compile Include="Domain\Store\StorePriceListDomain.cs" />
     <Compile Include="Domain\Store\StoreOnHandDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
@@ -165,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

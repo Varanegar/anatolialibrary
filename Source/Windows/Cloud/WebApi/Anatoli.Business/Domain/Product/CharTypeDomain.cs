@@ -103,7 +103,7 @@ namespace Anatoli.Business.Domain
 
                 charTypes.ForEach(item =>
                 {
-                    var charType = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var charType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
                     Repository.DeleteAsync(charType);
                 });

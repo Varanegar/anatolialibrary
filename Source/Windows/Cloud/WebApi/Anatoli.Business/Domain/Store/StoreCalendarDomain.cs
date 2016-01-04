@@ -70,7 +70,7 @@ namespace Anatoli.Business.Domain
 
                 storeCalendars.ForEach(item =>
                 {
-                    var currentStoreCalendars = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var currentStoreCalendars = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentStoreCalendars != null)
                     {
                         if (currentStoreCalendars.Date != item.Date ||
@@ -110,7 +110,7 @@ namespace Anatoli.Business.Domain
 
                 storeCalendars.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
                     Repository.DeleteAsync(product);
                 });

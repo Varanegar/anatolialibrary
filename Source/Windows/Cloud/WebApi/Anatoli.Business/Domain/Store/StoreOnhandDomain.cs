@@ -126,7 +126,7 @@ namespace Anatoli.Business.Domain
 
                 storeActiveOnhands.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID == item.Number_ID).FirstOrDefault();
+                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
                     Repository.DeleteAsync(product);
                 });
