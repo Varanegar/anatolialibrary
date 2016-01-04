@@ -17,6 +17,9 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<ProductPicture>(pp => pp.ProductPictures)
                 .WithRequired(p => p.Product);
 
+            this.HasMany<StockProduct>(pp => pp.StockProducts)
+                .WithRequired(p => p.Product);
+
             this.HasMany<BasketItem>(pp => pp.BasketItems)
                 .WithRequired(p => p.Product);
 

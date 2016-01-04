@@ -21,9 +21,13 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> ManufactureId { get; set; }
         [ForeignKey("MainSupplier")]
         public Nullable<Guid> MainSuppliereId { get; set; }
+        [ForeignKey("ProductType")]
+        public Nullable<Guid> ProductTypeId { get; set; }
 
+        public virtual ProductType ProductType { get; set; }
         public virtual Supplier MainSupplier { get; set; }
         public virtual ProductGroup ProductGroup { get; set; }
+        public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<ProductComment> ProductComments { get; set; }
         public virtual ICollection<ProductPicture> ProductPictures { get; set; }
         public virtual ICollection<BasketItem> BasketItems { get; set; }

@@ -2,7 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public class Store : BaseModel
     {
         //public Guid StoreId { get; set; }
@@ -19,7 +19,8 @@ namespace Anatoli.DataAccess.Models
         public byte SupportWebOrder { get; set; }
         public byte SupportCallCenterOrder { get; set; }
         public Nullable<byte> StoreStatusTypeId { get; set; }
-    
+
+        public virtual ICollection<Stock> StoreStocks { get; set; }
         public virtual ICollection<StoreAction> StoreActions { get; set; }
         public virtual ICollection<StoreActiveOnhand> StoreActiveOnhands { get; set; }
         public virtual ICollection<StoreActivePriceList> StoreActivePriceLists { get; set; }

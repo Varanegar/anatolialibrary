@@ -76,8 +76,15 @@
     <Compile Include="Configs\ManufactureConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
+    <Compile Include="Configs\ProductTypeConfig.cs" />
     <Compile Include="Configs\RoleConfig.cs" />
+    <Compile Include="Configs\ReorderCalcTypeConfig.cs" />
+    <Compile Include="Configs\StockProductRequestTypeConfig.cs" />
+    <Compile Include="Configs\StockProductRequestConfig.cs" />
+    <Compile Include="Configs\StockProductConfig.cs" />
+    <Compile Include="Configs\StockOnHandSyncConfig.cs" />
     <Compile Include="Configs\StoreCalendarConfig.cs" />
+    <Compile Include="Configs\StockConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
@@ -135,6 +142,14 @@
     <Compile Include="Migrations\201601021224565_business.Designer.cs">
       <DependentUpon>201601021224565_business.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601040844197_Stock-Request-1.cs" />
+    <Compile Include="Migrations\201601040844197_Stock-Request-1.Designer.cs">
+      <DependentUpon>201601040844197_Stock-Request-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601040859515_Stock-Request-2.cs" />
+    <Compile Include="Migrations\201601040859515_Stock-Request-2.Designer.cs">
+      <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -169,13 +184,23 @@
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
+    <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
     <Compile Include="Models\PurchaseOrderClearance.cs" />
     <Compile Include="Models\PurchaseOrderHistory.cs" />
     <Compile Include="Models\PurchaseOrderLineItem.cs" />
     <Compile Include="Models\PurchaseOrderPayment.cs" />
+    <Compile Include="Models\StockProductRequestProduct.cs" />
+    <Compile Include="Models\StockProductRequestType.cs" />
+    <Compile Include="Models\ReorderCalcType.cs" />
+    <Compile Include="Models\StockHistoryOnHand.cs" />
+    <Compile Include="Models\StockOnHandSync.cs" />
+    <Compile Include="Models\StockProductRequest.cs" />
+    <Compile Include="Models\StockProduct.cs" />
+    <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="Models\StoreAction.cs" />
+    <Compile Include="Models\StockActiveOnHand.cs" />
     <Compile Include="Models\StoreActiveOnHand.cs" />
     <Compile Include="Models\StoreActivePriceList.cs" />
     <Compile Include="Models\StoreCalendar.cs" />
@@ -242,6 +267,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601021224565_business.resx">
       <DependentUpon>201601021224565_business.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601040844197_Stock-Request-1.resx">
+      <DependentUpon>201601040844197_Stock-Request-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601040859515_Stock-Request-2.resx">
+      <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

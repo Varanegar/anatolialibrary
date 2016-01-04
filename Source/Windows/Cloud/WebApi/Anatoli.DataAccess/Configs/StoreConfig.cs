@@ -20,9 +20,12 @@ namespace Anatoli.DataAccess.Configs
                     cs.MapLeftKey("StoreId");
                     cs.MapRightKey("CityRegionID");
                     cs.ToTable("StoreValidRegionInfoes");
-                }); 
-            
+                });
+
             this.HasMany<StoreActivePriceList>(cr => cr.StoreActivePriceLists)
+               .WithRequired(svr => svr.Store);
+            
+            this.HasMany<Stock>(cr => cr.StoreStocks)
                .WithRequired(svr => svr.Store);
 
             this.HasMany<StoreActiveOnhand>(cr => cr.StoreActiveOnhands)
