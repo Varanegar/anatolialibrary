@@ -21,6 +21,8 @@ namespace Anatoli.Business.Domain
         #region Properties
         public IAnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel> Proxy { get; set; }
         public IRepository<StockActiveOnHand> Repository { get; set; }
+        public IRepository<StockOnHandSync> StockSynRepository { get; set; }
+        public IRepository<StockHistoryOnHand> StockHistoryOnHandRepository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
 
@@ -30,14 +32,19 @@ namespace Anatoli.Business.Domain
         StockActiveOnHandDomain() { }
         public StockActiveOnHandDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockActiveOnHandDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockActiveOnHandRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel>.Create())
+            : this(new StockActiveOnHandRepository(dbc), new StockHistoryOnHandRepository(dbc), new StockOnHandSyncRepository(dbc), new PrincipalRepository(dbc), 
+                    AnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel>.Create()
+            )
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public StockActiveOnHandDomain(IStockActiveOnHandRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel> proxy)
+        public StockActiveOnHandDomain(IStockActiveOnHandRepository dataRepository, IStockHistoryOnHandRepository dataHistoryRepository, IStockOnHandSyncRepository dataSyncRepository, 
+                    IPrincipalRepository principalRepository, IAnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel> proxy)
         {
             Proxy = proxy;
             Repository = dataRepository;
+            StockSynRepository = dataSyncRepository;
+            StockHistoryOnHandRepository = dataHistoryRepository;
             PrincipalRepository = principalRepository;
         }
         #endregion
@@ -84,6 +91,7 @@ namespace Anatoli.Business.Domain
                     }
                 });
 
+
                 await Repository.SaveChangesAsync();
             }
             catch(Exception ex)
@@ -122,6 +130,9 @@ namespace Anatoli.Business.Domain
                 SyncDate = DateTime.Now,
                 SyncPDate = PersianDate.Today.ToShortDateString(),
             };
+
+            dataHistoryRepository.
+            //rep.
 
         }
         #endregion
