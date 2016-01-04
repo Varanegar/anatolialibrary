@@ -10,5 +10,6 @@ namespace Anatoli.DataAccess.Models
         public string ProductTypeName { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<StockProductRequest> StockProductRequests { get; set; }
+        public virtual ICollection<StockProductRequestRule> StockProductRequestRules { get; set; }
     }
 }

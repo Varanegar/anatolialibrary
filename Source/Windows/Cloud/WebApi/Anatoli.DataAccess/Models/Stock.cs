@@ -17,10 +17,13 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> Accept2ById { get; set; }
         [ForeignKey("Accept3By")]
         public Nullable<Guid> Accept3ById { get; set; }
+        [ForeignKey("StockType")]
+        public Nullable<Guid> StockTypeId { get; set; }
         public virtual Store Store { get; set; }
         public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<StockOnHandSync> StockOnHandSyncs { get; set; }
         public virtual ICollection<StockProductRequest> StockProductRequests { get; set; }
+        public virtual StockType StockType { get; set; }
         public virtual Principal Accept1By { get; set; }
         public virtual Principal Accept2By { get; set; }
         public virtual Principal Accept3By { get; set; }

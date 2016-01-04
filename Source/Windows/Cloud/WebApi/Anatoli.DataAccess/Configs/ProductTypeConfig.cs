@@ -15,6 +15,9 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
                 .WithRequired(p => p.ProductType)
                 .WillCascadeOnDelete(false);
+            this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
+                .WithRequired(p => p.ProductType)
+                .WillCascadeOnDelete(false);
         }
     }
 }

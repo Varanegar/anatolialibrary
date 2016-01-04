@@ -95,6 +95,9 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new StockConfig());
             modelBuilder.Configurations.Add(new StockProductConfig());
             modelBuilder.Configurations.Add(new StockProductRequestConfig());
+            modelBuilder.Configurations.Add(new StockProductRequestProductConfig());
+            modelBuilder.Configurations.Add(new StockProductRequestRuleConfig());
+            modelBuilder.Configurations.Add(new StockProductRequestStatusConfig());
             modelBuilder.Configurations.Add(new StockProductRequestTypeConfig());
             modelBuilder.Configurations.Add(new StockOnHandSyncConfig());
             modelBuilder.Configurations.Add(new StoreCalendarConfig());

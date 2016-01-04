@@ -75,10 +75,14 @@
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
+    <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
+    <Compile Include="Configs\StockProductRequestProductConfig.cs" />
+    <Compile Include="Configs\StockTypeConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\ProductTypeConfig.cs" />
     <Compile Include="Configs\RoleConfig.cs" />
     <Compile Include="Configs\ReorderCalcTypeConfig.cs" />
+    <Compile Include="Configs\StockProductRequestStatusConfig.cs" />
     <Compile Include="Configs\StockProductRequestTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestConfig.cs" />
     <Compile Include="Configs\StockProductConfig.cs" />
@@ -150,6 +154,14 @@
     <Compile Include="Migrations\201601040859515_Stock-Request-2.Designer.cs">
       <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601040946568_Stock-Request-3.cs" />
+    <Compile Include="Migrations\201601040946568_Stock-Request-3.Designer.cs">
+      <DependentUpon>201601040946568_Stock-Request-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601041024001_Stock-Request-4.cs" />
+    <Compile Include="Migrations\201601041024001_Stock-Request-4.Designer.cs">
+      <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -184,6 +196,9 @@
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
+    <Compile Include="Models\StockProductRequestProductDetail.cs" />
+    <Compile Include="Models\StockProductRequestRule.cs" />
+    <Compile Include="Models\StockType.cs" />
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
     <Compile Include="Models\PurchaseOrderClearance.cs" />
@@ -191,6 +206,7 @@
     <Compile Include="Models\PurchaseOrderLineItem.cs" />
     <Compile Include="Models\PurchaseOrderPayment.cs" />
     <Compile Include="Models\StockProductRequestProduct.cs" />
+    <Compile Include="Models\StockProductRequestStatus.cs" />
     <Compile Include="Models\StockProductRequestType.cs" />
     <Compile Include="Models\ReorderCalcType.cs" />
     <Compile Include="Models\StockHistoryOnHand.cs" />
@@ -273,6 +289,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601040859515_Stock-Request-2.resx">
       <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601040946568_Stock-Request-3.resx">
+      <DependentUpon>201601040946568_Stock-Request-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601041024001_Stock-Request-4.resx">
+      <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

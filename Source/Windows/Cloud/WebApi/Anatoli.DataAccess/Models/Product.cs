@@ -31,6 +31,10 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<ProductComment> ProductComments { get; set; }
         public virtual ICollection<ProductPicture> ProductPictures { get; set; }
         public virtual ICollection<BasketItem> BasketItems { get; set; }
+        public virtual ICollection<StockProductRequestRule> StockProductRequestRules { get; set; }
+        public virtual ICollection<StockProductRequestProduct> StockProductRequestProducts { get; set; }
+        public virtual ICollection<StockHistoryOnHand> StockHistoryOnHands { get; set; }
+        public virtual ICollection<StockActiveOnHand> StockActiveOnHands { get; set; }
         public virtual ICollection<PurchaseOrderLineItem> PurchaseOrderLineItems { get; set; }
         public virtual ICollection<ProductRate> ProductRates { get; set; }
         public virtual ICollection<StoreActivePriceList> StoreActivePriceLists { get; set; }

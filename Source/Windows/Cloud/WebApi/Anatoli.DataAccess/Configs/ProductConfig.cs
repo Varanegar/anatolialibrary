@@ -23,14 +23,37 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<BasketItem>(pp => pp.BasketItems)
                 .WithRequired(p => p.Product);
 
+            this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
+                .WithOptional(p => p.Product)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockProductRequestProduct>(pp => pp.StockProductRequestProducts)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockHistoryOnHand>(pp => pp.StockHistoryOnHands)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockActiveOnHand>(pp => pp.StockActiveOnHands)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<PurchaseOrderLineItem>(pr => pr.PurchaseOrderLineItems)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<ProductRate>(pr => pr.ProductRates)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<ProductComment>(pc => pc.ProductComments)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
 
             this.HasMany<CharValue>(s => s.CharValues)

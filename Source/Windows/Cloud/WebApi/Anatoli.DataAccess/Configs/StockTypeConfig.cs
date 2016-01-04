@@ -3,18 +3,18 @@ using System.Linq;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
-using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Configs
 {
-    public class StockProductRequestTypeConfig : EntityTypeConfiguration<StockProductRequestType>
+    public class StockTypeConfig : EntityTypeConfiguration<StockType>
     {
-        public StockProductRequestTypeConfig()
+        public StockTypeConfig()
         {
+            this.HasMany<Stock>(pp => pp.Products)
+                .WithOptional(p => p.StockType);
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
-                .WithRequired(p => p.StockProductRequestType)
+                .WithRequired(p => p.StockType)
                 .WillCascadeOnDelete(false);
-
         }
     }
 }

@@ -12,6 +12,16 @@ namespace Anatoli.DataAccess.Configs
         {
             this.HasMany<ProductGroup>(pg => pg.ProductGroup1)
                 .WithOptional(pg => pg.ProductGroup2);
+
+            this.HasMany<Product>(pg => pg.Products)
+                .WithOptional(pg => pg.ProductGroup)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockProductRequestRule>(pg => pg.StockProductRequestRules)
+                .WithOptional(pg => pg.ProductGroup)
+                .WillCascadeOnDelete(false);
+
+
         }
     }
 }
