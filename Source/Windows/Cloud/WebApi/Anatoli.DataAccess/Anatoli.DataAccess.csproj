@@ -75,6 +75,7 @@
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
+    <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
+    <Compile Include="Interfaces\Base\IFiscalYearRepository.cs" />
     <Compile Include="Interfaces\Base\IItemImageRegionRepository.cs" />
     <Compile Include="Interfaces\Base\ICityRegionRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketItemRepository.cs" />
@@ -103,12 +105,26 @@
     <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
+    <Compile Include="Interfaces\Product\IReorderCalcTypeRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
     <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockOnHandSyncRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestProductDetailRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestProductRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestRuleRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestStatusRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockProductRequestTypeRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockRepository.cs" />
+    <Compile Include="Interfaces\Stock\IStockTypeRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreCalendarRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreActivePriceListRepository.cs" />
@@ -162,6 +178,10 @@
     <Compile Include="Migrations\201601041024001_Stock-Request-4.Designer.cs">
       <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601041204501_Stock-Request-5.cs" />
+    <Compile Include="Migrations\201601041204501_Stock-Request-5.Designer.cs">
+      <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -198,6 +218,7 @@
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
+    <Compile Include="Models\FiscalYear.cs" />
     <Compile Include="Models\StockType.cs" />
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
@@ -229,6 +250,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Base\FiscalYearRepository.cs" />
     <Compile Include="Repositories\Base\BaseTypeRepository.cs" />
     <Compile Include="Repositories\Base\BaseValueRepository.cs" />
     <Compile Include="Repositories\Base\CityRegionRepository.cs" />
@@ -244,9 +266,23 @@
     <Compile Include="Repositories\Base\SupplierRepository.cs" />
     <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
     <Compile Include="Repositories\Base\ManufactureRepository.cs" />
+    <Compile Include="Repositories\Product\ReorderCalcTypeRepository.cs" />
+    <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
+    <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
+    <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestProductDetailRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestProductRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestTypeRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestStatusRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestRuleRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRequestRepository.cs" />
+    <Compile Include="Repositories\Stock\StockProductRepository.cs" />
+    <Compile Include="Repositories\Stock\StockOnHandSyncRepository.cs" />
+    <Compile Include="Repositories\Stock\StockTypeRepository.cs" />
+    <Compile Include="Repositories\Stock\StockRepository.cs" />
     <Compile Include="Repositories\Store\StoreCalendarRepository.cs" />
     <Compile Include="Repositories\Store\StoreActivePriceListRepository.cs" />
     <Compile Include="Repositories\Store\StoreActiveOnHandRepository.cs" />
@@ -295,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601041024001_Stock-Request-4.resx">
       <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601041204501_Stock-Request-5.resx">
+      <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

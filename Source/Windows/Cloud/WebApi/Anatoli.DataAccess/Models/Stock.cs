@@ -9,6 +9,7 @@ namespace Anatoli.DataAccess.Models
     {
         public int StockCode { get; set; }
         public string StockName { get; set; }
+        public string Address { get; set; }
         [ForeignKey("Store")]
         public Guid StoreId { get; set; }
         [ForeignKey("Accept1By")]

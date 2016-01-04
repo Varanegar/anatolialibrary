@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />
     <Compile Include="BaseModels\BaseValueViewModel.cs" />
     <Compile Include="BaseModels\ItemImageViewModel.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Order\PurchaseOrderLineItemViewModel.cs" />
     <Compile Include="Order\PurchaseOrderStatusViewModel.cs" />
     <Compile Include="Order\PurchaseOrderViewModel.cs" />
+    <Compile Include="ProductModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
     <Compile Include="ProductModels\CharValueViewModel.cs" />
@@ -56,8 +58,21 @@
     <Compile Include="ProductModels\ProductPictureViewModel.cs" />
     <Compile Include="BaseModels\ManufactureViewModel.cs" />
     <Compile Include="ProductModels\ProductGroupViewModel.cs" />
+    <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="StockModels\StockHistoryOnHandViewModel.cs" />
+    <Compile Include="StockModels\StockOnHandSyncViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestProductDetailViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestProductViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestRuleViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestStatusViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestTypeViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestViewModel.cs" />
+    <Compile Include="StockModels\StockProductViewModel.cs" />
+    <Compile Include="StockModels\StockTypeViewModel.cs" />
+    <Compile Include="StockModels\StockViewModel.cs" />
+    <Compile Include="StockModels\StockActiveOnHandViewModel.cs" />
     <Compile Include="StoreModels\StoreActivePriceListViewModel.cs" />
     <Compile Include="StoreModels\StoreCalendarViewModel.cs" />
     <Compile Include="StoreModels\StoreActiveOnhandViewModel.cs" />
@@ -65,6 +80,7 @@
     <Compile Include="BaseModels\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

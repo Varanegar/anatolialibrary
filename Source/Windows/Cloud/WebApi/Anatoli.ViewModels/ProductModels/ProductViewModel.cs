@@ -11,6 +11,7 @@ namespace Anatoli.ViewModels.ProductModels
         public string StoreProductName { get; set; }
         public decimal? PackVolume { get; set; }
         public decimal? PackWeight { get; set; }
+        public decimal QtyPerPack { get; set; }
         public decimal RateValue { get; set; }
         public string SmallPicURL { get; set; }
         public string LargePicURL { get; set; }

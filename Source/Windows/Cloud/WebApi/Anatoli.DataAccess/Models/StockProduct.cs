@@ -9,14 +9,17 @@ namespace Anatoli.DataAccess.Models
         public decimal MinQty { get; set; }
         public decimal ReorderLevel { get; set; }
         public decimal MaxQty { get; set; }
-        public Guid OrderType { get; set; }
+        public bool IsEnable { get; set; }
         [ForeignKey("Stock")]
         public Guid StockId { get; set; }
+        [ForeignKey("FiscalYear")]
+        public Guid FiscalYearId { get; set; }
         [ForeignKey("Product")]
         public Guid ProductId { get; set; }
         [ForeignKey("ReorderCalcType")]
         public Nullable<Guid> ReorderCalcTypeId { get; set; }
         public virtual ReorderCalcType ReorderCalcType { get; set; }
+        public virtual FiscalYear FiscalYear { get; set; }
         public virtual Stock Stock { get; set; }
         public virtual Product Product { get; set; }
     }

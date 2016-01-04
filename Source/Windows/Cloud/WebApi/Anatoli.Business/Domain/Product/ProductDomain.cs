@@ -89,12 +89,11 @@ namespace Anatoli.Business.Domain
                         currentProduct.ManufactureId = item.ManufactureId;
                         currentProduct.MainSuppliereId = item.MainSuppliereId;
                         currentProduct.Desctription = item.Desctription;
-                        currentProduct.PackUnitValueId = item.PackUnitValueId;
+                        currentProduct.QtyPerPack = item.QtyPerPack;
                         currentProduct.PackVolume = item.PackVolume;
                         currentProduct.PackWeight = item.PackWeight;
                         currentProduct.ProductCode = item.ProductCode;
                         currentProduct.ProductName = item.ProductName;
-                        currentProduct.ProductTypeValueId = item.ProductTypeValueId;
                         currentProduct.StoreProductName = item.StoreProductName;
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
                         currentProduct.LastUpdate = DateTime.Now;

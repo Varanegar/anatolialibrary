@@ -8,9 +8,19 @@ namespace Anatoli.PMC.DataAccess.Helpers
 {
     public static class DBQuery
     {
+        public static string GetFiscalYearQuery()
+        {
+            return @"select FiscalYearId as id, convert(uniqueidentifier,uniqueid) as UniqueId, dbo.ToMiladi(StartDate) as FromDate, StartDate as fromPDate, dbo.ToMiladi(EndDate) as toDate, EndDate as ToPdate  from fiscalyear ";
+        }
         public static string GetStoreQuery()
         {
             return @"SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center where centertypeid=3 ";
+        }
+        public static string GetStockQuery()
+        {
+            return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, stock.UniqueId StoreId, stock.Stockid as StockCode, StockName , Center.Address
+	                    FROM stock, Center where stock.centerid=Center.centerid 
+                    ";
         }
         public static string GetStoreCalendarQuery(int storeId) 
         {
@@ -57,6 +67,129 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public static string GetFiscalYearId()
         {
             return @"select FiscalYearId from FiscalYear where StartDate <= dbo.ToShamsi(getdate()) and enddate>= dbo.ToShamsi(getdate())";
+        }
+        public static string GetStockProducts(int fiscalYear)
+        {
+            return
+            @" select convert(uniqueidentifier, stock.uniqueId) as StockGuid,
+	                convert(uniqueidentifier, product.uniqueId) as ProductGuid,
+	                convert(uniqueidentifier, FiscalYear.uniqueId) as FiscalYearId,
+	                ActiveInStock as isEnable from stockproduct, product, stock, FiscalYear
+	                where stockproduct.productid = product.productid and  stock.stockid = stockproduct.stockid and FiscalYear.FiscalYearId = stockproduct.fiscalyearid
+                ";
+
+        }
+        public static string GetStockOnHand(int fiscalYear)
+        {
+            return
+            @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Stock.UniqueId) as StockGuid from (      
+                      SELECT  ProductId,sum(Qty) as  Qty,StockId, CenterId
+                      FROM         
+                      (        
+                        SELECT iv.FiscalYearId,iv.StockId,id.ProductId ,   
+                       (CASE WHEN vt.IsInput=1 THEN 1 ELSE -1 END * id.Qty) Qty          
+                       ,iv.CenterId    
+                        FROM InvVoucher iv           
+                       INNER JOIN InvVoucherDetail id ON iv.InvVoucherId=id.InvVoucherId          
+                       INNER JOIN InvVoucherType vt ON vt.InvVoucherTypeId=iv.InvVoucherTypeId         
+                       where fiscalYearId = " + fiscalYear + @"        
+                      UNION ALL          
+             
+                      SELECT s.FiscalYearId,s.StockId,sd.ProductId     
+                       ,-SUM(Qty) Qty ,   CenterId    
+                      FROM SellM s           
+                       INNER JOIN SellDetail sd ON s.SellId=sd.SellId          
+                      WHERE s.IsCanceled=0       
+                       AND s.InvVoucherId IS NULL      
+                       and fiscalYearId = " + fiscalYear + @" 
+                      GROUP BY s.FiscalYearId ,s.CenterId ,s.StockId,sd.ProductId,s.InvoiceDate     
+             
+                
+                      UNION ALL        
+             
+                      SELECT s.FiscalYearId,srd.StockId,srd.ProductId     
+                        ,SUM(Qty)*(-1) AS Qty ,         
+                        s.CenterId    
+                      FROM  SalesReceipt s        
+                       INNER JOIN SalesReceiptDetail srd ON s.SalesReceiptId=srd.SalesReceiptId        
+                      WHERE srd.InvVoucherDetailId IS NULL      
+                       AND s.SalesReceiptStatusId =5     
+                       AND s.IsCanceled=0        
+                       AND srd.IsRemoved=0      
+                       and fiscalYearId = " + fiscalYear + @" 
+                      GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
+      
+                      UNION ALL     
+                      SELECT s.FiscalYearId,srd.StockId,srd.ProductId     
+                        ,SUM(Qty) AS Qty ,    s.CenterId    
+                      FROM  SalesReceipt s        
+                       INNER JOIN SalesReceiptDetail srd ON s.SalesReceiptId=srd.SalesReceiptId        
+                      WHERE srd.InvVoucherDetailId IS NULL      
+                       AND s.SalesReceiptStatusId =4     
+                       AND s.IsCanceled=0        
+                       AND srd.IsRemoved=0      
+                       and fiscalYearId = " + fiscalYear + @" 
+                      GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
+                      ) A 
+                    group by FiscalYearId, ProductId,StockId
+                    ) as onhand, Product, Stock where onhand.ProductId = Product.ProductId and Stock.StockId = onhand.StockId";
+
+        }
+        public static string GetStockOnHandByStockId(int fiscalYear, string stockId)
+        {
+            return
+            @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Stock.UniqueId) as StockGuid from (      
+                      SELECT  ProductId,sum(Qty) as  Qty,StockId, CenterId
+                      FROM         
+                      (        
+                        SELECT iv.FiscalYearId,iv.StockId,id.ProductId ,   
+                       (CASE WHEN vt.IsInput=1 THEN 1 ELSE -1 END * id.Qty) Qty          
+                       ,iv.CenterId    
+                        FROM InvVoucher iv           
+                       INNER JOIN InvVoucherDetail id ON iv.InvVoucherId=id.InvVoucherId          
+                       INNER JOIN InvVoucherType vt ON vt.InvVoucherTypeId=iv.InvVoucherTypeId         
+                       where fiscalYearId = " + fiscalYear + @" and iv.stockid = '" + stockId + @"       
+                      UNION ALL          
+             
+                      SELECT s.FiscalYearId,s.StockId,sd.ProductId     
+                       ,-SUM(Qty) Qty ,   CenterId    
+                      FROM SellM s           
+                       INNER JOIN SellDetail sd ON s.SellId=sd.SellId          
+                      WHERE s.IsCanceled=0       
+                       AND s.InvVoucherId IS NULL      
+                       and fiscalYearId = " + fiscalYear + @" and s.stockid = '" + stockId + @"       
+                      GROUP BY s.FiscalYearId ,s.CenterId ,s.StockId,sd.ProductId,s.InvoiceDate     
+             
+                
+                      UNION ALL        
+             
+                      SELECT s.FiscalYearId,srd.StockId,srd.ProductId     
+                        ,SUM(Qty)*(-1) AS Qty ,         
+                        s.CenterId    
+                      FROM  SalesReceipt s        
+                       INNER JOIN SalesReceiptDetail srd ON s.SalesReceiptId=srd.SalesReceiptId        
+                      WHERE srd.InvVoucherDetailId IS NULL      
+                       AND s.SalesReceiptStatusId =5     
+                       AND s.IsCanceled=0        
+                       AND srd.IsRemoved=0      
+                       and fiscalYearId = " + fiscalYear + @" and srd.stockid = '" + stockId + @"       
+                      GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
+      
+                      UNION ALL     
+                      SELECT s.FiscalYearId,srd.StockId,srd.ProductId     
+                        ,SUM(Qty) AS Qty ,    s.CenterId    
+                      FROM  SalesReceipt s        
+                       INNER JOIN SalesReceiptDetail srd ON s.SalesReceiptId=srd.SalesReceiptId        
+                      WHERE srd.InvVoucherDetailId IS NULL      
+                       AND s.SalesReceiptStatusId =4     
+                       AND s.IsCanceled=0        
+                       AND srd.IsRemoved=0      
+                       and fiscalYearId = " + fiscalYear + @" and srd.stockid = '" + stockId + @"       
+                      GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
+                      ) A 
+                    group by FiscalYearId, ProductId,StockId
+                    ) as onhand, Product, Stock where onhand.ProductId = Product.ProductId and Stock.StockId = onhand.StockId";
+
         }
         public static string GetStoreStockOnHand(int fiscalYear)
         {
@@ -116,7 +249,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
         }
         public static string GetProduct()
         {
-            return @"SELECT p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, p.PackWeight, 
+            return @"SELECT p.QtyPerPack, p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, p.PackWeight, 
                     p.Description, null  as PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
                     WHEN 2 THEN CONVERT(uniqueidentifier, '594120A7-1312-45B2-883B-605000D33D0F') WHEN 3 THEN CONVERT(uniqueidentifier, 
                     '9DA7C343-CE14-4CBB-81AE-709E075D4E10') END AS ProductTypeId, pg.UniqueId as ProductGroupIdString, m.UniqueId as ManufactureIdString

@@ -9,10 +9,9 @@ namespace Anatoli.DataAccess.Models
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string StoreProductName { get; set; }
-        public int PackUnitValueId { get; set; }
-        public int ProductTypeValueId { get; set; }
         public Nullable<decimal> PackVolume { get; set; }
         public Nullable<decimal> PackWeight { get; set; }
+        public decimal? QtyPerPack { get; set; }
         public Nullable<long> TaxCategoryValueId { get; set; }
         public string Desctription { get; set; }
         [ForeignKey("ProductGroup")]
