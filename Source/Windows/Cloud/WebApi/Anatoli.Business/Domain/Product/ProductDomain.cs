@@ -110,7 +110,7 @@ namespace Anatoli.Business.Domain
                     {
                         if(item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
-                        item = SetMainSupplierData(item, item.MainSupplier, Repository.DbContext);
+                        item = SetMainSupplierData(item, item.Suppliers.FirstOrDefault(), Repository.DbContext);
                         item = SetManucfatureData(item, item.Manufacture, Repository.DbContext);
                         item = SetProductGroupData(item, item.ProductGroup, Repository.DbContext);
                         if (item.ProductPictures != null) item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);

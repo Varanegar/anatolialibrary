@@ -54,7 +54,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return products;       
         }
-        public  List<ProductGroupViewModel> GetAllProductGroups(DateTime lastUpload)
+        public List<ProductGroupViewModel> GetAllProductGroups(DateTime lastUpload)
         {
             List<ProductGroupViewModel> productGroup = new List<ProductGroupViewModel>();
             using (var context = new DataContext())
@@ -64,6 +64,20 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 
                 context.Execute(DBQuery.GetProductGroupData());
                 var data = context.All<ProductGroupViewModel>(DBQuery.GetProductGroupTree());
+                productGroup = data.ToList();
+            }
+            return productGroup;
+        }
+        public List<MainProductGroupViewModel> GetAllMainProductGroups(DateTime lastUpload)
+        {
+            List<MainProductGroupViewModel> productGroup = new List<MainProductGroupViewModel>();
+            using (var context = new DataContext())
+            {
+                string where = "";
+                if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+                context.Execute(DBQuery.GetMainProductGroupData());
+                var data = context.All<MainProductGroupViewModel>(DBQuery.GetMainProductGroupTree());
                 productGroup = data.ToList();
             }
             return productGroup;

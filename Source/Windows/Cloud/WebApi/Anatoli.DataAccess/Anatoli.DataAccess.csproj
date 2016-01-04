@@ -74,6 +74,7 @@
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
+    <Compile Include="Configs\MainProductGroupConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
+    <Compile Include="Interfaces\Product\IMainProductGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
     <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
@@ -186,6 +188,10 @@
     <Compile Include="Migrations\201601041424205_Stock-Request-6.Designer.cs">
       <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601041600316_Stock-Request-7.cs" />
+    <Compile Include="Migrations\201601041600316_Stock-Request-7.Designer.cs">
+      <DependentUpon>201601041600316_Stock-Request-7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -216,6 +222,7 @@
     <Compile Include="Models\Manufacture.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductComment.cs" />
+    <Compile Include="Models\MainProductGroup.cs" />
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
@@ -265,6 +272,7 @@
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />
     <Compile Include="Repositories\Product\CharGroupRepository.cs" />
+    <Compile Include="Repositories\Product\MainProductGroupRepository.cs" />
     <Compile Include="Repositories\Product\ProductRateRepository.cs" />
     <Compile Include="Repositories\Product\ProductPictureRepository.cs" />
     <Compile Include="Repositories\Base\SupplierRepository.cs" />
@@ -341,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601041424205_Stock-Request-6.resx">
       <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601041600316_Stock-Request-7.resx">
+      <DependentUpon>201601041600316_Stock-Request-7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -17,11 +17,6 @@ namespace Anatoli.DataAccess.Configs
                 .WithOptional(pg => pg.ProductGroup)
                 .WillCascadeOnDelete(false);
 
-            this.HasMany<StockProductRequestRule>(pg => pg.StockProductRequestRules)
-                .WithOptional(pg => pg.ProductGroup)
-                .WillCascadeOnDelete(false);
-
-
         }
     }
 }

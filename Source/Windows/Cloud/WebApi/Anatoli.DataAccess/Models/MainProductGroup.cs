@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class ProductGroup : BaseModel
+    public class MainProductGroup : BaseModel
     {
         public string GroupName { get; set; }
         public int NLeft { get; set; }
@@ -15,8 +15,9 @@ namespace Anatoli.DataAccess.Models
         public Guid? ProductGroup2Id { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
-        public virtual ICollection<ProductGroup> ProductGroup1 { get; set; }
+        public virtual ICollection<StockProductRequestRule> StockProductRequestRules { get; set; }
+        public virtual ICollection<MainProductGroup> ProductGroup1 { get; set; }
         [ForeignKey("ProductGroup2Id")]
-        public virtual ProductGroup ProductGroup2 { get; set; }
+        public virtual MainProductGroup ProductGroup2 { get; set; }
     }
 }

@@ -335,6 +335,73 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     FROM ProductGroupTreeRows ER
                     ORDER BY thePath";
         }
+        public static string GetMainProductGroupData()
+        {
+            return @"IF OBJECT_ID('tempdb..#GroupRec') IS NOT NULL drop table  #GroupRec
+                    select p.ProductGroupTreeId as ProductGroupTreeId, p.ParentId, p.Title, p.uniqueid, p2.uniqueid as Parentuniqueid, null  as CharGroupId
+		                     into #GroupRec
+		                     from ProductGroupTree AS p INNER JOIN
+                                             ProductGroupTree AS p2 ON p.ParentId = p2.ProductGroupTreeId 
+		                     where p.parentid = p2.ProductGroupTreeId";
+        }
+        public static string GetMainProductGroupTree()
+        {
+            return @"
+                    WITH ProductGroupTreeLevels AS
+                    (
+                        SELECT
+                            p.ProductGroupTreeId as ProductGroupTreeId,
+		                    p.ParentId,
+		                    p.Title,
+		                    p.uniqueid,
+		                    convert(varchar(66),null) as Parentuniqueid,
+		                    null as CharGroupId,
+                            CONVERT(VARCHAR(MAX), p.ProductGroupTreeId) AS thePath,
+                            1 AS Level
+	                    FROM            ProductGroupTree AS p 
+                        WHERE p.ParentId IS NULL 
+
+                        UNION ALL
+
+                        SELECT
+                            e.ProductGroupTreeId,
+		                    e.ParentId,
+		                    e.Title,
+		                    e.uniqueid,
+		                    e.Parentuniqueid,
+		                    e.CharGroupId,
+                            x.thePath + '.' + CONVERT(VARCHAR(MAX), e.ProductGroupTreeId) AS thePath,
+                            x.Level + 1 AS Level
+                        FROM ProductGroupTreeLevels x
+                        JOIN #GroupRec e on e.ParentId = x.ProductGroupTreeId
+                    ),
+                    ProductGroupTreeRows AS
+                    (
+                        SELECT
+                             ProductGroupTreeLevels.*,
+                             ROW_NUMBER() OVER (ORDER BY thePath) AS Row
+                        FROM ProductGroupTreeLevels
+                    )
+                    SELECT
+	                    Er.UniqueId as UniqueIdString,
+	                    Er.ParentUniqueId as ParentUniqueIdString,
+                         ER.ProductGroupTreeId as ID,
+                         ER.ParentId as ParentId,
+	                     ER.Title as GroupName,
+	                     ER.CharGroupId as CharGroupIdString,
+                         --ER.thePath,
+                         ER.Level as NLevel,
+                         ER.Row,
+                         (ER.Row * 2) - ER.Level AS NLeft,
+                         ((ER.Row * 2) - ER.Level) + 
+                            (
+                                SELECT COUNT(*) * 2
+                                FROM ProductGroupTreeRows ER2 
+                                WHERE ER2.thePath LIKE ER.thePath + '.%'
+                            ) + 1 AS NRight
+                    FROM ProductGroupTreeRows ER
+                    ORDER BY thePath";
+        }
         public static string GetManufacture()
         {
             return "select ManufacturerId as Id, convert(uniqueidentifier, uniqueid) as uniqueid, ManufacturerName as ManufactureName from Manufacturer";

@@ -16,6 +16,8 @@ namespace Anatoli.DataAccess.Models
         public string Desctription { get; set; }
         [ForeignKey("ProductGroup")]
         public Nullable<Guid> ProductGroupId { get; set; }
+        [ForeignKey("MainProductGroup")]
+        public Nullable<Guid> MainProductGroupId { get; set; }
         [ForeignKey("Manufacture")]
         public Nullable<Guid> ManufactureId { get; set; }
         [ForeignKey("MainSupplier")]
@@ -26,6 +28,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ProductType ProductType { get; set; }
         public virtual Supplier MainSupplier { get; set; }
         public virtual ProductGroup ProductGroup { get; set; }
+        public virtual MainProductGroup MainProductGroup { get; set; }
         public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<ProductComment> ProductComments { get; set; }
         public virtual ICollection<ProductPicture> ProductPictures { get; set; }

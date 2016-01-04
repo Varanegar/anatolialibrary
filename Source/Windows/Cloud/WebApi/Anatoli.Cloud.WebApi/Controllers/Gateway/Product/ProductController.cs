@@ -153,5 +153,37 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }        
         #endregion
 
+        #region Product Main Groups
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("mainproductgroups")]
+        public async Task<IHttpActionResult> GetMainProductGroups(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productGroupDomain = new MainProductGroupDomain(owner);
+            var result = await productGroupDomain.GetAll();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("mainproductgroups/after")]
+        public async Task<IHttpActionResult> GetMainProductGroups(string privateOwnerId, string dateAfter)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productGroupDomain = new MainProductGroupDomain(owner);
+            var validDate = DateTime.Parse(dateAfter);
+            var result = await productGroupDomain.GetAllChangedAfter(validDate);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("mainproductgroups/save")]
+        public async Task<IHttpActionResult> SaveMainProductGroups(string privateOwnerId, List<MainProductGroupViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var productGroupDomain = new MainProductGroupDomain(owner);
+            await productGroupDomain.PublishAsync(data);
+            return Ok();
+        }
+        #endregion
     }
 }

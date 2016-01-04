@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.BaseModels;
-using Anatoli.ViewModels.StoreModels;
+using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes
 {

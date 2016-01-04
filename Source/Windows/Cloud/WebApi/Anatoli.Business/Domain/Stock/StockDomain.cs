@@ -67,12 +67,18 @@ namespace Anatoli.Business.Domain
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
-                        if (currentData.StockName != item.StockName)
-                        {
-                            currentData.StockName = item.StockName;
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
-                        }
+                        currentData.Accept1By = item.Accept1By;
+                        currentData.Accept1ById = item.Accept1ById;
+                        currentData.Accept2ById = item.Accept2ById;
+                        currentData.Accept3ById = item.Accept3ById;
+                        currentData.Address = item.Address;
+                        currentData.StockCode = item.StockCode;
+                        currentData.StockName = item.StockName;
+                        currentData.StockTypeId = item.StockTypeId;
+                        currentData.StoreId = item.StoreId;
+
+                        currentData.LastUpdate = DateTime.Now;
+                        Repository.UpdateAsync(currentData);
                     }
                     else
                     {

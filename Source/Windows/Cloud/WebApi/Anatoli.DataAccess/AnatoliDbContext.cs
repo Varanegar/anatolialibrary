@@ -87,6 +87,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CustomerConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
+            modelBuilder.Configurations.Add(new MainProductGroupConfig());
             modelBuilder.Configurations.Add(new ManufactureConfig());
             modelBuilder.Configurations.Add(new ProductConfig());
             modelBuilder.Configurations.Add(new ProductGroupConfig());

@@ -50,6 +50,7 @@
     <Compile Include="Order\PurchaseOrderLineItemViewModel.cs" />
     <Compile Include="Order\PurchaseOrderStatusViewModel.cs" />
     <Compile Include="Order\PurchaseOrderViewModel.cs" />
+    <Compile Include="ProductModels\MainProductGroupViewModel.cs" />
     <Compile Include="ProductModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />

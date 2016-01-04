@@ -17,12 +17,12 @@ namespace Anatoli.DataAccess.Models
         public TimeSpan ToTime { get; set; }
         [ForeignKey("Product")]
         public Nullable<Guid> ProductId { get; set; }
-        [ForeignKey("ProductGroup")]
-        public Nullable<Guid> ProductGroupId { get; set; }
+        [ForeignKey("MainProductGroup")]
+        public Nullable<Guid> MainProductGroupId { get; set; }
         [ForeignKey("ProductType")]
         public Nullable<Guid> ProductTypeId { get; set; }
         public virtual Product Product { get; set; }
-        public virtual ProductGroup ProductGroup { get; set; }
+        public virtual MainProductGroup MainProductGroup { get; set; }
         public virtual ProductType ProductType { get; set; }
         public virtual ICollection<StockProductRequestProductDetail> StockProductRequestProductDetails { get; set; }
     }
