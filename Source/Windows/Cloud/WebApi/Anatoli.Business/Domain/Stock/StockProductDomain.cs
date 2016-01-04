@@ -60,11 +60,12 @@ namespace Anatoli.Business.Domain
             {
                 var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
                 dataList.ForEach(item =>
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var currentData = currentDataList.Find(p => p.Id == item.Id);
                     if (currentData != null)
                     {
                         if (currentData.MinQty != item.MinQty ||
@@ -87,13 +88,13 @@ namespace Anatoli.Business.Domain
                             currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
 
                             currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
+                            Repository.Update(currentData);
                         }
                     }
                     else
                     {
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
+                        Repository.Add(item);
                     }
                 });
 

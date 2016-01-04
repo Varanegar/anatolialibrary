@@ -58,15 +58,15 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         public List<StockActiveOnHandViewModel> GetAllStockOnHands(DateTime lastUpload)
         {
             string centerId = "center";
-            PMCStoreConfigEntity config = StoreConfigHeler.Instance.GetStoreConfig(1);
-            string connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+            //PMCStoreConfigEntity config = StoreConfigHeler.Instance.GetStoreConfig(1);
+            //string connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
             try
             {
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 List<StockActiveOnHandViewModel> StockOnHandList = new List<StockActiveOnHandViewModel>();
-                using (var context = new DataContext(centerId, connectionString, Transaction.No))
+                using (var context = new DataContext())//centerId, connectionString, Transaction.No))
                 {
                     var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
                     var data = context.All<StockActiveOnHandViewModel>(DBQuery.GetStockOnHand(fiscalYear));

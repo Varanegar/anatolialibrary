@@ -157,6 +157,7 @@
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\SupplierController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />

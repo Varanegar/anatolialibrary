@@ -88,7 +88,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("stockOnhand/save")]
-        public async Task<IHttpActionResult> SaveStoreOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
+        public async Task<IHttpActionResult> SaveStockOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
             var stockDomain = new StoreActiveOnhandDomain(owner);
@@ -121,10 +121,43 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveStores(string privateOwnerId, List<StockViewModel> data)
+        public async Task<IHttpActionResult> SaveStocks(string privateOwnerId, List<StockViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
             var stockDomain = new StockDomain(owner);
+            await stockDomain.PublishAsync(data);
+            return Ok();
+        }
+        #endregion
+
+        #region Stock Product List
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("stockproduct")]
+        public async Task<IHttpActionResult> GetStockProducts(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var stockDomain = new StockProductDomain(owner);
+            var result = await stockDomain.GetAll();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("stockproduct/after")]
+        public async Task<IHttpActionResult> GetStockProducts(string privateOwnerId, string dateAfter)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var stockDomain = new StockProductDomain(owner);
+            var validDate = DateTime.Parse(dateAfter);
+            var result = await stockDomain.GetAllChangedAfter(validDate);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("stockproduct/save")]
+        public async Task<IHttpActionResult> SaveStockProducts(string privateOwnerId, List<StockProductViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var stockDomain = new StockProductDomain(owner);
             await stockDomain.PublishAsync(data);
             return Ok();
         }

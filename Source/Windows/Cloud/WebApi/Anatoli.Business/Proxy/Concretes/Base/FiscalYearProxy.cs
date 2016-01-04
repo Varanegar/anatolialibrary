@@ -18,6 +18,12 @@ namespace Anatoli.Business.Proxy.Concretes.BaseConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                FromDate = data.FromDate,
+                FromPDate = data.FromPdate,
+                ToDate = data.ToDate,
+                ToPDate = data.ToPdate,
+
+
             };
         }
 
@@ -29,6 +35,10 @@ namespace Anatoli.Business.Proxy.Concretes.BaseConcretes
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
+                FromDate = data.FromDate,
+                FromPdate = data.FromPDate,
+                ToDate = data.ToDate,
+                ToPdate = data.ToPDate,
             
             };
         }

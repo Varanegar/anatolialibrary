@@ -18,8 +18,8 @@ namespace Anatoli.PMC.DataAccess.Helpers
         }
         public static string GetStockQuery()
         {
-            return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, stock.UniqueId StoreId, stock.Stockid as StockCode, StockName , Center.Address
-	                    FROM stock, Center where stock.centerid=Center.centerid where stockid in (11,12,13)
+            return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, Convert(Uniqueidentifier, center.UniqueId) as StoreId, stock.Stockid as StockCode, StockName , Center.Address
+	                    FROM stock, Center where stock.centerid=Center.centerid and stock.stockid in (11,12,13)
                     ";
         }
         public static string GetStoreCalendarQuery(int storeId) 
@@ -71,12 +71,13 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public static string GetStockProducts(int fiscalYear)
         {
             return
-            @" select convert(uniqueidentifier, stock.uniqueId) as StockGuid,
+            @" select convert(uniqueidentifier, stockproduct.uniqueId) as UniqueId,convert(uniqueidentifier, stock.uniqueId) as StockGuid,
 	                convert(uniqueidentifier, product.uniqueId) as ProductGuid,
 	                convert(uniqueidentifier, FiscalYear.uniqueId) as FiscalYearId,
 	                ActiveInStock as isEnable from stockproduct, product, stock, FiscalYear
 	                where stockproduct.productid = product.productid and  stock.stockid = stockproduct.stockid and FiscalYear.FiscalYearId = stockproduct.fiscalyearid
                     and stock.stockid in (11,12,13)
+
                 ";
 
         }
@@ -93,7 +94,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         FROM InvVoucher iv           
                        INNER JOIN InvVoucherDetail id ON iv.InvVoucherId=id.InvVoucherId          
                        INNER JOIN InvVoucherType vt ON vt.InvVoucherTypeId=iv.InvVoucherTypeId         
-                       where fiscalYearId = " + fiscalYear + @"    and  iv.stockid in (11,12,13)  
+                       where fiscalYearId = " + fiscalYear + @"   
                       UNION ALL          
              
                       SELECT s.FiscalYearId,s.StockId,sd.ProductId     
@@ -102,7 +103,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        INNER JOIN SellDetail sd ON s.SellId=sd.SellId          
                       WHERE s.IsCanceled=0       
                        AND s.InvVoucherId IS NULL      
-                       and fiscalYearId = " + fiscalYear + @"  and  s.stockid in (11,12,13)  
+                       and fiscalYearId = " + fiscalYear + @"   
                       GROUP BY s.FiscalYearId ,s.CenterId ,s.StockId,sd.ProductId,s.InvoiceDate     
              
                 
@@ -117,7 +118,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        AND s.SalesReceiptStatusId =5     
                        AND s.IsCanceled=0        
                        AND srd.IsRemoved=0      
-                       and fiscalYearId = " + fiscalYear + @"  and  srd.stockid in (11,12,13)  
+                       and fiscalYearId = " + fiscalYear + @" 
                       GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
       
                       UNION ALL     
@@ -129,7 +130,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                        AND s.SalesReceiptStatusId =4     
                        AND s.IsCanceled=0        
                        AND srd.IsRemoved=0      
-                       and fiscalYearId = " + fiscalYear + @"  and  srd.stockid in (11,12,13)  
+                       and fiscalYearId = " + fiscalYear + @" 
                       GROUP BY s.FiscalYearId ,srd.StockId ,srd.ProductId ,s.CenterId   
                       ) A 
                     group by FiscalYearId, ProductId,StockId

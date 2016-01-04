@@ -19,6 +19,16 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                Accept1ById = data.Accept1ById,
+                Accept2ById = data.Accept2ById,
+                Accept3ById = data.Accept3ById,
+                Address = data.Address,
+                StockCode = data.StockCode,
+                StockName = data.StockName,
+                StockTypeId = data.StockTypeId,
+                StoreId = data.StoreId,
+
+
             };
         }
 
@@ -30,7 +40,14 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
-            
+                Accept1ById = data.Accept1ById,
+                Accept2ById = data.Accept2ById,
+                Accept3ById = data.Accept3ById,
+                Address = data.Address,
+                StockCode = data.StockCode,
+                StockName = data.StockName,
+                StockTypeId = data.StockTypeId,
+                StoreId = data.StoreId,            
             };
         }
     }
