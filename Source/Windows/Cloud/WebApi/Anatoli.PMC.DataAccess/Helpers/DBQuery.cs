@@ -14,12 +14,12 @@ namespace Anatoli.PMC.DataAccess.Helpers
         }
         public static string GetStoreQuery()
         {
-            return @"SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center where centertypeid=3 ";
+            return @"SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center ";//where centertypeid=3 ";
         }
         public static string GetStockQuery()
         {
             return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, Convert(Uniqueidentifier, center.UniqueId) as StoreId, stock.Stockid as StockCode, StockName , Center.Address
-	                    FROM stock, Center where stock.centerid=Center.centerid and stock.stockid in (11,12,13)
+	                    FROM stock, Center where stock.centerid=Center.centerid
                     ";
         }
         public static string GetStoreCalendarQuery(int storeId) 
@@ -76,7 +76,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
 	                convert(uniqueidentifier, FiscalYear.uniqueId) as FiscalYearId,
 	                ActiveInStock as isEnable from stockproduct, product, stock, FiscalYear
 	                where stockproduct.productid = product.productid and  stock.stockid = stockproduct.stockid and FiscalYear.FiscalYearId = stockproduct.fiscalyearid
-                    and stock.stockid in (11,12,13)
+                    
 
                 ";
 
@@ -85,7 +85,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
         {
             return
             @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Stock.UniqueId) as StockGuid from (      
-                      SELECT  ProductId,sum(Qty) as  Qty,StockId, CenterId
+                      SELECT  ProductId,sum(Qty) as  Qty,StockId
                       FROM         
                       (        
                         SELECT iv.FiscalYearId,iv.StockId,id.ProductId ,   

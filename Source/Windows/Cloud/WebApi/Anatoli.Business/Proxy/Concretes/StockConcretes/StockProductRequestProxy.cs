@@ -11,6 +11,19 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
 {
     public class StockProductRequestProxy : AnatoliProxy<StockProductRequest, StockProductRequestViewModel>, IAnatoliProxy<StockProductRequest, StockProductRequestViewModel>
     {
+        public IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> StockProductRequestProductProxy { get; set; }
+        #region Ctors
+        public StockProductRequestProxy() :
+            this(AnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel>.Create()
+            )
+        { }
+
+        public StockProductRequestProxy(IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> stockProductRequestProductProxy
+            )
+        {
+            StockProductRequestProductProxy = stockProductRequestProductProxy;
+        }
+        #endregion
         public override StockProductRequestViewModel Convert(StockProductRequest data)
         {
             return new StockProductRequestViewModel
@@ -19,6 +32,35 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                RequestDate = data.RequestDate,
+                RequestPDate = data.RequestPDate,
+                Accept1Date = data.Accept1Date,
+                Accept1PDate = data.Accept1PDate,
+                Accept1ById = data.Accept1ById,
+                Accept2Date = data.Accept2Date,
+                Accept2PDate = data.Accept2PDate,
+                Accept2ById = data.Accept2ById,
+                Accept3Date = data.Accept3Date,
+                Accept3PDate = data.Accept3PDate,
+                Accept3ById = data.Accept3ById,
+                SendtoSourceStockDate = data.SendtoSourceStockDate,
+                SendtoSourceStockDatePDate = data.SendtoSourceStockDatePDate,
+                SrouceStockRequestId = data.SrouceStockRequestId,
+                SrouceStockRequestNo = data.SrouceStockRequestNo,
+                TargetStockIssueDate = data.TargetStockIssueDate,
+                TargetStockIssueDatePDate = data.TargetStockIssueDatePDate,
+                TargetStockPaperId = data.TargetStockPaperId,
+                TargetStockPaperNo = data.TargetStockPaperNo,
+                StockProductRequestStatusId = data.StockProductRequestStatusId,
+                StockId = data.StockId,
+                StockTypeId = data.StockTypeId,
+                SupplierId = data.SupplierId,
+                ReorderCalcTypeId = data.ReorderCalcTypeId,
+                StockProductRequestTypeId = data.StockProductRequestTypeId,
+                PorductTypeId = data.PorductTypeId,
+                StockOnHandSyncId = data.StockOnHandSyncId,
+
+                StockProductRequestProducts = (data.StockProductRequestProducts == null) ? null : StockProductRequestProductProxy.Convert(data.StockProductRequestProducts.ToList()),
             };
         }
 
@@ -30,7 +72,36 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
-            
+                RequestDate = data.RequestDate,
+                RequestPDate = data.RequestPDate,
+                Accept1Date = data.Accept1Date,
+                Accept1PDate = data.Accept1PDate,
+                Accept1ById = data.Accept1ById,
+                Accept2Date = data.Accept2Date,
+                Accept2PDate = data.Accept2PDate,
+                Accept2ById = data.Accept2ById,
+                Accept3Date = data.Accept3Date,
+                Accept3PDate = data.Accept3PDate,
+                Accept3ById = data.Accept3ById,
+                SendtoSourceStockDate = data.SendtoSourceStockDate,
+                SendtoSourceStockDatePDate = data.SendtoSourceStockDatePDate,
+                SrouceStockRequestId = data.SrouceStockRequestId,
+                SrouceStockRequestNo = data.SrouceStockRequestNo,
+                TargetStockIssueDate = data.TargetStockIssueDate,
+                TargetStockIssueDatePDate = data.TargetStockIssueDatePDate,
+                TargetStockPaperId = data.TargetStockPaperId,
+                TargetStockPaperNo = data.TargetStockPaperNo,
+                StockProductRequestStatusId = data.StockProductRequestStatusId,
+                StockId = data.StockId,
+                StockTypeId = data.StockTypeId,
+                SupplierId = data.SupplierId,
+                ReorderCalcTypeId = data.ReorderCalcTypeId,
+                StockProductRequestTypeId = data.StockProductRequestTypeId,
+                PorductTypeId = data.PorductTypeId,
+                StockOnHandSyncId = data.StockOnHandSyncId,
+
+                StockProductRequestProducts = (data.StockProductRequestProducts == null) ? null : StockProductRequestProductProxy.ReverseConvert(data.StockProductRequestProducts),
+           
             };
         }
     }

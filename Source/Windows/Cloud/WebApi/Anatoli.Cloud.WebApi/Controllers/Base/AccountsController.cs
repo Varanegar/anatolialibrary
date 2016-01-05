@@ -17,6 +17,7 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.ViewModels.Order;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -135,6 +136,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
                         List<CustomerViewModel> customerList = new List<CustomerViewModel>();
                         customerList.Add(customer);
                         await customerDomain.PublishAsync(customerList);
+
+
 
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
                         transaction.Commit();

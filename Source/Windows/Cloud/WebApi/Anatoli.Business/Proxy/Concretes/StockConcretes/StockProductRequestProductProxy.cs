@@ -11,6 +11,19 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
 {
     public class StockProductRequestProductProxy : AnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel>, IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel>
     {
+        public IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> StockProductRequestProductDetailProxy { get; set; }
+        #region Ctors
+        public StockProductRequestProductProxy() :
+            this(AnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel>.Create()
+            )
+        { }
+
+        public StockProductRequestProductProxy(IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> stockProductRequestProductDetailProxy
+            )
+        {
+            StockProductRequestProductDetailProxy = stockProductRequestProductDetailProxy;
+        }
+        #endregion
         public override StockProductRequestProductViewModel Convert(StockProductRequestProduct data)
         {
             return new StockProductRequestProductViewModel
@@ -19,6 +32,15 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                Accepted1Qty = data.Accepted1Qty,
+                Accepted2Qty = data.Accepted2Qty,
+                Accepted3Qty = data.Accepted3Qty,
+                DeliveredQty = data.DeliveredQty,
+                ProductId = data.ProductId,
+                RequestQty = data.RequestQty,
+                StockProductRequestId = data.StockProductRequestId,
+
+                StockProductRequestProductDetails = (data.StockProductRequestProductDetails == null) ? null : StockProductRequestProductDetailProxy.Convert(data.StockProductRequestProductDetails.ToList()),
             };
         }
 
@@ -30,7 +52,15 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
-            
+                Accepted1Qty = data.Accepted1Qty,
+                Accepted2Qty = data.Accepted2Qty,
+                Accepted3Qty = data.Accepted3Qty,
+                DeliveredQty = data.DeliveredQty,
+                ProductId = data.ProductId,
+                RequestQty = data.RequestQty,
+                StockProductRequestId = data.StockProductRequestId,
+
+                StockProductRequestProductDetails = (data.StockProductRequestProductDetails == null) ? null : StockProductRequestProductDetailProxy.ReverseConvert(data.StockProductRequestProductDetails),
             };
         }
     }

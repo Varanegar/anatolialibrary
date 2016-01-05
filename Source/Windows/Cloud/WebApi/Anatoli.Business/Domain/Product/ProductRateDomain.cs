@@ -48,7 +48,6 @@ namespace Anatoli.Business.Domain
 
         public async Task<List<ProductRateViewModel>> GetAllAvg()
         {
-            Repository.DbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
             var productRates = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
             var resulDict = productRates
@@ -95,6 +94,20 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
+
+        }
+        public async Task<List<ProductRateViewModel>> PublishAsyncWithReturn(List<ProductRateViewModel> ProductRateViewModels)
+        {
+            try
+            {
+                List<ProductRateViewModel> result = new List<ProductRateViewModel>();
                 var ProductRates = Proxy.ReverseConvert(ProductRateViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
@@ -111,14 +124,34 @@ namespace Anatoli.Business.Domain
                         currentProductRate.Value = item.Value;
 
                         currentProductRate = SetProductData(currentProductRate, item.Product, Repository.DbContext);
+                        Repository.UpdateAsync(item);
 
                     }
                     else
                     {
                         item.Id = Guid.NewGuid();
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        Repository.AddAsync(item);
                     }
-                });
+
+
+                }
+                );
+
+                await Repository.SaveChangesAsync();
+
+                foreach (var item in ProductRates)
+                {
+                    var rateData = await Repository.FindAllAsync(p => p.ProductId == item.ProductId);
+                    var resulDict = rateData
+                            .GroupBy(f => f.ProductId)
+                            .Select(g => new { ProductId = g.Key, Avg = g.Average(n => n.Value) })
+                            .Select(row => new ProductRateViewModel { Avg = row.Avg, ProductGuid = row.ProductId });
+                    result.AddRange(resulDict.ToList());
+                }
+
+                return result;
+
             }
             catch (Exception ex)
             {

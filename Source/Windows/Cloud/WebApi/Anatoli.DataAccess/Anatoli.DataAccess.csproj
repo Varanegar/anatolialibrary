@@ -79,6 +79,7 @@
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
+    <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\ProductTypeConfig.cs" />
@@ -114,6 +115,8 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
     <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
@@ -220,7 +223,24 @@
     <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.cs" />
+    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.Designer.cs">
+      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.cs" />
+    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.Designer.cs">
+      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.cs" />
+    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.Designer.cs">
+      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.cs" />
+    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.Designer.cs">
+      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -255,6 +275,7 @@
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
+    <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
@@ -310,6 +331,8 @@
     <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
@@ -401,6 +424,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051022553_Incomplete-PurchaseOrder.resx">
+      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.resx">
+      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.resx">
+      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.resx">
+      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

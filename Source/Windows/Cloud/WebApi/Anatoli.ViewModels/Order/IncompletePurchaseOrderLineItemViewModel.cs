@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Anatoli.ViewModels.Order
+{
+    public class IncompletePurchaseOrderLineItemViewModel : BaseViewModel
+    {
+        public decimal Qty { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid IncompletePurchaseOrderId { get; set; }
+
+    }
+}

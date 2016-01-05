@@ -10,28 +10,29 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.ViewModels.Order;
 
 namespace Anatoli.Business.Domain
 {
-    public class BasketItemDomain : BusinessDomain<BasketItemViewModel>, IBusinessDomain<BasketItem, BasketItemViewModel>
+    public class IncompletePurchaseOrderLineItemDomain : BusinessDomain<IncompletePurchaseOrderLineItemViewModel>, IBusinessDomain<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel>
     {
         #region Properties
-        public IAnatoliProxy<BasketItem, BasketItemViewModel> Proxy { get; set; }
-        public IRepository<BasketItem> Repository { get; set; }
+        public IAnatoliProxy<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel> Proxy { get; set; }
+        public IRepository<IncompletePurchaseOrderLineItem> Repository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
         #region Ctors
-        BasketItemDomain() { }
-        public BasketItemDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public BasketItemDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new BasketItemRepository(dbc),new PrincipalRepository(dbc), AnatoliProxy<BasketItem, BasketItemViewModel>.Create())
+        IncompletePurchaseOrderLineItemDomain() { }
+        public IncompletePurchaseOrderLineItemDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
+        public IncompletePurchaseOrderLineItemDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
+            : this(new IncompletePurchaseOrderLineItemRepository(dbc),new PrincipalRepository(dbc), AnatoliProxy<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public BasketItemDomain(IBasketItemRepository basketItemRepository, IPrincipalRepository principalRepository, IAnatoliProxy<BasketItem, BasketItemViewModel> proxy)
+        public IncompletePurchaseOrderLineItemDomain(IIncompletePurchaseOrderLineItemRepository basketItemRepository, IPrincipalRepository principalRepository, IAnatoliProxy<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel> proxy)
         {
             Proxy = proxy;
             Repository = basketItemRepository;
@@ -40,26 +41,26 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
-        public async Task<List<BasketItemViewModel>> GetAll()
+        public async Task<List<IncompletePurchaseOrderLineItemViewModel>> GetAll()
         {
             throw new NotImplementedException();
         }
-        public async Task<List<BasketItemViewModel>> GetAllChangedAfter(DateTime selectedDate)
+        public async Task<List<IncompletePurchaseOrderLineItemViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             throw new NotImplementedException();
         }
 
-        public async Task PublishAsync(List<BasketItemViewModel> basketViewModels)
+        public async Task PublishAsync(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
         {
             try
             {
-                var basketItems = Proxy.ReverseConvert(basketViewModels);
+                var lineItems = Proxy.ReverseConvert(lineItemViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                foreach (BasketItem item in basketItems)
+                foreach (IncompletePurchaseOrderLineItem item in lineItems)
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
+                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.IncompletePurchaseOrderId == item.IncompletePurchaseOrderId).FirstOrDefault();
                     if (currentBasket != null)
                     {
                         currentBasket.ProductId = item.ProductId;
@@ -83,17 +84,17 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        public async Task Delete(List<BasketItemViewModel> basketItemViewModels)
+        public async Task Delete(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var basketItems = Proxy.ReverseConvert(basketItemViewModels);
+                var basketItems = Proxy.ReverseConvert(lineItemViewModels);
 
                 basketItems.ForEach(item =>
                 {
-                    var basketItem = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var basketItem = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.IncompletePurchaseOrderId == item.IncompletePurchaseOrderId).FirstOrDefault();
 
-                    Repository.DeleteAsync(basketItem);
+                    Repository.DbContext.IncompletePurchaseOrderLineItems.Remove(basketItem);
                 });
 
                 Repository.SaveChangesAsync();

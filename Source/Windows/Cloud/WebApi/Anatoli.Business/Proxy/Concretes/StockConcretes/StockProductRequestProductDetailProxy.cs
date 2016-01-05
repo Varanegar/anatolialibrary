@@ -19,6 +19,10 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductDetailConcr
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                StockProductRequestProductId = data.StockProductRequestProductId,
+                RequestQty = data.RequestQty,
+                StockProductRequestRuleId = data.StockProductRequestRuleId,
+
             };
         }
 
@@ -30,7 +34,10 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductDetailConcr
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
-            
+                StockProductRequestProductId = data.StockProductRequestProductId,
+                RequestQty = data.RequestQty,
+                StockProductRequestRuleId = data.StockProductRequestRuleId,
+
             };
         }
     }

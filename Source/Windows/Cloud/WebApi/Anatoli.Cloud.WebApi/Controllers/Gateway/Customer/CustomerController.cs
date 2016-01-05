@@ -12,7 +12,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/customer")]
     public class BasketController : ApiController
     {
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("customers")]
         public async Task<IHttpActionResult> GetCustomerById(string privateOwnerId, string id)
         {
@@ -23,7 +23,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveCustomer(string privateOwnerId, CustomerViewModel data)
         {

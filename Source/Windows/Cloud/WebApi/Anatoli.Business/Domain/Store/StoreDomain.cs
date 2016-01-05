@@ -48,14 +48,14 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<StoreViewModel>> GetAll()
         {
-            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID != 1);
 
             return Proxy.Convert(stores.ToList()); ;
         }
 
         public async Task<List<StoreViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
-            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
+            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate && p.Number_ID != 1);
 
             return Proxy.Convert(stores.ToList()); ;
         }

@@ -30,6 +30,9 @@ namespace Anatoli.DataAccess.Configs
                 .WithOptional(p => p.RegionLevel4)
                 .HasForeignKey(P => P.RegionLevel4Id);
 
+            this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
+               .WithRequired(svr => svr.CityRegion);
+
         }
     }
 }

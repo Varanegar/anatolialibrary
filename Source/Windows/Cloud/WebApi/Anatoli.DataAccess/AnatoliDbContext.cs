@@ -66,6 +66,8 @@ namespace Anatoli.DataAccess
         public DbSet<ProductType> ProductType { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
+        public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
 
 
         #region Identity
@@ -104,6 +106,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CustomerConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
+            modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());
             modelBuilder.Configurations.Add(new MainProductGroupConfig());
             modelBuilder.Configurations.Add(new ManufactureConfig());
             modelBuilder.Configurations.Add(new ProductConfig());

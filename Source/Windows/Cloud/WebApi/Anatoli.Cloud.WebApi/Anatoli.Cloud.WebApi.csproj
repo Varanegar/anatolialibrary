@@ -166,6 +166,7 @@
     <Compile Include="Controllers\Gateway\Product\ProductRateController.cs" />
     <Compile Include="Controllers\Gateway\Product\ProductController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />
+    <Compile Include="Controllers\Gateway\PurchaseOrder\IncompletePurchaseOrderController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
     <Compile Include="Controllers\Gateway\Stock\StockController.cs" />
     <Compile Include="Controllers\Gateway\Store\StoreController.cs" />

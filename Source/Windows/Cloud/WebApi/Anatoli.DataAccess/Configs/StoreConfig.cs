@@ -24,7 +24,10 @@ namespace Anatoli.DataAccess.Configs
 
             this.HasMany<StoreActivePriceList>(cr => cr.StoreActivePriceLists)
                .WithRequired(svr => svr.Store);
-            
+
+            this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
+               .WithRequired(svr => svr.Store);
+
             this.HasMany<Stock>(cr => cr.StoreStocks)
                .WithRequired(svr => svr.Store);
 

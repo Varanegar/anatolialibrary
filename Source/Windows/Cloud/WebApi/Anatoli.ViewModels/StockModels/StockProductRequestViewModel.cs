@@ -19,9 +19,10 @@ namespace Anatoli.ViewModels.StockModels
         public string SendtoSourceStockDatePDate { get; set; }
         public Guid? SrouceStockRequestId { get; set; }
         public string SrouceStockRequestNo { get; set; }
-        public DateTime TargetStockIssueDate { get; set; }
+        public DateTime? TargetStockIssueDate { get; set; }
         public string TargetStockIssueDatePDate { get; set; }
-        public Guid TargetStockPaperId { get; set; }
+        public Guid? TargetStockPaperId { get; set; }
+        public string TargetStockPaperNo { get; set; }
         public Guid StockProductRequestStatusId { get; set; }
         public Guid StockId { get; set; }
         public Guid StockTypeId { get; set; }
@@ -33,5 +34,6 @@ namespace Anatoli.ViewModels.StockModels
         public Guid? Accept2ById { get; set; }
         public Guid? Accept3ById { get; set; }
         public Guid StockOnHandSyncId { get; set; }
+        public List<StockProductRequestProductViewModel> StockProductRequestProducts { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Anatoli.DataAccess.Models
         public byte SupportCallCenterOrder { get; set; }
         public Nullable<byte> StoreStatusTypeId { get; set; }
 
+        public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public virtual ICollection<Stock> StoreStocks { get; set; }
         public virtual ICollection<StoreAction> StoreActions { get; set; }
         public virtual ICollection<StoreActiveOnhand> StoreActiveOnhands { get; set; }

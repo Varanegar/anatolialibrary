@@ -27,26 +27,23 @@
                 );
 
             context.Roles.AddOrUpdate(item => item.Id,
-                new IdentityRole { Id = "4447853b-e19f-42ce-bb29-f5aa1943b542", Name = "User" },
-                new IdentityRole { Id = "4d10bd96-7f25-477a-a544-75e54b619a1f", Name = "AuthorizedApp" },
-                new IdentityRole { Id = "507b6966-17f1-4116-a497-02242c052961", Name = "SuperAdmin" },
-                new IdentityRole { Id = "5a61344b-b1b5-4157-8861-7bed15c0bdc2", Name = "Admin" },
+                new IdentityRole { Id = "a246c692-bcd4-441f-b4b3-fec237603417", Name = "User" },
+                new IdentityRole { Id = "9d7a33b0-8f24-4b22-93f2-055b10b94a2c", Name = "AuthorizedApp" },
+                new IdentityRole { Id = "edebbfe2-6eb8-4c7b-945c-480d130305df", Name = "SuperAdmin" },
+                new IdentityRole { Id = "969cf96e-e231-4991-a913-87f9c1e0bb81", Name = "Admin" },
                 new IdentityRole { Id = "95B93EF1-9F67-4EB5-AD3E-569C64DAF4E3", Name = "SCM" },
                 new IdentityRole { Id = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", Name = "InternalCommunication" }
                 );
-
+            /*
             #region User Info
             Principal privateOwner = context.Principals.FirstOrDefault(p => p.Title == "petropay@varanegar.com");
 
             var hasher = new PasswordHasher();
-            string userId = "0DAB1636-AE22-4ABE-A18D-6EC7B8E9C544";
+            string userId = "0dab1636-ae22-4abe-a18d-6ec7b8e9c544";
             string userEmail = "anatoli-mobile-app@varanegar.com";
             Principal principal = context.Principals.FirstOrDefault(p => p.Title == userEmail);
             context.Users.AddOrUpdate(item => item.Id,
-                new User { Id = userId, PhoneNumber = "87135003", UserName = "anatoli-mobile-app@varanegar.com", PasswordHash = hasher.HashPassword("Anatoli@App@Vn"), Email = userEmail, Principal = principal, EmailConfirmed = true, PhoneNumberConfirmed = true, CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, LastEntry = DateTime.Now, PrivateLabelOwner = privateOwner, SecurityStamp = Guid.NewGuid().ToString() });
-            //context.UserRoles.AddOrUpdate(item => item.UserId && item.RoleId,
-            //    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId=userId }
-            //    );
+                new User { Id = userId, PhoneNumber = "09125793221", UserName = "AnatoliMobileApp", PasswordHash = hasher.HashPassword("Anatoli@App@Vn"), Email = userEmail, Principal = principal, EmailConfirmed = true, PhoneNumberConfirmed = true, CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, LastEntry = DateTime.Now, PrivateLabelOwner = privateOwner, SecurityStamp = Guid.NewGuid().ToString() });
 
             userId = "95FCB850-2E63-4B26-8DBF-BBC86B7F5046";
             userEmail = "anatoli-inter-com@varanegar.com";
@@ -64,7 +61,7 @@
             userEmail = "anatoli@varanegar.com";
             principal = context.Principals.FirstOrDefault(p => p.Title == userEmail);
             context.Users.AddOrUpdate(item => item.Id,
-                new User { Id = userId, PhoneNumber = "87135000", UserName = "anatoli@varanegar.com", PasswordHash = hasher.HashPassword("anatoli@vn@87134"), Email = userEmail, Principal = principal, EmailConfirmed = true, PhoneNumberConfirmed = true, CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, LastEntry = DateTime.Now, PrivateLabelOwner = privateOwner, SecurityStamp = Guid.NewGuid().ToString() });
+                new User { Id = userId, PhoneNumber = "87135000", UserName = "anatoli", PasswordHash = hasher.HashPassword("anatoli@vn@87134"), Email = userEmail, Principal = principal, EmailConfirmed = true, PhoneNumberConfirmed = true, CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, LastEntry = DateTime.Now, PrivateLabelOwner = privateOwner, SecurityStamp = Guid.NewGuid().ToString() });
 
 
             userId = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
@@ -73,7 +70,7 @@
             context.Users.AddOrUpdate(item => item.Id,
                 new User { Id = userId, PhoneNumber = "02100000000", UserName = "petropay", PasswordHash = hasher.HashPassword("petropay@webapp"), Email = userEmail, Principal = principal, EmailConfirmed = true, PhoneNumberConfirmed = true, CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, LastEntry = DateTime.Now, PrivateLabelOwner = privateOwner, SecurityStamp = Guid.NewGuid().ToString() });
             #endregion
-
+            */
 
             context.ProductType.AddOrUpdate(item => item.Id,
                 new ProductType { Id = Guid.Parse("72E59112-6054-4140-8E33-947228616393"), ProductTypeName = "کالای زیر صفر", IsRemoved = false, PrivateLabelOwner_Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
