@@ -62,6 +62,19 @@ namespace AnatoliAndroid.Fragments
                 _customerViewModel.Mobile = _telEditText.Text;
                 _customerViewModel.NationalCode = _idEditText.Text;
                 AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                {
+                    errDialog.SetTitle(Resources.GetText(Resource.String.NetworkAccessFailed));
+                    errDialog.SetMessage(Resources.GetText(Resource.String.PleaseConnectToInternet));
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    {
+                        Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
+                        AnatoliApp.GetInstance().Activity.StartActivity(intent);
+                    });
+                    errDialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => {});
+                    errDialog.Show();
+                    return;
+                }
                 try
                 {
                     ProgressDialog pDialog = new ProgressDialog();

@@ -16,6 +16,8 @@
   <string name="Login">ورود</string>
   <string name="Logout">خروج از حساب کاربری</string>
   <string name="MainMenu">منوی اصلی</string>
+  <string name="NetworkAccessFailed">خطای دسترسی به اینترنت</string>
+  <string name="PleaseConnectToInternet">لطفا دستگاه خود را به اینترنت متصل نمایید</string>
 
   <string name="ItemRemoved">حذف شد !</string>
   <string name="RemoveFromList">حذف از فهرست من</string>

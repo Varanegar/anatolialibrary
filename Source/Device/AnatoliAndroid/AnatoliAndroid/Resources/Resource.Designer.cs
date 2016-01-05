@@ -2730,59 +2730,59 @@ namespace AnatoliAndroid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050023
-			public const int AddToList = 2131034147;
+			// aapt resource value: 0x7f050025
+			public const int AddToList = 2131034149;
 			
-			// aapt resource value: 0x7f05002d
-			public const int Address = 2131034157;
+			// aapt resource value: 0x7f05002f
+			public const int Address = 2131034159;
 			
 			// aapt resource value: 0x7f050013
 			public const int ApplicationName = 2131034131;
 			
-			// aapt resource value: 0x7f050034
-			public const int AreYouSure = 2131034164;
+			// aapt resource value: 0x7f050036
+			public const int AreYouSure = 2131034166;
+			
+			// aapt resource value: 0x7f050043
+			public const int AuthenticationFailed = 2131034179;
 			
 			// aapt resource value: 0x7f050041
-			public const int AuthenticationFailed = 2131034177;
+			public const int Cancel = 2131034177;
 			
-			// aapt resource value: 0x7f05003f
-			public const int Cancel = 2131034175;
+			// aapt resource value: 0x7f050031
+			public const int City = 2131034161;
 			
-			// aapt resource value: 0x7f05002f
-			public const int City = 2131034159;
-			
-			// aapt resource value: 0x7f050039
-			public const int Close = 2131034169;
+			// aapt resource value: 0x7f05003b
+			public const int Close = 2131034171;
 			
 			// aapt resource value: 0x7f050016
 			public const int CloseDrawer = 2131034134;
 			
-			// aapt resource value: 0x7f050030
-			public const int District = 2131034160;
+			// aapt resource value: 0x7f050032
+			public const int District = 2131034162;
 			
-			// aapt resource value: 0x7f05002b
-			public const int Email = 2131034155;
+			// aapt resource value: 0x7f05002d
+			public const int Email = 2131034157;
 			
 			// aapt resource value: 0x7f050018
 			public const int EneterUserNamePass = 2131034136;
 			
-			// aapt resource value: 0x7f050029
-			public const int FirstName = 2131034153;
+			// aapt resource value: 0x7f05002b
+			public const int FirstName = 2131034155;
 			
 			// aapt resource value: 0x7f050012
 			public const int Hello = 2131034130;
 			
-			// aapt resource value: 0x7f050033
-			public const int Id = 2131034163;
+			// aapt resource value: 0x7f050035
+			public const int Id = 2131034165;
 			
-			// aapt resource value: 0x7f050021
-			public const int ItemRemoved = 2131034145;
+			// aapt resource value: 0x7f050023
+			public const int ItemRemoved = 2131034147;
 			
-			// aapt resource value: 0x7f05003b
-			public const int KMeter = 2131034171;
+			// aapt resource value: 0x7f05003d
+			public const int KMeter = 2131034173;
 			
-			// aapt resource value: 0x7f05002a
-			public const int LastName = 2131034154;
+			// aapt resource value: 0x7f05002c
+			public const int LastName = 2131034156;
 			
 			// aapt resource value: 0x7f05001c
 			public const int LastOrders = 2131034140;
@@ -2802,8 +2802,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f05001d
 			public const int Messages = 2131034141;
 			
-			// aapt resource value: 0x7f05003a
-			public const int Meter = 2131034170;
+			// aapt resource value: 0x7f05003c
+			public const int Meter = 2131034172;
 			
 			// aapt resource value: 0x7f05001a
 			public const int MyList = 2131034138;
@@ -2811,65 +2811,71 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f05001b
 			public const int MyStore = 2131034139;
 			
-			// aapt resource value: 0x7f050036
-			public const int No = 2131034166;
-			
-			// aapt resource value: 0x7f050028
-			public const int Ok = 2131034152;
+			// aapt resource value: 0x7f050021
+			public const int NetworkAccessFailed = 2131034145;
 			
 			// aapt resource value: 0x7f050038
-			public const int Open = 2131034168;
+			public const int No = 2131034168;
+			
+			// aapt resource value: 0x7f05002a
+			public const int Ok = 2131034154;
+			
+			// aapt resource value: 0x7f05003a
+			public const int Open = 2131034170;
 			
 			// aapt resource value: 0x7f050015
 			public const int OpenDrawer = 2131034133;
 			
-			// aapt resource value: 0x7f050027
-			public const int PleaseLogin = 2131034151;
+			// aapt resource value: 0x7f050022
+			public const int PleaseConnectToInternet = 2131034146;
 			
-			// aapt resource value: 0x7f05003d
-			public const int PleaseWait = 2131034173;
+			// aapt resource value: 0x7f050029
+			public const int PleaseLogin = 2131034153;
+			
+			// aapt resource value: 0x7f05003f
+			public const int PleaseWait = 2131034175;
 			
 			// aapt resource value: 0x7f050017
 			public const int Products = 2131034135;
 			
-			// aapt resource value: 0x7f05002e
-			public const int Province = 2131034158;
-			
-			// aapt resource value: 0x7f050024
-			public const int RemoveFromBasket = 2131034148;
-			
-			// aapt resource value: 0x7f050022
-			public const int RemoveFromList = 2131034146;
-			
-			// aapt resource value: 0x7f050032
-			public const int Save = 2131034162;
-			
-			// aapt resource value: 0x7f05003e
-			public const int SaveSuccess = 2131034174;
-			
-			// aapt resource value: 0x7f050040
-			public const int ServerUnreachable = 2131034176;
-			
-			// aapt resource value: 0x7f05002c
-			public const int Tel = 2131034156;
-			
-			// aapt resource value: 0x7f050025
-			public const int TotalItems = 2131034149;
+			// aapt resource value: 0x7f050030
+			public const int Province = 2131034160;
 			
 			// aapt resource value: 0x7f050026
-			public const int TotalPrice = 2131034150;
+			public const int RemoveFromBasket = 2131034150;
 			
-			// aapt resource value: 0x7f05003c
-			public const int UnknownDistance = 2131034172;
+			// aapt resource value: 0x7f050024
+			public const int RemoveFromList = 2131034148;
+			
+			// aapt resource value: 0x7f050034
+			public const int Save = 2131034164;
+			
+			// aapt resource value: 0x7f050040
+			public const int SaveSuccess = 2131034176;
+			
+			// aapt resource value: 0x7f050042
+			public const int ServerUnreachable = 2131034178;
+			
+			// aapt resource value: 0x7f05002e
+			public const int Tel = 2131034158;
+			
+			// aapt resource value: 0x7f050027
+			public const int TotalItems = 2131034151;
+			
+			// aapt resource value: 0x7f050028
+			public const int TotalPrice = 2131034152;
+			
+			// aapt resource value: 0x7f05003e
+			public const int UnknownDistance = 2131034174;
+			
+			// aapt resource value: 0x7f050039
+			public const int Updating = 2131034169;
 			
 			// aapt resource value: 0x7f050037
-			public const int Updating = 2131034167;
+			public const int Yes = 2131034167;
 			
-			// aapt resource value: 0x7f050035
-			public const int Yes = 2131034165;
-			
-			// aapt resource value: 0x7f050031
-			public const int Zone = 2131034161;
+			// aapt resource value: 0x7f050033
+			public const int Zone = 2131034163;
 			
 			// aapt resource value: 0x7f050000
 			public const int abc_action_bar_home_description = 2131034112;
