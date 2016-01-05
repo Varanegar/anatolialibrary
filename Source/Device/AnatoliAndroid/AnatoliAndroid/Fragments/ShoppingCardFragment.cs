@@ -20,6 +20,7 @@ using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using Android.Animation;
+using Android.Views.InputMethods;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -32,7 +33,7 @@ namespace AnatoliAndroid.Fragments
         ProductsListAdapter _listAdapter;
         RelativeLayout _countRelativeLayout;
         RelativeLayout _cardItemsRelativeLayout;
-        TextView _deliveryAddress;
+        EditText _deliveryAddress;
         TextView _factorePriceTextView;
         //TextView _deliveryTelTextView;
         TextView _storeTelTextView;
@@ -40,13 +41,14 @@ namespace AnatoliAndroid.Fragments
         //TextView _nameTextView;
         Spinner _delivaryDate;
         Spinner _deliveryTime;
-        ImageView _editAddressImageView;
+        //ImageView _editAddressImageView;
         ImageView _slideupmageView;
         ImageView _slidedownImageView;
         Button _checkoutButton;
         ImageView _callImageView;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
+        Spinner _typeSpinner;
         Cheesebaron.SlidingUpPanel.SlidingUpPanelLayout _slidingLayout;
 
         //ShoppingCardListToolsFragment _toolsDialog;
@@ -99,12 +101,30 @@ namespace AnatoliAndroid.Fragments
             _callImageView = view.FindViewById<ImageView>(Resource.Id.callImageView);
             _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
             _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
-            _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
+            _deliveryAddress = view.FindViewById<EditText>(Resource.Id.addressEditText);
             //_deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             //_nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
-            _editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
+            _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
+            //_editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
+
+            _deliveryAddress.FocusChange += (s, e) =>
+            {
+                if (!_deliveryAddress.HasFocus)
+                {
+                    SaveAddress(_deliveryAddress.Text);
+                }
+            };
+            _deliveryAddress.EditorAction += (s, e) =>
+            {
+                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                {
+                    SaveAddress(_deliveryAddress.Text);
+                    InputMethodManager inputMethodManager = AnatoliApp.GetInstance().Activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
+                    inputMethodManager.HideSoftInputFromWindow(_deliveryAddress.WindowToken, HideSoftInputFlags.None);
+                }
+            };
 
             _checkoutButton.Click += async (s, e) =>
             {
@@ -156,26 +176,34 @@ namespace AnatoliAndroid.Fragments
             _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
-            _editAddressImageView.Click += (s, e) =>
-            {
-                var transaction = FragmentManager.BeginTransaction();
-                EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
-                editShippingDialog.SetAddress(_deliveryAddress.Text);
-                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
-                //editShippingDialog.SetName(_nameTextView.Text);
-                editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
-                {
-                    _deliveryAddress.Text = address;
-                    //_deliveryTelTextView.Text = tel;
-                    //_nameTextView.Text = name;
-                    _checkoutButton.Enabled = CheckCheckout();
-                };
-                editShippingDialog.Show(transaction, "shipping_dialog");
 
-            };
+            var typeOptions = new string[2] {"میام میبرم","خودتون بیارید"};
+            _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, typeOptions);
+
+            //_editAddressImageView.Click += (s, e) =>
+            //{
+            //    var transaction = FragmentManager.BeginTransaction();
+            //    EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
+            //    editShippingDialog.SetAddress(_deliveryAddress.Text);
+            //    //editShippingDialog.SetTel(_deliveryTelTextView.Text);
+            //    //editShippingDialog.SetName(_nameTextView.Text);
+            //    editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
+            //    {
+            //        _deliveryAddress.Text = address;
+            //        //_deliveryTelTextView.Text = tel;
+            //        //_nameTextView.Text = name;
+            //        _checkoutButton.Enabled = CheckCheckout();
+            //    };
+            //    editShippingDialog.Show(transaction, "shipping_dialog");
+
+            //};
 
 
             return view;
+        }
+        async void SaveAddress(string address)
+        {
+            await ShippingInfoManager.NewShippingAddress(address, "", "");
         }
         public async override void OnStart()
         {
@@ -211,6 +239,8 @@ namespace AnatoliAndroid.Fragments
             {
                 AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
             }
+
+
 
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";

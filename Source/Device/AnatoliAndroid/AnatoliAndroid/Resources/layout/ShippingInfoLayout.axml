@@ -70,7 +70,7 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:id="@+id/shippingAddressRelativeLayout"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
@@ -83,33 +83,31 @@
             android:layout_alignParentRight="true"
             android:id="@+id/addressTitleTextView"
             local:customFont="Fonts/anatoli.ttf" />
-        <ImageView
+    <!--<ImageView
             android:id="@+id/editAddressImageView"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_edit_text_green_24dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
-        <AnatoliAndroid.Components.AnatoliTextView
-            android:id="@+id/addressTextView"
-            android:minHeight="40dp"
+            android:layout_alignParentTop="true" />-->
+        <EditText
+            android:id="@+id/addressEditText"
             android:layout_below="@id/addressTitleTextView"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:minWidth="100dp"
-            android:layout_margin="5dp"
+            android:layout_width="match_parent"
             android:gravity="right"
-            android:maxHeight="70dp"
-            android:padding="5dp"
-            local:customFont="Fonts/anatoli.ttf" />
+            android:imeOptions="actionDone"
+            style="@style/AnatoliTextField"
+            local:customFont="Fonts/anatoli.ttf"
+            android:inputType="text" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/telRelativeLayout"
         android:layout_below="@id/shippingAddressRelativeLayout"
         android:layout_height="60dp"
-        android:layout_marginEnd="5dp">
+        android:layout_marginEnd="5dp"
+        android:visibility="gone">
     <!--
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -205,8 +203,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/storeTelRelativeLayout"
+        android:id="@+id/deliveryTypeRelativeLayout"
         android:layout_below="@id/deliveryTimeLinearLayout"
+        android:layout_marginBottom="5dp">
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text="نحوه ارسال"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:id="@+id/dTypetextView"
+            android:gravity="center_vertical"
+            local:customFont="Fonts/anatoli.ttf" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/typeSpinner"
+            android:gravity="center_vertical"
+            android:paddingRight="20dp"
+            android:layout_toLeftOf="@id/dTypetextView" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/storeTelRelativeLayout"
+        android:layout_below="@id/deliveryTypeRelativeLayout"
         android:layout_marginBottom="5dp">
         <AnatoliAndroid.Components.AnatoliTextView
             android:textAppearance="?android:attr/textAppearanceMedium"
