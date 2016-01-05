@@ -19,6 +19,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestStatusConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                StockProductRequestStatusName = data.StockProductRequestStatusName,
             };
         }
 
@@ -29,6 +30,8 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestStatusConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+
+                StockProductRequestStatusName = data.StockProductRequestStatusName,
 
             
             };

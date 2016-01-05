@@ -74,8 +74,7 @@ namespace Anatoli.Business.Domain
                             currentData.IsEnable != item.IsEnable ||
                             currentData.StockId != item.StockId ||
                             currentData.FiscalYearId != item.FiscalYearId ||
-                            currentData.ProductId != item.ProductId ||
-                            currentData.ReorderCalcTypeId != item.ReorderCalcTypeId 
+                            currentData.ProductId != item.ProductId
                             )
                         {
                             currentData.MinQty = item.MinQty;
@@ -85,7 +84,6 @@ namespace Anatoli.Business.Domain
                             currentData.StockId = item.StockId;
                             currentData.FiscalYearId = item.FiscalYearId;
                             currentData.ProductId = item.ProductId;
-                            currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
 
                             currentData.LastUpdate = DateTime.Now;
                             Repository.Update(currentData);

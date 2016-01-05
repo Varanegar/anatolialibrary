@@ -200,6 +200,26 @@
     <Compile Include="Migrations\201601041957561_Stock-Request-9.Designer.cs">
       <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601042126391_stock-request-10.cs" />
+    <Compile Include="Migrations\201601042126391_stock-request-10.Designer.cs">
+      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042144304_stock-request-11.cs" />
+    <Compile Include="Migrations\201601042144304_stock-request-11.Designer.cs">
+      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042145239_stock-request-12.cs" />
+    <Compile Include="Migrations\201601042145239_stock-request-12.Designer.cs">
+      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042208389_stock-request-13.cs" />
+    <Compile Include="Migrations\201601042208389_stock-request-13.Designer.cs">
+      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042221041_stock-request-14.cs" />
+    <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
+      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -366,6 +386,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601041957561_Stock-Request-9.resx">
       <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042126391_stock-request-10.resx">
+      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042144304_stock-request-11.resx">
+      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042145239_stock-request-12.resx">
+      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042208389_stock-request-13.resx">
+      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
+      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

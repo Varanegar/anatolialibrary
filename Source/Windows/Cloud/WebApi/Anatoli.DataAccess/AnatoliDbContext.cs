@@ -50,12 +50,29 @@ namespace Anatoli.DataAccess
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<ItemImage> Images { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<StockActiveOnHand> StockActiveOnHands { get; set; }
+        public DbSet<StockHistoryOnHand> StockHistoryOnHands { get; set; }
+        public DbSet<StockOnHandSync> StockOnHandSyncs { get; set; }
+        public DbSet<StockProduct> StockProducts { get; set; }
+        public DbSet<StockProductRequest> StockProductRequests { get; set; }
+        public DbSet<StockProductRequestProduct> StockProductRequestProducts { get; set; }
+        public DbSet<StockProductRequestProductDetail> StockProductRequestProductDetails { get; set; }
+        public DbSet<StockProductRequestRule> StockProductRequestRules { get; set; }
+        public DbSet<StockProductRequestStatus> StockProductRequestStatuses { get; set; }
+        public DbSet<StockProductRequestType> StockProductRequestTypes { get; set; }
+        public DbSet<MainProductGroup> MainProductGroups { get; set; }
+        public DbSet<StockType> StockTypes { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
+        public DbSet<FiscalYear> FiscalYears { get; set; }
+        public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
 
 
         #region Identity
         public DbSet<Principal> Principals { get; set; }
         //public DbSet<Role> Roles { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<IdentityUserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<PrincipalPermission> PrincipalPermissions { get; set; }
         #endregion

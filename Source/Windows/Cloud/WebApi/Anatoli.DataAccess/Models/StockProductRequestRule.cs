@@ -11,10 +11,8 @@ namespace Anatoli.DataAccess.Models
         public string StockProductRequestRuleName { get; set; }
         public DateTime FromDate { get; set; }
         public string FromPDate { get; set; }
-        public TimeSpan FromTime { get; set; }
         public DateTime ToDate { get; set; }
         public string ToPDate { get; set; }
-        public TimeSpan ToTime { get; set; }
         [ForeignKey("Product")]
         public Nullable<Guid> ProductId { get; set; }
         [ForeignKey("MainProductGroup")]

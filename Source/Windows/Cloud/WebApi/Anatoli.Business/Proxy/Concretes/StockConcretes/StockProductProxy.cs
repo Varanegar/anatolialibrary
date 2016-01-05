@@ -26,7 +26,6 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
                 StockGuid = data.StockId,
                 FiscalYearId = data.FiscalYearId,
                 ProductGuid = data.ProductId,
-                ReorderCalcTypeId = data.ReorderCalcTypeId,
             };
         }
 
@@ -41,7 +40,6 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
                 StockId = data.StockGuid,
                 FiscalYearId = data.FiscalYearId,
                 ProductId = data.ProductGuid,
-                ReorderCalcTypeId = data.ReorderCalcTypeId,
 
                 Number_ID = data.ID,
                 Id = data.UniqueId,
