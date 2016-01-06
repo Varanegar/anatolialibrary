@@ -11,7 +11,7 @@
             <div class="stores">
 
                 <div class="list-group" data-bind="foreach: stores">
-                    <a href="#" class="list-group-item" data-bind="text: Name,
+                    <a href="#" class="list-group-item" data-bind="text: stockName,
                                    css: { active:  $data == $root.chosenStore() },
                                    click: $root.refreshProducts">
                     </a>
@@ -27,8 +27,8 @@
 @section scripts
 {
     <script>
-        var storesUrl = '/api/ProductManager/GetStores';
-        var productsUrl = '/api/ProductManager/GetProducts';
+        var storesUrl = 'http://localhost/api/gateway/stock/stocks/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
+        var productsUrl = 'http://localhost/api/gateway/stock/stockproduct/stockid/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
 
         function ProductManagerViewModel() {
             // Data
@@ -51,40 +51,41 @@
             };
 
             self.refreshProducts = function (data) {
+                
                 self.chosenStore(data);
                 $('.products-grid').data("kendoGrid").dataSource.read();
                 $('.products-grid').data("kendoGrid").refresh();
             };
 
+            authHeader = function (req) {
+                var tokenKey = 'accessToken';
+                var token = sessionStorage.getItem(tokenKey);
+
+                req.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+
             self.initGrid = function (id) {
-                var crudServiceBaseUrl = "/api/ProductManager/",
+                var crudServiceBaseUrl = "http://localhost/api/gateway/stock/",
+                    crudServiceBaseUrl2 = "http://localhost/api/gateway/basedata/",
                 dataSource = new kendo.data.DataSource({
                     transport: {
                         read: {
-                            url: crudServiceBaseUrl + "GetProducts",
+                            url: crudServiceBaseUrl + "stockproduct/stockid/",
                             dataType: "json",
                             contentType: "application/json",
                             type: "POST",
-                            data: { StoreId: self.chosenStore().Id }
+                            data: { privateOwnerId: "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", stockId: self.chosenStore().uniqueId },
+                            beforeSend: authHeader
                         },
                         update: {
-                            url: crudServiceBaseUrl + "UpdateProducts",
+                            url: crudServiceBaseUrl + "stockproduct/save/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C",
                             type: "POST",
                             contentType: "application/json",
-                            dataType: "json"
-                        },
-                        create: {
-                            url: crudServiceBaseUrl + "CreateProduct",
-                            dataType: "json"
-                        },
-                        destroy: {
-                            url: crudServiceBaseUrl + "DestoryProducts",
-                            type: "POST",
-                            contentType: "application/json",
-                            dataType: "json"
+                            dataType: "json",
+                            beforeSend: authHeader
                         },
                         parameterMap: function (options, operation) {
-                            options.StoreId = self.chosenStore().Id;
+                            options.stockId = self.chosenStore().uniqueId;
                             if (operation == "read")
                                 return kendo.stringify(options);
 
@@ -96,12 +97,17 @@
                     pageSize: 20,
                     schema: {
                         model: {
-                            id: "Id",
+                            id: "productGuid",
                             fields: {
-                                Id: { editable: false, nullable: true },
-                                ProductName: { editable: false },
-                                LargeUnit: { type: "number", validation: { required: true, min: 1 } },
-                                SmallUnit: { type: "number", validation: { required: true, min: 1 } }
+                                productGuid: { editable: false, nullable: true },
+                                productCode: { editable: false },
+                                productName: { editable: false },
+                                QtyPerPack: { editable: false },
+                                minQty: { type: "number", validation: { min: 0 } },
+                                maxQty: { type: "number", validation: {  min: 0 } },
+                                reorderLevel: { type: "number", validation: { min: 0 } },
+                                reorderCalcTypeInfo: { defaultValue: { uniqueId: "", reorderTypeName: "" } }
+
                             }
                         }
                     }
@@ -114,13 +120,42 @@
                     height: 550,
                     toolbar: ["save", "cancel"],//"create",
                     columns: [
-                        { field: "ProductName", title: "نام کالا" },
-                        { field: "LargeUnit", title: "تعداد واحد بزرگ", width: 150 },
-                        { field: "SmallUnit", title: "تعداد واحد کوچک", width: 150 },
-                        { command: "destroy", title: "&nbsp;", width: 150 }
+                        { field: "productCode", title: "کد کالا", width: 50 },
+                        { field: "productName", title: "نام کالا", width: 50 },
+                        { field: "minQty", title: "حداقل موجودی", width: 50 },
+                        { field: "maxQty", title: "حداکثر موجودی", width: 50 },
+                        { field: "reorderLevel", title: "نقطه سفارش", width: 50 },
+                        { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: "180px", editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
                     ],
                     editable: true
                 });
+
+                function categoryDropDownEditor(container, options) {
+                    
+                    $('<input required data-text-field="reorderTypeName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                           dataSource: {
+                                transport: {
+                                    read: {
+                                        url: crudServiceBaseUrl2 + "reordercalctypes",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        type: "POST",
+                                        data: { privateOwnerId: "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C" },
+                                        beforeSend: authHeader
+                                    },
+                                        parameterMap: function (options, operation) {
+                                            if (operation == "read")
+                                                return kendo.stringify(options);
+
+                                           
+                                        }
+                                }
+                            }
+                        });
+                }
+
             };
 
             self.refreshStores();

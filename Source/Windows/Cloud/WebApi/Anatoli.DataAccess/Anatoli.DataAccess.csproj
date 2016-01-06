@@ -101,6 +101,7 @@
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
+    <Compile Include="Interfaces\Base\IReorderCalcTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IFiscalYearRepository.cs" />
     <Compile Include="Interfaces\Base\IItemImageRegionRepository.cs" />
     <Compile Include="Interfaces\Base\ICityRegionRepository.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
     <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
-    <Compile Include="Interfaces\Product\IReorderCalcTypeRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -315,6 +315,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Base\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Base\FiscalYearRepository.cs" />
     <Compile Include="Repositories\Base\BaseTypeRepository.cs" />
     <Compile Include="Repositories\Base\BaseValueRepository.cs" />
@@ -332,7 +333,6 @@
     <Compile Include="Repositories\Base\SupplierRepository.cs" />
     <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
     <Compile Include="Repositories\Base\ManufactureRepository.cs" />
-    <Compile Include="Repositories\Product\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />

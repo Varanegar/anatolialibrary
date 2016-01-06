@@ -14,12 +14,23 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class CustomerController : ApiController
     {
         [Authorize(Roles = "User")]
-        [Route("customerbaskets")]
-        public async Task<IHttpActionResult> GetCustomerBasket(string privateOwnerId, string id)
+        [Route("customerbaskets/bycustomer")]
+        public async Task<IHttpActionResult> GetCustomerBasketByCustomerId(string privateOwnerId, string customerId)
         {
             var owner = Guid.Parse(privateOwnerId);
             var basketDomain = new BasketDomain(owner);
-            var result = await basketDomain.GetBasketByCustomerId(id);
+            var result = await basketDomain.GetBasketByCustomerId(customerId);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("customerbaskets/bybasket")]
+        public async Task<IHttpActionResult> GetCustomerBasketByBasketId(string privateOwnerId, string basketId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new BasketDomain(owner);
+            var result = await basketDomain.GetBasketByBasketId(basketId);
 
             return Ok(result);
         }
@@ -34,6 +45,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "User")]
+        [Route("delete")]
+        public async Task<IHttpActionResult> DeleteBasket(string privateOwnerId, List<BasketViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new BasketDomain(owner);
+            await basketDomain.Delete(data);
+            return Ok();
+        }
+
 
         [Authorize(Roles = "User")]
         [Route("basketitem/save")]
@@ -42,6 +63,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var owner = Guid.Parse(privateOwnerId);
             var basketDomain = new BasketItemDomain(owner);
             await basketDomain.PublishAsync(data);
+            return Ok();
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("basketitem/change")]
+        public async Task<IHttpActionResult> ChangeBasketItem(string privateOwnerId, List<BasketItemViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new BasketItemDomain(owner);
+            await basketDomain.ChangeAsync(data);
             return Ok();
         }
 

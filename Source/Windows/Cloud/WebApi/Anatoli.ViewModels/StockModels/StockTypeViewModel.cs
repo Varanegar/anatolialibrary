@@ -7,5 +7,7 @@ namespace Anatoli.ViewModels.StockModels
 {
     public class StockTypeViewModel : BaseViewModel
     {
+        public string StockTypeName { get; set; }
+
     }
 }

@@ -42,9 +42,17 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<StockViewModel>> GetAll()
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            try
+            {
+                var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
-            return Proxy.Convert(dataList.ToList()); ;
+                return Proxy.Convert(dataList.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll", ex);
+                throw ex;
+            }
         }
 
         public async Task<List<StockViewModel>> GetAllChangedAfter(DateTime selectedDate)

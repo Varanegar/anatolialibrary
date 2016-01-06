@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApp", "TestApp", "{C897
 		Readme.txt = Readme.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc-Web", "Mvc-Web\Mvc-Web.csproj", "{5423B484-5B58-4EB3-97D1-229E85DC2CDD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnatoliUnitTests", "AnatoliUnitTests\AnatoliUnitTests.csproj", "{58A467A1-D24E-4652-A622-2C2075C09E45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Business", "Anatoli.Business\Anatoli.Business.csproj", "{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}"
@@ -42,10 +40,6 @@ Global
 		{507DB6C2-A55A-4557-8DD6-7187C868ACA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{507DB6C2-A55A-4557-8DD6-7187C868ACA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{507DB6C2-A55A-4557-8DD6-7187C868ACA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5423B484-5B58-4EB3-97D1-229E85DC2CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58A467A1-D24E-4652-A622-2C2075C09E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58A467A1-D24E-4652-A622-2C2075C09E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58A467A1-D24E-4652-A622-2C2075C09E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,7 +73,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5423B484-5B58-4EB3-97D1-229E85DC2CDD} = {C89776FD-09E5-4963-9E89-E768CF0CB08B}
 		{58A467A1-D24E-4652-A622-2C2075C09E45} = {C89776FD-09E5-4963-9E89-E768CF0CB08B}
 	EndGlobalSection
 EndGlobal

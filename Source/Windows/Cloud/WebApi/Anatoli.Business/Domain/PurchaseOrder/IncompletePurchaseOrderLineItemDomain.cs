@@ -84,6 +84,40 @@ namespace Anatoli.Business.Domain
             }
         }
 
+        public async Task ChangeAsync(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
+        {
+            try
+            {
+                var lineItems = Proxy.ReverseConvert(lineItemViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+
+                foreach (IncompletePurchaseOrderLineItem item in lineItems)
+                {
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.IncompletePurchaseOrderId == item.IncompletePurchaseOrderId).FirstOrDefault();
+                    if (currentBasket != null)
+                    {
+                        currentBasket.ProductId = item.ProductId;
+                        currentBasket.Qty += item.Qty;
+                        currentBasket.LastUpdate = DateTime.Now;
+                        await Repository.UpdateAsync(currentBasket);
+                    }
+                    else
+                    {
+                        item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        await Repository.AddAsync(item);
+                    }
+                };
+                await Repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("ChangeAsync", ex);
+                throw ex;
+            }
+        }
+
         public async Task Delete(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
         {
             await Task.Factory.StartNew(() =>
