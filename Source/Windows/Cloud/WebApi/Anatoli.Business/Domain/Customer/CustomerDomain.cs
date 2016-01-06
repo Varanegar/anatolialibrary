@@ -15,7 +15,6 @@ namespace Anatoli.Business.Domain
 {
     public class CustomerDomain : BusinessDomain<CustomerViewModel>, IBusinessDomain<Customer, CustomerViewModel>
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
         public IAnatoliProxy<Customer, CustomerViewModel> Proxy { get; set; }
         public IRepository<Customer> Repository { get; set; }
@@ -67,6 +66,8 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var customers = Proxy.ReverseConvert(customerViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
@@ -115,6 +116,11 @@ namespace Anatoli.Business.Domain
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
+            }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + customerViewModels.Count);
             }
         }
 

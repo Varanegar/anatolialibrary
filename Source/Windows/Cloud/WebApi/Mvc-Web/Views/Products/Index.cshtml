@@ -27,8 +27,8 @@
 @section scripts
 {
     <script>
-        var storesUrl = 'http://localhost/api/gateway/stock/stocks/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
-        var productsUrl = 'http://localhost/api/gateway/stock/stockproduct/stockid/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
+        var storesUrl = 'http://79.175.166.186/api/gateway/stock/stocks/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
+        var productsUrl = 'http://79.175.166.186/api/gateway/stock/stockproduct/stockid/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
 
         function ProductManagerViewModel() {
             // Data
@@ -65,8 +65,8 @@
             }
 
             self.initGrid = function (id) {
-                var crudServiceBaseUrl = "http://localhost/api/gateway/stock/",
-                    crudServiceBaseUrl2 = "http://localhost/api/gateway/basedata/",
+                var crudServiceBaseUrl = "http://79.175.166.186/api/gateway/stock/",
+                    crudServiceBaseUrl2 = "http://79.175.166.186/api/gateway/basedata/",
                 dataSource = new kendo.data.DataSource({
                     transport: {
                         read: {

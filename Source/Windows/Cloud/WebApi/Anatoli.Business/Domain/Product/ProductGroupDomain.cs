@@ -57,6 +57,8 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentGroupList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -96,6 +98,11 @@ namespace Anatoli.Business.Domain
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
+            }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + ProductGroupViewModels.Count);
             }
         }
 
