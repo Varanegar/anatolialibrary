@@ -8,7 +8,7 @@ namespace Anatoli.DataAccess.Models
 {
     public class StockProductRequestStatus : BaseModel
     {
-        public string StockPorductRequestTypeName { get; set; }
+        public string StockProductRequestStatusName { get; set; }
         public virtual ICollection<StockProductRequest> StockProductRequests { get; set; }
     }
 }

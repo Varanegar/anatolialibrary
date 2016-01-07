@@ -7,5 +7,9 @@ namespace Anatoli.ViewModels.StockModels
 {
     public class StockProductRequestProductDetailViewModel : BaseViewModel
     {
+        public decimal RequestQty { get; set; }
+        public Guid StockProductRequestProductId { get; set; }
+        public Guid StockProductRequestRuleId { get; set; }
+
     }
 }

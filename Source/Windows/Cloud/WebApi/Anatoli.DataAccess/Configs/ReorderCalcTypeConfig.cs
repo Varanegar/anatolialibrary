@@ -10,10 +10,6 @@ namespace Anatoli.DataAccess.Configs
     {
         public ReorderCalcTypeConfig()
         {
-            this.HasMany<StockProduct>(pp => pp.StockProducts)
-                .WithOptional(p => p.ReorderCalcType)
-                .WillCascadeOnDelete(false);
-
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
                 .WithRequired(p => p.ReorderCalcType);
         }

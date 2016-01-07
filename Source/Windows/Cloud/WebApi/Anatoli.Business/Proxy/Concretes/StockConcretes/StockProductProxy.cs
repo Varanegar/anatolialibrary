@@ -13,7 +13,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
     {
         public override StockProductViewModel Convert(StockProduct data)
         {
-            return new StockProductViewModel
+            var result = new StockProductViewModel
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
@@ -26,8 +26,15 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
                 StockGuid = data.StockId,
                 FiscalYearId = data.FiscalYearId,
                 ProductGuid = data.ProductId,
+                ProductCode = data.Product.ProductCode,
+                ProductName = data.Product.ProductName,
+                QtyPerPack = data.Product.QtyPerPack??0,
                 ReorderCalcTypeId = data.ReorderCalcTypeId,
+
             };
+            result.ReorderCalcTypeInfo = (result.ReorderCalcTypeId == null) ? new ReorderCalcTypeViewModel() : new ReorderCalcTypeViewModel { ReorderTypeName = data.ReorderCalcType.ReorderTypeName, UniqueId = data.ReorderCalcType.Id };
+
+            return result;
         }
 
         public override StockProduct ReverseConvert(StockProductViewModel data)

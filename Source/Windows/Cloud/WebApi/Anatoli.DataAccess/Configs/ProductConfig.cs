@@ -23,6 +23,10 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<BasketItem>(pp => pp.BasketItems)
                 .WithRequired(p => p.Product);
 
+            this.HasMany<IncompletePurchaseOrderLineItem>(pp => pp.IncompletePurchaseOrderLineItems)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
                 .WithOptional(p => p.Product)
                 .WillCascadeOnDelete(false);

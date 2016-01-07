@@ -22,10 +22,10 @@ namespace Anatoli.Cloud.WebApi.Classes
                     file.SaveAs(physicalPath);
 
                     Image image100x100 = Scale(Image.FromFile(physicalPath), 100, 100);
-                    image100x100.Save(GetPath(token, imagetype + "\\100x100", imageName + "-100x100.png"));
+                    image100x100.Save(GetPath(token, imagetype + "\\100x100", imageName + ".png"));
 
                     Image image320x320 = Scale(Image.FromFile(physicalPath), 320, 320);
-                    image320x320.Save(GetPath(token, imagetype + "\\320x320", imageName + "-320x320.png"));
+                    image320x320.Save(GetPath(token, imagetype + "\\320x320", imageName + ".png"));
                 });
             }
             catch(Exception ex)

@@ -28,6 +28,7 @@ namespace Anatoli.DataAccess.Models
 
         public virtual ICollection<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public virtual ICollection<Basket> CustomerBaskets { get; set; }
+        public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public virtual CityRegion RegionInfo { get; set; }
         public virtual CityRegion RegionLevel1 { get; set; }
         public virtual CityRegion RegionLevel2 { get; set; }

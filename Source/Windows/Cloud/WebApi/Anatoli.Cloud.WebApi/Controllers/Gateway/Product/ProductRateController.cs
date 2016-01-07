@@ -49,15 +49,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveProductRates(string privateOwnerId, List<ProductRateViewModel> data)
         {
             if (data != null) log.Info("save product count : " + data.Count);
             var owner = Guid.Parse(privateOwnerId);
             var productRateDomain = new ProductRateDomain(owner);
-            await productRateDomain.PublishAsync(data);
-            return Ok();
+            var result = await productRateDomain.PublishAsyncWithReturn(data);
+            return Ok(result);
         }        
         #endregion
     }

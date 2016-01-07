@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Build\Anatoli.ViewModels\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />
     <Compile Include="BaseModels\BaseValueViewModel.cs" />
@@ -47,11 +48,12 @@
     <Compile Include="BaseModels\BasketItemViewModel.cs" />
     <Compile Include="BaseModels\BasketViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
+    <Compile Include="Order\IncompletePurchaseOrderLineItemViewModel.cs" />
     <Compile Include="Order\PurchaseOrderLineItemViewModel.cs" />
     <Compile Include="Order\PurchaseOrderStatusViewModel.cs" />
+    <Compile Include="Order\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="Order\PurchaseOrderViewModel.cs" />
     <Compile Include="ProductModels\MainProductGroupViewModel.cs" />
-    <Compile Include="ProductModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
     <Compile Include="ProductModels\CharValueViewModel.cs" />

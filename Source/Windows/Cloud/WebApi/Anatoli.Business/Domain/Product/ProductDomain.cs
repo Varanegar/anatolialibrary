@@ -76,6 +76,8 @@ namespace Anatoli.Business.Domain
             log.Info("PublishAsync " + ProductViewModels.Count);
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var products = Proxy.ReverseConvert(ProductViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentProductList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -123,6 +125,7 @@ namespace Anatoli.Business.Domain
 
                         Repository.Add(item);
                     }
+                    
                 });
                 await Repository.SaveChangesAsync();
             }
@@ -131,7 +134,11 @@ namespace Anatoli.Business.Domain
                 log.Info("PublishAsync ", ex);
                 throw ex;
             }
-            log.Info("PublishAsync Finish" + ProductViewModels.Count);
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + ProductViewModels.Count);
+            }
         }
 
         public async Task Delete(List<ProductViewModel> ProductViewModels)

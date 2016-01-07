@@ -33,23 +33,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Log4Net.Async">
       <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -79,6 +84,7 @@
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
+    <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\ProductTypeConfig.cs" />
@@ -95,6 +101,7 @@
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
+    <Compile Include="Interfaces\Base\IReorderCalcTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IFiscalYearRepository.cs" />
     <Compile Include="Interfaces\Base\IItemImageRegionRepository.cs" />
     <Compile Include="Interfaces\Base\ICityRegionRepository.cs" />
@@ -108,12 +115,13 @@
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
     <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
-    <Compile Include="Interfaces\Product\IReorderCalcTypeRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
     <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
@@ -200,7 +208,44 @@
     <Compile Include="Migrations\201601041957561_Stock-Request-9.Designer.cs">
       <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601042126391_stock-request-10.cs" />
+    <Compile Include="Migrations\201601042126391_stock-request-10.Designer.cs">
+      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042144304_stock-request-11.cs" />
+    <Compile Include="Migrations\201601042144304_stock-request-11.Designer.cs">
+      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042145239_stock-request-12.cs" />
+    <Compile Include="Migrations\201601042145239_stock-request-12.Designer.cs">
+      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042208389_stock-request-13.cs" />
+    <Compile Include="Migrations\201601042208389_stock-request-13.Designer.cs">
+      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601042221041_stock-request-14.cs" />
+    <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
+      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.cs" />
+    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.Designer.cs">
+      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.cs" />
+    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.Designer.cs">
+      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.cs" />
+    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.Designer.cs">
+      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.cs" />
+    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.Designer.cs">
+      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -235,6 +280,7 @@
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
+    <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
@@ -269,6 +315,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Base\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Base\FiscalYearRepository.cs" />
     <Compile Include="Repositories\Base\BaseTypeRepository.cs" />
     <Compile Include="Repositories\Base\BaseValueRepository.cs" />
@@ -286,10 +333,11 @@
     <Compile Include="Repositories\Base\SupplierRepository.cs" />
     <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
     <Compile Include="Repositories\Base\ManufactureRepository.cs" />
-    <Compile Include="Repositories\Product\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
@@ -366,6 +414,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601041957561_Stock-Request-9.resx">
       <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042126391_stock-request-10.resx">
+      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042144304_stock-request-11.resx">
+      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042145239_stock-request-12.resx">
+      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042208389_stock-request-13.resx">
+      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
+      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051022553_Incomplete-PurchaseOrder.resx">
+      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.resx">
+      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.resx">
+      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.resx">
+      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

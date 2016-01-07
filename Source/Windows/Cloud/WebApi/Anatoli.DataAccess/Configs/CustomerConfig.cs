@@ -15,6 +15,9 @@ namespace Anatoli.DataAccess.Configs
 
             this.HasMany<Basket>(csa => csa.CustomerBaskets)
                 .WithRequired(c => c.Customer);
+
+            this.HasMany<IncompletePurchaseOrder>(csa => csa.IncompletePurchaseOrders)
+                .WithRequired(c => c.Customer);
         }
     }
 }

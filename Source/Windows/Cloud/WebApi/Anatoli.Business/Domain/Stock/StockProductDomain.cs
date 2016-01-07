@@ -47,6 +47,14 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
+        public async Task<List<StockProductViewModel>> GetAllByStockId(string stockId)
+        {
+            Guid stockGuid = Guid.Parse(stockId);
+            var dataList = await Repository.FindAllAsync(p => p.StockId == stockGuid);
+
+            return Proxy.Convert(dataList.ToList()); ;
+        }
+
         public async Task<List<StockProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
@@ -74,8 +82,7 @@ namespace Anatoli.Business.Domain
                             currentData.IsEnable != item.IsEnable ||
                             currentData.StockId != item.StockId ||
                             currentData.FiscalYearId != item.FiscalYearId ||
-                            currentData.ProductId != item.ProductId ||
-                            currentData.ReorderCalcTypeId != item.ReorderCalcTypeId 
+                            currentData.ProductId != item.ProductId
                             )
                         {
                             currentData.MinQty = item.MinQty;
@@ -85,7 +92,6 @@ namespace Anatoli.Business.Domain
                             currentData.StockId = item.StockId;
                             currentData.FiscalYearId = item.FiscalYearId;
                             currentData.ProductId = item.ProductId;
-                            currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
 
                             currentData.LastUpdate = DateTime.Now;
                             Repository.Update(currentData);

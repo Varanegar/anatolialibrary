@@ -15,6 +15,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/stock")]
     public class StockController : ApiController
     {
+        public class RequestModel
+        {
+            public string privateOwnerId { get; set; }
+            public string stockId { get; set; }
+        }
 
         #region stock On Hand List
         [Authorize(Roles = "AuthorizedApp")]
@@ -142,6 +147,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
+        [Route("stockproduct/stockid")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockProductsByStockId([FromBody] RequestModel data)
+        {
+            var owner = Guid.Parse(data.privateOwnerId);
+            var stockDomain = new StockProductDomain(owner);
+            var result = await stockDomain.GetAllByStockId(data.stockId);
+            return Ok(result);
+        }
+
+
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("stockproduct/after")]
         public async Task<IHttpActionResult> GetStockProducts(string privateOwnerId, string dateAfter)
         {
@@ -154,12 +171,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("stockproduct/save")]
+        [HttpPost]
         public async Task<IHttpActionResult> SaveStockProducts(string privateOwnerId, List<StockProductViewModel> data)
         {
             var owner = Guid.Parse(privateOwnerId);
             var stockDomain = new StockProductDomain(owner);
             await stockDomain.PublishAsync(data);
-            return Ok();
+            return Ok(data);
         }
         #endregion
     }
