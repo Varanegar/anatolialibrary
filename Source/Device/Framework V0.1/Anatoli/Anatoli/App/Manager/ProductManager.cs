@@ -105,5 +105,10 @@ namespace Anatoli.App.Manager
             }
         }
 
+        public static async Task<List<ProductModel>> GetListOFProducts()
+        {
+            return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
+        }
+
     }
 }

@@ -29,16 +29,16 @@ namespace Anatoli.Framework.AnatoliBase
             public struct Products
             {
                 public static readonly string ProductView = "product_view.php";
-                public static readonly string ProductsView = "products_test.php";
+                public static readonly string ProductsView = "/api/gateway/product/products/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string FOGList = "list.php";
                 public static readonly string RateProductUri = "/Products/Rate";
-
+                public static readonly string ProductGroups = "/api/gateway/product/productgroups/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string FavoritsView = "/Products/Rate";
             }
             public struct Stores
             {
                 public static readonly string StoreView = "store_view";
-                public static readonly string StoresView = "store_list";
+                public static readonly string StoresView = "/api/gateway/store/stores/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Users
             {

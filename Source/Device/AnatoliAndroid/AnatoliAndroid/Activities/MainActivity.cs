@@ -30,7 +30,7 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
@@ -93,12 +93,16 @@ namespace AnatoliAndroid.Activities
             {
                 await StoreManager.GetDefaultAsync();
                 AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                //var list = await ProductManager.GetListOFProducts();
+                //if (list.Count > 0)
+                //{
+                //    Toast.MakeText(this, "count = " + list.Count, ToastLength.Short);
+                //}
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 AnatoliApp.GetInstance().SetFragment<StoresListFragment>(null, "stores_fragment");
             }
-
 
         }
 
@@ -146,12 +150,12 @@ namespace AnatoliAndroid.Activities
 
         public void OnProviderDisabled(string provider)
         {
-            
+
         }
 
         public void OnProviderEnabled(string provider)
         {
-            
+
         }
 
         public void OnStatusChanged(string provider, Availability status, Bundle extras)
@@ -190,6 +194,11 @@ namespace AnatoliAndroid.Activities
             if (LocationManagerStatusChanged != null)
                 LocationManagerStatusChanged(this, EventArgs.Empty);
         }
+    }
+
+    public class TestClass
+    {
+        public string name { get; set; }
     }
 
 }

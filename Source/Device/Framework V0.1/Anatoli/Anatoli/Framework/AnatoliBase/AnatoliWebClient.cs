@@ -234,6 +234,7 @@ namespace Anatoli.Framework.AnatoliBase
             var result = deserializer.Deserialize<Result>(respone.Result);
             return result;
         }
+
     }
     public class AnatoliMetaInfo
     {

@@ -38,6 +38,6 @@ namespace Anatoli.Framework.Model
         }
         public Dictionary<string, string[]> ModelState { get; set; }
 
-        public string PrivateOwnerId { get { return "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"; } set { PrivateOwnerId = value; } }
+        public string PrivateOwnerId { get { return "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"; }}
     }
 }
