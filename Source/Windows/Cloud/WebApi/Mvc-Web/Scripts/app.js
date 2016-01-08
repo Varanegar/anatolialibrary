@@ -6,13 +6,14 @@
         productsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/?privateOwnerId=' + privateOwnerId,
         stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
         saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
-        reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes"
+        reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
+        stockPageUrl: "/Products/",
     },
     gridAuthHeader = function (req) {
         var tokenKey = 'accessToken',
             token = $.cookie("token");
         req.setRequestHeader('Authorization', 'Bearer ' + token);
-    }
+    };
 
 toastr.options = {
     "closeButton": false,
@@ -34,7 +35,15 @@ toastr.options = {
 showError = function (title, message) {
     toastr["error"](title, message);
 };
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 //******************************************************************//
+
 function headerMenuViewModel() {
     var self = this;
     self.shouldShowLogout = ko.observable(false);
@@ -42,6 +51,7 @@ function headerMenuViewModel() {
 };
 var headerMenu = new headerMenuViewModel();
 //******************************************************************//
+
 function accountManagerViewModel() {
     var self = this;
 
@@ -156,6 +166,7 @@ function accountManagerViewModel() {
 };
 var accountManagerApp = new accountManagerViewModel();
 //******************************************************************//
+
 function productManagerViewModel() {
     // Data
     var self = this;
@@ -169,7 +180,19 @@ function productManagerViewModel() {
         accountManagerApp.callApi(urls.storesUrl, 'GET', function (data) {
             self.stores(data);
             if (self.stores().length > 0) {
-                self.chosenStore(self.stores()[0]);
+                //find query string stock id in store list
+                var stockId = getParameterByName('stockId');
+                if (stockId && stockId !== '') {
+                    var match = ko.utils.arrayFirst(self.stores(), function (item) {
+                        return item.uniqueId === stockId;
+                    });
+                    if (match && match != null)
+                        self.chosenStore(match);
+                    else
+                        self.chosenStore(self.stores()[0]);
+                }
+                else
+                    self.chosenStore(self.stores()[0]);
 
                 if (self.flg_initGrid()) {
                     self.flg_initGrid(false);
@@ -240,8 +263,8 @@ function productManagerViewModel() {
             height: 550,
             toolbar: ["save", "cancel"],//"create",
             columns: [
-                { field: "productCode", title: "کد کالا", width: 50 },
-                { field: "productName", title: "نام کالا", width: 50 },
+                { field: "productCode", title: "کد کالا", width: 100 },
+                { field: "productName", title: "نام کالا", width: 200 },
                 { field: "minQty", title: "حداقل موجودی", width: 50 },
                 { field: "maxQty", title: "حداکثر موجودی", width: 50 },
                 { field: "reorderLevel", title: "نقطه سفارش", width: 50 },
@@ -274,4 +297,265 @@ function productManagerViewModel() {
         }
     };
     self.refreshStores();
+};
+//******************************************************************//
+
+//Todo: this view model should be complete.
+var fakeBackendUrl = "/api/ProductManager/",
+    fakeUrls = {
+        storeRequestsUrl: fakeBackendUrl + "GetStoreRequests",
+        requestReviewUrl: fakeBackendUrl + 'GetRequestReview',
+        updateRequestReviewUrl: fakeBackendUrl + 'UpdateRequestReview',
+        requestReviewDetailsUrl: fakeBackendUrl + 'GetRequestReviewDetail'
+    };
+
+function ReviewProductRequestViewModel() {
+    // Data
+    var self = this;
+
+    self.stockRequests = ko.observableArray([]);
+
+    self.chosenStoreRequest = ko.observable();
+    self.storeRequestInfo = ko.observable();
+    self.shouldShowRequestInfo = ko.observable(false);
+
+    self.StoreName = ko.observable();
+    self.RequestDate = ko.observable();
+    self.RequestNumber = ko.observable();
+    self.State = ko.observable();
+
+    self.refreshStockRequest = function (term) {
+        //todo: change this code with accountManagerApp call api method.
+        $.post(fakeUrls.storeRequestsUrl, { term: term }, function (data, textStatus, jqXHR) {
+            self.stockRequests(data);
+            if (self.stockRequests().length > 0)
+                self.refreshStoreRequestInfo(self.stockRequests()[0]);
+        }, "json");
+    };
+
+    self.refreshStoreRequestInfo = function (data) {
+        self.chosenStoreRequest(data);
+        self.initRequestReviewGrid();
+        self.shouldShowRequestInfo(true);
+    };
+
+    self.initRequestReviewGrid = function () {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: fakeUrls.requestReviewUrl,
+                    dataType: "json",
+                    contentType: "application/json",
+                    type: "POST",
+                    data: { StoreRequestId: self.chosenStoreRequest().Id }
+                },
+                update: {
+                    url: fakeUrls.updateRequestReviewUrl,
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json"
+                },
+                parameterMap: function (options, operation) {
+                    options.StoreRequestId = self.chosenStoreRequest().Id;
+                    if (operation == "read")
+                        return kendo.stringify(options);
+
+                    if (operation !== "read" && options.models)
+                        return kendo.stringify(options.models);
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "Id",
+                    fields: {
+                        Id: { editable: false, nullable: true },
+                        ModifiedBy: { type: "string", editable: false },
+                        ModifiedDate: { type: "string", editable: false },
+                        ModifiedLargeUnit: { type: "number", editable: false },
+                        ModifiedSmallUnit: { type: "number", editable: false },
+                        LargeUnit: { type: "number", validation: { required: true, min: 1 } },
+                        SmallUnit: { type: "number", validation: { required: true, min: 1 } }
+                    }
+                }
+            }
+        });
+
+        $(".request-review-grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: true,
+            sortable: true,
+            height: 550,
+            detailTemplate: kendo.template($("#template").html()),
+            detailInit: detailInit,
+            dataBound: function () {
+                this.expandRow(this.tbody.find("tr.k-master-row").first());
+            },
+            toolbar: ["save"],
+            columns: [
+                { field: "ModifiedBy", title: "نام کاربر" },
+                { field: "ModifiedDate", title: "تاریخ تغییر" },
+                { field: "ModifiedLargeUnit", title: "تعداد واحد بزرگ", width: 80 },
+                { field: "ModifiedSmallUnit", title: "تعداد واحد کوچک", width: 80 },
+                { field: "LargeUnit", title: "تعداد واحد بزرگ", width: 80 },
+                { field: "SmallUnit", title: "تعداد واحد کوچک", width: 80 },
+            ],
+            editable: true
+        });
+    };
+
+    function detailInit(e) {
+        var detailRow = e.detailRow;
+
+        detailRow.find(".request-details-grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: fakeUrls.requestReviewDetailsUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        data: { RequestReviewId: e.data.Id }
+                    },
+                    parameterMap: function (options, operation) {
+                        options.RequestReviewId = e.data.Id;
+                        if (operation == "read")
+                            return kendo.stringify(options);
+                    }
+                },
+                pageSize: 10
+            },
+            scrollable: false,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "ProductName", title: "نام محصول", width: "70px" },
+                { field: "Number", title: "تعداد", width: "110px" },
+            ]
+        });
+    }
+
+    self.refreshStockRequest();
+
+    $(document).on("keypress", ".stock-term", function (e) {
+        var term = $(this).val();
+        if (e.which == 13)
+            self.refreshStockRequest(term);
+    });
+
+    $(document).on("click", ".btn-lnk-stock", function (e) {
+        e.preventDefault();
+
+        var id = $(this).attr('data-id');
+
+        window.location = urls.stockPageUrl + "?stockId=" + id;
+    });
+};
+//******************************************************************//
+
+//Todo: this view model should be complete.
+var storesUrl = '/api/ProductManager/GetStores';
+var productsUrl = '/api/ProductManager/GetProducts';
+
+function ProductHistoryManagerViewModel() {
+    // Data
+    var self = this;
+    self.chosenStore = ko.observable();
+    self.chosenProduct = ko.observable();
+
+    self.stores = ko.observableArray([]);
+    self.products = ko.observableArray([]);
+
+    self.chosenStore.subscribe(function (newValue) {
+        self.refreshProducts(newValue);
+        $(".product-term").removeAttr('disabled');
+    }, self);
+
+    self.refreshStores = function () {
+        accountManagerApp.callApi(storesUrl, 'GET', function (data) {
+            self.stores(data);
+        });
+    };
+
+    self.refreshProducts = function (data, term) {
+
+        $.post(productsUrl, { StoreId: data.Id, term: term }, self.products)
+        .then(function () {
+            if (self.products().length > 0)
+                self.refreshHistory(self.products()[0], true);
+        },
+        function (ex) {
+            console.log(ex.message);
+        });
+    };
+
+    self.refreshHistory = function (data, initGrid_flag) {
+        self.chosenProduct(data);
+
+        if (initGrid_flag)
+            self.initGrid(self.chosenStore().Id);
+        else {
+            $('.history-grid').data("kendoGrid").dataSource.read();
+            $('.history-grid').data("kendoGrid").refresh();
+        }
+    };
+
+    self.initGrid = function (id) {
+        var crudServiceBaseUrl = "/api/ProductManager/",
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: crudServiceBaseUrl + "GetProductRequestsHistory",
+                    dataType: "json",
+                    contentType: "application/json",
+                    type: "POST",
+                    data: { ProductId: self.chosenProduct().Id }
+                },
+
+                parameterMap: function (options, operation) {
+                    options.ProductId = self.chosenProduct().Id;
+                    if (operation == "read")
+                        return kendo.stringify(options);
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "Id",
+                    fields: {
+                        Id: { editable: false, nullable: true },
+                        ModifiedBy: { type: "string" },
+                        ModifiedDate: { type: "string" },
+                        LargeUnit: { type: "number" },
+                        SmallUnit: { type: "number" }
+                    }
+                }
+            }
+        });
+
+        $(".history-grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: true,
+            height: 550,
+            columns: [
+                { field: "ModifiedBy", title: "نام کاربر" },
+                { field: "ModifiedDate", title: "تاریخ تغییر" },
+                { field: "LargeUnit", title: "تعداد واحد بزرگ", width: 150 },
+                { field: "SmallUnit", title: "تعداد واحد کوچک", width: 150 },
+            ],
+            editable: false
+        });
+    };
+
+    self.refreshStores();
+
+    $(document).on("keypress", ".product-term", function (e) {
+        var term = $(this).val();
+        if (e.which == 13)
+            self.refreshProducts(self.chosenStore(), term);
+    });
 };
