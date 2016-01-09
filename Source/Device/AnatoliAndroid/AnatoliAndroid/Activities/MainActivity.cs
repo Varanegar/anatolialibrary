@@ -92,7 +92,7 @@ namespace AnatoliAndroid.Activities
             try
             {
                 await StoreManager.GetDefaultAsync();
-                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
             }
             catch (Exception e)
             {

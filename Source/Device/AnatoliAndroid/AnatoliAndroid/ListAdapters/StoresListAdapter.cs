@@ -34,7 +34,7 @@ namespace AnatoliAndroid.ListAdapters
             {
                 if (await StoreManager.SelectAsync(item) == true)
                 {
-                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                    AnatoliApp.GetInstance().SetFragment<FirstFragment>(new FirstFragment(), "first_fragment");
                     OnStoreSelected(item);
                 }
             };

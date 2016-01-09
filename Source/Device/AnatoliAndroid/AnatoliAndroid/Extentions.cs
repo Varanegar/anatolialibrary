@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AnatoliAndroid.Fragments;
+using Android.Graphics;
+using System.Net;
 
 namespace AnatoliAndroid
 {
@@ -37,6 +39,36 @@ namespace AnatoliAndroid
         {
             var propertyInfo = obj.GetType().GetProperty("Instance");
             return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
+        }
+
+        public static Bitmap ImageBitmapFromUrl(string url)
+        {
+            try
+            {
+                var request = HttpWebRequest.Create(url);
+                request.Timeout = 10000;
+                Bitmap imageBitmap = null;
+                using (var response = request.GetResponse())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        byte[] imageBytes = new byte[2097152];
+                        int totalBytes = 0;
+                        int bytesRead;
+                        do
+                        {
+                            bytesRead = stream.Read(imageBytes, 0, imageBytes.Length);
+                            totalBytes += bytesRead;
+                        } while (bytesRead != 0);
+                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, totalBytes);
+                    }
+                }
+                return imageBitmap;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
