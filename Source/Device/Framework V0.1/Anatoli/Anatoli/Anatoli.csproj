@@ -41,6 +41,9 @@
     <Compile Include="App\Manager\MessageManager.cs" />
     <Compile Include="App\Manager\OrderItemsManager.cs" />
     <Compile Include="App\Manager\OrderManager.cs" />
+    <Compile Include="App\Manager\ProductGroupManager.cs" />
+    <Compile Include="App\Manager\ProductPriceManager.cs" />
+    <Compile Include="App\Manager\ProductUpdateManager.cs" />
     <Compile Include="App\Manager\ShippingInfoManager.cs" />
     <Compile Include="App\Manager\ShoppingCardManager.cs" />
     <Compile Include="App\Manager\ProductManager.cs" />
@@ -52,13 +55,16 @@
     <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
     <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
     <Compile Include="App\Model\Product\ProductFieldModel.cs" />
+    <Compile Include="App\Model\Product\ProductGroupModel.cs" />
     <Compile Include="App\Model\Product\ProductImage.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
-    <Compile Include="App\Model\Product\ProductModelUpdateResult.cs" />
+    <Compile Include="App\Model\Product\ProductUpdateModel.cs" />
     <Compile Include="App\Model\Store\MessageModel.cs" />
     <Compile Include="App\Model\Store\OrderItemModel.cs" />
     <Compile Include="App\Model\Store\OrderModel.cs" />
+    <Compile Include="App\Model\Store\ProductPriceModel.cs" />
     <Compile Include="App\Model\Store\StoreDataModel.cs" />
+    <Compile Include="App\SyncManager.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
@@ -70,8 +76,6 @@
     <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
     <Compile Include="Framework\Manager\BaseManager.cs" />
     <Compile Include="Framework\Model\BaseDataModel.cs" />
-    <Compile Include="Framework\Model\BaseListResult.cs" />
-    <Compile Include="Framework\Model\BaseModelResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\ProductTest.cs" />
   </ItemGroup>
@@ -81,9 +85,6 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Parse.Android">
       <HintPath>..\..\..\packages\Parse\Parse.Android\Parse.Android.dll</HintPath>

@@ -23,13 +23,13 @@ namespace Anatoli.App.Manager
         //    return await GetItemAsync(new DBQuery("products",parameter));
         //}
 
-        public static async Task<bool> RemoveFavorit(int pId)
+        public static async Task<bool> RemoveFavorit(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
             return await LocalUpdateAsync(dbQuery) > 0 ? true : false;
         }
 
-        public static async Task<bool> AddToFavorits(int pId)
+        public static async Task<bool> AddToFavorits(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "1"));
             return await LocalUpdateAsync(dbQuery) > 0 ? true : false;

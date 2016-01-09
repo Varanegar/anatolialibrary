@@ -28,10 +28,54 @@ namespace Anatoli.Framework.AnatoliBase
                 byte[] plainText = Crypto.DecryptAES(cipherText);
                 string tokenString = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
                 string[] tokenStringFields = tokenString.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                _userTokenInfo.AccessToken = tokenStringFields[0];
-                _userTokenInfo.ExpiresIn = long.Parse(tokenStringFields[1]);
-                _appTokenInfo.AccessToken = tokenStringFields[2];
-                _appTokenInfo.ExpiresIn = long.Parse(tokenStringFields[3]);
+                if (tokenStringFields.Length == 4)
+                {
+                    if (tokenStringFields[0] != "null")
+                    {
+                        _userTokenInfo = new AnatoliTokenInfo();
+                        _userTokenInfo.AccessToken = tokenStringFields[0];
+                        _userTokenInfo.ExpiresIn = long.Parse(tokenStringFields[1]);
+                    }
+                    if (tokenStringFields[2] != "null")
+                    {
+                        _appTokenInfo = new AnatoliTokenInfo();
+                        _appTokenInfo.AccessToken = tokenStringFields[2];
+                        _appTokenInfo.ExpiresIn = long.Parse(tokenStringFields[3]);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        public bool LoadTokenFile()
+        {
+            try
+            {
+                byte[] cipherText = AnatoliClient.GetInstance().FileIO.ReadAllBytes(AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.tokenInfoFile);
+                byte[] plainText = Crypto.DecryptAES(cipherText);
+                string tokenString = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
+                string[] tokenStringFields = tokenString.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                if (tokenStringFields.Length == 4)
+                {
+                    if (tokenStringFields[0] != "null")
+                    {
+                        _userTokenInfo = new AnatoliTokenInfo();
+                        _userTokenInfo.AccessToken = tokenStringFields[0];
+                        _userTokenInfo.ExpiresIn = long.Parse(tokenStringFields[1]);
+                    }
+                    if (tokenStringFields[2] != "null")
+                    {
+                        _appTokenInfo = new AnatoliTokenInfo();
+                        _appTokenInfo.AccessToken = tokenStringFields[2];
+                        _appTokenInfo.ExpiresIn = long.Parse(tokenStringFields[3]);
+                    }
+                }
+
                 return true;
             }
             catch (Exception)
@@ -44,19 +88,19 @@ namespace Anatoli.Framework.AnatoliBase
         {
             string content = "";
             if (_userTokenInfo != null)
-            {
                 if (_userTokenInfo.AccessToken != null)
-                {
                     content += _userTokenInfo.AccessToken + Environment.NewLine + _userTokenInfo.ExpiresIn.ToString() + Environment.NewLine;
-                }
-            }
-            if (_userTokenInfo != null)
-            {
-                if (_userTokenInfo.AccessToken != null)
-                {
+                else
+                    content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            else
+                content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            if (_appTokenInfo != null)
+                if (_appTokenInfo.AccessToken != null)
                     content += _appTokenInfo.AccessToken + Environment.NewLine + _appTokenInfo.ExpiresIn;
-                }
-            }
+                else
+                    content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            else
+                content += "null" + Environment.NewLine + "null" + Environment.NewLine;
 
             try
             {
@@ -67,6 +111,36 @@ namespace Anatoli.Framework.AnatoliBase
                     return true;
                 });
                 return wResult;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool SaveTokenFile()
+        {
+            string content = "";
+            if (_userTokenInfo != null)
+                if (_userTokenInfo.AccessToken != null)
+                    content += _userTokenInfo.AccessToken + Environment.NewLine + _userTokenInfo.ExpiresIn.ToString() + Environment.NewLine;
+                else
+                    content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            else
+                content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            if (_appTokenInfo != null)
+                if (_appTokenInfo.AccessToken != null)
+                    content += _appTokenInfo.AccessToken + Environment.NewLine + _appTokenInfo.ExpiresIn;
+                else
+                    content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+            else
+                content += "null" + Environment.NewLine + "null" + Environment.NewLine;
+
+            try
+            {
+
+                var cipherText = Crypto.EncryptAES(content);
+                bool result = AnatoliClient.GetInstance().FileIO.WriteAllBytes(cipherText, AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.tokenInfoFile);
+                return result;
             }
             catch (Exception)
             {
@@ -108,17 +182,55 @@ namespace Anatoli.Framework.AnatoliBase
                 return _appTokenInfo;
             }
         }
+        AnatoliTokenInfo GetToken(TokenType tokenType)
+        {
+            if (tokenType == TokenType.UserToken)
+            {
+                if (_userTokenInfo == null)
+                {
+                    LoadTokenFile();
+                    if (_userTokenInfo == null)
+                    {
+                        RefreshToken();
+                        if (_userTokenInfo == null)
+                        {
+                            throw new ServerUnreachable();
+                        }
+                    }
+                }
+                return _userTokenInfo;
+            }
+            else
+            {
+                if (_appTokenInfo == null)
+                {
+                    LoadTokenFile();
+                    if (_appTokenInfo == null)
+                    {
+                        RefreshToken();
+                        if (_appTokenInfo == null)
+                        {
+                            throw new ServerUnreachable();
+                        }
+                    }
+                }
+                return _appTokenInfo;
+            }
+        }
         RestRequest CreateRequest(AnatoliTokenInfo tokenInfo, string requestUrl, HttpMethod method, params Tuple<string, string>[] parameters)
         {
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
             request.AddHeader("Accept", "application/json");
-            foreach (var item in parameters)
+            if (parameters != null)
             {
-                Parameter p = new Parameter();
-                p.Name = item.Item1;
-                p.Value = item.Item2;
-                request.AddParameter(p);
+                foreach (var item in parameters)
+                {
+                    Parameter p = new Parameter();
+                    p.Name = item.Item1;
+                    p.Value = item.Item2;
+                    request.AddParameter(p);
+                }
             }
             return request;
         }
@@ -127,12 +239,15 @@ namespace Anatoli.Framework.AnatoliBase
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
             request.AddHeader("Accept", "application/json");
-            foreach (var item in parameters)
+            if (parameters != null)
             {
-                Parameter p = new Parameter();
-                p.Name = item.Item1;
-                p.Value = item.Item2;
-                request.AddParameter(p);
+                foreach (var item in parameters)
+                {
+                    Parameter p = new Parameter();
+                    p.Name = item.Item1;
+                    p.Value = item.Item2;
+                    request.AddParameter(p);
+                }
             }
             request.AddJsonBody(obj);
             return request;
@@ -177,6 +292,47 @@ namespace Anatoli.Framework.AnatoliBase
                 throw e;
             }
         }
+
+        public void RefreshToken(TokenRefreshParameters parameters = null)
+        {
+            var tclient = new Thinktecture.IdentityModel.Client.OAuth2Client(new Uri(Configuration.WebService.PortalAddress + Configuration.WebService.OAuthTokenUrl));
+            try
+            {
+                tclient.Timeout = new TimeSpan(0, 0, 30);
+                var result = tclient.RequestResourceOwnerPasswordAsync(Configuration.AppMobileAppInfo.UserName, Configuration.AppMobileAppInfo.Password, Configuration.AppMobileAppInfo.Scope);
+
+                while (!result.IsCompleted)
+                {
+
+                }
+                var oauthresult = result.Result;
+                if (oauthresult.AccessToken == null)
+                    throw new TokenException();
+                _appTokenInfo = new AnatoliTokenInfo();
+                _appTokenInfo.AccessToken = oauthresult.AccessToken;
+                _appTokenInfo.ExpiresIn = oauthresult.ExpiresIn;
+
+                if (parameters != null)
+                {
+                    result = tclient.RequestResourceOwnerPasswordAsync(parameters.UserName, parameters.Password, parameters.Scope);
+                    while (!result.IsCompleted)
+                    {
+                    }
+                    oauthresult = result.Result;
+                    if (oauthresult.AccessToken == null)
+                        throw new TokenException();
+                    _userTokenInfo = new AnatoliTokenInfo();
+                    _userTokenInfo.AccessToken = oauthresult.AccessToken;
+                    _userTokenInfo.ExpiresIn = oauthresult.ExpiresIn;
+                }
+
+                SaveTokenFile();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         public async Task<Result> SendPostRequestAsync<Result>(TokenType tokenType, string requestUri, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
@@ -213,7 +369,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
             RestRequest request;
-            var token = GetTokenAsync(tokenType).Result;
+            var token = GetToken(tokenType);
             request = CreateRequest(token, requestUri, HttpMethod.Get, parameters);
             var response = ExecRequest<Result>(client, request);
             return response;
@@ -223,17 +379,37 @@ namespace Anatoli.Framework.AnatoliBase
             client.IgnoreResponseStatusCode = true;
             var respone = await client.Execute(request);
             JsonDeserializer deserializer = new JsonDeserializer();
-            var result = deserializer.Deserialize<Result>(respone);
-            return result;
+            try
+            {
+                var result = deserializer.Deserialize<Result>(respone);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
+            }
         }
         Result ExecRequest<Result>(RestClient client, RestRequest request)
         {
             client.IgnoreResponseStatusCode = true;
             var respone = client.Execute(request);
+            while (!respone.IsCompleted)
+            {
+
+            }
             JsonDeserializer deserializer = new JsonDeserializer();
-            var result = deserializer.Deserialize<Result>(respone.Result);
-            return result;
+            try
+            {
+                var result = deserializer.Deserialize<Result>(respone.Result);
+                string aa = Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length), e);
+            }
         }
+
     }
     public class AnatoliMetaInfo
     {
@@ -271,5 +447,9 @@ namespace Anatoli.Framework.AnatoliBase
     public class TokenException : Exception
     {
 
+    }
+    public class AnatoliWebClientException : Exception
+    {
+        public AnatoliWebClientException(string message, Exception ex) : base(message, ex) { }
     }
 }

@@ -42,7 +42,9 @@
   <string name="AreYouSure">آیا اطمینان دارید؟</string>
   <string name="Yes">آره</string>
   <string name="No">بی خیال !</string>
-  <string name="Updating">بروزرسانی</string>
+  <string name="Updating">در حال بروزرسانی</string>
+  <string name="Update">بروزرسانی</string>
+  <string name="Error">خطا</string>
   
   <string name="Open">باز است !</string>
   <string name="Close">بسته است !</string>

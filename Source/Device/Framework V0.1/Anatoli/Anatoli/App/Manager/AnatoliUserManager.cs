@@ -114,6 +114,5 @@ namespace Anatoli.App.Manager
             }
         }
 
-
     }
 }

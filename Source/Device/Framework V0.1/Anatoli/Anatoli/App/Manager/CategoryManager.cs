@@ -96,5 +96,6 @@ namespace Anatoli.App.Manager
                     return new CategoryInfoModel(0, -1, 1, "همه محصولات");
             }
         }
+
     }
 }

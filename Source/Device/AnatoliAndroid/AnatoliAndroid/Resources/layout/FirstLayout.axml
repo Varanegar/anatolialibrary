@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <ScrollView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView1">
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/relativeLayout1">
+            <ImageView
+                android:src="@android:drawable/progress_indeterminate_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/slideShowImageView"
+                android:scaleType="centerCrop" />
+            <GridLayout
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gridLayout1"
+                android:layout_below="@id/slideShowImageView"
+                android:rowCount="9"
+                android:columnCount="2"
+                android:layout_margin="25dp">
+                <ImageView
+                    android:src="@drawable/i1"
+                    android:layout_height="150dp"
+                    android:layout_width="150dp" />
+                <ImageView
+                    android:src="@drawable/i2"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i3"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i4"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i5"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i6"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i7"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i8"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i9"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i10"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i11"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i12"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i13"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i14"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i15"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i16"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:src="@drawable/i17"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <ImageView
+                    android:src="@drawable/i18"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right" />
+            </GridLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
