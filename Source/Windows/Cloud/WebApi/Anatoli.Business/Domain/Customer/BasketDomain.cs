@@ -48,6 +48,14 @@ namespace Anatoli.Business.Domain
 
             return Proxy.Convert(baskets.ToList()); ;
         }
+
+        public async Task<List<BasketViewModel>> GetBasketByBasketId(string basketId)
+        {
+            Guid basketGuid = Guid.Parse(basketId);
+            var baskets = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Id == basketGuid);
+
+            return Proxy.Convert(baskets.ToList());
+        }
         public async Task<List<BasketViewModel>> GetBasketByCustomerId(string customerId)
         {
             Guid  customerGuid = Guid.Parse(customerId);
@@ -111,9 +119,14 @@ namespace Anatoli.Business.Domain
 
                 baskets.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(product);
+                    if (item.Id != BasketViewModel.CheckOutBasketTypeId &&
+                        item.Id != BasketViewModel.FavoriteBasketTypeId &&
+                        item.Id != BasketViewModel.IncompleteBasketTypeId)
+                    {
+                        var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+
+                        Repository.DbContext.Baskets.Remove(product);
+                    }
                 });
 
                 Repository.SaveChangesAsync();

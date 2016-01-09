@@ -55,11 +55,6 @@ namespace Anatoli.Business.Domain
         {
             Guid customerGuid = Guid.Parse(customerId);
             var data = await Repository.FindAllAsync(p => p.CustomerId == customerGuid);
-            foreach(var item  in data.ToList())
-            {
-                var detailData = await LineItemRepository.FindAllAsync(p => p.IncompletePurchaseOrderId == item.Id);
-                item.IncompletePurchaseOrderLineItems = detailData.ToList();
-            }
             
             return Proxy.Convert(data.ToList()); ;
         }

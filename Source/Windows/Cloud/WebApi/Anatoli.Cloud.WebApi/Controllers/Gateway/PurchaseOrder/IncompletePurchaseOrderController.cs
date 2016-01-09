@@ -57,6 +57,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "User")]
+        [Route("lineitem/change")]
+        public async Task<IHttpActionResult> ChangeIncompletePurchaseOrderItem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
+            await basketDomain.ChangeAsync(data);
+            return Ok();
+        }
+
+        [Authorize(Roles = "User")]
         [Route("lineitem/delete")]
         [HttpPost]
         public async Task<IHttpActionResult> DeleteIncompletePurchaseOrderitem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)

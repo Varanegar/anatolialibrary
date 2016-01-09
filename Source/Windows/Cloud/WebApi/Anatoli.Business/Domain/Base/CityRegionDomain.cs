@@ -58,6 +58,8 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var cityRegions = Proxy.ReverseConvert(cityRegnioViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
@@ -95,6 +97,11 @@ namespace Anatoli.Business.Domain
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
+            }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + cityRegnioViewModels.Count);
             }
         }
 

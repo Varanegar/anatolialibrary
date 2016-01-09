@@ -84,6 +84,8 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var storeActiveOnhands = Proxy.ReverseConvert(StoreActiveOnhandViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
@@ -116,6 +118,11 @@ namespace Anatoli.Business.Domain
 
                 log.Error("PublishAsync", ex);
                 throw ex;
+            }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + StoreActiveOnhandViewModels.Count);
             }
         }
         public async Task Delete(List<StoreActiveOnhandViewModel> storeCalendarViewModels)

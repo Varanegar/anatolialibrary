@@ -42,7 +42,7 @@ namespace Anatoli.Business.Proxy.Concretes
                     Transferee = data.Transferee,
                     PaymentTypeId = data.PaymentTypeId,
                     CustomerId = data.CustomerId,
-                    LineItems = (data.IncompletePurchaseOrderLineItems == null) ? null : IncompletePurchaseOrderLineItemProxy.Convert(data.IncompletePurchaseOrderLineItems.ToList())
+                    LineItems = IncompletePurchaseOrderLineItemProxy.Convert(data.IncompletePurchaseOrderLineItems.ToList())
                 };
         }
 

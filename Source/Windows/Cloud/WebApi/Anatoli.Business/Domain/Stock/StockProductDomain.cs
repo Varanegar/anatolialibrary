@@ -47,6 +47,14 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
+        public async Task<List<StockProductViewModel>> GetAllByStockId(string stockId)
+        {
+            Guid stockGuid = Guid.Parse(stockId);
+            var dataList = await Repository.FindAllAsync(p => p.StockId == stockGuid);
+
+            return Proxy.Convert(dataList.ToList()); ;
+        }
+
         public async Task<List<StockProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);

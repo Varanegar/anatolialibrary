@@ -83,6 +83,40 @@ namespace Anatoli.Business.Domain
             }
         }
 
+        public async Task ChangeAsync(List<BasketItemViewModel> basketViewModels)
+        {
+            try
+            {
+                var basketItems = Proxy.ReverseConvert(basketViewModels);
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+
+                foreach (BasketItem item in basketItems)
+                {
+                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
+                    if (currentBasket != null)
+                    {
+                        currentBasket.ProductId = item.ProductId;
+                        currentBasket.Qty += item.Qty;
+                        currentBasket.LastUpdate = DateTime.Now;
+                        await Repository.UpdateAsync(currentBasket);
+                    }
+                    else
+                    {
+                        item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        await Repository.AddAsync(item);
+                    }
+                };
+                await Repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("ChangeAsync", ex);
+                throw ex;
+            }
+        }
+
         public async Task Delete(List<BasketItemViewModel> basketItemViewModels)
         {
             await Task.Factory.StartNew(() =>

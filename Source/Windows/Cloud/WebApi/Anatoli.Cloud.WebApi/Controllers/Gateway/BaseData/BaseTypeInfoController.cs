@@ -18,6 +18,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/basedata")]
     public class BaseTypeInfoController : BaseApiController
     {
+        public class RequestModel
+        {
+            public string privateOwnerId { get; set; }
+        }
+
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("basedatas")]
         public async Task<IHttpActionResult> GetBaseTypes(string privateOwnerId)
@@ -49,6 +54,31 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var baseTypeDomain = new BaseTypeDomain(owner);
             await baseTypeDomain.PublishAsync(data);
             return Ok();
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("reordercalctypes")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetReorderCalcTypes([FromBody] RequestModel data)
+        {
+            var owner = Guid.Parse(data.privateOwnerId);
+            var baseTypeDomain = new ReorderCalcTypeDomain(owner);
+            var result = await baseTypeDomain.GetAll();
+
+            result.Add(new ReorderCalcTypeViewModel { UniqueId = Guid.Empty, ReorderTypeName = string.Empty });
+            
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("stocktypes")]
+        public async Task<IHttpActionResult> GetStockTypes(string privateOwnerId)
+        {
+            var owner = Guid.Parse(privateOwnerId);
+            var baseTypeDomain = new StockTypeDomain(owner);
+            var result = await baseTypeDomain.GetAll();
+
+            return Ok(result);
         }
     }
 }

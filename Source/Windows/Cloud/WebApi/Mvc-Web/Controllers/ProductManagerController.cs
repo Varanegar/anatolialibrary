@@ -84,6 +84,7 @@ namespace Mvc_Web.Controllers
             public string ProductId { get; set; }
             public string StoreRequestId { get; set; }
             public string RequestReviewId { get; set; }
+            public string Term { get; set; }
         }
         #endregion
 
@@ -160,7 +161,7 @@ namespace Mvc_Web.Controllers
                     {
                         Id = Guid.NewGuid(),
                         Product = Products[new Random((int)DateTime.Now.Ticks).Next(0, 49)],
-                        Number=5,
+                        Number = 5,
                         RequestReview = RequestReviews[new Random((int)DateTime.Now.Ticks).Next(0, 1)],
                     });
             }
@@ -168,7 +169,7 @@ namespace Mvc_Web.Controllers
         #endregion
 
         #region Methods
-        [Authorize,HttpGet]
+        [HttpGet]
         public HttpResponseMessage GetStores()
         {
             return Request.CreateResponse(HttpStatusCode.OK, Stores);
@@ -182,10 +183,14 @@ namespace Mvc_Web.Controllers
         [HttpPost, Route("GetProducts")]
         public HttpResponseMessage GetProducts([FromBody] RequestModel data)
         {
+            var term = data != null ? data.Term ?? "" : "";
+
             var model = new List<Product>();
 
             if (!string.IsNullOrEmpty(data.StoreId))
-                model = Products.Where(p => p.Store.Id == Guid.Parse(data.StoreId)).ToList();
+                model = Products.Where(p => (p.Store.Id == Guid.Parse(data.StoreId)) &&
+                                            (term == "" || p.ProductName.Contains(data.Term)))
+                                .ToList();
 
             return Request.CreateResponse(HttpStatusCode.OK, model);
         }
@@ -223,15 +228,19 @@ namespace Mvc_Web.Controllers
         }
 
         [HttpPost, Route("GetStoreRequests")]
-        public HttpResponseMessage GetStoreRequests()
+        public HttpResponseMessage GetStoreRequests([FromBody] RequestModel data)
         {
+            var term = data != null ? data.Term ?? "" : "";
+
             return Request.CreateResponse(HttpStatusCode.OK, StoreRequests.Select(s => new
             {
                 s.Id,
                 s.RequestDate,
                 s.RequestNumber,
-                StoreName = s.Store.Name
-            }).ToList());
+                StoreName = s.Store.Name,
+                StoreId = s.Store.Id
+            }).Where(p => (term == "" || p.StoreName.Contains(data.Term)) || (term == "" || p.RequestNumber.Contains(data.Term)))
+              .ToList());
         }
 
         [HttpPost, Route("GetStoreRequestInfo")]

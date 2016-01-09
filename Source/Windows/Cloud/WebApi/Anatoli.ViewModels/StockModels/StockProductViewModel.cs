@@ -15,5 +15,10 @@ namespace Anatoli.ViewModels.StockModels
         public decimal MinQty { get; set; }
         public decimal ReorderLevel { get; set; }
         public decimal MaxQty { get; set; }
+        public string ProductName { get; set; }
+        public string ProductCode { get; set; }
+        public decimal QtyPerPack { get; set; }
+
+        public ReorderCalcTypeViewModel ReorderCalcTypeInfo { get; set; }
     }
 }
