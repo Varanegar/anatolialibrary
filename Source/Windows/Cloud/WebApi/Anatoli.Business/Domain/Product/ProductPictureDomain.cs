@@ -53,9 +53,9 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(productPictures.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ProductPictureViewModel> ProductPictureViewModels)
+        public async Task<List<ProductPictureViewModel>> PublishAsync(List<ProductPictureViewModel> dataViewModels)
         {
-            var productPictures = Proxy.ReverseConvert(ProductPictureViewModels);
+            var productPictures = Proxy.ReverseConvert(dataViewModels);
             var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
             productPictures.ForEach(item =>
@@ -77,13 +77,14 @@ namespace Anatoli.Business.Domain
             });
 
             await Repository.SaveChangesAsync();
+            return dataViewModels;
         }
 
-        public async Task Delete(List<ProductPictureViewModel> ProductPictureViewModels)
+        public async Task<List<ProductPictureViewModel>> Delete(List<ProductPictureViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var productPictures = Proxy.ReverseConvert(ProductPictureViewModels);
+                var productPictures = Proxy.ReverseConvert(dataViewModels);
 
                 productPictures.ForEach(item =>
                 {
@@ -94,6 +95,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public ProductPicture SetProductData(ProductPicture data, Product product, AnatoliDbContext context)

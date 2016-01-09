@@ -55,14 +55,19 @@ namespace Anatoli.Business.Proxy
         ///  Codesmell: this method could be optimized or replaced with IoC  in order to resolve proxy faster.
         /// </summary>
         /// <returns>IAnatoliProxy</returns>
-        public static IAnatoliProxy<TSource, TOut> Create()
+        public static IAnatoliProxy<TSource, TOut> Create(string FullName = "")
         {
             var interfaceType = typeof(IAnatoliProxy<TSource, TOut>);
 
-            object proxy = AppDomain.CurrentDomain.GetAssemblies()
+            var list = AppDomain.CurrentDomain.GetAssemblies()
                                .SelectMany(x => x.GetTypes())
                                .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-                               .Select(x => Activator.CreateInstance(x)).First();
+                               .Select(x => Activator.CreateInstance(x));
+            object proxy;
+            if (FullName != null && FullName != "")
+                proxy = list.First(p => p.GetType().FullName == FullName);
+            else
+                proxy = list.First();
 
             return (IAnatoliProxy<TSource, TOut>)proxy;
         }

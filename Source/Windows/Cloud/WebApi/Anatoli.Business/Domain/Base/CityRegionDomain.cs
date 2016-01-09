@@ -54,13 +54,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(cityRegions.ToList()); ;
         }
 
-        public async Task PublishAsync(List<CityRegionViewModel> cityRegnioViewModels)
+        public async Task<List<CityRegionViewModel>> PublishAsync(List<CityRegionViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var cityRegions = Proxy.ReverseConvert(cityRegnioViewModels);
+                var cityRegions = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (CityRegion item in cityRegions)
@@ -101,15 +101,17 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + cityRegnioViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<CityRegionViewModel> cityRegnioViewModels)
+        public async Task<List<CityRegionViewModel>> Delete(List<CityRegionViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var cityRegions = Proxy.ReverseConvert(cityRegnioViewModels);
+                var cityRegions = Proxy.ReverseConvert(dataViewModels);
 
                 cityRegions.ForEach(item =>
                 {
@@ -120,6 +122,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
 

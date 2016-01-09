@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public ProductGroupConfig()
         {
             this.HasMany<ProductGroup>(pg => pg.ProductGroup1)
-                .WithOptional(pg => pg.ProductGroup2);
+                .WithOptional(pg => pg.ProductGroup2)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Product>(pg => pg.Products)
                 .WithOptional(pg => pg.ProductGroup)

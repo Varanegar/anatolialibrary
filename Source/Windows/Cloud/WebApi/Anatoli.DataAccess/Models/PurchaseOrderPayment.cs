@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public class PurchaseOrderPayment : BaseModel
     {
@@ -15,6 +16,7 @@ namespace Anatoli.DataAccess.Models
         public long PayTypeValueId { get; set; }
         public byte InAppPayment { get; set; }
         public DateTime PayDate { get; set; }
+        [StringLength(10)]
         public string PayPDate { get; set; }
         public TimeSpan PayTime { get; set; }
     

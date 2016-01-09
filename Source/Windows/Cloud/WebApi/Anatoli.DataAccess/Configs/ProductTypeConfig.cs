@@ -11,12 +11,15 @@ namespace Anatoli.DataAccess.Configs
         public ProductTypeConfig()
         {
             this.HasMany<Product>(pp => pp.Products)
-                .WithOptional(p => p.ProductType);
+                .WithOptional(p => p.ProductType)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
                 .WithRequired(p => p.ProductType)
                 .WillCascadeOnDelete(false);
+
             this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
-                .WithRequired(p => p.ProductType)
+                .WithOptional(p => p.ProductType)
                 .WillCascadeOnDelete(false);
         }
     }

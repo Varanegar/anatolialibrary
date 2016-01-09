@@ -53,11 +53,11 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(charValues.ToList()); ;
         }
 
-        public async Task PublishAsync(List<CharValueViewModel> charViewModels)
+        public async Task<List<CharValueViewModel>> PublishAsync(List<CharValueViewModel> dataViewModels)
         {
             try
             {
-                var charValues = Proxy.ReverseConvert(charViewModels);
+                var charValues = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 charValues.ForEach(item =>
@@ -93,13 +93,15 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<CharValueViewModel> charViewModels)
+        public async Task<List<CharValueViewModel>> Delete(List<CharValueViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var charValues = Proxy.ReverseConvert(charViewModels);
+                var charValues = Proxy.ReverseConvert(dataViewModels);
 
                 charValues.ForEach(item =>
                 {
@@ -110,6 +112,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

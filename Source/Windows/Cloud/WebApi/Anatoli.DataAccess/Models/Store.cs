@@ -2,12 +2,15 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Store : BaseModel
     {
         //public Guid StoreId { get; set; }
         public int StoreCode { get; set; }
+        [StringLength(100)]
         public string StoreName { get; set; }
+        [StringLength(200)]
         public string Address { get; set; }
         public long Lat { get; set; }
         public long Lng { get; set; }

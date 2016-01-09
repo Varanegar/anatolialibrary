@@ -16,7 +16,8 @@ namespace Anatoli.DataAccess.Configs
             this.HasOptional<Principal>(p => p.Accept3By);
             
             this.HasMany<StockProductRequestProduct>(pp => pp.StockProductRequestProducts)
-                .WithRequired(p => p.StockProductRequest);
+                .WithRequired(p => p.StockProductRequest)
+                .WillCascadeOnDelete(true);
         }
     }
 }

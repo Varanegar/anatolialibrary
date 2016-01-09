@@ -53,13 +53,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(productGroups.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ProductGroupViewModel> ProductGroupViewModels)
+        public async Task<List<ProductGroupViewModel>> PublishAsync(List<ProductGroupViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
+                var productGroups = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentGroupList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
@@ -102,25 +102,27 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + ProductGroupViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<ProductGroupViewModel> ProductGroupViewModels)
+        public async Task<List<ProductGroupViewModel>> Delete(List<ProductGroupViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var productGroups = Proxy.ReverseConvert(ProductGroupViewModels);
+                var productGroups = Proxy.ReverseConvert(dataViewModels);
 
                 productGroups.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.ProductGroups.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

@@ -61,13 +61,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(storeCalendars.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StoreCalendarViewModel> StoreCalendarViewModels)
+        public async Task<List<StoreCalendarViewModel>> PublishAsync(List<StoreCalendarViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var storeCalendars = Proxy.ReverseConvert(StoreCalendarViewModels);
+                var storeCalendars = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 storeCalendars.ForEach(item =>
@@ -105,25 +105,27 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + StoreCalendarViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StoreCalendarViewModel> storeCalendarViewModels)
+        public async Task<List<StoreCalendarViewModel>> Delete(List<StoreCalendarViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var storeCalendars = Proxy.ReverseConvert(storeCalendarViewModels);
+                var storeCalendars = Proxy.ReverseConvert(dataViewModels);
 
                 storeCalendars.ForEach(item =>
                 {
                     var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.StoreCalendars.Remove(product);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

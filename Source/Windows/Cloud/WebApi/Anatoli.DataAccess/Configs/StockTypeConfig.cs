@@ -11,7 +11,9 @@ namespace Anatoli.DataAccess.Configs
         public StockTypeConfig()
         {
             this.HasMany<Stock>(pp => pp.Products)
-                .WithOptional(p => p.StockType);
+                .WithOptional(p => p.StockType)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
                 .WithRequired(p => p.StockType)
                 .WillCascadeOnDelete(false);

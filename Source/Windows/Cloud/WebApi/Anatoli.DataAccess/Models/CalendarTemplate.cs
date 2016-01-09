@@ -1,12 +1,13 @@
 namespace Anatoli.DataAccess.Models
 {
     using System;
-    using System.Collections.Generic; 
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations; 
        
     public class CalendarTemplate : BaseModel
-    {       
+    {
+        [StringLength(200)]
         public string CalendarTemplateName { get; set; }
-        //public Guid CalendarTemplateId { get; set; }
     
         public virtual ICollection<CalendarTemplateHoliday> CalendarTemplateHolidays { get; set; }
         public virtual ICollection<CalendarTemplateOpenTime> CalendarTemplateOpenTimes { get; set; }

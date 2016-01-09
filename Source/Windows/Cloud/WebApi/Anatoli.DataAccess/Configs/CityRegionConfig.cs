@@ -12,26 +12,32 @@ namespace Anatoli.DataAccess.Configs
         {
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithOptional(p => p.RegionInfo)
-                .HasForeignKey( p => p.RegionInfoId);
+                .HasForeignKey(p => p.RegionInfoId)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithOptional(p => p.RegionLevel1)
-                .HasForeignKey(P => P.RegionLevel1Id);
+                .HasForeignKey(P => P.RegionLevel1Id)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithOptional(p => p.RegionLevel2)
-                .HasForeignKey(P => P.RegionLevel2Id);
+                .HasForeignKey(P => P.RegionLevel2Id)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithOptional(p => p.RegionLevel3)
-                .HasForeignKey(P => P.RegionLevel3Id);
+                .HasForeignKey(P => P.RegionLevel3Id)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Customer>(pp => pp.CustomerInfos)
                 .WithOptional(p => p.RegionLevel4)
-                .HasForeignKey(P => P.RegionLevel4Id);
+                .HasForeignKey(P => P.RegionLevel4Id)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
-               .WithRequired(svr => svr.CityRegion);
+               .WithRequired(svr => svr.CityRegion)
+                .WillCascadeOnDelete(false);
 
         }
     }

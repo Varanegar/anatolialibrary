@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VNAppServer.Anatoli.PMC.Helpers
+namespace VNAppServer.Anatoli.Common
 {
-    public static class BaseInfo
+    public static class UriInfo
     {
         public static readonly string SaveSupplierURI = "/api/gateway/base/supplier/save";
         public static readonly string SaveManufactureURI = "/api/gateway/base/manufacture/save";
@@ -23,7 +23,16 @@ namespace VNAppServer.Anatoli.PMC.Helpers
         public static readonly string SaveFiscalYearURI = "/api/gateway/fiscalyear/save";
         public static readonly string SaveStockOnHandURI = "/api/gateway/stock/stockOnhand/save";
         public static readonly string SaveStockProductURI = "/api/gateway/stock/stockproduct/save";
+        public static readonly string SaveStockProductRequestURI = "/api/gateway/stock/stockproduct/save";
         public static readonly string SaveMainProductGroupURI = "/api/gateway/product/mainproductgroups/save";
+
+        public static readonly string GetProductRequestRulesURI = "/api/gateway/stockproductrequest/rules/valid";
+        public static readonly string GetProductsURI = "/api/gateway/product/products";
+        public static readonly string GetMainProductGroupsURI = "/api/gateway/product/mainproductgroups";
+        public static readonly string GetStocksURI = "/api/gateway/stock/stocks";
+        public static readonly string GetStocksCompleteURI = "/api/gateway/stock/stocks/complete";
+        public static readonly string GetStockRequestTypesURI = "/api/gateway/stock/stockrequesttypes";
+
     }
 }
     

@@ -54,7 +54,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockProductRequestTypeViewModel> dataViewModels)
+        public async Task<List<StockProductRequestTypeViewModel>> PublishAsync(List<StockProductRequestTypeViewModel> dataViewModels)
         {
             try
             {
@@ -67,12 +67,12 @@ namespace Anatoli.Business.Domain
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
-                        //if (currentData.StockProductRequestTypeName != item.StockProductRequestTypeName)
-                        //{
-                        //    currentData.StockProductRequestTypeName = item.StockProductRequestTypeName;
-                        //    currentData.LastUpdate = DateTime.Now;
-                        //    Repository.UpdateAsync(currentData);
-                        //}
+                        if (currentData.StockProductRequestTypeName != item.StockProductRequestTypeName)
+                        {
+                            currentData.StockProductRequestTypeName = item.StockProductRequestTypeName;
+                            currentData.LastUpdate = DateTime.Now;
+                            Repository.UpdateAsync(currentData);
+                        }
                     }
                     else
                     {
@@ -88,9 +88,10 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StockProductRequestTypeViewModel> dataViewModels)
+        public async Task<List<StockProductRequestTypeViewModel>> Delete(List<StockProductRequestTypeViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -100,11 +101,12 @@ namespace Anatoli.Business.Domain
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(data);
+                    Repository.DbContext.StockProductRequestTypes.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

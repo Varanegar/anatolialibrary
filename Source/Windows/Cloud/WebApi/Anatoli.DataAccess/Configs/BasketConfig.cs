@@ -15,7 +15,8 @@ namespace Anatoli.DataAccess.Configs
                 .WillCascadeOnDelete(true);
 
             this.HasMany<BasketNote>(bn => bn.BasketNotes)
-                .WithRequired(c => c.Basket);
+                .WithRequired(c => c.Basket)
+                .WillCascadeOnDelete(true);
         }
     }
 }

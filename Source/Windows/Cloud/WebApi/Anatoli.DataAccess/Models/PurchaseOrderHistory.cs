@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public class PurchaseOrderHistory : BaseModel
     {
@@ -9,6 +10,7 @@ namespace Anatoli.DataAccess.Models
         public Nullable<long> PurchaseOrderStatusValueId { get; set; }
         //public int PurchaseOrderId { get; set; }
         public Nullable<DateTime> StatusDate { get; set; }
+        [StringLength(10)]
         public string StatusPDate { get; set; }
         public Nullable<TimeSpan> StatusTime { get; set; }
         public Nullable<int> PurchaseOrderStatusDataId { get; set; }

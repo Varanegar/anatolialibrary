@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public ManufactureConfig()
         {
             this.HasMany<Product>(pg => pg.ProductManufactures)
-                .WithOptional(pg => pg.Manufacture);
+                .WithOptional(pg => pg.Manufacture)
+                .WillCascadeOnDelete(false);
         }
     }
 }

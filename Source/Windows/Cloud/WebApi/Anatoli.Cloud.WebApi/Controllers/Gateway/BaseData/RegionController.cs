@@ -10,39 +10,63 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/base/region")]
-    public class RegionController : ApiController
+    public class RegionController : BaseApiController
     {
         [Authorize(Roles = "AuthorizedApp")]
         [Route("cityregions")]
         public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var cityRegionDomain = new CityRegionDomain(owner);
-            var result = await cityRegionDomain.GetAll();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var cityRegionDomain = new CityRegionDomain(owner);
+                var result = await cityRegionDomain.GetAll();
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("cityregions/after")]
         public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId, string dateAfter)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var cityRegionDomain = new CityRegionDomain(owner);
-            var validDate = DateTime.Parse(dateAfter);
-            var result = await cityRegionDomain.GetAllChangedAfter(validDate);
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var cityRegionDomain = new CityRegionDomain(owner);
+                var validDate = DateTime.Parse(dateAfter);
+                var result = await cityRegionDomain.GetAllChangedAfter(validDate);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var cityRegionDomain = new CityRegionDomain(owner);
-            await cityRegionDomain.PublishAsync(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var cityRegionDomain = new CityRegionDomain(owner);
+                var result = await cityRegionDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }        
 
     }

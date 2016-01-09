@@ -68,13 +68,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(storePriceLists.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StoreActivePriceListViewModel> StoreActivePriceListViewModels)
+        public async Task<List<StoreActivePriceListViewModel>> PublishAsync(List<StoreActivePriceListViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var storePriceLists = Proxy.ReverseConvert(StoreActivePriceListViewModels);
+                var storePriceLists = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 var currentStoreActivePriceLists = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -109,25 +109,29 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + StoreActivePriceListViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StoreActivePriceListViewModel> storeCalendarViewModels)
+        public async Task<List<StoreActivePriceListViewModel>> Delete(List<StoreActivePriceListViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var storePriceLists = Proxy.ReverseConvert(storeCalendarViewModels);
+                var storePriceLists = Proxy.ReverseConvert(dataViewModels);
 
                 storePriceLists.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.StoreActivePriceLists.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+
+            return dataViewModels;
         }
         #endregion
     }

@@ -41,26 +41,26 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<ManufactureViewModel>> GetAll()
         {
-            var manufactures = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var dataLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
-            return Proxy.Convert(manufactures.ToList()); ;
+            return Proxy.Convert(dataLists.ToList()); ;
         }
 
         public async Task<List<ManufactureViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
-            var manufactures = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
+            var dataLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
 
-            return Proxy.Convert(manufactures.ToList()); ;
+            return Proxy.Convert(dataLists.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ManufactureViewModel> manufactureViewModels)
+        public async Task<List<ManufactureViewModel>> PublishAsync(List<ManufactureViewModel> dataViewModels)
         {
             try
             {
-                var manufactures = Proxy.ReverseConvert(manufactureViewModels);
+                var dataLists = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                manufactures.ForEach(item =>
+                dataLists.ForEach(item =>
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentManufacture = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
@@ -87,23 +87,25 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<ManufactureViewModel> manufactureViewModels)
+        public async Task<List<ManufactureViewModel>> Delete(List<ManufactureViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var manufactures = Proxy.ReverseConvert(manufactureViewModels);
+                var dataLists = Proxy.ReverseConvert(dataViewModels);
 
-                manufactures.ForEach(item =>
+                dataLists.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.Manufactures.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

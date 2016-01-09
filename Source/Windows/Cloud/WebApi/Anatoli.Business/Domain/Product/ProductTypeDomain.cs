@@ -54,7 +54,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ProductTypeViewModel> dataViewModels)
+        public async Task<List<ProductTypeViewModel>> PublishAsync(List<ProductTypeViewModel> dataViewModels)
         {
             try
             {
@@ -88,9 +88,10 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<ProductTypeViewModel> dataViewModels)
+        public async Task<List<ProductTypeViewModel>> Delete(List<ProductTypeViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -100,11 +101,12 @@ namespace Anatoli.Business.Domain
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(data);
+                    Repository.DbContext.ProductType.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

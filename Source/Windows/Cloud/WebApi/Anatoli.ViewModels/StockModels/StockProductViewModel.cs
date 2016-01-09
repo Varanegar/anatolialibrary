@@ -18,7 +18,9 @@ namespace Anatoli.ViewModels.StockModels
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
         public decimal QtyPerPack { get; set; }
-
+        public decimal CurrentOnHand { get; set; }
         public ReorderCalcTypeViewModel ReorderCalcTypeInfo { get; set; }
+        public Guid? StockProductRequestSupplyTypeId { get; set; }
+
     }
 }

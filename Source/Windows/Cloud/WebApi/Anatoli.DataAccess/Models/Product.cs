@@ -2,17 +2,23 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public class Product : BaseModel
     {
         public string ProductCode { get; set; }
+        [StringLength(200)]
         public string ProductName { get; set; }
+        [StringLength(200)]
         public string StoreProductName { get; set; }
         public Nullable<decimal> PackVolume { get; set; }
         public Nullable<decimal> PackWeight { get; set; }
-        public decimal? QtyPerPack { get; set; }
+        [DefaultValue(1)]
+        public decimal QtyPerPack { get; set; }
         public Nullable<long> TaxCategoryValueId { get; set; }
+        [StringLength(500)]
         public string Desctription { get; set; }
         [ForeignKey("ProductGroup")]
         public Nullable<Guid> ProductGroupId { get; set; }
@@ -21,7 +27,7 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("Manufacture")]
         public Nullable<Guid> ManufactureId { get; set; }
         [ForeignKey("MainSupplier")]
-        public Nullable<Guid> MainSuppliereId { get; set; }
+        public Nullable<Guid> MainSupplierId { get; set; }
         [ForeignKey("ProductType")]
         public Nullable<Guid> ProductTypeId { get; set; }
 

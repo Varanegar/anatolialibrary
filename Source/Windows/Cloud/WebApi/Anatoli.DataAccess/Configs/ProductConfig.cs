@@ -15,13 +15,16 @@ namespace Anatoli.DataAccess.Configs
                 .WithMany(m => m.Products);
             */
             this.HasMany<ProductPicture>(pp => pp.ProductPictures)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<StockProduct>(pp => pp.StockProducts)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<BasketItem>(pp => pp.BasketItems)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<IncompletePurchaseOrderLineItem>(pp => pp.IncompletePurchaseOrderLineItems)
                 .WithRequired(p => p.Product)
@@ -40,10 +43,6 @@ namespace Anatoli.DataAccess.Configs
                 .WillCascadeOnDelete(false);
 
             this.HasMany<StockActiveOnHand>(pp => pp.StockActiveOnHands)
-                .WithRequired(p => p.Product)
-                .WillCascadeOnDelete(false);
-
-            this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)
                 .WithRequired(p => p.Product)
                 .WillCascadeOnDelete(false);
 
@@ -79,7 +78,8 @@ namespace Anatoli.DataAccess.Configs
                 });
 
             this.HasMany<StoreActivePriceList>(sap => sap.StoreActivePriceLists)
-                .WithRequired(p => p.Product);
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
 
         }
     }

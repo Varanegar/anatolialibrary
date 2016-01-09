@@ -180,6 +180,7 @@
     <Compile Include="Controllers\Gateway\BaseData\BaseTypeInfoController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\IncompletePurchaseOrderController.cs" />
     <Compile Include="Controllers\Gateway\PurchaseOrder\PurchaseOrderController.cs" />
+    <Compile Include="Controllers\Gateway\Stock\StockProductRequestController.cs" />
     <Compile Include="Controllers\Gateway\Stock\StockController.cs" />
     <Compile Include="Controllers\Gateway\Store\StoreController.cs" />
     <Compile Include="Controllers\Base\RolesController.cs" />

@@ -80,13 +80,13 @@ namespace Anatoli.Business.Domain
             return returnData;
         }
 
-        public async Task PublishAsync(List<StoreActiveOnhandViewModel> StoreActiveOnhandViewModels)
+        public async Task<List<StoreActiveOnhandViewModel>> PublishAsync(List<StoreActiveOnhandViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var storeActiveOnhands = Proxy.ReverseConvert(StoreActiveOnhandViewModels);
+                var storeActiveOnhands = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 var currentStoreAciveOnHands = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -122,24 +122,27 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + StoreActiveOnhandViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
         }
-        public async Task Delete(List<StoreActiveOnhandViewModel> storeCalendarViewModels)
+        public async Task<List<StoreActiveOnhandViewModel>> Delete(List<StoreActiveOnhandViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var storeActiveOnhands = Proxy.ReverseConvert(storeCalendarViewModels);
+                var storeActiveOnhands = Proxy.ReverseConvert(dataViewModels);
 
                 storeActiveOnhands.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.StoreActiveOnhands.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+
+            return dataViewModels;
         }
         #endregion
 

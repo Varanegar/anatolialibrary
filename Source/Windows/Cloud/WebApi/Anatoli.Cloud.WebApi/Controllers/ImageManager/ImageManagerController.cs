@@ -18,7 +18,7 @@ using Anatoli.Business.Domain;
 namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 {
     [RoutePrefix("api/imageManager")]
-    public class ImageManagerController : ApiController
+    public class ImageManagerController : BaseApiController
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
@@ -40,23 +40,39 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         [Route("images")]
         public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var productDomain = new ItemImageDomain(owner);
-            var result = await productDomain.GetAll();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var productDomain = new ItemImageDomain(owner);
+                var result = await productDomain.GetAll();
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images/after")]
         public async Task<IHttpActionResult> GetProducts(string privateOwnerId, string dateAfter)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var productDomain = new ItemImageDomain(owner);
-            var validDate = DateTime.Parse(dateAfter);
-            var result = await productDomain.GetAllChangedAfter(validDate);
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var productDomain = new ItemImageDomain(owner);
+                var validDate = DateTime.Parse(dateAfter);
+                var result = await productDomain.GetAllChangedAfter(validDate);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [HttpPost, Route("Save")]
@@ -102,10 +118,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return "Invalid Operation!";
                 //todo: log error!
             }
         }
+
         //[HttpPost, Route("Remove")]
         //public async Task<string> RemoveImages(string[] fileNames, string imageType)
         //{

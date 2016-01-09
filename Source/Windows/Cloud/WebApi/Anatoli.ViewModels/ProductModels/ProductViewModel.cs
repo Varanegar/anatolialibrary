@@ -13,16 +13,16 @@ namespace Anatoli.ViewModels.ProductModels
         public decimal? PackWeight { get; set; }
         public decimal QtyPerPack { get; set; }
         public decimal RateValue { get; set; }
-        public string SmallPicURL { get; set; }
-        public string LargePicURL { get; set; }
         public string Desctription { get; set; }
 
         public Guid PackUnitId { get; set; }
-        public Guid ProductTypeId { get; set; }
+        public Guid? ProductTypeId { get; set; }
         public Guid TaxCategoryId { get; set; }
 
         public List<SupplierViewModel> Suppliers { get; set; }
         public string MainProductGroupIdString { get; set; }
+        public string MainSupplierId { get; set; }
+
         public string ProductGroupIdString { get; set; }
         public string ManufactureIdString { get; set; }
 
