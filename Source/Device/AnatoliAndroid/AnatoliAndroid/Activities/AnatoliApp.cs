@@ -17,6 +17,7 @@ using AnatoliAndroid.Fragments;
 using Anatoli.App.Manager;
 using Android.Locations;
 using Android.Views.InputMethods;
+using Anatoli.App;
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -328,43 +329,64 @@ namespace AnatoliAndroid.Activities
                         _productsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
-                        _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.StoresList:
-                        _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.Login:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         var transaction = Activity.FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
                         loginFragment.Show(transaction, "shipping_dialog");
-                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.MainMenu:
                         AnatoliApp.GetInstance().RefreshMenuItems();
                         break;
                     case DrawerMainItem.DrawerMainItems.Favorits:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _favoritsFragment = new FavoritsListFragment();
                         AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
-                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Avatar:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _profileFragment = new ProfileFragment();
                         AnatoliApp.GetInstance().SetFragment<ProfileFragment>(_profileFragment, "profile_fragment");
-                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Messages:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _messagesFragment = new MessagesListFragment();
                         AnatoliApp.GetInstance().SetFragment<MessagesListFragment>(_messagesFragment, "messages_fragment");
-                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     case DrawerMainItem.DrawerMainItems.Orders:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _ordersFragment = new OrdersListFragment();
                         AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(_ordersFragment, "orders_fragment");
+                        break;
+                    case DrawerMainItem.DrawerMainItems.Update:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
+                        try
+                        {
+                            pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                            pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                            pDialog.Show();
+                            await SyncManager.SyncDatabase();
+                            pDialog.Dismiss();
+                        }
+                        catch (Exception ex)
+                        {
+                            pDialog.Dismiss();
+                            AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
+                            alert.SetMessage(ex.Message);
+                            alert.SetTitle(Resource.String.Error);
+                            alert.Show();
+                        }
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         bool result = await AnatoliUserManager.LogoutAsync();
                         if (result)
                         {
@@ -372,7 +394,6 @@ namespace AnatoliAndroid.Activities
                             AnatoliApp.GetInstance().RefreshMenuItems();
                             AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         }
-                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         break;
                     default:
                         break;
@@ -588,6 +609,12 @@ namespace AnatoliAndroid.Activities
             //    logoutMenuEntry.ImageResId = Resource.Drawable.Exit;
             //    mainItems.Add(logoutMenuEntry);
             //}
+
+            var updateMenuEntry = new DrawerMainItem();
+            updateMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Update;
+            updateMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Update);
+            mainItems.Add(updateMenuEntry);
+
 
             AnatoliMenuItems = mainItems;
             _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);

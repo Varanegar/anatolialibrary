@@ -39,6 +39,7 @@ namespace Anatoli.Framework.AnatoliBase
             {
                 public static readonly string StoreView = "store_view";
                 public static readonly string StoresView = "/api/gateway/store/stores/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string PricesView = "/api/gateway/store/storepricelist/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Users
             {
@@ -48,6 +49,7 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
                 public static readonly string ShoppingCard = "";
             }
+            public static readonly string CityRegion = "/api/gateway/base/region/cityregions/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
         }
     }
 }

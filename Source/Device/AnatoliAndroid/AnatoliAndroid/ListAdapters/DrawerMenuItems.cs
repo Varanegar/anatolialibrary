@@ -155,6 +155,7 @@ namespace AnatoliAndroid.ListAdapters
             public const int Messages = 9;
             public const int Orders = 10;
             public const int Avatar = 11;
+            public const int Update = 12;
         }
     }
 }

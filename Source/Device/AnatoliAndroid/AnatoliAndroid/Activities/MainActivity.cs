@@ -93,11 +93,6 @@ namespace AnatoliAndroid.Activities
             {
                 await StoreManager.GetDefaultAsync();
                 AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
-                //var list = await ProductManager.GetListOFProducts();
-                //if (list.Count > 0)
-                //{
-                //    Toast.MakeText(this, "count = " + list.Count, ToastLength.Short);
-                //}
             }
             catch (Exception e)
             {

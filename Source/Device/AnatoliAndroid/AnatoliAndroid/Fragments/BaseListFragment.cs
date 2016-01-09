@@ -64,7 +64,7 @@ namespace AnatoliAndroid.Fragments
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
-            
+
             if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
             {
                 AnatoliApp.GetInstance().HideMenuIcon();
@@ -116,7 +116,7 @@ namespace AnatoliAndroid.Fragments
                 parameters.Clear();
                 parameters.Add(p);
             }
-            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters), new RemoteQuery(GetWebServiceUri(), parameters));
+            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters),null);
         }
 
         protected abstract List<QueryParameter> CreateQueryParameters();
@@ -136,7 +136,7 @@ namespace AnatoliAndroid.Fragments
         {
             if (EmptyList != null)
             {
-                EmptyList.Invoke(this,new EventArgs());
+                EmptyList.Invoke(this, new EventArgs());
             }
         }
         public event EventHandler EmptyList;

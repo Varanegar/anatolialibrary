@@ -2745,17 +2745,17 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050036
 			public const int AreYouSure = 2131034166;
 			
-			// aapt resource value: 0x7f050043
-			public const int AuthenticationFailed = 2131034179;
+			// aapt resource value: 0x7f050045
+			public const int AuthenticationFailed = 2131034181;
 			
-			// aapt resource value: 0x7f050041
-			public const int Cancel = 2131034177;
+			// aapt resource value: 0x7f050043
+			public const int Cancel = 2131034179;
 			
 			// aapt resource value: 0x7f050031
 			public const int City = 2131034161;
 			
-			// aapt resource value: 0x7f05003b
-			public const int Close = 2131034171;
+			// aapt resource value: 0x7f05003d
+			public const int Close = 2131034173;
 			
 			// aapt resource value: 0x7f050016
 			public const int CloseDrawer = 2131034134;
@@ -2769,6 +2769,9 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050018
 			public const int EneterUserNamePass = 2131034136;
 			
+			// aapt resource value: 0x7f05003b
+			public const int Error = 2131034171;
+			
 			// aapt resource value: 0x7f05002b
 			public const int FirstName = 2131034155;
 			
@@ -2781,8 +2784,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050023
 			public const int ItemRemoved = 2131034147;
 			
-			// aapt resource value: 0x7f05003d
-			public const int KMeter = 2131034173;
+			// aapt resource value: 0x7f05003f
+			public const int KMeter = 2131034175;
 			
 			// aapt resource value: 0x7f05002c
 			public const int LastName = 2131034156;
@@ -2805,8 +2808,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f05001d
 			public const int Messages = 2131034141;
 			
-			// aapt resource value: 0x7f05003c
-			public const int Meter = 2131034172;
+			// aapt resource value: 0x7f05003e
+			public const int Meter = 2131034174;
 			
 			// aapt resource value: 0x7f05001a
 			public const int MyList = 2131034138;
@@ -2823,8 +2826,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f05002a
 			public const int Ok = 2131034154;
 			
-			// aapt resource value: 0x7f05003a
-			public const int Open = 2131034170;
+			// aapt resource value: 0x7f05003c
+			public const int Open = 2131034172;
 			
 			// aapt resource value: 0x7f050015
 			public const int OpenDrawer = 2131034133;
@@ -2835,8 +2838,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050029
 			public const int PleaseLogin = 2131034153;
 			
-			// aapt resource value: 0x7f05003f
-			public const int PleaseWait = 2131034175;
+			// aapt resource value: 0x7f050041
+			public const int PleaseWait = 2131034177;
 			
 			// aapt resource value: 0x7f050017
 			public const int Products = 2131034135;
@@ -2853,11 +2856,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050034
 			public const int Save = 2131034164;
 			
-			// aapt resource value: 0x7f050040
-			public const int SaveSuccess = 2131034176;
-			
 			// aapt resource value: 0x7f050042
-			public const int ServerUnreachable = 2131034178;
+			public const int SaveSuccess = 2131034178;
+			
+			// aapt resource value: 0x7f050044
+			public const int ServerUnreachable = 2131034180;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Tel = 2131034158;
@@ -2868,8 +2871,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050028
 			public const int TotalPrice = 2131034152;
 			
-			// aapt resource value: 0x7f05003e
-			public const int UnknownDistance = 2131034174;
+			// aapt resource value: 0x7f050040
+			public const int UnknownDistance = 2131034176;
+			
+			// aapt resource value: 0x7f05003a
+			public const int Update = 2131034170;
 			
 			// aapt resource value: 0x7f050039
 			public const int Updating = 2131034169;

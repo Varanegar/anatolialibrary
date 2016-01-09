@@ -43,11 +43,23 @@ namespace Anatoli.Framework.Manager
             {
                 throw new ArgumentNullException();
             }
-            _localP.Limit = _limit;
-            _remoteP.Limit = _limit;
+            if (_localP != null)
+            {
+                _localP.Limit = _limit;
+            }
+            if (_remoteP != null)
+            {
+                _remoteP.Limit = _limit;
+            }
             var list = await Task.Run(() => { return dataAdapter.GetList(_localP, _remoteP); });
-            _localP.Index += Math.Min(list.Count, _limit);
-            _remoteP.Index += Math.Min(list.Count, _limit);
+            if (_localP != null)
+            {
+                _localP.Index += Math.Min(list.Count, _limit);
+            }
+            if (_remoteP != null)
+            {
+                _remoteP.Index += Math.Min(list.Count, _limit);
+            }
             return list;
         }
         public static List<DataModel> GetList(DBQuery dbQuery, RemoteQuery remoteQuery)
@@ -86,8 +98,7 @@ namespace Anatoli.Framework.Manager
         /// <returns></returns>
         public static async Task<int> LocalUpdateAsync(DBQuery command)
         {
-            return await Task.Run(() => { return BaseDataAdapter<DataModel>.LocalUpdate(command); });
+            return await Task.Run(() => { return BaseDataAdapter<DataModel>.UpdateItemStatic(command, null); });
         }
-
     }
 }
