@@ -7,34 +7,24 @@
     <hr />
     <div class="row">
         <div class="col-lg-3 k-rtl">
-            <div class="requests-grid"></div>
-        </div>
-        <div class="col-lg-9" data-bind="visible: shouldShowRequestInfo">
             <div class="row">
-                <div class=" requests-info">
-                    <div class="row">
-                        <div class="col-md-3">فروشگاه:</div>
-                        <div class="col-md-3">
-                            <span data-bind="text: StoreName"></span>
-                        </div>
-                        <div class="col-md-3">تاریخ:</div>
-                        <div class="col-md-3">
-                            <span data-bind="text: RequestDate"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">شماره درخواست:</div>
-                        <div class="col-md-3">
-                            <span data-bind="text: RequestNumber"></span>
-                        </div>
-                        <div class="col-md-3">وضعیت:</div>
-                        <div class="col-md-3">
-                            <span data-bind="text: State"></span>
+                <input type="text" class="form-control stock-term" name="term" placeholder="فروشگاه، شماره درخواست" /><br />
+                <div class="list-group-box stock-requests">
+                    <div class="list-group" data-bind="foreach: stockRequests">
+                        <div class="stock-request-row">
+                            <a href="#" class="list-group-item" data-bind="text: StoreName + '، ' + RequestNumber + '، ' + RequestDate,
+                                   css: { active:  $data == $root.chosenStoreRequest() },
+                                   click: $root.refreshStoreRequestInfo">
+                            </a>
+                            <button data-bind="attr: { 'data-id': StoreId }" type="button" class="btn btn-success btn-lnk-stock" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
-                <hr />
             </div>
+        </div>
+        <div class="col-lg-9" data-bind="visible: shouldShowRequestInfo">
             <div class="row">
                 <div class="col-md-12">
                     <div class="request-review-grid"></div>
@@ -51,204 +41,10 @@
             <div class="request-details-grid"></div>
         </div>
     </script>
-    
+
     <script>
-        var crudServiceBaseUrl = "/api/ProductManager/";
-        var storeRequestsUrl = crudServiceBaseUrl + "GetStoreRequests",
-            storeRequestInfoUrl = crudServiceBaseUrl + 'GetStoreRequestInfo',
-            requestReviewUrl = crudServiceBaseUrl + 'GetRequestReview',
-            updateRequestReviewUrl = crudServiceBaseUrl + 'UpdateRequestReview',
-            requestReviewDetailsUrl = crudServiceBaseUrl + 'GetRequestReviewDetail';
-
-        function ReviewProductRequestViewModel() {
-            // Data
-            var self = this;
-
-            self.chosenStoreRequest = ko.observable();
-            self.storeRequestInfo = ko.observable();
-            self.shouldShowRequestInfo = ko.observable(false);
-
-            self.StoreName = ko.observable();
-            self.RequestDate = ko.observable();
-            self.RequestNumber = ko.observable();
-            self.State = ko.observable();
-
-            self.initStoreRequestsGrid = function () {
-                dataSource = new kendo.data.DataSource({
-                    transport: {
-                        read: {
-                            url: storeRequestsUrl,
-                            dataType: "json",
-                            contentType: "application/json",
-                            type: "POST"
-                        },
-                        parameterMap: function (options, operation) {
-                            if (operation == "read")
-                                return kendo.stringify(options);
-                        }
-                    },
-                    batch: true,
-                    pageSize: 20,
-                    schema: {
-                        model: {
-                            id: "Id",
-                            fields: {
-                                Id: { editable: false, nullable: true },
-                                StoreName: { type: "string" },
-                                RequestDate: { type: "string" },
-                                RequestNumber: { type: "string" }
-                            }
-                        }
-                    }
-                });
-
-                $(".requests-grid").kendoGrid({
-                    dataSource: dataSource,
-                    selectable: "row",
-                    navigatable: true,
-                    pageable: true,
-                    sortable: true,
-                    height: 550,
-                    change: function (arg) {
-                        var grid = this;
-                        var model = grid.dataItem(grid.select());
-
-                        self.chosenStoreRequest(model);
-                        self.refreshStoreRequestInfo()
-                    },
-                    columns: [
-                        { field: "RequestNumber", title: "شماره درخواست", width: 120 },
-                        { field: "StoreName", title: "نام فروشگاه", width: 100 },
-                        { field: "RequestDate", title: "تاریخ درخواست", width: 100 },
-                    ],
-                    editable: false
-                });
-            };
-
-            self.refreshStoreRequestInfo = function () {
-                $.ajax({
-                    type: "POST",
-                    url: storeRequestInfoUrl,
-                    data: { storeRequestId: self.chosenStoreRequest().Id },
-                    dataType: "json",
-                    success: function (data) {
-                        //ko.mapping.fromJS(data, {}, self.storeRequestInfo);
-
-                        self.StoreName(data.StoreName);
-                        self.RequestDate(data.RequestDate);
-                        self.RequestNumber(data.RequestNumber);
-                        self.State(data.State);
-
-                        self.shouldShowRequestInfo(true)
-
-                        self.initRequestReviewGrid();
-                    }
-                });
-            };
-
-            self.initRequestReviewGrid = function () {
-                dataSource = new kendo.data.DataSource({
-                    transport: {
-                        read: {
-                            url: requestReviewUrl,
-                            dataType: "json",
-                            contentType: "application/json",
-                            type: "POST",
-                            data: { StoreRequestId: self.chosenStoreRequest().Id }
-                        },
-                        update: {
-                            url: updateRequestReviewUrl,
-                            type: "POST",
-                            contentType: "application/json",
-                            dataType: "json"
-                        },
-                        parameterMap: function (options, operation) {
-                            options.StoreRequestId = self.chosenStoreRequest().Id;
-                            if (operation == "read")
-                                return kendo.stringify(options);
-
-                            if (operation !== "read" && options.models)
-                                return kendo.stringify(options.models);
-                        }
-                    },
-                    batch: true,
-                    pageSize: 20,
-                    schema: {
-                        model: {
-                            id: "Id",
-                            fields: {
-                                Id: { editable: false, nullable: true },
-                                ModifiedBy: { type: "string", editable: false },
-                                ModifiedDate: { type: "string", editable: false },
-                                ModifiedLargeUnit: { type: "number", editable: false },
-                                ModifiedSmallUnit: { type: "number", editable: false },
-                                LargeUnit: { type: "number", validation: { required: true, min: 1 } },
-                                SmallUnit: { type: "number", validation: { required: true, min: 1 } }
-                            }
-                        }
-                    }
-                });
-
-                $(".request-review-grid").kendoGrid({
-                    dataSource: dataSource,
-                    navigatable: true,
-                    pageable: true,
-                    sortable: true,
-                    height: 550,
-                    detailTemplate: kendo.template($("#template").html()),
-                    detailInit: detailInit,
-                    dataBound: function () {
-                        this.expandRow(this.tbody.find("tr.k-master-row").first());
-                    },
-                    toolbar: ["save"],
-                    columns: [
-                        { field: "ModifiedBy", title: "نام کاربر" },
-                        { field: "ModifiedDate", title: "تاریخ تغییر" },
-                        { field: "ModifiedLargeUnit", title: "تعداد واحد بزرگ", width: 80 },
-                        { field: "ModifiedSmallUnit", title: "تعداد واحد کوچک", width: 80 },
-                        { field: "LargeUnit", title: "تعداد واحد بزرگ", width: 80 },
-                        { field: "SmallUnit", title: "تعداد واحد کوچک", width: 80 },
-                    ],
-                    editable: true
-                });
-            };
-
-            function detailInit(e) {
-                var detailRow = e.detailRow;
-
-                detailRow.find(".request-details-grid").kendoGrid({
-                    dataSource: {
-                        transport: {
-                            read: {
-                                url: requestReviewDetailsUrl,
-                                dataType: "json",
-                                contentType: "application/json",
-                                type: "POST",
-                                data: { RequestReviewId: e.data.Id }
-                            },
-                            parameterMap: function (options, operation) {
-                                options.RequestReviewId = e.data.Id;
-                                if (operation == "read")
-                                    return kendo.stringify(options);
-                            }
-                        },
-                        pageSize: 10
-                    },
-                    scrollable: false,
-                    sortable: true,
-                    pageable: true,
-                    columns: [
-                        { field: "ProductName", title: "نام محصول", width: "70px" },
-                        { field: "Number", title: "تعداد", width: "110px" },
-                    ]
-                });
-            }
-
-            self.initStoreRequestsGrid();
-        };
-
         $(function () {
-            ko.applyBindings(new ReviewProductRequestViewModel(), $('.request-review-page"')[0]);
+            ko.applyBindings(new ReviewProductRequestViewModel(), $('.request-review-page')[0]);
         });
     </script>
 }

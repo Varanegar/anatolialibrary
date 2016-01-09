@@ -53,3 +53,21 @@ input[type="checkbox"].input-validation-error {
     overflow-x: hidden !important;
     margin-right: 25px;
 }
+
+.list-group-box {
+    height: 450px;
+    overflow-y: scroll;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.stock-request-row {
+    position: relative;
+}
+
+    .stock-request-row .btn-lnk-stock {
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        z-index: 9999;
+    }

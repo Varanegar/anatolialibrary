@@ -2,7 +2,6 @@
     ViewBag.Title = "محصولات";
 }
 
-
 <div class="container products-page k-rtl">
     <h1>@ViewBag.Title</h1>
     <hr />
@@ -27,142 +26,8 @@
 @section scripts
 {
     <script>
-        var storesUrl = 'http://79.175.166.186/api/gateway/stock/stocks/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
-        var productsUrl = 'http://79.175.166.186/api/gateway/stock/stockproduct/stockid/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C';
-
-        function ProductManagerViewModel() {
-            // Data
-            var self = this;
-            self.chosenStore = ko.observable();
-            self.stores = ko.observableArray([]);
-            self.products = ko.observableArray([]);
-
-            self.refreshStores = function () {
-                accountManagerApp.callApi(storesUrl, 'GET', function (data) {
-                    self.stores(data);
-                    if (self.stores().length > 0) {
-                        self.chosenStore(self.stores()[0]);
-
-                        self.initGrid(self.chosenStore().Id);
-
-                        self.refreshProducts(self.chosenStore());
-                    }
-                });
-            };
-
-            self.refreshProducts = function (data) {
-                
-                self.chosenStore(data);
-                $('.products-grid').data("kendoGrid").dataSource.read();
-                $('.products-grid').data("kendoGrid").refresh();
-            };
-
-            authHeader = function (req) {
-                var tokenKey = 'accessToken';
-                var token = sessionStorage.getItem(tokenKey);
-
-                req.setRequestHeader('Authorization', 'Bearer ' + token);
-            }
-
-            self.initGrid = function (id) {
-                var crudServiceBaseUrl = "http://79.175.166.186/api/gateway/stock/",
-                    crudServiceBaseUrl2 = "http://79.175.166.186/api/gateway/basedata/",
-                dataSource = new kendo.data.DataSource({
-                    transport: {
-                        read: {
-                            url: crudServiceBaseUrl + "stockproduct/stockid/",
-                            dataType: "json",
-                            contentType: "application/json",
-                            type: "POST",
-                            data: { privateOwnerId: "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", stockId: self.chosenStore().uniqueId },
-                            beforeSend: authHeader
-                        },
-                        update: {
-                            url: crudServiceBaseUrl + "stockproduct/save/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C",
-                            type: "POST",
-                            contentType: "application/json",
-                            dataType: "json",
-                            beforeSend: authHeader
-                        },
-                        parameterMap: function (options, operation) {
-                            options.stockId = self.chosenStore().uniqueId;
-                            if (operation == "read")
-                                return kendo.stringify(options);
-
-                            if (operation !== "read" && options.models)
-                                return kendo.stringify(options.models);
-                        }
-                    },
-                    batch: true,
-                    pageSize: 20,
-                    schema: {
-                        model: {
-                            id: "productGuid",
-                            fields: {
-                                productGuid: { editable: false, nullable: true },
-                                productCode: { editable: false },
-                                productName: { editable: false },
-                                QtyPerPack: { editable: false },
-                                minQty: { type: "number", validation: { min: 0 } },
-                                maxQty: { type: "number", validation: {  min: 0 } },
-                                reorderLevel: { type: "number", validation: { min: 0 } },
-                                reorderCalcTypeInfo: { defaultValue: { uniqueId: "", reorderTypeName: "" } }
-
-                            }
-                        }
-                    }
-                });
-
-                $(".products-grid").kendoGrid({
-                    dataSource: dataSource,
-                    navigatable: true,
-                    pageable: true,
-                    height: 550,
-                    toolbar: ["save", "cancel"],//"create",
-                    columns: [
-                        { field: "productCode", title: "کد کالا", width: 50 },
-                        { field: "productName", title: "نام کالا", width: 50 },
-                        { field: "minQty", title: "حداقل موجودی", width: 50 },
-                        { field: "maxQty", title: "حداکثر موجودی", width: 50 },
-                        { field: "reorderLevel", title: "نقطه سفارش", width: 50 },
-                        { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: "180px", editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
-                    ],
-                    editable: true
-                });
-
-                function categoryDropDownEditor(container, options) {
-                    
-                    $('<input required data-text-field="reorderTypeName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
-                        .appendTo(container)
-                        .kendoDropDownList({
-                           dataSource: {
-                                transport: {
-                                    read: {
-                                        url: crudServiceBaseUrl2 + "reordercalctypes",
-                                        dataType: "json",
-                                        contentType: "application/json",
-                                        type: "POST",
-                                        data: { privateOwnerId: "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C" },
-                                        beforeSend: authHeader
-                                    },
-                                        parameterMap: function (options, operation) {
-                                            if (operation == "read")
-                                                return kendo.stringify(options);
-
-                                           
-                                        }
-                                }
-                            }
-                        });
-                }
-
-            };
-
-            self.refreshStores();
-        };
-
         $(function () {
-            ko.applyBindings(new ProductManagerViewModel(), $(".products-page")[0]);
+            ko.applyBindings(new productManagerViewModel(), $(".products-page")[0]);
         });
     </script>
 }
