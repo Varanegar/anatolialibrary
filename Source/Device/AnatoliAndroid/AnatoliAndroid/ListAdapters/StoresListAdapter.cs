@@ -43,6 +43,10 @@ namespace AnatoliAndroid.ListAdapters
             ImageView _mapIconImageView = convertView.FindViewById<ImageView>(Resource.Id.mapIconImageView);
             LinearLayout storeSummaryInfoLinearLayout = convertView.FindViewById<LinearLayout>(Resource.Id.storeSummaryInfoLinearLayout);
             ImageView storeImageView = convertView.FindViewById<ImageView>(Resource.Id.storeImageImageView);
+
+            storeNameTextView.Text = item.store_name;
+            storeAddressTextView.Text = item.store_address;
+
             storeStatusTextView.Click += async (s, e) =>
             {
                 await Select(item);
@@ -79,8 +83,7 @@ namespace AnatoliAndroid.ListAdapters
             //storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Close);
             //storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
 
-            storeNameTextView.Text = item.store_name;
-            storeAddressTextView.Text = item.store_address;
+            
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
         }

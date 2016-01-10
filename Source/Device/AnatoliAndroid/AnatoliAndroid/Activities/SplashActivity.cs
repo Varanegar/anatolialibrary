@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "آناتولی", Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
+    [Activity(Label = "ایگ مارکت", Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

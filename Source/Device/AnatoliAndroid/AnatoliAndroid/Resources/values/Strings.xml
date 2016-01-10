@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="Hello">Hello World, Click Me!</string>
-  <string name="ApplicationName">آناتولی</string>
+  <string name="ApplicationName">ایگ مارکت</string>
   <string name="OpenDrawer">باز کردن منو</string>
   <string name="CloseDrawer">بستن منو</string>
   <string name="Products">دسته بندی کالا</string>
