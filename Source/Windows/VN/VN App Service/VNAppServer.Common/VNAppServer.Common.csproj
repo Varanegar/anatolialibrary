@@ -70,16 +70,24 @@
     <Reference Include="Log4Net.Async">
       <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="Thinktecture.IdentityModel.Client.Net45">
+      <HintPath>..\packages\Thinktecture.IdentityModel.Client.4.0.1\lib\net45\Thinktecture.IdentityModel.Client.Net45.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\AnatoliJob.cs" />
     <Compile Include="ClientProxies\AppServerAdminClient.cs" />
     <Compile Include="CustomerSetting\AnatoliConfigSection.cs" />
     <Compile Include="CustomerSetting\AnatoliWebServiceConfgiCollection.cs" />
@@ -92,6 +100,7 @@
     <Compile Include="DTOs\WcfServiceConfig.cs" />
     <Compile Include="DTOs\TimerLibrary.cs" />
     <Compile Include="DTOs\WcfServiceLibrary.cs" />
+    <Compile Include="Interfaces\IAnatoliJob.cs" />
     <Compile Include="Interfaces\IAppServerAdmin.cs" />
     <Compile Include="Interfaces\IConfigService.cs" />
     <Compile Include="Interfaces\IServiceStatus.cs" />
@@ -128,6 +137,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

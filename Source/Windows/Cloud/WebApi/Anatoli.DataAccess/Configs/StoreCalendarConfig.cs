@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public StoreCalendarConfig()
         {
             this.HasMany<StoreCalendarHistory>(cr => cr.StoreCalendarHistories)
-               .WithRequired(svr => svr.StoreCalendar);
+                .WithRequired(svr => svr.StoreCalendar)
+                .WillCascadeOnDelete(true);
         }
     }
 }

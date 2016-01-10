@@ -72,6 +72,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Build\Thunderstruck\Thunderstruck.dll</HintPath>
     </Reference>
+    <Reference Include="VNAppServer.Anatoli.Common">
+      <HintPath>..\..\..\Build\VNAppServer\VNAppServer.Anatoli.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransferHandler\ProductGroupPictureTransferHandler.cs" />
@@ -92,7 +95,6 @@
     <Compile Include="DataTransferHandler\ManufactureTransferHandler.cs" />
     <Compile Include="DataTransferHandler\ProductPictureTransferHandler.cs" />
     <Compile Include="DataTransferHandler\SupplierTransferHandler.cs" />
-    <Compile Include="Helpers\BaseInfo.cs" />
     <Compile Include="Helpers\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

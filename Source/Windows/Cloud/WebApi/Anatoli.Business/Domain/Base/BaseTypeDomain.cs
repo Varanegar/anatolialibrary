@@ -44,27 +44,27 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<BaseTypeViewModel>> GetAll()
         {
-            var baseTypes = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var dataListInfo = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
-            return Proxy.Convert(baseTypes.ToList()); ;
+            return Proxy.Convert(dataListInfo.ToList()); ;
         }
 
         public async Task<List<BaseTypeViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
-            var baseTypes = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
+            var dataListInfo = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
 
-            return Proxy.Convert(baseTypes.ToList()); ;
+            return Proxy.Convert(dataListInfo.ToList()); ;
         }
 
-        public async Task PublishAsync(List<BaseTypeViewModel> BaseTypeViewModels)
+        public async Task<List<BaseTypeViewModel>> PublishAsync(List<BaseTypeViewModel> dataViewModels)
         {
             try
             {
-                var baseTypes = Proxy.ReverseConvert(BaseTypeViewModels);
+                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentTypes = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
-                foreach (BaseType item in baseTypes)
+                foreach (BaseType item in dataListInfo)
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentType = currentTypes.Find(p => p.Id == item.Id);
@@ -93,15 +93,17 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<BaseTypeViewModel> BaseTypeViewModels)
+        public async Task<List<BaseTypeViewModel>> Delete(List<BaseTypeViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var baseTypes = Proxy.ReverseConvert(BaseTypeViewModels);
+                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
 
-                baseTypes.ForEach(item =>
+                dataListInfo.ForEach(item =>
                 {
                     var baseType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
@@ -110,6 +112,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public async Task<BaseType> SetBaseValueData(BaseType data, List<BaseValue> baseValues, AnatoliDbContext context)

@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using Anatoli.ViewModels.BaseModels;
+using VNAppServer.Anatoli.Common;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -27,8 +28,8 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
 
                 List<ItemImageViewModel> dataList = ImageAdapter.Instance.CenterPictures(lastUpload);
 
-                string URI = serverURI + BaseInfo.SaveImageURI + privateOwnerQueryString;
-                var result = Utility.CallServerService(dataList, client, URI);
+                string URI = serverURI + UriInfo.SaveImageURI + privateOwnerQueryString;
+                ConnectionHelper.CallServerService(dataList, client, URI);
                 Utility.SetLastUploadTime(PictureDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

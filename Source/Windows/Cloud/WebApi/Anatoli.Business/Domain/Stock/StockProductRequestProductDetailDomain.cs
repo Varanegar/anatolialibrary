@@ -54,34 +54,11 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockProductRequestProductDetailViewModel> dataViewModels)
+        public async Task<List<StockProductRequestProductDetailViewModel>> PublishAsync(List<StockProductRequestProductDetailViewModel> dataViewModels)
         {
             try
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                dataList.ForEach(item =>
-                {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        //if (currentData.StockProductRequestProductDetailName != item.StockProductRequestProductDetailName)
-                        //{
-                        //    currentData.StockProductRequestProductDetailName = item.StockProductRequestProductDetailName;
-                        //    currentData.LastUpdate = DateTime.Now;
-                        //    Repository.UpdateAsync(currentData);
-                        //}
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                throw new NotImplementedException();
             }
             catch(Exception ex)
             {
@@ -90,21 +67,9 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        public async Task Delete(List<StockProductRequestProductDetailViewModel> dataViewModels)
+        public async Task<List<StockProductRequestProductDetailViewModel>> Delete(List<StockProductRequestProductDetailViewModel> dataViewModels)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
+            throw new NotImplementedException();
         }
         #endregion
     }

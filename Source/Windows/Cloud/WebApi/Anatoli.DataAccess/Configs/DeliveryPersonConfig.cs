@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public DeliveryPersonConfig()
         {
             this.HasMany<StoreDeliveryPerson>(cr => cr.StoreDeliveryPersons)
-                .WithRequired(svr => svr.DeliveryPerson);
+                .WithRequired(svr => svr.DeliveryPerson)
+                .WillCascadeOnDelete(false);
         }
     }
 }

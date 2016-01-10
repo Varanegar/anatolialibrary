@@ -12,37 +12,61 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/incompletepurchaseorder")]
-    public class IncomplatePurchaseOrderController : ApiController
+    public class IncomplatePurchaseOrderController : BaseApiController
     {
         [Authorize(Roles = "User")]
         [Route("")]
         public async Task<IHttpActionResult> GetByCustomerId(string privateOwnerId, string customerId)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderDomain(owner);
-            var result = await basketDomain.GetAllByCustomerId(customerId);
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderDomain(owner);
+                var result = await basketDomain.GetAllByCustomerId(customerId);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveIncompletePurchaseOrder(string privateOwnerId, List<IncompletePurchaseOrderViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderDomain(owner);
-            await basketDomain.PublishAsync(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderDomain(owner);
+                var result = await basketDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
         [Route("clear")]
         public async Task<IHttpActionResult> ClearIncompletePurchaseOrder(string privateOwnerId, List<IncompletePurchaseOrderViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderDomain(owner);
-            await basketDomain.Clear(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderDomain(owner);
+                var result = await basketDomain.Clear(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
 
@@ -50,20 +74,36 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("lineitem/save")]
         public async Task<IHttpActionResult> SaveIncompletePurchaseOrderItem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-            await basketDomain.PublishAsync(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
+                var result = await basketDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
         [Route("lineitem/change")]
         public async Task<IHttpActionResult> ChangeIncompletePurchaseOrderItem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-            await basketDomain.ChangeAsync(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
+                var result = await basketDomain.ChangeAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
@@ -71,10 +111,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> DeleteIncompletePurchaseOrderitem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-            await basketDomain.Delete(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
+                var result = await basketDomain.Delete(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
     }
 }

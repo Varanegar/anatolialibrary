@@ -13,7 +13,8 @@ namespace Anatoli.DataAccess.Configs
         {
             
             this.HasMany<StockProductRequestProductDetail>(pp => pp.StockProductRequestProductDetails)
-                .WithRequired(p => p.StockProductRequestProduct);
+                .WithRequired(p => p.StockProductRequestProduct)
+                .WillCascadeOnDelete(true);
         }
     }
 }

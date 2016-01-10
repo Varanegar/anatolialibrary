@@ -11,7 +11,8 @@ namespace Anatoli.DataAccess.Configs
         public StoreConfig()
         {
             this.HasMany<StoreDeliveryPerson>(cr => cr.StoreDeliveryPersons)
-                .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<CityRegion>(s => s.StoreValidRegionInfoes)
                 .WithMany(c => c.StoreValidRegionInfoes)
@@ -23,22 +24,28 @@ namespace Anatoli.DataAccess.Configs
                 });
 
             this.HasMany<StoreActivePriceList>(cr => cr.StoreActivePriceLists)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<Stock>(cr => cr.StoreStocks)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(false);
 
             this.HasMany<StoreActiveOnhand>(cr => cr.StoreActiveOnhands)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<StoreAction>(cr => cr.StoreActions)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<StoreCalendar>(cr => cr.StoreCalendars)
-               .WithRequired(svr => svr.Store);
+                .WithRequired(svr => svr.Store)
+                .WillCascadeOnDelete(true);
         }
     }
 }

@@ -56,13 +56,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(charGroups.ToList()); ;
         }
 
-        public async Task PublishAsync(List<CharGroupViewModel> CharGroupViewModels)
+        public async Task<List<CharGroupViewModel>> PublishAsync(List<CharGroupViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var charGroups = Proxy.ReverseConvert(CharGroupViewModels);
+                var charGroups = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentGroups = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
                 var currentTypes = CharTypeRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -95,35 +95,38 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + CharGroupViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
 
         }
 
-        public async Task Delete(List<CharGroupViewModel> CharGroupViewModels)
+        public async Task<List<CharGroupViewModel>> Delete(List<CharGroupViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var charGroups = Proxy.ReverseConvert(CharGroupViewModels);
+                var charGroups = Proxy.ReverseConvert(dataViewModels);
 
                 charGroups.ForEach(item =>
                 {
                     var charGroup = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(charGroup);
+                    Repository.DbContext.CharGroups.Remove(charGroup);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
-        private async Task DeleteAllGroups()
+        private async Task<List<CharGroupViewModel>> DeleteAllGroups()
         {
             await Task.Factory.StartNew(() =>
             {
                 Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroupTypes");
                 Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroups");
             });
+            return new List<CharGroupViewModel>();
         }
 
         public async Task<CharGroup> SetCharTypeData(CharGroup data, List<CharType> charTypes, List<CharType> currentCharTypes)

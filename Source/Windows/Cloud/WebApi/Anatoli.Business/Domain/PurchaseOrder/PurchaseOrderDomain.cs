@@ -56,7 +56,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(itemImages.ToList()); ;
         }
 
-        public async Task PublishAsync(List<PurchaseOrderViewModel> purchaseOrderViewModels)
+        public async Task<List<PurchaseOrderViewModel>> PublishAsync(List<PurchaseOrderViewModel> dataViewModels)
         {
             try
             {
@@ -69,11 +69,11 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        public async Task Delete(List<PurchaseOrderViewModel> purchaseOrderViewModels)
+        public async Task<List<PurchaseOrderViewModel>> Delete(List<PurchaseOrderViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var itemImages = Proxy.ReverseConvert(purchaseOrderViewModels);
+                var itemImages = Proxy.ReverseConvert(dataViewModels);
 
                 itemImages.ForEach(item =>
                 {
@@ -84,17 +84,20 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+
+            return dataViewModels;
         }
 
-        public async Task PublishOrderOnline(PurchaseOrderViewModel order)
+        public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderViewModel order)
         {
             var returnData = new List<PurchaseOrderViewModel>();
             string data = JsonConvert.SerializeObject(order);
 
             await Task.Factory.StartNew(() =>
             {
-                PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data);
+                order = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data);
             });
+            return order;
         }
 
         public async Task<PurchaseOrderViewModel> CalcPromoOnline(PurchaseOrderViewModel order)

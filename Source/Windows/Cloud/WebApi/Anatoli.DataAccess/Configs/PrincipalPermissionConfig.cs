@@ -11,10 +11,12 @@ namespace Anatoli.DataAccess.Configs
         public PrincipalPermissionConfig()
         {
             this.HasRequired<Principal>(p => p.Principal)
-                .WithMany(pp => pp.PrincipalPermissions);
+                .WithMany(pp => pp.PrincipalPermissions)
+                .WillCascadeOnDelete(false);
 
             this.HasRequired<Permission>(p => p.Permission)
-                .WithMany(pp => pp.PrincipalPermissions);
+                .WithMany(pp => pp.PrincipalPermissions)
+                .WillCascadeOnDelete(false);
         }
     }
 }

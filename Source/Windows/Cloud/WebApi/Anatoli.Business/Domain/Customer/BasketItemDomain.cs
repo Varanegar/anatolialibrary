@@ -49,14 +49,14 @@ namespace Anatoli.Business.Domain
             throw new NotImplementedException();
         }
 
-        public async Task PublishAsync(List<BasketItemViewModel> basketViewModels)
+        public async Task<List<BasketItemViewModel>> PublishAsync(List<BasketItemViewModel> dataViewModels)
         {
             try
             {
-                var basketItems = Proxy.ReverseConvert(basketViewModels);
+                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                foreach (BasketItem item in basketItems)
+                foreach (BasketItem item in dataListInfo)
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
@@ -81,16 +81,18 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task ChangeAsync(List<BasketItemViewModel> basketViewModels)
+        public async Task<List<BasketItemViewModel>> ChangeAsync(List<BasketItemViewModel> dataViewModels)
         {
             try
             {
-                var basketItems = Proxy.ReverseConvert(basketViewModels);
+                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
-                foreach (BasketItem item in basketItems)
+                foreach (BasketItem item in dataListInfo)
                 {
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
@@ -115,15 +117,17 @@ namespace Anatoli.Business.Domain
                 log.Error("ChangeAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<BasketItemViewModel> basketItemViewModels)
+        public async Task<List<BasketItemViewModel>> Delete(List<BasketItemViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var basketItems = Proxy.ReverseConvert(basketItemViewModels);
+                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
 
-                basketItems.ForEach(item =>
+                dataListInfo.ForEach(item =>
                 {
                     var basketItem = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
@@ -132,6 +136,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

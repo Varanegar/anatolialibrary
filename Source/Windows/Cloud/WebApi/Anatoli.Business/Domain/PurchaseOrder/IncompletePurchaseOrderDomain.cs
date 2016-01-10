@@ -66,11 +66,11 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(itemImages.ToList()); ;
         }
 
-        public async Task PublishAsync(List<IncompletePurchaseOrderViewModel> incompletePurchaseOrderViewModels)
+        public async Task<List<IncompletePurchaseOrderViewModel>> PublishAsync(List<IncompletePurchaseOrderViewModel> dataViewModels)
         {
             try
             {
-                var dataList = Proxy.ReverseConvert(incompletePurchaseOrderViewModels);
+                var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (IncompletePurchaseOrder item in dataList)
@@ -110,13 +110,15 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Clear(List<IncompletePurchaseOrderViewModel> incompletePurchaseOrderViewModels)
+        public async Task<List<IncompletePurchaseOrderViewModel>> Clear(List<IncompletePurchaseOrderViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var dataList = Proxy.ReverseConvert(incompletePurchaseOrderViewModels);
+                var dataList = Proxy.ReverseConvert(dataViewModels);
 
                 dataList.ForEach(item =>
                 {
@@ -128,13 +130,14 @@ namespace Anatoli.Business.Domain
                 });
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
-        public async Task Delete(List<IncompletePurchaseOrderViewModel> incompletePurchaseOrderViewModels)
+        public async Task<List<IncompletePurchaseOrderViewModel>> Delete(List<IncompletePurchaseOrderViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var itemImages = Proxy.ReverseConvert(incompletePurchaseOrderViewModels);
+                var itemImages = Proxy.ReverseConvert(dataViewModels);
 
                 itemImages.ForEach(item =>
                 {
@@ -145,6 +148,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public async Task<IncompletePurchaseOrder> SetLineItemData(IncompletePurchaseOrder data, List<IncompletePurchaseOrderLineItem> dataList, AnatoliDbContext context)

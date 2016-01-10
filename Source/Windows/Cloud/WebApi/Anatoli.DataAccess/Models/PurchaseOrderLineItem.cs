@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public class PurchaseOrderLineItem : BaseModel
     {
@@ -14,6 +15,7 @@ namespace Anatoli.DataAccess.Models
         public decimal Add2 { get; set; }
         public decimal Amount { get; set; }
         public byte IsPrize { get; set; }
+        [StringLength(500)]
         public string Comment { get; set; }
         public byte AllowReplace { get; set; }
         public decimal Weight { get; set; }

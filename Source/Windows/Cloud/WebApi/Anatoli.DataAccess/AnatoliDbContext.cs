@@ -49,6 +49,7 @@ namespace Anatoli.DataAccess
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<ItemImage> Images { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<StockActiveOnHand> StockActiveOnHands { get; set; }
@@ -59,8 +60,10 @@ namespace Anatoli.DataAccess
         public DbSet<StockProductRequestProduct> StockProductRequestProducts { get; set; }
         public DbSet<StockProductRequestProductDetail> StockProductRequestProductDetails { get; set; }
         public DbSet<StockProductRequestRule> StockProductRequestRules { get; set; }
+        public DbSet<StockProductRequestRuleType> StockProductRequestRuleTypes { get; set; }
         public DbSet<StockProductRequestStatus> StockProductRequestStatuses { get; set; }
         public DbSet<StockProductRequestType> StockProductRequestTypes { get; set; }
+        public DbSet<StockProductRequestSupplyType> StockProductRequestSupplyTypes { get; set; }
         public DbSet<MainProductGroup> MainProductGroups { get; set; }
         public DbSet<StockType> StockTypes { get; set; }
         public DbSet<ProductType> ProductType { get; set; }
@@ -72,7 +75,6 @@ namespace Anatoli.DataAccess
 
         #region Identity
         public DbSet<Principal> Principals { get; set; }
-        //public DbSet<Role> Roles { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<IdentityUserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
@@ -84,7 +86,9 @@ namespace Anatoli.DataAccess
         #region ctors
         static AnatoliDbContext()
         {
-            Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
+            //Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
+            //var migrator = new System.Data.Entity.Migrations.DbMigrator(new Anatoli.DataAccess.Migrations.Configuration());
+            //migrator.Update();
         }
 
         public AnatoliDbContext()
@@ -119,7 +123,9 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new StockProductRequestConfig());
             modelBuilder.Configurations.Add(new StockProductRequestProductConfig());
             modelBuilder.Configurations.Add(new StockProductRequestRuleConfig());
+            modelBuilder.Configurations.Add(new StockProductRequestRuleTypeConfig());
             modelBuilder.Configurations.Add(new StockProductRequestStatusConfig());
+            modelBuilder.Configurations.Add(new StockProductRequestTypeSupplyConfig());
             modelBuilder.Configurations.Add(new StockProductRequestTypeConfig());
             modelBuilder.Configurations.Add(new StockOnHandSyncConfig());
             modelBuilder.Configurations.Add(new StoreCalendarConfig());

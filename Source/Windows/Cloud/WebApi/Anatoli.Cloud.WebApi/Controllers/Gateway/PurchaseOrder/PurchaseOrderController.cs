@@ -11,47 +11,71 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/purchaseorder")]
-    public class PurchaseOrderController : ApiController
+    public class PurchaseOrderController : BaseApiController
     {
 
-        [Authorize(Roles = "User")]
-        [Route("history")]
-        public IHttpActionResult GetPurchaseStatus()
-        {
-            return Ok();
-        }
+        //[Authorize(Roles = "User")]
+        //[Route("history")]
+        //public IHttpActionResult GetPurchaseStatus()
+        //{
+        //    return Ok();
+        //}
 
         [Authorize(Roles = "User")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateOrder(string privateOwnerId, PurchaseOrderViewModel orderEntity)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var orderDomain = new PurchaseOrderDomain(owner);
-            await orderDomain.PublishOrderOnline(orderEntity);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var orderDomain = new PurchaseOrderDomain(owner);
+                var result = await orderDomain.PublishOrderOnline(orderEntity);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
         [Route("local/create")]
         public async Task<IHttpActionResult> CreateOrderLocal(string privateOwnerId, PurchaseOrderViewModel orderEntity)
         {
-            PurchaseOrderViewModel result = new PurchaseOrderViewModel();
-            await Task.Factory.StartNew(() =>
+            try
             {
-                var orderDomain = new PMCPurchaseOrderDomain();
-                result = orderDomain.Publish(orderEntity);
-            });
-            return Ok(result);
+                PurchaseOrderViewModel result = new PurchaseOrderViewModel();
+                await Task.Factory.StartNew(() =>
+                {
+                    var orderDomain = new PMCPurchaseOrderDomain();
+                    result = orderDomain.Publish(orderEntity);
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
         [Route("calcpromo")]
         public async Task<IHttpActionResult> ClacPromo(string privateOwnerId, PurchaseOrderViewModel orderEntity)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var orderDomain = new PurchaseOrderDomain(owner);
-            var result = await orderDomain.CalcPromoOnline(orderEntity);
-            return Ok(result);
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var orderDomain = new PurchaseOrderDomain(owner);
+                var result = await orderDomain.CalcPromoOnline(orderEntity);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "User")]
@@ -59,13 +83,21 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> ClacPromoLocal(string privateOwnerId, PurchaseOrderViewModel orderEntity)
         {
-            PurchaseOrderViewModel result = new PurchaseOrderViewModel();
-            await Task.Factory.StartNew(() =>
+            try
             {
-                var orderDomain = new PMCPurchaseOrderDomain();
-                result = orderDomain.GetPerformaInvoicePreview(orderEntity);
-            });
-            return Ok(result);
+                PurchaseOrderViewModel result = new PurchaseOrderViewModel();
+                await Task.Factory.StartNew(() =>
+                {
+                    var orderDomain = new PMCPurchaseOrderDomain();
+                    result = orderDomain.GetPerformaInvoicePreview(orderEntity);
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
     }

@@ -55,13 +55,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(charTypes.ToList()); ;
         }
 
-        public async Task PublishAsync(List<CharTypeViewModel> CharTypeViewModels)
+        public async Task<List<CharTypeViewModel>> PublishAsync(List<CharTypeViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var charTypes = Proxy.ReverseConvert(CharTypeViewModels);
+                var charTypes = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentTypes = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
@@ -98,25 +98,28 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + CharTypeViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<CharTypeViewModel> CharTypeViewModels)
+        public async Task<List<CharTypeViewModel>> Delete(List<CharTypeViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var charTypes = Proxy.ReverseConvert(CharTypeViewModels);
+                var charTypes = Proxy.ReverseConvert(dataViewModels);
 
                 charTypes.ForEach(item =>
                 {
                     var charType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
 
-                    Repository.DeleteAsync(charType);
+                    Repository.DbContext.CharTypes.Remove(charType);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public async Task<CharType> SetCharValueData(CharType data, List<CharValue> charValues, AnatoliDbContext context)

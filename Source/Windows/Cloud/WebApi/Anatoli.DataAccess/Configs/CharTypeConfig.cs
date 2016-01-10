@@ -20,7 +20,8 @@ namespace Anatoli.DataAccess.Configs
                 });
 
             this.HasMany<CharValue>(pc => pc.CharValues)
-                .WithRequired(p => p.CharType);
+                .WithRequired(p => p.CharType)
+                .WillCascadeOnDelete(false); 
         }
     }
 }

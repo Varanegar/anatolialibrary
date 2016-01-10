@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public class PurchaseOrder : BaseModel
     {        
@@ -20,9 +21,11 @@ namespace Anatoli.DataAccess.Models
         public decimal TotalAmount { get; set; }
         public decimal OtherAdd { get; set; }
         public Nullable<decimal> OtherSub { get; set; }
+        [StringLength(500)]
         public string Comment { get; set; }
         public long DeliveryTypeValueId { get; set; }
         public Nullable<DateTime> DeliveryDate { get; set; }
+        [StringLength(10)]
         public string DeliveryPDate { get; set; }
         public Nullable<TimeSpan> DeliveryFromTime { get; set; }
         public Nullable<TimeSpan> DeliveryToTime { get; set; }
@@ -36,6 +39,7 @@ namespace Anatoli.DataAccess.Models
         public decimal OtherFinalSub { get; set; }
         public Nullable<byte> IsCancelled { get; set; }
         public Nullable<long> CancelReasonValueId { get; set; }
+        [StringLength(100)]
         public string CancelDesc { get; set; }
         public Nullable<int> BackOfficeId { get; set; }
 

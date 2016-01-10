@@ -50,11 +50,11 @@ namespace Anatoli.Business.Domain
             throw new NotImplementedException();
         }
 
-        public async Task PublishAsync(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
+        public async Task<List<IncompletePurchaseOrderLineItemViewModel>> PublishAsync(List<IncompletePurchaseOrderLineItemViewModel> dataViewModels)
         {
             try
             {
-                var lineItems = Proxy.ReverseConvert(lineItemViewModels);
+                var lineItems = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (IncompletePurchaseOrderLineItem item in lineItems)
@@ -82,13 +82,15 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task ChangeAsync(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
+        public async Task<List<IncompletePurchaseOrderLineItemViewModel>> ChangeAsync(List<IncompletePurchaseOrderLineItemViewModel> dataViewModels)
         {
             try
             {
-                var lineItems = Proxy.ReverseConvert(lineItemViewModels);
+                var lineItems = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (IncompletePurchaseOrderLineItem item in lineItems)
@@ -116,13 +118,15 @@ namespace Anatoli.Business.Domain
                 log.Error("ChangeAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<IncompletePurchaseOrderLineItemViewModel> lineItemViewModels)
+        public async Task<List<IncompletePurchaseOrderLineItemViewModel>> Delete(List<IncompletePurchaseOrderLineItemViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var basketItems = Proxy.ReverseConvert(lineItemViewModels);
+                var basketItems = Proxy.ReverseConvert(dataViewModels);
 
                 basketItems.ForEach(item =>
                 {
@@ -133,6 +137,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

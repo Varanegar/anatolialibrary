@@ -28,9 +28,8 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
                 ProductGuid = data.ProductId,
                 ProductCode = data.Product.ProductCode,
                 ProductName = data.Product.ProductName,
-                QtyPerPack = data.Product.QtyPerPack??0,
+                QtyPerPack = data.Product.QtyPerPack,
                 ReorderCalcTypeId = data.ReorderCalcTypeId,
-
             };
             result.ReorderCalcTypeInfo = (result.ReorderCalcTypeId == null) ? new ReorderCalcTypeViewModel() : new ReorderCalcTypeViewModel { ReorderTypeName = data.ReorderCalcType.ReorderTypeName, UniqueId = data.ReorderCalcType.Id };
 

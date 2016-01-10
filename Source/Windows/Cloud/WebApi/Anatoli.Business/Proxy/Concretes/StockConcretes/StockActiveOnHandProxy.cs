@@ -19,6 +19,10 @@ namespace Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
+                ProductGuid = data.ProductId,
+                Qty = data.Qty,
+                StockGuid = data.StockId,
+
             };
         }
 
@@ -30,7 +34,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
 
-            
+                ProductId = data.ProductGuid,
+                Qty = data.Qty,
+                StockId = data.StockGuid,
             };
         }
     }

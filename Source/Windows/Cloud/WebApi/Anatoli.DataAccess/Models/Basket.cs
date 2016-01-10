@@ -2,11 +2,13 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;  
       
     public class Basket : BaseModel
     {       
         public Guid BasketTypeValueGuid { get; set; }
+        [StringLength(200)]
         public string BasketName { get; set; }
         [ForeignKey("Customer")]
         public Guid CustomerId { get; set; }

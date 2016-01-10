@@ -54,7 +54,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockOnHandSyncViewModel> dataViewModels)
+        public async Task<List<StockOnHandSyncViewModel>> PublishAsync(List<StockOnHandSyncViewModel> dataViewModels)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        public async Task Delete(List<StockOnHandSyncViewModel> dataViewModels)
+        public async Task<List<StockOnHandSyncViewModel>> Delete(List<StockOnHandSyncViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -77,11 +77,12 @@ namespace Anatoli.Business.Domain
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(data);
+                    Repository.DbContext.StockOnHandSyncs.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

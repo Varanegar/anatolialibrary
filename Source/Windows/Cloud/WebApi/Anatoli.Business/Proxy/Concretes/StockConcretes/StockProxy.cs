@@ -13,7 +13,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
     {
         public override StockViewModel Convert(Stock data)
         {
-            return new StockViewModel
+            var result = new StockViewModel
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
@@ -27,9 +27,19 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 StockName = data.StockName,
                 StockTypeId = data.StockTypeId,
                 StoreId = data.StoreId,
-
+                MainSCMStockId = data.MainSCMStock2Id,
+                RelatedSCMStockId = data.RelatedSCMStock2Id,
 
             };
+
+            if (data.StockOnHandSyncs.Count > 0)
+            {
+                var latestSyncDate = data.StockOnHandSyncs.Max(p => p.SyncDate);
+                if (latestSyncDate != null)
+                    result.LatestStockOnHandSyncId = data.StockOnHandSyncs.First(f => f.SyncDate == latestSyncDate).Id;
+            }
+            return result;
+
         }
 
         public override Stock ReverseConvert(StockViewModel data)
@@ -47,7 +57,10 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 StockCode = data.StockCode,
                 StockName = data.StockName,
                 StockTypeId = data.StockTypeId,
-                StoreId = data.StoreId,            
+                StoreId = data.StoreId,
+                MainSCMStock2Id = data.MainSCMStockId,
+                RelatedSCMStock2Id = data.RelatedSCMStockId,
+
             };
         }
     }

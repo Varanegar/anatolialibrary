@@ -90,7 +90,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(productRates.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ProductRateViewModel> ProductRateViewModels)
+        public async Task<List<ProductRateViewModel>> PublishAsync(List<ProductRateViewModel> dataViewModels)
         {
             try
             {
@@ -103,12 +103,12 @@ namespace Anatoli.Business.Domain
             }
 
         }
-        public async Task<List<ProductRateViewModel>> PublishAsyncWithReturn(List<ProductRateViewModel> ProductRateViewModels)
+        public async Task<List<ProductRateViewModel>> PublishAsyncWithReturn(List<ProductRateViewModel> dataViewModels)
         {
+            List<ProductRateViewModel> result = new List<ProductRateViewModel>();
             try
             {
-                List<ProductRateViewModel> result = new List<ProductRateViewModel>();
-                var ProductRates = Proxy.ReverseConvert(ProductRateViewModels);
+                var ProductRates = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 ProductRates.ForEach(item =>
@@ -149,8 +149,8 @@ namespace Anatoli.Business.Domain
                             .Select(row => new ProductRateViewModel { Avg = row.Avg, ProductGuid = row.ProductId });
                     result.AddRange(resulDict.ToList());
                 }
+                await Repository.SaveChangesAsync();
 
-                return result;
 
             }
             catch (Exception ex)
@@ -158,15 +158,15 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return result;
 
-            await Repository.SaveChangesAsync();
         }
 
-        public async Task Delete(List<ProductRateViewModel> ProductRateViewModels)
+        public async Task<List<ProductRateViewModel>> Delete(List<ProductRateViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var ProductRates = Proxy.ReverseConvert(ProductRateViewModels);
+                var ProductRates = Proxy.ReverseConvert(dataViewModels);
 
                 ProductRates.ForEach(item =>
                 {
@@ -177,6 +177,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public ProductRate SetProductData(ProductRate data, Product product, AnatoliDbContext context)
