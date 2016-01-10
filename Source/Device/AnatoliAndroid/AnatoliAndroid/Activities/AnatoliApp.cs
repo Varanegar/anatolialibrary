@@ -633,6 +633,7 @@ namespace AnatoliAndroid.Activities
         }
 
         string _locationProvider = "";
+        bool _canclelLocation = false;
 
         public void StartLocationUpdates()
         {
@@ -644,7 +645,7 @@ namespace AnatoliAndroid.Activities
                     PowerRequirement = Power.Medium
                 };
                 _locationProvider = LocationManager.GetBestProvider(criteriaForLocationService, true);
-                if (!String.IsNullOrEmpty(_locationProvider))
+                if (!String.IsNullOrEmpty(_locationProvider) && !_canclelLocation)
                 {
                     LocationManager.RequestLocationUpdates(_locationProvider, 10000, 100, (ILocationListener)_activity);
                     if (_locationProvider != LocationManager.GpsProvider)
@@ -656,7 +657,7 @@ namespace AnatoliAndroid.Activities
                             Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
                             _activity.StartActivity(callGPSSettingIntent);
                         });
-                        alert.SetNegativeButton("بی خیال", (s, e) => { });
+                        alert.SetNegativeButton("بی خیال", (s, e) => { _canclelLocation = true; });
                         alert.Show();
                     }
                 }

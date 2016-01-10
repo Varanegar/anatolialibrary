@@ -2046,8 +2046,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00c1
 			public const int firstNameEditText = 2131427521;
 			
-			// aapt resource value: 0x7f0b00f9
-			public const int footerRelativeLayout = 2131427577;
+			// aapt resource value: 0x7f0b00fa
+			public const int footerRelativeLayout = 2131427578;
 			
 			// aapt resource value: 0x7f0b008c
 			public const int front = 2131427468;
@@ -2064,8 +2064,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b000d
 			public const int homeAsUp = 2131427341;
 			
-			// aapt resource value: 0x7f0b00f6
-			public const int horizontalLineView = 2131427574;
+			// aapt resource value: 0x7f0b00f7
+			public const int horizontalLineView = 2131427575;
 			
 			// aapt resource value: 0x7f0b002f
 			public const int icon = 2131427375;
@@ -2148,8 +2148,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00c0
 			public const int mainLinearLayout = 2131427520;
 			
-			// aapt resource value: 0x7f0b00fa
-			public const int mapIconImageView = 2131427578;
+			// aapt resource value: 0x7f0b00f5
+			public const int mapIconImageView = 2131427573;
 			
 			// aapt resource value: 0x7f0b00a9
 			public const int media_actions = 2131427497;
@@ -2424,8 +2424,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00fb
 			public const int storeAddressTextView = 2131427579;
 			
-			// aapt resource value: 0x7f0b00f5
-			public const int storeImageImageView = 2131427573;
+			// aapt resource value: 0x7f0b00f6
+			public const int storeImageImageView = 2131427574;
 			
 			// aapt resource value: 0x7f0b00b5
 			public const int storeNameLabelTextView = 2131427509;
@@ -2433,11 +2433,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00a2
 			public const int storeNameTextView = 2131427490;
 			
-			// aapt resource value: 0x7f0b00f7
-			public const int storeStatusTextView = 2131427575;
-			
 			// aapt resource value: 0x7f0b00f8
-			public const int storeSummaryInfoLinearLayout = 2131427576;
+			public const int storeStatusTextView = 2131427576;
+			
+			// aapt resource value: 0x7f0b00f9
+			public const int storeSummaryInfoLinearLayout = 2131427577;
 			
 			// aapt resource value: 0x7f0b00f4
 			public const int storeSummaryRelativeLayout = 2131427572;
@@ -2820,11 +2820,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050036
 			public const int AreYouSure = 2131034166;
 			
-			// aapt resource value: 0x7f050045
-			public const int AuthenticationFailed = 2131034181;
+			// aapt resource value: 0x7f050046
+			public const int AuthenticationFailed = 2131034182;
 			
-			// aapt resource value: 0x7f050043
-			public const int Cancel = 2131034179;
+			// aapt resource value: 0x7f050044
+			public const int Cancel = 2131034180;
 			
 			// aapt resource value: 0x7f050031
 			public const int City = 2131034161;
@@ -2834,6 +2834,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f050016
 			public const int CloseDrawer = 2131034134;
+			
+			// aapt resource value: 0x7f050041
+			public const int DistanceFromYou = 2131034177;
 			
 			// aapt resource value: 0x7f050032
 			public const int District = 2131034162;
@@ -2913,8 +2916,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050029
 			public const int PleaseLogin = 2131034153;
 			
-			// aapt resource value: 0x7f050041
-			public const int PleaseWait = 2131034177;
+			// aapt resource value: 0x7f050042
+			public const int PleaseWait = 2131034178;
 			
 			// aapt resource value: 0x7f050017
 			public const int Products = 2131034135;
@@ -2931,11 +2934,11 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050034
 			public const int Save = 2131034164;
 			
-			// aapt resource value: 0x7f050042
-			public const int SaveSuccess = 2131034178;
+			// aapt resource value: 0x7f050043
+			public const int SaveSuccess = 2131034179;
 			
-			// aapt resource value: 0x7f050044
-			public const int ServerUnreachable = 2131034180;
+			// aapt resource value: 0x7f050045
+			public const int ServerUnreachable = 2131034181;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Tel = 2131034158;
