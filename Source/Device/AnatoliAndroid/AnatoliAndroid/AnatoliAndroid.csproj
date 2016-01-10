@@ -138,6 +138,7 @@
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Components\AnatoliButton.cs" />
     <Compile Include="Components\AnatoliEditText.cs" />
+    <Compile Include="Components\AnatoliSlideShow.cs" />
     <Compile Include="Components\AnatoliSwitch.cs" />
     <Compile Include="Components\AnatoliTextView.cs" />
     <Compile Include="Components\TypeFaceProvider.cs" />

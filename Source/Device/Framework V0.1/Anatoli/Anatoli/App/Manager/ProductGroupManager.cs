@@ -17,7 +17,7 @@ namespace Anatoli.App.Manager
             try
             {
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups));
-                if (list.Count > 0)
+                if (list.Count == 0)
                 {
                     throw new Exception("Could not load groups data");
                 }
