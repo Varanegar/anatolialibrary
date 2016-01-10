@@ -11,13 +11,16 @@ namespace Anatoli.DataAccess.Configs
         public CustomerConfig()
         {
             this.HasMany<CustomerShipAddress>(csa => csa.CustomerShipAddresses)
-                .WithRequired(c => c.Customer);
+                .WithRequired(c => c.Customer)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<Basket>(csa => csa.CustomerBaskets)
-                .WithRequired(c => c.Customer);
+                .WithRequired(c => c.Customer)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<IncompletePurchaseOrder>(csa => csa.IncompletePurchaseOrders)
-                .WithRequired(c => c.Customer);
+                .WithRequired(c => c.Customer)
+                .WillCascadeOnDelete(false);
         }
     }
 }

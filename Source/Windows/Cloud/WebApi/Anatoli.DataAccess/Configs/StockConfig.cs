@@ -11,14 +11,28 @@ namespace Anatoli.DataAccess.Configs
     {
         public StockConfig()
         {
+            this.HasMany<Stock>(pg => pg.MainSCMStock1)
+                 .WithOptional(pg => pg.MainSCMStock2)
+                 .WillCascadeOnDelete(false);
+
+            this.HasMany<Stock>(pg => pg.RelatedSCMStock1)
+                 .WithOptional(pg => pg.RelatedSCMStock2)
+                 .WillCascadeOnDelete(false);
+
             this.HasMany<StockProduct>(pp => pp.StockProducts)
                 .WithRequired(p => p.Stock)
                 .WillCascadeOnDelete(false);
+
             this.HasMany<StockOnHandSync>(pp => pp.StockOnHandSyncs)
                 .WithRequired(p => p.Stock)
                 .WillCascadeOnDelete(false);
+
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
                 .WithRequired(p => p.Stock)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<StockProductRequest>(pp => pp.StockProductRequestSourceStocks)
+                .WithOptional(p => p.SupplyByStock)
                 .WillCascadeOnDelete(false);
 
             this.HasOptional<Principal>(p => p.Accept1By);

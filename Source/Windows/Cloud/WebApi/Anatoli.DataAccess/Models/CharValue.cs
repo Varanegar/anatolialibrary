@@ -2,10 +2,12 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
     public class CharValue : BaseModel
     {
+        [StringLength(200)]
         public string CharValueText { get; set; }
         public Nullable<decimal> CharValueFromAmount { get; set; }
         public Nullable<decimal> CharValueToAmount { get; set; }

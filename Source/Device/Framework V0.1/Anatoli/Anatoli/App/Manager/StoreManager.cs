@@ -73,5 +73,11 @@ namespace Anatoli.App.Manager
                 return false;
             }
         }
+
+        public static async Task<List<StoreDataModel>> DownloadStoreModels()
+        {
+            return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<StoreDataModel>>(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
+            var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView));
+        }
     }
 }

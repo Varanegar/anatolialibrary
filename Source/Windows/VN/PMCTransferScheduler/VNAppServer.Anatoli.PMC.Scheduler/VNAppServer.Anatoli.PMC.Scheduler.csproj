@@ -79,7 +79,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IAnatoliJob.cs" />
     <Compile Include="UploadStockOnHandForStockLogistic.cs" />
     <Compile Include="UploadLatestDataForStockLogistic.cs" />
     <Compile Include="UploadLatestPicturesForAnatoliPOS.cs" />

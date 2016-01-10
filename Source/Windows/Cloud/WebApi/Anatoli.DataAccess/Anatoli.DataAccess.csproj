@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
@@ -76,6 +79,7 @@
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
+    <Compile Include="Configs\IncompletePurchaseOrderLineItemConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
@@ -85,6 +89,8 @@
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
+    <Compile Include="Configs\StockProductRequestRuleTypeConfig.cs" />
+    <Compile Include="Configs\StockProductRequestTypeSupplyConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
     <Compile Include="Configs\PurchaseOrderConfig.cs" />
     <Compile Include="Configs\ProductTypeConfig.cs" />
@@ -97,6 +103,7 @@
     <Compile Include="Configs\StockOnHandSyncConfig.cs" />
     <Compile Include="Configs\StoreCalendarConfig.cs" />
     <Compile Include="Configs\StockConfig.cs" />
+    <Compile Include="Configs\SupplierConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
@@ -244,6 +251,62 @@
     <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.Designer.cs">
       <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601070851564_Spell-Check-1.cs" />
+    <Compile Include="Migrations\201601070851564_Spell-Check-1.Designer.cs">
+      <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081249007_Set-String-Length.cs" />
+    <Compile Include="Migrations\201601081249007_Set-String-Length.Designer.cs">
+      <DependentUpon>201601081249007_Set-String-Length.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081803461_Stock-Product-Rule-2.cs" />
+    <Compile Include="Migrations\201601081803461_Stock-Product-Rule-2.Designer.cs">
+      <DependentUpon>201601081803461_Stock-Product-Rule-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081820523_Stock-Product-Rule-3.cs" />
+    <Compile Include="Migrations\201601081820523_Stock-Product-Rule-3.Designer.cs">
+      <DependentUpon>201601081820523_Stock-Product-Rule-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081821204_Stock-Product-Rule-4.cs" />
+    <Compile Include="Migrations\201601081821204_Stock-Product-Rule-4.Designer.cs">
+      <DependentUpon>201601081821204_Stock-Product-Rule-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081833465_Cascasde-Delete-1.cs" />
+    <Compile Include="Migrations\201601081833465_Cascasde-Delete-1.Designer.cs">
+      <DependentUpon>201601081833465_Cascasde-Delete-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081929071_Cascasde-Delete-2.cs" />
+    <Compile Include="Migrations\201601081929071_Cascasde-Delete-2.Designer.cs">
+      <DependentUpon>201601081929071_Cascasde-Delete-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.cs" />
+    <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.Designer.cs">
+      <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.cs" />
+    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.Designer.cs">
+      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.cs" />
+    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.Designer.cs">
+      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601082317567_Stock-Request-16.cs" />
+    <Compile Include="Migrations\201601082317567_Stock-Request-16.Designer.cs">
+      <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601082322473_Stock-Request-17.cs" />
+    <Compile Include="Migrations\201601082322473_Stock-Request-17.Designer.cs">
+      <DependentUpon>201601082322473_Stock-Request-17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601082328562_Stock-Request-18.cs" />
+    <Compile Include="Migrations\201601082328562_Stock-Request-18.Designer.cs">
+      <DependentUpon>201601082328562_Stock-Request-18.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601091937297_Stock-Request-19.cs" />
+    <Compile Include="Migrations\201601091937297_Stock-Request-19.Designer.cs">
+      <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\ItemImage.cs" />
@@ -284,6 +347,8 @@
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
+    <Compile Include="Models\StockProductRequestRuleType.cs" />
+    <Compile Include="Models\StockProductRequestSupplyType.cs" />
     <Compile Include="Models\StockType.cs" />
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
@@ -441,6 +506,48 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.resx">
       <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601070851564_Spell-Check-1.resx">
+      <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081249007_Set-String-Length.resx">
+      <DependentUpon>201601081249007_Set-String-Length.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081803461_Stock-Product-Rule-2.resx">
+      <DependentUpon>201601081803461_Stock-Product-Rule-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081820523_Stock-Product-Rule-3.resx">
+      <DependentUpon>201601081820523_Stock-Product-Rule-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081821204_Stock-Product-Rule-4.resx">
+      <DependentUpon>201601081821204_Stock-Product-Rule-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081833465_Cascasde-Delete-1.resx">
+      <DependentUpon>201601081833465_Cascasde-Delete-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081929071_Cascasde-Delete-2.resx">
+      <DependentUpon>201601081929071_Cascasde-Delete-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081932083_Cascasde-Delete-3.resx">
+      <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081934211_Cascasde-Delete-4.resx">
+      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601081934511_Cascasde-Delete-5.resx">
+      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601082317567_Stock-Request-16.resx">
+      <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601082322473_Stock-Request-17.resx">
+      <DependentUpon>201601082322473_Stock-Request-17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601082328562_Stock-Request-18.resx">
+      <DependentUpon>201601082328562_Stock-Request-18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601091937297_Stock-Request-19.resx">
+      <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

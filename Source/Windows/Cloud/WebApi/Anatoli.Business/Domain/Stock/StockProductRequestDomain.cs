@@ -54,7 +54,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockProductRequestViewModel> dataViewModels)
+        public async Task<List<StockProductRequestViewModel>> PublishAsync(List<StockProductRequestViewModel> dataViewModels)
         {
             try
             {
@@ -67,15 +67,12 @@ namespace Anatoli.Business.Domain
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
-                        //if (currentData.StockProductRequestName != item.StockProductRequestName)
-                        //{
-                        //    currentData.StockProductRequestName = item.StockProductRequestName;
-                        //    currentData.LastUpdate = DateTime.Now;
-                        //    Repository.UpdateAsync(currentData);
-                        //}
+                        throw new NotImplementedException();
                     }
                     else
                     {
+                        throw new NotImplementedException();
+
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         Repository.AddAsync(item);
                     }
@@ -88,9 +85,10 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StockProductRequestViewModel> dataViewModels)
+        public async Task<List<StockProductRequestViewModel>> Delete(List<StockProductRequestViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -100,11 +98,12 @@ namespace Anatoli.Business.Domain
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(data);
+                    Repository.DbContext.StockProductRequests.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

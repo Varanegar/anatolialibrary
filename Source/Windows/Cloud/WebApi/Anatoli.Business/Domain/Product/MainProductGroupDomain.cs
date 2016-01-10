@@ -53,10 +53,12 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<MainProductGroupViewModel> dataViewModels)
+        public async Task<List<MainProductGroupViewModel>> PublishAsync(List<MainProductGroupViewModel> dataViewModels)
         {
             try
             {
+                if (dataViewModels.Count == 0) return dataViewModels;
+
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
                 var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
@@ -103,23 +105,41 @@ namespace Anatoli.Business.Domain
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
                 log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<MainProductGroupViewModel> dataViewModels)
+        public async Task<List<MainProductGroupViewModel>> Delete(List<MainProductGroupViewModel> dataViewModels)
         {
-            await Task.Factory.StartNew(() =>
+            try
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                await Task.Factory.StartNew(() =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(product);
-                });
+                    var dataList = Proxy.ReverseConvert(dataViewModels);
 
-                Repository.SaveChangesAsync();
-            });
+                    dataList.ForEach(item =>
+                    {
+                        var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+
+                        Repository.DbContext.MainProductGroups.Remove(data);
+                    });
+
+                    Repository.SaveChangesAsync();
+                });
+            }
+            catch (Exception ex)
+            {
+                log.Error("PublishAsync", ex);
+                throw ex;
+            }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
+            }
+            return dataViewModels;
+
         }
         #endregion
     }

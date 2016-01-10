@@ -62,13 +62,13 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(customers.ToList()); ;
         }
 
-        public async Task PublishAsync(List<CustomerViewModel> customerViewModels)
+        public async Task<List<CustomerViewModel>> PublishAsync(List<CustomerViewModel> dataViewModels)
         {
             try
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var customers = Proxy.ReverseConvert(customerViewModels);
+                var customers = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 customers.ForEach(item =>
@@ -120,15 +120,17 @@ namespace Anatoli.Business.Domain
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + customerViewModels.Count);
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<CustomerViewModel> customerViewModels)
+        public async Task<List<CustomerViewModel>> Delete(List<CustomerViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var customers = Proxy.ReverseConvert(customerViewModels);
+                var customers = Proxy.ReverseConvert(dataViewModels);
 
                 customers.ForEach(item =>
                 {
@@ -139,6 +141,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public Customer SetBasketData(Customer data, List<Basket> baskets, AnatoliDbContext context)

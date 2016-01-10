@@ -322,13 +322,13 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     SELECT
 	                    Er.UniqueId as UniqueIdString,
 	                    Er.ParentUniqueId as ParentUniqueIdString,
-                         ER.ProductGroupTreeId as ID,
+                         ER.ProductGroupTreeId as Row,
                          ER.ParentId as ParentId,
 	                     ER.Title as GroupName,
 	                     ER.CharGroupId as CharGroupIdString,
                          --ER.thePath,
                          ER.Level as NLevel,
-                         ER.Row,
+                         ER.Row as Id,
                          (ER.Row * 2) - ER.Level AS NLeft,
                          ((ER.Row * 2) - ER.Level) + 
                             (
@@ -389,13 +389,13 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     SELECT
 	                    Er.UniqueId as UniqueIdString,
 	                    Er.ParentUniqueId as ParentUniqueIdString,
-                         ER.ProductGroupTreeId as ID,
+                         ER.ProductGroupTreeId as Row,
                          ER.ParentId as ParentId,
 	                     ER.Title as GroupName,
 	                     ER.CharGroupId as CharGroupIdString,
                          --ER.thePath,
                          ER.Level as NLevel,
-                         ER.Row,
+                         ER.Row as ID,
                          (ER.Row * 2) - ER.Level AS NLeft,
                          ((ER.Row * 2) - ER.Level) + 
                             (

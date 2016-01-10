@@ -139,6 +139,10 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VNAppServer.Anatoli.Common\VNAppServer.Anatoli.Common.csproj">
+      <Project>{6a231a4c-f960-4a7c-a6ed-120dcea3d49e}</Project>
+      <Name>VNAppServer.Anatoli.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VNAppServer.Common\VNAppServer.Common.csproj">
       <Project>{397ffbf5-67dc-4dcf-bbde-a145f99be2d2}</Project>
       <Name>VNAppServer.Common</Name>

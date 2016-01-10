@@ -22,33 +22,59 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("fiscalyears")]
         public async Task<IHttpActionResult> GetFiscalYears(string privateOwnerId)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var fiscalYearDomain = new FiscalYearDomain(owner);
-            var result = await fiscalYearDomain.GetAll();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var fiscalYearDomain = new FiscalYearDomain(owner);
+                var result = await fiscalYearDomain.GetAll();
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
+
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("fiscalyears/after")]
         public async Task<IHttpActionResult> GetFiscalYears(string privateOwnerId, string dateAfter)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var fiscalYearDomain = new FiscalYearDomain(owner);
-            var validDate = DateTime.Parse(dateAfter);
-            var result = await fiscalYearDomain.GetAllChangedAfter(validDate);
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var fiscalYearDomain = new FiscalYearDomain(owner);
+                var validDate = DateTime.Parse(dateAfter);
+                var result = await fiscalYearDomain.GetAllChangedAfter(validDate);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("save")]
         public async Task<IHttpActionResult> SaveFiscalYears(string privateOwnerId, List<FiscalYearViewModel> data)
         {
-            var owner = Guid.Parse(privateOwnerId);
-            var fiscalYearDomain = new FiscalYearDomain(owner);
-            await fiscalYearDomain.PublishAsync(data);
-            return Ok();
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var fiscalYearDomain = new FiscalYearDomain(owner);
+                var result = await fiscalYearDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
+
     }
 }

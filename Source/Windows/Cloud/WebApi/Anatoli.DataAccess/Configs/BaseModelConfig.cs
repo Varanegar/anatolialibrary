@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Configs
     {
         public BaseModelConfig()
         {
-            this.HasRequired<Principal>(p => p.PrivateLabelOwner);
+            this.HasRequired<Principal>(p => p.PrivateLabelOwner).WithRequiredDependent().WillCascadeOnDelete(false);
             this.HasOptional<Principal>(p => p.AddedBy);
             this.HasOptional<Principal>(p => p.LastModifiedBy);
         }

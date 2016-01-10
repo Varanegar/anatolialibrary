@@ -21,7 +21,7 @@ using Android.Locations;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "آناتولی", Icon = "@drawable/icon")]
+    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon")]
     public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;
@@ -30,7 +30,7 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
@@ -92,13 +92,12 @@ namespace AnatoliAndroid.Activities
             try
             {
                 await StoreManager.GetDefaultAsync();
-                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 AnatoliApp.GetInstance().SetFragment<StoresListFragment>(null, "stores_fragment");
             }
-
 
         }
 
@@ -146,12 +145,12 @@ namespace AnatoliAndroid.Activities
 
         public void OnProviderDisabled(string provider)
         {
-            
+
         }
 
         public void OnProviderEnabled(string provider)
         {
-            
+
         }
 
         public void OnStatusChanged(string provider, Availability status, Bundle extras)
@@ -190,6 +189,11 @@ namespace AnatoliAndroid.Activities
             if (LocationManagerStatusChanged != null)
                 LocationManagerStatusChanged(this, EventArgs.Empty);
         }
+    }
+
+    public class TestClass
+    {
+        public string name { get; set; }
     }
 
 }

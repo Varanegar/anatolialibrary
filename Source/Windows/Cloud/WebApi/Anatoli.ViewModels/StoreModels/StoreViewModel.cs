@@ -7,19 +7,19 @@ namespace Anatoli.ViewModels.StoreModels
 {
     public class StoreViewModel : BaseViewModel
     {
-        public int CenterId { get; set; }
-        public int StoreCode { get; set; }
-        public string StoreName { get; set; }
-        public string Address { get; set; }
-        public long Lat { get; set; }
-        public long Lng { get; set; }
-        public bool HasDelivery { get; set; }
-        public Guid GradeValueId { get; set; }
-        public Guid StoreTemplateId { get; set; }
-        public bool HasCourier { get; set; }
-        public bool SupportAppOrder { get; set; }
-        public bool SupportWebOrder { get; set; }
-        public bool SupportCallCenterOrder { get; set; }
+        public int centerId { get; set; }
+        public int storeCode { get; set; }
+        public string storeName { get; set; }
+        public string address { get; set; }
+        public long lat { get; set; }
+        public long lng { get; set; }
+        public bool hasDelivery { get; set; }
+        public Guid gradeValueId { get; set; }
+        public Guid storeTemplateId { get; set; }
+        public bool hasCourier { get; set; }
+        public bool supportAppOrder { get; set; }
+        public bool supportWebOrder { get; set; }
+        public bool supportCallCenterOrder { get; set; }
 
         public List<StoreCalendarViewModel> StoreCalendar { get; set; }
         public List<CityRegionViewModel> StoreValidRegionInfo { get; set; }

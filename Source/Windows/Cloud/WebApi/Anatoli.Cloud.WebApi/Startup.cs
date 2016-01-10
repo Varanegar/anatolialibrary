@@ -14,6 +14,7 @@ using Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web;

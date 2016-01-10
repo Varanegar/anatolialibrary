@@ -70,6 +70,8 @@
     <Compile Include="StockModels\StockProductRequestProductViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestRuleViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestStatusViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestRuleTypeViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestSupplyTypeViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestTypeViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestViewModel.cs" />
     <Compile Include="StockModels\StockProductViewModel.cs" />

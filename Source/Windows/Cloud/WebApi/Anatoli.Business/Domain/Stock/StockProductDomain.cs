@@ -62,10 +62,12 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockProductViewModel> dataViewModels)
+        public async Task<List<StockProductViewModel>> PublishAsync(List<StockProductViewModel> dataViewModels)
         {
             try
             {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
@@ -111,9 +113,15 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            finally
+            {
+                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                log.Info("PublishAsync Finish" + dataViewModels.Count);
+            }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StockProductViewModel> dataViewModels)
+        public async Task<List<StockProductViewModel>> Delete(List<StockProductViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -123,11 +131,13 @@ namespace Anatoli.Business.Domain
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(data);
+                    Repository.DbContext.StockProducts.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+
+            return dataViewModels;
         }
         #endregion
     }

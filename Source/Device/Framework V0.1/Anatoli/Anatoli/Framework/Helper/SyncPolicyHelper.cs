@@ -34,14 +34,22 @@ namespace Anatoli.Framework.Helper
 
         public SYNC_POLICY GetModelSyncPolicy(Type modelType)
         {
-            //if (modelType == typeof(ProductModel))
-            //{
-            //    return SYNC_POLICY.OnlineIfConnected;
-            //}
-            //else if (modelType == typeof(ProductImage))
-            //{
-            //    return SYNC_POLICY.OnlineIfWifi;
-            //}
+            if (modelType == typeof(ProductGroupModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
+            if (modelType == typeof(ProductUpdateModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
+            if (modelType == typeof(ProductModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
+            else if (modelType == typeof(ProductImage))
+            {
+                return SYNC_POLICY.OnlineIfWifi;
+            }
             return SYNC_POLICY.Offline;
         }
         public class SyncPolicyException : Exception

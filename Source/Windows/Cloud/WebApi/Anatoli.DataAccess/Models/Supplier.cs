@@ -8,6 +8,7 @@ namespace Anatoli.DataAccess.Models
         public string SupplierName { get; set; }
         public bool OrderAllProduct { get; set; }
 
+        public virtual ICollection<StockProductRequestRule> StockProductRequestRules { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }

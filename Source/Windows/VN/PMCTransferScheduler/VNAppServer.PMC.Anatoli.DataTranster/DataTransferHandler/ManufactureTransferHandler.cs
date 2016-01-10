@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
+using VNAppServer.Anatoli.Common;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -26,8 +27,8 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var supplier = ManufactureAdapter.Instance.GetAllManufactures(lastUpload);
 
                 string data =JsonConvert.SerializeObject(supplier);
-                string URI = serverURI + BaseInfo.SaveManufactureURI + privateOwnerQueryString;
-                var result = Utility.CallServerService(data, URI, client);
+                string URI = serverURI + UriInfo.SaveManufactureURI + privateOwnerQueryString;
+                var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 Utility.SetLastUploadTime(ManufactureDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

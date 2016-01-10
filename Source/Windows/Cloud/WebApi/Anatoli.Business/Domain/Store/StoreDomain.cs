@@ -60,11 +60,11 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(stores.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StoreViewModel> StoreViewModels)
+        public async Task<List<StoreViewModel>> PublishAsync(List<StoreViewModel> dataViewModels)
         {
             try
             {
-                var stores = Proxy.ReverseConvert(StoreViewModels);
+                var stores = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (Store item in stores)
@@ -103,13 +103,14 @@ namespace Anatoli.Business.Domain
                 throw ex;
                 log.Error("PublishAsync", ex);
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StoreViewModel> StoreViewModels)
+        public async Task<List<StoreViewModel>> Delete(List<StoreViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var stores = Proxy.ReverseConvert(StoreViewModels);
+                var stores = Proxy.ReverseConvert(dataViewModels);
 
                 stores.ForEach(item =>
                 {
@@ -120,6 +121,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public async Task<Store> SetStoreCalendarData(Store data, List<StoreCalendar> storeCalendars, AnatoliDbContext context)

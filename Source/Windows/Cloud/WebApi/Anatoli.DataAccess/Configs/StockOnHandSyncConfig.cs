@@ -11,11 +11,16 @@ namespace Anatoli.DataAccess.Configs
         public StockOnHandSyncConfig()
         {
             this.HasMany<StockActiveOnHand>(pp => pp.StockActiveOnHands)
-                .WithRequired(p => p.StockOnHandSync);
+                .WithRequired(p => p.StockOnHandSync)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<StockHistoryOnHand>(pp => pp.StockHistoryOnHands)
-                .WithRequired(p => p.StockOnHandSync);
+                .WithRequired(p => p.StockOnHandSync)
+                .WillCascadeOnDelete(true);
+
             this.HasMany<StockProductRequest>(pp => pp.StockProductRequests)
-                .WithRequired(p => p.StockOnHandSync);
+                .WithRequired(p => p.StockOnHandSync)
+                .WillCascadeOnDelete(false);
         }
     }
 }

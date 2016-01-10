@@ -2,18 +2,26 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
     public class Customer : BaseModel
     {
         public Nullable<long> CustomerCode { get; set; }
+        [StringLength(200)]
         public string CustomerName { get; set; }
         public Nullable<DateTime> BirthDay { get; set; }
+        [StringLength(20)]
         public string Phone { get; set; }
+        [StringLength(20)]
         public string Mobile { get; set; }
+        [StringLength(500)]
         public string Email { get; set; }
+        [StringLength(500)]
         public string Address { get; set; }
+        [StringLength(20)]
         public string PostalCode { get; set; }
+        [StringLength(20)]
         public string NationalCode { get; set; }
         [ForeignKey("RegionInfo"), Column(Order = 0)]
         public Nullable<Guid> RegionInfoId { get; set; }

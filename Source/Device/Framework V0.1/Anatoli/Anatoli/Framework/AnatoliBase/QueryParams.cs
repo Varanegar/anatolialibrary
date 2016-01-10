@@ -113,13 +113,16 @@ namespace Anatoli.Framework.AnatoliBase
     }
     public class RemoteQuery : Query
     {
-        public RemoteQuery(string WebServiceEndpoint, params QueryParameter[] options)
+        public TokenType TokenType { get; private set; }
+        public RemoteQuery(TokenType token, string WebServiceEndpoint, params QueryParameter[] options)
         {
             this.WebServiceEndpoint = WebServiceEndpoint;
+            this.TokenType = token;
         }
-        public RemoteQuery(string WebServiceEndpoint, List<QueryParameter> options)
+        public RemoteQuery(TokenType token, string WebServiceEndpoint, List<QueryParameter> options)
         {
             this.WebServiceEndpoint = WebServiceEndpoint;
+            this.TokenType = token;
         }
         public string WebServiceEndpoint { get; set; }
         public List<Tuple<string, string>> Params
@@ -153,7 +156,8 @@ namespace Anatoli.Framework.AnatoliBase
     public class StringQuery : DBQuery
     {
         string _query;
-        public StringQuery(string query) : base(null)
+        public StringQuery(string query)
+            : base(null)
         {
             _query = query;
         }

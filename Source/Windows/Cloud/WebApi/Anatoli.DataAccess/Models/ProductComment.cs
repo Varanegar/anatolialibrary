@@ -2,6 +2,7 @@ namespace Anatoli.DataAccess.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public class ProductComment : BaseModel
     {
@@ -9,7 +10,9 @@ namespace Anatoli.DataAccess.Models
         public TimeSpan CommentTime { get; set; }
         public int Value { get; set; }
         public Nullable<Guid> CommentBy { get; set; }
+        [StringLength(100)]
         public string CommentByName { get; set; }
+        [StringLength(50)]
         public string CommentByEmailAddress { get; set; }
         public Nullable<byte> IsApproved { get; set; }
         //public Nullable<Guid> ProductId { get; set; }

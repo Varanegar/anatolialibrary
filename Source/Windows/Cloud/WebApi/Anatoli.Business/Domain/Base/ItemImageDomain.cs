@@ -52,11 +52,11 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(itemImages.ToList()); ;
         }
 
-        public async Task PublishAsync(List<ItemImageViewModel> itemImageViewModels)
+        public async Task<List<ItemImageViewModel>> PublishAsync(List<ItemImageViewModel> dataViewModels)
         {
             try
             {
-                var itemImages = Proxy.ReverseConvert(itemImageViewModels);
+                var itemImages = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 foreach (ItemImage item in itemImages)
@@ -85,23 +85,26 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
+
         }
 
-        public async Task Delete(List<ItemImageViewModel> itemImageViewModels)
+        public async Task<List<ItemImageViewModel>> Delete(List<ItemImageViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
-                var itemImages = Proxy.ReverseConvert(itemImageViewModels);
+                var itemImages = Proxy.ReverseConvert(dataViewModels);
 
                 itemImages.ForEach(item =>
                 {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                    
-                    Repository.DeleteAsync(product);
+                    Repository.DbContext.Images.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
 

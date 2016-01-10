@@ -11,13 +11,16 @@ namespace Anatoli.DataAccess.Configs
         public CalendarTemplateConfig()
         {
             this.HasMany<CalendarTemplateHoliday>(cr => cr.CalendarTemplateHolidays)
-                .WithOptional(svr => svr.CalendarTemplate);
+                .WithOptional(svr => svr.CalendarTemplate)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<CalendarTemplateOpenTime>(cr => cr.CalendarTemplateOpenTimes)
-                .WithOptional(svr => svr.CalendarTemplate);
+                .WithOptional(svr => svr.CalendarTemplate)
+                .WillCascadeOnDelete(true);
 
             this.HasMany<StoreCalendarHistory>(cr => cr.StoreCalendarHistories)
-                .WithOptional(svr => svr.CalendarTemplate);
+                .WithOptional(svr => svr.CalendarTemplate)
+                .WillCascadeOnDelete(false); 
 
         }
     }

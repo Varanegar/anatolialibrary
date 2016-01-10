@@ -132,6 +132,7 @@
     <Compile Include="Proxy\Concretes\ProductConcretes\CharValueProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\MainProductGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\ProductCompleteInfoProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductRateProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductPicture.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductTypeProxy.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Proxy\Concretes\StockConcretes\StockProductRequestRuleProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockProductRequestStatusProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockProductRequestTypeProxy.cs" />
+    <Compile Include="Proxy\Concretes\StockConcretes\StockCompleteInfoProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreConcretes\StoreActiveOnhandProxy.cs" />

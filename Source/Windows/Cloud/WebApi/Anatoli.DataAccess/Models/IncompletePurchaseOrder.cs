@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public class IncompletePurchaseOrder : BaseModel
@@ -16,8 +17,10 @@
         public Guid? PaymentTypeId { get; set; }
         public string OrderShipAddress { get; set; }
         //تحویل گیرنده
+        [StringLength(100)]
         public string Transferee { get; set; }
         //تلفن تحویل گیرنده
+        [StringLength(20)]
         public string Phone { get; set; }
         public DateTime? DeliveryFromTime { get; set; }
         public DateTime? DeliveryToTime { get; set; }

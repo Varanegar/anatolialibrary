@@ -16,5 +16,11 @@ namespace Anatoli.ViewModels.StockModels
         public Guid? Accept2ById { get; set; }
         public Guid? Accept3ById { get; set; }
         public Guid? StockTypeId { get; set; }
+        public Guid? MainSCMStockId { get; set; }
+        public Guid? RelatedSCMStockId { get; set; }
+        public Guid? LatestStockOnHandSyncId { get; set; }
+
+        public List<StockProductViewModel> StockProduct { get; set; }
+        public List<StockActiveOnHandViewModel> StockActiveOnHand { get; set; }
     }
 }

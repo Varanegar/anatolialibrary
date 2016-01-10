@@ -71,7 +71,7 @@ namespace Anatoli.Business.Domain
         }
 
 
-        public async Task PublishAsync(List<StockActiveOnHandViewModel> dataViewModels)
+        public async Task<List<StockActiveOnHandViewModel>> PublishAsync(List<StockActiveOnHandViewModel> dataViewModels)
         {
             try
             {
@@ -94,9 +94,10 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StockActiveOnHandViewModel> dataViewModels)
+        public async Task<List<StockActiveOnHandViewModel>> Delete(List<StockActiveOnHandViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -111,6 +112,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
 
         public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, Principal privateOwnerId, AnatoliDbContext context)

@@ -10,6 +10,7 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
+using Anatoli.Business.Proxy.Concretes.StockConcretes;
 
 namespace Anatoli.Business.Domain
 {
@@ -17,6 +18,7 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         public IAnatoliProxy<Stock, StockViewModel> Proxy { get; set; }
+        public IAnatoliProxy<Stock, StockViewModel> ProxyCompleteInfo { get; set; }
         public IRepository<Stock> Repository { get; set; }
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid PrivateLabelOwnerId { get; private set; }
@@ -27,13 +29,14 @@ namespace Anatoli.Business.Domain
         StockDomain() { }
         public StockDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Stock, StockViewModel>.Create())
+            : this(new StockRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockProxy).FullName), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockCompleteInfoProxy).FullName))
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public StockDomain(IStockRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Stock, StockViewModel> proxy)
+        public StockDomain(IStockRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Stock, StockViewModel> proxy, IAnatoliProxy<Stock, StockViewModel> completeProxy)
         {
             Proxy = proxy;
+            ProxyCompleteInfo = completeProxy;
             Repository = dataRepository;
             PrincipalRepository = principalRepository;
         }
@@ -55,6 +58,22 @@ namespace Anatoli.Business.Domain
             }
         }
 
+        public async Task<List<StockViewModel>> GetStockCompleteInfo(string stockId)
+        {
+            try
+            {
+                Guid stockGuid = Guid.Parse(stockId);
+                var dataList = await Repository.FindAllAsync(p => p.Id == stockGuid);
+
+                return ProxyCompleteInfo.Convert(dataList.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll", ex);
+                throw ex;
+            }
+        }
+
         public async Task<List<StockViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
@@ -62,7 +81,7 @@ namespace Anatoli.Business.Domain
             return Proxy.Convert(dataList.ToList()); ;
         }
 
-        public async Task PublishAsync(List<StockViewModel> dataViewModels)
+        public async Task<List<StockViewModel>> PublishAsync(List<StockViewModel> dataViewModels)
         {
             try
             {
@@ -84,7 +103,8 @@ namespace Anatoli.Business.Domain
                         currentData.StockName = item.StockName;
                         currentData.StockTypeId = item.StockTypeId;
                         currentData.StoreId = item.StoreId;
-
+                        currentData.MainSCMStock2Id = item.MainSCMStock2Id;
+                        currentData.RelatedSCMStock2Id = item.RelatedSCMStock2Id;
                         currentData.LastUpdate = DateTime.Now;
                         Repository.UpdateAsync(currentData);
                     }
@@ -102,9 +122,11 @@ namespace Anatoli.Business.Domain
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
+
+            return dataViewModels;
         }
 
-        public async Task Delete(List<StockViewModel> dataViewModels)
+        public async Task<List<StockViewModel>> Delete(List<StockViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -119,6 +141,7 @@ namespace Anatoli.Business.Domain
 
                 Repository.SaveChangesAsync();
             });
+            return dataViewModels;
         }
         #endregion
     }

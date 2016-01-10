@@ -14,36 +14,7 @@ namespace VNAppServer.Anatoli.PMC.Helpers
     public static class Utility
     {
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static string CallServerService(string data, string URI, HttpClient client)
-        {
-            try
-            {
-                HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                var result = client.PostAsync(URI, content).Result;
-                return result.Content.ReadAsStringAsync().Result;
-                return null;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Fail CallServerService URI :" + URI, ex);
-                return null;
-            }
-        }
-        public static string CallServerService(List<ItemImageViewModel> dataList, HttpClient client, string URI)
-        {
-            dataList.ForEach(item =>
-            {
-                var requestContent = new MultipartFormDataContent();
-                var imageContent = new ByteArrayContent(item.image);
-                imageContent.Headers.ContentType =
-                    MediaTypeHeaderValue.Parse("image/jpeg");
-
-                requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
-                var response = client.PostAsync(URI + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
-            }
-            );
-            return null;
-        }
+        
 
         public static DateTime GetLastUploadTime(string dataType)
         {

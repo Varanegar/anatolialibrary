@@ -52,26 +52,20 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 Desctription = data.Desctription,
-                LargePicURL = "",
-                SmallPicURL = "",
                 PackVolume = data.PackVolume,
                 PackWeight = data.PackWeight,
                 ProductCode = data.ProductCode,
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
-
-                //PackUnitId=data.PackUnitValueId
-                //ProductTypeId=data.ProductTypeValueId,
-                //RateValue=data.ProductRates,
-                //TaxCategoryId=data.TaxCategoryValueId,
+                ProductTypeId = data.ProductTypeId,
+                QtyPerPack = data.QtyPerPack,
 
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
-                ManufactureIdString  = (data.Manufacture == null) ? null : data.Manufacture.Id.ToString(),
-                ProductGroupIdString = (data.ProductGroup == null) ? null : data.ProductGroup.Id.ToString(),
-                MainProductGroupIdString = (data.MainProductGroup == null) ? null : data.MainProductGroup.Id.ToString(),
-                Suppliers = (data.Suppliers == null) ? null : SupplierProxy.Convert(data.Suppliers.ToList()),
-                CharValues = (data.CharValues == null) ? null : CharValueProxy.Convert(data.CharValues.ToList()),
+                ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
+                ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
+                MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
+                MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
             };
         }
 
@@ -87,6 +81,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductCode = data.ProductCode,
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
+                QtyPerPack = (data.QtyPerPack==0)?1:data.QtyPerPack,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
                 Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
