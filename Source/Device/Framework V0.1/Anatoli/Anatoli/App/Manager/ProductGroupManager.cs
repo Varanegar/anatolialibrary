@@ -22,12 +22,13 @@ namespace Anatoli.App.Manager
                     throw new Exception("Could not load groups data");
                 }
                 //var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductGroupModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductGroups);
+                int c = await LocalUpdateAsync(new DeleteCommand("categories"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        InsertCommand command = new InsertCommand("categories", new BasicParam("cat_id", item.UniqueIdString),
+                        InsertCommand command = new InsertCommand("categories", new BasicParam("cat_id", item.UniqueId),
                             new BasicParam("cat_name", item.GroupName),
                             new BasicParam("cat_parent", item.ParentUniqueIdString),
                             new BasicParam("cat_left", item.NLeft.ToString()),
