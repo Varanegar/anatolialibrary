@@ -237,22 +237,6 @@
     <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.cs" />
-    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.Designer.cs">
-      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.cs" />
-    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.Designer.cs">
-      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.cs" />
-    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.Designer.cs">
-      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.cs" />
-    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.Designer.cs">
-      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201601070851564_Spell-Check-1.cs" />
     <Compile Include="Migrations\201601070851564_Spell-Check-1.Designer.cs">
       <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
@@ -284,14 +268,6 @@
     <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.cs" />
     <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.Designer.cs">
       <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.cs" />
-    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.Designer.cs">
-      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.cs" />
-    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.Designer.cs">
-      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201601082317567_Stock-Request-16.cs" />
     <Compile Include="Migrations\201601082317567_Stock-Request-16.Designer.cs">
@@ -509,18 +485,6 @@
     <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051022553_Incomplete-PurchaseOrder.resx">
-      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.resx">
-      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.resx">
-      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.resx">
-      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601070851564_Spell-Check-1.resx">
       <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
     </EmbeddedResource>
@@ -544,12 +508,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601081932083_Cascasde-Delete-3.resx">
       <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081934211_Cascasde-Delete-4.resx">
-      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081934511_Cascasde-Delete-5.resx">
-      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601082317567_Stock-Request-16.resx">
       <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
