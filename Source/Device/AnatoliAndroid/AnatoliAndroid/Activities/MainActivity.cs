@@ -22,7 +22,7 @@ using Anatoli.App;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon")]
+    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon", ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
     public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;
