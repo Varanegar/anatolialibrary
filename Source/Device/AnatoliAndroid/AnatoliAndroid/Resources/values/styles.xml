@@ -73,7 +73,7 @@
   <style name="ListBackContent">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">@dimen/height_list</item>
-    <item name="android:background">@drawable/background_item</item>
+    <item name="android:background">@color/background_list_front</item>
     <item name="android:paddingLeft">@dimen/padding_default</item>
     <item name="android:gravity">center</item>
   </style>

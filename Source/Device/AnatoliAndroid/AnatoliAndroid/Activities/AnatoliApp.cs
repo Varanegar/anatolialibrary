@@ -148,6 +148,14 @@ namespace AnatoliAndroid.Activities
                 else
                     HideKeyboard(_searchEditText);
             };
+            _searchEditText.EditorAction += async (s, e) =>
+            {
+                if (e.ActionId == ImeAction.Done)
+                {
+                    await Search(_searchEditText.Text);
+                    CloseSearchBar();
+                }
+            };
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
             _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);

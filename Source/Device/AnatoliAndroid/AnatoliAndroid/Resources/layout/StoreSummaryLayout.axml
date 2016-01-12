@@ -4,81 +4,80 @@
     p1:layout_width="match_parent"
     p1:layout_height="wrap_content"
     p1:id="@+id/storeSummaryRelativeLayout">
-  <ImageView
-      p1:src="@drawable/ic_location_on_gray_24dp"
-      p1:id="@+id/mapIconImageView"
-      p1:layout_width="wrap_content"
-      p1:layout_alignParentRight="true"
-      p1:layout_height="wrap_content"
-      p1:layout_centerVertical="true"
-      p1:layout_marginRight="10dp" />
-  <ImageView
-      p1:layout_width="65dp"
-      p1:layout_height="65dp"
-      p1:id="@+id/storeImageImageView"
-      p1:layout_toLeftOf="@id/mapIconImageView"
-      p1:src="@drawable/igmart"
-      p1:layout_centerVertical="true"
-      p1:layout_margin="10dp" />
-  <View
-      p1:layout_width="match_parent"
-      p1:layout_height="2dp"
-      p1:id="@+id/horizontalLineView"
-      p1:background="@color/lightgray" />
-  <AnatoliAndroid.Components.AnatoliTextView
-      p1:textAppearance="?android:attr/textAppearanceSmall"
-      p1:id="@+id/storeStatusTextView"
-      local:customFont="Fonts/anatoli.ttf"
-      p1:layout_gravity="right"
-      p1:gravity="center"
-      p1:layout_width="70dp"
-      p1:layout_height="30dp"
-      p1:layout_alignParentLeft="true"
-      p1:layout_centerVertical="true"
-      p1:layout_margin="20dp"
-      p1:background="@drawable/textcorner"
-      p1:textSize="13dp" />
-  <LinearLayout
-      p1:orientation="vertical"
-      p1:minWidth="50dp"
-      p1:minHeight="50dp"
-      p1:layout_width="wrap_content"
-      p1:layout_height="wrap_content"
-      p1:id="@+id/storeSummaryInfoLinearLayout"
-      p1:layout_toRightOf="@id/storeStatusTextView"
-      p1:layout_margin="5dp"
-      p1:padding="5dp"
-      p1:layout_toLeftOf="@id/storeImageImageView">
-    <AnatoliAndroid.Components.AnatoliTextView
-        p1:text="نام فروشگاه"
-        p1:textAppearance="?android:attr/textAppearanceSmall"
-        p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
-        p1:id="@+id/storeNameTextView"
-        p1:gravity="right"
-        local:customFont="Fonts/anatoli.ttf"
-        p1:layout_gravity="right"
-        p1:textSize="15dp" />
-
-    <AnatoliAndroid.Components.AnatoliTextView
-        p1:text="آدرس"
-        p1:textAppearance="?android:attr/textAppearanceSmall"
-        p1:id="@+id/storeAddressTextView"
-        p1:textDirection="rtl"
-        p1:gravity="right"
-        p1:layout_gravity="right"
-        p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
-        local:customFont="Fonts/anatoli.ttf"
-        p1:textSize="12dp" />
-    <AnatoliAndroid.Components.AnatoliTextView
-        p1:text="فاصله"
-        p1:textAppearance="?android:attr/textAppearanceSmall"
-        p1:id="@+id/distanceTextView"
-        p1:gravity="right"
+    <ImageView
+        p1:src="@drawable/ic_location_on_gray_24dp"
+        p1:id="@+id/mapIconImageView"
+        p1:layout_width="20dp"
+        p1:layout_alignParentRight="true"
+        p1:layout_height="40dp"
+        p1:layout_centerVertical="true"
+        p1:layout_marginRight="10dp" />
+    <ImageView
+        p1:layout_width="65dp"
+        p1:layout_height="65dp"
+        p1:id="@+id/storeImageImageView"
+        p1:layout_toLeftOf="@id/mapIconImageView"
+        p1:src="@drawable/igmart"
+        p1:layout_centerVertical="true"
+        p1:layout_margin="10dp" />
+    <View
         p1:layout_width="match_parent"
-        p1:layout_height="wrap_content"
+        p1:layout_height="2dp"
+        p1:id="@+id/horizontalLineView"
+        p1:background="@color/lightgray" />
+    <AnatoliAndroid.Components.AnatoliTextView
+        p1:textAppearance="?android:attr/textAppearanceSmall"
+        p1:id="@+id/storeStatusTextView"
         local:customFont="Fonts/anatoli.ttf"
-        p1:textSize="10dp" />
-  </LinearLayout>
+        p1:layout_gravity="right"
+        p1:gravity="center"
+        p1:layout_width="70dp"
+        p1:layout_height="30dp"
+        p1:layout_alignParentLeft="true"
+        p1:layout_centerVertical="true"
+        p1:layout_margin="20dp"
+        p1:background="@drawable/textcorner"
+        p1:textSize="13dp" />
+    <LinearLayout
+        p1:orientation="vertical"
+        p1:minWidth="50dp"
+        p1:minHeight="50dp"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:id="@+id/storeSummaryInfoLinearLayout"
+        p1:layout_toRightOf="@id/storeStatusTextView"
+        p1:layout_margin="5dp"
+        p1:padding="5dp"
+        p1:layout_toLeftOf="@id/storeImageImageView">
+        <AnatoliAndroid.Components.AnatoliTextView
+            p1:text="نام فروشگاه"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/storeNameTextView"
+            p1:gravity="right"
+            local:customFont="Fonts/anatoli.ttf"
+            p1:layout_gravity="right"
+            p1:textSize="15dp" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            p1:text="آدرس"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:id="@+id/storeAddressTextView"
+            p1:textDirection="rtl"
+            p1:gravity="right"
+            p1:layout_gravity="right"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            local:customFont="Fonts/anatoli.ttf"
+            p1:textSize="12dp" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            p1:text="فاصله"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:id="@+id/distanceTextView"
+            p1:gravity="right"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            local:customFont="Fonts/anatoli.ttf"
+            p1:textSize="10dp" />
+    </LinearLayout>
 </RelativeLayout>
