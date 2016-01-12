@@ -313,16 +313,15 @@ namespace AnatoliAndroid.Activities
                         if (_productsListF != null)
                         {
                             _productsListF.ExitSearchMode();
-                            _productsListF.SetCatId(0);
+                            await _productsListF.SetCatId(null);
                         }
-                        var temp = CategoryManager.GetCategories(0);
+                        var temp = CategoryManager.GetFirstLevel();
                         var categories = new List<DrawerItemType>();
                         categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                        var current = CategoryManager.GetParentCategory(0);
-                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.AllProducts, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
                         foreach (var item in temp)
                         {
-                            var it = new DrawerPCItem(item.catId, item.name);
+                            var it = new DrawerPCItem(item.cat_id, item.cat_name);
                             categories.Add(it);
                         }
                         AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -404,35 +403,35 @@ namespace AnatoliAndroid.Activities
                 if (_productsListF != null)
                 {
                     _productsListF.ExitSearchMode();
-                    _productsListF.SetCatId(0);
                 }
                 if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
                 {
-                    _productsListF.SetCatId(selectedItem.ItemId);
+                    await _productsListF.SetCatId(selectedItem.ItemId);
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                     return;
                 }
-                var temp = CategoryManager.GetCategories(selectedItem.ItemId);
+                var temp = await CategoryManager.GetCategoriesAsync(selectedItem.ItemId);
                 if (temp != null)
                 {
-                    _productsListF.SetCatId(selectedItem.ItemId);
+                    await _productsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
                     categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                    var parent = CategoryManager.GetParentCategory(selectedItem.ItemId);
-
-                    var current = CategoryManager.GetCategoryInfo(selectedItem.ItemId);
-                    if (current.catId != parent.catId)
+                    var parent = await CategoryManager.GetParentCategory(selectedItem.ItemId);
+                    var current = await CategoryManager.GetCategoryInfo(selectedItem.ItemId);
+                    if (parent != null)
                     {
-                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Parent));
-                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerPCItem(parent.cat_id, parent.cat_name, DrawerPCItem.ItemTypes.Parent));
+                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
                     }
                     else
-                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Leaf));
-
+                    {
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.ProductCategries, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
+                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
+                    }
                     foreach (var item in temp)
                     {
-                        var it = new DrawerPCItem(item.catId, item.name);
+                        var it = new DrawerPCItem(item.cat_id, item.cat_name);
                         categories.Add(it);
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);

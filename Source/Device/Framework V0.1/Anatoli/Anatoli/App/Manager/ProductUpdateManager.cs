@@ -18,6 +18,7 @@ namespace Anatoli.App.Manager
             try
             {
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView));
+                int c = await LocalUpdateAsync(new DeleteCommand("products"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();

@@ -54,6 +54,7 @@
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
     <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
     <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
+    <Compile Include="App\Model\Product\GroupLeftRightModel.cs" />
     <Compile Include="App\Model\Product\ProductFieldModel.cs" />
     <Compile Include="App\Model\Product\ProductGroupModel.cs" />
     <Compile Include="App\Model\Product\ProductImage.cs" />

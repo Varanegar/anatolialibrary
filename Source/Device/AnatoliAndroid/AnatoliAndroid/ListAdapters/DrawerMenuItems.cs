@@ -108,10 +108,10 @@ namespace AnatoliAndroid.ListAdapters
     }
     public abstract class DrawerItemType
     {
-        public int ItemId { get; set; }
+        public string ItemId { get; set; }
         public string Name { get; set; }
         public int ImageResId { get; set; }
-        public DrawerItemType(int itemId = 0, string name = "Menu Item", int imageResId = -1)
+        public DrawerItemType(string itemId = "", string name = "Menu Item", int imageResId = -1)
         {
             ItemId = itemId;
             Name = name;
@@ -122,7 +122,7 @@ namespace AnatoliAndroid.ListAdapters
     {
         public ItemTypes ItemType;
 
-        public DrawerPCItem(int itemId, string itemName, ItemTypes type = ItemTypes.Normal)
+        public DrawerPCItem(string itemId, string itemName, ItemTypes type = ItemTypes.Normal)
             : base(itemId, itemName, -1)
         {
             ItemType = type;
@@ -137,25 +137,26 @@ namespace AnatoliAndroid.ListAdapters
     class DrawerMainItem : DrawerItemType
     {
         public DrawerMainItem() : base() { }
-        public DrawerMainItem(int itemId, string name)
+        public DrawerMainItem(string itemId, string name)
             : base(itemId, name)
         {
         }
         public struct DrawerMainItems
         {
-            public const int MainMenu = 0;
-            public const int ProductCategries = 1;
-            public const int ShoppingCard = 2;
-            public const int Profile = 3;
-            public const int Help = 4;
-            public const int Login = 5;
-            public const int StoresList = 6;
-            public const int Favorits = 7;
-            public const int Logout = 8;
-            public const int Messages = 9;
-            public const int Orders = 10;
-            public const int Avatar = 11;
-            public const int Update = 12;
+            public const string MainMenu = "MainMenu";
+            public const string AllProducts = "AllProducts";
+            public const string ProductCategries = "ProductCategries";
+            public const string ShoppingCard = "ShoppingCard";
+            public const string Profile = "Profile";
+            public const string Help = "Help";
+            public const string Login = "Login";
+            public const string StoresList = "StoresList";
+            public const string Favorits = "Favorits";
+            public const string Logout = "Logout";
+            public const string Messages = "Messages";
+            public const string Orders = "Orders";
+            public const string Avatar = "Avatar";
+            public const string Update = "Update";
         }
     }
 }
