@@ -11,6 +11,7 @@ namespace Anatoli.DataAccess.Interfaces
     {
         AnatoliDbContext DbContext { get; set; }
         IQueryable<T> GetQuery();
+        T GetById(Guid id);
         Task<T> GetByIdAsync(Guid id);
         Task<ICollection<T>> GetAllAsync();
         Task<T> FindAsync(Expression<Func<T, bool>> match);

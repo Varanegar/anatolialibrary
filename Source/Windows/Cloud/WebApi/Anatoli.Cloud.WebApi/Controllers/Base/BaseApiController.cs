@@ -9,6 +9,8 @@ using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.Results;
+using System.Text;
+using System.Collections;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -63,7 +65,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 return InternalServerError();
             }
-            ModelState.AddModelError("", error);
+            ModelState.AddModelError(String.Empty, error);
             return BadRequest(ModelState);
 
         }
@@ -74,9 +76,50 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 return InternalServerError();
             }
-            ModelState.AddModelError("", ex);
+            var builder = new StringBuilder();
+            WriteExceptionDetails(ex, builder, 0, ModelState);
+
             return BadRequest(ModelState);
 
+        }
+        public static void WriteExceptionDetails(Exception exception, StringBuilder builderToFill, int level, ModelStateDictionary modelState)
+        {
+            var indent = new string(' ', level);
+
+            if (level > 0)
+            {
+                builderToFill.AppendLine(indent + "=== INNER EXCEPTION ===");
+            }
+
+            Action<string> append = (prop) =>
+            {
+                var propInfo = exception.GetType().GetProperty(prop);
+                var val = propInfo.GetValue(exception);
+
+                if (val != null)
+                {
+                    builderToFill.AppendFormat("{0}{1}: {2}{3}", indent, prop, val.ToString(), Environment.NewLine);
+                    modelState.AddModelError(exception.Message, String.Format("{0}{1}: {2}{3}", indent, prop, val.ToString(), Environment.NewLine));
+                }
+            };
+
+            append("Message");
+            append("HResult");
+            append("HelpLink");
+            append("Source");
+            append("StackTrace");
+            append("TargetSite");
+
+            foreach (DictionaryEntry de in exception.Data)
+            {
+                builderToFill.AppendFormat("{0} {1} = {2}{3}", indent, de.Key, de.Value, Environment.NewLine);
+                modelState.AddModelError(exception.Message, String.Format("{0} {1} = {2}{3}", indent, de.Key, de.Value, Environment.NewLine));
+            }
+
+            if (exception.InnerException != null)
+            {
+                WriteExceptionDetails(exception.InnerException, builderToFill, ++level, modelState);
+            }
         }
 
         protected IHttpActionResult GetErrorResult(IdentityResult result)

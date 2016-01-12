@@ -25,9 +25,9 @@ namespace ClientApp
             try
             {
 
-                //string servserURI = "http://79.175.166.186/";
+                string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
-                string servserURI = "http://localhost/";
+                //string servserURI = "http://localhost/";
                 //string servserURI = "http://192.20.6.6/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
@@ -66,6 +66,7 @@ namespace ClientApp
                     //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
                     //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
+                    IncompleteManagement.GetIncompleteFromServer(client, servserURI);
                 }
                 
             }

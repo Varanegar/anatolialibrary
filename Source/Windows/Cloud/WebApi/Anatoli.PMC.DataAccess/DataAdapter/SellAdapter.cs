@@ -32,47 +32,86 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 
             using (var context = new DataContext(Transaction.Begin))
             {
-                if (CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId))
-                    orderInfo.CustomerId = CustomerAdapter.Instance.GetCustomerId(customer.CustomerSiteUserId);
-                else
+                try
                 {
-                    DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
-                    customer.CustomerId = GeneralCommands.GetId(context, "Customer");
-                    customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);
-                    customerDataObject.Insert(customer, context);
-                    orderInfo.CustomerId = customer.CustomerId;
-                    var genScript = context.GetValue<string>(@"EXEC usp_GenData 'Customer','customerid=" + customer.CustomerId + "' ,1,1");
-
-                    StoreConfigHeler.Instance.AllStoreConfigs.ForEach(item =>
+                    if (CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId))
+                        orderInfo.CustomerId = CustomerAdapter.Instance.GetCustomerId(customer.CustomerSiteUserId);
+                    else
                     {
-                        if(item.CenterId != 1)
+                        DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
+                        customer.CustomerId = GeneralCommands.GetId(context, "Customer");
+                        customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);
+                        customerDataObject.Insert(customer, context);
+                        orderInfo.CustomerId = customer.CustomerId;
+                        var genScript = context.GetValue<string>(@"EXEC usp_GenData 'Customer','customerid=" + customer.CustomerId + "' ,1,1");
+
+                        StoreConfigHeler.Instance.AllStoreConfigs.ForEach(item =>
                         {
-                            DataContext contextTemp = new DataContext(item.CenterId.ToString(), item.ConnectionString, Transaction.Begin);
-                            contextTemp.Execute(@"update CenterSetting set LogIsActive = 0");
-                            contextTemp.Execute(genScript);
-                            contextTemp.Execute(@"update CenterSetting set LogIsActive = 1");
-                            contextTemp.Commit();
-                        }
-                    });
-                    context.Commit();
+                            if (item.CenterId != 1)
+                            {
+                                using (var contextTemp = new DataContext(item.CenterId.ToString(), item.ConnectionString, Transaction.Begin))
+                                {
+                                    try
+                                    {
+                                        contextTemp.Execute(@"update CenterSetting set LogIsActive = 0");
+                                        contextTemp.Execute(genScript);
+                                        contextTemp.Execute(@"update CenterSetting set LogIsActive = 1");
+                                        contextTemp.Commit();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        contextTemp.Rollback();
+                                        log.Error(ex.Message, ex);
+                                        throw ex;
+                                    }
+                                }
+                            }
+                        });
+                        context.Commit();
+                    }
+                }catch(Exception ex)
+                {
+                    context.Rollback();
+
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
                 }
             }
 
             using (var context = new DataContext(orderInfo.CenterId.ToString(), connectionString, Transaction.Begin))
             {
-                DataObject<PMCSellViewModel> sellDataObject = new DataObject<PMCSellViewModel>("Sell", "InvalidId");
-                orderInfo.SellId = GeneralCommands.GetId(context, "Sell");
-                orderInfo.FiscalYearId = GeneralCommands.GetFiscalYearId(context);
-                sellDataObject.Insert(orderInfo, context);
-                DataObject<PMCSellDetailViewModel> lineItemDataObject = new DataObject<PMCSellDetailViewModel>("SellDetail", "InvalidId");
-                orderInfo.SellDetail.ForEach(item =>
+                try
                 {
-                    item.SellId = orderInfo.SellId;
-                    item.SellDetailId = GeneralCommands.GetId(context, "SellDetail");
-                    lineItemDataObject.Insert(item, context);
-                });
-                context.Commit();
+                    DataObject<PMCSellViewModel> sellDataObject = new DataObject<PMCSellViewModel>("Sell", "InvalidId");
+                    orderInfo.SellId = GeneralCommands.GetId(context, "Sell");
+                    orderInfo.FiscalYearId = GeneralCommands.GetFiscalYearId(context);
+                    sellDataObject.Insert(orderInfo, context);
+                    DataObject<PMCSellDetailViewModel> lineItemDataObject = new DataObject<PMCSellDetailViewModel>("SellDetail", "InvalidId");
+                    orderInfo.SellDetail.ForEach(item =>
+                    {
+                        item.SellId = orderInfo.SellId;
+                        item.SellDetailId = GeneralCommands.GetId(context, "SellDetail");
+                        lineItemDataObject.Insert(item, context);
+                    });
+                    context.Commit();
+                }
+                catch (Exception ex)
+                {
+                    context.Rollback();
+
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
+                }
             }
         }
     }
 }
+

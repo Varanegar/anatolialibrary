@@ -41,6 +41,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var owner = Guid.Parse(privateOwnerId);
                 var basketDomain = new IncompletePurchaseOrderDomain(owner);
+                //data[0].StoreId = Guid.NewGuid();
                 var result = await basketDomain.PublishAsync(data);
                 return Ok(result);
             }

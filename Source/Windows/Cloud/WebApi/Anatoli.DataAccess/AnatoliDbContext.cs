@@ -69,6 +69,8 @@ namespace Anatoli.DataAccess
         public DbSet<ProductType> ProductType { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
+        public DbSet<IncompleteOrder> IncompleteOrders { get; set; }
+        public DbSet<IncompleteOrderLineItem> IncompleteOrderLineItems { get; set; }
         public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
 
@@ -86,9 +88,9 @@ namespace Anatoli.DataAccess
         #region ctors
         static AnatoliDbContext()
         {
-            //Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
-            //var migrator = new System.Data.Entity.Migrations.DbMigrator(new Anatoli.DataAccess.Migrations.Configuration());
-            //migrator.Update();
+            Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
+            var migrator = new System.Data.Entity.Migrations.DbMigrator(new Anatoli.DataAccess.Migrations.Configuration());
+            migrator.Update();
         }
 
         public AnatoliDbContext()
@@ -110,6 +112,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CustomerConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
+            modelBuilder.Configurations.Add(new IncompleteOrderConfig());
             modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());
             modelBuilder.Configurations.Add(new MainProductGroupConfig());
             modelBuilder.Configurations.Add(new ManufactureConfig());

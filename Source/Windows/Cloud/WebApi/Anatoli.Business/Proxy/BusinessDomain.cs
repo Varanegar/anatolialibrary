@@ -32,6 +32,15 @@ namespace Anatoli.Business
                 HttpContent content = new  StringContent(data, Encoding.UTF8, "application/json");
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?privateOwnerId="
                             + PrivateLabelOwnerId.ToString(), content).Result;
+                if(result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Can not save order to server");
+                }
+                else if(!result.IsSuccessStatusCode)
+                {
+                    throw new Exception(result.Content.ReadAsStringAsync().Result);
+                }
+
                 if (needReturnData)
                 {
                     var json = result.Content.ReadAsStringAsync().Result;

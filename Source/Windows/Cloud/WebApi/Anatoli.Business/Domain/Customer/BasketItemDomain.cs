@@ -44,6 +44,15 @@ namespace Anatoli.Business.Domain
         {
             throw new NotImplementedException();
         }
+        public async Task<List<BasketItemViewModel>> GetByIds(List<BasketItemViewModel> data)
+        {
+            foreach(var item in data)
+            {
+                var value = await Repository.FindAsync(p => p.BasketId == item.BasketId && p.ProductId == item.ProductId);
+                if(value !=  null) item.Qty = value.Qty;
+            };
+            return data;
+        }
         public async Task<List<BasketItemViewModel>> GetAllChangedAfter(DateTime selectedDate)
         {
             throw new NotImplementedException();

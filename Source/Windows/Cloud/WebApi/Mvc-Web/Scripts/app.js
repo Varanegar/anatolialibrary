@@ -1,4 +1,4 @@
-﻿var baseBackendUrl = 'http://localhost:8090/',
+﻿var baseBackendUrl = 'http://localhost',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',

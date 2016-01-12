@@ -97,8 +97,8 @@
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
-    <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
     <Compile Include="Domain\Stock\StockActiveOnHandDomain.cs" />
     <Compile Include="Domain\Stock\StockDomain.cs" />
@@ -136,7 +136,9 @@
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductRateProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductPicture.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductTypeProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderLineItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderLineItemProxy.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\PurchaseOrder\PurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockActiveOnHandProxy.cs" />
