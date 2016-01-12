@@ -57,6 +57,21 @@ namespace Anatoli.Business.Domain
                 throw ex;
             }
         }
+        public async Task<List<StockViewModel>> GetAllByUserId(Guid userId)
+        {
+            try
+            {
+                //Todo: user and stock need a join.
+                var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+
+                return Proxy.Convert(dataList.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll", ex);
+                throw ex;
+            }
+        }
 
         public async Task<List<StockViewModel>> GetStockCompleteInfo(string stockId)
         {

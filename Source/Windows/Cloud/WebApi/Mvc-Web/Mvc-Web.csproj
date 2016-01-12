@@ -158,6 +158,7 @@
     <Compile Include="Controllers\ProductManagerController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\testController.cs" />
+    <Compile Include="Controllers\UserManagerController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -237,6 +238,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Products\StoreRequestsHistory.cshtml" />
     <Content Include="Views\Products\ReviewProductRequest.cshtml" />
+    <Content Include="Views\UserManager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

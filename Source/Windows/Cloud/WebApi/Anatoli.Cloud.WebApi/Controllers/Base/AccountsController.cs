@@ -8,7 +8,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Anatoli.Cloud.WebApi.Models;
-using System.Security.Claims;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data;
@@ -17,14 +16,12 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
-using Anatoli.ViewModels.Order;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
-
         [Authorize(Roles="Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()

@@ -19,6 +19,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             public string privateOwnerId { get; set; }
             public string stockId { get; set; }
+            public string userId { get; set; }
             public string dateAfter { get; set; }
         }
 
@@ -108,6 +109,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var stockDomain = new StockDomain(owner);
                 var result = await stockDomain.GetAll();
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("userStocks")]
+        public async Task<IHttpActionResult> GetStocks(string privateOwnerId,[FromBody] RequestModel data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var stockDomain = new StockDomain(owner);
+
+                var result = await stockDomain.GetAllByUserId(Guid.Parse(data.userId));
+                //Todo: it should be changed.
+                return Ok(result.FirstOrDefault());
             }
             catch (Exception ex)
             {

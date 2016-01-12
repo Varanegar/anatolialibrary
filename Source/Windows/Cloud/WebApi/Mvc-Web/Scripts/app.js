@@ -3,10 +3,12 @@
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
         storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/?privateOwnerId=' + privateOwnerId,
+        userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks/?privateOwnerId=' + privateOwnerId,
         productsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/?privateOwnerId=' + privateOwnerId,
         stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
         saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
         reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
+        usersUrl: baseBackendUrl + "/api/accounts/users",
         stockPageUrl: "/Products/",
     },
     gridAuthHeader = function (req) {
@@ -35,6 +37,9 @@ toastr.options = {
 showError = function (title, message) {
     toastr["error"](title, message);
 };
+showSuccess = function (title, message) {
+    toastr["success"](title, message);
+};
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -47,7 +52,6 @@ function getParameterByName(name) {
 function headerMenuViewModel() {
     var self = this;
     self.shouldShowLogout = ko.observable(false);
-
 };
 var headerMenu = new headerMenuViewModel();
 //******************************************************************//
@@ -513,7 +517,6 @@ function ProductHistoryManagerViewModel() {
                     type: "POST",
                     data: { ProductId: self.chosenProduct().Id }
                 },
-
                 parameterMap: function (options, operation) {
                     options.ProductId = self.chosenProduct().Id;
                     if (operation == "read")
@@ -558,4 +561,69 @@ function ProductHistoryManagerViewModel() {
         if (e.which == 13)
             self.refreshProducts(self.chosenStore(), term);
     });
+};
+//******************************************************************//
+
+function UserManagerViewModel() {
+    var self = this;
+
+    self.chosenUser = ko.observable();
+    self.users = ko.observableArray([]);
+    self.stocks = ko.observableArray([]);
+    self.chosenStocks = ko.observableArray([]);
+
+    self.isInChosenStocks = function (data) {
+        var match = ko.utils.arrayFirst(self.chosenStocks(), function (item) {
+            return item.uniqueId === data.uniqueId;
+        });
+
+        if (match && match != null)
+            return true;
+        else
+            return false;
+    };
+
+    self.addChosenStocks = function (data) {
+        var match = ko.utils.arrayFirst(self.chosenStocks(), function (item) {
+            return item.uniqueId === data.uniqueId;
+        });
+
+        if (match && match != null)
+            self.chosenStocks.remove(data);
+        else
+            self.chosenStocks.push(data);
+    };
+
+    self.refreshUsers = function () {
+        accountManagerApp.callApi(urls.usersUrl, 'GET', function (data) {
+            self.users(data);
+            if (self.users().length > 0)
+                self.chosenUser(self.users()[0]);
+        });
+    };
+
+    self.chosenUser.subscribe(function (newValue) {
+        self.refreshStocks(newValue);
+    }, self);
+
+    self.refreshStocks = function (data) {
+        self.chosenStocks([]);
+
+        accountManagerApp.callApi(urls.storesUrl, 'GET', function (data) {
+            self.stocks(data);
+
+            accountManagerApp.callApi(urls.userStocksUrl, 'GET', function (data) {
+                if (data)
+                    data.forEach(function (itm) { self.addChosenStocks.push(itm); });
+            });
+        });
+    };
+
+    self.saveUsersStocks = function () {
+        accountManagerApp.callApi(urls.saveStocksUsersUrl, 'POST', function (data) {
+            showSuccess("ذخیره سازی", "انجام شد");
+        });
+    };
+
+    self.refreshUsers();
 };
