@@ -69,6 +69,11 @@ namespace Thunderstruck.Provider
             if(DbTransaction != null) DbTransaction.Commit();
         }
 
+        public void Rollback()
+        {
+            if (DbTransaction != null) DbTransaction.Rollback();
+        }
+
         public void Dispose()
         {
             if (DbTransaction != null) DbTransaction.Dispose();

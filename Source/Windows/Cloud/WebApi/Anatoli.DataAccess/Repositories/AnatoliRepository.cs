@@ -38,8 +38,11 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            throw new InvalidOperationException();
             return await DbSet.FindAsync(id);
+        }
+        public virtual T GetById(Guid id)
+        {
+            return DbSet.Find(id);
         }
         public virtual async Task<ICollection<T>> GetAllAsync()
         {

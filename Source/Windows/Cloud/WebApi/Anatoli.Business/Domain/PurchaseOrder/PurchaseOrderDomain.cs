@@ -14,13 +14,16 @@ using Anatoli.ViewModels.Order;
 using Anatoli.Business.Helpers;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using Anatoli.ViewModels.CustomerModels;
 
 namespace Anatoli.Business.Domain
 {
     public class PurchaseOrderDomain : BusinessDomain<PurchaseOrderViewModel>, IBusinessDomain<PurchaseOrder, PurchaseOrderViewModel>
     {
         #region Properties
+        public IAnatoliProxy<Customer, CustomerViewModel> CustomerProxy { get; set; }
         public IAnatoliProxy<PurchaseOrder, PurchaseOrderViewModel> Proxy { get; set; }
+        public IRepository<Customer> CustomerRepository { get; set; }
         public IRepository<PurchaseOrder> Repository { get; set; }
 
         #endregion
@@ -29,14 +32,16 @@ namespace Anatoli.Business.Domain
         PurchaseOrderDomain() { }
         public PurchaseOrderDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public PurchaseOrderDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new PurchaseOrderRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<PurchaseOrder, PurchaseOrderViewModel>.Create())
+            : this(new PurchaseOrderRepository(dbc), new CustomerRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<PurchaseOrder, PurchaseOrderViewModel>.Create(), AnatoliProxy<Customer, CustomerViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public PurchaseOrderDomain(IPurchaseOrderRepository PurchaseOrderRepository, IPrincipalRepository principalRepository, IAnatoliProxy<PurchaseOrder, PurchaseOrderViewModel> proxy)
+        public PurchaseOrderDomain(IPurchaseOrderRepository PurchaseOrderRepository, ICustomerRepository customerRepository, IPrincipalRepository principalRepository, IAnatoliProxy<PurchaseOrder, PurchaseOrderViewModel> proxy, IAnatoliProxy<Customer, CustomerViewModel> customerProxy)
         {
             Proxy = proxy;
+            CustomerProxy = customerProxy;
             Repository = PurchaseOrderRepository;
+            CustomerRepository = customerRepository;
             PrincipalRepository = principalRepository;
         }
         #endregion
@@ -91,7 +96,9 @@ namespace Anatoli.Business.Domain
         public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderViewModel order)
         {
             var returnData = new List<PurchaseOrderViewModel>();
+            order.Customer = CustomerProxy.Convert(CustomerRepository.GetById(order.UserId));
             string data = JsonConvert.SerializeObject(order);
+            
 
             await Task.Factory.StartNew(() =>
             {

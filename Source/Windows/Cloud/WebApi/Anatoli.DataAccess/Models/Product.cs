@@ -49,6 +49,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<CharValue> CharValues { get; set; }
         public virtual ICollection<Supplier> Suppliers { get; set; }
         public virtual ICollection<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
+        public virtual ICollection<IncompleteOrderLineItem> IncompleteOrderLineItems { get; set; }
         public virtual Manufacture Manufacture { get; set; }
     }
 }

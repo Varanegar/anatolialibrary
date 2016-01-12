@@ -32,31 +32,45 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(data.CenterId).ConnectionString;
             using(var context = new DataContext(data.CenterId.ToString(), connectionString, Transaction.No))
             {
-                DateTime serverTime = GeneralCommands.GetServerDateTime(context);
-                data.DateOf = new PersianDate(serverTime) + serverTime.ToString(" HH:mm");
-                
-                var evcId =
-                data.EVCId = GeneralCommands.GetId(context, "Evc");
+                try
+                {
+                    DateTime serverTime = GeneralCommands.GetServerDateTime(context);
+                    data.DateOf = new PersianDate(serverTime) + serverTime.ToString(" HH:mm");
 
-                DataObject<PMCEvcViewModel> evcDataObject = new DataObject<PMCEvcViewModel>("Evc", "InvalidId");
-                evcDataObject.Insert(data, context);
-                DataObject<PMCEvcDetailViewModel> evcDetailDataObject = new DataObject<PMCEvcDetailViewModel>("EvcDetail", "InvalidId");
-                data.EVCDetail.ForEach(item =>
-                    {
-                        item.EvcDetailId = GeneralCommands.GetId(context, "Evc");
-                        item.EVCID = data.EVCId;
-                        evcDetailDataObject.Insert(item, context);
-                    });
-                context.Execute("EXEC ApplyPrice " + evcId);
-                context.Execute("EXEC ApplyPromotion " + evcId);
-                context.Execute("EXEC ApplyTaxCharge " + evcId);
-                context.Execute("EXEC ApplyStock " + evcId);
+                    var evcId =
+                    data.EVCId = GeneralCommands.GetId(context, "Evc");
+
+                    DataObject<PMCEvcViewModel> evcDataObject = new DataObject<PMCEvcViewModel>("Evc", "InvalidId");
+                    evcDataObject.Insert(data, context);
+                    DataObject<PMCEvcDetailViewModel> evcDetailDataObject = new DataObject<PMCEvcDetailViewModel>("EvcDetail", "InvalidId");
+                    data.EVCDetail.ForEach(item =>
+                        {
+                            item.EvcDetailId = GeneralCommands.GetId(context, "Evc");
+                            item.EVCID = data.EVCId;
+                            evcDetailDataObject.Insert(item, context);
+                        });
+                    context.Execute("EXEC ApplyPrice " + evcId);
+                    context.Execute("EXEC ApplyPromotion " + evcId);
+                    context.Execute("EXEC ApplyTaxCharge " + evcId);
+                    context.Execute("EXEC ApplyStock " + evcId);
 
 
-                resultEvc = evcDataObject.Select.With(context).First("where EvcId='" + evcId + "'");
-                var resultEvcDetail = evcDetailDataObject.Select.With(context).All("where EvcId='" + evcId + "'");
-                resultEvc.EVCDetail = new List<PMCEvcDetailViewModel>();
-                resultEvc.EVCDetail.AddRange(resultEvcDetail);
+                    resultEvc = evcDataObject.Select.With(context).First("where EvcId='" + evcId + "'");
+                    var resultEvcDetail = evcDetailDataObject.Select.With(context).All("where EvcId='" + evcId + "'");
+                    resultEvc.EVCDetail = new List<PMCEvcDetailViewModel>();
+                    resultEvc.EVCDetail.AddRange(resultEvcDetail);
+                }
+                catch (Exception ex)
+                {
+                    context.Rollback();
+
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
+                }
             }
             return resultEvc;
         }

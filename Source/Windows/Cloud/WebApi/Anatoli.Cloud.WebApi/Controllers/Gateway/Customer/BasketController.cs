@@ -144,5 +144,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "User")]
+        [Route("basketitems")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetBasketitemByIds(string privateOwnerId, List<BasketItemViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var basketDomain = new BasketItemDomain(owner);
+                var result = await basketDomain.GetByIds(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
     }
 }

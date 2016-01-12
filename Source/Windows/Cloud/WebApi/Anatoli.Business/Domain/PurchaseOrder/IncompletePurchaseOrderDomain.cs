@@ -30,11 +30,13 @@ namespace Anatoli.Business.Domain
         IncompletePurchaseOrderDomain() { }
         public IncompletePurchaseOrderDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public IncompletePurchaseOrderDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new IncompletePurchaseOrderRepository(dbc), new IncompletePurchaseOrderLineItemRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<IncompletePurchaseOrder, IncompletePurchaseOrderViewModel>.Create())
+            : this(new IncompletePurchaseOrderRepository(dbc), new IncompletePurchaseOrderLineItemRepository(dbc), 
+            new PrincipalRepository(dbc), AnatoliProxy<IncompletePurchaseOrder, IncompletePurchaseOrderViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public IncompletePurchaseOrderDomain(IIncompletePurchaseOrderRepository IncompletePurchaseOrderRepository, IIncompletePurchaseOrderLineItemRepository IncompletePurchaseOrderLineItemRepository, IPrincipalRepository principalRepository, IAnatoliProxy<IncompletePurchaseOrder, IncompletePurchaseOrderViewModel> proxy)
+        public IncompletePurchaseOrderDomain(IIncompletePurchaseOrderRepository IncompletePurchaseOrderRepository, IIncompletePurchaseOrderLineItemRepository IncompletePurchaseOrderLineItemRepository, 
+            IPrincipalRepository principalRepository, IAnatoliProxy<IncompletePurchaseOrder, IncompletePurchaseOrderViewModel> proxy)
         {
             Proxy = proxy;
             Repository = IncompletePurchaseOrderRepository;
@@ -55,7 +57,11 @@ namespace Anatoli.Business.Domain
         {
             Guid customerGuid = Guid.Parse(customerId);
             var data = await Repository.FindAllAsync(p => p.CustomerId == customerGuid);
-            
+            data.ToList().ForEach(item =>
+                {
+                    Repository.DbContext.Entry(item).Collection(c => c.IncompletePurchaseOrderLineItems).Load();
+                });
+
             return Proxy.Convert(data.ToList()); ;
         }
 
@@ -75,6 +81,7 @@ namespace Anatoli.Business.Domain
 
                 foreach (IncompletePurchaseOrder item in dataList)
                 {
+                    
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentData = Repository.GetQuery().Where(p => p.CustomerId == item.CustomerId).FirstOrDefault();
                     if (currentData != null)
@@ -89,17 +96,20 @@ namespace Anatoli.Business.Domain
                         currentData.StoreId = item.StoreId;
                         currentData.Transferee = item.Transferee;
                         currentData.LastUpdate = DateTime.Now;
-                        currentData = await SetLineItemData(currentData, item.IncompletePurchaseOrderLineItems.ToList(), Repository.DbContext);
+                        //currentData = await SetLineItemData(currentData, item.IncompletePurchaseOrderLineItems.ToList(), Repository.DbContext);
                         await Repository.UpdateAsync(currentData);
                     }
                     else
                     {
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        item.IncompletePurchaseOrderLineItems.ToList().ForEach(itemDetail =>
+                        if (item.IncompletePurchaseOrderLineItems != null)
                         {
-                            itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
-                            itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
-                        });
+                            item.IncompletePurchaseOrderLineItems.ToList().ForEach(itemDetail =>
+                            {
+                                itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
+                                itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
+                            });
+                        }
                         await Repository.AddAsync(item);
                     }
                 }
@@ -151,20 +161,20 @@ namespace Anatoli.Business.Domain
             return dataViewModels;
         }
 
-        public async Task<IncompletePurchaseOrder> SetLineItemData(IncompletePurchaseOrder data, List<IncompletePurchaseOrderLineItem> dataList, AnatoliDbContext context)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                data.IncompletePurchaseOrderLineItems.Clear();
-                foreach (IncompletePurchaseOrderLineItem item in dataList)
-                {
-                    item.PrivateLabelOwner = data.PrivateLabelOwner;
-                    item.CreatedDate = item.LastUpdate = data.CreatedDate;
-                    LineItemRepository.Add(item);
-                }
-            });
-            return data;
-        }
+        //public async Task<IncompletePurchaseOrder> SetLineItemData(IncompletePurchaseOrder data, List<IncompletePurchaseOrderLineItem> dataList, AnatoliDbContext context)
+        //{
+        //    await Task.Factory.StartNew(() =>
+        //    {
+        //        //data.IncompletePurchaseOrderLineItems.Clear();
+        //        foreach (IncompletePurchaseOrderLineItem item in dataList)
+        //        {
+        //            item.PrivateLabelOwner = data.PrivateLabelOwner;
+        //            item.CreatedDate = item.LastUpdate = data.CreatedDate;
+        //            LineItemRepository.Add(item);
+        //        }
+        //    });
+        //    return data;
+        //}
 
 
         #endregion
