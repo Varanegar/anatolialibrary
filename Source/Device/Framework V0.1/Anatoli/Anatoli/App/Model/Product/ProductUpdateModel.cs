@@ -20,9 +20,9 @@ namespace Anatoli.App.Model.Product
         public string LargePicURL { get; set; }
         public string Desctription { get; set; }
 
-        public Guid PackUnitId { get; set; }
-        public Guid ProductTypeId { get; set; }
-        public Guid TaxCategoryId { get; set; }
+        public string PackUnitId { get; set; }
+        public string ProductTypeId { get; set; }
+        public string TaxCategoryId { get; set; }
 
         //public List<SupplierViewModel> Suppliers { get; set; }
         public string MainProductGroupIdString { get; set; }

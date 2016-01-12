@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="Hello">Hello World, Click Me!</string>
-  <string name="ApplicationName">آناتولی</string>
+  <string name="ApplicationName">ایگ مارکت</string>
   <string name="OpenDrawer">باز کردن منو</string>
   <string name="CloseDrawer">بستن منو</string>
   <string name="Products">دسته بندی کالا</string>
@@ -51,6 +51,7 @@
   <string name="Meter">متر</string>
   <string name="KMeter">کیلومتر</string>
   <string name="UnknownDistance">فاصله نامشخص</string>
+  <string name="DistanceFromYou">فاصله از شما</string>
   
   <string name="PleaseWait">لطفا صبور باشید</string>
   <string name="SaveSuccess">عضویت انجام شد</string>

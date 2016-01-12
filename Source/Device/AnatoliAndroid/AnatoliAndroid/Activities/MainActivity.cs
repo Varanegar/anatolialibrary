@@ -21,7 +21,7 @@ using Android.Locations;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "آناتولی", Icon = "@drawable/icon")]
+    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon")]
     public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;

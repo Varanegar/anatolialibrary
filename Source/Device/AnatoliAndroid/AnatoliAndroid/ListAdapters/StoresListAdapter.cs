@@ -16,6 +16,7 @@ using Anatoli.App.Manager;
 using AnatoliAndroid.Fragments;
 using AnatoliAndroid.Activities;
 using Android.Locations;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -30,14 +31,7 @@ namespace AnatoliAndroid.ListAdapters
                 item = List[position];
             else
                 return convertView;
-            convertView.Click += async (s, e) =>
-            {
-                if (await StoreManager.SelectAsync(item) == true)
-                {
-                    AnatoliApp.GetInstance().SetFragment<FirstFragment>(new FirstFragment(), "first_fragment");
-                    OnStoreSelected(item);
-                }
-            };
+
             if (item.selected == 1)
             {
                 convertView.SetBackgroundResource(Resource.Color.lightgray);
@@ -47,28 +41,37 @@ namespace AnatoliAndroid.ListAdapters
             TextView storeStatusTextView = convertView.FindViewById<TextView>(Resource.Id.storeStatusTextView);
             TextView _storeDistance = convertView.FindViewById<TextView>(Resource.Id.distanceTextView);
             ImageView _mapIconImageView = convertView.FindViewById<ImageView>(Resource.Id.mapIconImageView);
+            LinearLayout storeSummaryInfoLinearLayout = convertView.FindViewById<LinearLayout>(Resource.Id.storeSummaryInfoLinearLayout);
+            ImageView storeImageView = convertView.FindViewById<ImageView>(Resource.Id.storeImageImageView);
 
-            
+            storeNameTextView.Text = item.store_name;
+            storeAddressTextView.Text = item.store_address;
+
+            storeStatusTextView.Click += async (s, e) =>
+            {
+                await Select(item);
+            };
+            storeImageView.Click += async (s, e) =>
+            {
+                await Select(item);
+            };
+            storeSummaryInfoLinearLayout.Click += async (s, e) =>
+            {
+                await Select(item);
+            };
+
             if (item.distance < 0.0005)
-                _storeDistance.Text = AnatoliApp.GetResources().GetText(Resource.String.UnknownDistance);
+                _storeDistance.Text = "";
             else if (item.distance < 1500)
-                _storeDistance.Text = item.distance.ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.Meter);
+                _storeDistance.Text = AnatoliApp.GetResources().GetText(Resource.String.DistanceFromYou) + " " + Math.Round(item.distance, 0).ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.Meter);
             else
-                _storeDistance.Text = Math.Round((item.distance / 1000), 1).ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.KMeter);
+                _storeDistance.Text = AnatoliApp.GetResources().GetText(Resource.String.DistanceFromYou) + " " +  Math.Round((item.distance / 1000), 1).ToString() + " " + AnatoliApp.GetResources().GetText(Resource.String.KMeter);
 
             if (!String.IsNullOrEmpty(item.location))
             {
                 _mapIconImageView.Click += (s, e) =>
                 {
-                    OpenMap(item.location);
-                };
-                storeAddressTextView.Click += (s, e) =>
-                {
-                    OpenMap(item.location);
-                };
-                _storeDistance.Click += (s, e) =>
-                {
-                    OpenMap(item.location);
+                    OpenMap(item.location, item.store_address);
                 };
             }
 
@@ -80,16 +83,25 @@ namespace AnatoliAndroid.ListAdapters
             //storeStatusTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.Close);
             //storeStatusTextView.SetTextColor(Android.Graphics.Color.Red);
 
-            storeNameTextView.Text = item.store_name;
-            storeAddressTextView.Text = item.store_address;
+            
             // productIimageView.SetUrlDrawable(MadanerClient.Configuration.UsersImageBaseUri + "/" + item.User.image, null, 600000);
             return convertView;
         }
-        void OpenMap(string location)
+        async Task Select(StoreDataModel item)
+        {
+            if (await StoreManager.SelectAsync(item) == true)
+            {
+                AnatoliApp.GetInstance().SetFragment<FirstFragment>(new FirstFragment(), "first_fragment");
+                OnStoreSelected(item);
+            }
+        }
+        void OpenMap(string location, string label)
         {
             try
             {
-                var geoUri = Android.Net.Uri.Parse("geo:" + location);
+                string a = "geo:" + location + "?q=" + location + "(" + label + ")";
+                Console.WriteLine(a);
+                var geoUri = Android.Net.Uri.Parse(a);
                 var mapIntent = new Intent(Intent.ActionView, geoUri);
                 AnatoliApp.GetInstance().Activity.StartActivity(mapIntent);
             }
