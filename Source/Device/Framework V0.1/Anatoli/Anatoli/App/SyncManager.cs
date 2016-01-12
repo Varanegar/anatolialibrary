@@ -11,9 +11,10 @@ namespace Anatoli.App
     {
         public static async Task SyncDatabase()
         {
+            await StoreUpdateManager.SyncDataBase();
             await ProductGroupManager.SyncDataBase();
             await ProductUpdateManager.SyncDataBase();
-            await StoreUpdateManager.SyncDataBase();
+            await ProductPriceManager.SyncDataBase();
         }
     }
 }
