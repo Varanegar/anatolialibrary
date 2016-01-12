@@ -1998,8 +1998,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0025
 			public const int dismiss = 2131427365;
 			
-			// aapt resource value: 0x7f0b00fd
-			public const int distanceTextView = 2131427581;
+			// aapt resource value: 0x7f0b00fc
+			public const int distanceTextView = 2131427580;
 			
 			// aapt resource value: 0x7f0b00ce
 			public const int districtSpinner = 2131427534;
@@ -2046,9 +2046,6 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00c2
 			public const int firstNameEditText = 2131427522;
 			
-			// aapt resource value: 0x7f0b00fb
-			public const int footerRelativeLayout = 2131427579;
-			
 			// aapt resource value: 0x7f0b008d
 			public const int front = 2131427469;
 			
@@ -2067,8 +2064,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b002f
 			public const int icon = 2131427375;
 			
-			// aapt resource value: 0x7f0b00fe
-			public const int icons = 2131427582;
+			// aapt resource value: 0x7f0b00fd
+			public const int icons = 2131427581;
 			
 			// aapt resource value: 0x7f0b00c4
 			public const int idEditText = 2131427524;
@@ -2424,8 +2421,8 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b00a9
 			public const int status_bar_latest_event_content = 2131427497;
 			
-			// aapt resource value: 0x7f0b00fc
-			public const int storeAddressTextView = 2131427580;
+			// aapt resource value: 0x7f0b00fb
+			public const int storeAddressTextView = 2131427579;
 			
 			// aapt resource value: 0x7f0b00f7
 			public const int storeImageImageView = 2131427575;

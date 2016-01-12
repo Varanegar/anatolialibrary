@@ -13,6 +13,7 @@ namespace Anatoli.App
         {
             await ProductGroupManager.SyncDataBase();
             await ProductUpdateManager.SyncDataBase();
+            await StoreUpdateManager.SyncDataBase();
         }
     }
 }

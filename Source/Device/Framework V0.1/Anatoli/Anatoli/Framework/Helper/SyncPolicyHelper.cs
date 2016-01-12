@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
+using Anatoli.App.Model.Store;
 
 namespace Anatoli.Framework.Helper
 {
@@ -34,6 +35,10 @@ namespace Anatoli.Framework.Helper
 
         public SYNC_POLICY GetModelSyncPolicy(Type modelType)
         {
+            if (modelType == typeof(StoreUpdateModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
             if (modelType == typeof(ProductGroupModel))
             {
                 return SYNC_POLICY.OnlineIfConnected;

@@ -29,7 +29,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> SelectAsync(StoreDataModel store)
         {
             UpdateCommand command1 = new UpdateCommand("stores", new BasicParam("selected", "0"));
-            UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new EqFilterParam("store_id", store.store_id.ToString()));
+            UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new EqFilterParam("store_id", store.store_id));
             try
             {
                 int clear = await LocalUpdateAsync(command1);
@@ -60,9 +60,9 @@ namespace Anatoli.App.Manager
         {
         }
 
-        public static async Task<bool> UpdateDistanceAsync(int store_id, float dist)
+        public static async Task<bool> UpdateDistanceAsync(string store_id, float dist)
         {
-            UpdateCommand command = new UpdateCommand("stores", new BasicParam("distance", dist.ToString()), new EqFilterParam("store_id", store_id.ToString()));
+            UpdateCommand command = new UpdateCommand("stores", new BasicParam("distance", dist.ToString()), new EqFilterParam("store_id", store_id));
             try
             {
                 int result = await LocalUpdateAsync(command);
@@ -72,12 +72,6 @@ namespace Anatoli.App.Manager
             {
                 return false;
             }
-        }
-
-        public static async Task<List<StoreDataModel>> DownloadStoreModels()
-        {
-            return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<StoreDataModel>>(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
-            var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView));
         }
     }
 }
