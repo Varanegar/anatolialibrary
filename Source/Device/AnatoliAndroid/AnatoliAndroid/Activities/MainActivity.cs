@@ -18,6 +18,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.ListAdapters;
 using System.Threading.Tasks;
 using Android.Locations;
+using Anatoli.App;
 
 namespace AnatoliAndroid.Activities
 {
@@ -78,6 +79,29 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+
+            int v = Anatoli.App.SyncManager.LoadDBVersion();
+            if (v == 0)
+            {
+                AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
+                try
+                {
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                    pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                    pDialog.Show();
+                    await SyncManager.SyncDatabase();
+                    pDialog.Dismiss();
+                }
+                catch (Exception ex)
+                {
+                    pDialog.Dismiss();
+                    Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    alert.SetMessage(ex.Message);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.Show();
+                }
+            }
+
             try
             {
                 AnatoliApp.GetInstance().DefaultStore = (await StoreManager.GetDefaultAsync()).store_name;
