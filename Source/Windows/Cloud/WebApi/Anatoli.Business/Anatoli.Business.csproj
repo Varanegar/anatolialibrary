@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
     <Compile Include="Domain\Base\FiscalYearDomain.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />
+    <Compile Include="Proxy\Concretes\AuthorizationProxies\PrincipalPermissionProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\BaseTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\BaseValueProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\ReorderCalcTypeProxy.cs" />

@@ -1,4 +1,4 @@
-﻿var baseBackendUrl = 'http://localhost',
+﻿var baseBackendUrl = 'http://localhost:59822',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
@@ -11,11 +11,15 @@
         usersUrl: baseBackendUrl + "/api/accounts/users",
         stockPageUrl: "/Products/",
     },
-    gridAuthHeader = function (req) {
-        var tokenKey = 'accessToken',
-            token = $.cookie("token");
-        req.setRequestHeader('Authorization', 'Bearer ' + token);
-    };
+    errorMessage =
+    {
+        unAuthorized: "شما مجوز لازم را برای این درخواست ندارید!",
+    },
+gridAuthHeader = function (req) {
+    var tokenKey = 'accessToken',
+        token = $.cookie("token");
+    req.setRequestHeader('Authorization', 'Bearer ' + token);
+};
 
 toastr.options = {
     "closeButton": false,
@@ -68,18 +72,28 @@ function accountManagerViewModel() {
     self.requestAppObject = ko.observable();
 
     function showAjaxError(jqXHR) {
-        showError(jqXHR.responseJSON.error, jqXHR.responseJSON.error_description);
+        var title = jqXHR.status,
+            message = jqXHR.statusText
 
-        self.result(jqXHR.responseJSON.error + ': ' + jqXHR.responseJSON.error_description);
+        if (jqXHR.responseJSON) {
+            title = jqXHR.responseJSON.error;
+            message = jqXHR.responseJSON.error_description;
+        }
 
-        console.log(jqXHR.status + ': ' + jqXHR.statusText);
+        if (jqXHR.status == 401) {
+            title = '401';
+            message = errorMessage.unAuthorized;
+        }
+        showError(title, message);
+
+        console.log(title + ': ' + message);
     }
 
     self.callApi = function (url, callType, callBackFunc) {
         self.result('');
 
         var token = $.cookie("token"),
-            headers = {};
+            headers = { ownerKey: privateOwnerId };
 
         if (token)
             headers.Authorization = 'Bearer ' + token;
@@ -99,7 +113,14 @@ function accountManagerViewModel() {
         }).done(function (data) {
             self.result(data);
             callBackFunc(data);
-        }).fail(showAjaxError);
+        }).fail(function (jqXHR) {
+            showAjaxError(jqXHR);
+
+            if (jqXHR.status == 401) {
+                self.requestAppObject({ url: url, callType: callType, callBackFunc: callBackFunc });
+                self.openLogin();
+            }
+        });
     }
 
     var $loginForm = $(".login-form");
@@ -301,6 +322,13 @@ function productManagerViewModel() {
         }
     };
     self.refreshStores();
+
+    self.testAuth = function () {
+        accountManagerApp.callApi(baseBackendUrl + '/api/TestAuth/getsample', 'POST', function (data) {
+            debugger
+        });
+    }
+    self.testAuth();
 };
 //******************************************************************//
 
