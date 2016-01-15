@@ -11,7 +11,7 @@
         p1:layout_alignParentRight="true"
         p1:layout_height="40dp"
         p1:layout_centerVertical="true"
-        p1:layout_marginRight="10dp" />
+        p1:layout_marginRight="15dp" />
     <ImageView
         p1:layout_width="65dp"
         p1:layout_height="65dp"
@@ -19,7 +19,7 @@
         p1:layout_toLeftOf="@id/mapIconImageView"
         p1:src="@drawable/igmart"
         p1:layout_centerVertical="true"
-        p1:layout_margin="10dp" />
+        p1:layout_margin="15dp" />
     <View
         p1:layout_width="match_parent"
         p1:layout_height="2dp"

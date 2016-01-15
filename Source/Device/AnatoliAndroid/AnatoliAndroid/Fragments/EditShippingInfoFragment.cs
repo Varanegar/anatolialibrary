@@ -47,7 +47,7 @@ namespace AnatoliAndroid.Fragments
             _button.Click += async (s, e) =>
                 {
                     //if (await ShippingInfoManager.NewShippingAddress(_addressEditText.Text, _nameEditText.Text, _telEditText.Text))
-                    if (await ShippingInfoManager.NewShippingAddress(_addressEditText.Text, "", ""))
+                    if (await ShippingInfoManager.NewShippingAddress(_addressEditText.Text, "", "","","","",""))
                         OnShippingInfoChanged();
                     Dismiss();
                 };

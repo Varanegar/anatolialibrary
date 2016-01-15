@@ -17,9 +17,9 @@ namespace Anatoli.App.Manager
             {
                 SQLite.SQLiteCommand query;
                 if (catId == null)
-                    query = connection.CreateCommand("SELECT min(cat_left) as cat_left , max(cat_right) as cat_right FROM categories");
+                    query = connection.CreateCommand("SELECT min(cat_left) as left , max(cat_right) as right FROM categories");
                 else
-                    query = connection.CreateCommand(String.Format("SELECT cat_left , cat_right FROM categories WHERE cat_id ='{0}'", catId));
+                    query = connection.CreateCommand(String.Format("SELECT cat_left as left, cat_right as right FROM categories WHERE cat_id ='{0}'", catId));
                 var lr = query.ExecuteQuery<GroupLeftRightModel>();
                 return lr.First();
             }

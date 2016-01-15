@@ -72,10 +72,10 @@ namespace Anatoli.App.Manager
 
         public static async Task<CustomerViewModel> UploadCustomerAsync(CustomerViewModel user)
         {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.SaveProfileUrl + "?PrivateOwnerId=" + user.PrivateOwnerId,
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CustomerViewModel>>(TokenType.AppToken, Configuration.WebService.Users.SaveProfileUrl + "?PrivateOwnerId=" + user.PrivateOwnerId,
                 user
                 );
-            return userModel;
+            return userModel.First();
 
         }
     }

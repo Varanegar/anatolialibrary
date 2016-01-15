@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using Android.Animation;
 using Android.Views.InputMethods;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -49,6 +50,12 @@ namespace AnatoliAndroid.Fragments
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
         Spinner _typeSpinner;
+        Spinner _zoneSpinner;
+        Spinner _districtSpinner;
+        Spinner _citySpinner;
+        Spinner _provinceSpinner;
+        bool _tomorrow = false;
+
         Cheesebaron.SlidingUpPanel.SlidingUpPanelLayout _slidingLayout;
 
         //ShoppingCardListToolsFragment _toolsDialog;
@@ -76,6 +83,43 @@ namespace AnatoliAndroid.Fragments
             _itemCountTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
             _countRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.countRelativeLayout);
             _cardItemsRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.cardItemsRelativeLayout);
+
+            _zoneSpinner = view.FindViewById<Spinner>(Resource.Id.zoneSpinner);
+            _districtSpinner = view.FindViewById<Spinner>(Resource.Id.districtSpinner);
+            _citySpinner = view.FindViewById<Spinner>(Resource.Id.citySpinner);
+            _provinceSpinner = view.FindViewById<Spinner>(Resource.Id.provinceSpinner);
+
+            var cities = CityRegionManager.GetFirstLevel();
+            List<CityRegionModel> zones = new List<CityRegionModel>();
+            List<CityRegionModel> districts = new List<CityRegionModel>();
+            _citySpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, cities);
+            _citySpinner.ItemSelected += async (s, e) =>
+            {
+                try
+                {
+                    CityRegionModel selectedItem = cities[e.Position];
+                    zones = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
+                    _zoneSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, zones);
+                }
+                catch (Exception)
+                {
+
+                }
+            };
+            _zoneSpinner.ItemSelected += async (s, e) =>
+            {
+                try
+                {
+                    CityRegionModel selectedItem = zones[e.Position];
+                    districts = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
+                    _districtSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, districts);
+                }
+                catch (Exception)
+                {
+
+                }
+            };
+
             _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
             _checkoutButton.UpdateWidth();
 
@@ -113,14 +157,14 @@ namespace AnatoliAndroid.Fragments
             {
                 if (!_deliveryAddress.HasFocus)
                 {
-                    SaveAddress(_deliveryAddress.Text);
+                    SaveAddress(_deliveryAddress.Text, "", "", "", "");
                 }
             };
             _deliveryAddress.EditorAction += (s, e) =>
             {
                 if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
-                    SaveAddress(_deliveryAddress.Text);
+                    SaveAddress(_deliveryAddress.Text, "", "", "", "");
                     InputMethodManager inputMethodManager = AnatoliApp.GetInstance().Activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
                     inputMethodManager.HideSoftInputFromWindow(_deliveryAddress.WindowToken, HideSoftInputFlags.None);
                 }
@@ -141,6 +185,21 @@ namespace AnatoliAndroid.Fragments
                     lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
                     lAlert.Show();
                     return;
+                }
+                if (_tomorrow)
+                {
+                    AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
+                    lAlert.SetPositiveButton(Resource.String.Yes, (s2, e2) =>
+                    {
+
+                    });
+                    lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
+                    {
+                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
+                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                    });
+                    lAlert.Show();
                 }
                 try
                 {
@@ -174,10 +233,15 @@ namespace AnatoliAndroid.Fragments
             //};
 
             _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
+            if (_timeOptions.Length == 0)
+            {
+                _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Tommorow);
+                _tomorrow = true;
+            }
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
 
-            var typeOptions = new string[2] {"میام میبرم","خودتون بیارید"};
+            var typeOptions = new string[2] { "میام میبرم", "خودتون بیارید" };
             _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, typeOptions);
 
             //_editAddressImageView.Click += (s, e) =>
@@ -201,9 +265,9 @@ namespace AnatoliAndroid.Fragments
 
             return view;
         }
-        async void SaveAddress(string address)
+        async void SaveAddress(string address, string province, string city, string zone, string district)
         {
-            await ShippingInfoManager.NewShippingAddress(address, "", "");
+            await ShippingInfoManager.NewShippingAddress(address, province, city, zone, district, "", "");
         }
         public async override void OnStart()
         {

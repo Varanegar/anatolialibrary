@@ -25,18 +25,21 @@ namespace Anatoli.App.Manager
             SelectQuery dbQuery = new SelectQuery("shipping_info", f);
             return await GetItemAsync(dbQuery);
         }
-        public static async Task<bool> NewShippingAddress(string address, string name, string tel)
+        public static async Task<bool> NewShippingAddress(string address, string province, string city, string zone, string district, string name, string tel)
         {
             UpdateCommand command1 = new UpdateCommand("shipping_info", new BasicParam("default_shipping", "0"));
             try
             {
                 await LocalUpdateAsync(command1);
-                BasicParam cityP = new BasicParam("city", "تهران");
+                BasicParam cityP = new BasicParam("city", city);
+                BasicParam provinceP = new BasicParam("province", province);
+                BasicParam zoneP = new BasicParam("zone", zone);
+                BasicParam districtP = new BasicParam("district", district);
                 BasicParam addressP = new BasicParam("address", address);
                 BasicParam nameP = new BasicParam("name", name);
                 BasicParam telP = new BasicParam("tel", tel);
                 BasicParam defaultShipping = new BasicParam("default_shipping", "1");
-                var command2 = new InsertCommand("shipping_info", cityP, addressP, nameP, telP, defaultShipping);
+                var command2 = new InsertCommand("shipping_info", cityP, provinceP, zoneP, districtP, addressP, nameP, telP, defaultShipping);
                 return await LocalUpdateAsync(command2) > 0 ? true : false;
             }
             catch (Exception)
@@ -48,7 +51,7 @@ namespace Anatoli.App.Manager
 
         public static TimeOption[] GetAvailableDeliveryTimes(DateTime now, ShippingInfoManager.ShippingDateOptions dateOption)
         {
-            TimeOption[] times = new TimeOption[]{};
+            TimeOption[] times = new TimeOption[] { };
             if (dateOption == ShippingInfoManager.ShippingDateOptions.Today)
             {
                 if (now.Hour < 16)

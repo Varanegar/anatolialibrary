@@ -102,25 +102,33 @@ namespace AnatoliAndroid.ListAdapters
                 _back = (LinearLayout)view.GetTag(Resource.Id.back);
             }
 
-            if (!String.IsNullOrEmpty(item.image))
-            {
-                UrlImageViewHelper.SetUrlDrawable(_productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-                UrlImageViewHelper.SetUrlDrawable(_bproductImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-            }
-            else
-            {
-                _productIimageView.SetImageResource(Resource.Drawable.igmart);
-                _bproductImageView.SetImageResource(Resource.Drawable.igmart);
-            }
+            //if (!String.IsNullOrEmpty(item.image))
+            //{
+            //    UrlImageViewHelper.SetUrlDrawable(_productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            //    UrlImageViewHelper.SetUrlDrawable(_bproductImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            //}
+            //else
+            //{
+            //    _productIimageView.SetImageResource(Resource.Drawable.igmart);
+            //    _bproductImageView.SetImageResource(Resource.Drawable.igmart);
+            //}
+
+            string imguri = String.Format("http://79.175.166.186/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{0}-{1}.png", item.product_id, item.image);
+            UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            UrlImageViewHelper.SetUrlDrawable(_bproductImageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
 
 
             if (item.IsFavorit)
             {
                 _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.RemoveFromList);
+                _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_orange_24dp);
+                _favoritsTextView.SetTextColor(Android.Graphics.Color.Orange);
             }
             else
             {
                 _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
+                _favoritsTextView.SetTextColor(Android.Graphics.Color.Green);
+                _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_green_24dp);
             }
 
             _productCountTextView.Text = item.count.ToString() + " عدد";

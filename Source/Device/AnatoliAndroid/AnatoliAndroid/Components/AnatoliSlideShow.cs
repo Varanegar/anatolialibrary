@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using System.Threading.Tasks;
+using Anatoli.Framework.AnatoliBase;
+using System.IO;
 
 namespace AnatoliAndroid.Components
 {
@@ -18,7 +20,7 @@ namespace AnatoliAndroid.Components
     {
         int _imageIndex = 0;
         bool _continue = true;
-        public List<Tuple<BitmapContainer, OnClick>> Source = new List<Tuple<BitmapContainer, OnClick>>();
+        public List<Tuple<string, OnClick>> Source = new List<Tuple<string, OnClick>>();
         public delegate void OnClick();
         public static int UPDATE_IMAGE = 1000;
         bool _first = true;
@@ -29,7 +31,7 @@ namespace AnatoliAndroid.Components
         {
             _imageView = imageView;
             _imageView.Click += _imageView_Click;
-            mHandler = new Handler(async (msg) =>
+            mHandler = new Handler((msg) =>
             {
                 if (msg.What == UPDATE_IMAGE)
                 {
@@ -38,26 +40,10 @@ namespace AnatoliAndroid.Components
                     {
                         _imageIndex = 0;
                     }
-                    Bitmap bitmap;
-                    if (Source[_imageIndex].Item1.bitmap != null)
-                    {
-                        bitmap = Source[_imageIndex].Item1.bitmap;
-                    }
-                    else
-                    {
-                        _imageView.SetImageResource(Android.Resource.Drawable.ProgressIndeterminateHorizontal);
-                        progress.Visibility = ViewStates.Visible;
-                        bitmap = await Task.Run(() =>
-                        {
-                            return AnatoliAndroid.Extentions.ImageBitmapFromUrl(Source[_imageIndex].Item1.Path, Delay);
-                        });
-                        progress.Visibility = ViewStates.Invisible;
-                    }
-                    if (bitmap != null)
-                    {
-                        Source[_imageIndex].Item1.bitmap = bitmap;
-                        _imageView.SetImageBitmap(bitmap);
-                    }
+                    progress.Visibility = ViewStates.Visible;
+                    
+                    Koush.UrlImageViewHelper.SetUrlDrawable(_imageView, Source[_imageIndex].Item1);
+                    progress.Visibility = ViewStates.Invisible;
                     if (_continue)
                     {
                         Start();
@@ -87,15 +73,6 @@ namespace AnatoliAndroid.Components
             if (Source[_imageIndex].Item2 != null)
                 Source[_imageIndex].Item2();
         }
-    }
-    class BitmapContainer
-    {
-        public String Path { get; set; }
-        public Bitmap bitmap { get; set; }
-        public BitmapContainer(string path, Bitmap bitmapImage)
-        {
-            Path = path;
-            bitmap = bitmapImage;
-        }
+
     }
 }

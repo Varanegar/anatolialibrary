@@ -35,8 +35,8 @@ namespace AnatoliAndroid.Fragments
             var leftRight = CategoryManager.GetLeftRight(cat_id);
             if (leftRight != null)
             {
-                parameters.Add(new GreaterFilterParam("cat_left", leftRight.cat_left.ToString()));
-                parameters.Add(new SmallerFilterParam("cat_right", leftRight.cat_right.ToString()));
+                parameters.Add(new GreaterFilterParam("cat_left", leftRight.left.ToString()));
+                parameters.Add(new SmallerFilterParam("cat_right", leftRight.right.ToString()));
             }
 
             return parameters;

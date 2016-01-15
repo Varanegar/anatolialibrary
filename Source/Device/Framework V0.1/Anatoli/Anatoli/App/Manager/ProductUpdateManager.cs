@@ -27,7 +27,7 @@ namespace Anatoli.App.Manager
                         InsertCommand command = new InsertCommand("products", new BasicParam("product_id", item.UniqueId),
                             new BasicParam("product_name", item.ProductName),
                             new BasicParam("cat_id", item.ProductGroupIdString),
-                        new BasicParam("image", ""));
+                        new BasicParam("image", item.Id));
                         var query = connection.CreateCommand(command.GetCommand());
                         int t = query.ExecuteNonQuery();
                     }

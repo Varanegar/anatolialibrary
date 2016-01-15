@@ -18,6 +18,7 @@ using Anatoli.App.Manager;
 using Android.Locations;
 using Android.Views.InputMethods;
 using Anatoli.App;
+using AnatoliAndroid.Components;
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -230,6 +231,11 @@ namespace AnatoliAndroid.Activities
                 }
                 await _productsListF.Search("product_name", value);
             }
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
+            {
+                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prfoucts_fragment");
+                await _productsListF.Search("product_name", value);
+            }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
             {
                 if (_storesListF == null)
@@ -382,6 +388,7 @@ namespace AnatoliAndroid.Activities
                             pDialog.Show();
                             await SyncManager.SyncDatabase();
                             pDialog.Dismiss();
+                            SetFragment<FirstFragment>(null, "first_fragment)");
                         }
                         catch (Exception ex)
                         {

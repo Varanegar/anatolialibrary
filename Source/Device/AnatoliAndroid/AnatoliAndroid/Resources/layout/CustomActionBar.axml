@@ -37,7 +37,8 @@
             p1:layout_height="24dp"
             p1:id="@+id/menuImageButton"
             p1:layout_alignParentLeft="true"
-            p1:layout_centerVertical="true" />
+            p1:layout_centerVertical="true"
+            p1:visibility="gone" />
         <RelativeLayout
             p1:id="@+id/shoppingbarRelativeLayout"
             p1:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 p1:visibility="invisible" />
         </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
-            p1:text="Anatoli"
+            p1:text=""
             p1:layout_width="wrap_content"
             p1:layout_height="50dp"
             p1:id="@+id/toolbarTextView"
@@ -121,6 +122,7 @@
         <AutoCompleteTextView
             p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
+            p1:background="#00000000"
             p1:layout_alignParentTop="true"
             p1:layout_centerVertical="true"
             p1:layout_alignParentBottom="true"
