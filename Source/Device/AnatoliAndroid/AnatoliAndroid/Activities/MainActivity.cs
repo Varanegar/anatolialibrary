@@ -18,10 +18,11 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 using AnatoliAndroid.ListAdapters;
 using System.Threading.Tasks;
 using Android.Locations;
+using Anatoli.App;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon")]
+    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon", ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
     public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;
@@ -78,6 +79,44 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+
+            int v = Anatoli.App.SyncManager.LoadDBVersion();
+            if (v == 0)
+            {
+                AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
+                try
+                {
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
+                    pDialog.SetMessage(" بروز رسانی لیست شهر ها");
+                    pDialog.Show();
+                    await CityRegionUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
+                    pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
+                    await StoreUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
+                    pDialog.SetMessage("بروز رسانی گروه کالاها");
+                    await ProductGroupManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
+                    pDialog.SetMessage("بروز رسانی لیست کالاها");
+                    await ProductUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
+                    pDialog.SetMessage("بروز رسانی قیمت ها");
+                    await ProductPriceManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
+                    pDialog.SetMessage("آماده سازی برنامه");
+                    await SyncManager.SaveDBVersionAsync();
+                    pDialog.Dismiss();
+                }
+                catch (Exception ex)
+                {
+                    pDialog.Dismiss();
+                    Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    alert.SetMessage(ex.Message);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.Show();
+                }
+            }
+
             try
             {
                 AnatoliApp.GetInstance().DefaultStore = (await StoreManager.GetDefaultAsync()).store_name;

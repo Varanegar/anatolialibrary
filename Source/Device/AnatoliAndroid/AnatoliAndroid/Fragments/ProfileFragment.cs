@@ -15,6 +15,7 @@ using Anatoli.App.Model.AnatoliUser;
 using AnatoliAndroid.Activities;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -71,13 +72,13 @@ namespace AnatoliAndroid.Fragments
                         Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
                         AnatoliApp.GetInstance().Activity.StartActivity(intent);
                     });
-                    errDialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => {});
+                    errDialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
                     errDialog.Show();
                     return;
                 }
+                ProgressDialog pDialog = new ProgressDialog();
                 try
                 {
-                    ProgressDialog pDialog = new ProgressDialog();
                     pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
                     pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                     pDialog.Show();
@@ -99,6 +100,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
+                    pDialog.Dismiss();
                     errDialog.SetMessage(ex.Message);
                     errDialog.SetTitle("خطا");
                     errDialog.Show();
@@ -128,6 +130,38 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
+
+            // manipulate spin boxes
+            var cities = CityRegionManager.GetFirstLevel();
+            List<CityRegionModel> zones = new List<CityRegionModel>();
+            List<CityRegionModel> districts = new List<CityRegionModel>();
+            _citySpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, cities);
+            _citySpinner.ItemSelected += async (s, e) =>
+            {
+                try
+                {
+                    CityRegionModel selectedItem = cities[e.Position];
+                    zones = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
+                    _zoneSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, zones);
+                }
+                catch (Exception)
+                {
+
+                }
+            };
+            _zoneSpinner.ItemSelected += async (s, e) =>
+            {
+                try
+                {
+                    CityRegionModel selectedItem = zones[e.Position];
+                    districts = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
+                    _districtSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, districts);
+                }
+                catch (Exception)
+                {
+
+                }
+            };
             try
             {
                 _shippingInfo = ShippingInfoManager.GetDefault();

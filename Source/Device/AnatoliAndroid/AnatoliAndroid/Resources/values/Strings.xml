@@ -7,7 +7,7 @@
   <string name="Products">دسته بندی کالا</string>
   <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
   <string name="LoginFailed">ورود نا موفق</string>
-
+  <string name="AllProducts">همه محصولات</string>
 
   <string name="MyList">فهرست من</string>
   <string name="MyStore">فروشگاه من</string>
@@ -45,7 +45,9 @@
   <string name="Updating">در حال بروزرسانی</string>
   <string name="Update">بروزرسانی</string>
   <string name="Error">خطا</string>
-  
+  <string name="PassLengthError">کلمه عبور باید بیشتر از 4 حرف باشد</string>
+  <string name="ConnectionFailed">خطا در برقراری ارتباط</string>
+  <string name="SaveFailed">خطا در ذخیره سازی اطلاعات</string>
   <string name="Open">باز است !</string>
   <string name="Close">بسته است !</string>
   <string name="Meter">متر</string>

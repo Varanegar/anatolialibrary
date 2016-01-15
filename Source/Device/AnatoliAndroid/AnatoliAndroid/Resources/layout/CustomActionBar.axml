@@ -37,7 +37,8 @@
             p1:layout_height="24dp"
             p1:id="@+id/menuImageButton"
             p1:layout_alignParentLeft="true"
-            p1:layout_centerVertical="true" />
+            p1:layout_centerVertical="true"
+            p1:visibility="gone" />
         <RelativeLayout
             p1:id="@+id/shoppingbarRelativeLayout"
             p1:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 p1:visibility="invisible" />
         </RelativeLayout>
         <AnatoliAndroid.Components.AnatoliTextView
-            p1:text="Anatoli"
+            p1:text=""
             p1:layout_width="wrap_content"
             p1:layout_height="50dp"
             p1:id="@+id/toolbarTextView"
@@ -94,23 +95,23 @@
     <RelativeLayout
         p1:id="@+id/searchRelativeLayout"
         p1:layout_width="match_parent"
-        p1:layout_height="50dp"
+        p1:layout_height="40dp"
         p1:background="@android:drawable/editbox_background"
         p1:padding="1dp"
         p1:paddingRight="20dp">
         <ImageButton
-            p1:layout_width="wrap_content"
-            p1:layout_height="wrap_content"
+            p1:layout_width="20dp"
+            p1:layout_height="20dp"
             p1:id="@+id/searchbarImageButton"
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true"
             p1:layout_marginRight="15dp"
             p1:src="@drawable/ic_exit_gray_24dp"
-            p1:scaleType="centerInside"
+            p1:scaleType="fitXY"
             p1:background="@android:color/transparent" />
         <ImageButton
-            p1:layout_width="wrap_content"
-            p1:layout_height="wrap_content"
+            p1:layout_width="20dp"
+            p1:layout_height="20dp"
             p1:id="@+id/searchButtonImageButton"
             p1:layout_alignParentLeft="true"
             p1:layout_centerVertical="true"
@@ -121,6 +122,7 @@
         <AutoCompleteTextView
             p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
+            p1:background="#00000000"
             p1:layout_alignParentTop="true"
             p1:layout_centerVertical="true"
             p1:layout_alignParentBottom="true"
@@ -132,6 +134,9 @@
             p1:paddingRight="5dp"
             p1:paddingTop="1dp"
             p1:paddingBottom="1dp"
-            p1:singleLine="true" />
+            p1:singleLine="true"
+            p1:inputType="textPersonName"
+            p1:imeOptions="actionDone"
+            p1:gravity="right" />
     </RelativeLayout>
 </LinearLayout>

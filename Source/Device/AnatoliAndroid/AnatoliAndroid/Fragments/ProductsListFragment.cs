@@ -15,13 +15,14 @@ using Anatoli.App.Manager;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("دسته بندی کالا")]
     class ProductsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
-        int cat_id = 0;
+        string cat_id = null;
         public override void OnStart()
         {
             base.OnStart();
@@ -31,20 +32,16 @@ namespace AnatoliAndroid.Fragments
         {
             var parameters = new List<QueryParameter>();
             parameters.Add(new SortParam("order_count", SortTypes.DESC));
-            ProductManager pm = new ProductManager();
-            var ids = CategoryManager.GetCategories(cat_id);
-            parameters.Add(new CategoryFilterParam("cat_id", cat_id.ToString()));
-            if (ids != null)
+            var leftRight = CategoryManager.GetLeftRight(cat_id);
+            if (leftRight != null)
             {
-                foreach (var item in ids)
-                {
-                    parameters.Add(new CategoryFilterParam("cat_id", item.catId.ToString()));
-                }
+                parameters.Add(new GreaterFilterParam("cat_left", leftRight.left.ToString()));
+                parameters.Add(new SmallerFilterParam("cat_right", leftRight.right.ToString()));
             }
 
             return parameters;
         }
-        public async void SetCatId(int id)
+        public async Task SetCatId(string id)
         {
             cat_id = id;
             SetParameters();

@@ -33,10 +33,12 @@ namespace AnatoliAndroid.ListAdapters
         ImageView _bproductImageView;
         ImageButton _favoritsButton;
         ImageButton _productRemoveButton;
-        RelativeLayout _removeAllRelativeLayout;
+        ImageButton _removeAllProductsButton;
         OnTouchListener _addTouchlistener;
         LinearLayout _counterLinearLayout;
+        RelativeLayout _removeAllRelativeLayout;
         RelativeLayout _relativeLayout4;
+        LinearLayout _back;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -58,11 +60,12 @@ namespace AnatoliAndroid.ListAdapters
                 _bproductImageView = view.FindViewById<ImageView>(Resource.Id.bproductImageView);
                 _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addProductImageView);
                 _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
+                _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
                 _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                 _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
                 _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
-
+                _back = view.FindViewById<LinearLayout>(Resource.Id.back);
 
                 view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                 view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
@@ -73,11 +76,12 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
                 view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
                 view.SetTag(Resource.Id.bproductNameTextView, _bproductNameTextView);
+                view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
                 view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
                 view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                 view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
                 view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
-
+                view.SetTag(Resource.Id.back, _back);
             }
             else
             {
@@ -90,31 +94,41 @@ namespace AnatoliAndroid.ListAdapters
                 _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
                 _bproductImageView = (ImageView)view.GetTag(Resource.Id.bproductImageView);
                 _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
+                _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
                 _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
                 _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
                 _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
                 _relativeLayout4 = (RelativeLayout)view.GetTag(Resource.Id.relativeLayout4);
+                _back = (LinearLayout)view.GetTag(Resource.Id.back);
             }
 
-            if (!String.IsNullOrEmpty(item.image))
-            {
-                UrlImageViewHelper.SetUrlDrawable(_productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-                UrlImageViewHelper.SetUrlDrawable(_bproductImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-            }
-            else
-            {
-                _productIimageView.SetImageResource(Resource.Drawable.igmart);
-                _bproductImageView.SetImageResource(Resource.Drawable.igmart);
-            }
+            //if (!String.IsNullOrEmpty(item.image))
+            //{
+            //    UrlImageViewHelper.SetUrlDrawable(_productIimageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            //    UrlImageViewHelper.SetUrlDrawable(_bproductImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            //}
+            //else
+            //{
+            //    _productIimageView.SetImageResource(Resource.Drawable.igmart);
+            //    _bproductImageView.SetImageResource(Resource.Drawable.igmart);
+            //}
+
+            string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
+            UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+            UrlImageViewHelper.SetUrlDrawable(_bproductImageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
 
 
             if (item.IsFavorit)
             {
                 _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.RemoveFromList);
+                _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_orange_24dp);
+                _favoritsTextView.SetTextColor(Android.Graphics.Color.Orange);
             }
             else
             {
                 _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
+                _favoritsTextView.SetTextColor(Android.Graphics.Color.Green);
+                _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_green_24dp);
             }
 
             _productCountTextView.Text = item.count.ToString() + " عدد";
@@ -138,7 +152,7 @@ namespace AnatoliAndroid.ListAdapters
 
 
             var removeAll = new OnTouchListener();
-            _removeAllRelativeLayout.SetOnTouchListener(removeAll);
+            _removeAllProductsButton.SetOnTouchListener(removeAll);
             removeAll.Click += async (s, e) =>
             {
                 OnBackClicked(position);

@@ -43,8 +43,16 @@ namespace AnatoliAndroid.Fragments
             if (String.IsNullOrEmpty(_telEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
                 alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.EneterUserNamePass));
-                alertDialog.SetTitle("خطا");
-                alertDialog.SetPositiveButton("خب", (s, ev) => { });
+                alertDialog.SetTitle(Resource.String.Error);
+                alertDialog.SetPositiveButton(Resource.String.Ok, (s, ev) => { });
+                alertDialog.Show();
+                return;
+            }
+            if (_passwordEditText.Text.Length < 4)
+            {
+                alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PassLengthError));
+                alertDialog.SetTitle(Resource.String.Error);
+                alertDialog.SetPositiveButton(Resource.String.Ok, (s, ev) => { });
                 alertDialog.Show();
                 return;
             }
@@ -62,11 +70,11 @@ namespace AnatoliAndroid.Fragments
                 if (result.IsValid)
                 {
                     alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.SaveSuccess));
-                    alertDialog.SetPositiveButton("خب", async (s, a) =>
+                    alertDialog.SetPositiveButton(Resource.String.Ok, async (s, a) =>
                     {
                         ProgressDialog pDialog = new ProgressDialog();
                         AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                        errDialog.SetPositiveButton("خب", (s1, e1) => { });
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
 
                         pDialog.SetTitle(Resources.GetText(Resource.String.Login));
                         pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
@@ -89,7 +97,7 @@ namespace AnatoliAndroid.Fragments
                                 {
                                     if (ex.GetType() == typeof(TokenException))
                                     {
-                                        errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
+                                        errDialog.SetMessage(Resource.String.SaveFailed);
                                         errDialog.Show();
                                     }
                                 }
@@ -121,7 +129,7 @@ namespace AnatoliAndroid.Fragments
                 else
                 {
                     alertDialog.SetMessage(result.ModelStateString);
-                    alertDialog.SetPositiveButton("خب", (s, a) => { });
+                    alertDialog.SetPositiveButton(Resource.String.Ok, (s, a) => { });
                     alertDialog.Show();
                 }
             }
@@ -130,21 +138,21 @@ namespace AnatoliAndroid.Fragments
                 dialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {
-                    alertDialog.SetMessage("خطا در برقراری ارتباط");
-                    alertDialog.SetPositiveButton("خب", (s, a) => { });
+                    alertDialog.SetMessage(Resource.String.ConnectionFailed);
+                    alertDialog.SetPositiveButton(Resource.String.Ok, (s, a) => { });
                     alertDialog.Show();
                 }
                 else if (ex.GetType() == typeof(TokenException))
                 {
 
-                    alertDialog.SetMessage("خطای تصدیق هویت");
-                    alertDialog.SetPositiveButton("خب", (s, a) => { });
+                    alertDialog.SetMessage(Resource.String.AuthenticationFailed);
+                    alertDialog.SetPositiveButton(Resource.String.Ok, (s, a) => { });
                     alertDialog.Show();
                 }
                 else
                 {
                     alertDialog.SetMessage(ex.Message);
-                    alertDialog.SetPositiveButton("خب", (s, a) => { });
+                    alertDialog.SetPositiveButton(Resource.String.Ok, (s, a) => { });
                     alertDialog.Show();
                 }
             }

@@ -7,11 +7,11 @@
     <ImageView
         p1:src="@drawable/ic_location_on_gray_24dp"
         p1:id="@+id/mapIconImageView"
-        p1:layout_width="wrap_content"
+        p1:layout_width="20dp"
         p1:layout_alignParentRight="true"
-        p1:layout_height="wrap_content"
+        p1:layout_height="40dp"
         p1:layout_centerVertical="true"
-        p1:layout_marginRight="10dp" />
+        p1:layout_marginRight="15dp" />
     <ImageView
         p1:layout_width="65dp"
         p1:layout_height="65dp"
@@ -19,7 +19,7 @@
         p1:layout_toLeftOf="@id/mapIconImageView"
         p1:src="@drawable/igmart"
         p1:layout_centerVertical="true"
-        p1:layout_margin="10dp" />
+        p1:layout_margin="15dp" />
     <View
         p1:layout_width="match_parent"
         p1:layout_height="2dp"
@@ -59,21 +59,17 @@
             local:customFont="Fonts/anatoli.ttf"
             p1:layout_gravity="right"
             p1:textSize="15dp" />
-        <RelativeLayout
-            p1:layout_width="match_parent"
+        <AnatoliAndroid.Components.AnatoliTextView
+            p1:text="آدرس"
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:id="@+id/storeAddressTextView"
+            p1:textDirection="rtl"
+            p1:gravity="right"
+            p1:layout_gravity="right"
+            p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
-            p1:id="@+id/footerRelativeLayout">
-            <AnatoliAndroid.Components.AnatoliTextView
-                p1:text="آدرس"
-                p1:textAppearance="?android:attr/textAppearanceSmall"
-                p1:id="@+id/storeAddressTextView"
-                p1:textDirection="rtl"
-                p1:gravity="right"
-                p1:layout_width="wrap_content"
-                p1:layout_height="wrap_content"
-                local:customFont="Fonts/anatoli.ttf"
-                p1:textSize="12dp" />
-        </RelativeLayout>
+            local:customFont="Fonts/anatoli.ttf"
+            p1:textSize="12dp" />
         <AnatoliAndroid.Components.AnatoliTextView
             p1:text="فاصله"
             p1:textAppearance="?android:attr/textAppearanceSmall"

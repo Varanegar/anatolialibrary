@@ -19,6 +19,10 @@ namespace AnatoliAndroid
         {
             return System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
         }
+        public string GetInternetCacheLoction()
+        {
+            return System.Environment.GetFolderPath(System.Environment.SpecialFolder.InternetCache);
+        }
         public string ReadAllText(string path, string fileName)
         {
             string filePath = System.IO.Path.Combine(path, fileName);

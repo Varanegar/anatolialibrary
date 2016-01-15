@@ -9,21 +9,9 @@ namespace Anatoli.App.Model.Product
 {
     public class CategoryInfoModel : BaseDataModel
     {
-        public int catId;
-        public int parentId;
-        public int depth;
-        public string name;
-        public CategoryInfoModel()
-        {
-
-        }
-        public CategoryInfoModel(int catId, int parentId, int depth, string name)
-        {
-            // TODO: Complete member initialization
-            this.catId = catId;
-            this.parentId = parentId;
-            this.depth = depth;
-            this.name = name;
-        }
+        public string cat_id { get; set; }
+        public string cat_parent { get; set; }
+        public int cat_depth { get; set; }
+        public string cat_name { get; set; }
     }
 }

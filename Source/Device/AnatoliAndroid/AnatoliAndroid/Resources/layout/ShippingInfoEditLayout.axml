@@ -5,15 +5,149 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/AnatoliDialog">
-    <AnatoliAndroid.Components.AnatoliEditText
-        android:inputType="textImeMultiLine"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addressEditText"
-        android:imeOptions="actionNext"
-        style="@style/AnatoliTextField"
-        android:hint="آدرس" />
-    <!--<AnatoliAndroid.Components.AnatoliEditText
+        android:id="@+id/shippingAddressRelativeLayout"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shippingAddressLinearLayout"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Province"
+                    android:id="@+id/provinceTextView"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:layout_alignParentRight="true" />
+                <Spinner
+                    android:id="@+id/provinceSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/provinceTextView"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/City"
+                    android:id="@+id/cityTextView"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:layout_alignParentRight="true" />
+                <Spinner
+                    android:id="@+id/citySpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/cityTextView" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Zone"
+                    android:id="@+id/zoneTextView"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:layout_alignParentRight="true" />
+                <Spinner
+                    android:id="@+id/zoneSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/zoneTextView" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <AnatoliAndroid.Components.AnatoliTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/District"
+                    android:id="@+id/districtTextView"
+                    local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
+                    android:layout_alignParentRight="true" />
+                <Spinner
+                    android:id="@+id/districtSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/districtTextView" />
+            </RelativeLayout>
+            <AnatoliAndroid.Components.AnatoliEditText
+                android:id="@+id/addressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="آدرس تحویل:"
+                android:imeOptions="actionDone"
+                style="@style/AnatoliTextField"
+                local:customFont="Fonts/anatoli.ttf"
+                android:inputType="text" />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/telRelativeLayout"
+        android:layout_below="@id/shippingAddressRelativeLayout"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone">
+    <!--
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/addressTextView"
+            android:id="@+id/telTitleTextView"
+            android:text="شماره تماس :"
+            local:customFont="Fonts/anatoli.ttf" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/telTitleTextView"
+            android:id="@+id/telTextView"
+            local:customFont="Fonts/anatoli.ttf" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/telTitleTextView"
+            android:id="@+id/nameTitleTextView"
+            android:text="نام گیرنده :"
+            local:customFont="Fonts/anatoli.ttf" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/nameTitleTextView"
+            android:id="@+id/nameTextView"
+            local:customFont="Fonts/anatoli.ttf"
+            android:layout_below="@id/telTextView" />
+-->
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/lightgray"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+<!--<AnatoliAndroid.Components.AnatoliEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameEditText"

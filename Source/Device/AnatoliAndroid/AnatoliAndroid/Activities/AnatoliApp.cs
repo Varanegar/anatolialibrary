@@ -18,6 +18,7 @@ using Anatoli.App.Manager;
 using Android.Locations;
 using Android.Views.InputMethods;
 using Anatoli.App;
+using AnatoliAndroid.Components;
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -148,6 +149,14 @@ namespace AnatoliAndroid.Activities
                 else
                     HideKeyboard(_searchEditText);
             };
+            _searchEditText.EditorAction += async (s, e) =>
+            {
+                if (e.ActionId == ImeAction.Done)
+                {
+                    await Search(_searchEditText.Text);
+                    CloseSearchBar();
+                }
+            };
             _toolBarTextView = ToolBar.FindViewById<TextView>(Resource.Id.toolbarTextView);
             _shoppingCardTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingCardTextView);
             _shoppingPriceTextView = ToolBar.FindViewById<TextView>(Resource.Id.shoppingPriceTextView);
@@ -220,6 +229,11 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF = _currentFragment as ProductsListFragment;
                 }
+                await _productsListF.Search("product_name", value);
+            }
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
+            {
+                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prfoucts_fragment");
                 await _productsListF.Search("product_name", value);
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
@@ -313,16 +327,15 @@ namespace AnatoliAndroid.Activities
                         if (_productsListF != null)
                         {
                             _productsListF.ExitSearchMode();
-                            _productsListF.SetCatId(0);
+                            await _productsListF.SetCatId(null);
                         }
-                        var temp = CategoryManager.GetCategories(0);
+                        var temp = CategoryManager.GetFirstLevel();
                         var categories = new List<DrawerItemType>();
                         categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                        var current = CategoryManager.GetParentCategory(0);
-                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.AllProducts, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
                         foreach (var item in temp)
                         {
-                            var it = new DrawerPCItem(item.catId, item.name);
+                            var it = new DrawerPCItem(item.cat_id, item.cat_name);
                             categories.Add(it);
                         }
                         AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -373,8 +386,39 @@ namespace AnatoliAndroid.Activities
                             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.Show();
-                            await SyncManager.SyncDatabase();
+                            try
+                            {
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
+                                pDialog.SetMessage(" بروز رسانی لیست شهر ها");
+                                pDialog.Show();
+                                await CityRegionUpdateManager.SyncDataBase();
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
+                                pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
+                                await StoreUpdateManager.SyncDataBase();
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
+                                pDialog.SetMessage("بروز رسانی گروه کالاها");
+                                await ProductGroupManager.SyncDataBase();
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
+                                pDialog.SetMessage("بروز رسانی لیست کالاها");
+                                await ProductUpdateManager.SyncDataBase();
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
+                                pDialog.SetMessage("بروز رسانی قیمت ها");
+                                await ProductPriceManager.SyncDataBase();
+                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
+                                pDialog.SetMessage("آماده سازی برنامه");
+                                await SyncManager.SaveDBVersionAsync();
+                                pDialog.Dismiss();
+                            }
+                            catch (Exception ex)
+                            {
+                                pDialog.Dismiss();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                alert.SetMessage(ex.Message);
+                                alert.SetTitle(Resource.String.Error);
+                                alert.Show();
+                            }
                             pDialog.Dismiss();
+                            SetFragment<FirstFragment>(null, "first_fragment)");
                         }
                         catch (Exception ex)
                         {
@@ -404,35 +448,35 @@ namespace AnatoliAndroid.Activities
                 if (_productsListF != null)
                 {
                     _productsListF.ExitSearchMode();
-                    _productsListF.SetCatId(0);
                 }
                 if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
                 {
-                    _productsListF.SetCatId(selectedItem.ItemId);
+                    await _productsListF.SetCatId(selectedItem.ItemId);
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                     return;
                 }
-                var temp = CategoryManager.GetCategories(selectedItem.ItemId);
+                var temp = await CategoryManager.GetCategoriesAsync(selectedItem.ItemId);
                 if (temp != null)
                 {
-                    _productsListF.SetCatId(selectedItem.ItemId);
+                    await _productsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
                     categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                    var parent = CategoryManager.GetParentCategory(selectedItem.ItemId);
-
-                    var current = CategoryManager.GetCategoryInfo(selectedItem.ItemId);
-                    if (current.catId != parent.catId)
+                    var parent = await CategoryManager.GetParentCategory(selectedItem.ItemId);
+                    var current = await CategoryManager.GetCategoryInfo(selectedItem.ItemId);
+                    if (parent != null)
                     {
-                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Parent));
-                        categories.Add(new DrawerPCItem(current.catId, current.name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerPCItem(parent.cat_id, parent.cat_name, DrawerPCItem.ItemTypes.Parent));
+                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
                     }
                     else
-                        categories.Add(new DrawerPCItem(parent.catId, parent.name, DrawerPCItem.ItemTypes.Leaf));
-
+                    {
+                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.ProductCategries, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
+                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
+                    }
                     foreach (var item in temp)
                     {
-                        var it = new DrawerPCItem(item.catId, item.name);
+                        var it = new DrawerPCItem(item.cat_id, item.cat_name);
                         categories.Add(it);
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -505,6 +549,10 @@ namespace AnatoliAndroid.Activities
                 transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
                 transaction.Commit();
                 _toolBarTextView.Text = (fragment as Fragment).GetTitle();
+                if (fragment.GetType() != typeof(ProductsListFragment))
+                {
+                    RefreshMenuItems();
+                }
                 return true;
             }
             catch (Exception)

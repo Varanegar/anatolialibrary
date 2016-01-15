@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using FortySevenDeg.SwipeListView;
 using Android.Animation;
 using Android.Views.InputMethods;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -33,7 +34,7 @@ namespace AnatoliAndroid.Fragments
         ProductsListAdapter _listAdapter;
         RelativeLayout _countRelativeLayout;
         RelativeLayout _cardItemsRelativeLayout;
-        EditText _deliveryAddress;
+        TextView _deliveryAddress;
         TextView _factorePriceTextView;
         //TextView _deliveryTelTextView;
         TextView _storeTelTextView;
@@ -45,10 +46,17 @@ namespace AnatoliAndroid.Fragments
         ImageView _slideupmageView;
         ImageView _slidedownImageView;
         Button _checkoutButton;
-        ImageView _callImageView;
+        ImageButton _callImageButton;
+        ImageButton _editAddressImageButton;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
         Spinner _typeSpinner;
+        //Spinner _zoneSpinner;
+        //Spinner _districtSpinner;
+        //Spinner _citySpinner;
+        //Spinner _provinceSpinner;
+        bool _tomorrow = false;
+
         Cheesebaron.SlidingUpPanel.SlidingUpPanelLayout _slidingLayout;
 
         //ShoppingCardListToolsFragment _toolsDialog;
@@ -76,6 +84,7 @@ namespace AnatoliAndroid.Fragments
             _itemCountTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
             _countRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.countRelativeLayout);
             _cardItemsRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.cardItemsRelativeLayout);
+
             _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
             _checkoutButton.UpdateWidth();
 
@@ -98,33 +107,14 @@ namespace AnatoliAndroid.Fragments
                 _slideupmageView.Visibility = ViewStates.Visible;
             };
             _countTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
-            _callImageView = view.FindViewById<ImageView>(Resource.Id.callImageView);
+            _callImageButton = view.FindViewById<ImageButton>(Resource.Id.callImageButton);
             _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
             _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
-            _deliveryAddress = view.FindViewById<EditText>(Resource.Id.addressEditText);
-            //_deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
-            //_nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
+            _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
+            _editAddressImageButton = view.FindViewById<ImageButton>(Resource.Id.editAddressImageButton);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
-            //_editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
-
-            _deliveryAddress.FocusChange += (s, e) =>
-            {
-                if (!_deliveryAddress.HasFocus)
-                {
-                    SaveAddress(_deliveryAddress.Text);
-                }
-            };
-            _deliveryAddress.EditorAction += (s, e) =>
-            {
-                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
-                {
-                    SaveAddress(_deliveryAddress.Text);
-                    InputMethodManager inputMethodManager = AnatoliApp.GetInstance().Activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
-                    inputMethodManager.HideSoftInputFromWindow(_deliveryAddress.WindowToken, HideSoftInputFlags.None);
-                }
-            };
 
             _checkoutButton.Click += async (s, e) =>
             {
@@ -141,6 +131,21 @@ namespace AnatoliAndroid.Fragments
                     lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
                     lAlert.Show();
                     return;
+                }
+                if (_tomorrow)
+                {
+                    AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
+                    lAlert.SetPositiveButton(Resource.String.Yes, (s2, e2) =>
+                    {
+
+                    });
+                    lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
+                    {
+                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
+                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                    });
+                    lAlert.Show();
                 }
                 try
                 {
@@ -174,46 +179,44 @@ namespace AnatoliAndroid.Fragments
             //};
 
             _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
+            if (_timeOptions.Length == 0)
+            {
+                _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Tommorow);
+                _tomorrow = true;
+            }
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
 
-            var typeOptions = new string[2] {"میام میبرم","خودتون بیارید"};
+            var typeOptions = new string[2] { "میام میبرم", "خودتون بیارید" };
             _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, typeOptions);
 
-            //_editAddressImageView.Click += (s, e) =>
-            //{
-            //    var transaction = FragmentManager.BeginTransaction();
-            //    EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
-            //    editShippingDialog.SetAddress(_deliveryAddress.Text);
-            //    //editShippingDialog.SetTel(_deliveryTelTextView.Text);
-            //    //editShippingDialog.SetName(_nameTextView.Text);
-            //    editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
-            //    {
-            //        _deliveryAddress.Text = address;
-            //        //_deliveryTelTextView.Text = tel;
-            //        //_nameTextView.Text = name;
-            //        _checkoutButton.Enabled = CheckCheckout();
-            //    };
-            //    editShippingDialog.Show(transaction, "shipping_dialog");
+            _editAddressImageButton.Click += (s, e) =>
+            {
+                var transaction = FragmentManager.BeginTransaction();
+                EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
+                editShippingDialog.SetAddress(_deliveryAddress.Text);
+                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
+                //editShippingDialog.SetName(_nameTextView.Text);
+                editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
+                {
+                    _deliveryAddress.Text = address;
+                    //_deliveryTelTextView.Text = tel;
+                    //_nameTextView.Text = name;
+                    _checkoutButton.Enabled = CheckCheckout();
+                };
+                editShippingDialog.Show(transaction, "shipping_dialog");
 
-            //};
+            };
 
 
             return view;
         }
-        async void SaveAddress(string address)
-        {
-            await ShippingInfoManager.NewShippingAddress(address, "", "");
-        }
+
         public async override void OnStart()
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
             AnatoliApp.GetInstance().HideSearchIcon();
-            //AnatoliApp.GetInstance().MenuClicked = () =>
-            //{
-            //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
-            //};
 
             try
             {
@@ -221,13 +224,13 @@ namespace AnatoliAndroid.Fragments
                 if (String.IsNullOrEmpty(tel))
                 {
                     _storeTelTextView.Text = "نا مشخص";
-                    _callImageView.Visibility = ViewStates.Invisible;
+                    _callImageButton.Visibility = ViewStates.Invisible;
                 }
                 else
                 {
                     _storeTelTextView.Text = tel;
-                    _callImageView.Visibility = ViewStates.Visible;
-                    _callImageView.Click += (s, e) =>
+                    _callImageButton.Visibility = ViewStates.Visible;
+                    _callImageButton.Click += (s, e) =>
                     {
                         var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
                         var intent = new Intent(Intent.ActionDial, uri);
