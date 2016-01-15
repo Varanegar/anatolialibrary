@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />

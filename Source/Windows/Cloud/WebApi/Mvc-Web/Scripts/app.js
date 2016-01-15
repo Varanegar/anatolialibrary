@@ -1,9 +1,10 @@
-﻿var baseBackendUrl = 'http://localhost',
+﻿var baseBackendUrl = 'http://localhost:59822',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
         storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/?privateOwnerId=' + privateOwnerId,
-        userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks/?privateOwnerId=' + privateOwnerId,
+        userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
+        saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
         productsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/?privateOwnerId=' + privateOwnerId,
         stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
         saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
@@ -11,11 +12,14 @@
         usersUrl: baseBackendUrl + "/api/accounts/users",
         stockPageUrl: "/Products/",
     },
-    gridAuthHeader = function (req) {
-        var tokenKey = 'accessToken',
-            token = $.cookie("token");
-        req.setRequestHeader('Authorization', 'Bearer ' + token);
-    };
+    errorMessage = {
+        unAuthorized: "شما مجوز لازم را برای این درخواست ندارید!",
+    },
+gridAuthHeader = function (req) {
+    var tokenKey = 'accessToken',
+        token = $.cookie("token");
+    req.setRequestHeader('Authorization', 'Bearer ' + token);
+};
 
 toastr.options = {
     "closeButton": false,
@@ -68,18 +72,31 @@ function accountManagerViewModel() {
     self.requestAppObject = ko.observable();
 
     function showAjaxError(jqXHR) {
-        showError(jqXHR.responseJSON.error, jqXHR.responseJSON.error_description);
+        var title = jqXHR.status,
+            message = jqXHR.statusText
 
-        self.result(jqXHR.responseJSON.error + ': ' + jqXHR.responseJSON.error_description);
+        if (jqXHR.responseJSON) {
+            title = jqXHR.responseJSON.error;
+            message = jqXHR.responseJSON.error_description;
+        }
 
-        console.log(jqXHR.status + ': ' + jqXHR.statusText);
+        if (jqXHR.status == 401) {
+            title = '401';
+            message = errorMessage.unAuthorized;
+        }
+        showError(title, message);
+
+        console.log(title + ': ' + message);
     }
 
-    self.callApi = function (url, callType, callBackFunc) {
+    self.callApi = function (url, callType, dataParams, callBackFunc) {
+        if (url == undefined || url == '')
+            return;
+
         self.result('');
 
         var token = $.cookie("token"),
-            headers = {};
+            headers = { ownerKey: privateOwnerId };
 
         if (token)
             headers.Authorization = 'Bearer ' + token;
@@ -95,11 +112,19 @@ function accountManagerViewModel() {
         $.ajax({
             type: callType,
             url: url,
-            headers: headers
+            headers: headers,
+            data: dataParams
         }).done(function (data) {
             self.result(data);
             callBackFunc(data);
-        }).fail(showAjaxError);
+        }).fail(function (jqXHR) {
+            showAjaxError(jqXHR);
+
+            if (jqXHR.status == 401) {
+                self.requestAppObject({ url: url, callType: callType, callBackFunc: callBackFunc });
+                self.openLogin();
+            }
+        });
     }
 
     var $loginForm = $(".login-form");
@@ -129,7 +154,7 @@ function accountManagerViewModel() {
 
             retUrlObject = self.requestAppObject();
             if (retUrlObject)
-                self.callApi(retUrlObject.url, retUrlObject.callType, retUrlObject.callBackFunc);
+                self.callApi(retUrlObject.url, retUrlObject.callType, {}, retUrlObject.callBackFunc);
 
             headerMenu.shouldShowLogout(true);
 
@@ -181,7 +206,7 @@ function productManagerViewModel() {
     self.flg_initGrid = ko.observable(true);
 
     self.refreshStores = function () {
-        accountManagerApp.callApi(urls.storesUrl, 'GET', function (data) {
+        accountManagerApp.callApi(urls.storesUrl, 'GET', {}, function (data) {
             self.stores(data);
             if (self.stores().length > 0) {
                 //find query string stock id in store list
@@ -301,6 +326,13 @@ function productManagerViewModel() {
         }
     };
     self.refreshStores();
+
+    self.testAuth = function () {
+        accountManagerApp.callApi(baseBackendUrl + '/api/TestAuth/getsample', 'POST', {}, function (data) {
+            debugger
+        });
+    }
+    self.testAuth();
 };
 //******************************************************************//
 
@@ -478,7 +510,7 @@ function ProductHistoryManagerViewModel() {
     }, self);
 
     self.refreshStores = function () {
-        accountManagerApp.callApi(storesUrl, 'GET', function (data) {
+        accountManagerApp.callApi(storesUrl, 'GET', {}, function (data) {
             self.stores(data);
         });
     };
@@ -564,7 +596,7 @@ function ProductHistoryManagerViewModel() {
 };
 //******************************************************************//
 
-function UserManagerViewModel() {
+function UsersStocksViewModel() {
     var self = this;
 
     self.chosenUser = ko.observable();
@@ -584,18 +616,19 @@ function UserManagerViewModel() {
     };
 
     self.addChosenStocks = function (data) {
+        
         var match = ko.utils.arrayFirst(self.chosenStocks(), function (item) {
             return item.uniqueId === data.uniqueId;
         });
 
         if (match && match != null)
-            self.chosenStocks.remove(data);
+            self.chosenStocks.remove(match);
         else
             self.chosenStocks.push(data);
     };
 
     self.refreshUsers = function () {
-        accountManagerApp.callApi(urls.usersUrl, 'GET', function (data) {
+        accountManagerApp.callApi(urls.usersUrl, 'GET', {}, function (data) {
             self.users(data);
             if (self.users().length > 0)
                 self.chosenUser(self.users()[0]);
@@ -607,20 +640,26 @@ function UserManagerViewModel() {
     }, self);
 
     self.refreshStocks = function (data) {
-        self.chosenStocks([]);
 
-        accountManagerApp.callApi(urls.storesUrl, 'GET', function (data) {
+        self.chosenStocks([]);
+        var userId = data.id;
+
+        accountManagerApp.callApi(urls.storesUrl, 'GET', {}, function (data) {
             self.stocks(data);
 
-            accountManagerApp.callApi(urls.userStocksUrl, 'GET', function (data) {
-                if (data)
-                    data.forEach(function (itm) { self.addChosenStocks.push(itm); });
+            accountManagerApp.callApi(urls.userStocksUrl, 'POST', { userId: userId }, function (data) {
+                if (data && data.length > 0)
+                    data.forEach(function (itm) { self.addChosenStocks(itm); });
             });
         });
     };
 
     self.saveUsersStocks = function () {
-        accountManagerApp.callApi(urls.saveStocksUsersUrl, 'POST', function (data) {
+        var stockIds = [];
+
+        self.chosenStocks().forEach(function (stock) { stockIds.push(stock.uniqueId); });
+
+        accountManagerApp.callApi(urls.saveStocksUsersUrl, 'POST', { userId: self.chosenUser().id, stockIds: stockIds }, function (data) {
             showSuccess("ذخیره سازی", "انجام شد");
         });
     };

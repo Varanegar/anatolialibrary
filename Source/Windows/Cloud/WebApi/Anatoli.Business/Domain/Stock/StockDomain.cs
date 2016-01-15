@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
+using Anatoli.DataAccess;
 using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
+using Anatoli.ViewModels.StockModels;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
-using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.StockModels;
+using Anatoli.DataAccess.Models.Identity;
 using Anatoli.Business.Proxy.Concretes.StockConcretes;
 
 namespace Anatoli.Business.Domain
@@ -20,8 +20,9 @@ namespace Anatoli.Business.Domain
         public IAnatoliProxy<Stock, StockViewModel> Proxy { get; set; }
         public IAnatoliProxy<Stock, StockViewModel> ProxyCompleteInfo { get; set; }
         public IRepository<Stock> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
+        //  public IPrincipalRepository PrincipalRepository { get; set; }
+        public IRepository<User> UserRepository { get; set; }
+        //   public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
@@ -29,16 +30,21 @@ namespace Anatoli.Business.Domain
         StockDomain() { }
         public StockDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockProxy).FullName), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockCompleteInfoProxy).FullName))
+            : this(new StockRepository(dbc), new PrincipalRepository(dbc), new UserRepository(dbc), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockProxy).FullName), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockCompleteInfoProxy).FullName))
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public StockDomain(IStockRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Stock, StockViewModel> proxy, IAnatoliProxy<Stock, StockViewModel> completeProxy)
+        public StockDomain(IStockRepository dataRepository,
+                           IPrincipalRepository principalRepository,
+                           IUserRepository userRepository,
+                           IAnatoliProxy<Stock, StockViewModel> proxy,
+                           IAnatoliProxy<Stock, StockViewModel> completeProxy)
         {
             Proxy = proxy;
             ProxyCompleteInfo = completeProxy;
             Repository = dataRepository;
             PrincipalRepository = principalRepository;
+            UserRepository = userRepository;
         }
         #endregion
 
@@ -57,14 +63,13 @@ namespace Anatoli.Business.Domain
                 throw ex;
             }
         }
-        public async Task<List<StockViewModel>> GetAllByUserId(Guid userId)
+        public async Task<List<StockViewModel>> GetAllByUserId(string userId)
         {
             try
             {
-                //Todo: user and stock need a join.
-                var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+                var user = await UserRepository.FindAsync(p => p.Id == userId);
 
-                return Proxy.Convert(dataList.ToList()); ;
+                return Proxy.Convert(user.Stocks.ToList());
             }
             catch (Exception ex)
             {
@@ -132,13 +137,28 @@ namespace Anatoli.Business.Domain
 
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
             }
 
             return dataViewModels;
+        }
+
+        public async Task SaveStocksUser(string userId, List<Guid> stockIds)
+        {
+            var user = await UserRepository.FindAsync(p => p.Id == userId);
+            user.Stocks.Clear();
+
+            if (stockIds != null)
+            {
+                var stocks = await Repository.FindAllAsync(p => stockIds.Contains(p.Id));
+                
+                stocks.ToList().ForEach(itm => user.Stocks.Add(itm));
+            }
+
+            await UserRepository.SaveChangesAsync();
         }
 
         public async Task<List<StockViewModel>> Delete(List<StockViewModel> dataViewModels)
@@ -150,7 +170,7 @@ namespace Anatoli.Business.Domain
                 dataList.ForEach(item =>
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
+
                     Repository.DeleteAsync(data);
                 });
 
