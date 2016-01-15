@@ -19,6 +19,8 @@ using Android.Locations;
 using Android.Views.InputMethods;
 using Anatoli.App;
 using AnatoliAndroid.Components;
+using Anatoli.Framework.AnatoliBase;
+
 namespace AnatoliAndroid.Activities
 {
     class AnatoliApp
@@ -383,6 +385,11 @@ namespace AnatoliAndroid.Activities
                         AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
                         try
                         {
+                            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                            {
+                                Toast.MakeText(_activity, Resource.String.PleaseConnectToInternet, ToastLength.Short).Show();
+                                break;
+                            }
                             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.Show();

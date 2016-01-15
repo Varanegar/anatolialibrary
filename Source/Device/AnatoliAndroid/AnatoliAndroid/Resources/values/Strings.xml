@@ -27,7 +27,7 @@
   <string name="TotalPrice">جمع مبلغ : </string>
   <string name="PleaseLogin">لطفا وارد حساب کاربری خود شوید </string>
   <string name="Ok">باشه</string>
-
+  <string name="ErrorOccured">اجرای درخواست شما با خطا مواجه شد!</string>
   <string name="FirstName">نام</string>
   <string name="LastName">نام خانوادگی</string>
   <string name="Email">پست الکترونیک</string>
@@ -37,6 +37,7 @@
   <string name="City">شهر</string>
   <string name="District">محله</string>
   <string name="Zone">منطقه</string>
+  <string name="Zone2">ناحیه</string>
   <string name="Save">ثبت</string>
   <string name="Id">کد ملی</string>
   <string name="AreYouSure">آیا اطمینان دارید؟</string>

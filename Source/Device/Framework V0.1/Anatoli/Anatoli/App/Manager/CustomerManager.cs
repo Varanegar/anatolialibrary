@@ -23,12 +23,17 @@ namespace Anatoli.App.Manager
                 Environment.NewLine + customer.BirthDay +
                 Environment.NewLine + customer.CustomerCode +
                 Environment.NewLine + customer.CustomerName +
+                Environment.NewLine + customer.FirstName +
+                Environment.NewLine + customer.LastName +
                 Environment.NewLine + customer.Email +
                 Environment.NewLine + customer.Mobile +
                 Environment.NewLine + customer.NationalCode +
                 Environment.NewLine + customer.Phone +
                 Environment.NewLine + customer.PostalCode +
-                Environment.NewLine + customer.UniqueId;
+                Environment.NewLine + customer.UniqueId +
+                Environment.NewLine + customer.RegionLevel1Id +
+                Environment.NewLine + customer.RegionLevel2Id +
+                Environment.NewLine + customer.RegionLevel3Id;
             bool wResult = await Task.Run(() =>
             {
                 var cipherText = Crypto.EncryptAES(content);
@@ -50,15 +55,20 @@ namespace Anatoli.App.Manager
             string[] cInfoFields = cInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             CustomerViewModel customer = new CustomerViewModel();
             customer.Address = cInfoFields[0];
-            customer.BirthDay = new DateTime();
+            customer.BirthDay = cInfoFields[1];
             customer.CustomerCode = cInfoFields[2];
             customer.CustomerName = cInfoFields[3];
-            customer.Email = cInfoFields[4];
-            customer.Mobile = cInfoFields[5];
-            customer.NationalCode = cInfoFields[6];
-            customer.Phone = cInfoFields[7];
-            customer.PostalCode = cInfoFields[8];
-            customer.UniqueId = cInfoFields[9];
+            customer.FirstName = cInfoFields[4];
+            customer.LastName = cInfoFields[5];
+            customer.Email = cInfoFields[6];
+            customer.Mobile = cInfoFields[7];
+            customer.NationalCode = cInfoFields[8];
+            customer.Phone = cInfoFields[9];
+            customer.PostalCode = cInfoFields[10];
+            customer.UniqueId = cInfoFields[11];
+            customer.RegionLevel1Id = cInfoFields[12];
+            customer.RegionLevel2Id = cInfoFields[13];
+            customer.RegionLevel3Id = cInfoFields[14];
             return customer;
         }
 
