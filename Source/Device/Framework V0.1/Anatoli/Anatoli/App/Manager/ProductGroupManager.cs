@@ -12,7 +12,7 @@ namespace Anatoli.App.Manager
 {
     public class ProductGroupManager : BaseManager<BaseDataAdapter<ProductGroupModel>, ProductGroupModel>
     {
-        internal static async Task SyncDataBase()
+        public static async Task SyncDataBase()
         {
             try
             {

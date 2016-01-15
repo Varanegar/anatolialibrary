@@ -60,6 +60,7 @@ namespace AnatoliAndroid.Fragments
 
 
 
+
             return view;
         }
         public override async void OnStart()

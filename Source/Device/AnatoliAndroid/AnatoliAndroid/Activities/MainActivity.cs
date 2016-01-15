@@ -86,10 +86,25 @@ namespace AnatoliAndroid.Activities
                 AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
                 try
                 {
-                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                    pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
+                    pDialog.SetMessage(" بروز رسانی لیست شهر ها");
                     pDialog.Show();
-                    await SyncManager.SyncDatabase();
+                    await CityRegionUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
+                    pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
+                    await StoreUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
+                    pDialog.SetMessage("بروز رسانی گروه کالاها");
+                    await ProductGroupManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
+                    pDialog.SetMessage("بروز رسانی لیست کالاها");
+                    await ProductUpdateManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
+                    pDialog.SetMessage("بروز رسانی قیمت ها");
+                    await ProductPriceManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
+                    pDialog.SetMessage("آماده سازی برنامه");
+                    await SyncManager.SaveDBVersionAsync();
                     pDialog.Dismiss();
                 }
                 catch (Exception ex)

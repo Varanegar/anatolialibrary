@@ -16,7 +16,7 @@ namespace Anatoli.App
             await ProductGroupManager.SyncDataBase();
             await ProductUpdateManager.SyncDataBase();
             await ProductPriceManager.SyncDataBase();
-            SaveDBVersionAsync();
+            await SaveDBVersionAsync();
         }
         public static int LoadDBVersion()
         {
@@ -30,7 +30,7 @@ namespace Anatoli.App
                 return 0;
             }
         }
-        public static async void SaveDBVersionAsync()
+        public static async Task SaveDBVersionAsync()
         {
             await Task.Run(() =>
             {

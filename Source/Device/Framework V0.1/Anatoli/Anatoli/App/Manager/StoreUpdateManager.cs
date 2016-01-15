@@ -12,7 +12,7 @@ namespace Anatoli.App.Manager
 {
     public class StoreUpdateManager : BaseManager<BaseDataAdapter<StoreUpdateModel>, StoreUpdateModel>
     {
-        internal static async Task SyncDataBase()
+        public static async Task SyncDataBase()
         {
             try
             {

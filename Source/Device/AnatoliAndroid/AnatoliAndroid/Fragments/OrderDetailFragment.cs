@@ -45,46 +45,65 @@ namespace AnatoliAndroid.Fragments
             _itemsListView = view.FindViewById<ListView>(Resource.Id.itemsListView);
             _addAllButton = view.FindViewById<Button>(Resource.Id.addAllButton);
             _addAllButton.UpdateWidth();
-            _orderId = Arguments.GetString("order_id");
+            try
+            {
+                _orderId = Arguments.GetString("order_id");
+            }
+            catch (Exception)
+            {
+                AnatoliApp.GetInstance().BackFragment();
+                _orderId = "-1";
+            }
             return view;
         }
         public async override void OnStart()
         {
             base.OnStart();
-
-            OrderModel order = await OrderManager.GetOrderAsync(_orderId);
-            _dateTextView.Text = order.order_date;
-            _storeNameTextView.Text = order.store_name;
-            _priceTextView.Text = order.order_price.ToString();
-            _orderIdTextView.Text = order.order_id;
-            _orderStatusTextView.Text = order.order_status.ToString();
-
-
-            List<OrderItemModel> items = await OrderItemsManager.GetItemsAsync(_orderId);
-            OrderDetailAdapter adapter = new OrderDetailAdapter(items, AnatoliApp.GetInstance().Activity);
-            adapter.DataChanged += (s, e) =>
+            if (_orderId.Equals("-1"))
             {
-                _itemsListView.InvalidateViews();
-            };
-            _itemsListView.Adapter = adapter;
-
-            _addAllButton.Click += async (s, e) =>
+                AnatoliApp.GetInstance().BackFragment();
+            }
+            else
             {
-                int a = 0;
-                foreach (var item in items)
+                OrderModel order = await OrderManager.GetOrderAsync(_orderId);
+                _dateTextView.Text = order.order_date;
+                _storeNameTextView.Text = order.store_name;
+                _priceTextView.Text = order.order_price.ToString();
+                _orderIdTextView.Text = order.order_id;
+                _orderStatusTextView.Text = order.order_status.ToString();
+
+
+                List<OrderItemModel> items = await OrderItemsManager.GetItemsAsync(_orderId);
+                OrderDetailAdapter adapter = new OrderDetailAdapter(items, AnatoliApp.GetInstance().Activity);
+                adapter.DataChanged += (s, e) =>
                 {
-                    await Task.Delay(100);
-                    if (await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count))
-                    {
-                        a += item.item_count;
-                    }
+                    _itemsListView.InvalidateViews();
+                };
+                _itemsListView.Adapter = adapter;
 
-                }
-                AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                Toast.MakeText(AnatoliApp.GetInstance().Activity, String.Format("{0} آیتم به سبد خرید اضافه شد", a.ToString()), ToastLength.Short).Show();
-                AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(null, "shopping_fragment");
-            };
+                _addAllButton.Click += async (s, e) =>
+                {
+                    int a = 0;
+                    foreach (var item in items)
+                    {
+                        await Task.Delay(100);
+                        if (await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count))
+                        {
+                            a += item.item_count;
+                        }
+
+                    }
+                    if (a > 0)
+                    {
+                        AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                        AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                        Toast.MakeText(AnatoliApp.GetInstance().Activity, String.Format("{0} آیتم به سبد خرید اضافه شد", a.ToString()), ToastLength.Short).Show();
+                        AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(null, "shopping_fragment");
+                    }
+                    else
+                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "کالای مورد نظر هم اکنون در دسترس نمی باشد", ToastLength.Short).Show();
+                };
+            }
         }
 
         class OrderDetailAdapter : BaseAdapter<OrderItemModel>
@@ -132,6 +151,7 @@ namespace AnatoliAndroid.Fragments
                 ImageView productSummaryImageView = convertView.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
                 if (!String.IsNullOrEmpty(item.image))
                 {
+                    string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
                     UrlImageViewHelper.SetUrlDrawable(productSummaryImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 }
                 else
@@ -149,10 +169,14 @@ namespace AnatoliAndroid.Fragments
                 productNameTextView.Text = item.product_name;
                 addProductImageView.Click += async (s, e) =>
                 {
-                    await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count);
-                    AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                    AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                    Toast.MakeText(_context, "به سبد خرید اضافه شد", ToastLength.Short).Show();
+                    if (await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count))
+                    {
+                        AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                        AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                        Toast.MakeText(_context, "به سبد خرید اضافه شد", ToastLength.Short).Show();
+                    }
+                    else
+                        Toast.MakeText(_context, "کالای مورد نظر هم اکنون در دسترس نمی باشد", ToastLength.Short).Show();
                 };
                 //addToFavoritsImageView.Click += async (s, e) =>
                 //{

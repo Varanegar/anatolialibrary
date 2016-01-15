@@ -77,7 +77,7 @@ namespace Anatoli.Framework.DataAdapter
                 }
                 else if (policy == SYNC_POLICY.OnlineIfConnected)
                 {
-                    if (AnatoliClient.GetInstance().WebClient.IsOnline())
+                    if (AnatoliClient.GetInstance().WebClient.IsOnline() && remoteParameters != null)
                         data = CloudRead(remoteParameters);
                     else
                         data = LocalRead(localParameters);
