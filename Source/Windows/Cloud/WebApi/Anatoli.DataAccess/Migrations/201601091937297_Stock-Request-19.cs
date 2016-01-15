@@ -7,6 +7,7 @@ namespace Anatoli.DataAccess.Migrations
     {
         public override void Up()
         {
+            Sql("UPDATE [dbo].[Products] SET QtyPerPack = '1' WHERE QtyPerPack IS NULL");
             AlterColumn("dbo.Products", "QtyPerPack", c => c.Decimal(nullable: false, precision: 18, scale: 2, defaultValue: 1));
         }
         

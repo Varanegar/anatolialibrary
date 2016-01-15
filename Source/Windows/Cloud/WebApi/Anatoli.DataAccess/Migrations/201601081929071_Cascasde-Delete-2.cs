@@ -59,7 +59,6 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreCalendarHistories", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.DeliveryPersons", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.StoreDeliveryPersons", "PrivateLabelOwner_Id", "dbo.Principals");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.Customers", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.Baskets", "PrivateLabelOwner_Id", "dbo.Principals");
             DropForeignKey("dbo.BasketItems", "PrivateLabelOwner_Id", "dbo.Principals");
@@ -79,7 +78,6 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.BasketNotes", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.Customers", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CustomerShipAddresses", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.IncompletePurchaseOrders", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CityRegions", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.Stores", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StoreActions", new[] { "PrivateLabelOwner_Id" });
@@ -88,7 +86,6 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.CharValues", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CharTypes", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.CharGroups", new[] { "PrivateLabelOwner_Id" });
-            DropIndex("dbo.IncompletePurchaseOrderLineItems", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.MainProductGroups", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.StockProductRequestRules", new[] { "PrivateLabelOwner_Id" });
             DropIndex("dbo.ProductTypes", new[] { "PrivateLabelOwner_Id" });
@@ -177,7 +174,6 @@ namespace Anatoli.DataAccess.Migrations
             CreateIndex("dbo.ProductTypes", "PrivateLabelOwner_Id");
             CreateIndex("dbo.StockProductRequestRules", "PrivateLabelOwner_Id");
             CreateIndex("dbo.MainProductGroups", "PrivateLabelOwner_Id");
-            CreateIndex("dbo.IncompletePurchaseOrderLineItems", "PrivateLabelOwner_Id");
             CreateIndex("dbo.CharGroups", "PrivateLabelOwner_Id");
             CreateIndex("dbo.CharTypes", "PrivateLabelOwner_Id");
             CreateIndex("dbo.CharValues", "PrivateLabelOwner_Id");
@@ -186,7 +182,6 @@ namespace Anatoli.DataAccess.Migrations
             CreateIndex("dbo.StoreActions", "PrivateLabelOwner_Id");
             CreateIndex("dbo.Stores", "PrivateLabelOwner_Id");
             CreateIndex("dbo.CityRegions", "PrivateLabelOwner_Id");
-            CreateIndex("dbo.IncompletePurchaseOrders", "PrivateLabelOwner_Id");
             CreateIndex("dbo.CustomerShipAddresses", "PrivateLabelOwner_Id");
             CreateIndex("dbo.Customers", "PrivateLabelOwner_Id");
             CreateIndex("dbo.BasketNotes", "PrivateLabelOwner_Id");
@@ -206,7 +201,6 @@ namespace Anatoli.DataAccess.Migrations
             AddForeignKey("dbo.BasketItems", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Baskets", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Customers", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.IncompletePurchaseOrders", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.StoreDeliveryPersons", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.DeliveryPersons", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.StoreCalendarHistories", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
@@ -244,7 +238,6 @@ namespace Anatoli.DataAccess.Migrations
             AddForeignKey("dbo.ProductTypes", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.StockProductRequestRules", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.MainProductGroups", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.IncompletePurchaseOrderLineItems", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.CharValues", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.CharTypes", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);
             AddForeignKey("dbo.CharGroups", "PrivateLabelOwner_Id", "dbo.Principals", "Id", cascadeDelete: true);

@@ -8,7 +8,6 @@ namespace Anatoli.DataAccess.Models.Identity
 {
     public class User : IdentityUser
     {
-
         #region BaseModel
         [Key]
         public override string Id { get; set; }
@@ -40,5 +39,7 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual Principal Principal { get; set; }
         public virtual Role Role { get; set; }
         public virtual Group Group { get; set; }
+
+        public virtual ICollection<Stock> Stocks { get; set; }
     }
 }

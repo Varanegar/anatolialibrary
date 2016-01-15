@@ -36,7 +36,7 @@ namespace Anatoli.DataAccess
         public DbSet<ProductRate> ProductRates { get; set; }
         public DbSet<ProductSupplierGuarantee> ProductSupplierGuarantees { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
+        public DbSet<PurchaseOrderStatusHistory> PurchaseOrderHistories { get; set; }
         public DbSet<PurchaseOrderLineItem> PurchaseOrderLineItems { get; set; }
         public DbSet<PurchaseOrderPayment> PurchaseOrderPayments { get; set; }
         public DbSet<Store> Stores { get; set; }
@@ -86,7 +86,7 @@ namespace Anatoli.DataAccess
         #region ctors
         static AnatoliDbContext()
         {
-            //Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
+            Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
             //var migrator = new System.Data.Entity.Migrations.DbMigrator(new Anatoli.DataAccess.Migrations.Configuration());
             //migrator.Update();
         }
@@ -108,6 +108,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CharValueConfig());
             modelBuilder.Configurations.Add(new CityRegionConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
+            modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
             modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());

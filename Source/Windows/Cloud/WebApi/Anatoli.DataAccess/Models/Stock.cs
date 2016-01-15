@@ -40,6 +40,9 @@ namespace Anatoli.DataAccess.Models
         public virtual Principal Accept1By { get; set; }
         public virtual Principal Accept2By { get; set; }
         public virtual Principal Accept3By { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
+
     }
 }
     

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customer\PMCCustomerViewModel.cs" />
+    <Compile Include="Order\PMCSellStatusViewModel.cs" />
     <Compile Include="PMCBaseViewModel.cs" />
     <Compile Include="Center\PMCStoreOnhandViewModel.cs" />
     <Compile Include="EVC\PMCEvcViewModel.cs" />

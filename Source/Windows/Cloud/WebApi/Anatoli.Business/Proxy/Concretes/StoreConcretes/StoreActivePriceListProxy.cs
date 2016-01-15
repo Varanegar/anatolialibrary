@@ -16,6 +16,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 {
                     ID = data.Number_ID,
                     UniqueId = data.Id,
+                    PrivateOwnerId = data.PrivateLabelOwner_Id,
                     
                     Price = data.Price,
                     StoreGuid = data.StoreId,

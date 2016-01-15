@@ -545,5 +545,17 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         select 6 as id, convert(uniqueidentifier, 'F17B8898-D39F-4955-9757-A6B31767F5C7') as uniqueid, 'PayType' as BaseTypeDesc
                         ";
         }
+        public static string GetSellInfo()
+        {
+            return @"select * from sell ";
+        }
+        public static string GetSellDetailInfo()
+        {
+            return @"select * from sell ";
+        }
+        public static string GetSellActionInfo()
+        {
+            return @"select * from sell ";
+        }
     }
 }

@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
     <Compile Include="Domain\Base\FiscalYearDomain.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Domain\Base\CityRegionDomain.cs" />
     <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
+    <Compile Include="Domain\Customer\CustomerShipAddressDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
     <Compile Include="Domain\Product\CharGroupDomain.cs" />
@@ -97,8 +99,8 @@
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
-    <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
     <Compile Include="Domain\Stock\StockActiveOnHandDomain.cs" />
     <Compile Include="Domain\Stock\StockDomain.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />
+    <Compile Include="Proxy\Concretes\AuthorizationProxies\PrincipalPermissionProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\BaseTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\BaseValueProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\ReorderCalcTypeProxy.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="Proxy\Concretes\Base\ItemImageProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\CityRegionProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerShipAddressProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharGroupProxy.cs" />
@@ -136,8 +140,12 @@
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductRateProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductPicture.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductTypeProxy.cs" />
-    <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderLineItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrder\PurchaseOrderLineItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderLineItemProxy.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Proxy\Concretes\PurchaseOrder\IncompletePurchaseOrderProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrder\PurchaseOrderStatusHistoryProxy.cs" />
     <Compile Include="Proxy\Concretes\PurchaseOrder\PurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockActiveOnHandProxy.cs" />
     <Compile Include="Proxy\Concretes\StockConcretes\StockHistoryOnHandProxy.cs" />
@@ -188,7 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

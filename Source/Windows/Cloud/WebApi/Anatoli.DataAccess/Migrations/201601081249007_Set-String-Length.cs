@@ -60,8 +60,6 @@ namespace Anatoli.DataAccess.Migrations
             AlterColumn("dbo.CustomerShipAddresses", "MainStreet", c => c.String(maxLength: 50));
             AlterColumn("dbo.CustomerShipAddresses", "OtherStreet", c => c.String(maxLength: 50));
             AlterColumn("dbo.CustomerShipAddresses", "PostalCode", c => c.String(maxLength: 20));
-            AlterColumn("dbo.IncompletePurchaseOrders", "Transferee", c => c.String(maxLength: 100));
-            AlterColumn("dbo.IncompletePurchaseOrders", "Phone", c => c.String(maxLength: 20));
             AlterColumn("dbo.Stores", "StoreName", c => c.String(maxLength: 100));
             AlterColumn("dbo.Stores", "Address", c => c.String(maxLength: 200));
             AlterColumn("dbo.StoreActions", "ActionPDate", c => c.String(maxLength: 10));
@@ -192,8 +190,6 @@ namespace Anatoli.DataAccess.Migrations
             AlterColumn("dbo.StoreActions", "ActionPDate", c => c.String());
             AlterColumn("dbo.Stores", "Address", c => c.String());
             AlterColumn("dbo.Stores", "StoreName", c => c.String());
-            AlterColumn("dbo.IncompletePurchaseOrders", "Phone", c => c.String());
-            AlterColumn("dbo.IncompletePurchaseOrders", "Transferee", c => c.String());
             AlterColumn("dbo.CustomerShipAddresses", "PostalCode", c => c.String());
             AlterColumn("dbo.CustomerShipAddresses", "OtherStreet", c => c.String());
             AlterColumn("dbo.CustomerShipAddresses", "MainStreet", c => c.String());

@@ -77,9 +77,10 @@
     <Compile Include="Configs\CharTypeConfig.cs" />
     <Compile Include="Configs\CharValueConfig.cs" />
     <Compile Include="Configs\CustomerConfig.cs" />
+    <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
-    <Compile Include="Configs\IncompletePurchaseOrderLineItemConfig.cs" />
+    <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
-    <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestTypeSupplyConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Configs\SupplierConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Interfaces\Account\IPrincipalPermissionRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
     <Compile Include="Interfaces\Base\IReorderCalcTypeRepository.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Interfaces\Base\ICityRegionRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketItemRepository.cs" />
     <Compile Include="Interfaces\Customer\ICustomerRepository.cs" />
+    <Compile Include="Interfaces\Customer\ICustomerShipAddressRepository.cs" />
     <Compile Include="Interfaces\Product\ICharValueRepository.cs" />
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
@@ -127,7 +129,9 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
     <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
-    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderLineItemRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
@@ -235,22 +239,6 @@
     <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.cs" />
-    <Compile Include="Migrations\201601051022553_Incomplete-PurchaseOrder.Designer.cs">
-      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.cs" />
-    <Compile Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.Designer.cs">
-      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.cs" />
-    <Compile Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.Designer.cs">
-      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.cs" />
-    <Compile Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.Designer.cs">
-      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201601070851564_Spell-Check-1.cs" />
     <Compile Include="Migrations\201601070851564_Spell-Check-1.Designer.cs">
       <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
@@ -283,14 +271,6 @@
     <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.Designer.cs">
       <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.cs" />
-    <Compile Include="Migrations\201601081934211_Cascasde-Delete-4.Designer.cs">
-      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.cs" />
-    <Compile Include="Migrations\201601081934511_Cascasde-Delete-5.Designer.cs">
-      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201601082317567_Stock-Request-16.cs" />
     <Compile Include="Migrations\201601082317567_Stock-Request-16.Designer.cs">
       <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
@@ -307,7 +287,20 @@
     <Compile Include="Migrations\201601091937297_Stock-Request-19.Designer.cs">
       <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601100914419_Incomplete-4.cs" />
+    <Compile Include="Migrations\201601100914419_Incomplete-4.Designer.cs">
+      <DependentUpon>201601100914419_Incomplete-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601100937569_Incomplete-5.cs" />
+    <Compile Include="Migrations\201601100937569_Incomplete-5.Designer.cs">
+      <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601151617246_AddUsersStocks.cs" />
+    <Compile Include="Migrations\201601151617246_AddUsersStocks.Designer.cs">
+      <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -343,7 +336,7 @@
     <Compile Include="Models\ProductPicture.cs" />
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
-    <Compile Include="Models\IncompletePurchaseOrder.cs" />
+    <Compile Include="Models\PurchaseOrderStatusHistory.cs" />
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
@@ -353,7 +346,6 @@
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
     <Compile Include="Models\PurchaseOrderClearance.cs" />
-    <Compile Include="Models\PurchaseOrderHistory.cs" />
     <Compile Include="Models\PurchaseOrderLineItem.cs" />
     <Compile Include="Models\PurchaseOrderPayment.cs" />
     <Compile Include="Models\StockProductRequestProduct.cs" />
@@ -377,6 +369,7 @@
     <Compile Include="MyContextInitializer.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Account\PrincipalPermissionRepository.cs" />
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
@@ -388,6 +381,7 @@
     <Compile Include="Repositories\Base\ItemImageRepository.cs" />
     <Compile Include="Repositories\Customer\BasketItemRepository.cs" />
     <Compile Include="Repositories\Customer\CustomerRepository.cs" />
+    <Compile Include="Repositories\Customer\CustomerShipAddressRepository.cs" />
     <Compile Include="Repositories\Product\CharValueRepository.cs" />
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />
@@ -401,7 +395,9 @@
     <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />
-    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderLineItemRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
@@ -495,18 +491,6 @@
     <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
       <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051022553_Incomplete-PurchaseOrder.resx">
-      <DependentUpon>201601051022553_Incomplete-PurchaseOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051140580_Incomplete-PurchaseOrder-2.resx">
-      <DependentUpon>201601051140580_Incomplete-PurchaseOrder-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051311415_Incomplete-PurchaseOrder-3.resx">
-      <DependentUpon>201601051311415_Incomplete-PurchaseOrder-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601051333071_Incomplete-PurchaseOrder-4.resx">
-      <DependentUpon>201601051333071_Incomplete-PurchaseOrder-4.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601070851564_Spell-Check-1.resx">
       <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
     </EmbeddedResource>
@@ -531,12 +515,6 @@
     <EmbeddedResource Include="Migrations\201601081932083_Cascasde-Delete-3.resx">
       <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081934211_Cascasde-Delete-4.resx">
-      <DependentUpon>201601081934211_Cascasde-Delete-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081934511_Cascasde-Delete-5.resx">
-      <DependentUpon>201601081934511_Cascasde-Delete-5.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601082317567_Stock-Request-16.resx">
       <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
     </EmbeddedResource>
@@ -548,6 +526,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601091937297_Stock-Request-19.resx">
       <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601100914419_Incomplete-4.resx">
+      <DependentUpon>201601100914419_Incomplete-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601100937569_Incomplete-5.resx">
+      <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601151617246_AddUsersStocks.resx">
+      <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

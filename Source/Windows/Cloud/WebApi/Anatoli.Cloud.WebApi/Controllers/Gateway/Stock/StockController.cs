@@ -1,26 +1,25 @@
-﻿using Anatoli.Business;
-using Anatoli.Business.Domain;
-using Anatoli.ViewModels.StoreModels;
-using Anatoli.PMC.Business.Domain.Store;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
+using System.Threading.Tasks;
+using Anatoli.Business.Domain;
+using System.Collections.Generic;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels.StoreModels;
 using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/stock")]
-    public class StockController : BaseApiController
+    public class StockController : AnatoliApiController
     {
-        public class RequestModel
-        {
-            public string privateOwnerId { get; set; }
-            public string stockId { get; set; }
-            public string dateAfter { get; set; }
-        }
+        //public class RequestModel
+        //{
+        //    public string privateOwnerId { get; set; }
+        //    public string stockId { get; set; }
+        //    public string userId { get; set; }
+        //    public string dateAfter { get; set; }
+        //}
 
         #region stock On Hand List
         [Authorize(Roles = "AuthorizedApp")]
@@ -108,6 +107,39 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var stockDomain = new StockDomain(owner);
                 var result = await stockDomain.GetAll();
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "UserStocks"),
+         Route("userStocks"), HttpPost]
+        public async Task<IHttpActionResult> GetUserStocks([FromBody] RequestModel data)
+        {
+            try
+            {
+                var result = await new StockDomain(OwnerKey).GetAllByUserId(data.userId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "SaveUserStocks"),
+         Route("saveUserStocks"), HttpPost]
+        public async Task<IHttpActionResult> SaveUserStocks([FromBody] RequestModel data)
+        {
+            try
+            {
+                await new StockDomain(OwnerKey).SaveStocksUser(data.userId, data.stockIds == null ? null : data.stockIds.Select(s => Guid.Parse(s)).ToList());
+
+                return Ok(new { });
             }
             catch (Exception ex)
             {

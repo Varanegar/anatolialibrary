@@ -184,6 +184,11 @@ namespace Thunderstruck
             Provider.Commit();
         }
 
+        public void Rollback()
+        {
+            Provider.Rollback();
+        }
+
         /// <summary>
         /// Closes the data context and database connection. Don't commit commands on transactional data contexts.
         /// </summary>

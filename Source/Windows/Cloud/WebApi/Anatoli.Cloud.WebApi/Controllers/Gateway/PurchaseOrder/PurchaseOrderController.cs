@@ -13,14 +13,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/purchaseorder")]
     public class PurchaseOrderController : BaseApiController
     {
-
-        //[Authorize(Roles = "User")]
-        //[Route("history")]
-        //public IHttpActionResult GetPurchaseStatus()
-        //{
-        //    return Ok();
-        //}
-
         [Authorize(Roles = "User")]
         [Route("create")]
         public async Task<IHttpActionResult> CreateOrder(string privateOwnerId, PurchaseOrderViewModel orderEntity)
@@ -100,5 +92,47 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("bycustomerid/online")]
+        public async Task<IHttpActionResult> GetPurchaseOrderOnlineByCustomerId(string privateOwnerId, string customerId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var orderDomain = new PurchaseOrderDomain(owner);
+                var result = await orderDomain.GetAllByCustomerIdOnLine(customerId);
+                result.ForEach(item =>
+                {
+                    item.PrivateOwnerId = owner;
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("bycustomerid/local")]
+        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string customerId, int centerId)
+        {
+            try
+            {
+                var result = new List<PurchaseOrderViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var orderDomain = new PMCPurchaseOrderDomain();
+                    result = orderDomain.GetAllByCustomerId(customerId, null, centerId);
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
     }
 }

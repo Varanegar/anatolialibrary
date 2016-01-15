@@ -10,9 +10,6 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.PrincipalPermissions", "Principal_Id", "dbo.Principals");
             DropForeignKey("dbo.PrincipalPermissions", "Permission_Id", "dbo.Permissions");
             DropForeignKey("dbo.BasketItems", "ProductId", "dbo.Products");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "CityRegionId", "dbo.CityRegions");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "StoreId", "dbo.Stores");
             DropForeignKey("dbo.Stocks", "StoreId", "dbo.Stores");
             DropForeignKey("dbo.StockProducts", "ProductId", "dbo.Products");
             DropForeignKey("dbo.StoreActivePriceLists", "ProductId", "dbo.Products");
@@ -26,9 +23,6 @@ namespace Anatoli.DataAccess.Migrations
             AddForeignKey("dbo.PrincipalPermissions", "Principal_Id", "dbo.Principals", "Id");
             AddForeignKey("dbo.PrincipalPermissions", "Permission_Id", "dbo.Permissions", "Id");
             AddForeignKey("dbo.BasketItems", "ProductId", "dbo.Products", "Id");
-            AddForeignKey("dbo.IncompletePurchaseOrders", "CustomerId", "dbo.Customers", "Id");
-            AddForeignKey("dbo.IncompletePurchaseOrders", "CityRegionId", "dbo.CityRegions", "Id");
-            AddForeignKey("dbo.IncompletePurchaseOrders", "StoreId", "dbo.Stores", "Id");
             AddForeignKey("dbo.Stocks", "StoreId", "dbo.Stores", "Id");
             AddForeignKey("dbo.StockProducts", "ProductId", "dbo.Products", "Id");
             AddForeignKey("dbo.StoreActivePriceLists", "ProductId", "dbo.Products", "Id");
@@ -53,10 +47,6 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreActivePriceLists", "ProductId", "dbo.Products");
             DropForeignKey("dbo.StockProducts", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Stocks", "StoreId", "dbo.Stores");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "StoreId", "dbo.Stores");
-            DropForeignKey("dbo.IncompletePurchaseOrderLineItems", "IncompletePurchaseOrderId", "dbo.IncompletePurchaseOrders");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "CityRegionId", "dbo.CityRegions");
-            DropForeignKey("dbo.IncompletePurchaseOrders", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.BasketItems", "ProductId", "dbo.Products");
             DropForeignKey("dbo.PrincipalPermissions", "Permission_Id", "dbo.Permissions");
             DropForeignKey("dbo.PrincipalPermissions", "Principal_Id", "dbo.Principals");
@@ -70,10 +60,6 @@ namespace Anatoli.DataAccess.Migrations
             AddForeignKey("dbo.StoreActivePriceLists", "ProductId", "dbo.Products", "Id", cascadeDelete: true);
             AddForeignKey("dbo.StockProducts", "ProductId", "dbo.Products", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Stocks", "StoreId", "dbo.Stores", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.IncompletePurchaseOrders", "StoreId", "dbo.Stores", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.IncompletePurchaseOrderLineItems", "IncompletePurchaseOrderId", "dbo.IncompletePurchaseOrders", "Id");
-            AddForeignKey("dbo.IncompletePurchaseOrders", "CityRegionId", "dbo.CityRegions", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.IncompletePurchaseOrders", "CustomerId", "dbo.Customers", "Id", cascadeDelete: true);
             AddForeignKey("dbo.BasketItems", "ProductId", "dbo.Products", "Id", cascadeDelete: true);
             AddForeignKey("dbo.PrincipalPermissions", "Permission_Id", "dbo.Permissions", "Id", cascadeDelete: true);
             AddForeignKey("dbo.PrincipalPermissions", "Principal_Id", "dbo.Principals", "Id", cascadeDelete: true);

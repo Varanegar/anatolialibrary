@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Data.Entity;
-using System.Collections.Generic;
-using Anatoli.DataAccess.Interfaces;
+﻿using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Repositories
@@ -18,5 +14,5 @@ namespace Anatoli.DataAccess.Repositories
         #endregion
         
         //notice: new custom methods could be added in here
-    }
+    }    
 }

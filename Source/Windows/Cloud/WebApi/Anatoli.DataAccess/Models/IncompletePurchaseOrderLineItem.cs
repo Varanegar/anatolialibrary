@@ -13,6 +13,6 @@ namespace Anatoli.DataAccess.Models
         public Guid IncompletePurchaseOrderId { get; set; }
         public virtual Product Product { get; set; }
 
-        public virtual IncompletePurchaseOrder IncompletePurchaseOrder{ get; set; }
+        public virtual IncompletePurchaseOrder IncompletePurchaseOrder { get; set; }
     }
 }

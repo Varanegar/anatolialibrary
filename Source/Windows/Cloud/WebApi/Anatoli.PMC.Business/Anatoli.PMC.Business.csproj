@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\PurchaseOrder\PMCPurchaseOrderLineItemDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\PMCPurchaseOrderStatusHistoryDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PMCPurchaseOrderDomain.cs" />
     <Compile Include="Domain\Store\PMCStoreOnHandDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

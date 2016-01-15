@@ -26,10 +26,11 @@ namespace Anatoli.Business.Proxy.Concretes
         #endregion
         public override IncompletePurchaseOrderViewModel Convert(IncompletePurchaseOrder data)
         {
-            return new IncompletePurchaseOrderViewModel()
+            var result = new IncompletePurchaseOrderViewModel()
                 {
                     ID = data.Number_ID,
                     UniqueId = data.Id,
+                    PrivateOwnerId = data.PrivateLabelOwner_Id,
 
                     CityRegionId = data.CityRegionId,
                     DeliveryDate = data.DeliveryDate,
@@ -42,8 +43,12 @@ namespace Anatoli.Business.Proxy.Concretes
                     Transferee = data.Transferee,
                     PaymentTypeId = data.PaymentTypeId,
                     CustomerId = data.CustomerId,
-                    LineItems = IncompletePurchaseOrderLineItemProxy.Convert(data.IncompletePurchaseOrderLineItems.ToList())
+
+                    
                 };
+            if (data.IncompletePurchaseOrderLineItems != null)
+                result.LineItems = IncompletePurchaseOrderLineItemProxy.Convert(data.IncompletePurchaseOrderLineItems.ToList());
+            return result; 
         }
 
         public override IncompletePurchaseOrder ReverseConvert(IncompletePurchaseOrderViewModel data)
@@ -64,7 +69,7 @@ namespace Anatoli.Business.Proxy.Concretes
                     Transferee = data.Transferee,
                     PaymentTypeId = data.PaymentTypeId,
                     CustomerId = data.CustomerId,
-                    IncompletePurchaseOrderLineItems = (data.LineItems == null) ? null : IncompletePurchaseOrderLineItemProxy.ReverseConvert(data.LineItems)
+                    //IncompletePurchaseOrderLineItems = (data.LineItems == null) ? null : IncompletePurchaseOrderLineItemProxy.ReverseConvert(data.LineItems)
 
                 };
         }

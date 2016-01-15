@@ -40,6 +40,11 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
         {
             throw new NotImplementedException();
         }
+        public List<PurchaseOrderViewModel> GetAllByCustomerId(string customerId, string statusId, int centerId)
+        {
+            var orders = SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId, statusId, centerId);
+            return orders;
+        }
 
         public List<PurchaseOrderViewModel> GetAllChangedAfter(DateTime selectedDate)
         {

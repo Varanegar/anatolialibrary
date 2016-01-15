@@ -12,18 +12,18 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
 {
     public class CustomerProxy : AnatoliProxy<Customer, CustomerViewModel>, IAnatoliProxy<Customer, CustomerViewModel>
     {
-        public IAnatoliProxy<Basket, BasketViewModel> BasketProxy { get; set; }
+        public IAnatoliProxy<CustomerShipAddress, CustomerShipAddressViewModel> CustomerShipAddressProxy { get; set; }
 
         #region Ctors
         public CustomerProxy() :
-            this(AnatoliProxy<Basket, BasketViewModel>.Create()
+            this(AnatoliProxy<CustomerShipAddress, CustomerShipAddressViewModel>.Create()
             )
         { }
 
-        public CustomerProxy(IAnatoliProxy<Basket, BasketViewModel> basketProxy
+        public CustomerProxy(IAnatoliProxy<CustomerShipAddress, CustomerShipAddressViewModel> customerShipAddressProxy
             )
         {
-            BasketProxy = basketProxy;
+            CustomerShipAddressProxy = customerShipAddressProxy;
         }
         #endregion
 
@@ -36,16 +36,24 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,
+                FirstName = data.FirstName,
+                LastName = data.LastName,
                 Phone = data.Phone,
                 Mobile = data.Mobile,
-                Address = data.Address,
+                MainStreet = data.MainStreet,
+                OtherStreet = data.OtherStreet,
                 PostalCode = data.PostalCode,
                 NationalCode = data.NationalCode,
                 BirthDay = data.BirthDay,
                 Email = data.Email,
+                RegionInfoId = data.RegionInfoId,
+                RegionLevel1Id = data.RegionLevel1Id,
+                RegionLevel2Id = data.RegionLevel2Id,
+                RegionLevel3Id = data.RegionLevel3Id,
+                RegionLevel4Id = data.RegionLevel4Id,
+                DefauleStoreId = data.DefauleStoreId,
 
-
-                Baskets = (data.CustomerBaskets == null) ? null : BasketProxy.Convert(data.CustomerBaskets.ToList()),
+                CustomerShipAddress  = (data.CustomerShipAddresses != null)?CustomerShipAddressProxy.Convert(data.CustomerShipAddresses.ToList()):null,
             };
         }
 
@@ -59,15 +67,24 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
 
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,
+                FirstName = data.FirstName,
+                LastName = data.LastName,
                 Phone = data.Phone,
                 Mobile = data.Mobile,
-                Address = data.Address,
+                MainStreet = data.MainStreet,
+                OtherStreet = data.OtherStreet,
                 PostalCode = data.PostalCode,
                 NationalCode = data.NationalCode,
                 BirthDay = data.BirthDay,
                 Email = data.Email,
+                RegionInfoId = data.RegionInfoId,
+                RegionLevel1Id = data.RegionLevel1Id,
+                RegionLevel2Id = data.RegionLevel2Id,
+                RegionLevel3Id = data.RegionLevel3Id,
+                RegionLevel4Id = data.RegionLevel4Id,
+                DefauleStoreId = data.DefauleStoreId,
 
-                CustomerBaskets = (data.Baskets == null) ? null : data.Baskets != null ? BasketProxy.ReverseConvert(data.Baskets.ToList()) : null,
+                CustomerShipAddresses = (data.CustomerShipAddress != null) ? CustomerShipAddressProxy.ReverseConvert(data.CustomerShipAddress.ToList()) : null,
             };
         }
     }

@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />
@@ -47,12 +49,13 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BaseModels\BasketItemViewModel.cs" />
     <Compile Include="BaseModels\BasketViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerShipAddressViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
-    <Compile Include="Order\IncompletePurchaseOrderLineItemViewModel.cs" />
-    <Compile Include="Order\PurchaseOrderLineItemViewModel.cs" />
-    <Compile Include="Order\PurchaseOrderStatusViewModel.cs" />
-    <Compile Include="Order\IncompletePurchaseOrderViewModel.cs" />
-    <Compile Include="Order\PurchaseOrderViewModel.cs" />
+    <Compile Include="OrderModels\IncompletePurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
+    <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
     <Compile Include="ProductModels\MainProductGroupViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
