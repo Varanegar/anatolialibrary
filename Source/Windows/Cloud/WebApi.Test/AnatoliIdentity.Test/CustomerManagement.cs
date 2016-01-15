@@ -15,7 +15,7 @@ namespace ClientApp
         public static CustomerViewModel GetCustomerFromServer(HttpClient client, string servserURI)
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
-            var result8 = client.GetAsync(servserURI + "/api/gateway/customer/customers?id=F125EDC7-473D-4C59-B966-3EF9E6E6A7D9&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.GetAsync(servserURI + "/api/gateway/customer/customers?id=308E176C-74E0-4916-95F5-FFDF4E35AE22&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new CustomerViewModel();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);

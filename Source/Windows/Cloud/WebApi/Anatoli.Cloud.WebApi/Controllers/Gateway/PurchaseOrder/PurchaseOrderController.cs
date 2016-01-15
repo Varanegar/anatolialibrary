@@ -116,7 +116,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("bycustomerid/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string customerId, int centerId)
+        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string customerId, string centerId)
         {
             try
             {
@@ -125,6 +125,92 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 {
                     var orderDomain = new PMCPurchaseOrderDomain();
                     result = orderDomain.GetAllByCustomerId(customerId, null, centerId);
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("lineitem/online")]
+        public async Task<IHttpActionResult> GetPurchaseOrderLineItemOnline(string privateOwnerId, string poId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var orderDomain = new PurchaseOrderDomain(owner);
+                var result = await orderDomain.GetAllByCustomerIdOnLine(poId);
+                result.ForEach(item =>
+                {
+                    item.PrivateOwnerId = owner;
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("lineitem/local")]
+        public async Task<IHttpActionResult> GetPurchaseOrderLineItemLocal(string poId, string centerId)
+        {
+            try
+            {
+                var result = new List<PurchaseOrderViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var orderDomain = new PMCPurchaseOrderDomain();
+                    result = orderDomain.GetAllByCustomerId(poId, null, centerId);
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("statushistory/online")]
+        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryOnline(string privateOwnerId, string poId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var orderDomain = new PurchaseOrderStatusHistoryDomain(owner);
+                var result = await orderDomain.GetAllByPOIdOnLine(poId);
+                result.ForEach(item =>
+                {
+                    item.PrivateOwnerId = owner;
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("statushistory/local")]
+        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryLocal(string poId, string centerId)
+        {
+            try
+            {
+                var result = new List<PurchaseOrderStatusHistoryViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var orderDomain = new PMCPurchaseOrderStatusHistoryDomain();
+                    result = orderDomain.GetAllByOrderId(poId, centerId);
                 });
                 return Ok(result);
             }

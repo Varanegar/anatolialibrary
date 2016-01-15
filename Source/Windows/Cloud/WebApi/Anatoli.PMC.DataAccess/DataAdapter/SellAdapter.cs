@@ -26,7 +26,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
         }
         SellAdapter() { }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, int centerId)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId)
         {
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
@@ -55,7 +55,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return result;
         }
-        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, int centerId)
+        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, string centerId)
         {
             List<PurchaseOrderLineItemViewModel> result = new List<PurchaseOrderLineItemViewModel>();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
@@ -79,7 +79,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return result;
         }
-        public List<PurchaseOrderStatusHistoryViewModel> GetPurchaseOrderStatusByPOId(string pOId, int centerId)
+        public List<PurchaseOrderStatusHistoryViewModel> GetPurchaseOrderStatusByPOId(string pOId, string centerId)
         {
             List<PurchaseOrderStatusHistoryViewModel> result = new List<PurchaseOrderStatusHistoryViewModel>();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
