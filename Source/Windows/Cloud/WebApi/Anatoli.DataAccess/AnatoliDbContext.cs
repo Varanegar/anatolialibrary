@@ -36,7 +36,7 @@ namespace Anatoli.DataAccess
         public DbSet<ProductRate> ProductRates { get; set; }
         public DbSet<ProductSupplierGuarantee> ProductSupplierGuarantees { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
+        public DbSet<PurchaseOrderStatusHistory> PurchaseOrderHistories { get; set; }
         public DbSet<PurchaseOrderLineItem> PurchaseOrderLineItems { get; set; }
         public DbSet<PurchaseOrderPayment> PurchaseOrderPayments { get; set; }
         public DbSet<Store> Stores { get; set; }
@@ -69,8 +69,6 @@ namespace Anatoli.DataAccess
         public DbSet<ProductType> ProductType { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
-        public DbSet<IncompleteOrder> IncompleteOrders { get; set; }
-        public DbSet<IncompleteOrderLineItem> IncompleteOrderLineItems { get; set; }
         public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
 
@@ -110,9 +108,9 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CharValueConfig());
             modelBuilder.Configurations.Add(new CityRegionConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
+            modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
-            modelBuilder.Configurations.Add(new IncompleteOrderConfig());
             modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());
             modelBuilder.Configurations.Add(new MainProductGroupConfig());
             modelBuilder.Configurations.Add(new ManufactureConfig());

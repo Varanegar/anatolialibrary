@@ -60,7 +60,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 QtyPerPack = data.QtyPerPack,
 
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner_Id,
 
                 ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
                 ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),

@@ -34,7 +34,7 @@ namespace Anatoli.PMC.ViewModels.Order
         public decimal ChargeAmount { get; set; }
         public int CenterId { get; set; }
         public decimal DiscountAmount2 { get; set; }
-        public int RequestNo { get; set; }
+        public long RequestNo { get; set; }
         public string RequestDateTime { get; set; }
         public int SellCategoryId { get; set; }
         public bool IsConfirmed { get; set; }

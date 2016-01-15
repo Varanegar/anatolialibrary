@@ -10,6 +10,10 @@ namespace Anatoli.DataAccess.Models
         public Nullable<long> CustomerCode { get; set; }
         [StringLength(200)]
         public string CustomerName { get; set; }
+        [StringLength(200)]
+        public string FirstName { get; set; }
+        [StringLength(200)]
+        public string LastName { get; set; }
         public Nullable<DateTime> BirthDay { get; set; }
         [StringLength(20)]
         public string Phone { get; set; }
@@ -18,7 +22,9 @@ namespace Anatoli.DataAccess.Models
         [StringLength(500)]
         public string Email { get; set; }
         [StringLength(500)]
-        public string Address { get; set; }
+        public string MainStreet { get; set; }
+        [StringLength(500)]
+        public string OtherStreet { get; set; }
         [StringLength(20)]
         public string PostalCode { get; set; }
         [StringLength(20)]
@@ -33,11 +39,13 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> RegionLevel3Id { get; set; }
         [ForeignKey("RegionLevel4"), Column(Order = 4)]
         public Nullable<Guid> RegionLevel4Id { get; set; }
+        [ForeignKey("DefauleStore")]
+        public Nullable<Guid> DefauleStoreId { get; set; }
 
         public virtual ICollection<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public virtual ICollection<Basket> CustomerBaskets { get; set; }
-        public virtual ICollection<IncompleteOrder> IncompleteOrders { get; set; }
         public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public virtual Store DefauleStore { get; set; }
         public virtual CityRegion RegionInfo { get; set; }
         public virtual CityRegion RegionLevel1 { get; set; }
         public virtual CityRegion RegionLevel2 { get; set; }

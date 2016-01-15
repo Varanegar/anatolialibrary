@@ -26,7 +26,84 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
         }
         SellAdapter() { }
-        public  void SavePurchaseOrder(PMCSellViewModel orderInfo, PMCCustomerViewModel customer)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, int centerId)
+        {
+            List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
+            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+
+            using (var context = new DataContext(Transaction.No))
+            {
+                try
+                {
+                    IEnumerable<PurchaseOrderViewModel> data = null;
+                    if(statusId != null)
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.GetSellInfo() + " where customerId='" + customerId + "' and statusId = '" + statusId + "'");
+                    else
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.GetSellInfo() + " where customerId='" + customerId + "'");
+
+                    result = data.ToList();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
+                }
+            }
+            return result;
+        }
+        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, int centerId)
+        {
+            List<PurchaseOrderLineItemViewModel> result = new List<PurchaseOrderLineItemViewModel>();
+            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+
+            using (var context = new DataContext(Transaction.No))
+            {
+                try
+                {
+                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.GetSellDetailInfo() + " where sellId='" + pOId + "'");
+                    result = data.ToList();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
+                }
+            }
+            return result;
+        }
+        public List<PurchaseOrderStatusHistoryViewModel> GetPurchaseOrderStatusByPOId(string pOId, int centerId)
+        {
+            List<PurchaseOrderStatusHistoryViewModel> result = new List<PurchaseOrderStatusHistoryViewModel>();
+            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+
+            using (var context = new DataContext(Transaction.No))
+            {
+                try
+                {
+                    var data = context.All<PurchaseOrderStatusHistoryViewModel>(DBQuery.GetSellActionInfo() + " where sellId='" + pOId + "'");
+                    result = data.ToList();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.Message, ex);
+                    throw ex;
+                }
+                finally
+                {
+                    context.Dispose();
+                }
+            }
+            return result;
+        }
+        public int SavePurchaseOrder(PMCSellViewModel orderInfo, PMCCustomerViewModel customer)
         {
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(orderInfo.CenterId).ConnectionString;
 
@@ -111,6 +188,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     context.Dispose();
                 }
             }
+
+            return orderInfo.SellId;
         }
     }
 }

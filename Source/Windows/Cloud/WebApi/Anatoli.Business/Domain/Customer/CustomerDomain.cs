@@ -79,24 +79,42 @@ namespace Anatoli.Business.Domain
                     {
                         if (currentCustomer.CustomerCode != item.CustomerCode ||
                                 currentCustomer.CustomerName != item.CustomerName ||
+                                currentCustomer.FirstName != item.FirstName ||
+                                currentCustomer.LastName != item.LastName ||
                                 currentCustomer.Phone != item.Phone ||
                                 currentCustomer.Email != item.Email ||
-                                currentCustomer.Address != item.Address ||
+                                currentCustomer.MainStreet != item.MainStreet ||
+                                currentCustomer.OtherStreet != item.OtherStreet ||
                                 currentCustomer.BirthDay != item.BirthDay ||
                                 currentCustomer.Mobile != item.Mobile ||
+                                currentCustomer.DefauleStoreId != item.DefauleStoreId ||
+                                currentCustomer.RegionInfoId   != item.RegionInfoId ||
+                                currentCustomer.RegionLevel1Id != item.RegionLevel1Id ||
+                                currentCustomer.RegionLevel2Id != item.RegionLevel2Id ||
+                                currentCustomer.RegionLevel2Id != item.RegionLevel3Id ||
+                                currentCustomer.RegionLevel4Id != item.RegionLevel4Id ||
                                 currentCustomer.PostalCode != item.PostalCode ||
                                 currentCustomer.NationalCode != item.NationalCode)
                         {
                             currentCustomer.CustomerCode = item.CustomerCode;
                             currentCustomer.CustomerName = item.CustomerName;
+                            currentCustomer.FirstName = item.FirstName;
+                            currentCustomer.LastName = item.LastName;
                             currentCustomer.Phone = item.Phone;
                             currentCustomer.Email = item.Email;
-                            currentCustomer.Address = item.Address;
+                            currentCustomer.MainStreet = item.MainStreet;
+                            currentCustomer.OtherStreet = item.OtherStreet;
                             currentCustomer.BirthDay = item.BirthDay;
                             currentCustomer.Mobile = item.Mobile;
                             currentCustomer.PostalCode = item.PostalCode;
                             currentCustomer.NationalCode = item.NationalCode;
                             currentCustomer.LastUpdate = DateTime.Now;
+                            currentCustomer.DefauleStoreId = item.DefauleStoreId;
+                            currentCustomer.RegionInfoId = item.RegionInfoId;
+                            currentCustomer.RegionLevel1Id= item.RegionLevel1Id;
+                            currentCustomer.RegionLevel2Id= item.RegionLevel2Id;
+                            currentCustomer.RegionLevel2Id= item.RegionLevel3Id;
+                            currentCustomer.RegionLevel4Id = item.RegionLevel4Id;
                             Repository.UpdateAsync(currentCustomer);
                         }
                     }
@@ -105,8 +123,6 @@ namespace Anatoli.Business.Domain
                         if(item.Id == null || item.Id == Guid.Empty)
                             item.Id = Guid.NewGuid();
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        if (item.CustomerBaskets != null)
-                            item = SetBasketData(item, item.CustomerBaskets.ToList(), Repository.DbContext);
                         Repository.AddAsync(item);
                     }
                 });
@@ -144,43 +160,6 @@ namespace Anatoli.Business.Domain
             return dataViewModels;
         }
 
-        public Customer SetBasketData(Customer data, List<Basket> baskets, AnatoliDbContext context)
-        {
-            BasketDomain basketDomain = new BasketDomain(data.PrivateLabelOwner.Id, context);
-            baskets.ForEach(item =>
-            {
-                item.PrivateLabelOwner = data.PrivateLabelOwner;
-                item.CreatedDate = item.LastUpdate = data.CreatedDate;
-                if (item.BasketItems != null)
-                    item = SetBasketItemData(item, item.BasketItems.ToList(), context);
-
-                item.Id = Guid.NewGuid();
-
-                data.CustomerBaskets.Add(item);
-
-            });
-            return data;
-        }
-
-
-        public Basket SetBasketItemData(Basket basket, List<BasketItem> basketItems, AnatoliDbContext context)
-        {
-            ProductDomain productDomain = new ProductDomain(basket.PrivateLabelOwner.Id, context);
-
-            basketItems.ToList().ForEach(basketItem =>
-            {
-                basketItem.PrivateLabelOwner = basket.PrivateLabelOwner;
-                basketItem.CreatedDate = basketItem.LastUpdate = basket.CreatedDate;
-                basketItem.Id = Guid.NewGuid();
-                var product = productDomain.Repository.GetQuery().Where(p => p.Id == basketItem.ProductId).FirstOrDefault();
-                if (product != null)
-                {
-                    basketItem.Product = product;
-                    basket.BasketItems.Add(basketItem);
-                }
-            });
-            return basket;
-        }
         #endregion
     }
 }

@@ -30,7 +30,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.Customer
                 AppUserId = storeConfig.AppUserId,
                 ModifiedDate = DateTime.Now,
 
-                Address = data.Address,
+                Address = data.MainStreet + ' ' + data.OtherStreet,
                 BirthDay = data.BirthDay,
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,

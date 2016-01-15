@@ -10,10 +10,6 @@ namespace Anatoli.DataAccess.Configs
     {
         public PurchaseOrderConfig()
         {
-            this.HasOptional<Basket>(b => b.Basket)
-                .WithMany(c => c.PurchaseOrders)
-                .WillCascadeOnDelete(false);
-
             this.HasMany<PurchaseOrderPayment>(pop => pop.PurchaseOrderPayments)
                 .WithRequired(po => po.PurchaseOrder)
                 .WillCascadeOnDelete(true);
@@ -22,7 +18,7 @@ namespace Anatoli.DataAccess.Configs
                 .WithRequired(po => po.PurchaseOrder)
                 .WillCascadeOnDelete(true);
 
-            this.HasMany<PurchaseOrderHistory>(poc => poc.PurchaseOrderHistories)
+            this.HasMany<PurchaseOrderStatusHistory>(poc => poc.PurchaseOrderHistories)
                 .WithRequired(po => po.PurchaseOrder);
 
             this.HasMany<PurchaseOrderLineItem>(poc => poc.PurchaseOrderLineItems)

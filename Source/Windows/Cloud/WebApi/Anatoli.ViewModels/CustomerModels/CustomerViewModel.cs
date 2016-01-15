@@ -11,13 +11,23 @@ namespace Anatoli.ViewModels.CustomerModels
     {
         public long? CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime? BirthDay { get; set; }
         public string Phone { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }
-        public string Address { get; set; }
+        public string MainStreet { get; set; }
+        public string OtherStreet { get; set; }
         public string PostalCode { get; set; }
         public string NationalCode { get; set; }
-        public List<BasketViewModel> Baskets { get; set; }
+        public Nullable<Guid> RegionInfoId { get; set; }
+        public Nullable<Guid> RegionLevel1Id { get; set; }
+        public Nullable<Guid> RegionLevel2Id { get; set; }
+        public Nullable<Guid> RegionLevel3Id { get; set; }
+        public Nullable<Guid> RegionLevel4Id { get; set; }
+        public Nullable<Guid> DefauleStoreId { get; set; }
+
+        public List<CustomerShipAddressViewModel> CustomerShipAddress { get; set; }
     }
 }

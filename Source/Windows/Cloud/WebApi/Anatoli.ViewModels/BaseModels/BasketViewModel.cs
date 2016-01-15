@@ -17,15 +17,14 @@ namespace Anatoli.ViewModels.BaseModels
         public BasketViewModel()
         {
         }
-        public BasketViewModel(Guid basketTypeId)
+        public BasketViewModel(Guid basketTypeId, Guid customerId)
         {
             BasketTypeValueId = basketTypeId;
+            CustomerId = customerId;
         }
         public Guid CustomerId { get; set; }
         public Guid BasketTypeValueId { get; set; }
         public string BasketName { get; set; }
         public List<BasketItemViewModel> BasketItems { get; set; }
-
-        public CustomerViewModel Customer { get; set; }
     }
 }

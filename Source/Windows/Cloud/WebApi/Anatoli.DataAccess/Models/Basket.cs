@@ -16,6 +16,5 @@ namespace Anatoli.DataAccess.Models
 
         public virtual ICollection<BasketItem> BasketItems { get; set; }
         public virtual ICollection<BasketNote> BasketNotes { get; set; }
-        public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

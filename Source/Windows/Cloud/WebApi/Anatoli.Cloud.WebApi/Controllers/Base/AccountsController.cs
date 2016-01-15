@@ -111,9 +111,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
                             });
                         }
 
-                        //if (createUserModel.RoleName != "User")
-                        //    this.AppUserManager.AddToRoles(user.Id, new string[] { "User", createUserModel.RoleName });
-                        //else
                         this.AppUserManager.AddToRoles(user.Id, new string[] { "User" });
 
 
@@ -126,15 +123,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
                             Email = createUserModel.Email,
                         };
 
-                        customer.Baskets = new List<BasketViewModel>();
-                        customer.Baskets.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId));
-                        customer.Baskets.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId));
 
                         List<CustomerViewModel> customerList = new List<CustomerViewModel>();
                         customerList.Add(customer);
                         await customerDomain.PublishAsync(customerList);
 
-
+                        List<BasketViewModel> basketList = new List<BasketViewModel>();
+                        basketList.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId, customer.UniqueId));
+                        basketList.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId, customer.UniqueId));
+                       
+                        var basketDomain = new BasketDomain(createUserModel.PrivateOwnerId, Request.GetOwinContext().Get<AnatoliDbContext>());
+                        await basketDomain.PublishAsync(basketList);
 
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
                         transaction.Commit();

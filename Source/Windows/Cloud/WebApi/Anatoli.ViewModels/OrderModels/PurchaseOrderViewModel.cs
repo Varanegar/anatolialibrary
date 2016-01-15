@@ -13,13 +13,13 @@ namespace Anatoli.ViewModels.Order
         public Guid StoreGuid { get; set; }
         public Guid PurchaseOrderStatusValueId { get; set; }
         public Guid PaymentTypeValueId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public TimeSpan OrderTime { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public TimeSpan? OrderTime { get; set; }
         public string OrderPDate { get; set; }
         public string DeviceIMEI { get; set; }
         public Guid ActionSourceValueId { get; set; }
         public String Comment { get; set; }
-        public int AppOrderNo { get; set; }
+        public long AppOrderNo { get; set; }
         public decimal Amount { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal DiscountAmount2 { get; set; }
@@ -44,6 +44,7 @@ namespace Anatoli.ViewModels.Order
         public decimal NetAmount { get; set; }
         public decimal FinalNetAmount { get; set; }
         public CustomerViewModel Customer { get; set; }
+        public int? BackOfficeId { get; set; }
 
         public List<PurchaseOrderLineItemViewModel> LineItems = new List<PurchaseOrderLineItemViewModel>();
 

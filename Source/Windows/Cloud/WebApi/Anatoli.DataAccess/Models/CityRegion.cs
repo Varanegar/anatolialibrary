@@ -15,7 +15,6 @@ namespace Anatoli.DataAccess.Models
         public Guid? CityRegion2Id { get; set; }
 
         public virtual ICollection<Store> StoreValidRegionInfoes { get; set; }
-        public virtual ICollection<IncompleteOrder> IncompleteOrders { get; set; }
         public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public virtual ICollection<Customer> CustomerInfos { get; set; }
         public virtual ICollection<CityRegion> CityRegion1 { get; set; }

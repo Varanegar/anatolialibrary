@@ -8,7 +8,8 @@ namespace Anatoli.ViewModels.Order
 {
     public class PurchaseOrderLineItemViewModel : BaseViewModel
     {
-        public Guid  ProductId { get; set; }
+        public Guid FinalProductId { get; set; }
+        public Guid ProductId { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal TaxAmount { get; set; }
@@ -25,6 +26,7 @@ namespace Anatoli.ViewModels.Order
         public decimal FinalNetAmount { get; set; }
         public decimal FinalQty { get; set; }
         public bool FinalIsPrize { get; set; }
+        public Guid PurchaseOrderId { get; set; }
 
     }
 }
