@@ -299,6 +299,10 @@
     <Compile Include="Migrations\201601151617246_AddUsersStocks.Designer.cs">
       <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.cs" />
+    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.Designer.cs">
+      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -535,6 +539,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601151617246_AddUsersStocks.resx">
       <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601152051082_Customer-Ship-Address-1.resx">
+      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
