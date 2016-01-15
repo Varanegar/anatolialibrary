@@ -34,7 +34,7 @@ namespace AnatoliAndroid.Fragments
         ProductsListAdapter _listAdapter;
         RelativeLayout _countRelativeLayout;
         RelativeLayout _cardItemsRelativeLayout;
-        EditText _deliveryAddress;
+        TextView _deliveryAddress;
         TextView _factorePriceTextView;
         //TextView _deliveryTelTextView;
         TextView _storeTelTextView;
@@ -46,14 +46,15 @@ namespace AnatoliAndroid.Fragments
         ImageView _slideupmageView;
         ImageView _slidedownImageView;
         Button _checkoutButton;
-        ImageView _callImageView;
+        ImageButton _callImageButton;
+        ImageButton _editAddressImageButton;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
         Spinner _typeSpinner;
-        Spinner _zoneSpinner;
-        Spinner _districtSpinner;
-        Spinner _citySpinner;
-        Spinner _provinceSpinner;
+        //Spinner _zoneSpinner;
+        //Spinner _districtSpinner;
+        //Spinner _citySpinner;
+        //Spinner _provinceSpinner;
         bool _tomorrow = false;
 
         Cheesebaron.SlidingUpPanel.SlidingUpPanelLayout _slidingLayout;
@@ -84,42 +85,6 @@ namespace AnatoliAndroid.Fragments
             _countRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.countRelativeLayout);
             _cardItemsRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.cardItemsRelativeLayout);
 
-            _zoneSpinner = view.FindViewById<Spinner>(Resource.Id.zoneSpinner);
-            _districtSpinner = view.FindViewById<Spinner>(Resource.Id.districtSpinner);
-            _citySpinner = view.FindViewById<Spinner>(Resource.Id.citySpinner);
-            _provinceSpinner = view.FindViewById<Spinner>(Resource.Id.provinceSpinner);
-
-            var cities = CityRegionManager.GetFirstLevel();
-            List<CityRegionModel> zones = new List<CityRegionModel>();
-            List<CityRegionModel> districts = new List<CityRegionModel>();
-            _citySpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, cities);
-            _citySpinner.ItemSelected += async (s, e) =>
-            {
-                try
-                {
-                    CityRegionModel selectedItem = cities[e.Position];
-                    zones = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                    _zoneSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, zones);
-                }
-                catch (Exception)
-                {
-
-                }
-            };
-            _zoneSpinner.ItemSelected += async (s, e) =>
-            {
-                try
-                {
-                    CityRegionModel selectedItem = zones[e.Position];
-                    districts = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                    _districtSpinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, districts);
-                }
-                catch (Exception)
-                {
-
-                }
-            };
-
             _checkoutButton = view.FindViewById<Button>(Resource.Id.checkoutButton);
             _checkoutButton.UpdateWidth();
 
@@ -142,33 +107,14 @@ namespace AnatoliAndroid.Fragments
                 _slideupmageView.Visibility = ViewStates.Visible;
             };
             _countTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
-            _callImageView = view.FindViewById<ImageView>(Resource.Id.callImageView);
+            _callImageButton = view.FindViewById<ImageButton>(Resource.Id.callImageButton);
             _storeTelTextView = view.FindViewById<TextView>(Resource.Id.storeTelTextView);
             _factorePriceTextView = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
-            _deliveryAddress = view.FindViewById<EditText>(Resource.Id.addressEditText);
-            //_deliveryTelTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
-            //_nameTextView = view.FindViewById<TextView>(Resource.Id.nameTextView);
+            _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
+            _editAddressImageButton = view.FindViewById<ImageButton>(Resource.Id.editAddressImageButton);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
             _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
-            //_editAddressImageView = view.FindViewById<ImageView>(Resource.Id.editAddressImageView);
-
-            _deliveryAddress.FocusChange += (s, e) =>
-            {
-                if (!_deliveryAddress.HasFocus)
-                {
-                    SaveAddress(_deliveryAddress.Text, "", "", "", "");
-                }
-            };
-            _deliveryAddress.EditorAction += (s, e) =>
-            {
-                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
-                {
-                    SaveAddress(_deliveryAddress.Text, "", "", "", "");
-                    InputMethodManager inputMethodManager = AnatoliApp.GetInstance().Activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
-                    inputMethodManager.HideSoftInputFromWindow(_deliveryAddress.WindowToken, HideSoftInputFlags.None);
-                }
-            };
 
             _checkoutButton.Click += async (s, e) =>
             {
@@ -244,40 +190,33 @@ namespace AnatoliAndroid.Fragments
             var typeOptions = new string[2] { "میام میبرم", "خودتون بیارید" };
             _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, typeOptions);
 
-            //_editAddressImageView.Click += (s, e) =>
-            //{
-            //    var transaction = FragmentManager.BeginTransaction();
-            //    EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
-            //    editShippingDialog.SetAddress(_deliveryAddress.Text);
-            //    //editShippingDialog.SetTel(_deliveryTelTextView.Text);
-            //    //editShippingDialog.SetName(_nameTextView.Text);
-            //    editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
-            //    {
-            //        _deliveryAddress.Text = address;
-            //        //_deliveryTelTextView.Text = tel;
-            //        //_nameTextView.Text = name;
-            //        _checkoutButton.Enabled = CheckCheckout();
-            //    };
-            //    editShippingDialog.Show(transaction, "shipping_dialog");
+            _editAddressImageButton.Click += (s, e) =>
+            {
+                var transaction = FragmentManager.BeginTransaction();
+                EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
+                editShippingDialog.SetAddress(_deliveryAddress.Text);
+                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
+                //editShippingDialog.SetName(_nameTextView.Text);
+                editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
+                {
+                    _deliveryAddress.Text = address;
+                    //_deliveryTelTextView.Text = tel;
+                    //_nameTextView.Text = name;
+                    _checkoutButton.Enabled = CheckCheckout();
+                };
+                editShippingDialog.Show(transaction, "shipping_dialog");
 
-            //};
+            };
 
 
             return view;
         }
-        async void SaveAddress(string address, string province, string city, string zone, string district)
-        {
-            await ShippingInfoManager.NewShippingAddress(address, province, city, zone, district, "", "");
-        }
+
         public async override void OnStart()
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
             AnatoliApp.GetInstance().HideSearchIcon();
-            //AnatoliApp.GetInstance().MenuClicked = () =>
-            //{
-            //    _toolsDialog.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
-            //};
 
             try
             {
@@ -285,13 +224,13 @@ namespace AnatoliAndroid.Fragments
                 if (String.IsNullOrEmpty(tel))
                 {
                     _storeTelTextView.Text = "نا مشخص";
-                    _callImageView.Visibility = ViewStates.Invisible;
+                    _callImageButton.Visibility = ViewStates.Invisible;
                 }
                 else
                 {
                     _storeTelTextView.Text = tel;
-                    _callImageView.Visibility = ViewStates.Visible;
-                    _callImageView.Click += (s, e) =>
+                    _callImageButton.Visibility = ViewStates.Visible;
+                    _callImageButton.Click += (s, e) =>
                     {
                         var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
                         var intent = new Intent(Intent.ActionDial, uri);
