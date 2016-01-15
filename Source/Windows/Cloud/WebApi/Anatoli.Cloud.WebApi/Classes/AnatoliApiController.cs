@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Web;
-using System.Web.Http;
+using System.Collections.Generic;
+using Anatoli.Cloud.WebApi.Controllers;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
-    public class AnatoliApiController: ApiController
+    public abstract class AnatoliApiController : BaseApiController
     {
         public class RequestModel
         {
@@ -12,6 +13,7 @@ namespace Anatoli.Cloud.WebApi.Classes
             public string stockId { get; set; }
             public string userId { get; set; }
             public string dateAfter { get; set; }
+            public List<string> stockIds { get; set; }
         }
 
         public Guid OwnerKey
