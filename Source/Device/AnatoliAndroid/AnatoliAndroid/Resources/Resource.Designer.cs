@@ -3091,6 +3091,12 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f070137
 			public const int AnatoliTextField = 2131165495;
 			
+			// aapt resource value: 0x7f07012e
+			public const int AnatoliTheme = 2131165486;
+			
+			// aapt resource value: 0x7f07012f
+			public const int AnatoliTheme_Base = 2131165487;
+			
 			// aapt resource value: 0x7f07007c
 			public const int Animation_AppCompat_Dialog = 2131165308;
 			
@@ -3519,12 +3525,6 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f070139
 			public const int ListFrontContent = 2131165497;
-			
-			// aapt resource value: 0x7f07012e
-			public const int MyTheme = 2131165486;
-			
-			// aapt resource value: 0x7f07012f
-			public const int MyTheme_Base = 2131165487;
 			
 			// aapt resource value: 0x7f07013e
 			public const int New = 2131165502;

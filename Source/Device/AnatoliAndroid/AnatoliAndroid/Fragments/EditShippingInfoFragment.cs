@@ -117,6 +117,7 @@ namespace AnatoliAndroid.Fragments
                         {
                             errDialog.SetTitle("خطا");
                             errDialog.SetMessage(result.ModelStateString);
+                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                             errDialog.Show();
                         }
                     }
@@ -124,6 +125,7 @@ namespace AnatoliAndroid.Fragments
                     {
                         pDialog.Dismiss();
                         errDialog.SetMessage(Resource.String.ErrorOccured);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                         errDialog.SetTitle("خطا");
                         errDialog.Show();
                     }
@@ -158,6 +160,7 @@ namespace AnatoliAndroid.Fragments
                 catch (Exception ex)
                 {
                     errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
             }

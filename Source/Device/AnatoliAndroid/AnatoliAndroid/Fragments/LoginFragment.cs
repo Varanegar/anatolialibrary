@@ -98,6 +98,7 @@ namespace AnatoliAndroid.Fragments
                         if (ex.GetType() == typeof(TokenException))
                         {
                             errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
+                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                             errDialog.Show();
                         }
                     }
@@ -106,6 +107,7 @@ namespace AnatoliAndroid.Fragments
                 {
                     errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
                     errDialog.SetMessage(userModel.ModelStateString);
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
             }
@@ -115,11 +117,13 @@ namespace AnatoliAndroid.Fragments
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {
                     errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
                 else if (ex.GetType() == typeof(TokenException))
                 {
                     errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
             }

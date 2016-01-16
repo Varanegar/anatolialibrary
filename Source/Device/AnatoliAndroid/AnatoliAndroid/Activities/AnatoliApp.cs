@@ -422,6 +422,7 @@ namespace AnatoliAndroid.Activities
                                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                 alert.SetMessage(ex.Message);
                                 alert.SetTitle(Resource.String.Error);
+                                alert.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                                 alert.Show();
                             }
                             pDialog.Dismiss();

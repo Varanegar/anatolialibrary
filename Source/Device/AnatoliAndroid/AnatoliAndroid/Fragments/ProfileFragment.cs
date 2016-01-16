@@ -100,12 +100,14 @@ namespace AnatoliAndroid.Fragments
                         await CustomerManager.SaveCustomerAsync(_customerViewModel);
                         errDialog.SetTitle("");
                         errDialog.SetMessage("اطلاعات بروزرسانی شد");
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                         errDialog.Show();
                     }
                     else
                     {
                         errDialog.SetTitle("خطا");
                         errDialog.SetMessage(result.ModelStateString);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                         errDialog.Show();
                     }
                 }
@@ -114,6 +116,7 @@ namespace AnatoliAndroid.Fragments
                     pDialog.Dismiss();
                     errDialog.SetMessage(Resource.String.ErrorOccured);
                     errDialog.SetTitle("خطا");
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
             };
@@ -170,6 +173,7 @@ namespace AnatoliAndroid.Fragments
                     catch (Exception ex)
                     {
                         errDialog.SetMessage(Resource.String.ErrorOccured);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                         errDialog.Show();
                     }
                 }
