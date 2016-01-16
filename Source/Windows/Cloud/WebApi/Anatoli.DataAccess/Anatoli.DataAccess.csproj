@@ -133,7 +133,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderLineItemRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
+    <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderStatusHistoryRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockOnHandSyncRepository.cs" />
@@ -299,6 +301,10 @@
     <Compile Include="Migrations\201601151617246_AddUsersStocks.Designer.cs">
       <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.cs" />
+    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.Designer.cs">
+      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -399,6 +405,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repositories\PurchaseOrder\IncompletePurchaseOrderRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\PurchaseOrderLineItemRepository.cs" />
+    <Compile Include="Repositories\PurchaseOrder\PurchaseOrderStatusHistoryRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
@@ -535,6 +543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601151617246_AddUsersStocks.resx">
       <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601152051082_Customer-Ship-Address-1.resx">
+      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -63,7 +63,7 @@ namespace ClientApp
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
                     //UserManagement.TestUserInfo(client, servserURI);
-                    //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
+                    CustomerManagement.UpdateCustomerFromServer(client, servserURI);
                     //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
                     IncompleteManagement.GetIncompleteFromServer(client, servserURI);

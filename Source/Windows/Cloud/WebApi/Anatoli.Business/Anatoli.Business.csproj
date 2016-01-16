@@ -101,6 +101,8 @@
     <Compile Include="Domain\Product\ProductGroupDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\IncompletePurchaseOrderLineItemDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\PurchaseOrderStatusHistoryDomain.cs" />
+    <Compile Include="Domain\PurchaseOrder\PurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
     <Compile Include="Domain\Stock\StockActiveOnHandDomain.cs" />
     <Compile Include="Domain\Stock\StockDomain.cs" />

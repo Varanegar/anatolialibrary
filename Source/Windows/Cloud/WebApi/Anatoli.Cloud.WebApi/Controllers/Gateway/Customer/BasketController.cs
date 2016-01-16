@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/basket")]
-    public class CustomerController : BaseApiController
+    public class BasketController : BaseApiController
     {
         [Authorize(Roles = "User")]
         [Route("customerbaskets/bycustomer")]

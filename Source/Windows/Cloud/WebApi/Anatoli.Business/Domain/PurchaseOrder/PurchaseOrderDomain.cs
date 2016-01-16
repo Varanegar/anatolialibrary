@@ -67,10 +67,13 @@ namespace Anatoli.Business.Domain
 
             await Task.Factory.StartNew(() =>
             {
-                //var centerList = Repository.DbContext.PurchaseOrders.Select(m => m.Store)
-                returnData.AddRange(GetOnlineData(WebApiURIHelper.GetStoreOnHandLocalURI, "id=" + custoemrId + "&centerId="));
-            });
 
+                var storeList = Repository.DbContext.Stores.Select(m => m.Id);
+                Parallel.ForEach(storeList, (currentStore) =>
+                    {
+                        returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoByCustomerIdLocalURI, "id=" + custoemrId + "&centerId=" + currentStore));
+                    });
+            });
             return returnData;
         }
 

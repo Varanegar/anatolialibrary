@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/customer")]
-    public class BasketController : BaseApiController
+    public class CustomerController : BaseApiController
     {
         #region Customer
         [Authorize(Roles = "AuthorizedApp, User")]
@@ -131,7 +131,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("save")]
+        [Route("customershipaddress/save")]
         public async Task<IHttpActionResult> SaveCustomer(string privateOwnerId, CustomerShipAddressViewModel data)
         {
             try

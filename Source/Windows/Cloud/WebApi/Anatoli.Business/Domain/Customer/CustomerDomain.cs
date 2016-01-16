@@ -91,7 +91,7 @@ namespace Anatoli.Business.Domain
                                 currentCustomer.RegionInfoId   != item.RegionInfoId ||
                                 currentCustomer.RegionLevel1Id != item.RegionLevel1Id ||
                                 currentCustomer.RegionLevel2Id != item.RegionLevel2Id ||
-                                currentCustomer.RegionLevel2Id != item.RegionLevel3Id ||
+                                currentCustomer.RegionLevel3Id != item.RegionLevel3Id ||
                                 currentCustomer.RegionLevel4Id != item.RegionLevel4Id ||
                                 currentCustomer.PostalCode != item.PostalCode ||
                                 currentCustomer.NationalCode != item.NationalCode)
@@ -113,7 +113,7 @@ namespace Anatoli.Business.Domain
                             currentCustomer.RegionInfoId = item.RegionInfoId;
                             currentCustomer.RegionLevel1Id= item.RegionLevel1Id;
                             currentCustomer.RegionLevel2Id= item.RegionLevel2Id;
-                            currentCustomer.RegionLevel2Id= item.RegionLevel3Id;
+                            currentCustomer.RegionLevel3Id= item.RegionLevel3Id;
                             currentCustomer.RegionLevel4Id = item.RegionLevel4Id;
                             Repository.UpdateAsync(currentCustomer);
                         }
