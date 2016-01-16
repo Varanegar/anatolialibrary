@@ -78,7 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/linearLayout1"
-            android:id="@+id/relativeLayout4">
+            android:id="@+id/relativeLayout4"
+            android:layout_centerVertical="true">
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="60dp"
