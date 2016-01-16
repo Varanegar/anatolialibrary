@@ -56,6 +56,7 @@ namespace AnatoliAndroid.Fragments
         //Spinner _citySpinner;
         //Spinner _provinceSpinner;
         bool _tomorrow = false;
+        CustomerViewModel _customerViewModel;
 
         Cheesebaron.SlidingUpPanel.SlidingUpPanelLayout _slidingLayout;
 
@@ -136,9 +137,9 @@ namespace AnatoliAndroid.Fragments
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
-                    lAlert.SetPositiveButton(Resource.String.Yes, (s2, e2) =>
+                    lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
                     {
-
+                        await SaveOrder();
                     });
                     lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
                     {
@@ -147,23 +148,9 @@ namespace AnatoliAndroid.Fragments
                     });
                     lAlert.Show();
                 }
-                try
-                {
-                    await OrderManager.SaveOrder();
-                    OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
-                    var transaction = FragmentManager.BeginTransaction();
-                    dialog.Show(transaction, "order_saved_dialog");
-                    AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(new OrdersListFragment(), "orders_fragment");
-                    AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                    AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                }
-                catch (Exception ex)
-                {
-                    if (ex.GetType() == typeof(StoreManager.NullStoreException))
-                    {
-                        AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
-                    }
-                }
+                else
+                    await SaveOrder();
+
 
             };
             //if (DateTime.Now.ToLocalTime().Hour < 16)
@@ -210,6 +197,26 @@ namespace AnatoliAndroid.Fragments
 
 
             return view;
+        }
+        async Task SaveOrder()
+        {
+            try
+            {
+                await OrderManager.SaveOrder();
+                OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
+                var transaction = FragmentManager.BeginTransaction();
+                dialog.Show(transaction, "order_saved_dialog");
+                AnatoliApp.GetInstance().SetFragment<OrdersListFragment>(new OrdersListFragment(), "orders_fragment");
+                AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() == typeof(StoreManager.NullStoreException))
+                {
+                    AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+                }
+            }
         }
 
         public async override void OnStart()
@@ -274,18 +281,54 @@ namespace AnatoliAndroid.Fragments
                 await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
             };
 
-            var shippingInfo = await ShippingInfoManager.GetDefaultAsync();
-            if (shippingInfo != null)
+            //var shippingInfo = await ShippingInfoManager.GetDefaultAsync();
+            //if (shippingInfo != null)
+            //{
+            //    _deliveryAddress.Text = shippingInfo.address;
+            //    //_nameTextView.Text = shippingInfo.name;
+            //    //_deliveryTelTextView.Text = shippingInfo.tel;
+            //    _checkoutButton.Enabled = CheckCheckout();
+            //}
+            //else
+            //{
+            //    _checkoutButton.Enabled = CheckCheckout();
+            //}
+
+
+
+            if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
-                _deliveryAddress.Text = shippingInfo.address;
-                //_nameTextView.Text = shippingInfo.name;
-                //_deliveryTelTextView.Text = shippingInfo.tel;
-                _checkoutButton.Enabled = CheckCheckout();
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                ProgressDialog pDialog = new ProgressDialog();
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                pDialog.Show();
+                try
+                {
+                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
+                    pDialog.Dismiss();
+                    if (c.IsValid)
+                    {
+                        _customerViewModel = c;
+                        await CustomerManager.SaveCustomerAsync(_customerViewModel);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.Show();
+                }
             }
-            else
+            else if (_customerViewModel == null)
             {
-                _checkoutButton.Enabled = CheckCheckout();
+                _customerViewModel = await CustomerManager.ReadCustomerAsync();
             }
+            if (_customerViewModel != null)
+            {
+                _deliveryAddress.Text = _customerViewModel.MainStreet;
+            }
+            _checkoutButton.Enabled = CheckCheckout();
+
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _countTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
 

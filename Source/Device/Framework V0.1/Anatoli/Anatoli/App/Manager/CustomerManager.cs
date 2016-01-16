@@ -33,7 +33,8 @@ namespace Anatoli.App.Manager
                 Environment.NewLine + customer.UniqueId +
                 Environment.NewLine + customer.RegionLevel1Id +
                 Environment.NewLine + customer.RegionLevel2Id +
-                Environment.NewLine + customer.RegionLevel3Id;
+                Environment.NewLine + customer.RegionLevel3Id +
+                Environment.NewLine + customer.RegionLevel4Id;
             bool wResult = await Task.Run(() =>
             {
                 var cipherText = Crypto.EncryptAES(content);
@@ -69,6 +70,7 @@ namespace Anatoli.App.Manager
             customer.RegionLevel1Id = cInfoFields[12];
             customer.RegionLevel2Id = cInfoFields[13];
             customer.RegionLevel3Id = cInfoFields[14];
+            customer.RegionLevel4Id = cInfoFields[15];
             return customer;
         }
 
