@@ -32,7 +32,8 @@ namespace Anatoli.App.Manager
                             new BasicParam("cat_parent", item.ParentUniqueIdString),
                             new BasicParam("cat_left", item.NLeft.ToString()),
                             new BasicParam("cat_right", item.NRight.ToString()),
-                            new BasicParam("cat_depth", item.NLevel.ToString()));
+                            new BasicParam("cat_depth", item.NLevel.ToString()),
+                            new BasicParam("cat_image", item.Id));
                         var query = connection.CreateCommand(command.GetCommand());
                         int t = query.ExecuteNonQuery();
                     }
