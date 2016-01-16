@@ -141,7 +141,8 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
-
+            AnatoliApp.GetInstance().HideMenuIcon();
+            AnatoliApp.GetInstance().HideSearchIcon();
             // manipulate spin boxes
             _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
             _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;

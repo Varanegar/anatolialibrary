@@ -100,8 +100,8 @@
         p1:padding="1dp"
         p1:paddingRight="20dp">
         <ImageButton
-            p1:layout_width="20dp"
-            p1:layout_height="20dp"
+            p1:layout_width="18dp"
+            p1:layout_height="18dp"
             p1:id="@+id/searchbarImageButton"
             p1:layout_alignParentRight="true"
             p1:layout_centerVertical="true"
@@ -123,7 +123,6 @@
             p1:layout_height="match_parent"
             p1:id="@+id/searchEditText"
             p1:background="#00000000"
-            p1:layout_alignParentTop="true"
             p1:layout_centerVertical="true"
             p1:layout_alignParentBottom="true"
             p1:textColor="@android:color/black"
@@ -137,6 +136,7 @@
             p1:singleLine="true"
             p1:inputType="textPersonName"
             p1:imeOptions="actionDone"
-            p1:gravity="right" />
+            p1:gravity="center_vertical"
+            p1:textSize="12dp" />
     </RelativeLayout>
 </LinearLayout>
