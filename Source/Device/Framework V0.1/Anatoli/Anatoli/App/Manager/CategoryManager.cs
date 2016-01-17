@@ -60,7 +60,7 @@ namespace Anatoli.App.Manager
         }
         public static string GetImageAddress(string catId, string imageId)
         {
-            string imguri = String.Format("http://79.175.166.186/content/Images/149E61EF-C4DC-437D-8BC9-F6037C0A1ED1/100x100/{0}/{0}-{1}.png", catId, imageId);
+            string imguri = String.Format("http://79.175.166.186/content/Images/149E61EF-C4DC-437D-8BC9-F6037C0A1ED1/100x100/{0}/{1}.png", catId, imageId);
             return imguri;
         }
 

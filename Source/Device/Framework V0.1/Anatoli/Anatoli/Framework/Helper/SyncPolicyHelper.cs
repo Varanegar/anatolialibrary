@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Model.Store;
+using Anatoli.App.Model;
 
 namespace Anatoli.Framework.Helper
 {
@@ -35,6 +36,10 @@ namespace Anatoli.Framework.Helper
 
         public SYNC_POLICY GetModelSyncPolicy(Type modelType)
         {
+            if (modelType == typeof(ItemImageViewModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
             if (modelType == typeof(CityRegionUpdateModel))
             {
                 return SYNC_POLICY.OnlineIfConnected;

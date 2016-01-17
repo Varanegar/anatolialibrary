@@ -26,6 +26,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
             public static readonly string PortalAddress = "http://79.175.166.186/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
+            public static readonly string Images = "/api/imageManager/images/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             public struct Products
             {
                 public static readonly string ProductView = "product_view.php";
