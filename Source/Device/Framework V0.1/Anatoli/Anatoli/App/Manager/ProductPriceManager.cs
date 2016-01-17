@@ -16,6 +16,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
+                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products_price");
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView));
                 int c = await LocalUpdateAsync(new DeleteCommand("products_price"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -30,6 +31,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
+                await SyncManager.SaveUpdateDateAsync("products_price");
             }
             catch (Exception e)
             {

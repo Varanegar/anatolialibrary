@@ -17,8 +17,12 @@ namespace Anatoli.App.Manager
             try
             {
                 //var lll = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<StoreCalendarViewModel>>(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
-
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.CityRegion));
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("cityregion");
+                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.CityRegion, new BasicParam("after", lastUpdateTime.ToString())));
+                //var list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CityRegionUpdateModel>>(
+                //    TokenType.AppToken,
+                //Configuration.WebService.CityRegion
+                //);
                 if (list.Count == 0)
                 {
                     throw new Exception("Could not download cities data");
@@ -38,8 +42,10 @@ namespace Anatoli.App.Manager
                         var query = connection.CreateCommand(command.GetCommand());
                         int t = query.ExecuteNonQuery();
                     }
+
                     connection.Commit();
                 }
+                await SyncManager.SaveUpdateDateAsync("cityregion");
             }
             catch (Exception e)
             {

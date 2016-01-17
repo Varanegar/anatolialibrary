@@ -16,6 +16,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
+                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("categories");
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups));
                 if (list.Count == 0)
                 {
@@ -37,6 +38,7 @@ namespace Anatoli.App.Manager
                         int t = query.ExecuteNonQuery();
                     }
                     connection.Commit();
+                    await SyncManager.SaveUpdateDateAsync("categories");
                 }
             }
             catch (Exception e)

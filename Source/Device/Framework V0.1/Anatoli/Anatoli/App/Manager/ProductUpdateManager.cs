@@ -17,6 +17,7 @@ namespace Anatoli.App.Manager
             //return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
             try
             {
+                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView));
                 int c = await LocalUpdateAsync(new DeleteCommand("products"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -32,6 +33,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
+                await SyncManager.SaveUpdateDateAsync("products");
             }
             catch (Exception e)
             {

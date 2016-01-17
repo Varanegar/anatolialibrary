@@ -15,6 +15,7 @@ namespace Anatoli.App.Model
         {
             try
             {
+                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
                 var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images));
                 if (list.Count == 0)
                 {
@@ -39,6 +40,7 @@ namespace Anatoli.App.Model
                         }
                     }
                     connection.Commit();
+                    await SyncManager.SaveUpdateDateAsync("products");
                 }
             }
             catch (Exception e)
