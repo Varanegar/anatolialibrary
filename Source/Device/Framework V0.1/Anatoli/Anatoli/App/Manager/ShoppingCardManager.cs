@@ -15,7 +15,7 @@ namespace Anatoli.App.Manager
     {
         public static async Task<ProductModel> GetItemAsync(string id)
         {
-            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString()));
+            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString().ToUpper()));
             return await GetItemAsync(query);
         }
         public static async Task<bool> AddProductAsync(string productId, int count)

@@ -24,7 +24,7 @@ namespace Anatoli.App.Manager
                     foreach (var item in list)
                     {
                         InsertCommand command = new InsertCommand("products_price", new BasicParam("price", item.Price.ToString()),
-                            new BasicParam("product_id", item.ProductGuid));
+                            new BasicParam("product_id", item.ProductGuid.ToUpper()));
                         var query = connection.CreateCommand(command.GetCommand());
                         int t = query.ExecuteNonQuery();
                     }

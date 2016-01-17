@@ -115,12 +115,11 @@ namespace AnatoliAndroid.Fragments
             ImageView imageView1 = convertView.FindViewById<ImageView>(Resource.Id.imageView1);
             TextView textView1 = convertView.FindViewById<TextView>(Resource.Id.textView1);
             textView1.Text = item.cat_name;
-            imageView1.SetImageResource(Resource.Drawable.igmart);
 
             string imguri = CategoryManager.GetImageAddress(item.cat_id, item.cat_image);
             try
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri, Koush.UrlImageViewHelper.CacheDurationFiveDays);
+                Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri);
             }
             catch (Exception)
             {

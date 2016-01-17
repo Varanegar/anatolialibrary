@@ -20,5 +20,6 @@
         local:customFont="Fonts/anatoli.ttf"
         android:singleLine="true"
         android:gravity="center_horizontal"
+        android:background="#CCFFFFFF"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
