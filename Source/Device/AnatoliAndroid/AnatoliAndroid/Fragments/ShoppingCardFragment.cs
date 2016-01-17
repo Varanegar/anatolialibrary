@@ -313,9 +313,10 @@ namespace AnatoliAndroid.Fragments
                         await CustomerManager.SaveCustomerAsync(_customerViewModel);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
                 }
             }

@@ -113,6 +113,7 @@ namespace AnatoliAndroid.Activities
                     Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
                     alert.SetMessage(ex.Message);
                     alert.SetTitle(Resource.String.Error);
+                    alert.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     alert.Show();
                 }
             }

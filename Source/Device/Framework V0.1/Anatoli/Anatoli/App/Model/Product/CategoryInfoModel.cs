@@ -13,5 +13,6 @@ namespace Anatoli.App.Model.Product
         public string cat_parent { get; set; }
         public int cat_depth { get; set; }
         public string cat_name { get; set; }
+        public string cat_image { get; set; }
     }
 }

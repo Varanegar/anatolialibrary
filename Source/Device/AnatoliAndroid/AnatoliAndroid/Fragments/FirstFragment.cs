@@ -14,6 +14,7 @@ using AnatoliAndroid.Components;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
 using Android.Graphics;
+using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -59,7 +60,14 @@ namespace AnatoliAndroid.Fragments
 
 
 
+            var imgView = view.FindViewById<ImageView>(Resource.Id.imgView);
+            var categories = CategoryManager.GetFirstLevel();
 
+            foreach (var item in categories)
+            {
+                string imguri = CategoryManager.GetImageAddress(item.cat_id, item.cat_image);
+                Koush.UrlImageViewHelper.SetUrlDrawable(imgView, imguri);
+            }
 
             return view;
         }
@@ -68,6 +76,7 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
+
         }
 
 
