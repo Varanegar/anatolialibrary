@@ -33,7 +33,7 @@ namespace AnatoliAndroid.Fragments
         Spinner _level4Spinner;
         Spinner _level2Spinner;
         Spinner _level1Spinner;
-        List<CityRegionModel> _level1SpinerDataAdapter = CityRegionManager.GetFirstLevel();
+        List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level3SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level4SpinerDataAdapter = new List<CityRegionModel>();
@@ -54,6 +54,7 @@ namespace AnatoliAndroid.Fragments
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
 
+            
             _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
             _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;
             _level2Spinner.ItemSelected += _level2Spinner_ItemSelected;
@@ -115,6 +116,7 @@ namespace AnatoliAndroid.Fragments
                         }
                         else
                         {
+                            pDialog.Dismiss();
                             errDialog.SetTitle("خطا");
                             errDialog.SetMessage(result.ModelStateString);
                             errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
@@ -139,7 +141,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
 
-
+            _level1SpinerDataAdapter = await CityRegionManager.GetFirstLevelAsync();
             if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
                 AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
@@ -159,6 +161,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
+                    pDialog.Dismiss();
                     errDialog.SetMessage(Resource.String.ErrorOccured);
                     errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();

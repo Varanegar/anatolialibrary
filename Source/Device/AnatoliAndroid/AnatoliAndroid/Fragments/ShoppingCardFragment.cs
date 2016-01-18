@@ -315,6 +315,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception)
                 {
+                    pDialog.Dismiss();
                     errDialog.SetMessage(Resource.String.ErrorOccured);
                     errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                     errDialog.Show();
@@ -322,7 +323,14 @@ namespace AnatoliAndroid.Fragments
             }
             else if (_customerViewModel == null)
             {
-                _customerViewModel = await CustomerManager.ReadCustomerAsync();
+                try
+                {
+                    _customerViewModel = await CustomerManager.ReadCustomerAsync();
+                }
+                catch (Exception)
+                {
+                    
+                }
             }
             if (_customerViewModel != null)
             {

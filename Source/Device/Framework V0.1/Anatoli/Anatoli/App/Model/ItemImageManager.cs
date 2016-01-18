@@ -11,16 +11,14 @@ namespace Anatoli.App.Model
 {
     public class ItemImageManager : BaseManager<BaseDataAdapter<ItemImageViewModel>, ItemImageViewModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
                 var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images));
-                if (list.Count == 0)
-                {
-                    throw new Exception("Could not download images");
-                }
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images);
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();

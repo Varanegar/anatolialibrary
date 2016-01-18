@@ -12,16 +12,14 @@ namespace Anatoli.App.Manager
 {
     public class ProductGroupManager : BaseManager<BaseDataAdapter<ProductGroupModel>, ProductGroupModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
                 var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("categories");
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups));
-                if (list.Count == 0)
-                {
-                    throw new Exception("Could not load groups data");
-                }
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups);
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
                 int c = await LocalUpdateAsync(new DeleteCommand("categories"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

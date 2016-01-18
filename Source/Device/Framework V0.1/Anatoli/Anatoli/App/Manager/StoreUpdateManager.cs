@@ -12,16 +12,14 @@ namespace Anatoli.App.Manager
 {
     public class StoreUpdateManager : BaseManager<BaseDataAdapter<StoreUpdateModel>, StoreUpdateModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("stores");
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView));
-                if (list.Count == 0)
-                {
-                    throw new Exception("Could not download stores data");
-                }
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
                 int c = await LocalUpdateAsync(new DeleteCommand("stores"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

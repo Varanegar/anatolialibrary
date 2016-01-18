@@ -12,12 +12,24 @@ using PCLCrypto;
 using Anatoli.App.Model;
 namespace Anatoli.App.Manager
 {
+    public class TempResult : Anatoli.Framework.Model.BaseDataModel
+    {
+
+    }
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
             await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
             var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
+            if (userModel.IsValid)
+            {
+                ParseInstallation installation = ParseInstallation.CurrentInstallation;
+                //await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + Parse);
+                var id = installation.InstallationId;
+                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo + "/GetSample", new Tuple<string, string>("installationId", id.ToString()));
+                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId",id.ToString()));
+            }
             return userModel;
         }
         public async Task<RegisterResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)

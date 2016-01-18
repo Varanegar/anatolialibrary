@@ -12,13 +12,15 @@ namespace Anatoli.App.Manager
 {
     public class ProductUpdateManager : BaseManager<BaseDataAdapter<ProductUpdateModel>, ProductUpdateModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             //return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
             try
             {
                 var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView));
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
                 int c = await LocalUpdateAsync(new DeleteCommand("products"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

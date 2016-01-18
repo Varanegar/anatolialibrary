@@ -13,12 +13,12 @@ namespace Anatoli.App.Manager
     public class ShippingInfoManager : BaseManager<BaseDataAdapter<ShippingInfoModel>, ShippingInfoModel>
     {
 
-        public static ShippingInfoModel GetDefault()
-        {
-            SearchFilterParam f = new EqFilterParam("default_shipping", "1");
-            SelectQuery dbQuery = new SelectQuery("shipping_info", f);
-            return GetItem(dbQuery);
-        }
+        //public static ShippingInfoModel GetDefault()
+        //{
+        //    SearchFilterParam f = new EqFilterParam("default_shipping", "1");
+        //    SelectQuery dbQuery = new SelectQuery("shipping_info", f);
+        //    return GetItem(dbQuery);
+        //}
         public static async Task<ShippingInfoModel> GetDefaultAsync()
         {
             SearchFilterParam f = new EqFilterParam("default_shipping", "1");

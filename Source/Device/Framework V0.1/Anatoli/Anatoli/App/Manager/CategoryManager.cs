@@ -24,11 +24,11 @@ namespace Anatoli.App.Manager
                 return lr.First();
             }
         }
-        public static List<CategoryInfoModel> GetFirstLevel()
+        public static async Task<List<CategoryInfoModel>> GetFirstLevelAsync()
         {
             var query = new SelectQuery("categories", new EqFilterParam("cat_depth", "1"));
             query.Unlimited = true;
-            var list = GetList(query, null);
+            var list = await GetListAsync(query, null);
             return list;
         }
         public static async Task<List<CategoryInfoModel>> GetCategoriesAsync(string catId)
@@ -39,13 +39,13 @@ namespace Anatoli.App.Manager
             return list;
         }
 
-        public static List<CategoryInfoModel> GetCategories(string catId)
-        {
-            var query = new SelectQuery("categories", new EqFilterParam("cat_parent", catId));
-            query.Unlimited = true;
-            var list = GetList(query, null);
-            return list;
-        }
+        //public static List<CategoryInfoModel> GetCategories(string catId)
+        //{
+        //    var query = new SelectQuery("categories", new EqFilterParam("cat_parent", catId));
+        //    query.Unlimited = true;
+        //    var list = GetList(query, null);
+        //    return list;
+        //}
         public static async Task<CategoryInfoModel> GetParentCategory(string p)
         {
             var current = await GetItemAsync(new SelectQuery("categories", new EqFilterParam("cat_id", p)));

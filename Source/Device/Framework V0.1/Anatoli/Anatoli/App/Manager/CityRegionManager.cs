@@ -26,11 +26,11 @@ namespace Anatoli.App.Manager
                 return lr.First();
             }
         }
-        public static List<CityRegionModel> GetFirstLevel()
+        public static async Task<List<CityRegionModel>> GetFirstLevelAsync()
         {
             var query = new SelectQuery("cityregion", new EqFilterParam("level", "1"));
             query.Unlimited = true;
-            var list = GetList(query, null);
+            var list = await GetListAsync(query, null);
             return list;
         }
         public static async Task<List<CityRegionModel>> GetGroupsAsync(string groupId)
@@ -41,11 +41,11 @@ namespace Anatoli.App.Manager
             return list;
         }
 
-        public static List<CityRegionModel> GetGroups(string groupId)
+        public static async Task<List<CityRegionModel>> GetGroups(string groupId)
         {
             var query = new SelectQuery("cityregion", new EqFilterParam("parent_id", groupId));
             query.Unlimited = true;
-            var list = GetList(query, null);
+            var list = await GetListAsync(query, null);
             return list;
         }
         public static async Task<CityRegionModel> GetParentGroup(string p)

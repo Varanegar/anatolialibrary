@@ -12,12 +12,14 @@ namespace Anatoli.App.Manager
 {
     public class ProductPriceManager : BaseManager<BaseDataAdapter<ProductPriceModel>, ProductPriceModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
                 var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products_price");
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView));
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView);
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
                 int c = await LocalUpdateAsync(new DeleteCommand("products_price"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

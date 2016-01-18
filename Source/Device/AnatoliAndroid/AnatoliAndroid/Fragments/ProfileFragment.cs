@@ -35,7 +35,7 @@ namespace AnatoliAndroid.Fragments
         TextView _exitTextView;
         Button _saveButton;
         CustomerViewModel _customerViewModel;
-        List<CityRegionModel> _level1SpinerDataAdapter = CityRegionManager.GetFirstLevel();
+        List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level3SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level4SpinerDataAdapter = new List<CityRegionModel>();
@@ -147,6 +147,7 @@ namespace AnatoliAndroid.Fragments
             AnatoliApp.GetInstance().HideMenuIcon();
             AnatoliApp.GetInstance().HideSearchIcon();
             // manipulate spin boxes
+            _level1SpinerDataAdapter = await CityRegionManager.GetFirstLevelAsync();
             _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
             _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;
             _level2Spinner.ItemSelected += _level2Spinner_ItemSelected;

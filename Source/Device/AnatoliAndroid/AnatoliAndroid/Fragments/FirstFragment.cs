@@ -24,6 +24,7 @@ namespace AnatoliAndroid.Fragments
     {
         ImageView _slideShowImageView;
         AnatoliSlideShow _slideShow;
+        GridView _groupsGridView;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -41,7 +42,7 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.FirstLayout, container, false);
             _slideShowImageView = view.FindViewById<ImageView>(Resource.Id.slideShowImageView);
             var progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
-            GridView groupsGridView = view.FindViewById<GridView>(Resource.Id.groupsGridView);
+            GridView _groupsGridView = view.FindViewById<GridView>(Resource.Id.groupsGridView);
             _slideShow = new AnatoliSlideShow(_slideShowImageView, progress);
             //var tl = new OnTouchListener();
             //_slideShowImageView.SetOnTouchListener(tl);
@@ -60,17 +61,15 @@ namespace AnatoliAndroid.Fragments
             var c3 = new Tuple<string, AnatoliAndroid.Components.AnatoliSlideShow.OnClick>("https://pixabay.com/static/uploads/photo/2012/11/06/03/47/background-64259_960_720.jpg", click3);
             _slideShow.Source.Add(c3);
 
-            var categories = CategoryManager.GetFirstLevel();
-
-            var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
-            groupsGridView.Adapter = groupAdapter;
-
             return view;
         }
         public override async void OnStart()
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
+            var categories = await CategoryManager.GetFirstLevelAsync();
+            var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
+            _groupsGridView.Adapter = groupAdapter;
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
 
         }
