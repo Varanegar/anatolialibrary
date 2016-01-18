@@ -19,6 +19,7 @@ using AnatoliAndroid.ListAdapters;
 using System.Threading.Tasks;
 using Android.Locations;
 using Anatoli.App;
+using Anatoli.App.Model;
 
 namespace AnatoliAndroid.Activities
 {
@@ -100,10 +101,11 @@ namespace AnatoliAndroid.Activities
                     pDialog.SetMessage("بروز رسانی لیست کالاها");
                     await ProductUpdateManager.SyncDataBase();
                     pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
+                    pDialog.SetMessage("بروز رسانی تصاویر");
+                    await ItemImageManager.SyncDataBase();
+                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                     pDialog.SetMessage("بروز رسانی قیمت ها");
                     await ProductPriceManager.SyncDataBase();
-                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
-                    pDialog.SetMessage("آماده سازی برنامه");
                     await SyncManager.SaveDBVersionAsync();
                     pDialog.Dismiss();
                 }

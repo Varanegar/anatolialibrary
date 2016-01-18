@@ -27,13 +27,12 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        InsertCommand command = new InsertCommand("categories", new BasicParam("cat_id", item.UniqueId),
+                        InsertCommand command = new InsertCommand("categories", new BasicParam("cat_id", item.UniqueId.ToUpper()),
                             new BasicParam("cat_name", item.GroupName.Trim()),
-                            new BasicParam("cat_parent", item.ParentUniqueIdString),
+                            new BasicParam("cat_parent", item.ParentUniqueIdString.ToUpper()),
                             new BasicParam("cat_left", item.NLeft.ToString()),
                             new BasicParam("cat_right", item.NRight.ToString()),
-                            new BasicParam("cat_depth", item.NLevel.ToString()),
-                            new BasicParam("cat_image", item.Id));
+                            new BasicParam("cat_depth", item.NLevel.ToString()));
                         var query = connection.CreateCommand(command.GetCommand());
                         int t = query.ExecuteNonQuery();
                     }

@@ -30,8 +30,8 @@ namespace Anatoli.App.Manager
                     foreach (var item in list)
                     {
                         InsertCommand command = new InsertCommand("cityregion", new BasicParam("group_name", item.GroupName),
-                            new BasicParam("group_id", item.UniqueId),
-                            new BasicParam("parent_id", item.ParentUniqueIdString),
+                            new BasicParam("group_id", item.UniqueId.ToUpper()),
+                            new BasicParam("parent_id", item.ParentUniqueIdString.ToUpper()),
                             new BasicParam("level", item.NLevel.ToString()),
                             new BasicParam("left", item.NLeft.ToString()),
                             new BasicParam("right", item.NRight.ToString()));

@@ -27,7 +27,7 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId),
+                        InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
                             new BasicParam("store_address", item.address));
                         var query = connection.CreateCommand(command.GetCommand());

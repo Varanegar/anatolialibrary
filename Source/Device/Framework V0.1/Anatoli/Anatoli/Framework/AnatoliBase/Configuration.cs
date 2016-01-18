@@ -26,6 +26,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
             public static readonly string PortalAddress = "http://79.175.166.186/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
+            public static readonly string Images = "/api/imageManager/images/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             public struct Products
             {
                 public static readonly string ProductView = "product_view.php";
@@ -50,6 +51,7 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string ViewProfileUrl = "/api/gateway/customer/customers";
                 public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
                 public static readonly string ShoppingCard = "";
+                public static readonly string OrdersHistory = "api/gateway/purchaseorder/history";
             }
             public static readonly string CityRegion = "/api/gateway/base/region/cityregions/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
         }
