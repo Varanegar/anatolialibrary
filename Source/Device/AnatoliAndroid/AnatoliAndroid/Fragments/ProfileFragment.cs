@@ -20,7 +20,7 @@ using Anatoli.App.Model.Store;
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("مشخصات من")]
-    public class ProfileFragment : Fragment
+    public class ProfileFragment : DialogFragment
     {
         EditText _firstNameEditText;
         EditText _lastNameEditText;

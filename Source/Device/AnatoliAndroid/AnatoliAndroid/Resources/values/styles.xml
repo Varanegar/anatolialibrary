@@ -54,9 +54,10 @@
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textColor">@color/textgray</item>
-    <item name="android:padding">15dp</item>
-    <item name="android:layout_margin">3dp</item>
+    <item name="android:padding">12dp</item>
+    <item name="android:layout_margin">2dp</item>
     <item name="android:gravity">right</item>
+    <item name="android:textSize">14dp</item>
     <item name="android:textCursorDrawable">@null</item>
   </style>
 

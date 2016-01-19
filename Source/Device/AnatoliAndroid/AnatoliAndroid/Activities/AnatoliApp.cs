@@ -398,7 +398,8 @@ namespace AnatoliAndroid.Activities
                     case DrawerMainItem.DrawerMainItems.Avatar:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _profileFragment = new ProfileFragment();
-                        AnatoliApp.GetInstance().SetFragment<ProfileFragment>(_profileFragment, "profile_fragment");
+                        var tr = _activity.FragmentManager.BeginTransaction();
+                        _profileFragment.Show(tr, "profile_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.Messages:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
