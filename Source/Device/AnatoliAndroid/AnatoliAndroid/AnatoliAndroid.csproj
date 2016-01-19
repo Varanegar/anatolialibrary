@@ -156,7 +156,6 @@
     <Compile Include="Fragments\OrderDetailFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
-    <Compile Include="Fragments\ProgressDialog.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />

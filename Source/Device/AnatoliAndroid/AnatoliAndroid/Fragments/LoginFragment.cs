@@ -75,14 +75,14 @@ namespace AnatoliAndroid.Fragments
                 return;
             }
             _loginButton.Enabled = false;
-            ProgressDialog pDialog = new ProgressDialog();
+            ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
             try
             {
                 pDialog.SetTitle(Resources.GetText(Resource.String.Login));
                 pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
                 pDialog.Show();
                 //var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-                var userModel = await AnatoliUserManager.LoginAsync("AnatoliMobileApp", "Anatoli@App@Vn");
+                var userModel = await AnatoliUserManager.LoginAsync(Configuration.AppMobileAppInfo.UserName, Configuration.AppMobileAppInfo.Password);
                 pDialog.Dismiss();
                 if (userModel.IsValid)
                 {
@@ -90,9 +90,10 @@ namespace AnatoliAndroid.Fragments
                     try
                     {
                         await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                        await AnatoliApp.GetInstance().RefreshCutomerProfile();
                         AnatoliApp.GetInstance().RefreshMenuItems();
+                        OnLoginSuccess();
                         Dismiss();
-                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
                     }
                     catch (Exception ex)
                     {
@@ -131,5 +132,16 @@ namespace AnatoliAndroid.Fragments
             _loginButton.Enabled = true;
 
         }
+
+        void OnLoginSuccess()
+        {
+            if (LoginSuceeded != null)
+            {
+                LoginSuceeded.Invoke();
+            }
+        }
+
+        public event LoginSuccessEventHandler LoginSuceeded;
+        public delegate void LoginSuccessEventHandler();
     }
 }

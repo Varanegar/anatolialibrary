@@ -15,8 +15,8 @@ namespace Anatoli.App.Model
         {
             try
             {
-                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images);
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products");
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await GetListAsync(null, q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

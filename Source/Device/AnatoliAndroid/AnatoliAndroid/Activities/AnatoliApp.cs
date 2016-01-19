@@ -219,6 +219,15 @@ namespace AnatoliAndroid.Activities
 
         void shoppingbarRelativeLayout_Click(object sender, EventArgs e)
         {
+            if (AnatoliApp.GetInstance().AnatoliUser == null)
+            {
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                LoginFragment login = new LoginFragment();
+                var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                login.LoginSuceeded += () => { SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment"); };
+                login.Show(transaction, "login_fragment");
+                return;
+            }
             SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
@@ -355,6 +364,15 @@ namespace AnatoliAndroid.Activities
 
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
+                        if (AnatoliApp.GetInstance().AnatoliUser == null)
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                            LoginFragment login = new LoginFragment();
+                            login.LoginSuceeded += () => { _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment"); };
+                            var tt = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                            login.Show(tt, "login_fragment");
+                            break;
+                        }
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
                         break;
@@ -366,6 +384,7 @@ namespace AnatoliAndroid.Activities
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         var transaction = Activity.FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
+                        loginFragment.LoginSuceeded += () => { _productsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment"); };
                         loginFragment.Show(transaction, "shipping_dialog");
                         break;
                     case DrawerMainItem.DrawerMainItems.MainMenu:
@@ -393,7 +412,7 @@ namespace AnatoliAndroid.Activities
                         break;
                     case DrawerMainItem.DrawerMainItems.Update:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-                        AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
+                        ProgressDialog pDialog = new ProgressDialog(_activity);
                         var g = await SyncDatabase();
                         SetFragment<FirstFragment>(null, "first_fragment)");
                         break;
@@ -457,6 +476,40 @@ namespace AnatoliAndroid.Activities
                 }
 
             }
+        }
+        internal async Task<CustomerViewModel> RefreshCutomerProfile(bool cancelable = false)
+        {
+            if (AnatoliClient.GetInstance().WebClient.IsOnline() && AnatoliApp.GetInstance().AnatoliUser != null)
+            {
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource();
+                if (cancelable)
+                {
+                    pDialog.SetButton("بی خیال", (s, e) => { cancellationTokenSource.Cancel(); });
+                    pDialog.CancelEvent += (s, e) => { cancellationTokenSource.Cancel(); };
+                    pDialog.Show();
+                }
+                try
+                {
+                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser, cancellationTokenSource);
+                    pDialog.Dismiss();
+                    if (c.IsValid)
+                    {
+                        await CustomerManager.SaveCustomerAsync(c);
+                    }
+                    return c;
+                }
+                catch (Exception)
+                {
+                    errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    errDialog.Show();
+                }
+            }
+            return null;
         }
         internal async Task<bool> SyncDatabase()
         {

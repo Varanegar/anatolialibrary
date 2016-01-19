@@ -17,21 +17,41 @@ namespace Anatoli.App.Manager
             //return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
             try
             {
-                var lastUpdateTiem = await SyncManager.GetLastUpdateDateAsync("products");
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products");
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await GetListAsync(null, q);
-                int c = await LocalUpdateAsync(new DeleteCommand("products"));
+                Dictionary<string, ProductModel> items = new Dictionary<string, ProductModel>();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var query = connection.CreateCommand("SELECT * FROM products");
+                    var currentList = query.ExecuteQuery<ProductModel>();
+                    foreach (var item in currentList)
+                    {
+                        items.Add(item.product_id, item);
+                    }
+                }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        InsertCommand command = new InsertCommand("products", new BasicParam("product_id", item.UniqueId.ToUpper()),
+                        if (items.ContainsKey(item.UniqueId))
+                        {
+                            UpdateCommand command = new UpdateCommand("products", new EqFilterParam("product_id", item.UniqueId.ToUpper()),
                             new BasicParam("product_name", item.ProductName),
                             new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
-                        var query = connection.CreateCommand(command.GetCommand());
-                        int t = query.ExecuteNonQuery();
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            InsertCommand command = new InsertCommand("products", new BasicParam("product_id", item.UniqueId.ToUpper()),
+                            new BasicParam("product_name", item.ProductName),
+                            new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
                     }
                     connection.Commit();
                 }

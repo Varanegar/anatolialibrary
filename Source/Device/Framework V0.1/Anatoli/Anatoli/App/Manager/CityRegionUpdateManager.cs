@@ -16,15 +16,10 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                //var lll = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<StoreCalendarViewModel>>(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("cityregion");
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.CityRegionAfter + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.CityRegion + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await GetListAsync(null, q);
-                //var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<CityRegionUpdateModel>>(
-                //    TokenType.AppToken,
-                //Configuration.WebService.CityRegion + "&after=" + lastUpdateTime.ToString()
-                //);
                 Dictionary<string, CityRegionModel> items = new Dictionary<string, CityRegionModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

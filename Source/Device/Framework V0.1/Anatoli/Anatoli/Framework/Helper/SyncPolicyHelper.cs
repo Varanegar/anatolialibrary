@@ -36,6 +36,10 @@ namespace Anatoli.Framework.Helper
 
         public SYNC_POLICY GetModelSyncPolicy(Type modelType)
         {
+            if (modelType == typeof(ProductPriceUpdateModel))
+            {
+                return SYNC_POLICY.OnlineIfConnected;
+            }
             if (modelType == typeof(ItemImageViewModel))
             {
                 return SYNC_POLICY.OnlineIfConnected;

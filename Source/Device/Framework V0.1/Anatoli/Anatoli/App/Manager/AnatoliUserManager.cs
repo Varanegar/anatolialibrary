@@ -27,8 +27,9 @@ namespace Anatoli.App.Manager
                 ParseInstallation installation = ParseInstallation.CurrentInstallation;
                 //await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + Parse);
                 var id = installation.InstallationId;
-                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo + "/GetSample", new Tuple<string, string>("installationId", id.ToString()));
-                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId",id.ToString()));
+#pragma warning disable
+                AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId", id.ToString()));
+#pragma warning restore
             }
             return userModel;
         }

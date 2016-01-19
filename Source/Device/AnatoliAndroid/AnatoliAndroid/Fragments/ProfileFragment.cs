@@ -87,7 +87,7 @@ namespace AnatoliAndroid.Fragments
                     errDialog.Show();
                     return;
                 }
-                ProgressDialog pDialog = new ProgressDialog();
+                ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
                 try
                 {
                     pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
@@ -154,34 +154,10 @@ namespace AnatoliAndroid.Fragments
             _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
             try
             {
-                if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                {
-                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                    ProgressDialog pDialog = new ProgressDialog();
-                    pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                    pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-                    pDialog.Show();
-                    try
-                    {
-                        var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
-                        pDialog.Dismiss();
-                        if (c.IsValid)
-                        {
-                            _customerViewModel = c;
-                            await CustomerManager.SaveCustomerAsync(_customerViewModel);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errDialog.SetMessage(Resource.String.ErrorOccured);
-                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                        errDialog.Show();
-                    }
-                }
-                else if (_customerViewModel == null)
-                {
+                if (_customerViewModel == null)
                     _customerViewModel = await CustomerManager.ReadCustomerAsync();
-                }
+                if (_customerViewModel == null)
+                    _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile(true);
                 if (_customerViewModel != null)
                 {
                     _firstNameEditText.Text = _customerViewModel.FirstName;

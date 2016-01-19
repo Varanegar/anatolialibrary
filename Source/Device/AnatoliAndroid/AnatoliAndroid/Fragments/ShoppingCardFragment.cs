@@ -281,57 +281,10 @@ namespace AnatoliAndroid.Fragments
                 await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
             };
 
-            //var shippingInfo = await ShippingInfoManager.GetDefaultAsync();
-            //if (shippingInfo != null)
-            //{
-            //    _deliveryAddress.Text = shippingInfo.address;
-            //    //_nameTextView.Text = shippingInfo.name;
-            //    //_deliveryTelTextView.Text = shippingInfo.tel;
-            //    _checkoutButton.Enabled = CheckCheckout();
-            //}
-            //else
-            //{
-            //    _checkoutButton.Enabled = CheckCheckout();
-            //}
-
-
-
-            if (AnatoliClient.GetInstance().WebClient.IsOnline())
-            {
-                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                ProgressDialog pDialog = new ProgressDialog();
-                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-                pDialog.Show();
-                try
-                {
-                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
-                    pDialog.Dismiss();
-                    if (c.IsValid)
-                    {
-                        _customerViewModel = c;
-                        await CustomerManager.SaveCustomerAsync(_customerViewModel);
-                    }
-                }
-                catch (Exception)
-                {
-                    pDialog.Dismiss();
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
-                }
-            }
-            else if (_customerViewModel == null)
-            {
-                try
-                {
-                    _customerViewModel = await CustomerManager.ReadCustomerAsync();
-                }
-                catch (Exception)
-                {
-                    
-                }
-            }
+            if (_customerViewModel == null)
+                _customerViewModel = await CustomerManager.ReadCustomerAsync();
+            if (_customerViewModel == null)
+                _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile();
             if (_customerViewModel != null)
             {
                 _deliveryAddress.Text = _customerViewModel.MainStreet;

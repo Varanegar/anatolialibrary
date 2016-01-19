@@ -92,6 +92,12 @@ namespace AnatoliAndroid.Activities
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
+                if (AnatoliApp.GetInstance().AnatoliUser != null)
+                {
+#pragma warning disable
+                    AnatoliApp.GetInstance().RefreshCutomerProfile();
+#pragma warning restore
+                }
             }
             catch (Exception)
             {

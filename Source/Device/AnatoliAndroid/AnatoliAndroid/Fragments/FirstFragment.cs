@@ -42,7 +42,7 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.FirstLayout, container, false);
             _slideShowImageView = view.FindViewById<ImageView>(Resource.Id.slideShowImageView);
             var progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
-            GridView _groupsGridView = view.FindViewById<GridView>(Resource.Id.groupsGridView);
+            _groupsGridView = view.FindViewById<GridView>(Resource.Id.groupsGridView);
             _slideShow = new AnatoliSlideShow(_slideShowImageView, progress);
             //var tl = new OnTouchListener();
             //_slideShowImageView.SetOnTouchListener(tl);
