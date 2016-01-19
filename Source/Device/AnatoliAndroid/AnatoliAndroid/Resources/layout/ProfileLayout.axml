@@ -109,23 +109,23 @@
                         <Spinner
                             android:layout_column="0"
                             android:layout_weight="1"
-                            android:id="@+id/citySpinner"
+                            android:id="@+id/level2Spinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
-                            android:text="@string/City"
+                            android:text="@string/Zone"
                             android:layout_column="1"
-                            android:id="@+id/cityTextView"
+                            android:id="@+id/zoneTextView"
                             local:customFont="Fonts/anatoli.ttf"
                             style="@style/AnatoliTextField" />
                         <Spinner
                             android:layout_column="2"
-                            android:id="@+id/provinceSpinner"
+                            android:id="@+id/level1Spinner"
                             android:layout_weight="1"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
-                            android:text="@string/Province"
+                            android:text="@string/City"
                             android:layout_column="3"
-                            android:id="@+id/provinceTextView"
+                            android:id="@+id/cityTextView"
                             local:customFont="Fonts/anatoli.ttf"
                             style="@style/AnatoliTextField"
                             android:layout_gravity="center_vertical" />
@@ -137,24 +137,24 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_column="0"
                             android:layout_weight="1"
-                            android:id="@+id/districtSpinner"
+                            android:id="@+id/level3Spinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
-                            android:text="@string/District"
+                            android:text="@string/Zone2"
                             android:layout_column="1"
-                            android:id="@+id/districtTextView"
+                            android:id="@+id/zone2TextView"
                             local:customFont="Fonts/anatoli.ttf"
                             style="@style/AnatoliTextField" />
                         <Spinner
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_column="2"
                             android:layout_weight="1"
-                            android:id="@+id/zoneSpinner"
+                            android:id="@+id/level4Spinner"
                             android:layout_gravity="center_vertical" />
                         <AnatoliAndroid.Components.AnatoliTextView
-                            android:text="@string/Zone"
+                            android:text="@string/District"
                             android:layout_column="3"
-                            android:id="@+id/zoneTextView"
+                            android:id="@+id/districtTextView"
                             local:customFont="Fonts/anatoli.ttf"
                             style="@style/AnatoliTextField" />
                     </TableRow>

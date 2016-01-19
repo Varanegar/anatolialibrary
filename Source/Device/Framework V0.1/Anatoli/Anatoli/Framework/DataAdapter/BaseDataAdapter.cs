@@ -13,15 +13,15 @@ namespace Anatoli.Framework.DataAdapter
     public class BaseDataAdapter<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        public List<DataModel> GetList(DBQuery localParameters)
+        public async Task<List<DataModel>> GetListAsync(DBQuery localParameters)
         {
-            return GetList(localParameters, null);
+            return await GetListAsync(localParameters, null);
         }
-        public List<DataModel> GetList(RemoteQuery remoteParameters)
+        public async Task<List<DataModel>> GetListAsync(RemoteQuery remoteParameters)
         {
-            return GetList(null, remoteParameters);
+            return await GetListAsync(null, remoteParameters);
         }
-        public List<DataModel> GetList(DBQuery localParameters, RemoteQuery remoteParameters)
+        public async Task<List<DataModel>> GetListAsync(DBQuery localParameters, RemoteQuery remoteParameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
             if (policy == SYNC_POLICY.ForceOnline && remoteParameters == null)
@@ -34,9 +34,10 @@ namespace Anatoli.Framework.DataAdapter
                 {
                     try
                     {
-                        var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<List<DataModel>>(
+                        var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<DataModel>>(
                             TokenType.AppToken,
                         remoteParameters.WebServiceEndpoint,
+                        remoteParameters.cancellationTokenSource,
                         remoteParameters.Params.ToArray()
                         );
                         return response;
@@ -65,7 +66,7 @@ namespace Anatoli.Framework.DataAdapter
             }
             throw new SyncPolicyHelper.SyncPolicyException();
         }
-        public static DataModel GetItem(DBQuery localParameters, RemoteQuery remoteParameters)
+        public static async Task<DataModel> GetItemAsync(DBQuery localParameters, RemoteQuery remoteParameters)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
             DataModel data = null;
@@ -73,18 +74,18 @@ namespace Anatoli.Framework.DataAdapter
             {
                 if (policy == SYNC_POLICY.ForceOnline)
                 {
-                    data = CloudRead(remoteParameters);
+                    data = await CloudReadAsync(remoteParameters);
                 }
                 else if (policy == SYNC_POLICY.OnlineIfConnected)
                 {
                     if (AnatoliClient.GetInstance().WebClient.IsOnline() && remoteParameters != null)
-                        data = CloudRead(remoteParameters);
+                        data = await CloudReadAsync(remoteParameters);
                     else
-                        data = LocalRead(localParameters);
+                        data = await LocalReadAsync(localParameters);
                 }
                 else if (policy == SYNC_POLICY.Offline)
                 {
-                    data = LocalRead(localParameters);
+                    data = await LocalReadAsync(localParameters);
                 }
                 return data;
             }
@@ -94,7 +95,7 @@ namespace Anatoli.Framework.DataAdapter
             }
         }
 
-        static DataModel LocalRead(DBQuery parameters)
+        static async Task<DataModel> LocalReadAsync(DBQuery parameters)
         {
             try
             {
@@ -115,11 +116,11 @@ namespace Anatoli.Framework.DataAdapter
                 throw;
             }
         }
-        static DataModel CloudRead(RemoteQuery parameters)
+        static async Task<DataModel> CloudReadAsync(RemoteQuery parameters)
         {
             try
             {
-                var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<DataModel>(
+                var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<DataModel>(
                     TokenType.UserToken,
                 parameters.WebServiceEndpoint,
                 parameters.Params.ToArray()
@@ -139,7 +140,7 @@ namespace Anatoli.Framework.DataAdapter
         {
             throw new NotImplementedException();
         }
-        internal static List<DataModel> GetListStatic(DBQuery dbQuery, RemoteQuery remoteQuery)
+        internal static async Task<List<DataModel>> GetListStaticAsync(DBQuery dbQuery, RemoteQuery remoteQuery)
         {
             SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
             if (policy == SYNC_POLICY.ForceOnline && remoteQuery == null)
@@ -152,9 +153,10 @@ namespace Anatoli.Framework.DataAdapter
                 {
                     try
                     {
-                        var response = AnatoliClient.GetInstance().WebClient.SendGetRequest<List<DataModel>>(
+                        var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<DataModel>>(
                             remoteQuery.TokenType,
                         remoteQuery.WebServiceEndpoint,
+                        remoteQuery.cancellationTokenSource,
                         remoteQuery.Params.ToArray()
                         );
                         return response;

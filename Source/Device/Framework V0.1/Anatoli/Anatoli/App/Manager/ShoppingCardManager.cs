@@ -15,7 +15,7 @@ namespace Anatoli.App.Manager
     {
         public static async Task<ProductModel> GetItemAsync(string id)
         {
-            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString()));
+            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString().ToUpper()));
             return await GetItemAsync(query);
         }
         public static async Task<bool> AddProductAsync(string productId, int count)
@@ -66,12 +66,12 @@ namespace Anatoli.App.Manager
             }
             return p;
         }
-        public static List<ProductModel> GetAllItems()
-        {
-            SelectQuery query = new SelectQuery("shopping_card_view");
-            query.Unlimited = true;
-            return GetList(query, null);
-        }
+        //public static List<ProductModel> GetAllItems()
+        //{
+        //    SelectQuery query = new SelectQuery("shopping_card_view");
+        //    query.Unlimited = true;
+        //    return GetList(query, null);
+        //}
         public static async Task<List<ProductModel>> GetAllItemsAsync()
         {
             SelectQuery query = new SelectQuery("shopping_card_view");

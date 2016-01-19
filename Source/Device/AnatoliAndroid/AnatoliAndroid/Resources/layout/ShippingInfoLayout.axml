@@ -104,7 +104,7 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
     android:background="@null" />
-        <TextView
+        <AnatoliAndroid.Components.AnatoliTextView
             android:id="@+id/addressTextView"
             local:customFont="Fonts/anatoli.ttf"
             android:layout_width="wrap_content"
@@ -204,13 +204,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout2">
-      <TextView
+      <AnatoliAndroid.Components.AnatoliTextView
           android:text="ساعت تحویل :"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/textView3"
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
+          local:customFont="Fonts/anatoli.ttf"
           android:minWidth="100dp" />
       <Spinner
           android:layout_width="wrap_content"
@@ -223,10 +224,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout2">
-      <TextView
+      <AnatoliAndroid.Components.AnatoliTextView
           android:text="نحوه ارسال :"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          local:customFont="Fonts/anatoli.ttf"
           android:id="@+id/textView3"
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
