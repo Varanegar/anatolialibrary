@@ -60,7 +60,7 @@ namespace AnatoliAndroid.Fragments
 
         protected override string GetWebServiceUri()
         {
-            return Configuration.WebService.Products.FavoritsView;
+            return "";
         }
     }
 }

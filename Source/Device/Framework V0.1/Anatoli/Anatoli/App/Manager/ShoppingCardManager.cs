@@ -66,12 +66,12 @@ namespace Anatoli.App.Manager
             }
             return p;
         }
-        public static List<ProductModel> GetAllItems()
-        {
-            SelectQuery query = new SelectQuery("shopping_card_view");
-            query.Unlimited = true;
-            return GetList(query, null);
-        }
+        //public static List<ProductModel> GetAllItems()
+        //{
+        //    SelectQuery query = new SelectQuery("shopping_card_view");
+        //    query.Unlimited = true;
+        //    return GetList(query, null);
+        //}
         public static async Task<List<ProductModel>> GetAllItemsAsync()
         {
             SelectQuery query = new SelectQuery("shopping_card_view");

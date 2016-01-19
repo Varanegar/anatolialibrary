@@ -34,9 +34,15 @@ namespace AnatoliAndroid
             if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
                 ParseClient.Initialize(Configuration.parseAppId, Configuration.parseDotNetKey);
-                ParsePush.ParsePushNotificationReceived += ParsePush.DefaultParsePushNotificationReceivedHandler;
+                ParsePush.ParsePushNotificationReceived += ParsePush_ParsePushNotificationReceived;
             }
 
+        }
+
+        void ParsePush_ParsePushNotificationReceived(object sender, ParsePushNotificationEventArgs e)
+        {
+            string s = "";
+            s = e.StringPayload;
         }
     }
 }

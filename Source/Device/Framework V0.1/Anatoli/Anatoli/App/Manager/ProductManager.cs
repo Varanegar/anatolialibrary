@@ -38,7 +38,7 @@ namespace Anatoli.App.Manager
         {
             var dbQuery = new SelectQuery(_productsTbl, new SearchFilterParam("product_name", key));
             dbQuery.Limit = 10000;
-            var listModel = await Task.Run(() => { return GetList(dbQuery, null); });
+            var listModel = await GetListAsync(dbQuery, null);
             if (listModel.Count > 0)
                 return ShowSuggests(listModel, no);
             else

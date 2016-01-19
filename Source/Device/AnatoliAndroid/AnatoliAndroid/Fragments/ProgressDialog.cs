@@ -14,7 +14,7 @@ using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
-    public class ProgressDialog : Dialog
+    public class ProgressDialog : Android.App.ProgressDialog
     {
         public delegate void CancelFunc();
         CancelFunc _cancel;

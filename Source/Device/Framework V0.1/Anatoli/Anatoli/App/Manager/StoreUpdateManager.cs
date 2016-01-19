@@ -12,29 +12,49 @@ namespace Anatoli.App.Manager
 {
     public class StoreUpdateManager : BaseManager<BaseDataAdapter<StoreUpdateModel>, StoreUpdateModel>
     {
-        public static async Task SyncDataBase()
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
-                var list = await GetListAsync(null, new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView));
-                if (list.Count == 0)
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("stores");
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await GetListAsync(null, q);
+                Dictionary<string, StoreDataModel> items = new Dictionary<string, StoreDataModel>();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
-                    throw new Exception("Could not download stores data");
+                    var query = connection.CreateCommand("SELECT * FROM stores");
+                    var currentList = query.ExecuteQuery<StoreDataModel>();
+                    foreach (var item in currentList)
+                    {
+                        items.Add(item.store_id, item);
+                    }
                 }
-                int c = await LocalUpdateAsync(new DeleteCommand("stores"));
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
+                        if (items.ContainsKey(item.UniqueId))
+                        {
+                            UpdateCommand command = new UpdateCommand("stores", new EqFilterParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
                             new BasicParam("store_address", item.address));
-                        var query = connection.CreateCommand(command.GetCommand());
-                        int t = query.ExecuteNonQuery();
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
+                            new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("store_address", item.address));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
                     }
                     connection.Commit();
                 }
+                await SyncManager.SaveUpdateDateAsync("stores");
             }
             catch (Exception e)
             {

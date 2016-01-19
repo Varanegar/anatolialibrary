@@ -58,9 +58,8 @@ namespace AnatoliAndroid.Fragments
             }
             _registerButton.Enabled = false;
             AnatoliUserManager usermanager = new AnatoliUserManager();
-            ProgressDialog dialog = new ProgressDialog();
+            ProgressDialog dialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
             dialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-            dialog.SetCancel(() => { usermanager.CancelRegisterTask(); });
             dialog.Show();
 
             try
@@ -72,7 +71,7 @@ namespace AnatoliAndroid.Fragments
                     alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.SaveSuccess));
                     alertDialog.SetPositiveButton(Resource.String.Ok, async (s, a) =>
                     {
-                        ProgressDialog pDialog = new ProgressDialog();
+                        ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
                         AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                         errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
 

@@ -71,9 +71,11 @@
     <Compile Include="App\Model\Store\OrderItemModel.cs" />
     <Compile Include="App\Model\Store\OrderModel.cs" />
     <Compile Include="App\Model\Store\ProductPriceModel.cs" />
+    <Compile Include="App\Model\Store\ProductPriceUpdateModel.cs" />
     <Compile Include="App\Model\Store\StoreCalendarViewModel.cs" />
     <Compile Include="App\Model\Store\StoreDataModel.cs" />
     <Compile Include="App\Model\Store\StoreUpdateModel.cs" />
+    <Compile Include="App\Model\UpdateTimeModel.cs" />
     <Compile Include="App\SyncManager.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />

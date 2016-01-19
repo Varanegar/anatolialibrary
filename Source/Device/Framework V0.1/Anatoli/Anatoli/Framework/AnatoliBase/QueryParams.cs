@@ -129,6 +129,7 @@ namespace Anatoli.Framework.AnatoliBase
     }
     public class RemoteQuery : Query
     {
+        public System.Threading.CancellationTokenSource cancellationTokenSource;
         public TokenType TokenType { get; private set; }
         public RemoteQuery(TokenType token, string WebServiceEndpoint, params QueryParameter[] options)
         {

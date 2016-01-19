@@ -51,7 +51,7 @@ namespace Anatoli.Framework.Manager
             {
                 _remoteP.Limit = _limit;
             }
-            var list = await Task.Run(() => { return dataAdapter.GetList(_localP, _remoteP); });
+            var list = await Task.Run(() => { return dataAdapter.GetListAsync(_localP, _remoteP); });
             if (_localP != null)
             {
                 _localP.Index += Math.Min(list.Count, _limit);
@@ -62,22 +62,22 @@ namespace Anatoli.Framework.Manager
             }
             return list;
         }
-        public static List<DataModel> GetList(DBQuery dbQuery, RemoteQuery remoteQuery)
-        {
-            if (dbQuery == null && remoteQuery == null)
-            {
-                throw new ArgumentNullException();
-            }
-            var list = BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery);
-            return list;
-        }
+        //public static List<DataModel> GetList(DBQuery dbQuery, RemoteQuery remoteQuery)
+        //{
+        //    if (dbQuery == null && remoteQuery == null)
+        //    {
+        //        throw new ArgumentNullException();
+        //    }
+        //    var list = await BaseDataAdapter<DataModel>.GetListStaticAsync(dbQuery, remoteQuery);
+        //    return list;
+        //}
         public static async Task<List<DataModel>> GetListAsync(DBQuery dbQuery, RemoteQuery remoteQuery)
         {
             if (dbQuery == null && remoteQuery == null)
             {
                 throw new ArgumentNullException();
             }
-            var list = await Task.Run(() => { return BaseDataAdapter<DataModel>.GetListStatic(dbQuery, remoteQuery); });
+            var list = await BaseDataAdapter<DataModel>.GetListStaticAsync(dbQuery, remoteQuery);
             if (list.Count == 0)
                 return new List<DataModel>();
             else
@@ -85,12 +85,12 @@ namespace Anatoli.Framework.Manager
         }
         public static async Task<DataModel> GetItemAsync(DBQuery query)
         {
-            return await Task.Run(() => { return BaseDataAdapter<DataModel>.GetItem(query, null); });
+            return await BaseDataAdapter<DataModel>.GetItemAsync(query, null);
         }
-        public static DataModel GetItem(DBQuery query)
-        {
-            return BaseDataAdapter<DataModel>.GetItem(query, null);
-        }
+        //public static DataModel GetItem(DBQuery query)
+        //{
+        //    return await BaseDataAdapter<DataModel>.GetItemAsync(query, null);
+        //}
         /// <summary>
         /// Runs a query and saves data to the locl sqlite database
         /// </summary>

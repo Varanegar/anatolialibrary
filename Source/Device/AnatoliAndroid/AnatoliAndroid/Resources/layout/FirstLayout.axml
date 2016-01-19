@@ -29,7 +29,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:id="@+id/slideShowImageView"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:layout_margin="15dp"
+                    android:maxWidth="300dp" />
                 <ProgressBar
                     android:id="@+id/progress"
                     android:layout_width="wrap_content"
@@ -46,7 +48,7 @@
             <GridView
                 android:id="@+id/groupsGridView"
                 android:layout_below="@id/imageRelativeLayout"
-                android:layout_height="1600dp"
+                android:layout_height="1300dp"
                 android:layout_width="match_parent"
                 android:numColumns="2"
                 android:stretchMode="columnWidth"
