@@ -188,6 +188,14 @@ namespace ClientApp
         }
         #endregion
 
+        internal static List<ProductGroupViewModel> DownloadProductGroupFromServer(HttpClient client, string servserURI)
+        {
+            var result8 = client.GetAsync(servserURI + "/api/gateway/product/productgroups?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<ProductGroupViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
         internal static List<ProductViewModel> DownloadProductFromServer(HttpClient client, string servserURI)
         {
             var result8 = client.GetAsync(servserURI + "/api/gateway/product/products?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;

@@ -24,6 +24,9 @@ public class ParseExample extends Activity {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "wUAgTsRuLdin0EvsBhPniG40O24i2nEGVFl8R5OI", "tDNoIFE1vzcXkBrxqltx392kqOqAhmUD9q0CZUlY");
         ParseInstallation installInfo = ParseInstallation.getCurrentInstallation();
+        installInfo.addUnique("username", "b3cfc74e-2004-47f5-acd7-a9b6f8811076");
+        installInfo.addUnique("channels","Eigg");
+        installInfo.addUnique("channels","Vn");
         installInfo.saveInBackground();
     }
 

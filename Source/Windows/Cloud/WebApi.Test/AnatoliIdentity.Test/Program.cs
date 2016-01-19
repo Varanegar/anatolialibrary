@@ -1,6 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 using log4net.Repository;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,7 +26,9 @@ namespace ClientApp
             try
             {
 
-                string servserURI = "http://79.175.166.186/";
+                //string servserURI = "http://46.209.104.2:8000/";
+                string servserURI = "http://192.168.201.71:8090/";
+                //string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
                 //string servserURI = "http://localhost/";
                 //string servserURI = "http://192.20.6.6/";
@@ -43,6 +46,17 @@ namespace ClientApp
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+
+                    var requestData = new RequestModel();
+                    requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
+                    string data = new JavaScriptSerializer().Serialize(requestData);
+                    HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var result8 = client.PostAsync(servserURI + "/api/testAuth/setparsinfo", content).Result;
+                    var json8 = result8.Content.ReadAsStringAsync().Result;
+                    var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+                    var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+
+
                     //ProductManagement.DownloadProductRateFromServer(client, servserURI);
 
                     //ImageManagement.UploadCenterPicture(client, servserURI);
@@ -57,16 +71,18 @@ namespace ClientApp
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
                     //StoreManagement.UploadStoreDataToServer(client, servserURI);
                     //ProductManagement.UploadProductToServer(client, servserURI);
+                    
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
                     //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
                     //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
                     //UserManagement.TestUserInfo(client, servserURI);
-                    CustomerManagement.UpdateCustomerFromServer(client, servserURI);
+                    //CustomerManagement.UpdateCustomerFromServer(client, servserURI);
                     //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
-                    IncompleteManagement.GetIncompleteFromServer(client, servserURI);
+                    ProductManagement.DownloadProductGroupFromServer(client, servserURI);
+                    //IncompleteManagement.GetIncompleteFromServer(client, servserURI);
                 }
                 
             }
@@ -99,36 +115,18 @@ namespace ClientApp
         public string Password { get; set; }
 
         public string ConfirmPassword { get; set; }
+
+    }
+
+    public class RequestModel
+    {
+        public string privateOwnerId { get; set; }
+        public string stockId { get; set; }
+        public string userId { get; set; }
+        public string dateAfter { get; set; }
+        public List<string> stockIds { get; set; }
+        public Guid installationId { get; set; }
     }
     #endregion
 }
 
-//var result9 = client.GetAsync(servserURI + "/api/accounts/user/09122073285").Result;
-//var json9 = result9.Content.ReadAsStringAsync().Result;
-
-//CharGroup.GetCharGroupInfo(client);
-
-/*
-var result3 = client.GetAsync(servserURI + "/api/gateway/product/chartypes").Result;
-var json3 = result3.Content.ReadAsStringAsync().Result;
-
-var result4 = client.GetAsync(servserURI + "/api/gateway/product/productlist").Result;
-var json4 = result4.Content.ReadAsStringAsync().Result;
-
-var result5 = client.GetAsync(servserURI + "/api/gateway/product/productgroups").Result;
-var json5 = result5.Content.ReadAsStringAsync().Result;
-
-var result6 = client.GetAsync(servserURI + "/api/gateway/base/region/cityregion").Result;
-var json6 = result6.Content.ReadAsStringAsync().Result;
-
-var result7 = client.GetAsync(servserURI + "/api/gateway/basedata/basevalues").Result;
-var json7 = result7.Content.ReadAsStringAsync().Result;
-
-var result2 = client.GetAsync(servserURI + "/api/gateway/base/manufacture/manufactures").Result;
-var json2 = result2.Content.ReadAsStringAsync().Result;
-
-
-
-var result10 = client.GetAsync(servserURI + "/api/gateway/store/GetStoreLists?appId="+ "CB11335F-6D14-49C9-9798-AD61D02EDBE1").Result;
-var json10 = result9.Content.ReadAsStringAsync().Result;
-*/
