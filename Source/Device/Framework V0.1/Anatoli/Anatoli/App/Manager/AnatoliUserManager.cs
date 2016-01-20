@@ -12,10 +12,6 @@ using PCLCrypto;
 using Anatoli.App.Model;
 namespace Anatoli.App.Manager
 {
-    public class TempResult : Anatoli.Framework.Model.BaseDataModel
-    {
-
-    }
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
@@ -28,7 +24,7 @@ namespace Anatoli.App.Manager
                 //await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + Parse);
                 var id = installation.InstallationId;
 #pragma warning disable
-                AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId", id.ToString()));
+                AnatoliClient.GetInstance().WebClient.SendPostRequestAsync(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId", id.ToString()));
 #pragma warning restore
             }
             return userModel;
