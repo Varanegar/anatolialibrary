@@ -16,6 +16,9 @@ using AnatoliAndroid.Activities;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
 using Anatoli.App.Model.Store;
+using Android.Graphics;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -33,7 +36,9 @@ namespace AnatoliAndroid.Fragments
         Spinner _level2Spinner;
         Spinner _level1Spinner;
         TextView _exitTextView;
+        TextView _fullNametextView;
         Button _saveButton;
+        ImageView _avatarImageView;
         CustomerViewModel _customerViewModel;
         List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
@@ -58,8 +63,14 @@ namespace AnatoliAndroid.Fragments
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
+            _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
+            _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
             _saveButton.UpdateWidth();
+
+            Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+
+
 
             _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
@@ -133,6 +144,7 @@ namespace AnatoliAndroid.Fragments
                         AnatoliApp.GetInstance().AnatoliUser = null;
                         AnatoliApp.GetInstance().RefreshMenuItems();
                         AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
+                        Dismiss();
                     }
 
                 });
@@ -166,6 +178,10 @@ namespace AnatoliAndroid.Fragments
                     _addressEditText.Text = _customerViewModel.MainStreet;
                     _emailEditText.Text = _customerViewModel.Email;
                     _telEditText.Text = _customerViewModel.Mobile;
+                    _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
+                    Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("https://i1.sndcdn.com/avatars-000022878889-l03kpc-large.jpg"); });
+                    Bitmap _bfinal = getRoundedShape(_bimage);
+                    _avatarImageView.SetImageBitmap(_bfinal);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
                     for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
                     {
@@ -266,5 +282,52 @@ namespace AnatoliAndroid.Fragments
 
             }
         }
+
+
+
+
+
+        public Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+            if (!(url == "null"))
+                using (var webClient = new WebClient())
+                {
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
+                }
+
+            System.Console.Out.WriteLine("Return fn");
+            return imageBitmap;
+        }
+
+        public Bitmap getRoundedShape(Bitmap scaleBitmapImage)
+        {
+            int targetWidth = 150;
+            int targetHeight = 150;
+            Bitmap targetBitmap = Bitmap.CreateBitmap(targetWidth,
+                targetHeight, Bitmap.Config.Argb8888);
+
+            Canvas canvas = new Canvas(targetBitmap);
+            Android.Graphics.Path path = new Android.Graphics.Path();
+            path.AddCircle(((float)targetWidth - 1) / 2,
+                ((float)targetHeight - 1) / 2,
+                (Math.Min(((float)targetWidth),
+                    ((float)targetHeight)) / 2),
+                Android.Graphics.Path.Direction.Ccw);
+
+            canvas.ClipPath(path);
+            Bitmap sourceBitmap = scaleBitmapImage;
+            canvas.DrawBitmap(sourceBitmap,
+                new Rect(0, 0, sourceBitmap.Width,
+                    sourceBitmap.Height),
+                new Rect(0, 0, targetWidth, targetHeight), null);
+            return targetBitmap;
+        }
+
+
     }
 }

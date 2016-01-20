@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/AnatoliPage">
+    android:layout_height="match_parent">
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
@@ -45,6 +44,28 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <RelativeLayout
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/avatarRelativeLayout"
+                    android:background="@drawable/blue_background"
+                    android:padding="20dp">
+                    <ImageView
+                        android:src="@android:drawable/ic_menu_gallery"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/avatarImageView"
+                        android:layout_centerInParent="true" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/avatarImageView"
+                        android:id="@+id/fullNametextView"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
                 <AnatoliAndroid.Components.AnatoliEditText
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
