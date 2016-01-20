@@ -28,6 +28,8 @@ namespace AnatoliAndroid.ListAdapters
         TextView _productPriceTextView;
         TextView _bproductNameTextView;
         TextView _favoritsTextView;
+        TextView _removeFromBasketTextView;
+
         ImageView _productIimageView;
         ImageButton _productAddButton;
         ImageView _bproductImageView;
@@ -39,6 +41,8 @@ namespace AnatoliAndroid.ListAdapters
         RelativeLayout _removeAllRelativeLayout;
         RelativeLayout _relativeLayout4;
         LinearLayout _back;
+
+
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -53,6 +57,7 @@ namespace AnatoliAndroid.ListAdapters
             {
                 _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
                 _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
+                _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
                 _bproductNameTextView = view.FindViewById<TextView>(Resource.Id.bproductNameTextView);
                 _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
                 _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
@@ -70,6 +75,7 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                 view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
                 view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
+                view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
                 view.SetTag(Resource.Id.addProductImageView, _productAddButton);
                 view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
                 view.SetTag(Resource.Id.bproductImageView, _bproductImageView);
@@ -87,6 +93,7 @@ namespace AnatoliAndroid.ListAdapters
             {
                 _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
                 _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
+                _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
                 _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
                 _bproductNameTextView = (TextView)view.GetTag(Resource.Id.bproductNameTextView);
                 _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
@@ -152,6 +159,7 @@ namespace AnatoliAndroid.ListAdapters
 
 
             var removeAll = new OnTouchListener();
+            _removeFromBasketTextView.SetOnTouchListener(removeAll);
             _removeAllProductsButton.SetOnTouchListener(removeAll);
             removeAll.Click += async (s, e) =>
             {
@@ -197,6 +205,7 @@ namespace AnatoliAndroid.ListAdapters
 
 
             var _favoritsTouchlistener = new OnTouchListener();
+            _favoritsTextView.SetOnTouchListener(_favoritsTouchlistener);
             _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
             _favoritsTouchlistener.Click += async (s, e) =>
             {
@@ -294,6 +303,7 @@ namespace AnatoliAndroid.ListAdapters
 
             return view;
         }
+
 
         void OnShoppingCardItemRemoved(ProductModel data)
         {

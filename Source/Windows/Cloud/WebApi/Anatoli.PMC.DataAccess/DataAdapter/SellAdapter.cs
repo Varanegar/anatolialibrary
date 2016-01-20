@@ -118,7 +118,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                         DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
                         customer.CustomerId = GeneralCommands.GetId(context, "Customer");
                         customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);
+                        context.Execute(@"update CenterSetting set LogIsActive = 0");
                         customerDataObject.Insert(customer, context);
+                        context.Execute(@"update CenterSetting set LogIsActive = 1");
                         orderInfo.CustomerId = customer.CustomerId;
                         var genScript = context.GetValue<string>(@"EXEC usp_GenData 'Customer','customerid=" + customer.CustomerId + "' ,1,1");
 

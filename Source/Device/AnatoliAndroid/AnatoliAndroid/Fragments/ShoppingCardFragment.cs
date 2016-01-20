@@ -133,23 +133,27 @@ namespace AnatoliAndroid.Fragments
                     lAlert.Show();
                     return;
                 }
-                if (_tomorrow)
+                if (await UpdateShippingInfo())
                 {
-                    AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                    lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
-                    lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
+                    if (_tomorrow)
                     {
+                        AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                        lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
+                        lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
+                        {
+                            await SaveOrder();
+                        });
+                        lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
+                            AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                        });
+                        lAlert.Show();
+                    }
+                    else
                         await SaveOrder();
-                    });
-                    lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
-                    {
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
-                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
-                    });
-                    lAlert.Show();
+
                 }
-                else
-                    await SaveOrder();
 
 
             };
@@ -174,7 +178,7 @@ namespace AnatoliAndroid.Fragments
             _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
 
 
-            var typeOptions = new string[2] { "میام میبرم", "خودتون بیارید" };
+            var typeOptions = new string[2] { "خودتون بیارید", "میام میبرم" };
             _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, typeOptions);
 
             _editAddressImageButton.Click += (s, e) =>
@@ -281,53 +285,8 @@ namespace AnatoliAndroid.Fragments
                 await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
             };
 
-            //var shippingInfo = await ShippingInfoManager.GetDefaultAsync();
-            //if (shippingInfo != null)
-            //{
-            //    _deliveryAddress.Text = shippingInfo.address;
-            //    //_nameTextView.Text = shippingInfo.name;
-            //    //_deliveryTelTextView.Text = shippingInfo.tel;
-            //    _checkoutButton.Enabled = CheckCheckout();
-            //}
-            //else
-            //{
-            //    _checkoutButton.Enabled = CheckCheckout();
-            //}
+            await UpdateShippingInfo();
 
-
-
-            if (AnatoliClient.GetInstance().WebClient.IsOnline())
-            {
-                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                ProgressDialog pDialog = new ProgressDialog();
-                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-                pDialog.Show();
-                try
-                {
-                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
-                    pDialog.Dismiss();
-                    if (c.IsValid)
-                    {
-                        _customerViewModel = c;
-                        await CustomerManager.SaveCustomerAsync(_customerViewModel);
-                    }
-                }
-                catch (Exception)
-                {
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
-                }
-            }
-            else if (_customerViewModel == null)
-            {
-                _customerViewModel = await CustomerManager.ReadCustomerAsync();
-            }
-            if (_customerViewModel != null)
-            {
-                _deliveryAddress.Text = _customerViewModel.MainStreet;
-            }
             _checkoutButton.Enabled = CheckCheckout();
 
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
@@ -336,6 +295,32 @@ namespace AnatoliAndroid.Fragments
 
         }
 
+        async Task<bool> UpdateShippingInfo()
+        {
+            _customerViewModel = await CustomerManager.ReadCustomerAsync();
+            if (_customerViewModel == null)
+                _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile();
+            if (_customerViewModel != null)
+            {
+                _deliveryAddress.Text = _customerViewModel.MainStreet;
+                if (String.IsNullOrEmpty(_customerViewModel.FirstName) || String.IsNullOrEmpty(_customerViewModel.LastName))
+                {
+                    AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    lAlert.SetMessage("لطفا مشخصات خود را کامل کنید");
+                    lAlert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    {
+                        var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                        var profileFragment = new ProfileFragment();
+                        profileFragment.ProfileUpdated += async () => { await UpdateShippingInfo(); };
+                        profileFragment.Show(transaction, "profile_fragment");
+                    });
+                    lAlert.Show();
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
         bool CheckCheckout()
         {
             if (String.IsNullOrWhiteSpace(_deliveryAddress.Text) || String.IsNullOrEmpty(_deliveryAddress.Text) || _listAdapter.Count == 0)

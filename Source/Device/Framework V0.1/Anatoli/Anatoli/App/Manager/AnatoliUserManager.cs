@@ -18,6 +18,15 @@ namespace Anatoli.App.Manager
         {
             await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
             var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
+            if (userModel.IsValid)
+            {
+                ParseInstallation installation = ParseInstallation.CurrentInstallation;
+                //await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + Parse);
+                var id = installation.InstallationId;
+#pragma warning disable
+                AnatoliClient.GetInstance().WebClient.SendPostRequestAsync(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId", id.ToString()));
+#pragma warning restore
+            }
             return userModel;
         }
         public async Task<RegisterResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
@@ -104,6 +113,7 @@ namespace Anatoli.App.Manager
                     {
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.customerInfoFile);
                     }
                     );
                 return true;

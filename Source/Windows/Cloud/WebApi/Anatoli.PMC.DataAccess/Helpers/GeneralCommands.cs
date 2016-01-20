@@ -25,7 +25,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public static int GetId(DataContext context, string tableName)
         {
             if (context == null) context = new DataContext();
-            return context.GetValue<int>("declare @id int EXEC GetId '" + tableName + "' , @Id output  select @id");
+            return context.GetValue<int>("declare @id int EXEC GetId2 '" + tableName + "' , @Id output  select @id");
         }
         public static int GetFiscalYearId(DataContext context)
         {

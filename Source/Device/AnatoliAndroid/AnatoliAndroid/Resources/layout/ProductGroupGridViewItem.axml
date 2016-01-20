@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:layout_width="150dp"
+    android:layout_height="150dp">
+    <ImageView
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:id="@+id/imageView1"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY" />
+    <AnatoliAndroid.Components.AnatoliTextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:layout_alignParentBottom="true"
+        local:customFont="Fonts/anatoli.ttf"
+        android:singleLine="true"
+        android:gravity="center_horizontal"
+        android:background="#CCFFFFFF"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

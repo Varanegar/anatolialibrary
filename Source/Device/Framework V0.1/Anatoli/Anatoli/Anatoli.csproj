@@ -52,10 +52,13 @@
     <Compile Include="App\Manager\StoreManager.cs" />
     <Compile Include="App\Manager\StoreUpdateManager.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
     <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
     <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
+    <Compile Include="App\Model\ItemImageManager.cs" />
+    <Compile Include="App\Model\ItemImageViewModel.cs" />
     <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
     <Compile Include="App\Model\Product\GroupLeftRightModel.cs" />
     <Compile Include="App\Model\Product\ProductFieldModel.cs" />
@@ -69,9 +72,11 @@
     <Compile Include="App\Model\Store\OrderItemModel.cs" />
     <Compile Include="App\Model\Store\OrderModel.cs" />
     <Compile Include="App\Model\Store\ProductPriceModel.cs" />
+    <Compile Include="App\Model\Store\ProductPriceUpdateModel.cs" />
     <Compile Include="App\Model\Store\StoreCalendarViewModel.cs" />
     <Compile Include="App\Model\Store\StoreDataModel.cs" />
     <Compile Include="App\Model\Store\StoreUpdateModel.cs" />
+    <Compile Include="App\Model\UpdateTimeModel.cs" />
     <Compile Include="App\SyncManager.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />

@@ -82,7 +82,7 @@ namespace Anatoli.Business.Parse
         {
             try
             {
-                var installations = await GetInstallations(users);
+                var installations = await GetInstall    ations(users);
 
                 foreach (var installation in installations)
                 {

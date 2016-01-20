@@ -20,6 +20,8 @@ using Android.Views.InputMethods;
 using Anatoli.App;
 using AnatoliAndroid.Components;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.App.Model;
+using System.Threading.Tasks;
 
 namespace AnatoliAndroid.Activities
 {
@@ -217,6 +219,15 @@ namespace AnatoliAndroid.Activities
 
         void shoppingbarRelativeLayout_Click(object sender, EventArgs e)
         {
+            if (AnatoliApp.GetInstance().AnatoliUser == null)
+            {
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                LoginFragment login = new LoginFragment();
+                var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                login.LoginSuceeded += () => { SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment"); };
+                login.Show(transaction, "login_fragment");
+                return;
+            }
             SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
         }
@@ -326,24 +337,42 @@ namespace AnatoliAndroid.Activities
                 switch (selectedItem.ItemId)
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
-                        if (_productsListF != null)
+                        bool go = true;
+                        if ((await Anatoli.App.SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
                         {
-                            _productsListF.ExitSearchMode();
-                            await _productsListF.SetCatId(null);
+                            go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
-                        var temp = CategoryManager.GetFirstLevel();
-                        var categories = new List<DrawerItemType>();
-                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                        categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.AllProducts, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
-                        foreach (var item in temp)
+                        if (go)
                         {
-                            var it = new DrawerPCItem(item.cat_id, item.cat_name);
-                            categories.Add(it);
+                            if (_productsListF != null)
+                            {
+                                _productsListF.ExitSearchMode();
+                                await _productsListF.SetCatId(null);
+                            }
+                            var temp = await CategoryManager.GetFirstLevelAsync();
+                            var categories = new List<DrawerItemType>();
+                            categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
+                            categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.AllProducts, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
+                            foreach (var item in temp)
+                            {
+                                var it = new DrawerPCItem(item.cat_id, item.cat_name);
+                                categories.Add(it);
+                            }
+                            AnatoliApp.GetInstance().RefreshMenuItems(categories);
+                            _productsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                         }
-                        AnatoliApp.GetInstance().RefreshMenuItems(categories);
-                        _productsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
+
                         break;
                     case DrawerMainItem.DrawerMainItems.ShoppingCard:
+                        if (AnatoliApp.GetInstance().AnatoliUser == null)
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                            LoginFragment login = new LoginFragment();
+                            login.LoginSuceeded += () => { _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment"); };
+                            var tt = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                            login.Show(tt, "login_fragment");
+                            break;
+                        }
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _shoppingCardFragment = AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
                         break;
@@ -355,6 +384,7 @@ namespace AnatoliAndroid.Activities
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         var transaction = Activity.FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
+                        loginFragment.LoginSuceeded += () => { _productsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(_productsListF, "products_fragment"); };
                         loginFragment.Show(transaction, "shipping_dialog");
                         break;
                     case DrawerMainItem.DrawerMainItems.MainMenu:
@@ -368,7 +398,8 @@ namespace AnatoliAndroid.Activities
                     case DrawerMainItem.DrawerMainItems.Avatar:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _profileFragment = new ProfileFragment();
-                        AnatoliApp.GetInstance().SetFragment<ProfileFragment>(_profileFragment, "profile_fragment");
+                        var tr = _activity.FragmentManager.BeginTransaction();
+                        _profileFragment.Show(tr, "profile_fragment");
                         break;
                     case DrawerMainItem.DrawerMainItems.Messages:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
@@ -382,60 +413,9 @@ namespace AnatoliAndroid.Activities
                         break;
                     case DrawerMainItem.DrawerMainItems.Update:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-                        AnatoliAndroid.Fragments.ProgressDialog pDialog = new AnatoliAndroid.Fragments.ProgressDialog();
-                        try
-                        {
-                            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
-                            {
-                                Toast.MakeText(_activity, Resource.String.PleaseConnectToInternet, ToastLength.Short).Show();
-                                break;
-                            }
-                            pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                            pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-                            pDialog.Show();
-                            try
-                            {
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
-                                pDialog.SetMessage(" بروز رسانی لیست شهر ها");
-                                pDialog.Show();
-                                await CityRegionUpdateManager.SyncDataBase();
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
-                                pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
-                                await StoreUpdateManager.SyncDataBase();
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
-                                pDialog.SetMessage("بروز رسانی گروه کالاها");
-                                await ProductGroupManager.SyncDataBase();
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
-                                pDialog.SetMessage("بروز رسانی لیست کالاها");
-                                await ProductUpdateManager.SyncDataBase();
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
-                                pDialog.SetMessage("بروز رسانی قیمت ها");
-                                await ProductPriceManager.SyncDataBase();
-                                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
-                                pDialog.SetMessage("آماده سازی برنامه");
-                                await SyncManager.SaveDBVersionAsync();
-                                pDialog.Dismiss();
-                            }
-                            catch (Exception ex)
-                            {
-                                pDialog.Dismiss();
-                                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                                alert.SetMessage(ex.Message);
-                                alert.SetTitle(Resource.String.Error);
-                                alert.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                alert.Show();
-                            }
-                            pDialog.Dismiss();
-                            SetFragment<FirstFragment>(null, "first_fragment)");
-                        }
-                        catch (Exception ex)
-                        {
-                            pDialog.Dismiss();
-                            AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
-                            alert.SetMessage(ex.Message);
-                            alert.SetTitle(Resource.String.Error);
-                            alert.Show();
-                        }
+                        ProgressDialog pDialog = new ProgressDialog(_activity);
+                        var g = await SyncDatabase();
+                        SetFragment<FirstFragment>(null, "first_fragment)");
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
@@ -496,6 +476,101 @@ namespace AnatoliAndroid.Activities
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                 }
 
+            }
+        }
+        internal async Task<CustomerViewModel> RefreshCutomerProfile(bool cancelable = false)
+        {
+            if (AnatoliClient.GetInstance().WebClient.IsOnline() && AnatoliApp.GetInstance().AnatoliUser != null)
+            {
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
+                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource();
+                if (cancelable)
+                {
+                    pDialog.SetButton("بی خیال", (s, e) => { cancellationTokenSource.Cancel(); });
+                    pDialog.CancelEvent += (s, e) => { cancellationTokenSource.Cancel(); };
+                    pDialog.Show();
+                }
+                try
+                {
+                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser, cancellationTokenSource);
+                    pDialog.Dismiss();
+                    if (c.IsValid)
+                    {
+                        await CustomerManager.SaveCustomerAsync(c);
+                    }
+                    return c;
+                }
+                catch (Exception)
+                {
+                    errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    errDialog.Show();
+                }
+            }
+            return null;
+        }
+        internal async Task<bool> SyncDatabase()
+        {
+            Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
+            pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
+            pDialog.SetMessage(" بروز رسانی لیست شهر ها");
+            System.Threading.CancellationTokenSource tokenSource = new System.Threading.CancellationTokenSource();
+            pDialog.CancelEvent += (s, e) => { tokenSource.Cancel(); };
+            pDialog.SetButton("بی خیال", (s, e) =>
+            {
+                tokenSource.Cancel();
+            });
+            pDialog.Show();
+            try
+            {
+                await CityRegionUpdateManager.SyncDataBase(tokenSource);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
+                pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
+                await StoreUpdateManager.SyncDataBase(tokenSource);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
+                pDialog.SetMessage("بروز رسانی گروه کالاها");
+                await ProductGroupManager.SyncDataBase(tokenSource);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
+                pDialog.SetMessage("بروز رسانی لیست کالاها");
+                await ProductUpdateManager.SyncDataBase(tokenSource);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
+                pDialog.SetMessage("بروز رسانی تصاویر");
+                await ItemImageManager.SyncDataBase(tokenSource);
+                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
+                pDialog.SetMessage("بروز رسانی قیمت ها");
+                await ProductPriceManager.SyncDataBase(tokenSource);
+                await SyncManager.SaveDBVersionAsync();
+                pDialog.Dismiss();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                pDialog.Dismiss();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
+                {
+                    alert.SetMessage(Resource.String.PleaseConnectToInternet);
+                    alert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    {
+                        Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
+                        AnatoliApp.GetInstance().Activity.StartActivity(intent);
+                    });
+                }
+                else
+                    alert.SetMessage(Resource.String.ErrorOccured);
+                alert.SetNegativeButton(Resource.String.Cancel, async (s2, e2) =>
+                {
+                    if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+                    {
+                        _activity.Finish();
+                    }
+                });
+                alert.SetTitle(Resource.String.Error);
+                alert.Show();
+                return false;
             }
         }
         internal FragmentType SetFragment<FragmentType>(FragmentType fragment, string tag, Tuple<string, string> parameter) where FragmentType : Android.App.Fragment, new()
