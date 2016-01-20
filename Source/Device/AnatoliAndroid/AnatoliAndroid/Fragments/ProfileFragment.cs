@@ -121,6 +121,8 @@ namespace AnatoliAndroid.Fragments
                         dialog.SetMessage("اطلاعات بروزرسانی شد");
                         dialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                         dialog.Show();
+                        OnProfileUpdated();
+                        Dismiss();
                     }
                     else
                     {
@@ -130,7 +132,7 @@ namespace AnatoliAndroid.Fragments
                         dialog.Show();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
@@ -336,6 +338,14 @@ namespace AnatoliAndroid.Fragments
             return targetBitmap;
         }
 
-
+        void OnProfileUpdated()
+        {
+            if (ProfileUpdated != null)
+            {
+                ProfileUpdated.Invoke();
+            }
+        }
+        public event ProfileUpdatedEventHandler ProfileUpdated;
+        public delegate void ProfileUpdatedEventHandler();
     }
 }

@@ -113,6 +113,7 @@ namespace Anatoli.App.Manager
                     {
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.customerInfoFile);
                     }
                     );
                 return true;
