@@ -65,6 +65,14 @@ namespace AnatoliAndroid.Fragments
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
             _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
+            view.FindViewById<TextView>(Resource.Id.changePassTextView).Click += (s, e) =>
+            {
+                ChangePassFragment fragment = new ChangePassFragment();
+                var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                fragment.Show(transaction, "changepass_fragment");
+                Dismiss();
+            };
+
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
             _saveButton.UpdateWidth();
 
@@ -84,18 +92,18 @@ namespace AnatoliAndroid.Fragments
                 _customerViewModel.RegionLevel2Id = _level2SpinerDataAdapter[_level2Spinner.SelectedItemPosition].group_id;
                 _customerViewModel.RegionLevel3Id = _level3SpinerDataAdapter[_level3Spinner.SelectedItemPosition].group_id;
                 _customerViewModel.RegionLevel4Id = _level4SpinerDataAdapter[_level4Spinner.SelectedItemPosition].group_id;
-                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (!AnatoliClient.GetInstance().WebClient.IsOnline())
                 {
-                    errDialog.SetTitle(Resources.GetText(Resource.String.NetworkAccessFailed));
-                    errDialog.SetMessage(Resources.GetText(Resource.String.PleaseConnectToInternet));
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    dialog.SetTitle(Resources.GetText(Resource.String.NetworkAccessFailed));
+                    dialog.SetMessage(Resources.GetText(Resource.String.PleaseConnectToInternet));
+                    dialog.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
                     {
                         Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
                         AnatoliApp.GetInstance().Activity.StartActivity(intent);
                     });
-                    errDialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
-                    errDialog.Show();
+                    dialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
+                    dialog.Show();
                     return;
                 }
                 ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
@@ -109,26 +117,26 @@ namespace AnatoliAndroid.Fragments
                     if (result.IsValid)
                     {
                         await CustomerManager.SaveCustomerAsync(_customerViewModel);
-                        errDialog.SetTitle("");
-                        errDialog.SetMessage("اطلاعات بروزرسانی شد");
-                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                        errDialog.Show();
+                        dialog.SetTitle("");
+                        dialog.SetMessage("اطلاعات بروزرسانی شد");
+                        dialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                        dialog.Show();
                     }
                     else
                     {
-                        errDialog.SetTitle("خطا");
-                        errDialog.SetMessage(result.ModelStateString);
-                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                        errDialog.Show();
+                        dialog.SetTitle("خطا");
+                        dialog.SetMessage(result.ModelStateString);
+                        dialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                        dialog.Show();
                     }
                 }
                 catch (Exception ex)
                 {
                     pDialog.Dismiss();
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetTitle("خطا");
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
+                    dialog.SetMessage(Resource.String.ErrorOccured);
+                    dialog.SetTitle("خطا");
+                    dialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    dialog.Show();
                 }
             };
             _exitTextView = view.FindViewById<TextView>(Resource.Id.logoutTextView);
