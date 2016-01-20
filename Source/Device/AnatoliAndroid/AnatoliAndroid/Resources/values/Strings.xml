@@ -40,6 +40,8 @@
   <string name="Zone2">ناحیه</string>
   <string name="Save">ثبت</string>
   <string name="Id">کد ملی</string>
+  <string name="Password">کلمه عبور</string>
+  <string name="ChangePassword">تغییر کلمه عبور</string>
   <string name="AreYouSure">آیا اطمینان دارید؟</string>
   <string name="Yes">آره</string>
   <string name="No">بی خیال !</string>

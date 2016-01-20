@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    style="@style/AnatoliDialog">
+    <AnatoliAndroid.Components.AnatoliEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentPassEditText"
+        android:hint="@string/Password"
+        local:customFont="Fonts/anatoli.ttf"
+        android:inputType="textPassword"
+        style="@style/AnatoliTextField"
+        android:singleLine="true"
+        android:imeOptions="actionNext" />
+    <AnatoliAndroid.Components.AnatoliEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordEditText"
+        android:inputType="textPassword"
+        android:hint="کلمه عبور جدید"
+        android:singleLine="true"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliTextField" />
+    <AnatoliAndroid.Components.AnatoliButton
+        android:text="@string/Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveButton"
+        local:customFont="Fonts/anatoli.ttf"
+        style="@style/AnatoliButton.Green"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

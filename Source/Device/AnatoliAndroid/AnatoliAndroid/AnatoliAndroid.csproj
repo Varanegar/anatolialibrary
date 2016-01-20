@@ -150,6 +150,7 @@
     <Compile Include="Fragments\FirstFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
     <Compile Include="Fragments\ListToolsDialog.cs" />
+    <Compile Include="Fragments\ChangePassFragment.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
     <Compile Include="Fragments\NoListToolsDialog.cs" />
     <Compile Include="Fragments\OnTouchListener.cs" />
@@ -272,6 +273,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ProductGroupGridViewItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ChangePassLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -1075,7 +1079,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_porseshopasokh_blue_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\blue_background.xml" />
+    <AndroidResource Include="Resources\drawable\blue4_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\i6.png" />
@@ -1181,6 +1185,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_mylist_orange.2_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\blue2_background.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

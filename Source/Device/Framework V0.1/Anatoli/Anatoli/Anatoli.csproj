@@ -52,6 +52,7 @@
     <Compile Include="App\Manager\StoreManager.cs" />
     <Compile Include="App\Manager\StoreUpdateManager.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
     <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
