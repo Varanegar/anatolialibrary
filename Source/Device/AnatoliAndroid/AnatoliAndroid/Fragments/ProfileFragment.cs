@@ -19,6 +19,8 @@ using Anatoli.App.Model.Store;
 using Android.Graphics;
 using System.Net;
 using System.Threading.Tasks;
+using Android.Provider;
+using Android.Database;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -64,6 +66,26 @@ namespace AnatoliAndroid.Fragments
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
             _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
+
+            _avatarImageView.Click += async (s, e) =>
+            {
+                //Intent intent = new Intent();
+                //intent.SetType("image/*");
+                //intent.SetAction(Intent.ActionGetContent);
+                //AnatoliApp.GetInstance().Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 0);
+                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("http://steezo.com/wp-content/uploads/2012/12/man-in-suit2.jpg"); });
+                System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                _bimage.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                byte[] bitmapData = stream.ToArray();
+                try
+                {
+                    await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId.ToString(), bitmapData);
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            };
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
             view.FindViewById<TextView>(Resource.Id.changePassTextView).Click += (s, e) =>
             {
@@ -163,6 +185,8 @@ namespace AnatoliAndroid.Fragments
             };
             return view;
         }
+       
+        
         public async override void OnStart()
         {
             base.OnStart();
@@ -189,6 +213,7 @@ namespace AnatoliAndroid.Fragments
                     _emailEditText.Text = _customerViewModel.Email;
                     _telEditText.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
+                    //string imgUri = 
                     Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("https://i1.sndcdn.com/avatars-000022878889-l03kpc-large.jpg"); });
                     Bitmap _bfinal = getRoundedShape(_bimage);
                     _avatarImageView.SetImageBitmap(_bfinal);

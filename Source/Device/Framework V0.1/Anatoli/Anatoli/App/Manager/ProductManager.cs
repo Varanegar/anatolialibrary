@@ -26,13 +26,23 @@ namespace Anatoli.App.Manager
         public static async Task<bool> RemoveFavorit(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
-            return await LocalUpdateAsync(dbQuery) > 0 ? true : false;
+            var r = await LocalUpdateAsync(dbQuery) > 0 ? true : false;
+            if (r)
+            {
+                BasketManager.SyncCloudAsync();
+            }
+            return r;
         }
 
         public static async Task<bool> AddToFavorits(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "1"));
-            return await LocalUpdateAsync(dbQuery) > 0 ? true : false;
+            var r = await LocalUpdateAsync(dbQuery) > 0 ? true : false;
+            if (r)
+            {
+                BasketManager.SyncCloudAsync();
+            }
+            return r;
         }
         public static async Task<List<string>> GetSuggests(string key, int no)
         {
@@ -110,6 +120,11 @@ namespace Anatoli.App.Manager
         {
             string imguri = String.Format("http://79.175.166.186/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId);
             return imguri;
+        }
+        public static async Task<List<ProductModel>> GetFavorits()
+        {
+            var dbQuery = new SelectQuery(_productsTbl, new EqFilterParam("favorit", "1"));
+            return await GetListAsync(dbQuery, null);
         }
     }
 }

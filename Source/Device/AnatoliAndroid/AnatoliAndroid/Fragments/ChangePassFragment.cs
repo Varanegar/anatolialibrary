@@ -35,15 +35,22 @@ namespace AnatoliAndroid.Fragments
             _currentPassEditText = view.FindViewById<EditText>(Resource.Id.currentPassEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
-            _saveButton.Click += _saveButton_Click;
+            _saveButton.Click += async (s, e) =>
+            {
+                var result = await AnatoliUserManager.ChangePassword(_currentPassEditText.Text, _passwordEditText.Text);
+                if (result != null)
+                {
+
+                    if (result.IsValid)
+                    {
+                        Console.WriteLine("Pass changed");
+                    }
+                    else
+                        Console.WriteLine(result.ModelStateString);
+                }
+            };
             _saveButton.UpdateWidth();
             return view;
         }
-
-        void _saveButton_Click(object sender, EventArgs e)
-        {
-            //AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ChangePasswordBindingModel>(TokenType.UserToken,)
-        }
-
     }
 }

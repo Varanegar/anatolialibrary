@@ -1,4 +1,5 @@
-﻿using Anatoli.Framework.AnatoliBase;
+﻿using Anatoli.App.Model;
+using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Manager;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.App.Model
+namespace Anatoli.App.Manager
 {
     public class ItemImageManager : BaseManager<BaseDataAdapter<ItemImageViewModel>, ItemImageViewModel>
     {
@@ -16,7 +17,7 @@ namespace Anatoli.App.Model
             try
             {
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("images");
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Images + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.ImageManager.Images + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await GetListAsync(null, q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

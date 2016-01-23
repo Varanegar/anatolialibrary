@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.AnatoliUser
 {
-    class ChangePasswordBindingModel : BaseDataModel
+    public class ChangePasswordBindingModel : BaseDataModel
     {
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }

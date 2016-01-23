@@ -1,12 +1,11 @@
-﻿using Anatoli.App.Manager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
-namespace Anatoli.App
+namespace Anatoli.App.Manager
 {
     public class SyncManager
     {

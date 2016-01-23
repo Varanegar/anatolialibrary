@@ -119,6 +119,8 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Click += async (s, e) =>
             {
+                var store = await StoreManager.GetDefaultAsync();
+                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id);
                 if (AnatoliApp.GetInstance().AnatoliUser == null)
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
