@@ -22,6 +22,7 @@ using AnatoliAndroid.Components;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
 using System.Threading.Tasks;
+using Anatoli.App.Model.Product;
 
 namespace AnatoliAndroid.Activities
 {
@@ -58,7 +59,7 @@ namespace AnatoliAndroid.Activities
                 _shoppingPriceTextView.Visibility = ViewStates.Visible;
             else
                 _shoppingPriceTextView.Visibility = ViewStates.Invisible;
-            _shoppingPriceTextView.Text = _price.ToString() + " تومان";
+            _shoppingPriceTextView.Text = _price.ToCurrency() + " تومان";
         }
         public double GetTotalPrice()
         {

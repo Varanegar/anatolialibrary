@@ -35,18 +35,38 @@ namespace AnatoliAndroid.Fragments
             _currentPassEditText = view.FindViewById<EditText>(Resource.Id.currentPassEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
+            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
             _saveButton.Click += async (s, e) =>
             {
-                var result = await AnatoliUserManager.ChangePassword(_currentPassEditText.Text, _passwordEditText.Text);
-                if (result != null)
+                ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                pDialog.SetMessage("در حال ارسال درخواست");
+                pDialog.Show();
+                try
+                {
+                    var result = await AnatoliUserManager.ChangePassword(_currentPassEditText.Text, _passwordEditText.Text);
+                    pDialog.Dismiss();
+                    if (result != null)
+                    {
+
+                        if (result.IsValid)
+                        {
+                            alert.SetMessage("کلمه عبور با موفقیت تغییر کرد");
+                            alert.Show();
+                        }
+                        else
+                        {
+                            alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
+                            alert.Show();
+                        }
+                    }
+                }
+                catch (Exception)
                 {
 
-                    if (result.IsValid)
-                    {
-                        Console.WriteLine("Pass changed");
-                    }
-                    else
-                        Console.WriteLine(result.ModelStateString);
+                }
+                finally
+                {
+                    pDialog.Dismiss();
                 }
             };
             _saveButton.UpdateWidth();

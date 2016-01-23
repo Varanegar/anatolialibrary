@@ -37,16 +37,16 @@ namespace Anatoli.App.Manager
                                 int t = query.ExecuteNonQuery();
                             }
                         }
-                        if (basket.BasketTypeValueId == BasketViewModel.IncompleteBasketTypeId)
-                        {
-                            foreach (var item in basket.BasketItems)
-                            {
-                                UpdateCommand command = new UpdateCommand("products", new EqFilterParam("product_id", item.ProductId.ToString().ToUpper()),
-                              new BasicParam("count", item.Qty.ToString()));
-                                var query = connection.CreateCommand(command.GetCommand());
-                                int t = query.ExecuteNonQuery();
-                            }
-                        }
+                        //if (basket.BasketTypeValueId == BasketViewModel.IncompleteBasketTypeId)
+                        //{
+                        //    foreach (var item in basket.BasketItems)
+                        //    {
+                        //        UpdateCommand command = new UpdateCommand("products", new EqFilterParam("product_id", item.ProductId.ToString().ToUpper()),
+                        //      new BasicParam("count", item.Qty.ToString()));
+                        //        var query = connection.CreateCommand(command.GetCommand());
+                        //        int t = query.ExecuteNonQuery();
+                        //    }
+                        //}
                         connection.Commit();
                         await SyncManager.SaveUpdateDateAsync("baskets");
                     }

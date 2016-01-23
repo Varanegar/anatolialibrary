@@ -83,7 +83,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             };
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
@@ -105,6 +105,30 @@ namespace AnatoliAndroid.Fragments
             _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
             {
+                if (!IsValidEmail(_emailEditText.Text))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage(Resource.String.PleaseEnterValidEmail);
+                    alert.Show();
+                    return;
+                }
+                if (!IsValidPhoneNumber(_emailEditText.Text))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage(Resource.String.PleaseEnterValidPhone);
+                    alert.Show();
+                    return;
+                }
+                if (String.IsNullOrEmpty(_idEditText.Text) || String.IsNullOrEmpty(_firstNameEditText.Text) || String.IsNullOrEmpty(_lastNameEditText.Text) || String.IsNullOrEmpty(_addressEditText.Text))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage("ورود نام، نام خانوادگی، شماره ملی و آدرس الزامی است");
+                    alert.Show();
+                    return;
+                }
                 _customerViewModel.MainStreet = _addressEditText.Text;
                 _customerViewModel.Email = _emailEditText.Text;
                 _customerViewModel.NationalCode = _idEditText.Text;
@@ -185,8 +209,8 @@ namespace AnatoliAndroid.Fragments
             };
             return view;
         }
-       
-        
+
+
         public async override void OnStart()
         {
             base.OnStart();
@@ -274,7 +298,28 @@ namespace AnatoliAndroid.Fragments
             }
 
         }
-
+        public static bool IsValidEmail(string target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Android.Util.Patterns.EmailAddress.Matcher(target).Matches();
+            }
+        }
+        public static bool IsValidPhoneNumber(string target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Android.Util.Patterns.Phone.Matcher(target).Matches();
+            }
+        }
         async void _level2Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             try
