@@ -36,6 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
+    <Compile Include="App\Manager\BaseTypeManager.cs" />
+    <Compile Include="App\Manager\BasketManager.cs" />
     <Compile Include="App\Manager\CategoryManager.cs" />
     <Compile Include="App\Manager\CityRegionManager.cs" />
     <Compile Include="App\Manager\CityRegionUpdateManager.cs" />
@@ -53,17 +55,21 @@
     <Compile Include="App\Manager\StoreUpdateManager.cs" />
     <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
     <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
+    <Compile Include="App\Model\BaseTypeViewModel.cs" />
+    <Compile Include="App\Model\BaseValueViewModel.cs" />
+    <Compile Include="App\Model\Store\BasketItemViewModel.cs" />
+    <Compile Include="App\Model\Store\BasketViewModel.cs" />
+    <Compile Include="App\Model\Store\IncompletePurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="App\Model\Store\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
     <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
     <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
-    <Compile Include="App\Model\ItemImageManager.cs" />
+    <Compile Include="App\Manager\ItemImageManager.cs" />
     <Compile Include="App\Model\ItemImageViewModel.cs" />
     <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
     <Compile Include="App\Model\Product\GroupLeftRightModel.cs" />
-    <Compile Include="App\Model\Product\ProductFieldModel.cs" />
     <Compile Include="App\Model\Product\ProductGroupModel.cs" />
-    <Compile Include="App\Model\Product\ProductImage.cs" />
     <Compile Include="App\Model\Product\ProductModel.cs" />
     <Compile Include="App\Model\Product\ProductUpdateModel.cs" />
     <Compile Include="App\Model\Store\CityRegionModel.cs" />
@@ -73,11 +79,13 @@
     <Compile Include="App\Model\Store\OrderModel.cs" />
     <Compile Include="App\Model\Store\ProductPriceModel.cs" />
     <Compile Include="App\Model\Store\ProductPriceUpdateModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderViewModel.cs" />
     <Compile Include="App\Model\Store\StoreCalendarViewModel.cs" />
     <Compile Include="App\Model\Store\StoreDataModel.cs" />
     <Compile Include="App\Model\Store\StoreUpdateModel.cs" />
     <Compile Include="App\Model\UpdateTimeModel.cs" />
-    <Compile Include="App\SyncManager.cs" />
+    <Compile Include="App\Manager\SyncManager.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
@@ -98,9 +106,6 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Parse.Android">
-      <HintPath>..\..\..\packages\Parse\Parse.Android\Parse.Android.dll</HintPath>
     </Reference>
     <Reference Include="PCLCrypto">
       <HintPath>..\packages\PCLCrypto.dll</HintPath>

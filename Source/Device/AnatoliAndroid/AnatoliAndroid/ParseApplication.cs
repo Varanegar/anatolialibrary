@@ -17,7 +17,7 @@ using Android.Net;
 namespace AnatoliAndroid
 {
     [Application(Name = "anatoliandroid.ParseApplication")]
-    
+
     public class ParseApplication : Application
     {
         public ParseApplication(IntPtr javaReference, JniHandleOwnership transfer)
@@ -41,8 +41,9 @@ namespace AnatoliAndroid
 
         void ParsePush_ParsePushNotificationReceived(object sender, ParsePushNotificationEventArgs e)
         {
-            string s = "";
-            s = e.StringPayload;
+            var data = e.Payload;
+            var s = e.StringPayload;
+            
         }
     }
 }

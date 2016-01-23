@@ -141,7 +141,7 @@ namespace AnatoliAndroid.ListAdapters
             _productCountTextView.Text = item.count.ToString() + " عدد";
             _productNameTextView.Text = item.product_name;
             _bproductNameTextView.Text = item.product_name;
-            _productPriceTextView.Text = string.Format(" {0} تومان", item.price);
+            _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
 
             if (item.product_name.Equals(_productNameTextView.Text))
             {
@@ -212,7 +212,7 @@ namespace AnatoliAndroid.ListAdapters
                 OnBackClicked(position);
                 if (this[position].IsFavorit)
                 {
-                    if (await ProductManager.RemoveFavorit(this[position].product_id) == true)
+                    if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
                     {
                         this[position].favorit = 0;
                         NotifyDataSetChanged();
@@ -221,7 +221,7 @@ namespace AnatoliAndroid.ListAdapters
                 }
                 else
                 {
-                    if (await ProductManager.AddToFavorits(this[position].product_id) == true)
+                    if (await ProductManager.AddToFavorits(this[position].product_id.ToString()) == true)
                     {
                         this[position].favorit = 1;
                         NotifyDataSetChanged();

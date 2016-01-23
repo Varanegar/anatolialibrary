@@ -45,7 +45,14 @@ namespace AnatoliAndroid.Fragments
         {
             _searchKeyWord = new Tuple<string, string>(key, value);
             SetParameters();
-            _listAdapter.List = await _dataManager.GetNextAsync();
+            try
+            {
+                _listAdapter.List = await _dataManager.GetNextAsync();
+            }
+            catch (Exception)
+            {
+
+            }
             _listAdapter.NotifyDataSetChanged();
         }
         public void ExitSearchMode()
@@ -85,12 +92,19 @@ namespace AnatoliAndroid.Fragments
             if (_firstShow)
             {
                 SetParameters();
-                _listAdapter.List = await _dataManager.GetNextAsync();
-                if (_listAdapter.Count == 0)
+                try
                 {
-                    OnEmptyList();
+                    _listAdapter.List = await _dataManager.GetNextAsync();
+                    if (_listAdapter.Count == 0)
+                    {
+                        OnEmptyList();
+                    }
+                    _listAdapter.NotifyDataSetChanged();
                 }
-                _listAdapter.NotifyDataSetChanged();
+                catch (Exception)
+                {
+
+                }
             }
             _firstShow = false;
         }
@@ -101,9 +115,16 @@ namespace AnatoliAndroid.Fragments
             {
                 if ((_listView.Adapter.Count - 1) <= _listView.LastVisiblePosition)
                 {
-                    var list = await _dataManager.GetNextAsync();
-                    _listAdapter.List.AddRange(list);
-                    _listAdapter.NotifyDataSetChanged();
+                    try
+                    {
+                        var list = await _dataManager.GetNextAsync();
+                        _listAdapter.List.AddRange(list);
+                        _listAdapter.NotifyDataSetChanged();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
             }
         }
@@ -116,7 +137,7 @@ namespace AnatoliAndroid.Fragments
                 parameters.Clear();
                 parameters.Add(p);
             }
-            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters),null);
+            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters), null);
         }
 
         protected abstract List<QueryParameter> CreateQueryParameters();

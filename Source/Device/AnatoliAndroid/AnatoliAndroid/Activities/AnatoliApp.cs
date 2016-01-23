@@ -22,6 +22,7 @@ using AnatoliAndroid.Components;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
 using System.Threading.Tasks;
+using Anatoli.App.Model.Product;
 
 namespace AnatoliAndroid.Activities
 {
@@ -58,7 +59,7 @@ namespace AnatoliAndroid.Activities
                 _shoppingPriceTextView.Visibility = ViewStates.Visible;
             else
                 _shoppingPriceTextView.Visibility = ViewStates.Invisible;
-            _shoppingPriceTextView.Text = _price.ToString() + " تومان";
+            _shoppingPriceTextView.Text = _price.ToCurrency() + " تومان";
         }
         public double GetTotalPrice()
         {
@@ -338,7 +339,7 @@ namespace AnatoliAndroid.Activities
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await Anatoli.App.SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+                        if ((await Anatoli.App.Manager.SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
@@ -355,7 +356,7 @@ namespace AnatoliAndroid.Activities
                             categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.AllProducts, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
                             foreach (var item in temp)
                             {
-                                var it = new DrawerPCItem(item.cat_id, item.cat_name);
+                                var it = new DrawerPCItem(item.cat_id.ToString(), item.cat_name);
                                 categories.Add(it);
                             }
                             AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -454,17 +455,17 @@ namespace AnatoliAndroid.Activities
                     var current = await CategoryManager.GetCategoryInfo(selectedItem.ItemId);
                     if (parent != null)
                     {
-                        categories.Add(new DrawerPCItem(parent.cat_id, parent.cat_name, DrawerPCItem.ItemTypes.Parent));
-                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerPCItem(parent.cat_id.ToString(), parent.cat_name, DrawerPCItem.ItemTypes.Parent));
+                        categories.Add(new DrawerPCItem(current.cat_id.ToString(), current.cat_name, DrawerPCItem.ItemTypes.Leaf));
                     }
                     else
                     {
                         categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.ProductCategries, AnatoliApp.GetResources().GetText(Resource.String.AllProducts)));
-                        categories.Add(new DrawerPCItem(current.cat_id, current.cat_name, DrawerPCItem.ItemTypes.Leaf));
+                        categories.Add(new DrawerPCItem(current.cat_id.ToString(), current.cat_name, DrawerPCItem.ItemTypes.Leaf));
                     }
                     foreach (var item in temp)
                     {
-                        var it = new DrawerPCItem(item.cat_id, item.cat_name);
+                        var it = new DrawerPCItem(item.cat_id.ToString(), item.cat_name);
                         categories.Add(it);
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);
@@ -512,20 +513,33 @@ namespace AnatoliAndroid.Activities
             }
             return null;
         }
+        async Task CancelSync()
+        {
+            if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
+                alert.SetNegativeButton("بی خیال و خروج", (s3, e3) => { _activity.Finish(); });
+                alert.SetPositiveButton("دوباره تلاش کن", async (s3, e3) => { await SyncDatabase(); });
+                alert.Show();
+            }
+        }
         internal async Task<bool> SyncDatabase()
         {
             Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
             pDialog.SetMessage(" بروز رسانی لیست شهر ها");
             System.Threading.CancellationTokenSource tokenSource = new System.Threading.CancellationTokenSource();
-            pDialog.CancelEvent += (s, e) => { tokenSource.Cancel(); };
-            pDialog.SetButton("بی خیال", (s, e) =>
+            pDialog.CancelEvent += async (s, e) => { tokenSource.Cancel(); await CancelSync(); };
+            pDialog.SetButton("بی خیال", async (s, e) =>
             {
                 tokenSource.Cancel();
+                await CancelSync();
             });
             pDialog.Show();
             try
             {
+                await BaseTypeManager.SyncDataBase(tokenSource);
                 await CityRegionUpdateManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
                 pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
@@ -563,10 +577,7 @@ namespace AnatoliAndroid.Activities
                     alert.SetMessage(Resource.String.ErrorOccured);
                 alert.SetNegativeButton(Resource.String.Cancel, async (s2, e2) =>
                 {
-                    if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
-                    {
-                        _activity.Finish();
-                    }
+                    await CancelSync();
                 });
                 alert.SetTitle(Resource.String.Error);
                 alert.Show();

@@ -60,7 +60,7 @@ namespace AnatoliAndroid.Fragments
                     loc.Longitude = langitude;
                     var dist = CalcDistance(_currentLocation, loc);
                     store.distance = dist;
-                    await StoreManager.UpdateDistanceAsync(store.store_id, dist);
+                    await StoreManager.UpdateDistanceAsync(store.store_id.ToString(), dist);
                     _listAdapter.NotifyDataSetChanged();
                 }
             }

@@ -47,6 +47,371 @@
             An event that is raised whenever progress changes are reported.
             </summary>
         </member>
+        <member name="T:System.TypeExtensions">
+             <summary>
+             Unity does not have an API for GetTypeInfo(), instead they expose most of the methods
+             on System.Reflection.TypeInfo on the type itself. This poses a problem for compatibility
+             with the rest of the C# world, as we expect the result of GetTypeInfo() to be an actual TypeInfo,
+             as well as be able to be converted back to a type using AsType().
+            
+             This class simply implements some of the simple missing methods on Type to make it as API-compatible
+             as possible to TypeInfo.
+             </summary>
+        </member>
+        <member name="T:System.AggregateException">
+            <summary>
+            Aggregates Exceptions that may be thrown in the process of a task's execution.
+            </summary>
+        </member>
+        <member name="M:System.AggregateException.#ctor(System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>
+            Creates a new AggregateException from a collection of exceptions.
+            </summary>
+            <param name="innerExceptions">The inner exceptions.</param>
+        </member>
+        <member name="M:System.AggregateException.Flatten">
+            <summary>
+            Flattens any nested AggregateExceptions into a single AggregateException
+            whose InnerExceptions include the Exceptions of its children.
+            </summary>
+            <returns>A new AggregateException with no inner AggregateExceptions.</returns>
+        </member>
+        <member name="M:System.AggregateException.ToString">
+            <summary>
+            Provides a summary of this Exception and all of its InnerExceptions.
+            </summary>
+            <returns>A string representation of this AggregateException.</returns>
+        </member>
+        <member name="P:System.AggregateException.InnerExceptions">
+            <summary>
+            Gets the exceptions that caused this AggregateException to be raised.
+            </summary>
+        </member>
+        <member name="T:System.Threading.CancellationToken">
+            <summary>
+            A token that can be used for cancellation of an asynchronous operation.
+            </summary>
+        </member>
+        <member name="M:System.Threading.CancellationToken.Register(System.Action)">
+            <summary>
+            Registers a callback to be invoked when this CancellationToken is cancelled.
+            </summary>
+            <param name="callback">The action to be invoked.</param>
+            <returns>A registration object that can be used to deregister the callback.</returns>
+        </member>
+        <member name="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+            <summary>
+            Throws an OperationCanceledException if the token has been cancelled.
+            </summary>
+        </member>
+        <member name="P:System.Threading.CancellationToken.None">
+            <summary>
+            Gets an empty CancellationToken that cannot be cancelled.
+            </summary>
+        </member>
+        <member name="P:System.Threading.CancellationToken.IsCancellationRequested">
+            <summary>
+            Gets whether cancellation has been requested for this token.
+            </summary>
+        </member>
+        <member name="T:System.Threading.CancellationTokenRegistration">
+            <summary>
+            Represents a registration of a handler with a cancellation token, and can be used to
+            unregister that handler.
+            </summary>
+        </member>
+        <member name="M:System.Threading.CancellationTokenRegistration.Dispose">
+            <summary>
+            Unregisters the handler associated with this registration.
+            </summary>
+        </member>
+        <member name="T:System.Threading.CancellationTokenSource">
+            <summary>
+            A provider for <see cref="T:System.Threading.CancellationToken"/>s. Use the CancellationTokenSource to
+            notify consumers of its token that they should cancel any ongoing operations.
+            </summary>
+        </member>
+        <member name="M:System.Threading.CancellationTokenSource.Cancel">
+            <summary>
+            Notifies consumers of the token that cancellation was requested.
+            </summary>
+        </member>
+        <member name="M:System.Threading.CancellationTokenSource.Cancel(System.Boolean)">
+            <summary>
+            Notifies consumers of the token that cancellation was requested.
+            If <paramref name="throwOnFirstException"/> is true, any exception thrown by a
+            handler of the cancellation request will cause processing of the cancellation
+            to halt and the exception will propagate immediately to the caller.
+            </summary>
+            <param name="throwOnFirstException">Whether to throw on first exception.</param>
+        </member>
+        <member name="P:System.Threading.CancellationTokenSource.Token">
+            <summary>
+            Gets a cancellation token linked to this CancellationTokenSource.
+            </summary>
+        </member>
+        <member name="T:System.Threading.Tasks.Task">
+            <summary>
+            Represents an asynchronous task.
+            </summary>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.Wait">
+            <summary>
+            Blocks until the task is complete.
+            </summary>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.ContinueWith``1(System.Func{System.Threading.Tasks.Task,``0})">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <typeparam name="T">The type returned by the continuation.</typeparam>
+            <param name="continuation">The continuation to run after the task completes.
+            The function takes the completed task as an argument and can return a value.</param>
+            <returns>A new Task that returns the value returned by the continuation after both
+            the task and the continuation are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.ContinueWith``1(System.Func{System.Threading.Tasks.Task,``0},System.Threading.CancellationToken)">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <typeparam name="T">The type returned by the continuation.</typeparam>
+            <param name="continuation">The continuation to run after the task completes.
+            The function takes the completed task as an argument and can return a value.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A new Task that returns the value returned by the continuation after both
+            the task and the continuation are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.ContinueWith(System.Action{System.Threading.Tasks.Task})">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <param name="continuation">The continuation to run after the task completes.
+            The function takes the completed task as an argument.</param>
+            <returns>A new Task that is complete after both the task and the continuation are
+            complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.ContinueWith(System.Action{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <param name="continuation">The continuation to run after the task completes.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A new Task that is complete after both the task and the continuation are
+            complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.WhenAll(System.Threading.Tasks.Task[])">
+            <summary>
+            Creates a task that is complete when all of the provided tasks are complete.
+            If any of the tasks has an exception, all exceptions raised in the tasks will
+            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
+            the returned task will be cancelled.
+            </summary>
+            <param name="tasks">The tasks to aggregate.</param>
+            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.WhenAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task})">
+            <summary>
+            Creates a task that is complete when all of the provided tasks are complete.
+            If any of the tasks has an exception, all exceptions raised in the tasks will
+            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
+            the returned task will be cancelled.
+            </summary>
+            <param name="tasks">The tasks to aggregate.</param>
+            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.WhenAll``1(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Creates a task that is complete when all of the provided tasks are complete.
+            If any of the tasks has an exception, all exceptions raised in the tasks will
+            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
+            the returned task will be cancelled. If all of the tasks succeed, the result of the
+            returned task will be an array containing the results of all of the input tasks.
+            </summary>
+            <typeparam name="T">The result type of the tasks.</typeparam>
+            <param name="tasks">The tasks to aggregate.</param>
+            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.FromResult``1(``0)">
+            <summary>
+            Creates a new, completed task for the given result.
+            </summary>
+            <typeparam name="T">The result type of the task.</typeparam>
+            <param name="result"></param>
+            <returns>A completed task.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.Run``1(System.Func{``0})">
+            <summary>
+            Executes a function asynchronously, returning a task that represents the operation.
+            </summary>
+            <typeparam name="T">The return type of the task.</typeparam>
+            <param name="toRun">The function to run.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.Run(System.Action)">
+            <summary>
+            Executes an action asynchronously, returning a task that represents the operation.
+            </summary>
+            <param name="toRun">The action to run.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task.Delay(System.TimeSpan)">
+            <summary>
+            Creates a task that will complete successfully after the given timespan.
+            </summary>
+            <param name="timespan">The amount of time to wait.</param>
+            <returns>A new task.</returns>
+        </member>
+        <member name="P:System.Threading.Tasks.Task.Exception">
+            <summary>
+            Gets the exceptions for the task, if there are any. <c>null</c> otherwise.
+            </summary>
+        </member>
+        <member name="P:System.Threading.Tasks.Task.IsCanceled">
+            <summary>
+            Gets whether the task was cancelled.
+            </summary>
+        </member>
+        <member name="P:System.Threading.Tasks.Task.IsCompleted">
+            <summary>
+            Gets whether the task has been completed with either an exception,
+            cancellation, or a result.
+            </summary>
+        </member>
+        <member name="P:System.Threading.Tasks.Task.IsFaulted">
+            <summary>
+            Gets whether the task failed.
+            </summary>
+        </member>
+        <member name="T:System.Threading.Tasks.Task`1">
+            <summary>
+            Represents an asynchronous task that has a result.
+            </summary>
+            <typeparam name="T">The type of the task's result.</typeparam>
+        </member>
+        <member name="M:System.Threading.Tasks.Task`1.ContinueWith(System.Action{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <param name="continuation">The continuation to run after the task completes.
+            The function takes the completed task as an argument.</param>
+            <returns>A new Task that is complete after both the task and the continuation are
+            complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.Task`1.ContinueWith``1(System.Func{System.Threading.Tasks.Task{`0},``0})">
+            <summary>
+            Registers a continuation for the task that will run when the task is complete.
+            </summary>
+            <typeparam name="TResult">The type returned by the continuation.</typeparam>
+            <param name="continuation">The continuation to run after the task completes.
+            The function takes the completed task as an argument and can return a value.</param>
+            <returns>A new Task that returns the value returned by the continuation after both
+            the task and the continuation are complete.</returns>
+        </member>
+        <member name="P:System.Threading.Tasks.Task`1.Result">
+            <summary>
+            Gets the result of the task. If the task is not complete, this property blocks
+            until the task is complete. If the task has an Exception or was cancelled, this
+            property will rethrow the exception.
+            </summary>
+        </member>
+        <member name="T:System.Threading.Tasks.TaskCompletionSource`1">
+            <summary>
+            Allows safe orchestration of a task's completion, preventing the consumer from prematurely
+            completing the task. Essentially, it represents the producer side of a <see cref="T:System.Threading.Tasks.Task`1"/>,
+            providing access to the consumer side through the <see cref="P:System.Threading.Tasks.TaskCompletionSource`1.Task"/>
+            while isolating the Task's completion mechanisms from the consumer.
+            </summary>
+            <typeparam name="T">The type of the result of the Task being created.</typeparam>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.#ctor">
+            <summary>
+            Constructs a new TaskCompletionSource.
+            </summary>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetResult(`0)">
+            <summary>
+            If the task is not already complete, completes the task by setting the result.
+            </summary>
+            <param name="result">The result for the task.</param>
+            <returns><c>true</c> if the result was set successfully.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetException(System.AggregateException)">
+            <summary>
+            If the task is not already complete, completes the task by setting the exception.
+            </summary>
+            <param name="exception">The exception for the task.</param>
+            <returns><c>true</c> if the exception was set successfully.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetException(System.Exception)">
+            <summary>
+            If the task is not already complete, completes the task by setting the exception.
+            </summary>
+            <param name="exception">The exception for the task.</param>
+            <returns><c>true</c> if the exception was set successfully.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetCanceled">
+            <summary>
+            If the task is not already complete, cancels the task.
+            </summary>
+            <returns><c>true</c> if the task was successfully cancelled.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetResult(`0)">
+            <summary>
+            Completes the task by setting the result. Throws an <see cref="T:System.InvalidOperationException"/>
+            if the task is already complete.
+            </summary>
+            <param name="result">The result for the task.</param>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetException(System.AggregateException)">
+            <summary>
+            Completes the task by setting the exception. Throws an
+            <see cref="T:System.InvalidOperationException"/> if the task is already complete.
+            </summary>
+            <param name="exception">The exception for the task.</param>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetException(System.Exception)">
+            <summary>
+            Completes the task by setting the exception. Throws an
+            <see cref="T:System.InvalidOperationException"/> if the task is already complete.
+            </summary>
+            <param name="exception">The exception for the task.</param>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetCanceled">
+            <summary>
+            Cancels the task. Throws an <see cref="T:System.InvalidOperationException"/> if the task is
+            already complete.
+            </summary>
+        </member>
+        <member name="P:System.Threading.Tasks.TaskCompletionSource`1.Task">
+            <summary>
+            Gets the task associated with this TaskCompletionSource.
+            </summary>
+        </member>
+        <member name="T:System.Threading.Tasks.TaskExtensions">
+            <summary>
+            Provides extension methods for working with <see cref="T:System.Threading.Tasks.Task"/>s.
+            </summary>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskExtensions.Unwrap(System.Threading.Tasks.Task{System.Threading.Tasks.Task})">
+            <summary>
+            Unwraps a nested task, producing a task that is complete when both the outer
+            and inner tasks are complete. This is primarily useful for chaining asynchronous
+            operations together.
+            </summary>
+            <param name="task">The task to unwrap.</param>
+            <returns>A new task that is complete when both the outer and inner tasks
+            are complete.</returns>
+        </member>
+        <member name="M:System.Threading.Tasks.TaskExtensions.Unwrap``1(System.Threading.Tasks.Task{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Unwraps a nested task, producing a task that is complete when both the outer
+            and inner tasks are complete and that has the inner task's result.
+            This is primarily useful for chaining asynchronous operations together.
+            </summary>
+            <param name="task">The task to unwrap.</param>
+            <returns>A new task that is complete when both the outer and inner tasks
+            are complete and that has the inner task's result.</returns>
+        </member>
         <member name="M:Parse.Internal.IParseAuthenticationProvider.AuthenticateAsync(System.Threading.CancellationToken)">
             <summary>
             Authenticates with the service.
@@ -80,6 +445,364 @@
             <summary>
             Parses a uri, looking for a base uri that represents facebook login completion, and then
             converting the query string into a dictionary of key-value pairs. (e.g. access_token)
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IParseCommandRunner.RunCommandAsync(Parse.Internal.ParseCommand,System.IProgress{Parse.ParseUploadProgressEventArgs},System.IProgress{Parse.ParseDownloadProgressEventArgs},System.Threading.CancellationToken)">
+            <summary>
+            Executes <see cref="T:Parse.Internal.ParseCommand"/> and convert the result into Dictionary.
+            </summary>
+            <param name="command">The command to be run.</param>
+            <param name="uploadProgress">Upload progress callback.</param>
+            <param name="downloadProgress">Download progress callback.</param>
+            <param name="cancellationToken">The cancellation token for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Parse.Internal.ParseCommand">
+            <summary>
+            ParseCommand is an <see cref="T:Parse.Internal.HttpRequest"/> with pre-populated
+            headers.
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.HttpRequest">
+            <summary>
+            <code>IHttpRequest</code> is an interface that provides an API to execute HTTP request data.
+            </summary>
+        </member>
+        <member name="P:Parse.Internal.HttpRequest.Data">
+            <summary>
+            Data stream to be uploaded.
+            </summary>
+        </member>
+        <member name="P:Parse.Internal.HttpRequest.Method">
+            <summary>
+            HTTP method. One of <c>DELETE</c>, <c>GET</c>, <c>HEAD</c>, <c>POST</c> or <c>PUT</c>
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IParseConfigController.FetchConfigAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Fetches the config from the server asynchronously.
+            </summary>
+            <returns>The config async.</returns>
+            <param name="sessionToken">Session token.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="P:Parse.Internal.IParseConfigController.CurrentConfigController">
+            <summary>
+            Gets the current config controller.
+            </summary>
+            <value>The current config controller.</value>
+        </member>
+        <member name="M:Parse.Internal.IParseCurrentConfigController.GetCurrentConfigAsync">
+            <summary>
+            Gets the current config async.
+            </summary>
+            <returns>The current config async.</returns>
+        </member>
+        <member name="M:Parse.Internal.IParseCurrentConfigController.SetCurrentConfigAsync(Parse.ParseConfig)">
+            <summary>
+            Sets the current config async.
+            </summary>
+            <returns>The current config async.</returns>
+            <param name="config">Config.</param>
+        </member>
+        <member name="M:Parse.Internal.IParseCurrentConfigController.ClearCurrentConfigAsync">
+            <summary>
+            Clears the current config async.
+            </summary>
+            <returns>The current config async.</returns>
+        </member>
+        <member name="M:Parse.Internal.IParseCurrentConfigController.ClearCurrentConfigInMemoryAsync">
+            <summary>
+            Clears the current config in memory async.
+            </summary>
+            <returns>The current config in memory async.</returns>
+        </member>
+        <member name="T:Parse.Internal.ParseConfigController">
+            <summary>
+            Config controller.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.ParseConfigController.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Parse.Internal.ParseConfigController"/> class.
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.ParseCurrentConfigController">
+            <summary>
+            Parse current config controller.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.ParseCurrentConfigController.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Parse.Internal.ParseCurrentConfigController"/> class.
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.NoObjectsEncoder">
+            <summary>
+            A <see cref="T:Parse.Internal.ParseEncoder"/> that throws an exception if it attempts to encode
+            a <see cref="T:Parse.ParseObject"/>
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.ParseEncoder">
+            <summary>
+            A <c>ParseEncoder</c> can be used to transform objects such as <see cref="T:Parse.ParseObject"/> into JSON
+            data structures.
+            </summary>
+            <seealso cref="T:Parse.Internal.ParseDecoder"/>
+        </member>
+        <member name="T:Parse.Internal.PointerOrLocalIdEncoder">
+            <summary>
+            A <see cref="T:Parse.Internal.ParseEncoder"/> that encode <see cref="T:Parse.ParseObject"/> as pointers. If the object
+            does not have an <see cref="P:Parse.ParseObject.ObjectId"/>, uses a local id.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IHttpClient.ExecuteAsync(Parse.Internal.HttpRequest,System.IProgress{Parse.ParseUploadProgressEventArgs},System.IProgress{Parse.ParseDownloadProgressEventArgs},System.Threading.CancellationToken)">
+            <summary>
+            Executes HTTP request to a <see cref="P:Parse.Internal.HttpRequest.Uri"/> with <see cref="P:Parse.Internal.HttpRequest.Method"/> HTTP verb
+            and <see cref="P:Parse.Internal.HttpRequest.Headers"/>.
+            </summary>
+            <param name="httpRequest">The HTTP request to be executed.</param>
+            <param name="uploadProgress">Upload progress callback.</param>
+            <param name="downloadProgress">Download progress callback.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A task that resolves to Htt</returns>
+        </member>
+        <member name="M:Parse.Internal.HttpClient.GetStatusCode(UnityEngine.WWW)">
+            <summary>
+            Gets the HTTP status code from finished <code>WWW</code> request.
+            </summary>
+            <param name="www">The WWW object.</param>
+            <returns>Returns 201 if there's no error. Otherwise, returns error status code.</returns>
+        </member>
+        <member name="M:Parse.Internal.HttpClient.GenerateWWWInstance(System.String,System.Byte[],System.Collections.Hashtable)">
+            <summary>
+            Unity changes its WWW constructor at 4.5.x from using <see cref="T:System.Collections.Hashtable"/> to using
+            <see cref="T:System.Collections.Generic.Dictionary`2"/>. We need to explicitly handle that. This method
+            generates a valid WWW instance depending on the newest WWW constructor
+            provided by used UnityEngine assembly
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IInstallationIdController.Set(System.Nullable{System.Guid})">
+            <summary>
+            Sets current <code>installationId</code> and saves it to local storage.
+            </summary>
+            <param name="installationId">The <code>installationId</code> to be saved.</param>
+        </member>
+        <member name="M:Parse.Internal.IInstallationIdController.Get">
+            <summary>
+            Gets current <code>installationId</code> from local storage. Generates a none exists.
+            </summary>
+            <returns>Current <code>installationId</code>.</returns>
+        </member>
+        <member name="M:Parse.Internal.IInstallationIdController.Clear">
+            <summary>
+            Clears current installationId from memory and local storage.
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.IParseObjectCurrentController`1">
+            <summary>
+            <code>IParseObjectCurrentController</code> controls the single-instance <see cref="T:Parse.ParseObject"/>
+            persistence used throughout the code-base. Sample usages are <see cref="P:Parse.ParseUser.CurrentUser"/> and
+            <see cref="P:Parse.ParseInstallation.CurrentInstallation"/>.
+            </summary>
+            <typeparam name="T">Type of object being persisted.</typeparam>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.SetAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Persists current <see cref="T:Parse.ParseObject"/>.
+            </summary>
+            <param name="obj"><see cref="T:Parse.ParseObject"/> to be persisted.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.GetAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the persisted current <see cref="T:Parse.ParseObject"/>.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.ExistsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Returns a <see cref="T:System.Threading.Tasks.Task"/> that resolves to <code>true</code> if current
+            <see cref="T:Parse.ParseObject"/> exists.
+            </summary>
+            <param name="cancellationToken">The cancellation token.</param>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.IsCurrent(`0)">
+            <summary>
+            Returns <code>true</code> if the given <see cref="T:Parse.ParseObject"/> is the persisted current
+            <see cref="T:Parse.ParseObject"/>.
+            </summary>
+            <param name="obj">The object to check.</param>
+            <returns>True if <code>obj</code> is the current persisted <see cref="T:Parse.ParseObject"/>.</returns>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.ClearFromMemory">
+            <summary>
+            Nullifies the current <see cref="T:Parse.ParseObject"/> from memory.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IParseObjectCurrentController`1.ClearFromDisk">
+            <summary>
+            Clears current <see cref="T:Parse.ParseObject"/> from disk.
+            </summary>
+        </member>
+        <member name="T:Parse.Internal.IParseFieldOperation">
+            <summary>
+            A ParseFieldOperation represents a modification to a value in a ParseObject.
+            For example, setting, deleting, or incrementing a value are all different kinds of
+            ParseFieldOperations. ParseFieldOperations themselves can be considered to be
+            immutable.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IParseFieldOperation.Encode">
+            <summary>
+            Converts the ParseFieldOperation to a data structure that can be converted to JSON and sent to
+            Parse as part of a save operation.
+            </summary>
+            <returns>An object to be JSONified.</returns>
+        </member>
+        <member name="M:Parse.Internal.IParseFieldOperation.MergeWithPrevious(Parse.Internal.IParseFieldOperation)">
+            <summary>
+            Returns a field operation that is composed of a previous operation followed by
+            this operation. This will not mutate either operation. However, it may return
+            <code>this</code> if the current operation is not affected by previous changes.
+            For example:
+              {increment by 2}.MergeWithPrevious({set to 5})       -> {set to 7}
+                    {set to 5}.MergeWithPrevious({increment by 2}) -> {set to 5}
+                   {add "foo"}.MergeWithPrevious({delete})         -> {set to ["foo"]}
+                      {delete}.MergeWithPrevious({add "foo"})      -> {delete}        /// </summary>
+            <param name="previous">The most recent operation on the field, or null if none.</param>
+            <returns>A new ParseFieldOperation or this.</returns>
+        </member>
+        <member name="M:Parse.Internal.IParseFieldOperation.Apply(System.Object,System.String)">
+            <summary>
+            Returns a new estimated value based on a previous value and this operation. This
+            value is not intended to be sent to Parse, but it is used locally on the client to
+            inspect the most likely current value for a field.
+            
+            The key and object are used solely for ParseRelation to be able to construct objects
+            that refer back to their parents.
+            </summary>
+            <param name="oldValue">The previous value for the field.</param>
+            <param name="key">The key that this value is for.</param>
+            <returns>The new value for the field.</returns>
+        </member>
+        <member name="T:Parse.Internal.ParseDeleteOperation">
+            <summary>
+            An operation where a field is deleted from the object.
+            </summary>
+        </member>
+        <member name="M:Parse.Internal.IPlatformHooks.ExecuteParseInstallationSaveHookAsync(Parse.ParseInstallation)">
+            <summary>
+            Executes platform specific hook that mutate the installation based on
+            the device platforms.
+            </summary>
+            <param name="installation">Installation to be mutated.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Parse.Internal.IPlatformHooks.ApplicationSettings">
+            <summary>
+            A thread-safe dictionary that persists key-value pair objects to disk.
+            </summary>
+        </member>
+        <member name="M:Parse.PlatformHooks.CallStaticJavaUnityMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a static method under Unity Java plugin with reflection.
+            </summary>
+            <remarks>
+            Warning: Unity Android only.
+            
+            Basically what we want to do:
+            <code>
+            AndroidJavaClass javaUnityHelper = new AndroidJavaClass(className);
+            javaUnityHelper.CallStatic(methodName, parameters);
+            But we can't because <c>AndroidJavaClass</c> is not cross-platform. It won't compile on iOS.
+            </code>
+            </remarks>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+        </member>
+        <member name="M:Parse.PlatformHooks.CreateWrapperTypes">
+            <summary>
+            Exists to ensure that generic types are AOT-compiled for the conversions we support.
+            Any new value types that we add support for will need to be registered here.
+            The method itself is never called, but by virtue of the Preserve attribute being set
+            on the PlatformHooks class, these types will be AOT-compiled.
+            </summary>
+        </member>
+        <member name="M:Parse.PlatformHooks.RegisterNetworkRequest(UnityEngine.WWW,System.Action{UnityEngine.WWW})">
+            <summary>
+            Registers a callback for network requests, running the callback on the main thread until
+            the network request is complete.
+            </summary>
+        </member>
+        <member name="M:Parse.PlatformHooks.RegisterDeviceTokenRequest(System.Action{System.Byte[]})">
+            <summary>
+            Warning: iOS only. Registers a callback for device token request.
+            </summary>
+            <param name="action">Action to be completed when device token is received.</param>
+        </member>
+        <member name="M:Parse.PlatformHooks.RegisteriOSPushNotificationListener(System.Action{System.Collections.Generic.IDictionary{System.String,System.Object}})">
+            <summary>
+            Warning: iOS only. Registers a callback for push notification.
+            </summary>
+            <param name="action">Action to be completed when push notification is received.</param>
+        </member>
+        <member name="M:Parse.PlatformHooks.RunOnMainThread(System.Action)">
+            <summary>
+            Runs things inside of a Unity coroutine (some APIs require that you
+            access them from the main thread).
+            </summary>
+        </member>
+        <member name="M:Parse.PlatformHooks.RunDispatcher">
+            <summary>
+            Returns an enumerator (for use in a coroutine) that runs actions that have been dispatched.
+            </summary>
+        </member>
+        <member name="M:Parse.PlatformHooks.Initialize">
+            <summary>
+            Initialize the app. Called from <see cref="M:Parse.ParseClient.Initialize(System.String,System.String)"/>. Guaranteed to be run on main thread.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsCompiledByIL2CPP">
+            <summary>
+            Returns true if current running platform is run from a project generated by IL2CPP compiler.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsWebPlayer">
+            <summary>
+            Returns true if current running platform is a web player.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsAndroid">
+            <summary>
+            Returns true if current running platform is Android.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsIOS">
+            <summary>
+            Returns true if current running platform is iPhone or iPad. 
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsTvOS">
+            <summary>
+            Returns true if the current platform is tvOS.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.IsWindowsPhone8">
+            <summary>
+            Returns true if current running platform is Windows Phone 8.
+            </summary>
+        </member>
+        <member name="P:Parse.PlatformHooks.ApplicationSettings">
+            <summary>
+            Provides a dictionary that gets persisted on the filesystem between runs of the app.
+            This is analogous to NSUserDefaults in iOS.
+            </summary>
+        </member>
+        <member name="T:Parse.PlatformHooks.SettingsWrapper">
+            <summary>
+            Wraps the custom settings object for Parse so that it can be exposed as ApplicationSettings.
             </summary>
         </member>
         <member name="T:Parse.Internal.FlexibleDictionaryWrapper`2">
@@ -117,25 +840,6 @@
             Converts the object to a data structure that can be converted to JSON.
             </summary>
             <returns>An object to be JSONified.</returns>
-        </member>
-        <member name="T:Parse.Internal.IHttpRequest">
-            <summary>
-            <code>IHttpRequest</code> is an interface that provides an API to execute HTTP request data.
-            </summary>
-        </member>
-        <member name="M:Parse.Internal.IHttpRequest.ExecuteAsync(System.IProgress{Parse.ParseUploadProgressEventArgs},System.IProgress{Parse.ParseDownloadProgressEventArgs},System.Threading.CancellationToken)">
-            <summary>
-            Executes HTTP request to a <see cref="P:Parse.Internal.IHttpRequest.Uri"/> with <see cref="P:Parse.Internal.IHttpRequest.Method"/> HTTP verb and <see cref="P:Parse.Internal.IHttpRequest.Headers"/>.
-            </summary>
-            <param name="uploadProgress">Upload progress callback.</param>
-            <param name="downloadProgress">Download progress callback.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>A task that resolves to Htt</returns>
-        </member>
-        <member name="P:Parse.Internal.IHttpRequest.Method">
-            <summary>
-            HTTP method. One of <c>DELETE</c>, <c>GET</c>, <c>HEAD</c>, <c>POST</c> or <c>PUT</c>
-            </summary>
         </member>
         <member name="T:Parse.Internal.InternalExtensions">
             <summary>
@@ -183,58 +887,6 @@
             <param name="partial"></param>
             <returns></returns>
         </member>
-        <member name="T:Parse.Internal.IParseFieldOperation">
-            <summary>
-            A ParseFieldOperation represents a modification to a value in a ParseObject.
-            For example, setting, deleting, or incrementing a value are all different kinds of
-            ParseFieldOperations. ParseFieldOperations themselves can be considered to be
-            immutable.
-            </summary>
-        </member>
-        <member name="M:Parse.Internal.IParseFieldOperation.Encode">
-            <summary>
-            Converts the ParseFieldOperation to a data structure that can be converted to JSON and sent to
-            Parse as part of a save operation.
-            </summary>
-            <returns>An object to be JSONified.</returns>
-        </member>
-        <member name="M:Parse.Internal.IParseFieldOperation.MergeWithPrevious(Parse.Internal.IParseFieldOperation)">
-            <summary>
-            Returns a field operation that is composed of a previous operation followed by
-            this operation. This will not mutate either operation. However, it may return
-            <code>this</code> if the current operation is not affected by previous changes.
-            For example:
-              {increment by 2}.MergeWithPrevious({set to 5})       -> {set to 7}
-                    {set to 5}.MergeWithPrevious({increment by 2}) -> {set to 5}
-                   {add "foo"}.MergeWithPrevious({delete})         -> {set to ["foo"]}
-                      {delete}.MergeWithPrevious({add "foo"})      -> {delete}        /// </summary>
-            <param name="previous">The most recent operation on the field, or null if none.</param>
-            <returns>A new ParseFieldOperation or this.</returns>
-        </member>
-        <member name="M:Parse.Internal.IParseFieldOperation.Apply(System.Object,Parse.ParseObject,System.String)">
-            <summary>
-            Returns a new estimated value based on a previous value and this operation. This
-            value is not intended to be sent to Parse, but it is used locally on the client to
-            inspect the most likely current value for a field.
-            
-            The key and object are used solely for ParseRelation to be able to construct objects
-            that refer back to their parents.
-            </summary>
-            <param name="oldValue">The previous value for the field.</param>
-            <param name="obj">The object that contains this value.</param>
-            <param name="key">The key that this value is for.</param>
-            <returns>The new value for the field.</returns>
-        </member>
-        <member name="M:Parse.Internal.IPlatformHooks.GetHttpRequest(System.Uri,System.String,System.IO.Stream,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.String,System.String}})">
-            <summary>
-            Construct a platform specific <see cref="T:Parse.Internal.IHttpRequest"/> with custom <see cref="M:Parse.Internal.IHttpRequest.ExecuteAsync(System.IProgress{Parse.ParseUploadProgressEventArgs},System.IProgress{Parse.ParseDownloadProgressEventArgs},System.Threading.CancellationToken)"/> implementation.
-            </summary>
-            <param name="uri">The Uri endpoint.</param>
-            <param name="method">The HTTP verb. One of <c>GET</c>, <c>HEAD</c>, <c>POST</c>, <c>PUT</c> or <c>DELETE</c>.</param>
-            <param name="data">Stream of data to be sent.</param>
-            <param name="headers">HTTP headers to be sent.</param>
-            <returns>Platform specific <see cref="T:Parse.Internal.IHttpRequest"/>.</returns>
-        </member>
         <member name="T:Parse.Internal.Json">
             <summary>
             A simple recursive-descent JSON Parser based on the grammar defined at http://www.json.org
@@ -257,14 +909,14 @@
         </member>
         <member name="M:Parse.Internal.Json.Encode(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Encodes a dictionary into a JSON string. Suppots values that are
+            Encodes a dictionary into a JSON string. Supports values that are
             IDictionary&lt;string, object&gt;, IList&lt;object&gt;, strings,
             nulls, and any of the primitive types.
             </summary>
         </member>
         <member name="M:Parse.Internal.Json.Encode(System.Collections.Generic.IList{System.Object})">
             <summary>
-            Encodes a list into a JSON string. Suppots values that are
+            Encodes a list into a JSON string. Supports values that are
             IDictionary&lt;string, object&gt;, IList&lt;object&gt;, strings,
             nulls, and any of the primitive types.
             </summary>
@@ -313,36 +965,12 @@
         </member>
         <member name="M:Parse.Internal.Json.JsonStringParser.Accept(System.Char)">
             <summary>
-            Find the first occurences of a character, consuming part of the string.
+            Find the first occurrences of a character, consuming part of the string.
             </summary>
         </member>
         <member name="M:Parse.Internal.Json.JsonStringParser.Accept(System.Char[])">
             <summary>
-            Find the first occurences of a string, consuming part of the string.
-            </summary>
-        </member>
-        <member name="T:Parse.Internal.NoObjectsEncoder">
-            <summary>
-            A <see cref="T:Parse.Internal.ParseEncoder"/> that throws an exception if it attempts to encode
-            a <see cref="T:Parse.ParseObject"/>
-            </summary>
-        </member>
-        <member name="T:Parse.Internal.ParseEncoder">
-            <summary>
-            A <c>ParseEncoder</c> can be used to transform objects such as <see cref="T:Parse.ParseObject"/> into JSON
-            data structures.
-            </summary>
-            <seealso cref="T:Parse.Internal.ParseDecoder"/>
-        </member>
-        <member name="T:Parse.Internal.ParseDeleteOperation">
-            <summary>
-            An operation where a field is deleted from the object.
-            </summary>
-        </member>
-        <member name="T:Parse.Internal.PointerOrLocalIdEncoder">
-            <summary>
-            A <see cref="T:Parse.Internal.ParseEncoder"/> that encode <see cref="T:Parse.ParseObject"/> as pointers. If the object
-            does not have an <see cref="P:Parse.ParseObject.ObjectId"/>, uses a local id.
+            Find the first occurrences of a string, consuming part of the string.
             </summary>
         </member>
         <member name="M:Parse.Internal.ReflectionHelpers.FindConstructor(System.Type,System.Type[])">
@@ -559,83 +1187,6 @@
             Gets or sets whether the public is allowed to write this object.
             </summary>
         </member>
-        <member name="T:Parse.ParseAnalytics">
-            <summary>
-            Provides an interface to Parse's logging and analytics backend.
-            
-            Methods will return immediately and cache requests (along with timestamps)
-            to be handled in the background. 
-            </summary>
-        </member>
-        <member name="M:Parse.ParseAnalytics.TrackAppOpenedAsync">
-            <summary>
-            Tracks this application being launched.
-            </summary>
-            <returns>An Async Task that can be waited on or ignored.</returns>
-        </member>
-        <member name="M:Parse.ParseAnalytics.TrackEventAsync(System.String)">
-             <summary>
-             Tracks the occurrence of a custom event with additional dimensions.
-             Parse will store a data point at the time of invocation with the
-             given event name.
-            
-             Dimensions will allow segmentation of the occurrences of this
-             custom event.
-            
-             To track a user signup along with additional metadata, consider the
-             following:
-             <code>
-             IDictionary&lt;string, string&gt; dims = new Dictionary&lt;string, string&gt; {
-               { "gender", "m" },
-               { "source", "web" },
-               { "dayType", "weekend" }
-             };
-             ParseAnalytics.TrackEventAsync("signup", dims);
-             </code>
-            
-             There is a default limit of 8 dimensions per event tracked.
-             </summary>
-             <param name="name">The name of the custom event to report to ParseClient
-             as having happened.</param>
-             <returns>An Async Task that can be waited on or ignored.</returns>
-        </member>
-        <member name="M:Parse.ParseAnalytics.TrackEventAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
-             <summary>
-             Tracks the occurrence of a custom event with additional dimensions.
-             Parse will store a data point at the time of invocation with the
-             given event name.
-            
-             Dimensions will allow segmentation of the occurrences of this
-             custom event.
-            
-             To track a user signup along with additional metadata, consider the
-             following:
-             <code>
-             IDictionary&lt;string, string&gt; dims = new Dictionary&lt;string, string&gt; {
-               { "gender", "m" },
-               { "source", "web" },
-               { "dayType", "weekend" }
-             };
-             ParseAnalytics.TrackEventAsync("signup", dims);
-             </code>
-            
-             There is a default limit of 8 dimensions per event tracked.
-             </summary>
-             <param name="name">The name of the custom event to report to ParseClient
-             as having happened.</param>
-             <param name="dimensions">The dictionary of information by which to
-             segment this event.</param>
-             <returns>An Async Task that can be waited on or ignored.</returns>
-        </member>
-        <member name="M:Parse.ParseAnalytics.TrackAppOpenedWithPushHashAsync(System.String)">
-            <summary>
-            Private method, used by platform-specific extensions to report an app-open
-            to the server.
-            </summary>
-            <param name="pushHash">An identifying hash for a given push notification,
-            passed down from the server.</param>
-            <returns>An Async Task that can be waited on or ignored.</returns>
-        </member>
         <member name="T:Parse.ParseClassNameAttribute">
             <summary>
             Defines the class name for a subclass of ParseObject.
@@ -670,68 +1221,42 @@
             <param name="dotnetKey">The .NET API Key provided in the Parse dashboard.
             </param>
         </member>
-        <member name="M:Parse.ParseClient.RequestAsync(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:Parse.ParseClient.Initialize(Parse.ParseClient.Configuration)">
             <summary>
-            Convenience alias for RequestAsync that takes a string instead of a Uri.
+            Authenticates this client as belonging to your application. This must be
+            called before your application can use the Parse library. The recommended
+            way is to put a call to <c>ParseFramework.Initialize</c> in your
+            Application startup.
+            </summary>
+            <param name="configuration">The configuration to initialize Parse with.
+            </param>
+        </member>
+        <member name="P:Parse.ParseClient.CurrentConfiguration">
+            <summary>
+            The current configuration that parse has been initialized with.
             </summary>
         </member>
-        <member name="M:Parse.ParseClient.RequestAsync(System.String,System.Uri,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="T:Parse.ParseClient.Configuration">
             <summary>
-            The main mechanism for making requests to Parse. Attaches headers related to
-            the SDK, session token, etc., then JSON-parses the result of the request and throws
-            a ParseException if necessary.
-            </summary>
-            <param name="method">The HTTP method to use.</param>
-            <param name="relativeUri">A relative URI for the API.</param>
-            <param name="cancellationToken">The session token for the request.</param>
-            <param name="data">A JSON-style data object that will be stringified
-            for the request body.</param>
-            <param name="sessionToken">The cancellation token for the request.</param>
-            <returns>A tuple indicating the HTTP status code and the JSON data
-            returned by the request.</returns>
-        </member>
-        <member name="M:Parse.ParseClient.UploadAsync(System.Uri,System.String,System.String,System.IO.Stream,System.IProgress{Parse.ParseUploadProgressEventArgs},System.Threading.CancellationToken)">
-            <summary>
-            Performs an upload that reports progress.
+            Represents the configuration of the Parse SDK.
             </summary>
         </member>
-        <member name="M:Parse.ParseClient.As``1(System.Object)">
+        <member name="P:Parse.ParseClient.Configuration.ApplicationId">
             <summary>
-            Performs a ConvertTo, but returns null if the object can't be
-            converted to that type.
+            The Parse.com application ID of your app.
             </summary>
         </member>
-        <member name="M:Parse.ParseClient.ConvertTo``1(System.Object)">
+        <member name="P:Parse.ParseClient.Configuration.Server">
             <summary>
-            Converts a value to the requested type -- coercing primitives to
-            the desired type, wrapping lists and dictionaries appropriately,
-            or else passing the object along to the caller unchanged.
+            The Parse.com API server to connect to.
             
-            This should be used on any containers that might be coming from a
-            user to normalize the collection types. Collection types coming from
-            JSON deserialization can be safely assumed to be lists or dictionaries of
-            objects.
+            Only needs to be set if you're using another server than https://api.parse.com/1.
             </summary>
         </member>
-        <member name="F:Parse.ParseClient.interfaceLookupCache">
+        <member name="P:Parse.ParseClient.Configuration.WindowsKey">
             <summary>
-            Holds a dictionary that maps a cache of interface types for related concrete types.
-            The lookup is slow the first time for each type because it has to enumerate all interface
-            on the object type, but made fast by the cache.
-            
-            The map is:
-               (object type, generic interface type) => constructed generic type
+            The Parse.com .NET key for your app.
             </summary>
-        </member>
-        <member name="M:Parse.ParseClient.DeepTraversal(System.Object,System.Boolean,System.Boolean)">
-            <summary>
-            Flattens dictionaries and lists into a single enumerable of all contained objects
-            that can then be queried over.
-            </summary>
-            <param name="root">The root of the traversal</param>
-            <param name="traverseParseObjects">Whether to traverse into ParseObjects' children</param>
-            <param name="yieldRoot">Whether to include the root in the result</param>
-            <returns></returns>
         </member>
         <member name="T:Parse.ParseCloud">
             <summary>
@@ -1182,7 +1707,7 @@
             If this ParseObject has not been fetched (i.e. <see cref="P:Parse.ParseObject.IsDataAvailable"/> returns
             false), fetches this object with the data from the server.
             </summary>
-            <param name="obj">The ParseObjhect to fetch.</param>
+            <param name="obj">The ParseObject to fetch.</param>
         </member>
         <member name="M:Parse.ParseExtensions.FetchIfNeededAsync``1(``0,System.Threading.CancellationToken)">
             <summary>
@@ -1191,86 +1716,6 @@
             </summary>
             <param name="obj">The ParseObject to fetch.</param>
             <param name="cancellationToken">The cancellation token.</param>
-        </member>
-        <member name="T:Parse.ParseFacebookUtils">
-            <summary>
-            Provides a set of utilities for using Parse with Facebook.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.Initialize">
-            <summary>
-            Unity will just auto-initialize this. Since we're not responsible for login, we don't
-            need the application id -- just the tokens.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.LogInAsync(System.String,System.String,System.DateTime,System.Threading.CancellationToken)">
-            <summary>
-            Logs in a <see cref="T:Parse.ParseUser"/> using Facebook for authentication. If a user for the
-            given Facebook credentials does not already exist, a new user will be created.
-            </summary>
-            <param name="facebookId">The user's Facebook ID.</param>
-            <param name="accessToken">A valid access token for the user.</param>
-            <param name="expiration">The expiration date of the access token.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>The user that was either logged in or created.</returns>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.LogInAsync(System.String,System.String,System.DateTime)">
-            <summary>
-            Logs in a <see cref="T:Parse.ParseUser"/> using Facebook for authentication. If a user for the
-            given Facebook credentials does not already exist, a new user will be created.
-            </summary>
-            <param name="facebookId">The user's Facebook ID.</param>
-            <param name="accessToken">A valid access token for the user.</param>
-            <param name="expiration">The expiration date of the access token.</param>
-            <returns>The user that was either logged in or created.</returns>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.LinkAsync(Parse.ParseUser,System.String,System.String,System.DateTime,System.Threading.CancellationToken)">
-            <summary>
-            Links a <see cref="T:Parse.ParseUser"/> to a Facebook account, allowing you to use Facebook
-            for authentication, and providing access to Facebook data for the user.
-            </summary>
-            <param name="user">The user to link to a Facebook account.</param>
-            <param name="facebookId">The user's Facebook ID.</param>
-            <param name="accessToken">A valid access token for the user.</param>
-            <param name="expiration">The expiration date of the access token.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.LinkAsync(Parse.ParseUser,System.String,System.String,System.DateTime)">
-            <summary>
-            Links a <see cref="T:Parse.ParseUser"/> to a Facebook account, allowing you to use Facebook
-            for authentication, and providing access to Facebook data for the user.
-            </summary>
-            <param name="user">The user to link to a Facebook account.</param>
-            <param name="facebookId">The user's Facebook ID.</param>
-            <param name="accessToken">A valid access token for the user.</param>
-            <param name="expiration">The expiration date of the access token.</param>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.IsLinked(Parse.ParseUser)">
-            <summary>
-            Gets whether the given user is linked to a Facebook account. This can only be used on
-            the currently authorized user.
-            </summary>
-            <param name="user">The user to check.</param>
-            <returns><c>true</c> if the user is linked to a Facebook account.</returns>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.UnlinkAsync(Parse.ParseUser,System.Threading.CancellationToken)">
-            <summary>
-            Unlinks a user from a Facebook account. Unlinking a user will save the user's data.
-            </summary>
-            <param name="user">The user to unlink.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-        </member>
-        <member name="M:Parse.ParseFacebookUtils.UnlinkAsync(Parse.ParseUser)">
-            <summary>
-            Unlinks a user from a Facebook account. Unlinking a user will save the user's data.
-            </summary>
-            <param name="user">The user to unlink.</param>
-        </member>
-        <member name="P:Parse.ParseFacebookUtils.AccessToken">
-            <summary>
-            Gets the access token for the currently logged in Facebook user. This can be used with a
-            Facebook SDK to get access to Facebook user data.
-            </summary>
         </member>
         <member name="T:Parse.ParseFieldNameAttribute">
             <summary>
@@ -1460,44 +1905,9 @@
             Extremes should not be used.
             </summary>
         </member>
-        <member name="T:Parse.ParseInitializeBehaviour">
-            <summary>
-            Mandatory MonoBehaviour for scenes that use Parse. Set the application ID and .NET key
-            in the editor.
-            </summary>
-        </member>
-        <member name="F:Parse.ParseInitializeBehaviour.applicationID">
-            <summary>
-            The Parse applicationId used in this app. You can get this value from the Parse website.
-            </summary>
-        </member>
-        <member name="F:Parse.ParseInitializeBehaviour.dotnetKey">
-            <summary>
-            The Parse dotnetKey used in this app. You can get this value from the Parse website.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseInitializeBehaviour.Awake">
-            <summary>
-            Initializes the Parse SDK and begins running network requests created by Parse.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseInitializeBehaviour.OnPushNotificationReceived(System.String)">
-            <summary>
-            The callback that will be called from the Android Java land via <c>UnityPlayer.UnitySendMessage(string)</c>
-            when the device receive a push notificaiton.
-            </summary>
-            <param name="pushPayloadString">the push payload as string</param>
-        </member>
-        <member name="M:Parse.ParseInitializeBehaviour.OnGcmRegistrationReceived(System.String)">
-            <summary>
-            The callback that will be called from the Android Java land via <c>UnityPlayer.UnitySendMessage(string)</c>
-            when the device receive a GCM registration id.
-            </summary>
-            <param name="registrationId">the GCM registration id</param>
-        </member>
         <member name="T:Parse.ParseInstallation">
             <summary>
-             Represents this app installed on this device. Use this class to track infomation you want
+             Represents this app installed on this device. Use this class to track information you want
              to sample from (i.e. if you update a field on app launch, you can issue a query to see
              the number of devices which were active in the last N hours).
             </summary>
@@ -1608,14 +2018,6 @@
             Allows subclasses to set values for non-pointer construction.
             </summary>
         </member>
-        <member name="M:Parse.ParseObject.GetFactory(System.String)">
-            <summary>
-            Gets the appropriate factory for the given class name. If there is no factory for the class,
-            a factory that produces a regular ParseObject will be created.
-            </summary>
-            <param name="className">The class name for the ParseObjects the factory will create.</param>
-            <returns></returns>
-        </member>
         <member name="M:Parse.ParseObject.RegisterSubclass``1">
             <summary>
             Registers a custom subclass type with the Parse SDK, enabling strong-typing of those ParseObjects whenever
@@ -1629,22 +2031,15 @@
             Clears any changes to this object made since the last call to <see cref="M:Parse.ParseObject.SaveAsync"/>.
             </summary>
         </member>
-        <member name="M:Parse.ParseObject.CheckpointMutableContainer(System.Object)">
+        <member name="M:Parse.ParseObject.DeepTraversal(System.Object,System.Boolean,System.Boolean)">
             <summary>
-            Updates the JSON cache value for the given object.
+            Flattens dictionaries and lists into a single enumerable of all contained objects
+            that can then be queried over.
             </summary>
-        </member>
-        <member name="M:Parse.ParseObject.CheckForChangesToMutableContainer(System.String,System.Object)">
-            <summary>
-            Inspects to see if a given mutable container owned by this object has
-            been mutated, and treats any mutation as a new "set" operation.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseObject.CheckForChangesToMutableContainers">
-            <summary>
-            Inspects to see if any mutable container owned by this object has been mutated, and
-            treats any mutation as a new 'Set' operation.
-            </summary>
+            <param name="root">The root of the traversal</param>
+            <param name="traverseParseObjects">Whether to traverse into ParseObjects' children</param>
+            <param name="yieldRoot">Whether to include the root in the result</param>
+            <returns></returns>
         </member>
         <member name="M:Parse.ParseObject.CollectFetchedObjects">
             <summary>
@@ -1781,11 +2176,6 @@
             Removes a key from the object's data if it exists.
             </summary>
             <param name="key">The key to remove.</param>
-        </member>
-        <member name="M:Parse.ParseObject.ApplyOperations(System.Collections.Generic.IDictionary{System.String,Parse.Internal.IParseFieldOperation},System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Updates the estimated values in the map based on the given set of ParseFieldOperations.
-            </summary>
         </member>
         <member name="M:Parse.ParseObject.RebuildEstimatedData">
             <summary>
@@ -2037,21 +2427,9 @@
             Gets the class name for the ParseObject.
             </summary>
         </member>
-        <member name="P:Parse.ParseObject.PropertyMappings">
-            <summary>
-            Gets the set of fieldName->propertyName mappings for the current class.
-            </summary>
-        </member>
         <member name="E:Parse.ParseObject.PropertyChanged">
             <summary>
             Occurs when a property value changes.
-            </summary>
-        </member>
-        <member name="F:Parse.ParseInstallation.currentInstallationMatchesDisk">
-            <summary>
-            Whether the currentInstallation is known to match the serialized version on disk.
-            This is useful for saving a filesystem check if you try to load currentInstallation
-            frequently while there is none on disk.
             </summary>
         </member>
         <member name="M:Parse.ParseInstallation.#ctor">
@@ -2060,13 +2438,13 @@
             ParseInstallations yourself. Instead use <see cref="P:Parse.ParseInstallation.CurrentInstallation"/>.
             </summary>
         </member>
-        <member name="M:Parse.ParseInstallation.getLocaleIdentifier">
+        <member name="M:Parse.ParseInstallation.GetLocaleIdentifier">
             <summary>
             Gets the locale identifier in the format: [language code]-[COUNTRY CODE].
             </summary>
             <returns>The locale identifier in the format: [language code]-[COUNTRY CODE].</returns>
         </member>
-        <member name="F:Parse.ParseInstallation.tzNameMap">
+        <member name="F:Parse.ParseInstallation.TimeZoneNameMap">
             <summary>
             This mapping of Windows names to a standard everyone else uses is maintained 
             by the Unicode consortium, which makes this officially the first helpful
@@ -2076,34 +2454,12 @@
             Built from http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/zone_tzid.html
             </summary>
         </member>
-        <member name="M:Parse.ParseInstallation.getDeviceType">
+        <member name="F:Parse.ParseInstallation.TimeZoneOffsetMap">
             <summary>
-            The runtime target of this application.
+            This is a mapping of odd TimeZone offsets to their respective IANA codes across the world.
+            This list was compiled from painstakingly pouring over the information available at
+            https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
             </summary>
-        </member>
-        <member name="M:Parse.ParseInstallation.getAppNameAsync">
-            <summary>
-            Gets the application name from <c>AndroidManifest.xml</c>.
-            </summary>
-            <returns>Application name.</returns>
-        </member>
-        <member name="M:Parse.ParseInstallation.getAppIdentifier">
-            <summary>
-            Gets the application unique identifier from <c>AndroidManifest.xml</c>.
-            </summary>
-            <returns>Application identifier.</returns>
-        </member>
-        <member name="M:Parse.ParseInstallation.getAppVersion">
-            <summary>
-            Gets the application version from <c>AndroidManifest.xml</c>.
-            </summary>
-            <returns>Application version.</returns>
-        </member>
-        <member name="M:Parse.ParseInstallation.getTimeZone">
-            <summary>
-            Gets current Timezone of the device.
-            </summary>
-            <returns>Current Timezone of the device.</returns>
         </member>
         <member name="M:Parse.ParseInstallation.SetDeviceTokenFromData(System.Byte[])">
             <summary>
@@ -2199,301 +2555,6 @@
             iOS Badge.
             </summary>
         </member>
-        <member name="T:Parse.ParsePush">
-            <summary>
-             A utility class for sending and receiving push notifications.
-            </summary>
-        </member>
-        <member name="M:Parse.ParsePush.#ctor">
-            <summary>
-            Creates a push which will target every device. The Data field must be set before calling SendAsync.
-            </summary>
-        </member>
-        <member name="M:Parse.ParsePush.SendAsync">
-            <summary>
-             Request a push to be sent. When this task completes, Parse has successfully acknowledged a request
-             to send push notifications but has not necessarily finished sending all notifications
-             requested. The current status of recent push notifications can be seen in your Push Notifications
-             console on http://parse.com
-            </summary>
-            <returns>A Task for continuation.</returns>
-        </member>
-        <member name="M:Parse.ParsePush.SendAsync(System.Threading.CancellationToken)">
-            <summary>
-             Request a push to be sent. When this task completes, Parse has successfully acknowledged a request
-             to send push notifications but has not necessarily finished sending all notifications
-             requested. The current status of recent push notifications can be seen in your Push Notifications
-             console on http://parse.com
-            </summary>
-            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendAlertAsync(System.String)">
-            <summary>
-            Pushes a simple message to every device. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="alert">The alert message to send.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,System.String)">
-            <summary>
-            Pushes a simple message to every device subscribed to channel. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Channels = new List&lt;string&gt; { channel };
-            push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="alert">The alert message to send.</param>
-            <param name="channel">An Installation must be subscribed to channel to receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Pushes a simple message to every device subscribed to any of channels. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Channels = channels;
-            push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="alert">The alert message to send.</param>
-            <param name="channels">An Installation must be subscribed to any of channels to receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,Parse.ParseQuery{Parse.ParseInstallation})">
-            <summary>
-            Pushes a simple message to every device matching the target query. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Query = query;
-            push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="alert">The alert message to send.</param>
-            <param name="query">A query filtering the devices which should receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Pushes an arbitrary payload to every device. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Data = data;
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
-            <summary>
-            Pushes an arbitrary payload to every device subscribed to channel. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Channels = new List&lt;string&gt; { channel };
-            push.Data = data;
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
-            <param name="channel">An Installation must be subscribed to channel to receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Pushes an arbitrary payload to every device subscribed to any of channels. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Channels = channels;
-            push.Data = data;
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
-            <param name="channels">An Installation must be subscribed to any of channels to receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Parse.ParseQuery{Parse.ParseInstallation})">
-            <summary>
-            Pushes an arbitrary payload to every device matching target. This is shorthand for:
-            
-            <code>
-            var push = new ParsePush();
-            push.Query = query
-            push.Data = data;
-            return push.SendAsync();
-            </code>
-            </summary>
-            <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
-            <param name="query">A query filtering the devices which should receive this Push Notification.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SubscribeAsync(System.String)">
-            <summary>
-            Subscribe the current installation to this channel. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.AddUniqueToList("channels", channel);
-            installation.SaveAsync();
-            </code>
-            </summary>
-            <param name="channel">The channel to which this installation should subscribe.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SubscribeAsync(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Subscribe the current installation to this channel. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.AddUniqueToList("channels", channel);
-            installation.SaveAsync(cancellationToken);
-            </code>
-            </summary>
-            <param name="channel">The channel to which this installation should subscribe.</param>
-            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SubscribeAsync(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Subscribe the current installation to these channels. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.AddRangeUniqueToList("channels", channels);
-            installation.SaveAsync();
-            </code>
-            </summary>
-            <param name="channels">The channels to which this installation should subscribe.</param>
-        </member>
-        <member name="M:Parse.ParsePush.SubscribeAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
-            <summary>
-            Subscribe the current installation to these channels. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.AddRangeUniqueToList("channels", channels);
-            installation.SaveAsync(cancellationToken);
-            </code>
-            </summary>
-            <param name="channels">The channels to which this installation should subscribe.</param>
-            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
-        </member>
-        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.String)">
-            <summary>
-            Unsubscribe the current installation from this channel. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.Remove("channels", channel);
-            installation.SaveAsync();
-            </code>
-            </summary>
-            <param name="channel">The channel from which this installation should unsubscribe.</param>
-        </member>
-        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Unsubscribe the current installation from this channel. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.Remove("channels", channel);
-            installation.SaveAsync(cancellationToken);
-            </code>
-            </summary>
-            <param name="channel">The channel from which this installation should unsubscribe.</param>
-            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
-        </member>
-        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Unsubscribe the current installation from these channels. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.RemoveAllFromList("channels", channels);
-            installation.SaveAsync();
-            </code>
-            </summary>
-            <param name="channels">The channels from which this installation should unsubscribe.</param>
-        </member>
-        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
-            <summary>
-            Unsubscribe the current installation from these channels. This is shorthand for:
-            
-            <code>
-            var installation = ParseInstallation.CurrentInstallation;
-            installation.RemoveAllFromList("channels", channels);
-            installation.SaveAsync(cancellationToken);
-            </code>
-            </summary>
-            <param name="channels">The channels from which this installation should unsubscribe.</param>
-            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
-        </member>
-        <member name="P:Parse.ParsePush.Query">
-            <summary>
-            An installation query that specifies which installations shoudl receive
-            this push.
-            This should not be used in tandem with Channels.
-            </summary>
-        </member>
-        <member name="P:Parse.ParsePush.Channels">
-            <summary>
-            A short-hand to set a query which only discriminates on the channels to which a device is subscribed.
-            This is shorthand for:
-            
-            <code>
-            var push = new Push();
-            push.Query = ParseInstallation.Query.WhereKeyContainedIn("channels", channels);
-            </code>
-            
-            This cannot be used in tandem with Query.
-            </summary>
-        </member>
-        <member name="P:Parse.ParsePush.Expiration">
-            <summary>
-            The time at which this push will expire. This should not be used in tandem with ExpirationInterval.
-            </summary>
-        </member>
-        <member name="P:Parse.ParsePush.ExpirationInterval">
-            <summary>
-            The time from initial schedul when this push will expire. This should not be used in tandem with Expiration.
-            </summary>
-        </member>
-        <member name="P:Parse.ParsePush.Data">
-            <summary>
-            The contents of this push. Some keys have special meaning. A full list of pre-defined
-            keys can be found in the Parse Push Guide. The following keys affect WinRT devices.
-            Keys which do not start with x-winrt- can be prefixed with x-winrt- to specify an
-            override only sent to winrt devices.
-            alert: the body of the alert text.
-            title: The title of the text.
-            x-winrt-payload: A full XML payload to be sent to WinRT installations instead of
-                 the auto-layout.
-            This should not be used in tandem with Alert.
-            </summary>
-        </member>
-        <member name="P:Parse.ParsePush.Alert">
-            <summary>
-            A conveninence method which sets Data to a dictionary with alert as its only field. Equivalent to
-            
-            <code>
-            Data = new Dictionary&lt;string, object&gt; {{"alert", alert}};
-            </code>
-            
-            This should not be used in tandem with Data.
-            </summary>
-        </member>
-        <member name="E:Parse.ParsePush.ParsePushNotificationReceived">
-            <summary>
-            An event fired when a push notification is received.
-            </summary>
-        </member>
         <member name="T:Parse.ParsePushNotificationEventArgs">
             <summary>
             A wrapper around Parse push notification payload.
@@ -2543,7 +2604,7 @@
              </code>
              </example>
         </member>
-        <member name="M:Parse.ParseQuery`1.#ctor(Parse.ParseQuery{`0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Parse.ParseQuery`1.#ctor(Parse.ParseQuery{`0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
             Private constructor for composition of queries. A source query is required,
             but the remaining values can be null if they won't be changed in this
@@ -2586,27 +2647,27 @@
             <returns>A new query with the additional constraint.</returns>
         </member>
         <member name="M:Parse.ParseQuery`1.ThenBy(System.String)">
-            <summary>
-            Sorts the results in ascending order by the given key, after previous
-            ordering has been applied.
+             <summary>
+             Sorts the results in ascending order by the given key, after previous
+             ordering has been applied.
             
-            This method can only be called if there is already an <see cref="M:Parse.ParseQuery`1.OrderBy(System.String)"/>
-            or <see cref="M:Parse.ParseQuery`1.OrderByDescending(System.String)"/>
-            on this query.
-            </summary>
-            <param name="key">The key to order by.</param>
-            <returns>A new query with the additional constraint.</returns>
+             This method can only be called if there is already an <see cref="M:Parse.ParseQuery`1.OrderBy(System.String)"/>
+             or <see cref="M:Parse.ParseQuery`1.OrderByDescending(System.String)"/>
+             on this query.
+             </summary>
+             <param name="key">The key to order by.</param>
+             <returns>A new query with the additional constraint.</returns>
         </member>
         <member name="M:Parse.ParseQuery`1.ThenByDescending(System.String)">
-            <summary>
-            Sorts the results in descending order by the given key, after previous
-            ordering has been applied.
+             <summary>
+             Sorts the results in descending order by the given key, after previous
+             ordering has been applied.
             
-            This method can only be called if there is already an <see cref="M:Parse.ParseQuery`1.OrderBy(System.String)"/>
-            or <see cref="M:Parse.ParseQuery`1.OrderByDescending(System.String)"/> on this query.
-            </summary>
-            <param name="key">The key to order by.</param>
-            <returns>A new query with the additional constraint.</returns>
+             This method can only be called if there is already an <see cref="M:Parse.ParseQuery`1.OrderBy(System.String)"/>
+             or <see cref="M:Parse.ParseQuery`1.OrderByDescending(System.String)"/> on this query.
+             </summary>
+             <param name="key">The key to order by.</param>
+             <returns>A new query with the additional constraint.</returns>
         </member>
         <member name="M:Parse.ParseQuery`1.Include(System.String)">
             <summary>
@@ -2950,10 +3011,18 @@
             <param name="cancellationToken">The cancellation token.</param>
             <returns>The ParseObject for the given objectId.</returns>
         </member>
-        <member name="P:Parse.ParseQuery`1.JsonString">
+        <member name="M:Parse.ParseQuery`1.Equals(System.Object)">
             <summary>
-            For debugging purposes.
+            Determines whether the specified object is equal to the current object.
             </summary>
+            <param name="obj">The object to compare with the current object.</param>
+            <returns><c>true</c> if the specified object is equal to the current object; otherwise, <c>false</c></returns>
+        </member>
+        <member name="M:Parse.ParseQuery`1.GetHashCode">
+            <summary>
+            Serves as the default hash function.
+            </summary>
+            <returns>A hash code for the current object.</returns>
         </member>
         <member name="T:Parse.ParseRelationBase">
             <summary>
@@ -3078,18 +3147,6 @@
         <member name="T:Parse.ParseUser">
             <summary>
             Represents a user for a Parse application.
-            </summary>
-        </member>
-        <member name="F:Parse.ParseUser.currentUserMatchesDisk">
-            <summary>
-            Whether the currentUser is known to match the serialized version on disk.
-            This is useful for saving a filesystem check if you try to load currentUser
-            frequently while there is none on disk.
-            </summary>
-        </member>
-        <member name="M:Parse.ParseUser.#ctor">
-            <summary>
-            Constructs a new ParseUser with no data.
             </summary>
         </member>
         <member name="M:Parse.ParseUser.Remove(System.String)">
@@ -3278,470 +3335,555 @@
             Gets the authData for this user.
             </summary>
         </member>
-        <member name="M:Parse.PlatformHooks.CallStaticJavaUnityMethod(System.String,System.String,System.Object[])">
+        <member name="T:Parse.ParseAnalytics">
             <summary>
-            Calls a static method under Unity Java plugin with reflection.
-            </summary>
-            <remarks>
-            Warning: Unity Android only.
+            Provides an interface to Parse's logging and analytics backend.
             
-            Basically what we want to do:
-            <code>
-            AndroidJavaClass javaUnityHelper = new AndroidJavaClass(className);
-            javaUnityHelper.CallStatic(methodName, parameters);
-            But we can't because <c>AndroidJavaClass</c> is not cross-platform. It won't compile on iOS.
-            </code>
-            </remarks>
-            <param name="className"></param>
-            <param name="methodName"></param>
-            <param name="parameters"></param>
-        </member>
-        <member name="M:Parse.PlatformHooks.CreateWrapperTypes">
-            <summary>
-            Exists to ensure that generic types are AOT-compiled for the conversions we support.
-            Any new value types that we add support for will need to be registered here.
-            The method itself is never called, but by virtue of the Preserve attribute being set
-            on the PlatformHooks class, these types will be AOT-compiled.
+            Methods will return immediately and cache requests (along with timestamps)
+            to be handled in the background. 
             </summary>
         </member>
-        <member name="M:Parse.PlatformHooks.GenerateWWWInstance(System.String,System.Byte[],System.Collections.Hashtable)">
+        <member name="M:Parse.ParseAnalytics.TrackAppOpenedAsync">
             <summary>
-            Unity changes its WWW constructor at 4.5.x from using <see cref="T:System.Collections.Hashtable"/> to using
-            <see cref="T:System.Collections.Generic.Dictionary`2"/>. We need to explicitly handle that. This method
-            generates a valid WWW instance depending on the newest WWW constructor
-            provided by used UnityEngine assembly
+            Tracks this application being launched.
+            </summary>
+            <returns>An Async Task that can be waited on or ignored.</returns>
+        </member>
+        <member name="M:Parse.ParseAnalytics.TrackEventAsync(System.String)">
+             <summary>
+             Tracks the occurrence of a custom event with additional dimensions.
+             Parse will store a data point at the time of invocation with the
+             given event name.
+            
+             Dimensions will allow segmentation of the occurrences of this
+             custom event.
+            
+             To track a user signup along with additional metadata, consider the
+             following:
+             <code>
+             IDictionary&lt;string, string&gt; dims = new Dictionary&lt;string, string&gt; {
+               { "gender", "m" },
+               { "source", "web" },
+               { "dayType", "weekend" }
+             };
+             ParseAnalytics.TrackEventAsync("signup", dims);
+             </code>
+            
+             There is a default limit of 8 dimensions per event tracked.
+             </summary>
+             <param name="name">The name of the custom event to report to ParseClient
+             as having happened.</param>
+             <returns>An Async Task that can be waited on or ignored.</returns>
+        </member>
+        <member name="M:Parse.ParseAnalytics.TrackEventAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+             <summary>
+             Tracks the occurrence of a custom event with additional dimensions.
+             Parse will store a data point at the time of invocation with the
+             given event name.
+            
+             Dimensions will allow segmentation of the occurrences of this
+             custom event.
+            
+             To track a user signup along with additional metadata, consider the
+             following:
+             <code>
+             IDictionary&lt;string, string&gt; dims = new Dictionary&lt;string, string&gt; {
+               { "gender", "m" },
+               { "source", "web" },
+               { "dayType", "weekend" }
+             };
+             ParseAnalytics.TrackEventAsync("signup", dims);
+             </code>
+            
+             There is a default limit of 8 dimensions per event tracked.
+             </summary>
+             <param name="name">The name of the custom event to report to ParseClient
+             as having happened.</param>
+             <param name="dimensions">The dictionary of information by which to
+             segment this event.</param>
+             <returns>An Async Task that can be waited on or ignored.</returns>
+        </member>
+        <member name="M:Parse.ParseAnalytics.TrackAppOpenedWithPushHashAsync(System.String)">
+            <summary>
+            Private method, used by platform-specific extensions to report an app-open
+            to the server.
+            </summary>
+            <param name="pushHash">An identifying hash for a given push notification,
+            passed down from the server.</param>
+            <returns>An Async Task that can be waited on or ignored.</returns>
+        </member>
+        <member name="T:Parse.ParseFacebookUtils">
+            <summary>
+            Provides a set of utilities for using Parse with Facebook.
             </summary>
         </member>
-        <member name="M:Parse.PlatformHooks.RegisterNetworkRequest(UnityEngine.WWW,System.Action{UnityEngine.WWW})">
+        <member name="M:Parse.ParseFacebookUtils.Initialize">
             <summary>
-            Registers a callback for network requests, running the callback on the main thread until
-            the network request is complete.
+            Unity will just auto-initialize this. Since we're not responsible for login, we don't
+            need the application id -- just the tokens.
             </summary>
         </member>
-        <member name="M:Parse.PlatformHooks.RegisterDeviceTokenRequest(System.Action{System.Byte[]})">
+        <member name="M:Parse.ParseFacebookUtils.LogInAsync(System.String,System.String,System.DateTime,System.Threading.CancellationToken)">
             <summary>
-            Warning: iOS only. Registers a callback for device token request.
+            Logs in a <see cref="T:Parse.ParseUser"/> using Facebook for authentication. If a user for the
+            given Facebook credentials does not already exist, a new user will be created.
             </summary>
-            <param name="action">Action to be completed when device token is received.</param>
-        </member>
-        <member name="M:Parse.PlatformHooks.RegisteriOSPushNotificationListener(System.Action{System.Collections.Generic.IDictionary{System.String,System.Object}})">
-            <summary>
-            Warning: iOS only. Registers a callback for push notification.
-            </summary>
-            <param name="action">Action to be completed when push notification is received.</param>
-        </member>
-        <member name="M:Parse.PlatformHooks.RunOnMainThread(System.Action)">
-            <summary>
-            Runs things inside of a Unity coroutine (some APIs require that you
-            access them from the main thread).
-            </summary>
-        </member>
-        <member name="M:Parse.PlatformHooks.RunDispatcher">
-            <summary>
-            Returns an enumerator (for use in a coroutine) that runs actions that have been dispatched.
-            </summary>
-        </member>
-        <member name="M:Parse.PlatformHooks.Initialize">
-            <summary>
-            Initialize the app. Called from <see cref="M:Parse.ParseClient.Initialize(System.String,System.String)"/>. Guaranteed to be run on main thread.
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.IsCompiledByIL2CPP">
-            <summary>
-            Returns true if current running platform is run from a project generated by IL2CPP compiler.
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.IsWebPlayer">
-            <summary>
-            Returns true if current running platform is a web player.
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.IsAndroid">
-            <summary>
-            Returns true if current running platform is Android.
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.IsIOS">
-            <summary>
-            Returns true if current running platform is iPhone or iPad. 
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.IsWindowsPhone8">
-            <summary>
-            Returns true if current running platform is Windows Phone 8.
-            </summary>
-        </member>
-        <member name="P:Parse.PlatformHooks.ApplicationSettings">
-            <summary>
-            Provides a dictionary that gets persisted on the filesystem between runs of the app.
-            This is analogous to NSUserDefaults in iOS.
-            </summary>
-        </member>
-        <member name="M:Parse.PlatformHooks.HttpRequestUnity.getStatusCode(UnityEngine.WWW)">
-            <summary>
-            Gets the HTTP status code from finished <code>WWW</code> request.
-            </summary>
-            <param name="www">The WWW object.</param>
-            <returns>Returns 201 if there's no error. Otherwise, returns error status code.</returns>
-        </member>
-        <member name="T:Parse.PlatformHooks.SettingsWrapper">
-            <summary>
-            Wraps the custom settings object for Parse so that it can be exposed as ApplicationSettings.
-            </summary>
-        </member>
-        <member name="T:System.AggregateException">
-            <summary>
-            Aggregates Exceptions that may be thrown in the process of a task's execution.
-            </summary>
-        </member>
-        <member name="M:System.AggregateException.#ctor(System.Collections.Generic.IEnumerable{System.Exception})">
-            <summary>
-            Creates a new AggregateException from a collection of exceptions.
-            </summary>
-            <param name="innerExceptions">The inner exceptions.</param>
-        </member>
-        <member name="M:System.AggregateException.Flatten">
-            <summary>
-            Flattens any nested AggregateExceptions into a single AggregateException
-            whose InnerExceptions include the Exceptions of its children.
-            </summary>
-            <returns>A new AggregateException with no inner AggregateExceptions.</returns>
-        </member>
-        <member name="M:System.AggregateException.ToString">
-            <summary>
-            Provides a summary of this Exception and all of its InnerExceptions.
-            </summary>
-            <returns>A string representation of this AggregateException.</returns>
-        </member>
-        <member name="P:System.AggregateException.InnerExceptions">
-            <summary>
-            Gets the exceptions that caused this AggregateException to be raised.
-            </summary>
-        </member>
-        <member name="T:System.Threading.CancellationToken">
-            <summary>
-            A token that can be used for cancellation of an asynchronous operation.
-            </summary>
-        </member>
-        <member name="M:System.Threading.CancellationToken.Register(System.Action)">
-            <summary>
-            Registers a callback to be invoked when this CancellationToken is cancelled.
-            </summary>
-            <param name="callback">The action to be invoked.</param>
-            <returns>A registration object that can be used to deregister the callback.</returns>
-        </member>
-        <member name="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
-            <summary>
-            Throws an OperationCanceledException if the token has been cancelled.
-            </summary>
-        </member>
-        <member name="P:System.Threading.CancellationToken.None">
-            <summary>
-            Gets an empty CancellationToken that cannot be cancelled.
-            </summary>
-        </member>
-        <member name="P:System.Threading.CancellationToken.IsCancellationRequested">
-            <summary>
-            Gets whether cancellation has been requested for this token.
-            </summary>
-        </member>
-        <member name="T:System.Threading.CancellationTokenRegistration">
-            <summary>
-            Represents a registration of a handler with a cancellation token, and can be used to
-            unregister that handler.
-            </summary>
-        </member>
-        <member name="M:System.Threading.CancellationTokenRegistration.Dispose">
-            <summary>
-            Unregisters the handler associated with this registration.
-            </summary>
-        </member>
-        <member name="T:System.Threading.CancellationTokenSource">
-            <summary>
-            A provider for <see cref="T:System.Threading.CancellationToken"/>s. Use the CancellationTokenSource to
-            notify consumers of its token that they should cancel any ongoing operations.
-            </summary>
-        </member>
-        <member name="M:System.Threading.CancellationTokenSource.Cancel">
-            <summary>
-            Notifies consumers of the token that cancellation was requested.
-            </summary>
-        </member>
-        <member name="M:System.Threading.CancellationTokenSource.Cancel(System.Boolean)">
-            <summary>
-            Notifies consumers of the token that cancellation was requested.
-            If <paramref name="throwOnFirstException"/> is true, any exception thrown by a
-            handler of the cancellation request will cause processing of the cancellation
-            to halt and the exception will propagate immediately to the caller.
-            </summary>
-            <param name="throwOnFirstException">Whether to throw on first exception.</param>
-        </member>
-        <member name="P:System.Threading.CancellationTokenSource.Token">
-            <summary>
-            Gets a cancellation token linked to this CancellationTokenSource.
-            </summary>
-        </member>
-        <member name="T:System.Threading.Tasks.Task">
-            <summary>
-            Represents an asynchronous task.
-            </summary>
-        </member>
-        <member name="M:System.Threading.Tasks.Task.Wait">
-            <summary>
-            Blocks until the task is complete.
-            </summary>
-        </member>
-        <member name="M:System.Threading.Tasks.Task.ContinueWith``1(System.Func{System.Threading.Tasks.Task,``0})">
-            <summary>
-            Registers a continuation for the task that will run when the task is complete.
-            </summary>
-            <typeparam name="T">The type returned by the continuation.</typeparam>
-            <param name="continuation">The continuation to run after the task completes.
-            The function takes the completed task as an argument and can return a value.</param>
-            <returns>A new Task that returns the value returned by the continuation after both
-            the task and the continuation are complete.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.Task.ContinueWith``1(System.Func{System.Threading.Tasks.Task,``0},System.Threading.CancellationToken)">
-            <summary>
-            Registers a continuation for the task that will run when the task is complete.
-            </summary>
-            <typeparam name="T">The type returned by the continuation.</typeparam>
-            <param name="continuation">The continuation to run after the task completes.
-            The function takes the completed task as an argument and can return a value.</param>
+            <param name="facebookId">The user's Facebook ID.</param>
+            <param name="accessToken">A valid access token for the user.</param>
+            <param name="expiration">The expiration date of the access token.</param>
             <param name="cancellationToken">The cancellation token.</param>
-            <returns>A new Task that returns the value returned by the continuation after both
-            the task and the continuation are complete.</returns>
+            <returns>The user that was either logged in or created.</returns>
         </member>
-        <member name="M:System.Threading.Tasks.Task.ContinueWith(System.Action{System.Threading.Tasks.Task})">
+        <member name="M:Parse.ParseFacebookUtils.LogInAsync(System.String,System.String,System.DateTime)">
             <summary>
-            Registers a continuation for the task that will run when the task is complete.
+            Logs in a <see cref="T:Parse.ParseUser"/> using Facebook for authentication. If a user for the
+            given Facebook credentials does not already exist, a new user will be created.
             </summary>
-            <param name="continuation">The continuation to run after the task completes.
-            The function takes the completed task as an argument.</param>
-            <returns>A new Task that is complete after both the task and the continuation are
-            complete.</returns>
+            <param name="facebookId">The user's Facebook ID.</param>
+            <param name="accessToken">A valid access token for the user.</param>
+            <param name="expiration">The expiration date of the access token.</param>
+            <returns>The user that was either logged in or created.</returns>
         </member>
-        <member name="M:System.Threading.Tasks.Task.ContinueWith(System.Action{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+        <member name="M:Parse.ParseFacebookUtils.LinkAsync(Parse.ParseUser,System.String,System.String,System.DateTime,System.Threading.CancellationToken)">
             <summary>
-            Registers a continuation for the task that will run when the task is complete.
+            Links a <see cref="T:Parse.ParseUser"/> to a Facebook account, allowing you to use Facebook
+            for authentication, and providing access to Facebook data for the user.
             </summary>
-            <param name="continuation">The continuation to run after the task completes.</param>
+            <param name="user">The user to link to a Facebook account.</param>
+            <param name="facebookId">The user's Facebook ID.</param>
+            <param name="accessToken">A valid access token for the user.</param>
+            <param name="expiration">The expiration date of the access token.</param>
             <param name="cancellationToken">The cancellation token.</param>
-            <returns>A new Task that is complete after both the task and the continuation are
-            complete.</returns>
         </member>
-        <member name="M:System.Threading.Tasks.Task.WhenAll(System.Threading.Tasks.Task[])">
+        <member name="M:Parse.ParseFacebookUtils.LinkAsync(Parse.ParseUser,System.String,System.String,System.DateTime)">
             <summary>
-            Creates a task that is complete when all of the provided tasks are complete.
-            If any of the tasks has an exception, all exceptions raised in the tasks will
-            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
-            the returned task will be cancelled.
+            Links a <see cref="T:Parse.ParseUser"/> to a Facebook account, allowing you to use Facebook
+            for authentication, and providing access to Facebook data for the user.
             </summary>
-            <param name="tasks">The tasks to aggregate.</param>
-            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+            <param name="user">The user to link to a Facebook account.</param>
+            <param name="facebookId">The user's Facebook ID.</param>
+            <param name="accessToken">A valid access token for the user.</param>
+            <param name="expiration">The expiration date of the access token.</param>
         </member>
-        <member name="M:System.Threading.Tasks.Task.WhenAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task})">
+        <member name="M:Parse.ParseFacebookUtils.IsLinked(Parse.ParseUser)">
             <summary>
-            Creates a task that is complete when all of the provided tasks are complete.
-            If any of the tasks has an exception, all exceptions raised in the tasks will
-            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
-            the returned task will be cancelled.
+            Gets whether the given user is linked to a Facebook account. This can only be used on
+            the currently authorized user.
             </summary>
-            <param name="tasks">The tasks to aggregate.</param>
-            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+            <param name="user">The user to check.</param>
+            <returns><c>true</c> if the user is linked to a Facebook account.</returns>
         </member>
-        <member name="M:System.Threading.Tasks.Task.WhenAll``1(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task{``0}})">
+        <member name="M:Parse.ParseFacebookUtils.UnlinkAsync(Parse.ParseUser,System.Threading.CancellationToken)">
             <summary>
-            Creates a task that is complete when all of the provided tasks are complete.
-            If any of the tasks has an exception, all exceptions raised in the tasks will
-            be aggregated into the returned task. Otherwise, if any of the tasks is cancelled,
-            the returned task will be cancelled. If all of the tasks succeed, the result of the
-            returned task will be an array containing the results of all of the input tasks.
+            Unlinks a user from a Facebook account. Unlinking a user will save the user's data.
             </summary>
-            <typeparam name="T">The result type of the tasks.</typeparam>
-            <param name="tasks">The tasks to aggregate.</param>
-            <returns>A task that is complete when all of the provided tasks are complete.</returns>
+            <param name="user">The user to unlink.</param>
+            <param name="cancellationToken">The cancellation token.</param>
         </member>
-        <member name="M:System.Threading.Tasks.Task.FromResult``1(``0)">
+        <member name="M:Parse.ParseFacebookUtils.UnlinkAsync(Parse.ParseUser)">
             <summary>
-            Creates a new, completed task for the given result.
+            Unlinks a user from a Facebook account. Unlinking a user will save the user's data.
             </summary>
-            <typeparam name="T">The result type of the task.</typeparam>
-            <param name="result"></param>
-            <returns>A completed task.</returns>
+            <param name="user">The user to unlink.</param>
         </member>
-        <member name="M:System.Threading.Tasks.Task.Run``1(System.Func{``0})">
+        <member name="P:Parse.ParseFacebookUtils.AccessToken">
             <summary>
-            Executes a function asynchronously, returning a task that represents the operation.
-            </summary>
-            <typeparam name="T">The return type of the task.</typeparam>
-            <param name="toRun">The function to run.</param>
-            <returns>A task representing the asynchronous operation.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.Task.Run(System.Action)">
-            <summary>
-            Executes an action asynchronously, returning a task that represents the operation.
-            </summary>
-            <param name="toRun">The action to run.</param>
-            <returns>A task representing the asynchronous operation.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.Task.Delay(System.TimeSpan)">
-            <summary>
-            Creates a task that will complete successfully after the given timespan.
-            </summary>
-            <param name="timespan">The amount of time to wait.</param>
-            <returns>A new task.</returns>
-        </member>
-        <member name="P:System.Threading.Tasks.Task.Exception">
-            <summary>
-            Gets the exceptions for the task, if there are any. <c>null</c> otherwise.
+            Gets the access token for the currently logged in Facebook user. This can be used with a
+            Facebook SDK to get access to Facebook user data.
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.Task.IsCanceled">
+        <member name="T:Parse.ParsePush">
             <summary>
-            Gets whether the task was cancelled.
+             A utility class for sending and receiving push notifications.
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.Task.IsCompleted">
+        <member name="M:Parse.ParsePush.#ctor">
             <summary>
-            Gets whether the task has been completed with either an exception,
-            cancellation, or a result.
+            Creates a push which will target every device. The Data field must be set before calling SendAsync.
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.Task.IsFaulted">
+        <member name="M:Parse.ParsePush.SendAsync">
             <summary>
-            Gets whether the task failed.
+            Request a push to be sent. When this task completes, Parse has successfully acknowledged a request
+            to send push notifications but has not necessarily finished sending all notifications
+            requested. The current status of recent push notifications can be seen in your Push Notifications
+            console on http://parse.com
+            </summary>
+            <returns>A Task for continuation.</returns>
+        </member>
+        <member name="M:Parse.ParsePush.SendAsync(System.Threading.CancellationToken)">
+            <summary>
+            Request a push to be sent. When this task completes, Parse has successfully acknowledged a request
+            to send push notifications but has not necessarily finished sending all notifications
+            requested. The current status of recent push notifications can be seen in your Push Notifications
+            console on http://parse.com
+            </summary>
+            <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendAlertAsync(System.String)">
+             <summary>
+             Pushes a simple message to every device. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="alert">The alert message to send.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,System.String)">
+             <summary>
+             Pushes a simple message to every device subscribed to channel. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Channels = new List&lt;string&gt; { channel };
+             push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="alert">The alert message to send.</param>
+             <param name="channel">An Installation must be subscribed to channel to receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,System.Collections.Generic.IEnumerable{System.String})">
+             <summary>
+             Pushes a simple message to every device subscribed to any of channels. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Channels = channels;
+             push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="alert">The alert message to send.</param>
+             <param name="channels">An Installation must be subscribed to any of channels to receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendAlertAsync(System.String,Parse.ParseQuery{Parse.ParseInstallation})">
+             <summary>
+             Pushes a simple message to every device matching the target query. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Query = query;
+             push.Data = new Dictionary&lt;string, object&gt;{{"alert", alert}};
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="alert">The alert message to send.</param>
+             <param name="query">A query filtering the devices which should receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object})">
+             <summary>
+             Pushes an arbitrary payload to every device. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Data = data;
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+             <summary>
+             Pushes an arbitrary payload to every device subscribed to channel. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Channels = new List&lt;string&gt; { channel };
+             push.Data = data;
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
+             <param name="channel">An Installation must be subscribed to channel to receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{System.String})">
+             <summary>
+             Pushes an arbitrary payload to every device subscribed to any of channels. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Channels = channels;
+             push.Data = data;
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
+             <param name="channels">An Installation must be subscribed to any of channels to receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SendDataAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Parse.ParseQuery{Parse.ParseInstallation})">
+             <summary>
+             Pushes an arbitrary payload to every device matching target. This is shorthand for:
+            
+             <code>
+             var push = new ParsePush();
+             push.Query = query
+             push.Data = data;
+             return push.SendAsync();
+             </code>
+             </summary>
+             <param name="data">A push payload. See the ParsePush.Data property for more information.</param>
+             <param name="query">A query filtering the devices which should receive this Push Notification.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SubscribeAsync(System.String)">
+             <summary>
+             Subscribe the current installation to this channel. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.AddUniqueToList("channels", channel);
+             installation.SaveAsync();
+             </code>
+             </summary>
+             <param name="channel">The channel to which this installation should subscribe.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SubscribeAsync(System.String,System.Threading.CancellationToken)">
+             <summary>
+             Subscribe the current installation to this channel. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.AddUniqueToList("channels", channel);
+             installation.SaveAsync(cancellationToken);
+             </code>
+             </summary>
+             <param name="channel">The channel to which this installation should subscribe.</param>
+             <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SubscribeAsync(System.Collections.Generic.IEnumerable{System.String})">
+             <summary>
+             Subscribe the current installation to these channels. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.AddRangeUniqueToList("channels", channels);
+             installation.SaveAsync();
+             </code>
+             </summary>
+             <param name="channels">The channels to which this installation should subscribe.</param>
+        </member>
+        <member name="M:Parse.ParsePush.SubscribeAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+             <summary>
+             Subscribe the current installation to these channels. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.AddRangeUniqueToList("channels", channels);
+             installation.SaveAsync(cancellationToken);
+             </code>
+             </summary>
+             <param name="channels">The channels to which this installation should subscribe.</param>
+             <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
+        </member>
+        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.String)">
+             <summary>
+             Unsubscribe the current installation from this channel. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.Remove("channels", channel);
+             installation.SaveAsync();
+             </code>
+             </summary>
+             <param name="channel">The channel from which this installation should unsubscribe.</param>
+        </member>
+        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.String,System.Threading.CancellationToken)">
+             <summary>
+             Unsubscribe the current installation from this channel. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.Remove("channels", channel);
+             installation.SaveAsync(cancellationToken);
+             </code>
+             </summary>
+             <param name="channel">The channel from which this installation should unsubscribe.</param>
+             <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
+        </member>
+        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.Collections.Generic.IEnumerable{System.String})">
+             <summary>
+             Unsubscribe the current installation from these channels. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.RemoveAllFromList("channels", channels);
+             installation.SaveAsync();
+             </code>
+             </summary>
+             <param name="channels">The channels from which this installation should unsubscribe.</param>
+        </member>
+        <member name="M:Parse.ParsePush.UnsubscribeAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+             <summary>
+             Unsubscribe the current installation from these channels. This is shorthand for:
+            
+             <code>
+             var installation = ParseInstallation.CurrentInstallation;
+             installation.RemoveAllFromList("channels", channels);
+             installation.SaveAsync(cancellationToken);
+             </code>
+             </summary>
+             <param name="channels">The channels from which this installation should unsubscribe.</param>
+             <param name="cancellationToken">CancellationToken to cancel the current operation.</param>
+        </member>
+        <member name="P:Parse.ParsePush.Query">
+            <summary>
+            An installation query that specifies which installations should receive
+            this push.
+            This should not be used in tandem with Channels.
             </summary>
         </member>
-        <member name="T:System.Threading.Tasks.Task`1">
-            <summary>
-            Represents an asynchronous task that has a result.
-            </summary>
-            <typeparam name="T">The type of the task's result.</typeparam>
+        <member name="P:Parse.ParsePush.Channels">
+             <summary>
+             A short-hand to set a query which only discriminates on the channels to which a device is subscribed.
+             This is shorthand for:
+            
+             <code>
+             var push = new Push();
+             push.Query = ParseInstallation.Query.WhereKeyContainedIn("channels", channels);
+             </code>
+            
+             This cannot be used in tandem with Query.
+             </summary>
         </member>
-        <member name="M:System.Threading.Tasks.Task`1.ContinueWith(System.Action{System.Threading.Tasks.Task{`0}})">
+        <member name="P:Parse.ParsePush.Expiration">
             <summary>
-            Registers a continuation for the task that will run when the task is complete.
-            </summary>
-            <param name="continuation">The continuation to run after the task completes.
-            The function takes the completed task as an argument.</param>
-            <returns>A new Task that is complete after both the task and the continuation are
-            complete.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.Task`1.ContinueWith``1(System.Func{System.Threading.Tasks.Task{`0},``0})">
-            <summary>
-            Registers a continuation for the task that will run when the task is complete.
-            </summary>
-            <typeparam name="TResult">The type returned by the continuation.</typeparam>
-            <param name="continuation">The continuation to run after the task completes.
-            The function takes the completed task as an argument and can return a value.</param>
-            <returns>A new Task that returns the value returned by the continuation after both
-            the task and the continuation are complete.</returns>
-        </member>
-        <member name="P:System.Threading.Tasks.Task`1.Result">
-            <summary>
-            Gets the result of the task. If the task is not complete, this property blocks
-            until the task is complete. If the task has an Exception or was cancelled, this
-            property will rethrow the exception.
+            The time at which this push will expire. This should not be used in tandem with ExpirationInterval.
             </summary>
         </member>
-        <member name="T:System.Threading.Tasks.TaskCompletionSource`1">
+        <member name="P:Parse.ParsePush.PushTime">
             <summary>
-            Allows safe orchestration of a task's completion, preventing the consumer from prematurely
-            completing the task. Essentially, it represents the producer side of a <see cref="T:System.Threading.Tasks.Task`1"/>,
-            providing access to the consumer side through the <see cref="P:System.Threading.Tasks.TaskCompletionSource`1.Task"/>
-            while isolating the Task's completion mechanisms from the consumer.
-            </summary>
-            <typeparam name="T">The type of the result of the Task being created.</typeparam>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.#ctor">
-            <summary>
-            Constructs a new TaskCompletionSource.
+            The time at which this push will be sent.
             </summary>
         </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetResult(`0)">
+        <member name="P:Parse.ParsePush.ExpirationInterval">
             <summary>
-            If the task is not already complete, completes the task by setting the result.
-            </summary>
-            <param name="result">The result for the task.</param>
-            <returns><c>true</c> if the result was set successfully.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetException(System.AggregateException)">
-            <summary>
-            If the task is not already complete, completes the task by setting the exception.
-            </summary>
-            <param name="exception">The exception for the task.</param>
-            <returns><c>true</c> if the exception was set successfully.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetException(System.Exception)">
-            <summary>
-            If the task is not already complete, completes the task by setting the exception.
-            </summary>
-            <param name="exception">The exception for the task.</param>
-            <returns><c>true</c> if the exception was set successfully.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.TrySetCanceled">
-            <summary>
-            If the task is not already complete, cancels the task.
-            </summary>
-            <returns><c>true</c> if the task was successfully cancelled.</returns>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetResult(`0)">
-            <summary>
-            Completes the task by setting the result. Throws an <see cref="T:System.InvalidOperationException"/>
-            if the task is already complete.
-            </summary>
-            <param name="result">The result for the task.</param>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetException(System.AggregateException)">
-            <summary>
-            Completes the task by setting the exception. Throws an
-            <see cref="T:System.InvalidOperationException"/> if the task is already complete.
-            </summary>
-            <param name="exception">The exception for the task.</param>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetException(System.Exception)">
-            <summary>
-            Completes the task by setting the exception. Throws an
-            <see cref="T:System.InvalidOperationException"/> if the task is already complete.
-            </summary>
-            <param name="exception">The exception for the task.</param>
-        </member>
-        <member name="M:System.Threading.Tasks.TaskCompletionSource`1.SetCanceled">
-            <summary>
-            Cancels the task. Throws an <see cref="T:System.InvalidOperationException"/> if the task is
-            already complete.
+            The time from initial schedul when this push will expire. This should not be used in tandem with Expiration.
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.TaskCompletionSource`1.Task">
+        <member name="P:Parse.ParsePush.Data">
             <summary>
-            Gets the task associated with this TaskCompletionSource.
+            The contents of this push. Some keys have special meaning. A full list of pre-defined
+            keys can be found in the Parse Push Guide. The following keys affect WinRT devices.
+            Keys which do not start with x-winrt- can be prefixed with x-winrt- to specify an
+            override only sent to winrt devices.
+            alert: the body of the alert text.
+            title: The title of the text.
+            x-winrt-payload: A full XML payload to be sent to WinRT installations instead of
+                 the auto-layout.
+            This should not be used in tandem with Alert.
             </summary>
         </member>
-        <member name="T:System.Threading.Tasks.TaskExtensions">
+        <member name="P:Parse.ParsePush.Alert">
+             <summary>
+             A convenience method which sets Data to a dictionary with alert as its only field. Equivalent to
+            
+             <code>
+             Data = new Dictionary&lt;string, object&gt; {{"alert", alert}};
+             </code>
+            
+             This should not be used in tandem with Data.
+             </summary>
+        </member>
+        <member name="E:Parse.ParsePush.ParsePushNotificationReceived">
             <summary>
-            Provides extension methods for working with <see cref="T:System.Threading.Tasks.Task"/>s.
+            An event fired when a push notification is received.
             </summary>
         </member>
-        <member name="M:System.Threading.Tasks.TaskExtensions.Unwrap(System.Threading.Tasks.Task{System.Threading.Tasks.Task})">
+        <member name="T:Parse.ParseInitializeBehaviour">
             <summary>
-            Unwraps a nested task, producing a task that is complete when both the outer
-            and inner tasks are complete. This is primarily useful for chaining asynchronous
-            operations together.
+            Mandatory MonoBehaviour for scenes that use Parse. Set the application ID and .NET key
+            in the editor.
             </summary>
-            <param name="task">The task to unwrap.</param>
-            <returns>A new task that is complete when both the outer and inner tasks
-            are complete.</returns>
         </member>
-        <member name="M:System.Threading.Tasks.TaskExtensions.Unwrap``1(System.Threading.Tasks.Task{System.Threading.Tasks.Task{``0}})">
+        <member name="F:Parse.ParseInitializeBehaviour.applicationID">
             <summary>
-            Unwraps a nested task, producing a task that is complete when both the outer
-            and inner tasks are complete and that has the inner task's result.
-            This is primarily useful for chaining asynchronous operations together.
+            The Parse applicationId used in this app. You can get this value from the Parse website.
             </summary>
-            <param name="task">The task to unwrap.</param>
-            <returns>A new task that is complete when both the outer and inner tasks
-            are complete and that has the inner task's result.</returns>
+        </member>
+        <member name="F:Parse.ParseInitializeBehaviour.dotnetKey">
+            <summary>
+            The Parse dotnetKey used in this app. You can get this value from the Parse website.
+            </summary>
+        </member>
+        <member name="M:Parse.ParseInitializeBehaviour.Awake">
+            <summary>
+            Initializes the Parse SDK and begins running network requests created by Parse.
+            </summary>
+        </member>
+        <member name="M:Parse.ParseInitializeBehaviour.OnApplicationPause(System.Boolean)">
+            <summary>
+            Delegate function that will be called when the player pauses the game.
+            </summary>
+            <seealso href="http://docs.unity3d.com/ScriptReference/MonoBehaviour.OnApplicationPause.html"/>
+            <param name="paused"><c>true</c> if the application is paused.</param>
+        </member>
+        <member name="M:Parse.ParseInitializeBehaviour.OnPushNotificationReceived(System.String)">
+            <summary>
+            The callback that will be called from the Android Java land via <c>UnityPlayer.UnitySendMessage(string)</c>
+            when the device receive a push notification.
+            </summary>
+            <param name="pushPayloadString">the push payload as string</param>
+        </member>
+        <member name="M:Parse.ParseInitializeBehaviour.OnGcmRegistrationReceived(System.String)">
+            <summary>
+            The callback that will be called from the Android Java land via <c>UnityPlayer.UnitySendMessage(string)</c>
+            when the device receive a GCM registration id.
+            </summary>
+            <param name="registrationId">the GCM registration id</param>
+        </member>
+        <member name="T:Parse.Utilities.Conversion">
+            <summary>
+            A set of utilities for converting generic types between each other.
+            </summary>
+        </member>
+        <member name="M:Parse.Utilities.Conversion.As``1(System.Object)">
+             <summary>
+             Converts a value to the requested type -- coercing primitives to
+             the desired type, wrapping lists and dictionaries appropriately,
+             or else returning null.
+            
+             This should be used on any containers that might be coming from a
+             user to normalize the collection types. Collection types coming from
+             JSON deserialization can be safely assumed to be lists or dictionaries of
+             objects.
+             </summary>
+        </member>
+        <member name="M:Parse.Utilities.Conversion.To``1(System.Object)">
+             <summary>
+             Converts a value to the requested type -- coercing primitives to
+             the desired type, wrapping lists and dictionaries appropriately,
+             or else throwing an exception.
+            
+             This should be used on any containers that might be coming from a
+             user to normalize the collection types. Collection types coming from
+             JSON deserialization can be safely assumed to be lists or dictionaries of
+             objects.
+             </summary>
+        </member>
+        <member name="M:Parse.Utilities.Conversion.ConvertTo``1(System.Object)">
+             <summary>
+             Converts a value to the requested type -- coercing primitives to
+             the desired type, wrapping lists and dictionaries appropriately,
+             or else passing the object along to the caller unchanged.
+            
+             This should be used on any containers that might be coming from a
+             user to normalize the collection types. Collection types coming from
+             JSON deserialization can be safely assumed to be lists or dictionaries of
+             objects.
+             </summary>
+        </member>
+        <member name="F:Parse.Utilities.Conversion.interfaceLookupCache">
+             <summary>
+             Holds a dictionary that maps a cache of interface types for related concrete types.
+             The lookup is slow the first time for each type because it has to enumerate all interface
+             on the object type, but made fast by the cache.
+            
+             The map is:
+                (object type, generic interface type) => constructed generic type
+             </summary>
         </member>
     </members>
 </doc>

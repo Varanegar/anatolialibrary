@@ -364,6 +364,15 @@ namespace Anatoli.Framework.AnatoliBase
             request = CreateRequest(token, requestUri, HttpMethod.Post, obj, parameters);
             return await ExecRequestAsync<Result>(client, request);
         }
+        public async Task<Result> SendFileAsync<Result>(TokenType tokenType, string requestUri, Byte[] bytes)
+        {
+            var client = new RestClient(Configuration.WebService.PortalAddress);
+            RestRequest request;
+            var token = await GetTokenAsync(tokenType);
+            request = CreateRequest(token, requestUri, HttpMethod.Post);
+            request.AddFile("test", bytes, "ttt");
+            return await ExecRequestAsync<Result>(client, request);
+        }
         public async Task<Result> SendGetRequestAsync<Result>(TokenType tokenType, string requestUri, System.Threading.CancellationTokenSource cancelToken, params Tuple<string, string>[] parameters)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);

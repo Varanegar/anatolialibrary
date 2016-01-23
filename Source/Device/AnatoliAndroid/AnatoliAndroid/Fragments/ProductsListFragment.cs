@@ -45,8 +45,15 @@ namespace AnatoliAndroid.Fragments
         {
             cat_id = id;
             SetParameters();
-            _listAdapter.List = await _dataManager.GetNextAsync();
-            _listAdapter.NotifyDataSetChanged();
+            try
+            {
+                _listAdapter.List = await _dataManager.GetNextAsync();
+                _listAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         protected override string GetTableName()

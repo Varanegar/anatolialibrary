@@ -26,4 +26,11 @@ namespace Anatoli.App.Model.Product
             get { return favorit == 1 ? true : false; }
         }
     }
+    public static class DoubleExtension
+    {
+        public static string ToCurrency(this double value)
+        {
+            return Math.Round(value, 0).ToString("N0");
+        }
+    }
 }

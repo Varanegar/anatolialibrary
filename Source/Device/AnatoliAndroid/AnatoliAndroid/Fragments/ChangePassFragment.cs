@@ -35,15 +35,42 @@ namespace AnatoliAndroid.Fragments
             _currentPassEditText = view.FindViewById<EditText>(Resource.Id.currentPassEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);
-            _saveButton.Click += _saveButton_Click;
+            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+            _saveButton.Click += async (s, e) =>
+            {
+                ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                pDialog.SetMessage("در حال ارسال درخواست");
+                pDialog.Show();
+                try
+                {
+                    var result = await AnatoliUserManager.ChangePassword(_currentPassEditText.Text, _passwordEditText.Text);
+                    pDialog.Dismiss();
+                    if (result != null)
+                    {
+
+                        if (result.IsValid)
+                        {
+                            alert.SetMessage("کلمه عبور با موفقیت تغییر کرد");
+                            alert.Show();
+                        }
+                        else
+                        {
+                            alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
+                            alert.Show();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                finally
+                {
+                    pDialog.Dismiss();
+                }
+            };
             _saveButton.UpdateWidth();
             return view;
         }
-
-        void _saveButton_Click(object sender, EventArgs e)
-        {
-            //AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ChangePasswordBindingModel>(TokenType.UserToken,)
-        }
-
     }
 }
