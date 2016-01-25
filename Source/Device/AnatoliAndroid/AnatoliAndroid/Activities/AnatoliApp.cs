@@ -381,6 +381,10 @@ namespace AnatoliAndroid.Activities
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
                         break;
+                    case DrawerMainItem.DrawerMainItems.FirstPage:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        AnatoliApp.GetInstance().SetFragment<FirstFragment>(new FirstFragment(), "first_fragment");
+                        break;
                     case DrawerMainItem.DrawerMainItems.Login:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         var transaction = Activity.FragmentManager.BeginTransaction();
@@ -689,6 +693,11 @@ namespace AnatoliAndroid.Activities
                 mainItems.Add(loginMenuEntry);
             }
 
+
+            var firstPageMenuEntry = new DrawerMainItem();
+            firstPageMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.FirstPage;
+            firstPageMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.FirstPage);
+            mainItems.Add(firstPageMenuEntry);
 
 
             var categoriesMenuEntry = new DrawerMainItem();

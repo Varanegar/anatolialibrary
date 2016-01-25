@@ -36,11 +36,16 @@ namespace AnatoliAndroid.Fragments
 
             _listAdapter.BackClick += async (s, p) =>
             {
-                await Task.Run(async () =>
+                await Task.Delay(1000);
+                try
                 {
-                    await Task.Delay(1000);
-                    (_listView as SwipeListView).CloseAnimate(p);
-                });
+                    var sl = _listView as SwipeListView;
+                    sl.CloseOpenedItems();
+                }
+                catch (Exception)
+                {
+
+                }
             };
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             return view;
@@ -48,9 +53,9 @@ namespace AnatoliAndroid.Fragments
 
         void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
         {
-            var sl = _listView as SwipeListView;
             try
             {
+                var sl = _listView as SwipeListView;
                 sl.CloseOpenedItems();
             }
             catch (Exception)

@@ -8,6 +8,7 @@
   <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
   <string name="LoginFailed">ورود نا موفق</string>
   <string name="AllProducts">همه محصولات</string>
+  <string name="FirstPage">صفحه اصلی</string>
 
   <string name="MyList">فهرست من</string>
   <string name="MyStore">فروشگاه من</string>
