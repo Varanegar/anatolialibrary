@@ -243,12 +243,12 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF = _currentFragment as ProductsListFragment;
                 }
-                await _productsListF.Search("product_name", value);
+                await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
             {
-                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prfoucts_fragment");
-                await _productsListF.Search("product_name", value);
+                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prdoucts_fragment");
+                await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
             {
@@ -256,7 +256,7 @@ namespace AnatoliAndroid.Activities
                 {
                     _storesListF = _currentFragment as StoresListFragment;
                 }
-                await _storesListF.Search("store_name", value);
+                await _storesListF.Search(new Tuple<string, string>("store_name", value));
             }
         }
         void _searchBarImageButton_Click(object sender, EventArgs e)

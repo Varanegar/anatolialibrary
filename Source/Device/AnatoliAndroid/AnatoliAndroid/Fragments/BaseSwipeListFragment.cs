@@ -33,12 +33,30 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
-            
-            //_listAdapter.BackClick += async (s,p) =>
-            //{
-            //    await Task.Run(() => { (_listView as SwipeListView).CloseAnimate(p); });
-            //};
+
+            _listAdapter.BackClick += async (s, p) =>
+            {
+                await Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    (_listView as SwipeListView).CloseAnimate(p);
+                });
+            };
+            _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             return view;
+        }
+
+        void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
+        {
+            var sl = _listView as SwipeListView;
+            try
+            {
+                sl.CloseOpenedItems();
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
