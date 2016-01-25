@@ -113,14 +113,6 @@ namespace AnatoliAndroid.Fragments
                     alert.Show();
                     return;
                 }
-                if (!IsValidPhoneNumber(_emailEditText.Text))
-                {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                    alert.SetTitle(Resource.String.Error);
-                    alert.SetMessage(Resource.String.PleaseEnterValidPhone);
-                    alert.Show();
-                    return;
-                }
                 if (String.IsNullOrEmpty(_idEditText.Text) || String.IsNullOrEmpty(_firstNameEditText.Text) || String.IsNullOrEmpty(_lastNameEditText.Text) || String.IsNullOrEmpty(_addressEditText.Text))
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);

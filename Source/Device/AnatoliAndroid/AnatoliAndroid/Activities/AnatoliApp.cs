@@ -470,6 +470,11 @@ namespace AnatoliAndroid.Activities
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
+                    if (temp.Count == 0)
+                    {
+                        AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                    }
                 }
                 else
                 {

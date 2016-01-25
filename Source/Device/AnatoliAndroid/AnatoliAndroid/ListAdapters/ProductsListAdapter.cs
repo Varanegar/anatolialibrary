@@ -163,7 +163,7 @@ namespace AnatoliAndroid.ListAdapters
             _removeAllProductsButton.SetOnTouchListener(removeAll);
             removeAll.Click += async (s, e) =>
             {
-                OnBackClicked(position);
+                //OnBackClicked(position);
                 if (AnatoliApp.GetInstance().AnatoliUser != null)
                 {
                     int a = await ShoppingCardManager.GetItemsCountAsync();
@@ -209,7 +209,7 @@ namespace AnatoliAndroid.ListAdapters
             _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
             _favoritsTouchlistener.Click += async (s, e) =>
             {
-                OnBackClicked(position);
+                //OnBackClicked(position);
                 if (this[position].IsFavorit)
                 {
                     if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
@@ -295,10 +295,10 @@ namespace AnatoliAndroid.ListAdapters
                 }
             };
 
-            _relativeLayout4.Click += (s, e) =>
-            {
-                OnBackClicked(position);
-            };
+            //_relativeLayout4.Click += (s, e) =>
+            //{
+            //    OnBackClicked(position);
+            //};
 
 
             return view;

@@ -34,10 +34,10 @@ namespace AnatoliAndroid.Fragments
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
             
-            _listAdapter.BackClick += async (s,p) =>
-            {
-                await Task.Run(() => { (_listView as SwipeListView).CloseAnimate(p); });
-            };
+            //_listAdapter.BackClick += async (s,p) =>
+            //{
+            //    await Task.Run(() => { (_listView as SwipeListView).CloseAnimate(p); });
+            //};
             return view;
         }
     }

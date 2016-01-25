@@ -310,10 +310,10 @@ namespace AnatoliAndroid.Fragments
                 Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
                 _checkoutButton.Enabled = CheckCheckout();
             }
-            _listAdapter.BackClick += async (s, p) =>
-            {
-                await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
-            };
+            //_listAdapter.BackClick += async (s, p) =>
+            //{
+            //    await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
+            //};
 
             await UpdateShippingInfo();
 

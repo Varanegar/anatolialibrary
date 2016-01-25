@@ -19,14 +19,14 @@ namespace AnatoliAndroid.ListAdapters
         where DataModel : BaseDataModel, new()
         where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
     {
-        protected virtual void OnBackClicked(int position)
-        {
-            if (BackClick != null)
-            {
-                BackClick(this,position);
-            }
-        }
-        public event BackClickedEventHandler BackClick;
-        public delegate void BackClickedEventHandler(object sender,int position);
+        //protected virtual void OnBackClicked(int position)
+        //{
+        //    if (BackClick != null)
+        //    {
+        //        BackClick(this,position);
+        //    }
+        //}
+        //public event BackClickedEventHandler BackClick;
+        //public delegate void BackClickedEventHandler(object sender,int position);
     }
 }
