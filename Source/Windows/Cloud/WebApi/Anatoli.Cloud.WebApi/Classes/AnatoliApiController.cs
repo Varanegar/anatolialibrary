@@ -14,6 +14,8 @@ namespace Anatoli.Cloud.WebApi.Classes
             public string userId { get; set; }
             public string dateAfter { get; set; }
             public List<string> stockIds { get; set; }
+
+            public string data { get; set; }
         }
 
         public Guid OwnerKey

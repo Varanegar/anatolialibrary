@@ -18,5 +18,5 @@ namespace Anatoli.DataAccess.Configs
                 .WithMany(pp => pp.PrincipalPermissions)
                 .WillCascadeOnDelete(false);
         }
-    }
+    }    
 }

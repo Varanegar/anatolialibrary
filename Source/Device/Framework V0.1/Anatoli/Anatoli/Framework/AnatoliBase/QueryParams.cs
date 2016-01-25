@@ -163,12 +163,14 @@ namespace Anatoli.Framework.AnatoliBase
 
     public abstract class DBQuery : Query
     {
-        public DBQuery(string DBTableName)
+        public DBQuery(string DBTableName, string combination = "And")
         {
             this.DBTableName = DBTableName;
+            _combination = combination;
         }
         public abstract string GetCommand();
         public string DBTableName { get; set; }
+        protected string _combination;
     }
     public class StringQuery : DBQuery
     {
@@ -216,8 +218,32 @@ namespace Anatoli.Framework.AnatoliBase
                     Sorts.Add(item as SortParam);
             }
         }
-        public SelectQuery(string dataTableName, List<QueryParameter> options)
-            : base(dataTableName)
+        public SelectQuery(string dataTableName, string combination, params QueryParameter[] options)
+            : base(dataTableName, combination)
+        {
+            SearchFilters = new List<SearchFilterParam>();
+            CategoryFilters = new List<CategoryFilterParam>();
+            Sorts = new List<SortParam>();
+            Index = 0;
+            Limit = 10;
+            foreach (var item in options)
+            {
+                if (item.GetType() == typeof(SearchFilterParam))
+                    SearchFilters.Add(item as SearchFilterParam);
+                if (item.GetType() == typeof(EqFilterParam))
+                    SearchFilters.Add(item as EqFilterParam);
+                if (item.GetType() == typeof(GreaterFilterParam))
+                    SearchFilters.Add(item as GreaterFilterParam);
+                if (item.GetType() == typeof(SmallerFilterParam))
+                    SearchFilters.Add(item as SmallerFilterParam);
+                if (item.GetType() == typeof(CategoryFilterParam))
+                    CategoryFilters.Add(item as CategoryFilterParam);
+                else if (item.GetType() == typeof(SortParam))
+                    Sorts.Add(item as SortParam);
+            }
+        }
+        public SelectQuery(string dataTableName, string combination, List<QueryParameter> options)
+            : base(dataTableName, combination)
         {
             SearchFilters = new List<SearchFilterParam>();
             CategoryFilters = new List<CategoryFilterParam>();
@@ -257,7 +283,7 @@ namespace Anatoli.Framework.AnatoliBase
                 else
                     q += string.Format(" WHERE {0} LIKE '%{1}%' ", SearchFilters.First<FilterParam>().Name, SearchFilters.First<FilterParam>().Value);
             }
-            else if (SearchFilters.Count>=1)
+            else if (SearchFilters.Count >= 1)
             {
                 q += " WHERE (";
                 for (int i = 0; i < SearchFilters.Count - 1; i++)
@@ -270,7 +296,7 @@ namespace Anatoli.Framework.AnatoliBase
                     else if (filter.GetType() == typeof(SmallerFilterParam))
                         q += string.Format(" {0}<='{1}' and ", filter.Name, filter.Value);
                     else
-                        q += string.Format(" {0} LIKE '%{1}%' and ", filter.Name, filter.Value);
+                        q += string.Format(" {0} LIKE '%{1}%' {2} ", filter.Name, filter.Value, _combination);
                 }
                 if (SearchFilters.Last<FilterParam>().GetType() == typeof(EqFilterParam))
                     q += string.Format(" {0} = '{1}' )", SearchFilters.Last<FilterParam>().Name, SearchFilters.Last<FilterParam>().Value);

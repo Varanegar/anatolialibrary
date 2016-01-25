@@ -19,6 +19,8 @@ using Anatoli.App.Model.Store;
 using Android.Graphics;
 using System.Net;
 using System.Threading.Tasks;
+using Android.Provider;
+using Android.Database;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -64,6 +66,26 @@ namespace AnatoliAndroid.Fragments
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
             _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
+
+            _avatarImageView.Click += async (s, e) =>
+            {
+                //Intent intent = new Intent();
+                //intent.SetType("image/*");
+                //intent.SetAction(Intent.ActionGetContent);
+                //AnatoliApp.GetInstance().Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 0);
+                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("http://steezo.com/wp-content/uploads/2012/12/man-in-suit2.jpg"); });
+                System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                _bimage.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                byte[] bitmapData = stream.ToArray();
+                try
+                {
+                    await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId.ToString(), bitmapData);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            };
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
             view.FindViewById<TextView>(Resource.Id.changePassTextView).Click += (s, e) =>
             {
@@ -83,6 +105,22 @@ namespace AnatoliAndroid.Fragments
             _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
             {
+                if (!IsValidEmail(_emailEditText.Text))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage(Resource.String.PleaseEnterValidEmail);
+                    alert.Show();
+                    return;
+                }
+                if (String.IsNullOrEmpty(_idEditText.Text) || String.IsNullOrEmpty(_firstNameEditText.Text) || String.IsNullOrEmpty(_lastNameEditText.Text) || String.IsNullOrEmpty(_addressEditText.Text))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage("ورود نام، نام خانوادگی، شماره ملی و آدرس الزامی است");
+                    alert.Show();
+                    return;
+                }
                 _customerViewModel.MainStreet = _addressEditText.Text;
                 _customerViewModel.Email = _emailEditText.Text;
                 _customerViewModel.NationalCode = _idEditText.Text;
@@ -163,6 +201,8 @@ namespace AnatoliAndroid.Fragments
             };
             return view;
         }
+
+
         public async override void OnStart()
         {
             base.OnStart();
@@ -189,6 +229,7 @@ namespace AnatoliAndroid.Fragments
                     _emailEditText.Text = _customerViewModel.Email;
                     _telEditText.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
+                    //string imgUri = 
                     Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("https://i1.sndcdn.com/avatars-000022878889-l03kpc-large.jpg"); });
                     Bitmap _bfinal = getRoundedShape(_bimage);
                     _avatarImageView.SetImageBitmap(_bfinal);
@@ -249,7 +290,28 @@ namespace AnatoliAndroid.Fragments
             }
 
         }
-
+        public static bool IsValidEmail(string target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Android.Util.Patterns.EmailAddress.Matcher(target).Matches();
+            }
+        }
+        public static bool IsValidPhoneNumber(string target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Android.Util.Patterns.Phone.Matcher(target).Matches();
+            }
+        }
         async void _level2Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             try

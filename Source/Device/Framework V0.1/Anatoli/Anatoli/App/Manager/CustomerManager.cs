@@ -19,7 +19,7 @@ namespace Anatoli.App.Manager
             {
                 throw new ArgumentNullException("Could not save null user!");
             }
-            string content = customer.Address +
+            string content = customer.MainStreet +
                 Environment.NewLine + customer.BirthDay +
                 Environment.NewLine + customer.CustomerCode +
                 Environment.NewLine + customer.CustomerName +
@@ -57,7 +57,7 @@ namespace Anatoli.App.Manager
                 string cInfo = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
                 string[] cInfoFields = cInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 CustomerViewModel customer = new CustomerViewModel();
-                customer.Address = cInfoFields[0];
+                customer.MainStreet = cInfoFields[0];
                 customer.BirthDay = cInfoFields[1];
                 customer.CustomerCode = cInfoFields[2];
                 customer.CustomerName = cInfoFields[3];
@@ -83,7 +83,7 @@ namespace Anatoli.App.Manager
 
         public static async Task<CustomerViewModel> DownloadCustomerAsync(AnatoliUserModel user, System.Threading.CancellationTokenSource CancellationTokenSource)
         {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl, CancellationTokenSource,
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.UserToken, Configuration.WebService.Users.ViewProfileUrl, CancellationTokenSource,
                 new Tuple<string, string>("Id", user.Id),
                 new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
             return userModel;
@@ -95,7 +95,14 @@ namespace Anatoli.App.Manager
                 user
                 );
             return userModel.First();
+        }
 
+        public static async Task<string> UploadImageAsync(string userId , Byte[] obj)
+        {
+            var result = await AnatoliClient.GetInstance().WebClient.SendFileAsync<string>(
+                TokenType.UserToken,
+                Configuration.WebService.ImageManager.ImageSave + "&imageType=" + ItemImageViewModel.CustomerImageType + "&imageId=" + userId + "&token=" + userId, obj);
+            return result;
         }
     }
 }

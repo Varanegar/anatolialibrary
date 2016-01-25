@@ -119,6 +119,7 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Click += async (s, e) =>
             {
+                var store = await StoreManager.GetDefaultAsync();
                 if (AnatoliApp.GetInstance().AnatoliUser == null)
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
@@ -135,23 +136,52 @@ namespace AnatoliAndroid.Fragments
                 }
                 if (await UpdateShippingInfo())
                 {
-                    if (_tomorrow)
+                    ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                    try
                     {
-                        AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                        lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
-                        lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
+                        if (_tomorrow)
                         {
+                            AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                            lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
+                            lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
+                            {
+                                pDialog.SetCancelable(false);
+                                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                                pDialog.SetTitle("در حال ارسال سفارش");
+                                pDialog.Show();
+                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id);
+                                await SaveOrder();
+                                pDialog.Dismiss();
+                            });
+                            lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
+                            {
+                                Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
+                                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
+                            });
+                            lAlert.Show();
+                        }
+                        else
+                        {
+                            pDialog.SetCancelable(false);
+                            pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
+                            pDialog.SetTitle("در حال ارسال سفارش");
+                            pDialog.Show();
+                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id);
                             await SaveOrder();
-                        });
-                        lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
-                        {
-                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
-                            AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
-                        });
-                        lAlert.Show();
+                            pDialog.Dismiss();
+                        }
                     }
-                    else
-                        await SaveOrder();
+                    catch (Exception)
+                    {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                        alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
+                        alert.SetTitle(Resource.String.Error);
+                        alert.Show();
+                    }
+                    finally
+                    {
+                        pDialog.Dismiss();
+                    }
 
                 }
 
@@ -280,10 +310,10 @@ namespace AnatoliAndroid.Fragments
                 Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
                 _checkoutButton.Enabled = CheckCheckout();
             }
-            _listAdapter.BackClick += async (s, p) =>
-            {
-                await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
-            };
+            //_listAdapter.BackClick += async (s, p) =>
+            //{
+            //    await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
+            //};
 
             await UpdateShippingInfo();
 

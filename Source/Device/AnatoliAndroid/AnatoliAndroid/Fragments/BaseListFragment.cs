@@ -31,9 +31,8 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
-        protected ImageView _listToolsImageView;
         private bool _firstShow = true;
-        protected Tuple<string, string> _searchKeyWord;
+        protected List<Tuple<string, string>> _searchKeyWords;
         public BaseListFragment()
             : base()
         {
@@ -41,16 +40,31 @@ namespace AnatoliAndroid.Fragments
             _dataManager = new BaseDataManager();
             _toolsDialogFragment = new ListTools();
         }
-        public async Task Search(string key, string value)
+        public async Task Search(params Tuple<string, string>[] keywords)
         {
-            _searchKeyWord = new Tuple<string, string>(key, value);
+            _searchKeyWords = new List<Tuple<string, string>>();
+            foreach (var item in keywords)
+            {
+                _searchKeyWords.Add(item);
+            }
             SetParameters();
-            _listAdapter.List = await _dataManager.GetNextAsync();
+            try
+            {
+                _listAdapter.List = await _dataManager.GetNextAsync();
+                if (_listAdapter.List.Count == 0)
+                {
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "هیچ آیتمی یافت نشد", ToastLength.Short).Show();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
             _listAdapter.NotifyDataSetChanged();
         }
         public void ExitSearchMode()
         {
-            _searchKeyWord = null;
+            _searchKeyWords = null;
         }
         protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -85,12 +99,19 @@ namespace AnatoliAndroid.Fragments
             if (_firstShow)
             {
                 SetParameters();
-                _listAdapter.List = await _dataManager.GetNextAsync();
-                if (_listAdapter.Count == 0)
+                try
                 {
-                    OnEmptyList();
+                    _listAdapter.List = await _dataManager.GetNextAsync();
+                    if (_listAdapter.Count == 0)
+                    {
+                        OnEmptyList();
+                    }
+                    _listAdapter.NotifyDataSetChanged();
                 }
-                _listAdapter.NotifyDataSetChanged();
+                catch (Exception)
+                {
+
+                }
             }
             _firstShow = false;
         }
@@ -101,22 +122,32 @@ namespace AnatoliAndroid.Fragments
             {
                 if ((_listView.Adapter.Count - 1) <= _listView.LastVisiblePosition)
                 {
-                    var list = await _dataManager.GetNextAsync();
-                    _listAdapter.List.AddRange(list);
-                    _listAdapter.NotifyDataSetChanged();
+                    try
+                    {
+                        var list = await _dataManager.GetNextAsync();
+                        _listAdapter.List.AddRange(list);
+                        _listAdapter.NotifyDataSetChanged();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
             }
         }
         protected void SetParameters()
         {
             var parameters = CreateQueryParameters();
-            if (_searchKeyWord != null)
+            if (_searchKeyWords != null)
             {
-                var p = new SearchFilterParam(_searchKeyWord.Item1, _searchKeyWord.Item2);
                 parameters.Clear();
-                parameters.Add(p);
+                foreach (var item in _searchKeyWords)
+                {
+                    var p = new SearchFilterParam(item.Item1, item.Item2);
+                    parameters.Add(p);
+                }
             }
-            _dataManager.SetQueries(new SelectQuery(GetTableName(), parameters),null);
+            _dataManager.SetQueries(new SelectQuery(GetTableName(), "Or", parameters), null);
         }
 
         protected abstract List<QueryParameter> CreateQueryParameters();

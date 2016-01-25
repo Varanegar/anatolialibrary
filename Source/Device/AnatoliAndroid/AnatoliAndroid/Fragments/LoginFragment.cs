@@ -14,6 +14,7 @@ using AnatoliAndroid.Activities;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.Framework.AnatoliBase;
+using Parse;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -81,8 +82,8 @@ namespace AnatoliAndroid.Fragments
                 pDialog.SetTitle(Resources.GetText(Resource.String.Login));
                 pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
                 pDialog.Show();
-                //var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-                var userModel = await AnatoliUserManager.LoginAsync(Configuration.AppMobileAppInfo.UserName, Configuration.AppMobileAppInfo.Password);
+                var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
+                //var userModel = await AnatoliUserManager.LoginAsync(Configuration.AppMobileAppInfo.UserName, Configuration.AppMobileAppInfo.Password);
                 pDialog.Dismiss();
                 if (userModel.IsValid)
                 {
@@ -93,6 +94,19 @@ namespace AnatoliAndroid.Fragments
                         await AnatoliApp.GetInstance().RefreshCutomerProfile();
                         AnatoliApp.GetInstance().RefreshMenuItems();
                         OnLoginSuccess();
+                        ParseInstallation installation = ParseInstallation.CurrentInstallation;
+                        try
+                        {
+
+                            installation["userUniqueId"] = userModel.UniqueId;
+                            installation.AddUniqueToList("channels", "b2c");
+#pragma warning disable
+                            installation.SaveAsync();
+#pragma warning restore
+                        }
+                        catch (Exception)
+                        {
+                        }
                         Dismiss();
                     }
                     catch (Exception ex)
