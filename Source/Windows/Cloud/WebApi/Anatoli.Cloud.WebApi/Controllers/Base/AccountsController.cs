@@ -177,7 +177,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
@@ -193,7 +193,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            model.NewPassword = "****";
+            model.OldPassword = "****";
+            model.ConfirmPassword = "****";
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]

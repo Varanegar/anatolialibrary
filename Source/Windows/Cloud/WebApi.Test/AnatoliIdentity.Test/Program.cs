@@ -27,8 +27,8 @@ namespace ClientApp
             {
 
                 //string servserURI = "http://46.209.104.2:8000/";
-                string servserURI = "http://192.168.201.71:8090/";
-                //string servserURI = "http://79.175.166.186/";
+                //string servserURI = "http://192.168.201.71:8090/";
+                string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
                 //string servserURI = "http://localhost/";
                 //string servserURI = "http://192.20.6.6/";
@@ -47,14 +47,14 @@ namespace ClientApp
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
 
-                    var requestData = new RequestModel();
-                    requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
-                    string data = new JavaScriptSerializer().Serialize(requestData);
-                    HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var result8 = client.PostAsync(servserURI + "/api/testAuth/setparsinfo", content).Result;
-                    var json8 = result8.Content.ReadAsStringAsync().Result;
-                    var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
-                    var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+                    //var requestData = new RequestModel();
+                    //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
+                    //string data = new JavaScriptSerializer().Serialize(requestData);
+                    //HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                    //var result8 = client.PostAsync(servserURI + "/api/testAuth/setparsinfo", content).Result;
+                    //var json8 = result8.Content.ReadAsStringAsync().Result;
+                    //var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+                    //var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
 
 
                     //ProductManagement.DownloadProductRateFromServer(client, servserURI);
@@ -74,7 +74,7 @@ namespace ClientApp
                     
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
                     //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
-                    //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
+                    StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
                     //UserManagement.TestUserInfo(client, servserURI);

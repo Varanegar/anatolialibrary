@@ -174,6 +174,7 @@
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Base\PushNotificationController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\SupplierController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
@@ -248,11 +249,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59822</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost:59822/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

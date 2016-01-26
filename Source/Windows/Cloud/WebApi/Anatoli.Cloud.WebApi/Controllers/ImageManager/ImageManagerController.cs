@@ -38,13 +38,13 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         #region Actions
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        public async Task<IHttpActionResult> GetImages(string privateOwnerId)
         {
             try
             {
                 var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ItemImageDomain(owner);
-                var result = await productDomain.GetAll();
+                var imageDomain = new ItemImageDomain(owner);
+                var result = await imageDomain.GetAll();
 
                 return Ok(result);
             }

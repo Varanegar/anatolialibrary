@@ -40,7 +40,7 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<List<ItemImageViewModel>> GetAll()
         {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.ImageType != ItemImageViewModel.UserImageType);
 
             return Proxy.Convert(itemImages.ToList()); ;
         }

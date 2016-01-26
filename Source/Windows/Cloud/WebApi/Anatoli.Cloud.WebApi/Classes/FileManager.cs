@@ -18,7 +18,7 @@ namespace Anatoli.Cloud.WebApi.Classes
             {
                 await Task.Run(() =>
                 {
-                    var physicalPath = GetPath(token, imagetype + "\\orginal", file.FileName);
+                    var physicalPath = GetPath(token, imagetype + "\\orginal", imageName + ".png");
                     file.SaveAs(physicalPath);
 
                     Image image100x100 = Scale(Image.FromFile(physicalPath), 100, 100);

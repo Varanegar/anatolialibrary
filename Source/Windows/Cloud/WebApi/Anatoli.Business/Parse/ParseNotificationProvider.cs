@@ -18,47 +18,12 @@ namespace Anatoli.Business.Parse
         #endregion
 
         #region Methods
-        public async Task SignupAsync(IdentityUser user)
-        {
-            try
-            {
-                var parseUser = new ParseUser()
-                {
-                    Username = user.UserName,
-                    Password = user.PasswordHash,
-                    Email = user.Email
-                };
-
-                // other fields can be set just like with ParseObject
-                parseUser["phone"] = user.PhoneNumber;
-
-                await parseUser.SignUpAsync();
-            }
-            catch (Exception ex)
-            {
-                //Todo: log4net
-                throw;
-            }
-        }
-
-        public async Task LoginAsync(IdentityUser user)
-        {
-            try
-            {
-                await ParseUser.LogInAsync(user.UserName, user.PasswordHash);
-            }
-            catch (Exception ex)
-            {
-                //Todo: log4net
-                throw;
-            }
-        }
 
         public async Task CreateChannel(string channelName, List<IdentityUser> users)
         {
             try
             {
-                var installations = await GetInstall    ations(users);
+                var installations = await GetInstallations(users);
 
                 foreach (var installation in installations)
                 {
@@ -134,16 +99,10 @@ namespace Anatoli.Business.Parse
             return await query.FirstAsync();
         }
 
-        public async Task SendNotification(string message, List<IdentityUser> users, ParseGeoPoint? location = null)
+        public async Task SendNotification(string message, List<string> users, ParseGeoPoint? location = null)
         {
             try
             {
-                var userNames = users.Select(s => s.UserName);
-
-                var userQuery = ParseUser.Query.Where(p => userNames.Contains(p.Username));
-
-                if (location.HasValue)
-                    userQuery = userQuery.WhereWithinDistance("location", location.Value, ParseGeoDistance.FromMiles(1));
 
                 var push = new ParsePush()
                 {
