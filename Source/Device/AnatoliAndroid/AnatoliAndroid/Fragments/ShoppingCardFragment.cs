@@ -176,6 +176,7 @@ namespace AnatoliAndroid.Fragments
                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                         alert.SetTitle(Resource.String.Error);
+                        alert.SetNegativeButton(Resource.String.Ok, (s2, e2) => { });
                         alert.Show();
                     }
                     finally

@@ -53,7 +53,7 @@ namespace AnatoliAndroid.Fragments
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 if (_listAdapter.List.Count == 0)
                 {
-                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "هیچ آیتمی یافت نشد", ToastLength.Short).Show();
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "هیچ موردی یافت نشد", ToastLength.Short).Show();
                 }
             }
             catch (Exception)
