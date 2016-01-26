@@ -22,6 +22,11 @@ namespace Anatoli.App.Model.Product
         public int favorit { get; set; }
         public int count { get; set; }
         public string image { get; set; }
+        public int is_group { get; set; }
+        public bool IsGroup
+        {
+            get { return is_group == 1 ? true : false; }
+        }
         public bool IsFavorit
         {
             get { return favorit == 1 ? true : false; }

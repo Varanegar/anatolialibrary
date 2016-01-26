@@ -45,6 +45,13 @@ namespace Anatoli.App.Manager
                            new BasicParam("cat_depth", item.NLevel.ToString()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
+
+                            UpdateCommand command2 = new UpdateCommand("products", new EqFilterParam("product_id", item.UniqueId.ToUpper()),
+                          new BasicParam("product_name", item.GroupName.Trim()),
+                          new BasicParam("cat_id", item.UniqueId.ToUpper()),
+                          new BasicParam("is_group", "1"));
+                            var query2 = connection.CreateCommand(command2.GetCommand());
+                            int t2 = query2.ExecuteNonQuery();
                         }
                         else
                         {
@@ -56,6 +63,13 @@ namespace Anatoli.App.Manager
                            new BasicParam("cat_depth", item.NLevel.ToString()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
+
+                            InsertCommand command2 = new InsertCommand("products", new BasicParam("product_id", item.UniqueId.ToUpper()),
+                           new BasicParam("product_name", item.GroupName.Trim()),
+                           new BasicParam("cat_id", item.UniqueId.ToUpper()),
+                           new BasicParam("is_group", "1"));
+                            var query2 = connection.CreateCommand(command2.GetCommand());
+                            int t2 = query2.ExecuteNonQuery();
                         }
                     }
                     connection.Commit();

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/back"
+        android:tag="back"
+        style="@style/ListBackContent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/front"
+        android:tag="front"
+        style="@style/ListFrontContent">
+        <TextView
+            android:text="Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp" />
+        <ImageView
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView1"
+            android:layout_alignParentLeft="true" />
+    </RelativeLayout>
+</FrameLayout>

@@ -62,7 +62,7 @@ namespace AnatoliAndroid.Fragments
             }
             _listAdapter.NotifyDataSetChanged();
         }
-        public void ExitSearchMode()
+        public void ClearSearch()
         {
             _searchKeyWords = null;
         }

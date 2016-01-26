@@ -149,6 +149,7 @@
     <Compile Include="Fragments\FavoritsToolsFragment.cs" />
     <Compile Include="Fragments\FirstFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
+    <Compile Include="Fragments\JProductModel.cs" />
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\ChangePassFragment.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />
@@ -181,7 +182,8 @@
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\paa.db">
+    <AndroidAsset Include="..\..\db\paa.db">
+      <Link>Assets\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
     <None Include="app.config" />
@@ -189,7 +191,7 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\ProductSummaryLayout.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SearchPageLayout.axml">
       <SubType>AndroidResource</SubType>
@@ -278,6 +280,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\CustomizedSpinnerStyle.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GroupSummaryLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

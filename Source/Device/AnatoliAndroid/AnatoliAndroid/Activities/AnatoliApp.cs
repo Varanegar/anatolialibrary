@@ -243,11 +243,13 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF = _currentFragment as ProductsListFragment;
                 }
+                await _productsListF.SetCatId(null);
                 await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
             {
                 _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prdoucts_fragment");
+                await _productsListF.SetCatId(null);
                 await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
@@ -347,7 +349,7 @@ namespace AnatoliAndroid.Activities
                         {
                             if (_productsListF != null)
                             {
-                                _productsListF.ExitSearchMode();
+                                _productsListF.ClearSearch();
                                 await _productsListF.SetCatId(null);
                             }
                             var temp = await CategoryManager.GetFirstLevelAsync();
@@ -440,11 +442,12 @@ namespace AnatoliAndroid.Activities
             {
                 if (_productsListF != null)
                 {
-                    _productsListF.ExitSearchMode();
+                    _productsListF.ClearSearch();
                 }
                 if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
                 {
                     await _productsListF.SetCatId(selectedItem.ItemId);
+                    SetFragment<ProductsListFragment>(_productsListF, "products_fragment");
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                     return;

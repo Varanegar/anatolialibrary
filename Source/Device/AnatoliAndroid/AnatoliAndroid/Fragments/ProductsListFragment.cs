@@ -28,6 +28,7 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
         }
+
         protected override List<QueryParameter> CreateQueryParameters()
         {
             var parameters = new List<QueryParameter>();
@@ -38,7 +39,6 @@ namespace AnatoliAndroid.Fragments
                 parameters.Add(new GreaterFilterParam("cat_left", leftRight.left.ToString()));
                 parameters.Add(new SmallerFilterParam("cat_right", leftRight.right.ToString()));
             }
-
             return parameters;
         }
         public async Task SetCatId(string id)

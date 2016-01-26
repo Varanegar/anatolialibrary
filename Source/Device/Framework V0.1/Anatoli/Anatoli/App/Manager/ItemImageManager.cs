@@ -36,6 +36,10 @@ namespace Anatoli.App.Manager
                             UpdateCommand command = new UpdateCommand("categories", new EqFilterParam("cat_id", item.BaseDataId.ToUpper()), new BasicParam("cat_image", item.ImageName.ToUpper()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
+
+                            command = new UpdateCommand("products", new EqFilterParam("product_id", item.BaseDataId.ToUpper()), new BasicParam("image", item.ImageName.ToUpper()));
+                            query = connection.CreateCommand(command.GetCommand());
+                            t = query.ExecuteNonQuery();
                         }
                     }
                     connection.Commit();
