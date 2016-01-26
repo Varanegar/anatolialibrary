@@ -16,13 +16,16 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.Business.Domain.Authorization;
+using Anatoli.Cloud.WebApi.Classes;
+using Newtonsoft.Json;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/accounts")]
-    public class AccountsController : BaseApiController
+    public class AccountsController : AnatoliApiController
     {
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
@@ -31,6 +34,49 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
+
+        [Authorize(Roles = "Admin")]
+        [Route("permissions"), HttpPost]
+        public async Task<IHttpActionResult> GetPersmissions()
+        {
+            var model = await new PermissionDomain(OwnerKey).GetAll();
+
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("getPersmissionsOfUser"), HttpPost]
+        public IHttpActionResult GetPersmissionsOfUser([FromBody] RequestModel data)
+        {
+            var model = new AuthorizationDomain(OwnerKey).GetPermissionsForPrincipal(Guid.Parse(data.userId));
+
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("savePermissions"), HttpPost]
+        public async Task<IHttpActionResult> SavePersmissions([FromBody] RequestModel data)
+        {
+            var model = JsonConvert.DeserializeObject<dynamic>(data.data);
+
+            var pp = new List<PrincipalPermission>();
+            foreach (var itm in model.permissions)
+            {
+                pp.Add(new PrincipalPermission
+                {
+                    CreatedDate = DateTime.Now,
+                    LastUpdate = DateTime.Now,
+                    Grant = itm.grant.Value,
+                    Permission = new Permission { Id = Guid.Parse(itm.id.Value) },
+                    Principal = new Principal { Id = Guid.Parse(model.userId.Value) }
+                });
+            }
+
+            await new AuthorizationDomain(OwnerKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
+
+            return Ok(new { });
+        }
+
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("user/{id:guid}", Name = "GetUserById")]
@@ -82,7 +128,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     Email = createUserModel.Email,
                     EmailConfirmed = true,
                     CreatedDate = DateTime.Now,
-                    PhoneNumber = createUserModel.Mobile, 
+                    PhoneNumber = createUserModel.Mobile,
                     PrivateLabelOwner = new Principal { Id = createUserModel.PrivateOwnerId },
                     Principal = new Principal { Id = id, Title = createUserModel.FullName }
                 };
@@ -131,7 +177,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                         List<BasketViewModel> basketList = new List<BasketViewModel>();
                         basketList.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId, customer.UniqueId));
                         basketList.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId, customer.UniqueId));
-                       
+
                         var basketDomain = new BasketDomain(createUserModel.PrivateOwnerId, Request.GetOwinContext().Get<AnatoliDbContext>());
                         await basketDomain.PublishAsync(basketList);
 
@@ -177,7 +223,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
@@ -193,7 +239,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            model.NewPassword = "****";
+            model.OldPassword = "****";
+            model.ConfirmPassword = "****";
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]

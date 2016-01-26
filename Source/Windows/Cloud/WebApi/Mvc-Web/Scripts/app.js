@@ -1,4 +1,4 @@
-﻿var baseBackendUrl = 'http://localhost:59822',
+﻿var baseBackendUrl = 'http://localhost',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
@@ -10,6 +10,10 @@
         saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
         reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
         usersUrl: baseBackendUrl + "/api/accounts/users",
+        permissionsUrl: baseBackendUrl + "/api/accounts/permissions",
+        savePermissionsUrl: baseBackendUrl + "/api/accounts/savePermissions",
+        permissionsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionsOfUser",
+
         stockPageUrl: "/Products/",
     },
     errorMessage = {
@@ -19,6 +23,7 @@ gridAuthHeader = function (req) {
     var tokenKey = 'accessToken',
         token = $.cookie("token");
     req.setRequestHeader('Authorization', 'Bearer ' + token);
+    req.setRequestHeader('OwnerKey', privateOwnerId);
 };
 
 toastr.options = {
@@ -616,7 +621,7 @@ function UsersStocksViewModel() {
     };
 
     self.addChosenStocks = function (data) {
-        
+
         var match = ko.utils.arrayFirst(self.chosenStocks(), function (item) {
             return item.uniqueId === data.uniqueId;
         });
@@ -661,6 +666,99 @@ function UsersStocksViewModel() {
 
         accountManagerApp.callApi(urls.saveStocksUsersUrl, 'POST', { userId: self.chosenUser().id, stockIds: stockIds }, function (data) {
             showSuccess("ذخیره سازی", "انجام شد");
+        });
+    };
+
+    self.refreshUsers();
+};
+//******************************************************************//
+
+function UserPermissionsViewModel() {
+    var self = this;
+
+    self.chosenUser = ko.observable();
+    self.users = ko.observableArray([]);
+    self.permissions = ko.observableArray([]);
+
+    self.refreshUsers = function () {
+        accountManagerApp.callApi(urls.usersUrl, 'GET', {}, function (data) {
+            self.users(data);
+            if (self.users().length > 0)
+                self.chosenUser(self.users()[0]);
+        });
+        self.refreshPermissions();
+    };
+
+    self.chosenUser.subscribe(function (newValue) {
+        $('input[name="grants[]"]:checked').each(function (indx, elm) {
+            $(this).prop('checked', false);
+        });
+
+        accountManagerApp.callApi(urls.permissionsOfUserUrl, 'POST', { userId: self.chosenUser().id }, function (data) {
+            data.forEach(function (itm) {
+                if (itm.grant)
+                    $('input[name="grants[]"][data-id="' + itm.permissionId + '"]').prop("checked", true);
+            });
+        });
+    }, self);
+
+    self.refreshPermissions = function () {
+        accountManagerApp.callApi(urls.permissionsUrl, 'POST', {}, function (data) {
+            self.permissions(data);
+            self.initTreeView(data);
+        });
+    };
+
+    self.initTreeView = function (data) {
+        data.forEach(function (itm) {
+            itm["expanded"] = true;
+        });
+
+        $(".permissions-tree-view").kendoTreeView({
+            dataTextField: "title",
+            loadOnDemand: false,
+            checkboxes: {
+                template: "<input type='checkbox' name='grants[]' data-id='#= item.id #' />"
+            },
+            dataSource: {
+                transport: {
+                    read: function (options) {
+
+                        var id = options.data.id || "";
+
+                        options.success($.grep(data, function (x) {
+                            return x.parent == id;
+                        }));
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "id",
+                        hasChildren: function (x) {
+                            var id = x.id;
+
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].parent == id) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+            },
+        });
+    };
+
+    self.saveUserPermissions = function () {
+        var _permissions = [];
+        $('input[name="grants[]"]:checked').each(function (indx, elm) {
+            var p = { id: $(this).attr('data-id'), grant: true };
+            _permissions.push(p);
+        });
+
+        accountManagerApp.callApi(urls.savePermissionsUrl, 'POST', { data: JSON.stringify({ userId: self.chosenUser().id, permissions: _permissions }) }, function (data) {
+            showSuccess('', 'اطلاعات ذخیره گردید');
         });
     };
 

@@ -71,3 +71,21 @@ input[type="checkbox"].input-validation-error {
         left: 5px;
         z-index: 9999;
     }
+
+.bootstrap-checkbox {
+    display: inline-block;
+    position: relative;
+    width: 13px;
+    height: 13px;
+    border: 1px solid #000;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    .bootstrap-checkbox i {
+        position: absolute;
+        left: -1px;
+        top: -2px;
+    }

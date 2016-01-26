@@ -14,7 +14,7 @@
     <RootNamespace>Anatoli.Cloud.WebApi</RootNamespace>
     <AssemblyName>Anatoli.Cloud.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -97,6 +97,14 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Parse, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\parse.1.6.2\lib\net45\Parse.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Parse.NetFx45, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\parse.1.6.2\lib\net45\Parse.NetFx45.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SendGrid">
       <HintPath>..\packages\Sendgrid.6.3.4\lib\SendGrid.dll</HintPath>
     </Reference>
@@ -174,6 +182,7 @@
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
+    <Compile Include="Controllers\Base\PushNotificationController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\SupplierController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
@@ -248,11 +257,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59822</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost:59822/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
