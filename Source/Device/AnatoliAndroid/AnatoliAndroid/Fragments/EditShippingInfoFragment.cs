@@ -54,8 +54,8 @@ namespace AnatoliAndroid.Fragments
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
 
-            
-            _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
+
+
             _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;
             _level2Spinner.ItemSelected += _level2Spinner_ItemSelected;
             _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
@@ -93,7 +93,7 @@ namespace AnatoliAndroid.Fragments
                         errDialog.Show();
                         return;
                     }
-                    ProgressDialog pDialog = new ProgressDialog();
+                    ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
                     try
                     {
                         pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
@@ -123,7 +123,7 @@ namespace AnatoliAndroid.Fragments
                             errDialog.Show();
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         pDialog.Dismiss();
                         errDialog.SetMessage(Resource.String.ErrorOccured);
@@ -131,9 +131,6 @@ namespace AnatoliAndroid.Fragments
                         errDialog.SetTitle("خطا");
                         errDialog.Show();
                     }
-
-
-
                 };
             return view;
         }
@@ -142,36 +139,14 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
 
             _level1SpinerDataAdapter = await CityRegionManager.GetFirstLevelAsync();
-            if (AnatoliClient.GetInstance().WebClient.IsOnline())
-            {
-                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                ProgressDialog pDialog = new ProgressDialog();
-                pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating));
-                pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
-                pDialog.Show();
-                try
-                {
-                    var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser);
-                    pDialog.Dismiss();
-                    if (c.IsValid)
-                    {
-                        _customerViewModel = c;
-                        await CustomerManager.SaveCustomerAsync(_customerViewModel);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    pDialog.Dismiss();
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
-                }
-            }
-            else if (_customerViewModel == null)
-            {
+            _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
+
+            if (_customerViewModel == null)
                 _customerViewModel = await CustomerManager.ReadCustomerAsync();
-            }
-            if (_customerViewModel != null)
+            if (_customerViewModel == null)
+                _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile(true);
+
+            if (_customerViewModel.IsValid)
             {
                 _addressEditText.Text = _customerViewModel.MainStreet;
                 _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;

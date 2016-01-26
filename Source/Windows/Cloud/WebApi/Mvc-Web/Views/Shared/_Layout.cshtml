@@ -4,12 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+
     @Styles.Render("~/Content/css")
-<<<<<<< HEAD
-    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.2.0-rc2/css/bootstrap-rtl.min.css" rel="stylesheet" />*@
-=======
     <link href="~/Content/bootstrap-rtl.min.css" rel="stylesheet" />
->>>>>>> b8bd47447b37925ff43631e1818dd32413b0001b
     @Styles.Render("~/Content/kendo")
 
     @Scripts.Render("~/bundles/modernizr")
@@ -69,6 +66,7 @@
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/kendo")
     @Scripts.Render("~/bundles/app")
+
     <script>
         $(function () {
             ko.applyBindings(headerMenu, $(".header-menu")[0]);

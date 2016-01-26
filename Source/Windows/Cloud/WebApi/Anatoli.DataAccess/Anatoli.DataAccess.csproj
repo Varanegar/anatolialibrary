@@ -81,6 +81,7 @@
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
+    <Compile Include="Configs\PermissionConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Configs\SupplierConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Interfaces\Account\IPermissionRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalPermissionRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
@@ -305,6 +307,10 @@
     <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.Designer.cs">
       <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601221653447_AddingPermissionParent.cs" />
+    <Compile Include="Migrations\201601221653447_AddingPermissionParent.Designer.cs">
+      <DependentUpon>201601221653447_AddingPermissionParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -375,6 +381,7 @@
     <Compile Include="MyContextInitializer.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Account\PermissionRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalPermissionRepository.cs" />
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
@@ -546,6 +553,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601152051082_Customer-Ship-Address-1.resx">
       <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601221653447_AddingPermissionParent.resx">
+      <DependentUpon>201601221653447_AddingPermissionParent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

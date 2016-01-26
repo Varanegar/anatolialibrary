@@ -19,7 +19,7 @@ namespace Anatoli.App.Manager
             {
                 throw new ArgumentNullException("Could not save null user!");
             }
-            string content = customer.Address +
+            string content = customer.MainStreet +
                 Environment.NewLine + customer.BirthDay +
                 Environment.NewLine + customer.CustomerCode +
                 Environment.NewLine + customer.CustomerName +
@@ -46,37 +46,44 @@ namespace Anatoli.App.Manager
         public static async Task<CustomerViewModel> ReadCustomerAsync()
         {
 
-            byte[] cipherText = await Task.Run(() =>
+            try
             {
-                byte[] result = AnatoliClient.GetInstance().FileIO.ReadAllBytes(AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.customerInfoFile);
-                return result;
-            });
-            byte[] plainText = Crypto.DecryptAES(cipherText);
-            string cInfo = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
-            string[] cInfoFields = cInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            CustomerViewModel customer = new CustomerViewModel();
-            customer.Address = cInfoFields[0];
-            customer.BirthDay = cInfoFields[1];
-            customer.CustomerCode = cInfoFields[2];
-            customer.CustomerName = cInfoFields[3];
-            customer.FirstName = cInfoFields[4];
-            customer.LastName = cInfoFields[5];
-            customer.Email = cInfoFields[6];
-            customer.Mobile = cInfoFields[7];
-            customer.NationalCode = cInfoFields[8];
-            customer.Phone = cInfoFields[9];
-            customer.PostalCode = cInfoFields[10];
-            customer.UniqueId = cInfoFields[11];
-            customer.RegionLevel1Id = cInfoFields[12];
-            customer.RegionLevel2Id = cInfoFields[13];
-            customer.RegionLevel3Id = cInfoFields[14];
-            customer.RegionLevel4Id = cInfoFields[15];
-            return customer;
+                byte[] cipherText = await Task.Run(() =>
+                {
+                    byte[] result = AnatoliClient.GetInstance().FileIO.ReadAllBytes(AnatoliClient.GetInstance().FileIO.GetDataLoction(), Configuration.customerInfoFile);
+                    return result;
+                });
+                byte[] plainText = Crypto.DecryptAES(cipherText);
+                string cInfo = Encoding.Unicode.GetString(plainText, 0, plainText.Length);
+                string[] cInfoFields = cInfo.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                CustomerViewModel customer = new CustomerViewModel();
+                customer.MainStreet = cInfoFields[0];
+                customer.BirthDay = cInfoFields[1];
+                customer.CustomerCode = cInfoFields[2];
+                customer.CustomerName = cInfoFields[3];
+                customer.FirstName = cInfoFields[4];
+                customer.LastName = cInfoFields[5];
+                customer.Email = cInfoFields[6];
+                customer.Mobile = cInfoFields[7];
+                customer.NationalCode = cInfoFields[8];
+                customer.Phone = cInfoFields[9];
+                customer.PostalCode = cInfoFields[10];
+                customer.UniqueId = cInfoFields[11];
+                customer.RegionLevel1Id = cInfoFields[12];
+                customer.RegionLevel2Id = cInfoFields[13];
+                customer.RegionLevel3Id = cInfoFields[14];
+                customer.RegionLevel4Id = cInfoFields[15];
+                return customer;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public static async Task<CustomerViewModel> DownloadCustomerAsync(AnatoliUserModel user)
+        public static async Task<CustomerViewModel> DownloadCustomerAsync(AnatoliUserModel user, System.Threading.CancellationTokenSource CancellationTokenSource)
         {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl,
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.UserToken, Configuration.WebService.Users.ViewProfileUrl, CancellationTokenSource,
                 new Tuple<string, string>("Id", user.Id),
                 new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
             return userModel;
@@ -88,7 +95,14 @@ namespace Anatoli.App.Manager
                 user
                 );
             return userModel.First();
+        }
 
+        public static async Task<string> UploadImageAsync(string userId , Byte[] obj)
+        {
+            var result = await AnatoliClient.GetInstance().WebClient.SendFileAsync<string>(
+                TokenType.UserToken,
+                Configuration.WebService.ImageManager.ImageSave + "&imageType=" + ItemImageViewModel.CustomerImageType + "&imageId=" + userId + "&token=" + userId, obj);
+            return result;
         }
     }
 }

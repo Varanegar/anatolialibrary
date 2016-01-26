@@ -8,10 +8,12 @@
     <ImageView
         android:src="@android:drawable/ic_menu_gallery"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:id="@+id/imageView1"
         android:layout_gravity="center_horizontal"
-        android:layout_centerInParent="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY" />
     <AnatoliAndroid.Components.AnatoliTextView
         android:layout_width="150dp"
         android:layout_height="wrap_content"

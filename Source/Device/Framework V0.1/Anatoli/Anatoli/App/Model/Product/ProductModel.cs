@@ -14,6 +14,7 @@ namespace Anatoli.App.Model.Product
     {
         public int order_count { get; set; }
         public string cat_id { get; set; }
+        public string cat_name { get; set; }
         public int brand_id { get; set; }
         public string product_name { get; set; }
         public string product_id { get; set; }
@@ -24,6 +25,13 @@ namespace Anatoli.App.Model.Product
         public bool IsFavorit
         {
             get { return favorit == 1 ? true : false; }
+        }
+    }
+    public static class DoubleExtension
+    {
+        public static string ToCurrency(this double value)
+        {
+            return Math.Round(value, 0).ToString("N0");
         }
     }
 }

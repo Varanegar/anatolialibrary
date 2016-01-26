@@ -20,6 +20,10 @@ using System.Threading.Tasks;
 using Android.Locations;
 using Anatoli.App;
 using Anatoli.App.Model;
+using Android.Provider;
+using Android.Graphics;
+using Android.Database;
+
 
 namespace AnatoliAndroid.Activities
 {
@@ -82,7 +86,7 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             try
             {
-                int v = Anatoli.App.SyncManager.LoadDBVersion();
+                int v = Anatoli.App.Manager.SyncManager.LoadDBVersion();
                 if (v == 0)
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
@@ -92,6 +96,13 @@ namespace AnatoliAndroid.Activities
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
+                if (AnatoliApp.GetInstance().AnatoliUser != null)
+                {
+#pragma warning disable
+                    AnatoliApp.GetInstance().RefreshCutomerProfile();
+                    BasketManager.SyncDataBase();
+#pragma warning restore
+                }
             }
             catch (Exception)
             {
@@ -101,7 +112,41 @@ namespace AnatoliAndroid.Activities
 
 
         }
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
 
+            //if (resultCode == Result.Ok)
+            //{
+            //    Android.Net.Uri selectedImage = data.Data;
+            //    String[] filePathColumn = { MediaStore.Images.Media.DefaultSortOrder };
+            //    var cursor = ContentResolver.Query(selectedImage, filePathColumn, null, null, null);
+            //    if (cursor.MoveToFirst())
+            //    {
+            //        int columnIndex = cursor.GetColumnIndex(filePathColumn[0]);
+            //        String filePath = cursor.GetString(columnIndex);
+            //        Bitmap bitmap = BitmapFactory.DecodeFile(filePath);
+            //        CustomerManager.UploadImageAsync("aaa", bitmap);
+            //    }
+            //    cursor.Close();
+            //}
+        }
+        private string GetPathToImage(Android.Net.Uri uri)
+        {
+            string path = null;
+            // The projection contains the columns we want to return in our query.
+            string[] projection = new[] { Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data };
+            using (ICursor cursor = AnatoliApp.GetInstance().Activity.ManagedQuery(uri, projection, null, null, null))
+            {
+                if (cursor != null)
+                {
+                    int columnIndex = cursor.GetColumnIndexOrThrow(Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data);
+                    cursor.MoveToFirst();
+                    path = cursor.GetString(columnIndex);
+                }
+            }
+            return path;
+        }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
 

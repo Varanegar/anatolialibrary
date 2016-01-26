@@ -18,6 +18,68 @@ namespace Anatoli.Business.Parse
         #endregion
 
         #region Methods
+<<<<<<< HEAD
+=======
+        public async Task AddUserToInstallation(IdentityUser user, ParseInstallation installation)
+        {
+            var parseUser = new ParseUser()
+            {
+                Username = user.UserName,
+                Password = user.PasswordHash,
+                Email = user.Email
+            };
+
+            installation["user"] = parseUser;
+
+            await installation.SaveAsync();
+        }
+        public async Task AddUserToInstallation(IdentityUser user, Guid installationId)
+        {
+            var query = from inst in ParseInstallation.Query
+                        where inst.InstallationId == installationId
+                        select inst;
+
+            var installation = await query.FirstOrDefaultAsync();
+
+            await AddUserToInstallation(user, installation);
+        }
+
+        public async Task SignupAsync(IdentityUser user)
+        {
+            try
+            {
+                var parseUser = new ParseUser()
+                {
+                    Username = user.UserName,
+                    Password = user.PasswordHash,
+                    Email = user.Email
+                };
+
+                // other fields can be set just like with ParseObject
+                parseUser["phone"] = user.PhoneNumber;
+
+                await parseUser.SignUpAsync();
+            }
+            catch (Exception ex)
+            {
+                //Todo: log4net
+                throw;
+            }
+        }
+
+        public async Task LoginAsync(IdentityUser user)
+        {
+            try
+            {
+                await ParseUser.LogInAsync(user.UserName, user.PasswordHash);
+            }
+            catch (Exception ex)
+            {
+                //Todo: log4net
+                throw;
+            }
+        }
+>>>>>>> 6aea786f11dcad1ddc1fada949902ef2c8a801be
 
         public async Task CreateChannel(string channelName, List<IdentityUser> users)
         {

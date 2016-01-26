@@ -23,10 +23,10 @@ namespace AnatoliAndroid.ListAdapters
         {
             if (BackClick != null)
             {
-                BackClick(this,position);
+                BackClick(this, position);
             }
         }
         public event BackClickedEventHandler BackClick;
-        public delegate void BackClickedEventHandler(object sender,int position);
+        public delegate void BackClickedEventHandler(object sender, int position);
     }
 }

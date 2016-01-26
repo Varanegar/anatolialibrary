@@ -1,4 +1,5 @@
-﻿using RestSharp.Portable;
+﻿using Anatoli.Framework.Model;
+using RestSharp.Portable;
 using RestSharp.Portable.Authenticators;
 using RestSharp.Portable.Deserializers;
 using System;
@@ -339,6 +340,14 @@ namespace Anatoli.Framework.AnatoliBase
             request = CreateRequest(token, requestUri, HttpMethod.Post, parameters);
             return await ExecRequestAsync<Result>(client, request);
         }
+        public async Task SendPostRequestAsync(TokenType tokenType, string requestUri, params Tuple<string, string>[] parameters)
+        {
+            var client = new RestClient(Configuration.WebService.PortalAddress);
+            RestRequest request;
+            var token = await GetTokenAsync(tokenType);
+            request = CreateRequest(token, requestUri, HttpMethod.Post, parameters);
+            await ExecRequestAsync(client, request);
+        }
         public async Task<Result> SendPostRequestAsync<Result>(TokenType tokenType, string requestUri, object obj)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
@@ -353,6 +362,15 @@ namespace Anatoli.Framework.AnatoliBase
             RestRequest request;
             var token = await GetTokenAsync(tokenType);
             request = CreateRequest(token, requestUri, HttpMethod.Post, obj, parameters);
+            return await ExecRequestAsync<Result>(client, request);
+        }
+        public async Task<Result> SendFileAsync<Result>(TokenType tokenType, string requestUri, Byte[] bytes)
+        {
+            var client = new RestClient(Configuration.WebService.PortalAddress);
+            RestRequest request;
+            var token = await GetTokenAsync(tokenType);
+            request = CreateRequest(token, requestUri, HttpMethod.Post);
+            request.AddFile("test", bytes, "ttt");
             return await ExecRequestAsync<Result>(client, request);
         }
         public async Task<Result> SendGetRequestAsync<Result>(TokenType tokenType, string requestUri, System.Threading.CancellationTokenSource cancelToken, params Tuple<string, string>[] parameters)
@@ -414,6 +432,11 @@ namespace Anatoli.Framework.AnatoliBase
                 throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
             }
         }
+        async Task ExecRequestAsync(RestClient client, RestRequest request)
+        {
+            client.IgnoreResponseStatusCode = true;
+            RestSharp.Portable.IRestResponse respone = await client.Execute(request);
+        }
         Result ExecRequest<Result>(RestClient client, RestRequest request, System.Threading.CancellationTokenSource tokenSource)
         {
             client.IgnoreResponseStatusCode = true;
@@ -436,12 +459,6 @@ namespace Anatoli.Framework.AnatoliBase
             }
         }
 
-    }
-    public class AnatoliMetaInfo
-    {
-        public string ErrorString { get; set; }
-        public string ErrorCode { get; set; }
-        public bool Result { get; set; }
     }
     public class AnatoliTokenInfo
     {

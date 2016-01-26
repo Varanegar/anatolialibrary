@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 using Anatoli.Framework.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.Framework.AnatoliBase;
-using Parse;
 using Anatoli.Framework.DataAdapter;
 using PCLCrypto;
 using Anatoli.App.Model;
 namespace Anatoli.App.Manager
 {
-    public class TempResult : Anatoli.Framework.Model.BaseDataModel
-    {
-
-    }
     public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
@@ -24,11 +19,9 @@ namespace Anatoli.App.Manager
             var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
             if (userModel.IsValid)
             {
-                ParseInstallation installation = ParseInstallation.CurrentInstallation;
-                //await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + Parse);
-                var id = installation.InstallationId;
-                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo + "/GetSample", new Tuple<string, string>("installationId", id.ToString()));
-                await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<TempResult>(TokenType.UserToken, Configuration.WebService.ParseInfo, new Tuple<string, string>("installationId",id.ToString()));
+#pragma warning disable
+                BasketManager.SyncDataBase();
+#pragma warning restore
             }
             return userModel;
         }
@@ -116,6 +109,7 @@ namespace Anatoli.App.Manager
                     {
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
+                        fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.customerInfoFile);
                     }
                     );
                 return true;
@@ -126,5 +120,15 @@ namespace Anatoli.App.Manager
             }
         }
 
+
+        public static async Task<ChangePasswordBindingModel> ChangePassword(string p1, string p2)
+        {
+            var obj = new ChangePasswordBindingModel();
+            obj.ConfirmPassword = p2;
+            obj.NewPassword = p2;
+            obj.OldPassword = p1;
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ChangePasswordBindingModel>(TokenType.UserToken, Configuration.WebService.Users.ChangePasswordUri, obj);
+            return result;
+        }
     }
 }

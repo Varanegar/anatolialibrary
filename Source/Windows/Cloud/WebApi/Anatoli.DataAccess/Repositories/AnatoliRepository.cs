@@ -116,6 +116,22 @@ namespace Anatoli.DataAccess.Repositories
 
             await factory.StartNew(() => DbSet.Remove(entity));
         }
+
+        public virtual async Task DeleteRangeAsync(List<T> entities)
+        {
+            entities.ForEach(entity =>
+            {
+                DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+                if (dbEntityEntry.State != EntityState.Deleted)
+                    dbEntityEntry.State = EntityState.Deleted;
+                else
+                    DbSet.Attach(entity);
+            });
+
+            await Task.Factory.StartNew(() => DbSet.RemoveRange(entities));
+        }
+
         public virtual async Task DeleteAsync(Guid id)
         {
             var entity = GetByIdAsync(id);

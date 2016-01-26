@@ -16,7 +16,7 @@
   <uses-permission android:name="com.parse.parseunitypushsample.permission.C2D_MESSAGE" />
 
   <application android:label="ParseUnityPushSample" android:icon="@drawable/app_icon">
-    <activity android:name=".UnityPlayerActivity">
+    <activity android:name="com.unity3d.player.UnityPlayerActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

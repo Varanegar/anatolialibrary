@@ -21,6 +21,7 @@ namespace Anatoli.DataAccess.Interfaces
         void Update(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task DeleteRangeAsync(List<T> entities);
         Task DeleteAsync(Guid id);
         void EntryModified(T entity);
         void SaveChanges();

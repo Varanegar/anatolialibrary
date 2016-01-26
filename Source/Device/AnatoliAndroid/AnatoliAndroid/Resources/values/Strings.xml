@@ -8,6 +8,7 @@
   <string name="EneterUserNamePass">نام کاربری و کلمه عبور را تایپ نمایید!</string>
   <string name="LoginFailed">ورود نا موفق</string>
   <string name="AllProducts">همه محصولات</string>
+  <string name="FirstPage">صفحه اصلی</string>
 
   <string name="MyList">فهرست من</string>
   <string name="MyStore">فروشگاه من</string>
@@ -18,7 +19,8 @@
   <string name="MainMenu">منوی اصلی</string>
   <string name="NetworkAccessFailed">خطای دسترسی به اینترنت</string>
   <string name="PleaseConnectToInternet">لطفا دستگاه خود را به اینترنت متصل نمایید</string>
-
+  <string name="PleaseEnterValidEmail">لطفا ایمیل معتبر وارد نمایید</string>
+  <string name="PleaseEnterValidPhone">لطفا شماره صحیح را وارد نمایید</string>
   <string name="ItemRemoved">حذف شد !</string>
   <string name="RemoveFromList">حذف از فهرست من</string>
   <string name="AddToList">افزودن به فهرست من</string>
@@ -40,6 +42,8 @@
   <string name="Zone2">ناحیه</string>
   <string name="Save">ثبت</string>
   <string name="Id">کد ملی</string>
+  <string name="Password">کلمه عبور</string>
+  <string name="ChangePassword">تغییر کلمه عبور</string>
   <string name="AreYouSure">آیا اطمینان دارید؟</string>
   <string name="Yes">آره</string>
   <string name="No">بی خیال !</string>
@@ -55,7 +59,7 @@
   <string name="KMeter">کیلومتر</string>
   <string name="UnknownDistance">فاصله نامشخص</string>
   <string name="DistanceFromYou">فاصله از شما</string>
-  
+
   <string name="PleaseWait">لطفا صبور باشید</string>
   <string name="SaveSuccess">عضویت انجام شد</string>
   <string name="Cancel">بی خیال</string>
