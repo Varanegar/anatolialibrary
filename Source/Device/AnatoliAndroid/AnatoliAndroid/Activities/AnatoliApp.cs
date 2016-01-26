@@ -243,12 +243,12 @@ namespace AnatoliAndroid.Activities
                 {
                     _productsListF = _currentFragment as ProductsListFragment;
                 }
-                await _productsListF.Search("product_name", value);
+                await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
             {
-                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prfoucts_fragment");
-                await _productsListF.Search("product_name", value);
+                _productsListF = SetFragment<ProductsListFragment>(_productsListF, "prdoucts_fragment");
+                await _productsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
             {
@@ -256,7 +256,7 @@ namespace AnatoliAndroid.Activities
                 {
                     _storesListF = _currentFragment as StoresListFragment;
                 }
-                await _storesListF.Search("store_name", value);
+                await _storesListF.Search(new Tuple<string, string>("store_name", value));
             }
         }
         void _searchBarImageButton_Click(object sender, EventArgs e)
@@ -381,6 +381,10 @@ namespace AnatoliAndroid.Activities
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
                         break;
+                    case DrawerMainItem.DrawerMainItems.FirstPage:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        AnatoliApp.GetInstance().SetFragment<FirstFragment>(new FirstFragment(), "first_fragment");
+                        break;
                     case DrawerMainItem.DrawerMainItems.Login:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         var transaction = Activity.FragmentManager.BeginTransaction();
@@ -470,6 +474,11 @@ namespace AnatoliAndroid.Activities
                     }
                     AnatoliApp.GetInstance().RefreshMenuItems(categories);
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
+                    if (temp.Count == 0)
+                    {
+                        AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                    }
                 }
                 else
                 {
@@ -684,6 +693,11 @@ namespace AnatoliAndroid.Activities
                 mainItems.Add(loginMenuEntry);
             }
 
+
+            var firstPageMenuEntry = new DrawerMainItem();
+            firstPageMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.FirstPage;
+            firstPageMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.FirstPage);
+            mainItems.Add(firstPageMenuEntry);
 
 
             var categoriesMenuEntry = new DrawerMainItem();

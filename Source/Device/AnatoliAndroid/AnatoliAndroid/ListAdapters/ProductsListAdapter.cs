@@ -173,7 +173,7 @@ namespace AnatoliAndroid.ListAdapters
                     {
                         while (item.count > 0)
                         {
-                            await Task.Delay(150);
+                            await Task.Delay(90);
                             item.count--;
                             counter.Text = (--a).ToString();
                             p = p - item.price;
@@ -295,10 +295,10 @@ namespace AnatoliAndroid.ListAdapters
                 }
             };
 
-            _relativeLayout4.Click += (s, e) =>
-            {
-                OnBackClicked(position);
-            };
+            //_relativeLayout4.Click += (s, e) =>
+            //{
+            //    OnBackClicked(position);
+            //};
 
 
             return view;

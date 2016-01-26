@@ -54,7 +54,7 @@ namespace Anatoli.App.Manager
             }
             catch (Exception e)
             {
-                throw e;
+                
             }
         }
         public static async Task SyncCloudAsync()

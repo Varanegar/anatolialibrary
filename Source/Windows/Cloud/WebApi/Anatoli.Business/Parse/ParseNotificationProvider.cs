@@ -18,6 +18,30 @@ namespace Anatoli.Business.Parse
         #endregion
 
         #region Methods
+        public async Task AddUserToInstallation(IdentityUser user, ParseInstallation installation)
+        {
+            var parseUser = new ParseUser()
+            {
+                Username = user.UserName,
+                Password = user.PasswordHash,
+                Email = user.Email
+            };
+
+            installation["user"] = parseUser;
+
+            await installation.SaveAsync();
+        }
+        public async Task AddUserToInstallation(IdentityUser user, Guid installationId)
+        {
+            var query = from inst in ParseInstallation.Query
+                        where inst.InstallationId == installationId
+                        select inst;
+
+            var installation = await query.FirstOrDefaultAsync();
+
+            await AddUserToInstallation(user, installation);
+        }
+
         public async Task SignupAsync(IdentityUser user)
         {
             try
@@ -58,7 +82,7 @@ namespace Anatoli.Business.Parse
         {
             try
             {
-                var installations = await GetInstall    ations(users);
+                var installations = await GetInstallations(users);
 
                 foreach (var installation in installations)
                 {

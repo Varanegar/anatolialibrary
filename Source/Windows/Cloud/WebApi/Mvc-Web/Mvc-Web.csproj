@@ -15,7 +15,7 @@
     <AssemblyName>Mvc-Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -240,6 +240,7 @@
     <Content Include="Views\Products\StoreRequestsHistory.cshtml" />
     <Content Include="Views\Products\ReviewProductRequest.cshtml" />
     <Content Include="Views\UserManager\Index.cshtml" />
+    <Content Include="Views\UserManager\Permissions.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -267,7 +268,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>11680</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11680/</IISUrl>
+          <IISUrl>http://localhost:8091</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

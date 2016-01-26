@@ -1,11 +1,10 @@
-﻿using System;
-using Anatoli.Business.Proxy.Interfaces;
+﻿using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.AuthorizationModels;
 
 namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
 {
-    class PrincipalPermissionProxy : AnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel>, IAnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel>
+    public class PrincipalPermissionProxy : AnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel>, IAnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel>
     {
         public override PrincipalPermissionViewModel Convert(PrincipalPermission data)
         {
