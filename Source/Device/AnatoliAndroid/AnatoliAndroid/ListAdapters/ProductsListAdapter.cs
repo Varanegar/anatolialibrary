@@ -59,9 +59,9 @@ namespace AnatoliAndroid.ListAdapters
                 view = _context.LayoutInflater.Inflate(Resource.Layout.GroupSummaryLayout, null);
             else
                 if (convertView != null)
-                    view = convertView;
-                else
-                    view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+                view = convertView;
+            else
+                view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
 
             if (item.IsGroup)
             {
@@ -172,9 +172,18 @@ namespace AnatoliAndroid.ListAdapters
                 UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 _groupImageView.Click += async (s, e) =>
                 {
-                    ProductsListFragment fragment = new ProductsListFragment();
-                    await fragment.SetCatId(item.product_id.ToString());
-                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(fragment, "products_fragment");
+                    if (AnatoliApp.GetInstance().ProductsListF != null)
+                    {
+                        AnatoliApp.GetInstance().ProductsListF.ClearSearch();
+                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                        AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                    }
+                    else
+                    {
+                        AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
+                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                        AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                    }
                 };
                 return view;
             }

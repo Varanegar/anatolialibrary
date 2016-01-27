@@ -127,9 +127,19 @@ namespace AnatoliAndroid.Fragments
 
             imageView1.Click += async (s, e) =>
             {
-                ProductsListFragment fragment = new ProductsListFragment();
-                await fragment.SetCatId(item.cat_id.ToString());
-                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(fragment, "product_fragments");
+                if (AnatoliApp.GetInstance().ProductsListF != null)
+                {
+                    AnatoliApp.GetInstance().ProductsListF.ClearSearch();
+                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                }
+                else
+                {
+                    AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
+                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                }
+
             };
             return convertView;
         }
