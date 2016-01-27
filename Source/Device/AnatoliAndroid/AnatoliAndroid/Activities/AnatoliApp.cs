@@ -248,7 +248,7 @@ namespace AnatoliAndroid.Activities
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
             {
-                ProductsListF = SetFragment<ProductsListFragment>(ProductsListF, "prdoucts_fragment");
+                ProductsListF = SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                 await ProductsListF.SetCatId(null);
                 await ProductsListF.Search(new Tuple<string, string>("product_name", value), new Tuple<string, string>("cat_name", value));
             }
