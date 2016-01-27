@@ -33,6 +33,7 @@ namespace AnatoliAndroid.Fragments
         protected ListTools _toolsDialogFragment;
         private bool _firstShow = true;
         protected List<Tuple<string, string>> _searchKeyWords;
+        TextView _resultTextView;
         public BaseListFragment()
             : base()
         {
@@ -51,16 +52,16 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
+                _listAdapter.NotifyDataSetChanged();
                 if (_listAdapter.List.Count == 0)
-                {
-                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "هیچ موردی یافت نشد", ToastLength.Short).Show();
-                }
+                    OnEmptyList();
+                else
+                    OnFullList();
             }
             catch (Exception)
             {
 
             }
-            _listAdapter.NotifyDataSetChanged();
         }
         public void ClearSearch()
         {
@@ -76,6 +77,7 @@ namespace AnatoliAndroid.Fragments
         {
             _view = InflateLayout(inflater, container, savedInstanceState);
             _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
+            _resultTextView = _view.FindViewById<TextView>(Resource.Id.resultTextView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
 
@@ -91,6 +93,15 @@ namespace AnatoliAndroid.Fragments
                     _toolsDialogFragment.Show(AnatoliApp.GetInstance().Activity.FragmentManager, "sss");
                 };
             }
+            EmptyList += (s, e) =>
+            {
+                _resultTextView.Visibility = ViewStates.Visible;
+                _resultTextView.Text = "هیچ موردی یافت نشد";
+            };
+            FullList += (s, e) =>
+            {
+                _resultTextView.Visibility = ViewStates.Gone;
+            };
             return _view;
         }
         public async override void OnCreate(Bundle savedInstanceState)
@@ -103,9 +114,9 @@ namespace AnatoliAndroid.Fragments
                 {
                     _listAdapter.List = await _dataManager.GetNextAsync();
                     if (_listAdapter.Count == 0)
-                    {
                         OnEmptyList();
-                    }
+                    else
+                        OnFullList();
                     _listAdapter.NotifyDataSetChanged();
                 }
                 catch (Exception)
@@ -171,5 +182,14 @@ namespace AnatoliAndroid.Fragments
             }
         }
         public event EventHandler EmptyList;
+
+        void OnFullList()
+        {
+            if (FullList != null)
+            {
+                FullList.Invoke(this, new EventArgs());
+            }
+        }
+        public event EventHandler FullList;
     }
 }
