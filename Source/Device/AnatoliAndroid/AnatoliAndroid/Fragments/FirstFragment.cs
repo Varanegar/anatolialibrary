@@ -67,6 +67,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
+            AnatoliApp.GetInstance().ShowSearchIcon();
             var categories = await CategoryManager.GetFirstLevelAsync();
             var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
             _groupsGridView.Adapter = groupAdapter;
@@ -143,5 +144,6 @@ namespace AnatoliAndroid.Fragments
             };
             return convertView;
         }
+        
     }
 }
