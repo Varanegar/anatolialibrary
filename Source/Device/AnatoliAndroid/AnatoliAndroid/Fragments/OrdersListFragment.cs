@@ -19,21 +19,7 @@ namespace AnatoliAndroid.Fragments
 {
     class OrdersListFragment : BaseListFragment<OrderManager, OrdersListAdapter, NoListToolsDialog, OrderModel>
     {
-        protected override List<Anatoli.Framework.AnatoliBase.QueryParameter> CreateQueryParameters()
-        {
-            var parameters = new List<QueryParameter>();
-            return parameters;
-        }
 
-        protected override string GetTableName()
-        {
-            return "orders_view";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return "none";
-        }
         public override void OnResume()
         {
             base.OnResume();

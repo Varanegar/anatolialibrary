@@ -22,29 +22,25 @@ namespace AnatoliAndroid.Fragments
     [FragmentTitle("دسته بندی کالا")]
     class ProductsListFragment : BaseSwipeListFragment<ProductManager, ProductsListAdapter, NoListToolsDialog, ProductModel>
     {
-        string cat_id = null;
+        public ProductsListFragment()
+        {
+            var query = new StringQuery("SELECT * FROM products_price_view ORDER BY cat_id");
+            _dataManager.SetQueries(query, null);
+        }
         public override void OnStart()
         {
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
         }
-
-        protected override List<QueryParameter> CreateQueryParameters()
-        {
-            var parameters = new List<QueryParameter>();
-            parameters.Add(new SortParam("order_count", SortTypes.DESC));
-            var leftRight = CategoryManager.GetLeftRight(cat_id);
-            if (leftRight != null)
-            {
-                parameters.Add(new GreaterFilterParam("cat_left", leftRight.left.ToString()));
-                parameters.Add(new SmallerFilterParam("cat_right", leftRight.right.ToString()));
-            }
-            return parameters;
-        }
         public async Task SetCatId(string id)
         {
-            cat_id = id;
-            SetParameters();
+            var leftRight = CategoryManager.GetLeftRight(id);
+            StringQuery query;
+            if (leftRight != null)
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left > {0} AND cat_right < {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
+            else
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
+            _dataManager.SetQueries(query, null);
             try
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
@@ -54,16 +50,6 @@ namespace AnatoliAndroid.Fragments
             {
 
             }
-        }
-
-        protected override string GetTableName()
-        {
-            return "products_price_view";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return Configuration.WebService.Products.ProductsView;
         }
     }
 }

@@ -169,12 +169,14 @@ namespace AnatoliAndroid.ListAdapters
             {
                 _groupNameTextView.Text = item.product_name;
                 string imguriii = CategoryManager.GetImageAddress(item.product_id, item.image);
-                UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                if (imguriii != null)
+                {
+                    UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                }
                 _groupImageView.Click += async (s, e) =>
                 {
                     if (AnatoliApp.GetInstance().ProductsListF != null)
                     {
-                        AnatoliApp.GetInstance().ProductsListF.ClearSearch();
                         await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                         AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                     }

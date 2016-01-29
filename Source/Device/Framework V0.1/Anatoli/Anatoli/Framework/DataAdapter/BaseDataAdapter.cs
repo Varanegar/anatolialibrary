@@ -13,117 +13,56 @@ namespace Anatoli.Framework.DataAdapter
     public class BaseDataAdapter<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        public async Task<List<DataModel>> GetListAsync(DBQuery localParameters)
+        public static async Task<List<DataModel>> GetListAsync(RemoteQuery query)
         {
-            return await GetListAsync(localParameters, null);
-        }
-        public async Task<List<DataModel>> GetListAsync(RemoteQuery remoteParameters)
-        {
-            return await GetListAsync(null, remoteParameters);
-        }
-        public async Task<List<DataModel>> GetListAsync(DBQuery localParameters, RemoteQuery remoteParameters)
-        {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
-            if (policy == SYNC_POLICY.ForceOnline && remoteParameters == null)
-            {
-                throw new SyncPolicyHelper.SyncPolicyException();
-            }
-            if (policy == SYNC_POLICY.OnlineIfConnected && remoteParameters != null)
-            {
-                if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                {
-                    try
-                    {
-                        var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<DataModel>>(
-                            TokenType.AppToken,
-                        remoteParameters.WebServiceEndpoint,
-                        remoteParameters.cancellationTokenSource,
-                        remoteParameters.Params.ToArray()
-                        );
-                        return response;
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                }
-            }
-            if (localParameters != null)
+            if (AnatoliClient.GetInstance().WebClient.IsOnline())
             {
                 try
                 {
+                    var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<DataModel>>(
+                        TokenType.AppToken,
+                    query.WebServiceEndpoint,
+                    query.cancellationTokenSource,
+                    query.Params.ToArray()
+                    );
+                    return response;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            {
+                throw new NoInternetAccess();
+            }
+        }
+        public static async Task<List<DataModel>> GetListAsync(DBQuery query)
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
                     using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                     {
-                        var command = connection.CreateCommand(localParameters.GetCommand());
+                        var command = connection.CreateCommand(query.GetCommand());
                         var result = command.ExecuteQuery<DataModel>();
                         return result;
                     }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                });
             }
-            throw new SyncPolicyHelper.SyncPolicyException();
-        }
-        public static async Task<DataModel> GetItemAsync(DBQuery localParameters, RemoteQuery remoteParameters)
-        {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
-            DataModel data = null;
-            try
+            catch (Exception e)
             {
-                if (policy == SYNC_POLICY.ForceOnline)
-                {
-                    data = await CloudReadAsync(remoteParameters);
-                }
-                else if (policy == SYNC_POLICY.OnlineIfConnected)
-                {
-                    if (AnatoliClient.GetInstance().WebClient.IsOnline() && remoteParameters != null)
-                        data = await CloudReadAsync(remoteParameters);
-                    else
-                        data = await LocalReadAsync(localParameters);
-                }
-                else if (policy == SYNC_POLICY.Offline)
-                {
-                    data = await LocalReadAsync(localParameters);
-                }
-                return data;
-            }
-            catch (Exception)
-            {
-                throw;
+                throw e;
             }
         }
-
-        static async Task<DataModel> LocalReadAsync(DBQuery parameters)
-        {
-            try
-            {
-                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
-                {
-                    var query = connection.CreateCommand(parameters.GetCommand());
-
-                    var qResult = query.ExecuteQuery<DataModel>();
-                    if (qResult.Count > 0)
-                    {
-                        return qResult.First<DataModel>();
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        static async Task<DataModel> CloudReadAsync(RemoteQuery parameters)
+        public static async Task<DataModel> GetItemAsync(RemoteQuery query)
         {
             try
             {
                 var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<DataModel>(
                     TokenType.UserToken,
-                parameters.WebServiceEndpoint,
-                parameters.Params.ToArray()
+                query.WebServiceEndpoint,
+                query.Params.ToArray()
                 );
                 if (response != null)
                 {
@@ -136,78 +75,42 @@ namespace Anatoli.Framework.DataAdapter
                 throw;
             }
         }
-        public static DataModel CloudInsert(RemoteQuery query)
-        {
-            throw new NotImplementedException();
-        }
-        internal static async Task<List<DataModel>> GetListStaticAsync(DBQuery dbQuery, RemoteQuery remoteQuery)
-        {
-            SYNC_POLICY policy = SyncPolicyHelper.GetInstance().GetModelSyncPolicy(typeof(DataModel));
-            if (policy == SYNC_POLICY.ForceOnline && remoteQuery == null)
-            {
-                throw new SyncPolicyHelper.SyncPolicyException();
-            }
-            if (policy == SYNC_POLICY.OnlineIfConnected && remoteQuery != null)
-            {
-                if (AnatoliClient.GetInstance().WebClient.IsOnline())
-                {
-                    try
-                    {
-                        var response = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<DataModel>>(
-                            remoteQuery.TokenType,
-                        remoteQuery.WebServiceEndpoint,
-                        remoteQuery.cancellationTokenSource,
-                        remoteQuery.Params.ToArray()
-                        );
-                        return response;
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                }
-            }
-            if (dbQuery != null)
-            {
-                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
-                {
-                    try
-                    {
-                        var command = connection.CreateCommand(dbQuery.GetCommand());
-                        var result = command.ExecuteQuery<DataModel>();
-                        return result;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
-                }
-            }
-            else
-                throw new SyncPolicyHelper.SyncPolicyException();
-        }
-        internal static int UpdateItemStatic(DBQuery dbQuery, RemoteQuery remoteQuery)
-        {
-            if (dbQuery == null && remoteQuery == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (dbQuery != null)
-            {
-                return LocalUpdate(dbQuery);
-            }
-            return 0;
-        }
-        static int LocalUpdate(DBQuery dbQuery)
+        public static async Task<DataModel> GetItemAsync(DBQuery query)
         {
             try
             {
-                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                return await Task.Run((Func<DataModel>)(() =>
                 {
-                    var query = connection.CreateCommand(dbQuery.GetCommand());
-                    var qResult = query.ExecuteNonQuery();
-                    return qResult;
-                }
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        var command = connection.CreateCommand(query.GetCommand());
+                        var qResult = command.ExecuteQuery<DataModel>();
+                        if (qResult.Count > 0)
+                        {
+                            return qResult.First();
+                        }
+                        return null;
+                    }
+                }));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public static async Task<int> UpdateItemAsync(DBQuery query)
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        var command = connection.CreateCommand(query.GetCommand());
+                        var qResult = command.ExecuteNonQuery();
+                        return qResult;
+                    }
+                });
             }
             catch (Exception)
             {

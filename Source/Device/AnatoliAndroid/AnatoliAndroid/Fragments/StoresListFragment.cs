@@ -27,6 +27,8 @@ namespace AnatoliAndroid.Fragments
         Location _currentLocation;
         public StoresListFragment()
         {
+            StringQuery query = new StringQuery("SELECT * FROM stores");
+            _dataManager.SetQueries(query, null);
             _listAdapter.StoreSelected += (store) =>
                 {
                     foreach (var item in _listAdapter.List)
@@ -66,21 +68,6 @@ namespace AnatoliAndroid.Fragments
             }
         }
 
-        protected override List<QueryParameter> CreateQueryParameters()
-        {
-            var parameters = new List<QueryParameter>();
-            return parameters;
-        }
-
-        protected override string GetTableName()
-        {
-            return "stores";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return Configuration.WebService.Stores.StoresView;
-        }
         public override void OnStart()
         {
             base.OnStart();

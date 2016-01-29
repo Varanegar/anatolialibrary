@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class OrderManager : BaseManager<BaseDataAdapter<OrderModel>, OrderModel>
+    public class OrderManager : BaseManager<OrderModel>
     {
         public static async Task<bool> SaveOrder()
         {
@@ -21,7 +21,7 @@ namespace Anatoli.App.Manager
                     new BasicParam("order_status", "0"),
                     new BasicParam("order_date", DateTime.Now.ToLocalTime().ToString())
                     );
-                var result = await LocalUpdateAsync(command);
+                var result = await BaseDataAdapter<OrderItemModel>.UpdateItemAsync(command);
                 if (result > 0)
                 {
                     var latestOrder = await GetLatestOrder();
@@ -37,7 +37,7 @@ namespace Anatoli.App.Manager
                         parametres.Add(p);
                     }
                     InsertAllCommand command2 = new InsertAllCommand("order_items", parametres);
-                    var r = await LocalUpdateAsync(command2);
+                    var r = await BaseDataAdapter<OrderItemModel>.UpdateItemAsync(command2);
                     if (r > 0)
                     {
                         await ShoppingCardManager.ClearAsync();
@@ -56,13 +56,13 @@ namespace Anatoli.App.Manager
         public static async Task<OrderModel> GetOrderAsync(string orderId)
         {
             SelectQuery query = new SelectQuery("orders_view", new EqFilterParam("order_id", orderId));
-            return await GetItemAsync(query);
+            return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
         }
 
         public static async Task<OrderModel> GetLatestOrder()
         {
             SelectQuery query = new SelectQuery("orders", new SortParam("order_id", SortTypes.DESC));
-            return await GetItemAsync(query);
+            return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
         }
     }
 }

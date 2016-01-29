@@ -9,27 +9,16 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Framework.Manager
 {
-    public abstract class BaseManager<DataAdapter, DataModel>
-        where DataAdapter : BaseDataAdapter<DataModel>, new()
+    public abstract class BaseManager<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        protected DataAdapter dataAdapter = null;
-        int _limit = 10;
+        int _limit = 20;
         protected DBQuery _localP;
         protected RemoteQuery _remoteP;
         public int Limit
         {
             get { return _limit; }
             set { _limit = value; }
-        }
-        protected BaseManager()
-        {
-            dataAdapter = new DataAdapter();
-        }
-
-        public bool IsIdValid(string id)
-        {
-            return true;
         }
         public void SetQueries(DBQuery dbQuery, RemoteQuery remoteQuery)
         {
@@ -51,7 +40,7 @@ namespace Anatoli.Framework.Manager
             {
                 _remoteP.Limit = _limit;
             }
-            var list = await Task.Run(() => { return dataAdapter.GetListAsync(_localP, _remoteP); });
+            var list = await Task.Run(() => { return BaseDataAdapter<DataModel>.GetListAsync(_localP); });
             if (_localP != null)
             {
                 _localP.Index += Math.Min(list.Count, _limit);
@@ -61,41 +50,6 @@ namespace Anatoli.Framework.Manager
                 _remoteP.Index += Math.Min(list.Count, _limit);
             }
             return list;
-        }
-        //public static List<DataModel> GetList(DBQuery dbQuery, RemoteQuery remoteQuery)
-        //{
-        //    if (dbQuery == null && remoteQuery == null)
-        //    {
-        //        throw new ArgumentNullException();
-        //    }
-        //    var list = await BaseDataAdapter<DataModel>.GetListStaticAsync(dbQuery, remoteQuery);
-        //    return list;
-        //}
-        public static async Task<List<DataModel>> GetListAsync(DBQuery dbQuery, RemoteQuery remoteQuery)
-        {
-            if (dbQuery == null && remoteQuery == null)
-            {
-                throw new ArgumentNullException();
-            }
-            var list = await BaseDataAdapter<DataModel>.GetListStaticAsync(dbQuery, remoteQuery);
-            return list;
-        }
-        public static async Task<DataModel> GetItemAsync(DBQuery query)
-        {
-            return await BaseDataAdapter<DataModel>.GetItemAsync(query, null);
-        }
-        //public static DataModel GetItem(DBQuery query)
-        //{
-        //    return await BaseDataAdapter<DataModel>.GetItemAsync(query, null);
-        //}
-        /// <summary>
-        /// Runs a query and saves data to the locl sqlite database
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public static async Task<int> LocalUpdateAsync(DBQuery command)
-        {
-            return await Task.Run(() => { return BaseDataAdapter<DataModel>.UpdateItemStatic(command, null); });
         }
     }
 }

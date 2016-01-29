@@ -12,12 +12,12 @@ using Anatoli.App.Model.Store;
 
 namespace Anatoli.App.Manager
 {
-    public class ShoppingCardManager : BaseManager<BaseDataAdapter<ProductModel>, ProductModel>
+    public class ShoppingCardManager : BaseManager<ProductModel>
     {
         public static async Task<ProductModel> GetItemAsync(string id)
         {
             SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString().ToUpper()));
-            return await GetItemAsync(query);
+            return await BaseDataAdapter<ProductModel>.GetItemAsync(query);
         }
         public static async Task<bool> AddProductAsync(string productId, int count)
         {
@@ -29,7 +29,7 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (count).ToString()), new BasicParam("product_id", productId));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await LocalUpdateAsync(query) > 0 ? true : false;
+                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
             }
             catch (Exception)
             {
@@ -43,7 +43,7 @@ namespace Anatoli.App.Manager
                 query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await LocalUpdateAsync(query) > 0 ? true : false;
+            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
         }
         public static async Task<bool> RemoveProductAsync(ProductModel item, bool all = false)
         {
@@ -52,14 +52,14 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await LocalUpdateAsync(query) > 0 ? true : false;
+            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
         }
 
         public async static Task<double> GetTotalPriceAsync()
         {
             SelectQuery query = new SelectQuery("shopping_card_view");
             query.Unlimited = true;
-            var result = await GetListAsync(query, null);
+            var result = await BaseDataAdapter<ProductModel>.GetListAsync(query);
             double p = 0;
             foreach (var item in result)
             {
@@ -67,24 +67,18 @@ namespace Anatoli.App.Manager
             }
             return p;
         }
-        //public static List<ProductModel> GetAllItems()
-        //{
-        //    SelectQuery query = new SelectQuery("shopping_card_view");
-        //    query.Unlimited = true;
-        //    return GetList(query, null);
-        //}
         public static async Task<List<ProductModel>> GetAllItemsAsync()
         {
             SelectQuery query = new SelectQuery("shopping_card_view");
             query.Unlimited = true;
-            var list = await GetListAsync(query, null);
+            var list = await BaseDataAdapter<ProductModel>.GetListAsync(query);
             return list;
         }
 
         public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
-            return (await LocalUpdateAsync(command) > 0) ? true : false;
+            return (await BaseDataAdapter<ProductModel>.UpdateItemAsync(command) > 0) ? true : false;
         }
 
         public static async Task<int> GetItemsCountAsync()
@@ -110,7 +104,7 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await LocalUpdateAsync(query) > 0 ? true : false;
+            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
         }
 
         public static async Task<PurchaseOrderViewModel> CalcPromo(string userId, string storeId)
@@ -140,19 +134,5 @@ namespace Anatoli.App.Manager
                 throw ex;
             }
         }
-
-        //public static async Task Updload()
-        //{
-        //    var products = await GetAllItemsAsync();
-        //    IncompletePurchaseOrderViewModel ip = new IncompletePurchaseOrderViewModel();
-        //    foreach (var item in products)
-        //    {
-        //        var line = new IncompletePurchaseOrderLineItemViewModel();
-        //        line.ProductId = item.product_id;
-        //        line.Qty = item.count;
-        //        ip.LineItems.Add(line);
-        //    }
-        //    var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<IncompletePurchaseOrderViewModel>(TokenType.UserToken, Configuration.WebService.Users.ShoppingCardSave, ip);
-        //}
     }
 }

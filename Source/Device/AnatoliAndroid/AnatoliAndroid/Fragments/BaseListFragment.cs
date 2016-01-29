@@ -21,19 +21,18 @@ using FortySevenDeg.SwipeListView;
 namespace AnatoliAndroid.Fragments
 {
     abstract class BaseListFragment<BaseDataManager, DataListAdapter, ListTools, DataModel> : Fragment
-        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
+        where BaseDataManager : BaseManager<DataModel>, new()
         where DataListAdapter : BaseListAdapter<BaseDataManager, DataModel>, new()
         where ListTools : ListToolsDialog, new()
         where DataModel : BaseDataModel, new()
     {
         protected View _view;
         protected ListView _listView;
+        TextView _resultTextView;
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
         private bool _firstShow = true;
-        protected List<Tuple<string, string>> _searchKeyWords;
-        TextView _resultTextView;
         public BaseListFragment()
             : base()
         {
@@ -41,18 +40,14 @@ namespace AnatoliAndroid.Fragments
             _dataManager = new BaseDataManager();
             _toolsDialogFragment = new ListTools();
         }
-        public async Task Search(params Tuple<string, string>[] keywords)
+        public async Task Search(DBQuery query, string value)
         {
-            _searchKeyWords = new List<Tuple<string, string>>();
-            foreach (var item in keywords)
-            {
-                _searchKeyWords.Add(item);
-            }
-            SetParameters();
+            _dataManager.SetQueries(query, null);
             try
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 _listAdapter.NotifyDataSetChanged();
+                AnatoliApp.GetInstance().SetToolbarTitle(string.Format("جستجو  \"{0}\"", value.Trim()));
                 if (_listAdapter.List.Count == 0)
                     OnEmptyList();
                 else
@@ -62,10 +57,6 @@ namespace AnatoliAndroid.Fragments
             {
 
             }
-        }
-        public void ClearSearch()
-        {
-            _searchKeyWords = null;
         }
         protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -109,7 +100,7 @@ namespace AnatoliAndroid.Fragments
             base.OnCreate(savedInstanceState);
             if (_firstShow)
             {
-                SetParameters();
+                //SetParameters();
                 try
                 {
                     _listAdapter.List = await _dataManager.GetNextAsync();
@@ -146,24 +137,6 @@ namespace AnatoliAndroid.Fragments
                 }
             }
         }
-        protected void SetParameters()
-        {
-            var parameters = CreateQueryParameters();
-            if (_searchKeyWords != null)
-            {
-                parameters.Clear();
-                foreach (var item in _searchKeyWords)
-                {
-                    var p = new SearchFilterParam(item.Item1, item.Item2);
-                    parameters.Add(p);
-                }
-            }
-            _dataManager.SetQueries(new SelectQuery(GetTableName(), "Or", parameters), null);
-        }
-
-        protected abstract List<QueryParameter> CreateQueryParameters();
-        protected abstract string GetTableName();
-        protected abstract string GetWebServiceUri();
 
         public void HideTools()
         {

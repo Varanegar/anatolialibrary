@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class ItemImageManager : BaseManager<BaseDataAdapter<ItemImageViewModel>, ItemImageViewModel>
+    public class ItemImageManager : BaseManager<ItemImageViewModel>
     {
         public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
@@ -19,7 +19,7 @@ namespace Anatoli.App.Manager
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("images");
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.ImageManager.Images + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
-                var list = await GetListAsync(null, q);
+                var list = await BaseDataAdapter<ItemImageViewModel>.GetListAsync(q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();

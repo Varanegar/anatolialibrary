@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class BaseTypeManager : BaseManager<BaseDataAdapter<BaseTypeViewModel>, BaseTypeViewModel>
+    public class BaseTypeManager : BaseManager<BaseTypeViewModel>
     {
         public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
@@ -19,7 +19,7 @@ namespace Anatoli.App.Manager
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("basetypes");
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
-                var list = await GetListAsync(null, q);
+                var list = await BaseDataAdapter<BaseTypeViewModel>.GetListAsync(q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
@@ -27,7 +27,7 @@ namespace Anatoli.App.Manager
                     {
                         if (item.UniqueId == BaseTypeViewModel.DeliveryType)
                         {
-                            var c = await LocalUpdateAsync(new DeleteCommand("delivery_types"));
+                            var c = await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
                             foreach (var value in item.BaseValues)
                             {
                                 InsertCommand command = new InsertCommand("delivery_types", new BasicParam("name", value.BaseValueName),
@@ -38,7 +38,7 @@ namespace Anatoli.App.Manager
                         }
                         else if (item.UniqueId == BaseTypeViewModel.PayType)
                         {
-                            var c = await LocalUpdateAsync(new DeleteCommand("pay_types"));
+                            var c = await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
                             foreach (var value in item.BaseValues)
                             {
                                 InsertCommand command = new InsertCommand("pay_types", new BasicParam("name", value.BaseValueName),

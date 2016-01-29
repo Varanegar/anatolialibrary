@@ -18,7 +18,7 @@ namespace AnatoliAndroid.ListAdapters
 {
     class BaseListAdapter<BaseDataManager, DataModel> : BaseAdapter<DataModel>
         where DataModel : BaseDataModel, new()
-        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
+        where BaseDataManager : BaseManager<DataModel>, new()
     {
         public List<DataModel> List;
         protected Activity _context;

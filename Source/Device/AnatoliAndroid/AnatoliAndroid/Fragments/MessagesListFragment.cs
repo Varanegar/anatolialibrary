@@ -40,20 +40,6 @@ namespace AnatoliAndroid.Fragments
                 }
             };
         }
-        protected override List<Anatoli.Framework.AnatoliBase.QueryParameter> CreateQueryParameters()
-        {
-            return new List<QueryParameter>();
-        }
-
-        protected override string GetTableName()
-        {
-            return "messages_view";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return "None";
-        }
 
         public override void OnDetach()
         {
