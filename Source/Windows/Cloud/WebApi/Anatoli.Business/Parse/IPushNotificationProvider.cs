@@ -14,7 +14,7 @@ namespace Anatoli.Business.Parse
         Task CreateChannel(string channelName, List<IdentityUser> users);
         Task Subscribe(List<string> channelNames, List<IdentityUser> users);
         Task UnSubscribe(string channelName, IdentityUser user);
-        Task SendNotification(string message, List<IdentityUser> users, ParseGeoPoint? location = null);
+        Task SendNotification(string message, List<string> users, ParseGeoPoint? location = null);
         Task SendData(IDictionary<string, object> data, List<IdentityUser> users, ParseGeoPoint? location = null);
         Task Broadcast(string channelName, string message, ParseGeoPoint? location = null);
         Task Broadcast(string channelName, IDictionary<string, object> data, ParseGeoPoint? location = null);

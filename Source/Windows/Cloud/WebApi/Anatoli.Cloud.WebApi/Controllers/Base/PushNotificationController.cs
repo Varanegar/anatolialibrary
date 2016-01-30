@@ -17,14 +17,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/push/parse")]
     public class RolesController : BaseApiController
     {
-        [Route("sendmessagetouser")]
-        public async Task<IHttpActionResult> PushMessage(string privateOwnerId, string appName, string username, string message)
-        {
+        //[Route("sendmessagetouser")]
+        //public async Task<IHttpActionResult> PushMessage(string privateOwnerId, string appName, string username, string message)
+        //{
 
-            var pushProvider = new ParseNotificationProvider();
-            pushProvider.SendNotification("سلام" + username, )
-            return OK(message);
+        //    var pushProvider = new ParseNotificationProvider();
+        //    //pushProvider.SendNotification("سلام" + username, )
+        //    //return OK();
 
-        }
+        //}
     }
 }

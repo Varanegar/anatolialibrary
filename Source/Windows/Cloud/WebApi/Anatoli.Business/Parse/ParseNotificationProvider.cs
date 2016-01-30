@@ -18,8 +18,6 @@ namespace Anatoli.Business.Parse
         #endregion
 
         #region Methods
-<<<<<<< HEAD
-=======
         public async Task AddUserToInstallation(IdentityUser user, ParseInstallation installation)
         {
             var parseUser = new ParseUser()
@@ -79,7 +77,6 @@ namespace Anatoli.Business.Parse
                 throw;
             }
         }
->>>>>>> 6aea786f11dcad1ddc1fada949902ef2c8a801be
 
         public async Task CreateChannel(string channelName, List<IdentityUser> users)
         {
@@ -166,15 +163,15 @@ namespace Anatoli.Business.Parse
             try
             {
 
-                var push = new ParsePush()
-                {
-                    Query = from installation in ParseInstallation.Query
-                            join user in userQuery on installation["user"] equals user
-                            select installation,
-                    Alert = message
-                };
+                //var push = new ParsePush()
+                //{
+                //    Query = from installation in ParseInstallation.Query
+                //            join user in userQuery on installation["user"] equals user
+                //            select installation,
+                //    Alert = message
+                //};
 
-                await push.SendAsync();
+                //await push.SendAsync();
             }
             catch (Exception ex)
             {
