@@ -12,7 +12,7 @@ namespace Anatoli.Framework.Manager
     public abstract class BaseManager<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        int _limit = 20;
+        int _limit = 50;
         protected DBQuery _localP;
         protected RemoteQuery _remoteP;
         public int Limit

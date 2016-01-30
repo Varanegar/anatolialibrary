@@ -167,9 +167,10 @@ namespace AnatoliAndroid.ListAdapters
             }
             if (item.IsGroup)
             {
-                new Runnable(async () => {
-                    _groupNameTextView.Text = await CategoryManager.GetFullName(item.cat_id); }
-                ).Run();
+                //new Runnable(async () => {
+                //    _groupNameTextView.Text = await CategoryManager.GetFullName(item.cat_id); }
+                //).Run();
+                _groupNameTextView.Text = item.product_name;
                 _groupNameTextView.Click += async (s, e) =>
                 {
                     if (AnatoliApp.GetInstance().ProductsListF != null)

@@ -51,7 +51,10 @@ namespace AnatoliAndroid.Fragments
                 if (_listAdapter.List.Count == 0)
                     OnEmptyList();
                 else
+                {
                     OnFullList();
+                    _listView.SetSelection(0);
+                }
             }
             catch (Exception)
             {
