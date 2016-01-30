@@ -239,9 +239,10 @@ namespace AnatoliAndroid.Activities
 
         async System.Threading.Tasks.Task Search(string value)
         {
+            value = value.Trim();
             if (String.IsNullOrEmpty(value))
                 return;
-            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.ProductsListFragment))
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(ProductsListFragment))
             {
                 if (ProductsListF == null)
                 {
@@ -251,13 +252,13 @@ namespace AnatoliAndroid.Activities
                 await ProductsListF.Search(ProductManager.Search(value), value);
 
             }
-            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.FirstFragment))
+            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(FirstFragment))
             {
-                ProductsListF = SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
+                ProductsListF = SetFragment(ProductsListF, "products_fragment");
                 await ProductsListF.SetCatId(null);
                 await ProductsListF.Search(ProductManager.Search(value), value);
             }
-            if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(AnatoliAndroid.Fragments.StoresListFragment))
+            if (GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
             {
                 if (_storesListF == null)
                 {
@@ -269,12 +270,12 @@ namespace AnatoliAndroid.Activities
         void _searchBarImageButton_Click(object sender, EventArgs e)
         {
             CloseSearchBar();
-            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+            DrawerLayout.CloseDrawer(GetInstance().DrawerListView);
         }
 
         void searchImageButton_Click(object sender, EventArgs e)
         {
-            DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+            DrawerLayout.CloseDrawer(GetInstance().DrawerListView);
             if (_searchBar)
             {
 
@@ -287,13 +288,13 @@ namespace AnatoliAndroid.Activities
 
         void toolbarImageButton_Click(object sender, EventArgs e)
         {
-            if (DrawerLayout.IsDrawerOpen(AnatoliApp.GetInstance().DrawerListView))
+            if (DrawerLayout.IsDrawerOpen(GetInstance().DrawerListView))
             {
-                DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                DrawerLayout.CloseDrawer(GetInstance().DrawerListView);
             }
             else
             {
-                DrawerLayout.OpenDrawer(AnatoliApp.GetInstance().DrawerListView);
+                DrawerLayout.OpenDrawer(GetInstance().DrawerListView);
             }
         }
 
@@ -301,7 +302,7 @@ namespace AnatoliAndroid.Activities
         {
             try
             {
-                return _list.Last<StackItem>().FragmentType;
+                return _list.Last().FragmentType;
             }
             catch (Exception)
             {
@@ -339,14 +340,14 @@ namespace AnatoliAndroid.Activities
         async void _drawerListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var selectedItem = AnatoliApp.GetInstance().AnatoliMenuItems[e.Position];
-            AnatoliApp.GetInstance().DrawerListView.SetItemChecked(e.Position, true);
+            GetInstance().DrawerListView.SetItemChecked(e.Position, true);
             if (selectedItem.GetType() == typeof(DrawerMainItem))
             {
                 switch (selectedItem.ItemId)
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await Anatoli.App.Manager.SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+                        if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }

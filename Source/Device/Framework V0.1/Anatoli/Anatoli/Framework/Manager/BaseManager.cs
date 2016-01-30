@@ -12,7 +12,7 @@ namespace Anatoli.Framework.Manager
     public abstract class BaseManager<DataModel>
         where DataModel : BaseDataModel, new()
     {
-        int _limit = 20;
+        int _limit = 50;
         protected DBQuery _localP;
         protected RemoteQuery _remoteP;
         public int Limit
@@ -26,7 +26,7 @@ namespace Anatoli.Framework.Manager
             _remoteP = remoteQuery;
         }
 
-        public async Task<List<DataModel>> GetNextAsync()
+        public virtual async Task<List<DataModel>> GetNextAsync()
         {
             if (_localP == null && _remoteP == null)
             {
