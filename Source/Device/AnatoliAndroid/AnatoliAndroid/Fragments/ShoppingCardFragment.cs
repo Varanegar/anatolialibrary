@@ -18,7 +18,6 @@ using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
-using FortySevenDeg.SwipeListView;
 using Android.Animation;
 using Android.Views.InputMethods;
 using Anatoli.App.Model.Store;

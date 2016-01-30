@@ -14,14 +14,9 @@
         p1:id="@+id/resultTextView"
         p1:gravity="center_horizontal"
         p1:visibility="gone" />
-    <com.fortysevendeg.swipelistview.SwipeListView
+    <ListView
         p1:listSelector="#00000000"
-        local:swipeFrontView="@+id/front"
-        local:swipeBackView="@+id/back"
-        local:swipeCloseAllItemsWhenMoveList="false"
-        local:swipeMode="both"
-        local:swipeActionLeft="reveal"
-        local:swipeActionRight="reveal"
+        
         p1:minWidth="25px"
         p1:minHeight="25px"
         p1:layout_width="match_parent"

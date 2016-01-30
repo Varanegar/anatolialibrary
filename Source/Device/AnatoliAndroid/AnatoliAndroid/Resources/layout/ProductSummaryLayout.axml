@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <LinearLayout
-        android:id="@+id/back"
+  <RelativeLayout
+      android:id="@+id/optionsLayout"
         android:tag="back"
+      android:visibility="gone"
         style="@style/ListBackContent">
-        <include
-            android:id="@+id/backLayout"
-            layout="@layout/BackProductSummaryLayout" />
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/front"
-        android:tag="front"
-        style="@style/ListFrontContent">
-        <include
-            android:id="@+id/frontLayout"
-            layout="@layout/FrontProductSummaryLayout" />
-    </RelativeLayout>
-</FrameLayout>
+    <include
+        android:id="@+id/backLayout"
+        layout="@layout/BackProductSummaryLayout" />
+  </RelativeLayout>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/front"
+      android:tag="front"
+      style="@style/ListFrontContent">
+    <include
+        android:id="@+id/frontLayout"
+        layout="@layout/FrontProductSummaryLayout" />
+  </RelativeLayout>
+</RelativeLayout>

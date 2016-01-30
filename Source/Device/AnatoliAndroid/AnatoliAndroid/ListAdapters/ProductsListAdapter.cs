@@ -14,11 +14,11 @@ using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Manager;
 using Koush;
 using System.Threading.Tasks;
-using FortySevenDeg.SwipeListView;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
 using Android.Content.Res;
 using Java.Lang;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -45,6 +45,7 @@ namespace AnatoliAndroid.ListAdapters
         LinearLayout _back;
         ImageView _groupImageView;
         TextView _groupNameTextView;
+        RelativeLayout _optionsLayout;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -91,7 +92,7 @@ namespace AnatoliAndroid.ListAdapters
                     _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                     _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
                     _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
-                    _back = view.FindViewById<LinearLayout>(Resource.Id.back);
+                    _optionsLayout = view.FindViewById<RelativeLayout>(Resource.Id.optionsLayout);
 
                     view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                     view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
@@ -108,7 +109,7 @@ namespace AnatoliAndroid.ListAdapters
                     view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                     view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
                     view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
-                    view.SetTag(Resource.Id.back, _back);
+                    view.SetTag(Resource.Id.optionsLayout, _optionsLayout);
                 }
 
                 else
@@ -128,7 +129,7 @@ namespace AnatoliAndroid.ListAdapters
                     _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
                     _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
                     _relativeLayout4 = (RelativeLayout)view.GetTag(Resource.Id.relativeLayout4);
-                    _back = (LinearLayout)view.GetTag(Resource.Id.back);
+                    _optionsLayout = (RelativeLayout)view.GetTag(Resource.Id.optionsLayout);
                     if (_productCountTextView == null)
                     {
                         view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
@@ -147,7 +148,7 @@ namespace AnatoliAndroid.ListAdapters
                         _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                         _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
                         _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
-                        _back = view.FindViewById<LinearLayout>(Resource.Id.back);
+                        _optionsLayout = view.FindViewById<RelativeLayout>(Resource.Id.optionsLayout);
 
                         view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                         view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
@@ -164,7 +165,7 @@ namespace AnatoliAndroid.ListAdapters
                         view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                         view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
                         view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
-                        view.SetTag(Resource.Id.back, _back);
+                        view.SetTag(Resource.Id.optionsLayout, _optionsLayout);
                     }
                 }
             }
@@ -387,11 +388,22 @@ namespace AnatoliAndroid.ListAdapters
                     }
                 };
 
-                
-                //_relativeLayout4.Click += (s, e) =>
-                //{
-                //    OnBackClicked(position);
-                //};
+                SwipeTouchListener tcl = new SwipeTouchListener(AnatoliApp.GetInstance().Activity);
+                view.SetOnTouchListener(tcl);
+                tcl.SwipeLeft += (s) =>
+                {
+                    if (_optionsLayout.Visibility == ViewStates.Gone)
+                    {
+                        _optionsLayout.Visibility = ViewStates.Visible;
+                    }
+                };
+                tcl.SwipeRight += (s) =>
+                {
+                    if (_optionsLayout.Visibility == ViewStates.Visible)
+                    {
+                        _optionsLayout.Visibility = ViewStates.Gone;
+                    }
+                };
 
 
                 return view;

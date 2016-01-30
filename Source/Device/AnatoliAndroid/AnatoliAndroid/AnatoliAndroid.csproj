@@ -68,10 +68,6 @@
     <Reference Include="Cheesebaron.SlidingUpPanel">
       <HintPath>..\Packages\Cheesebaron.SlidingUpPanel.dll</HintPath>
     </Reference>
-    <Reference Include="FortySevenDeg.SwipeListView, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\FortySevenDeg.SwipeListView.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android.Export" />
     <Reference Include="System.Collections" />
     <Reference Include="HockeyApp.Android">
@@ -141,6 +137,7 @@
     <Compile Include="Components\AnatoliSlideShow.cs" />
     <Compile Include="Components\AnatoliSwitch.cs" />
     <Compile Include="Components\AnatoliTextView.cs" />
+    <Compile Include="Components\SwipeTouchListener.cs" />
     <Compile Include="Components\TypeFaceProvider.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Fragments\BaseSwipeListFragment.cs" />

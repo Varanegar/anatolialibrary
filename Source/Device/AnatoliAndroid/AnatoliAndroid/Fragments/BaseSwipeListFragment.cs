@@ -13,8 +13,9 @@ using Anatoli.Framework.Manager;
 using Anatoli.Framework.DataAdapter;
 using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.Model;
-using FortySevenDeg.SwipeListView;
 using System.Threading.Tasks;
+using AnatoliAndroid.Activities;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -33,14 +34,13 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
-
             _listAdapter.BackClick += async (s, p) =>
             {
                 await Task.Delay(1000);
                 try
                 {
-                    var sl = _listView as SwipeListView;
-                    sl.CloseOpenedItems();
+                    //var sl = _listView as SwipeListView;
+                    //sl.CloseOpenedItems();
                 }
                 catch (Exception)
                 {
@@ -51,12 +51,17 @@ namespace AnatoliAndroid.Fragments
             return view;
         }
 
+        private void Tcl_SwipeRight(object sender, EventArgs e)
+        {
+            Console.WriteLine("Swipe right ..............");
+        }
+
         void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
         {
             try
             {
-                var sl = _listView as SwipeListView;
-                sl.CloseOpenedItems();
+                //var sl = _listView as SwipeListView;
+                //sl.CloseOpenedItems();
             }
             catch (Exception)
             {
@@ -64,4 +69,7 @@ namespace AnatoliAndroid.Fragments
             }
         }
     }
+
+
+
 }

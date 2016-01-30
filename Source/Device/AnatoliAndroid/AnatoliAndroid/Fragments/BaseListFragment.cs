@@ -16,7 +16,6 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
-using FortySevenDeg.SwipeListView;
 
 namespace AnatoliAndroid.Fragments
 {
