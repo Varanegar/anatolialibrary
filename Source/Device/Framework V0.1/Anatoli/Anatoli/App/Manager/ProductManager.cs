@@ -207,19 +207,48 @@ namespace Anatoli.App.Manager
 
         public static StringQuery Search(string value)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE product_name LIKE '%{0}%' OR cat_name LIKE '%{0}%' ORDER BY cat_id", value));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') ORDER BY cat_id", value));
             return query;
         }
 
         public static string GetImageAddress(string productId, string imageId)
         {
-            string imguri = String.Format("http://79.175.166.186/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId);
-            return imguri;
+            if (String.IsNullOrEmpty(productId) || string.IsNullOrEmpty(imageId))
+                return null;
+            else
+            {
+                string imguri = String.Format("http://79.175.166.186/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId);
+                return imguri;
+            }
         }
         public static async Task<List<ProductModel>> GetFavorits()
         {
             var dbQuery = new SelectQuery(_productsTbl, new EqFilterParam("favorit", "1"));
             return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
+        }
+
+        string lastGroupId = Guid.NewGuid().ToString();
+        public override async Task<List<ProductModel>> GetNextAsync()
+        {
+            var list = await base.GetNextAsync();
+            List<ProductModel> list2 = new List<ProductModel>();
+            foreach (var item in list)
+            {
+                if (!item.cat_id.Equals(lastGroupId))
+                {
+                    lastGroupId = item.cat_id;
+                    ProductModel g = new ProductModel();
+                    g.is_group = 1;
+                    g.cat_id = lastGroupId;
+                    g.cat_name = item.cat_name;
+                    g.product_name = item.cat_name;
+                    list2.Add(g);
+                    list2.Add(item);
+                }
+                else
+                    list2.Add(item);
+            }
+            return list2;
         }
     }
 }

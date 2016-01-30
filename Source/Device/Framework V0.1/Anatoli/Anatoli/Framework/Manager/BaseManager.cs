@@ -26,7 +26,7 @@ namespace Anatoli.Framework.Manager
             _remoteP = remoteQuery;
         }
 
-        public async Task<List<DataModel>> GetNextAsync()
+        public virtual async Task<List<DataModel>> GetNextAsync()
         {
             if (_localP == null && _remoteP == null)
             {

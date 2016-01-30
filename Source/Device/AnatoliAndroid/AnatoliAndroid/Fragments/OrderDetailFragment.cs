@@ -152,7 +152,10 @@ namespace AnatoliAndroid.Fragments
                 if (!String.IsNullOrEmpty(item.image))
                 {
                     string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
-                    UrlImageViewHelper.SetUrlDrawable(productSummaryImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                    if (imguri != null)
+                        UrlImageViewHelper.SetUrlDrawable(productSummaryImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                    else
+                        productSummaryImageView.Visibility = ViewStates.Invisible;
                 }
                 else
                 {

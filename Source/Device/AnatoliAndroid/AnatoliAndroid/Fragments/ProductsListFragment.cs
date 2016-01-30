@@ -37,7 +37,7 @@ namespace AnatoliAndroid.Fragments
             var leftRight = CategoryManager.GetLeftRight(id);
             StringQuery query;
             if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left > {0} AND cat_right < {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
             else
                 query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
             _dataManager.SetQueries(query, null);
@@ -45,6 +45,7 @@ namespace AnatoliAndroid.Fragments
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 _listAdapter.NotifyDataSetChanged();
+                _listView.SetSelection(0);
             }
             catch (Exception)
             {

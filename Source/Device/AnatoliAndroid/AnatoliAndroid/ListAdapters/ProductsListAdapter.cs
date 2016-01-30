@@ -18,6 +18,7 @@ using FortySevenDeg.SwipeListView;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
 using Android.Content.Res;
+using Java.Lang;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -43,7 +44,7 @@ namespace AnatoliAndroid.ListAdapters
         RelativeLayout _front;
         LinearLayout _back;
 
-        ImageView _groupImageView;
+        
         TextView _groupNameTextView;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
@@ -65,7 +66,6 @@ namespace AnatoliAndroid.ListAdapters
 
             if (item.IsGroup)
             {
-                _groupImageView = view.FindViewById<ImageView>(Resource.Id.imageView1);
                 _groupNameTextView = view.FindViewById<TextView>(Resource.Id.textView1);
                 _front = view.FindViewById<RelativeLayout>(Resource.Id.front);
             }
@@ -167,18 +167,15 @@ namespace AnatoliAndroid.ListAdapters
             }
             if (item.IsGroup)
             {
-                _groupNameTextView.Text = item.product_name;
-                string imguriii = CategoryManager.GetImageAddress(item.product_id, item.image);
-                if (imguriii != null)
-                {
-                    UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-                }
-                _groupImageView.Click += async (s, e) =>
+                new Runnable(async () => {
+                    _groupNameTextView.Text = await CategoryManager.GetFullName(item.cat_id); }
+                ).Run();
+                _groupNameTextView.Click += async (s, e) =>
                 {
                     if (AnatoliApp.GetInstance().ProductsListF != null)
                     {
                         await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                        //AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                     }
                     else
                     {
@@ -192,8 +189,16 @@ namespace AnatoliAndroid.ListAdapters
             else
             {
                 string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
-                UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-                UrlImageViewHelper.SetUrlDrawable(_bproductImageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                if (imguri != null)
+                {
+                    UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                    UrlImageViewHelper.SetUrlDrawable(_bproductImageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                }
+                else
+                {
+                    _productIimageView.Visibility = ViewStates.Invisible;
+                    _bproductImageView.Visibility = ViewStates.Invisible;
+                }
 
 
                 if (item.IsFavorit)

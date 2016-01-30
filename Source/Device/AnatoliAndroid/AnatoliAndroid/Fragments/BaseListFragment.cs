@@ -127,8 +127,11 @@ namespace AnatoliAndroid.Fragments
                     try
                     {
                         var list = await _dataManager.GetNextAsync();
-                        _listAdapter.List.AddRange(list);
-                        _listAdapter.NotifyDataSetChanged();
+                        if (list.Count > 0)
+                        {
+                            _listAdapter.List.AddRange(list);
+                            _listAdapter.NotifyDataSetChanged();
+                        }
                     }
                     catch (Exception)
                     {
