@@ -158,6 +158,7 @@
     <Compile Include="Fragments\OrderDetailFragment.cs" />
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
+    <Compile Include="Fragments\ProformaFragment.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
@@ -182,12 +183,11 @@
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\db\paa.db">
-      <Link>Assets\paa.db</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidAsset>
     <None Include="app.config" />
     <AndroidAsset Include="Assets\Fonts\anatoli.ttf" />
+    <AndroidAsset Include="Assets\paa.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\ProductSummaryLayout.axml">
@@ -283,6 +283,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\GroupSummaryLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ProformaLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

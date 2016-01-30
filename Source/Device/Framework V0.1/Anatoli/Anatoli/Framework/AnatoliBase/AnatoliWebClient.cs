@@ -493,6 +493,14 @@ namespace Anatoli.Framework.AnatoliBase
     }
     public class AnatoliWebClientException : Exception
     {
-        public AnatoliWebClientException(string message, Exception ex) : base(message, ex) { }
+        public AnatoliWebClientException(string message = "Web Exception", Exception ex = null) : base(message, ex) { }
+    }
+    public class ConnectionFailed : AnatoliWebClientException
+    {
+        public ConnectionFailed(string message = "Connection Failed", Exception ex = null) : base(message, ex) { }
+    }
+    public class NoInternetAccess : AnatoliWebClientException
+    {
+        public NoInternetAccess(string message = "No Internet Access", Exception ex = null) : base(message, ex) { }
     }
 }

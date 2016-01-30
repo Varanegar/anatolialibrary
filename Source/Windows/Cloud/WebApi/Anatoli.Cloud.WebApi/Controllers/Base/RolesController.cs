@@ -13,8 +13,8 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [Authorize(Roles="Admin")]
-    [RoutePrefix("api/roles")]
-    public class RolesController : BaseApiController
+    [RoutePrefix("api/pushnotification")]
+    public class PushNotificationController : BaseApiController
     {
 
         [Route("{id:guid}", Name = "GetRoleById")]

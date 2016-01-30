@@ -9,59 +9,144 @@ using Anatoli.App.Model.Product;
 using Anatoli.Framework.AnatoliBase;
 namespace Anatoli.App.Manager
 {
-    public class CategoryManager : BaseManager<BaseDataAdapter<CategoryInfoModel>, CategoryInfoModel>
+    public class CategoryManager : BaseManager<CategoryInfoModel>
     {
+        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
+        {
+            try
+            {
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("categories");
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await BaseDataAdapter<ProductGroupModel>.GetListAsync(q);
+                Dictionary<string, CategoryInfoModel> items = new Dictionary<string, CategoryInfoModel>();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var currentList = connection.CreateCommand("SELECT * FROM categories").ExecuteQuery<CategoryInfoModel>();
+                    foreach (var item in currentList)
+                    {
+                        items.Add(item.cat_id, item);
+                    }
+
+                    connection.BeginTransaction();
+                    foreach (var item in list)
+                    {
+                        if (items.ContainsKey(item.UniqueId))
+                        {
+                            UpdateCommand command = new UpdateCommand("categories", new EqFilterParam("cat_id", item.UniqueId.ToUpper()),
+                           new BasicParam("cat_name", item.GroupName.Trim()),
+                           new BasicParam("cat_parent", item.ParentUniqueIdString.ToUpper()),
+                           new BasicParam("cat_left", item.NLeft.ToString()),
+                           new BasicParam("cat_right", item.NRight.ToString()),
+                           new BasicParam("cat_depth", item.NLevel.ToString()));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            InsertCommand command = new InsertCommand("categories", new BasicParam("cat_id", item.UniqueId.ToUpper()),
+                           new BasicParam("cat_name", item.GroupName.Trim()),
+                           new BasicParam("cat_parent", item.ParentUniqueIdString.ToUpper()),
+                           new BasicParam("cat_left", item.NLeft.ToString()),
+                           new BasicParam("cat_right", item.NRight.ToString()),
+                           new BasicParam("cat_depth", item.NLevel.ToString()));
+                            string qq = command.GetCommand();
+                            var query = connection.CreateCommand(qq);
+                            int t = query.ExecuteNonQuery();
+                        }
+                    }
+                    connection.Commit();
+                    await SyncManager.SaveUpdateDateAsync("categories");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public static GroupLeftRightModel GetLeftRight(string catId)
         {
-            using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+            try
             {
-                SQLite.SQLiteCommand query;
-                if (catId == null)
-                    query = connection.CreateCommand("SELECT min(cat_left) as left , max(cat_right) as right FROM categories");
-                else
-                    query = connection.CreateCommand(String.Format("SELECT cat_left as left, cat_right as right FROM categories WHERE cat_id ='{0}'", catId));
-                var lr = query.ExecuteQuery<GroupLeftRightModel>();
-                return lr.First();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    SQLite.SQLiteCommand query;
+                    if (catId == null)
+                        query = connection.CreateCommand("SELECT min(cat_left) as left , max(cat_right) as right FROM categories");
+                    else
+                        query = connection.CreateCommand(String.Format("SELECT cat_left as left, cat_right as right FROM categories WHERE cat_id ='{0}'", catId));
+                    var lr = query.ExecuteQuery<GroupLeftRightModel>();
+                    return lr.First();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
         public static async Task<List<CategoryInfoModel>> GetFirstLevelAsync()
         {
-            var query = new SelectQuery("categories", new EqFilterParam("cat_depth", "1"));
-            query.Unlimited = true;
-            var list = await GetListAsync(query, null);
-            return list;
+            try
+            {
+                var query = new StringQuery("SELECT * FROM categories WHERE cat_depth = 1");
+                query.Unlimited = true;
+                var list = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(query);
+                return list;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public static async Task<List<CategoryInfoModel>> GetCategoriesAsync(string catId)
         {
-            var query = new SelectQuery("categories", new EqFilterParam("cat_parent", catId));
-            query.Unlimited = true;
-            var list = await GetListAsync(query, null);
-            return list;
+            try
+            {
+                var query = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_parent = '{0}'", catId));
+                var list = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(query);
+                return list;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static async Task<CategoryInfoModel> GetParentCategory(string catId)
+        {
+            try
+            {
+                var current = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", catId)));
+                var parent = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
+                return parent;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        //public static List<CategoryInfoModel> GetCategories(string catId)
-        //{
-        //    var query = new SelectQuery("categories", new EqFilterParam("cat_parent", catId));
-        //    query.Unlimited = true;
-        //    var list = GetList(query, null);
-        //    return list;
-        //}
-        public static async Task<CategoryInfoModel> GetParentCategory(string p)
+        public static async Task<CategoryInfoModel> GetCategoryInfo(string catId)
         {
-            var current = await GetItemAsync(new SelectQuery("categories", new EqFilterParam("cat_id", p)));
-            var parent = await GetItemAsync(new SelectQuery("categories", new EqFilterParam("cat_id", current.cat_parent)));
-            return parent;
-        }
-
-        public static async Task<CategoryInfoModel> GetCategoryInfo(string p)
-        {
-            var c = await GetItemAsync(new SelectQuery("categories", new EqFilterParam("cat_id", p)));
-            return c;
+            try
+            {
+                var c = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", catId)));
+                return c;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public static string GetImageAddress(string catId, string imageId)
         {
-            string imguri = String.Format("http://79.175.166.186/content/Images/149E61EF-C4DC-437D-8BC9-F6037C0A1ED1/320x320/{0}/{1}.png", catId, imageId);
-            return imguri;
+            if (string.IsNullOrEmpty(catId) || string.IsNullOrEmpty(imageId))
+                return null;
+            else
+            {
+                string imguri = String.Format("http://79.175.166.186/content/Images/149E61EF-C4DC-437D-8BC9-F6037C0A1ED1/320x320/{0}/{1}.png", catId, imageId);
+                return imguri;
+            }
         }
 
     }

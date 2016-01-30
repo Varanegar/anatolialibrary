@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class OrderItemsManager : BaseManager<BaseDataAdapter<OrderItemModel>, OrderItemModel>
+    public class OrderItemsManager : BaseManager<OrderItemModel>
     {
         public static async Task<List<OrderItemModel>> GetItemsAsync(string orderId)
         {
@@ -27,7 +27,7 @@ orders JOIN order_items ON orders.order_id = order_items.order_id
 JOIN stores ON orders.store_id = stores.store_id
 JOIN products ON order_items.product_id = products.product_id
 WHERE orders.order_id = {0}", orderId));
-            return await GetListAsync(query, null);
+            return await BaseDataAdapter<OrderItemModel>.GetListAsync(query);
         }
 
     }

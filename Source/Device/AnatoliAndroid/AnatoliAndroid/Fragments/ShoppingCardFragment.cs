@@ -150,6 +150,9 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.SetTitle("در حال ارسال سفارش");
                                 pDialog.Show();
                                 var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id);
+                                //ProformaFragment proforma = new ProformaFragment();
+                                //var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                                //proforma.Show(fr, "proforma_fragment");
                                 await SaveOrder();
                                 pDialog.Dismiss();
                             });
@@ -170,6 +173,7 @@ namespace AnatoliAndroid.Fragments
                             await SaveOrder();
                             pDialog.Dismiss();
                         }
+
                     }
                     catch (Exception)
                     {
@@ -334,7 +338,7 @@ namespace AnatoliAndroid.Fragments
             if (_customerViewModel != null)
             {
                 _deliveryAddress.Text = _customerViewModel.MainStreet;
-                if (String.IsNullOrEmpty(_customerViewModel.FirstName) || String.IsNullOrEmpty(_customerViewModel.LastName))
+                if (String.IsNullOrEmpty(_customerViewModel.FirstName) || String.IsNullOrEmpty(_customerViewModel.LastName) || String.IsNullOrEmpty(_customerViewModel.NationalCode) || String.IsNullOrEmpty(_customerViewModel.MainStreet))
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     lAlert.SetMessage("لطفا مشخصات خود را کامل کنید");

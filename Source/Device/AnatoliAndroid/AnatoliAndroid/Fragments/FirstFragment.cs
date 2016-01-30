@@ -67,9 +67,13 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
+            AnatoliApp.GetInstance().ShowSearchIcon();
             var categories = await CategoryManager.GetFirstLevelAsync();
-            var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
-            _groupsGridView.Adapter = groupAdapter;
+            if (categories != null)
+            {
+                var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
+                _groupsGridView.Adapter = groupAdapter;
+            }
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
 
         }
@@ -118,7 +122,10 @@ namespace AnatoliAndroid.Fragments
             string imguri = CategoryManager.GetImageAddress(item.cat_id, item.cat_image);
             try
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri);
+                if (imguri != null)
+                {
+                    Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri);
+                }
             }
             catch (Exception)
             {
@@ -127,11 +134,21 @@ namespace AnatoliAndroid.Fragments
 
             imageView1.Click += async (s, e) =>
             {
-                ProductsListFragment fragment = new ProductsListFragment();
-                await fragment.SetCatId(item.cat_id.ToString());
-                AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(fragment, "product_fragments");
+                if (AnatoliApp.GetInstance().ProductsListF != null)
+                {
+                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                }
+                else
+                {
+                    AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
+                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                }
+
             };
             return convertView;
         }
+
     }
 }

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
-    p1:minWidth="25px"
-    p1:minHeight="25px"
+<LinearLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     p1:layout_width="match_parent"
     p1:layout_height="match_parent"
-    p1:id="@+id/relativeLayout1">
-    <com.fortysevendeg.swipelistview.SwipeListView xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    p1:id="@+id/relativeLayout1"
+    p1:orientation="vertical">
+    <AnatoliAndroid.Components.AnatoliTextView
+        p1:text="Text"
+        p1:layout_width="match_parent"
+        p1:layout_margin="5dp"
+        p1:layout_height="wrap_content"
+        local:customFont="Fonts/anatoli.ttf"
+        p1:id="@+id/resultTextView"
+        p1:gravity="center_horizontal"
+        p1:visibility="gone" />
+    <com.fortysevendeg.swipelistview.SwipeListView
         p1:listSelector="#00000000"
-        swipe:swipeFrontView="@+id/front"
-        swipe:swipeBackView="@+id/back"
-        swipe:swipeCloseAllItemsWhenMoveList="false"
-        swipe:swipeMode="both"
-        swipe:swipeActionLeft="reveal"
-        swipe:swipeActionRight="reveal"
+        local:swipeFrontView="@+id/front"
+        local:swipeBackView="@+id/back"
+        local:swipeCloseAllItemsWhenMoveList="false"
+        local:swipeMode="both"
+        local:swipeActionLeft="reveal"
+        local:swipeActionRight="reveal"
         p1:minWidth="25px"
         p1:minHeight="25px"
         p1:layout_width="match_parent"
         p1:layout_height="wrap_content"
         p1:id="@+id/itemsListView" />
-</RelativeLayout>
+</LinearLayout>

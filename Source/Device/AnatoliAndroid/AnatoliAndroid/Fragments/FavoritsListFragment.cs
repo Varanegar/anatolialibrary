@@ -45,22 +45,5 @@ namespace AnatoliAndroid.Fragments
             _listAdapter.List.Remove(item);
             _listView.InvalidateViews();
         }
-
-        protected override List<QueryParameter> CreateQueryParameters()
-        {
-            var parameters = new List<QueryParameter>();
-            parameters.Add(new SearchFilterParam("favorit", "1"));
-            return parameters;
-        }
-
-        protected override string GetTableName()
-        {
-            return "products_price_view";
-        }
-
-        protected override string GetWebServiceUri()
-        {
-            return "";
-        }
     }
 }

@@ -17,7 +17,7 @@ namespace AnatoliAndroid.ListAdapters
 {
     class BaseSwipeListAdapter<BaseDataManager, DataModel> : BaseListAdapter<BaseDataManager, DataModel>
         where DataModel : BaseDataModel, new()
-        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
+        where BaseDataManager : BaseManager<DataModel>, new()
     {
         protected virtual void OnBackClicked(int position)
         {

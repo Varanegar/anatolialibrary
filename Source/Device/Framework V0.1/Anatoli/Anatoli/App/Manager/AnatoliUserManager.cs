@@ -11,7 +11,7 @@ using PCLCrypto;
 using Anatoli.App.Model;
 namespace Anatoli.App.Manager
 {
-    public class AnatoliUserManager : BaseManager<BaseDataAdapter<AnatoliUserModel>, AnatoliUserModel>
+    public class AnatoliUserManager
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {

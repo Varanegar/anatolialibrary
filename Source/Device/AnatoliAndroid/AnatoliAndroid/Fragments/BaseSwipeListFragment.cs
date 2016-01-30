@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace AnatoliAndroid.Fragments
 {
     abstract class BaseSwipeListFragment<BaseDataManager, DataListAdapter, ListTools, DataModel> : BaseListFragment<BaseDataManager, DataListAdapter, ListTools, DataModel>
-        where BaseDataManager : BaseManager<BaseDataAdapter<DataModel>, DataModel>, new()
+        where BaseDataManager : BaseManager<DataModel>, new()
         where DataListAdapter : BaseSwipeListAdapter<BaseDataManager, DataModel>, new()
         where ListTools : ListToolsDialog, new()
         where DataModel : BaseDataModel, new()

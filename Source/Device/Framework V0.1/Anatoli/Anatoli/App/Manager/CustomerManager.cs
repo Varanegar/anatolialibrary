@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Manager
 {
-    public class CustomerManager : BaseManager<BaseDataAdapter<CustomerViewModel>, CustomerViewModel>
+    public class CustomerManager : BaseManager<CustomerViewModel>
     {
         public static async Task SaveCustomerAsync(CustomerViewModel customer)
         {

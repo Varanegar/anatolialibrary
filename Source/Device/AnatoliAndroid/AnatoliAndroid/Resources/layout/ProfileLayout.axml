@@ -37,6 +37,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/avatarImageView"
+                        local:customFont="Fonts/anatoli.ttf"
                         android:id="@+id/fullNametextView"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="10dp" />
