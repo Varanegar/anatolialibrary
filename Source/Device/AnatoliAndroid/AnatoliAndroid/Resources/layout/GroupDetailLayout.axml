@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/back"
+        android:tag="back"
+        style="@style/ListBackContent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/front"
+        android:tag="front"
+        android:padding="10dp"
+        style="@style/ListFrontContent">
+        <ImageView
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:id="@+id/groupImageView"
+            android:layout_alignParentLeft="true" />
+        <AnatoliAndroid.Components.AnatoliTextView
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            local:customFont="Fonts/anatoli.ttf"
+            android:gravity="center_vertical|right"
+            android:minWidth="50dp"
+            android:maxHeight="20dp"
+            android:singleLine="false"
+            android:layout_toRightOf="@id/groupImageView" />
+    </RelativeLayout>
+</FrameLayout>

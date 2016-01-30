@@ -43,8 +43,7 @@ namespace AnatoliAndroid.ListAdapters
         RelativeLayout _relativeLayout4;
         RelativeLayout _front;
         LinearLayout _back;
-
-        
+        ImageView _groupImageView;
         TextView _groupNameTextView;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
@@ -57,7 +56,10 @@ namespace AnatoliAndroid.ListAdapters
                 return view;
 
             if (item.IsGroup)
-                view = _context.LayoutInflater.Inflate(Resource.Layout.GroupSummaryLayout, null);
+                if (!string.IsNullOrEmpty(item.message) && item.message.Equals("group"))
+                    view = _context.LayoutInflater.Inflate(Resource.Layout.GroupDetailLayout, null);
+                else
+                    view = _context.LayoutInflater.Inflate(Resource.Layout.GroupSummaryLayout, null);
             else
                 if (convertView != null)
                 view = convertView;
@@ -67,6 +69,7 @@ namespace AnatoliAndroid.ListAdapters
             if (item.IsGroup)
             {
                 _groupNameTextView = view.FindViewById<TextView>(Resource.Id.textView1);
+                _groupImageView = view.FindViewById<ImageView>(Resource.Id.groupImageView);
                 _front = view.FindViewById<RelativeLayout>(Resource.Id.front);
             }
             else
@@ -170,6 +173,18 @@ namespace AnatoliAndroid.ListAdapters
                 //new Runnable(async () => {
                 //    _groupNameTextView.Text = await CategoryManager.GetFullName(item.cat_id); }
                 //).Run();
+                if (!string.IsNullOrEmpty(item.message) && item.message.Equals("group"))
+                {
+                    var imguriii = CategoryManager.GetImageAddress(item.cat_id, item.image);
+                    if (imguriii != null)
+                    {
+                        UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                    }
+                    else
+                    {
+                        _groupImageView.Visibility = ViewStates.Invisible;
+                    }
+                }
                 _groupNameTextView.Text = item.product_name;
                 _groupNameTextView.Click += async (s, e) =>
                 {
@@ -372,6 +387,7 @@ namespace AnatoliAndroid.ListAdapters
                     }
                 };
 
+                
                 //_relativeLayout4.Click += (s, e) =>
                 //{
                 //    OnBackClicked(position);

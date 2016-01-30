@@ -40,7 +40,7 @@ namespace AnatoliAndroid.Fragments
             _dataManager = new BaseDataManager();
             _toolsDialogFragment = new ListTools();
         }
-        public async Task Search(DBQuery query, string value)
+        public virtual async Task Search(DBQuery query, string value)
         {
             _dataManager.SetQueries(query, null);
             try

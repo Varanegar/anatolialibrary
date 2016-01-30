@@ -16,6 +16,7 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
+using Anatoli.Framework.DataAdapter;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -31,6 +32,24 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
+        }
+        public override async Task Search(DBQuery query, string value)
+        {
+            await base.Search(query, value);
+            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
+            var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
+            List<ProductModel> pl = new List<ProductModel>();
+            foreach (var item in groups)
+            {
+                var p = new ProductModel();
+                p.cat_id = item.cat_id;
+                p.product_name = item.cat_name;
+                p.is_group = 1;
+                p.message = "group";
+                p.image = (await CategoryManager.GetCategoryInfo(item.cat_id)).cat_image;
+                pl.Add(p);
+            }
+            _listAdapter.List.InsertRange(0, pl);
         }
         public async Task SetCatId(string id)
         {
