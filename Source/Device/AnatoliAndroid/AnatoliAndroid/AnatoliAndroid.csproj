@@ -146,7 +146,6 @@
     <Compile Include="Fragments\FavoritsToolsFragment.cs" />
     <Compile Include="Fragments\FirstFragment.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
-    <Compile Include="Fragments\JProductModel.cs" />
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\ChangePassFragment.cs" />
     <Compile Include="Fragments\MessagesListFragment.cs" />

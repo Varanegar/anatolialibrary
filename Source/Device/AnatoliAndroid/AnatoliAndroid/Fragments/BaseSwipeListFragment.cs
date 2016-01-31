@@ -34,6 +34,7 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
+
             _listAdapter.BackClick += async (s, p) =>
             {
                 await Task.Delay(1000);
@@ -51,17 +52,24 @@ namespace AnatoliAndroid.Fragments
             return view;
         }
 
-        private void Tcl_SwipeRight(object sender, EventArgs e)
-        {
-            Console.WriteLine("Swipe right ..............");
-        }
-
         void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
         {
             try
             {
                 //var sl = _listView as SwipeListView;
                 //sl.CloseOpenedItems();
+                for (int i = _listView.FirstVisiblePosition; i < _listView.LastVisiblePosition; i++)
+                {
+                    try
+                    {
+                        int childPosition = i - _listView.FirstVisiblePosition;
+                        _listView.GetChildAt(childPosition).FindViewById<LinearLayout>(Resource.Id.optionslinearLayout).Visibility = ViewStates.Gone;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
             }
             catch (Exception)
             {

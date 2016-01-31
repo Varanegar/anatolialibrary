@@ -50,7 +50,7 @@ namespace AnatoliAndroid.Components
         public class GestureListener : Java.Lang.Object, GestureDetector.IOnGestureListener
         {
 
-            private static int SWIPE_THRESHOLD = 100;
+            private static int SWIPE_THRESHOLD = 50;
             private static int SWIPE_VELOCITY_THRESHOLD = 100;
 
             SwipeTouchListener _listener;

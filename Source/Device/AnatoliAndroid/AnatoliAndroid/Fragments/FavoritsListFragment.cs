@@ -45,5 +45,7 @@ namespace AnatoliAndroid.Fragments
             _listAdapter.List.Remove(item);
             _listView.InvalidateViews();
         }
+
+     
     }
 }
