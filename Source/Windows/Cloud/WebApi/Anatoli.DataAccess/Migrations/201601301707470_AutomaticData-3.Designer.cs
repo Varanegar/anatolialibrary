@@ -7,18 +7,18 @@ namespace Anatoli.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CustomerShipAddress1 : IMigrationMetadata
+    public sealed partial class AutomaticData3 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CustomerShipAddress1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AutomaticData3));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601152051082_Customer-Ship-Address-1"; }
+            get { return "201601301707470_AutomaticData-3"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target
