@@ -30,9 +30,9 @@ namespace AnatoliAndroid.Fragments
                     else if ((_upTime - _downTime) > 100 && d > 100)
                     {
                         if ((e.RawX - _downX) < -100)
-                            OnSwipeLeft();
+                            OnSwipeLeft(v);
                         else if ((e.RawX - _downX) > 100)
-                            OnSwipeRight();
+                            OnSwipeRight(v);
                     }
                     else
                         OnClick();
@@ -66,20 +66,20 @@ namespace AnatoliAndroid.Fragments
         }
         public event EventHandler LongClick;
 
-        void OnSwipeLeft()
+        void OnSwipeLeft(object sender)
         {
             if (SwipeLeft != null)
             {
-                SwipeLeft.Invoke(this, new EventArgs());
+                SwipeLeft.Invoke(sender, new EventArgs());
             }
         }
         public event EventHandler SwipeLeft;
 
-        void OnSwipeRight()
+        void OnSwipeRight(object sender)
         {
             if (SwipeRight != null)
             {
-                SwipeRight.Invoke(this, new EventArgs());
+                SwipeRight.Invoke(sender, new EventArgs());
             }
         }
         public event EventHandler SwipeRight;

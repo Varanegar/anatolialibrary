@@ -51,5 +51,7 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().HideSearchIcon();
         }
+
+      
     }
 }

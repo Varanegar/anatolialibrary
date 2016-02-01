@@ -50,7 +50,7 @@ namespace AnatoliAndroid.ListAdapters
         {
             return convertView;
         }
-
+        
         public void OnDataChanged()
         {
             if (DataChanged != null)

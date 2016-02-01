@@ -299,17 +299,17 @@
     <Compile Include="Migrations\201601100937569_Incomplete-5.Designer.cs">
       <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601151617246_AddUsersStocks.cs" />
-    <Compile Include="Migrations\201601151617246_AddUsersStocks.Designer.cs">
-      <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
+    <Compile Include="Migrations\201601301550582_AutomaticData.cs" />
+    <Compile Include="Migrations\201601301550582_AutomaticData.Designer.cs">
+      <DependentUpon>201601301550582_AutomaticData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.cs" />
-    <Compile Include="Migrations\201601152051082_Customer-Ship-Address-1.Designer.cs">
-      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
+    <Compile Include="Migrations\201601301707470_AutomaticData-3.cs" />
+    <Compile Include="Migrations\201601301707470_AutomaticData-3.Designer.cs">
+      <DependentUpon>201601301707470_AutomaticData-3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601221653447_AddingPermissionParent.cs" />
-    <Compile Include="Migrations\201601221653447_AddingPermissionParent.Designer.cs">
-      <DependentUpon>201601221653447_AddingPermissionParent.cs</DependentUpon>
+    <Compile Include="Migrations\201601301710052_InitialDataInsert.cs" />
+    <Compile Include="Migrations\201601301710052_InitialDataInsert.Designer.cs">
+      <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
@@ -378,7 +378,6 @@
     <Compile Include="Models\StoreCalendarHistory.cs" />
     <Compile Include="Models\StoreDeliveryPerson.cs" />
     <Compile Include="Models\Supplier.cs" />
-    <Compile Include="MyContextInitializer.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Account\PermissionRepository.cs" />
@@ -548,14 +547,14 @@
     <EmbeddedResource Include="Migrations\201601100937569_Incomplete-5.resx">
       <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601151617246_AddUsersStocks.resx">
-      <DependentUpon>201601151617246_AddUsersStocks.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601301550582_AutomaticData.resx">
+      <DependentUpon>201601301550582_AutomaticData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601152051082_Customer-Ship-Address-1.resx">
-      <DependentUpon>201601152051082_Customer-Ship-Address-1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601301707470_AutomaticData-3.resx">
+      <DependentUpon>201601301707470_AutomaticData-3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601221653447_AddingPermissionParent.resx">
-      <DependentUpon>201601221653447_AddingPermissionParent.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601301710052_InitialDataInsert.resx">
+      <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

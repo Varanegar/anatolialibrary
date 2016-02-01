@@ -18,7 +18,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/fiscalyear")]
     public class FiscalYearController : BaseApiController
     {
-        [Authorize(Roles = "AuthorizedApp, User")]
+        //[Authorize(Roles = "AuthorizedApp, User")]
         [Route("fiscalyears")]
         public async Task<IHttpActionResult> GetFiscalYears(string privateOwnerId)
         {

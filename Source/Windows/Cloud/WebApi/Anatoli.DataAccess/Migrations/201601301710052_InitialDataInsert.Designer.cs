@@ -7,13 +7,13 @@ namespace Anatoli.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddingPermissionParent : IMigrationMetadata
+    public sealed partial class InitialDataInsert : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingPermissionParent));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialDataInsert));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601221653447_AddingPermissionParent"; }
+            get { return "201601301710052_InitialDataInsert"; }
         }
         
         string IMigrationMetadata.Source

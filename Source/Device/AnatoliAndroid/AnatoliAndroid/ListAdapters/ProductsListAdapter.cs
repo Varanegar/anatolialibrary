@@ -27,25 +27,20 @@ namespace AnatoliAndroid.ListAdapters
         TextView _productCountTextView;
         TextView _productNameTextView;
         TextView _productPriceTextView;
-        TextView _bproductNameTextView;
         TextView _favoritsTextView;
         TextView _removeFromBasketTextView;
 
         ImageView _productIimageView;
         ImageButton _productAddButton;
-        ImageView _bproductImageView;
         ImageButton _favoritsButton;
         ImageButton _productRemoveButton;
         ImageButton _removeAllProductsButton;
         OnTouchListener _addTouchlistener;
         LinearLayout _counterLinearLayout;
         RelativeLayout _removeAllRelativeLayout;
-        RelativeLayout _relativeLayout4;
-        RelativeLayout _front;
-        LinearLayout _back;
         ImageView _groupImageView;
         TextView _groupNameTextView;
-        RelativeLayout _optionsLayout;
+        LinearLayout _optionslinearLayout;
         public override View GetItemView(int position, View convertView, ViewGroup parent)
         {
 
@@ -63,15 +58,14 @@ namespace AnatoliAndroid.ListAdapters
                     view = _context.LayoutInflater.Inflate(Resource.Layout.GroupSummaryLayout, null);
             else
                 if (convertView != null)
-                view = convertView;
-            else
-                view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+                    view = convertView;
+                else
+                    view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
 
             if (item.IsGroup)
             {
                 _groupNameTextView = view.FindViewById<TextView>(Resource.Id.textView1);
                 _groupImageView = view.FindViewById<ImageView>(Resource.Id.groupImageView);
-                _front = view.FindViewById<RelativeLayout>(Resource.Id.front);
             }
             else
             {
@@ -80,36 +74,30 @@ namespace AnatoliAndroid.ListAdapters
                     _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
                     _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
                     _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
-                    _bproductNameTextView = view.FindViewById<TextView>(Resource.Id.bproductNameTextView);
                     _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
                     _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
                     _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-                    _bproductImageView = view.FindViewById<ImageView>(Resource.Id.bproductImageView);
-                    _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addProductImageView);
+                    _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
                     _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
                     _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
                     _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                     _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                     _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
-                    _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
-                    _optionsLayout = view.FindViewById<RelativeLayout>(Resource.Id.optionsLayout);
+                    _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
 
                     view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                     view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
                     view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
                     view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
-                    view.SetTag(Resource.Id.addProductImageView, _productAddButton);
+                    view.SetTag(Resource.Id.addImageButton, _productAddButton);
                     view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
-                    view.SetTag(Resource.Id.bproductImageView, _bproductImageView);
                     view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
                     view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-                    view.SetTag(Resource.Id.bproductNameTextView, _bproductNameTextView);
                     view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
                     view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
                     view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                     view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
-                    view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
-                    view.SetTag(Resource.Id.optionsLayout, _optionsLayout);
+                    view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
                 }
 
                 else
@@ -118,54 +106,45 @@ namespace AnatoliAndroid.ListAdapters
                     _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
                     _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
                     _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
-                    _bproductNameTextView = (TextView)view.GetTag(Resource.Id.bproductNameTextView);
                     _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
-                    _productAddButton = (ImageButton)view.GetTag(Resource.Id.addProductImageView);
+                    _productAddButton = (ImageButton)view.GetTag(Resource.Id.addImageButton);
                     _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
-                    _bproductImageView = (ImageView)view.GetTag(Resource.Id.bproductImageView);
                     _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
                     _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
                     _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
                     _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
                     _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
-                    _relativeLayout4 = (RelativeLayout)view.GetTag(Resource.Id.relativeLayout4);
-                    _optionsLayout = (RelativeLayout)view.GetTag(Resource.Id.optionsLayout);
+                    _optionslinearLayout = (LinearLayout)view.GetTag(Resource.Id.optionslinearLayout);
                     if (_productCountTextView == null)
                     {
                         view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
                         _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
                         _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
                         _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
-                        _bproductNameTextView = view.FindViewById<TextView>(Resource.Id.bproductNameTextView);
                         _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
                         _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
                         _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-                        _bproductImageView = view.FindViewById<ImageView>(Resource.Id.bproductImageView);
-                        _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addProductImageView);
+                        _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
                         _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
                         _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
                         _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
                         _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
                         _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
-                        _relativeLayout4 = view.FindViewById<RelativeLayout>(Resource.Id.relativeLayout4);
-                        _optionsLayout = view.FindViewById<RelativeLayout>(Resource.Id.optionsLayout);
+                        _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
 
                         view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
                         view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
                         view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
                         view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
-                        view.SetTag(Resource.Id.addProductImageView, _productAddButton);
+                        view.SetTag(Resource.Id.addImageButton, _productAddButton);
                         view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
-                        view.SetTag(Resource.Id.bproductImageView, _bproductImageView);
                         view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
                         view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-                        view.SetTag(Resource.Id.bproductNameTextView, _bproductNameTextView);
                         view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
                         view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
                         view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                         view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
-                        view.SetTag(Resource.Id.relativeLayout4, _relativeLayout4);
-                        view.SetTag(Resource.Id.optionsLayout, _optionsLayout);
+                        view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
                     }
                 }
             }
@@ -209,12 +188,10 @@ namespace AnatoliAndroid.ListAdapters
                 if (imguri != null)
                 {
                     UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
-                    UrlImageViewHelper.SetUrlDrawable(_bproductImageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 }
                 else
                 {
                     _productIimageView.Visibility = ViewStates.Invisible;
-                    _bproductImageView.Visibility = ViewStates.Invisible;
                 }
 
 
@@ -233,7 +210,6 @@ namespace AnatoliAndroid.ListAdapters
 
                 _productCountTextView.Text = item.count.ToString() + " عدد";
                 _productNameTextView.Text = item.product_name;
-                _bproductNameTextView.Text = item.product_name;
                 _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
 
                 if (item.product_name.Equals(_productNameTextView.Text))
@@ -392,19 +368,12 @@ namespace AnatoliAndroid.ListAdapters
                 view.SetOnTouchListener(tcl);
                 tcl.SwipeLeft += (s) =>
                 {
-                    if (_optionsLayout.Visibility == ViewStates.Gone)
-                    {
-                        _optionsLayout.Visibility = ViewStates.Visible;
-                    }
+                    OnSwipeLeft(position);
                 };
                 tcl.SwipeRight += (s) =>
                 {
-                    if (_optionsLayout.Visibility == ViewStates.Visible)
-                    {
-                        _optionsLayout.Visibility = ViewStates.Gone;
-                    }
+                    OnSwipeRight(position);
                 };
-
 
                 return view;
             }
@@ -450,5 +419,6 @@ namespace AnatoliAndroid.ListAdapters
         }
         public event FavoritAddedEventHandler FavoritAdded;
         public delegate void FavoritAddedEventHandler(object sender, ProductModel data);
+
     }
 }
