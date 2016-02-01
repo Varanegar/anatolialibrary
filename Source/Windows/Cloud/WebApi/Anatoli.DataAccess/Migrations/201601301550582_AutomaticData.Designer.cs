@@ -7,13 +7,13 @@ namespace Anatoli.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddUsersStocks : IMigrationMetadata
+    public sealed partial class AutomaticData : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddUsersStocks));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AutomaticData));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601151617246_AddUsersStocks"; }
+            get { return "201601301550582_AutomaticData"; }
         }
         
         string IMigrationMetadata.Source

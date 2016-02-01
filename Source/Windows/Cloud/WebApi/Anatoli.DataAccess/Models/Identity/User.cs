@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
@@ -18,6 +19,9 @@ namespace Anatoli.DataAccess.Models.Identity
 
         public virtual Principal AddedBy { get; set; }
         public virtual Principal LastModifiedBy { get; set; }
+        [ForeignKey("PrivateLabelOwner")]
+        public virtual Guid PrivateLabelOwner_Id { get; set; }
+        
         public virtual Principal PrivateLabelOwner { get; set; }
         #endregion
 
@@ -36,6 +40,8 @@ namespace Anatoli.DataAccess.Models.Identity
         public DateTime LastEntry { get; set; }
         public string LastEntryIp { get; set; }
 
+        [ForeignKey("Principal")]
+        public virtual Guid Principal_Id { get; set; }
         public virtual Principal Principal { get; set; }
         public virtual Role Role { get; set; }
         public virtual Group Group { get; set; }

@@ -84,18 +84,10 @@ namespace Anatoli.DataAccess
         #endregion
 
         #region ctors
-        static AnatoliDbContext()
-        {
-            Database.SetInitializer<AnatoliDbContext>(new MyContextInitializer());
-            //var migrator = new System.Data.Entity.Migrations.DbMigrator(new Anatoli.DataAccess.Migrations.Configuration());
-            //migrator.Update();
-        }
 
         public AnatoliDbContext()
             : base("Name=AnatoliConnectionString", throwIfV1Schema: false)
         {
-            //Configuration.ProxyCreationEnabled = false;
-            //Configuration.LazyLoadingEnabled = false;
         }
         #endregion
 

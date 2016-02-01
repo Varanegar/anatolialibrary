@@ -207,7 +207,6 @@
     <Compile Include="Infrastructure\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Infrastructure\ExtendedClaimsProvider.cs" />
     <Compile Include="Infrastructure\RolesFromClaims.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\ClaimBindingModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
@@ -245,6 +244,9 @@
       <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
       <Name>Anatoli.ViewModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
