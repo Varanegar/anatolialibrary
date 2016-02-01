@@ -153,7 +153,7 @@ namespace AnatoliAndroid.Activities
 
         }
 
-        bool exit = false;
+
         public override void OnBackPressed()
         {
             if (AnatoliApp.GetInstance().DrawerLayout.IsDrawerOpen(AnatoliApp.GetInstance().DrawerListView))
@@ -168,16 +168,13 @@ namespace AnatoliAndroid.Activities
             }
             if (!AnatoliApp.GetInstance().BackFragment())
             {
-                if (!exit)
+                if (!AnatoliApp.GetInstance().ExitApp)
                 {
-                    exit = true;
                     Toast.MakeText(this, "برای خروج دوباره دکمه بازگشت را فشار دهید", ToastLength.Short).Show();
                 }
                 else
                     Finish();
             }
-            else
-                exit = false;
         }
 
         public event EventHandler NetworkStatusChanged;

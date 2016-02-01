@@ -37,6 +37,8 @@ namespace AnatoliAndroid.Activities
         public ListView DrawerListView { get { return _drawerListView; } }
         private static LinkedList<StackItem> _list;
 
+        int _backToExit = 0;
+        public bool ExitApp { get { return (_backToExit == 2) ? true : false; } }
         Toolbar ToolBar;
         public Android.Support.V4.Widget.DrawerLayout DrawerLayout;
         RelativeLayout _searchBarLayout;
@@ -642,10 +644,12 @@ namespace AnatoliAndroid.Activities
             {
                 RefreshMenuItems();
             }
+            _backToExit = 0;
             return fragment;
         }
         public bool BackFragment()
         {
+            _backToExit++;
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
