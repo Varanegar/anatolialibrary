@@ -32,7 +32,7 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
-        private bool _firstShow = true;
+        protected bool ForceRefresh = true;
         public BaseListFragment()
             : base()
         {
@@ -101,7 +101,7 @@ namespace AnatoliAndroid.Fragments
         public async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            if (_firstShow)
+            if (ForceRefresh)
             {
                 //SetParameters();
                 try
@@ -118,7 +118,7 @@ namespace AnatoliAndroid.Fragments
 
                 }
             }
-            _firstShow = false;
+            ForceRefresh = false;
         }
 
         async void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
@@ -153,7 +153,7 @@ namespace AnatoliAndroid.Fragments
             var transaction = FragmentManager.BeginTransaction();
             _toolsDialogFragment.Show(transaction, "tools_dialog");
         }
-        void OnEmptyList()
+        protected void OnEmptyList()
         {
             if (EmptyList != null)
             {
@@ -162,7 +162,7 @@ namespace AnatoliAndroid.Fragments
         }
         public event EventHandler EmptyList;
 
-        void OnFullList()
+        protected void OnFullList()
         {
             if (FullList != null)
             {

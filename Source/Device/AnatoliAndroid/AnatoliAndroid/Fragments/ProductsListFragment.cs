@@ -29,7 +29,6 @@ namespace AnatoliAndroid.Fragments
         {
             var query = new StringQuery("SELECT * FROM products_price_view ORDER BY cat_id");
             _dataManager.SetQueries(query, null);
-            
         }
         public override void OnStart()
         {
@@ -38,6 +37,7 @@ namespace AnatoliAndroid.Fragments
         }
         public override async Task Search(DBQuery query, string value)
         {
+            _dataManager.ShowGroups = true;
             await base.Search(query, value);
             var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
             var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
@@ -65,9 +65,8 @@ namespace AnatoliAndroid.Fragments
             _dataManager.SetQueries(query, null);
             try
             {
-                _listAdapter.List = await _dataManager.GetNextAsync();
-                _listAdapter.NotifyDataSetChanged();
-                _listView.SetSelection(0);
+                _dataManager.ShowGroups = false;
+                ForceRefresh = true;
             }
             catch (Exception)
             {

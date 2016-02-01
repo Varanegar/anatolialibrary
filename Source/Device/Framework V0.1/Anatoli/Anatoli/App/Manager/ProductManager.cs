@@ -227,10 +227,13 @@ namespace Anatoli.App.Manager
             return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
         }
 
+        public bool ShowGroups = false;
         string lastGroupId = Guid.NewGuid().ToString();
         public override async Task<List<ProductModel>> GetNextAsync()
         {
             var list = await base.GetNextAsync();
+            if (!ShowGroups)
+                return list;
             List<ProductModel> list2 = new List<ProductModel>();
             foreach (var item in list)
             {
