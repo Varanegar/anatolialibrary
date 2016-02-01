@@ -51,7 +51,7 @@ namespace AnatoliAndroid.Components
         {
 
             private static int SWIPE_THRESHOLD = 50;
-            private static int SWIPE_VELOCITY_THRESHOLD = 100;
+            private static int SWIPE_VELOCITY_THRESHOLD = 50;
 
             SwipeTouchListener _listener;
             public GestureListener(SwipeTouchListener listener)

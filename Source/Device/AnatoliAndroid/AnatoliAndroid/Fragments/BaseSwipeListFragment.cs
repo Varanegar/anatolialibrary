@@ -16,6 +16,7 @@ using Anatoli.Framework.Model;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Components;
+using Android.Views.Animations;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -63,7 +64,13 @@ namespace AnatoliAndroid.Fragments
                     try
                     {
                         int childPosition = i - _listView.FirstVisiblePosition;
-                        _listView.GetChildAt(childPosition).FindViewById<LinearLayout>(Resource.Id.optionslinearLayout).Visibility = ViewStates.Gone;
+                        var optionsLinearLayout = _listView.GetChildAt(childPosition).FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
+                        if (optionsLinearLayout.Visibility == ViewStates.Visible)
+                        {
+                            Animation anim = AnimationUtils.LoadAnimation(AnatoliApp.GetInstance().Activity, Resource.Animation.slideOut);
+                            optionsLinearLayout.StartAnimation(anim);
+                            optionsLinearLayout.Visibility = ViewStates.Gone;
+                        }
                     }
                     catch (Exception)
                     {

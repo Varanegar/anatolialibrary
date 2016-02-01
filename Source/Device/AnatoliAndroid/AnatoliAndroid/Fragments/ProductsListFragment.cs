@@ -17,6 +17,8 @@ using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
 using Anatoli.Framework.DataAdapter;
+using Android.Animation;
+using Android.Views.Animations;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -82,12 +84,22 @@ namespace AnatoliAndroid.Fragments
                 int childPosition = position - firstPosition;
                 var view = _listView.GetChildAt(childPosition);
                 var optionsLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
-                if (optionsLinearLayout.Visibility == ViewStates.Gone)
-                {
-                    optionsLinearLayout.Visibility = ViewStates.Visible;
-                }
+                optionsLinearLayout.Visibility = ViewStates.Visible;
+                Animation anim = AnimationUtils.LoadAnimation(AnatoliApp.GetInstance().Activity, Resource.Animation.slideIn);
+                optionsLinearLayout.StartAnimation(anim);
+                //ValueAnimator animator = ValueAnimator.OfInt(1, 500);
+                //animator.SetDuration(300);
+                //animator.SetInterpolator(new AccelerateDecelerateInterpolator());
+                //var parms = optionsLinearLayout.LayoutParameters;
+                //animator.Update += (s, e) =>
+                //{
+                //    int newValue = (int)e.Animation.AnimatedValue;
+                //    parms.Width = newValue;
+                //    optionsLinearLayout.LayoutParameters = parms;
+                //};
+                //animator.Start();
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }
@@ -101,12 +113,23 @@ namespace AnatoliAndroid.Fragments
                 int childPosition = position - firstPosition;
                 var view = _listView.GetChildAt(childPosition);
                 var optionsLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
-                if (optionsLinearLayout.Visibility == ViewStates.Visible)
-                {
-                    optionsLinearLayout.Visibility = ViewStates.Gone;
-                }
+                Animation anim = AnimationUtils.LoadAnimation(AnatoliApp.GetInstance().Activity, Resource.Animation.slideOut);
+                optionsLinearLayout.StartAnimation(anim);
+                optionsLinearLayout.Visibility = ViewStates.Gone;
+                //ValueAnimator animator = ValueAnimator.OfInt(500, 1);
+                //animator.SetDuration(300);
+                //animator.SetInterpolator(new AccelerateDecelerateInterpolator());
+                //var parms = optionsLinearLayout.LayoutParameters;
+                //animator.Update += (s, e) =>
+                //{
+                //    int newValue = (int)e.Animation.AnimatedValue;
+                //    parms.Width = newValue;
+                //    optionsLinearLayout.LayoutParameters = parms;
+
+                //};
+                //animator.Start();
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }
