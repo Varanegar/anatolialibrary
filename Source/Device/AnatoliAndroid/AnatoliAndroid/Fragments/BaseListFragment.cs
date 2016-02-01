@@ -16,6 +16,7 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -26,7 +27,7 @@ namespace AnatoliAndroid.Fragments
         where DataModel : BaseDataModel, new()
     {
         protected View _view;
-        protected ListView _listView;
+        protected SwipeListView _listView;
         TextView _resultTextView;
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
@@ -69,7 +70,7 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             _view = InflateLayout(inflater, container, savedInstanceState);
-            _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
+            _listView = _view.FindViewById<SwipeListView>(Resource.Id.itemsListView);
             _resultTextView = _view.FindViewById<TextView>(Resource.Id.resultTextView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;

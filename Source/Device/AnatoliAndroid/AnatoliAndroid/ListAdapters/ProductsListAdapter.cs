@@ -189,10 +189,10 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 }
-                else
-                {
-                    _productIimageView.Visibility = ViewStates.Invisible;
-                }
+                //else
+                //{
+                //    _productIimageView.Visibility = ViewStates.Invisible;
+                //}
 
 
                 if (item.IsFavorit)
@@ -232,7 +232,7 @@ namespace AnatoliAndroid.ListAdapters
                 _removeAllProductsButton.SetOnTouchListener(removeAll);
                 removeAll.Click += async (s, e) =>
                 {
-                    OnBackClicked(position);
+                    OptionsClicked(position);
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
                         int a = await ShoppingCardManager.GetItemsCountAsync();
@@ -278,7 +278,6 @@ namespace AnatoliAndroid.ListAdapters
                 _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
                 _favoritsTouchlistener.Click += async (s, e) =>
                 {
-                    OnBackClicked(position);
                     if (this[position].IsFavorit)
                     {
                         if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
@@ -297,7 +296,7 @@ namespace AnatoliAndroid.ListAdapters
                             OnFavoritAdded(this[position]);
                         }
                     }
-
+                    OptionsClicked(position);
                 };
 
                 _addTouchlistener = new OnTouchListener();
