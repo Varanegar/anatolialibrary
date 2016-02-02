@@ -83,25 +83,28 @@ namespace AnatoliAndroid.Fragments
 
                 _addAllButton.Click += async (s, e) =>
                 {
-                    int a = 0;
-                    foreach (var item in items)
+                    if (items != null)
                     {
-                        await Task.Delay(100);
-                        if (await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count))
+                        int a = 0;
+                        foreach (var item in items)
                         {
-                            a += item.item_count;
-                        }
+                            await Task.Delay(100);
+                            if (await ShoppingCardManager.AddProductAsync(item.product_id, item.item_count))
+                            {
+                                a += item.item_count;
+                            }
 
+                        }
+                        if (a > 0)
+                        {
+                            AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                            AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, String.Format("{0} آیتم به سبد خرید اضافه شد", a.ToString()), ToastLength.Short).Show();
+                            AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(null, "shopping_fragment");
+                        }
+                        else
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "کالای مورد نظر هم اکنون در دسترس نمی باشد", ToastLength.Short).Show();
                     }
-                    if (a > 0)
-                    {
-                        AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                        AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, String.Format("{0} آیتم به سبد خرید اضافه شد", a.ToString()), ToastLength.Short).Show();
-                        AnatoliApp.GetInstance().SetFragment<ShoppingCardFragment>(null, "shopping_fragment");
-                    }
-                    else
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "کالای مورد نظر هم اکنون در دسترس نمی باشد", ToastLength.Short).Show();
                 };
             }
         }

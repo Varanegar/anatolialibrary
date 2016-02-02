@@ -16,8 +16,15 @@ namespace Anatoli.App.Manager
     {
         public static async Task<ProductModel> GetItemAsync(string id)
         {
-            SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString().ToUpper()));
-            return await BaseDataAdapter<ProductModel>.GetItemAsync(query);
+            try
+            {
+                SelectQuery query = new SelectQuery("shopping_card_view", new EqFilterParam("product_id", id.ToString().ToUpper()));
+                return await BaseDataAdapter<ProductModel>.GetItemAsync(query);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public static async Task<bool> AddProductAsync(string productId, int count)
         {
@@ -38,41 +45,69 @@ namespace Anatoli.App.Manager
         }
         public static async Task<bool> AddProductAsync(ProductModel item)
         {
-            DBQuery query = null;
-            if (item.count == 0)
-                query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
-            else
-                query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+            try
+            {
+                DBQuery query = null;
+                if (item.count == 0)
+                    query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
+                else
+                    query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
+                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public static async Task<bool> RemoveProductAsync(ProductModel item, bool all = false)
         {
-            DBQuery query = null;
-            if (item.count <= 1 || all)
-                query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
-            else
-                query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+            try
+            {
+                DBQuery query = null;
+                if (item.count <= 1 || all)
+                    query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
+                else
+                    query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
+                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async static Task<double> GetTotalPriceAsync()
         {
-            SelectQuery query = new SelectQuery("shopping_card_view");
-            query.Unlimited = true;
-            var result = await BaseDataAdapter<ProductModel>.GetListAsync(query);
-            double p = 0;
-            foreach (var item in result)
+            try
             {
-                p += (item.count * item.price);
+                SelectQuery query = new SelectQuery("shopping_card_view");
+                query.Unlimited = true;
+                var result = await BaseDataAdapter<ProductModel>.GetListAsync(query);
+                double p = 0;
+                foreach (var item in result)
+                {
+                    p += (item.count * item.price);
+                }
+                return p;
             }
-            return p;
+            catch (Exception)
+            {
+                return 0;
+            }
         }
         public static async Task<List<ProductModel>> GetAllItemsAsync()
         {
-            SelectQuery query = new SelectQuery("shopping_card_view");
-            query.Unlimited = true;
-            var list = await BaseDataAdapter<ProductModel>.GetListAsync(query);
-            return list;
+            try
+            {
+                SelectQuery query = new SelectQuery("shopping_card_view");
+                query.Unlimited = true;
+                var list = await BaseDataAdapter<ProductModel>.GetListAsync(query);
+                return list;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<bool> ClearAsync()
