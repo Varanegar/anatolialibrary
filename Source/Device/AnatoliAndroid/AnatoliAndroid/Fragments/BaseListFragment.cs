@@ -46,15 +46,7 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
-                _listAdapter.NotifyDataSetChanged();
                 AnatoliApp.GetInstance().SetToolbarTitle(string.Format("جستجو  \"{0}\"", value.Trim()));
-                if (_listAdapter.List.Count == 0)
-                    OnEmptyList();
-                else
-                {
-                    OnFullList();
-                    _listView.SetSelection(0);
-                }
             }
             catch (Exception)
             {
@@ -116,6 +108,7 @@ namespace AnatoliAndroid.Fragments
                     OnEmptyList();
                 else
                     OnFullList();
+                _listView.SetSelection(0);
                 _listAdapter.NotifyDataSetChanged();
             }
             catch (Exception)

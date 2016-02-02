@@ -35,7 +35,7 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
         }
-        public override async Task Search(DBQuery query, string value)
+        public async Task Search(DBQuery query, string value)
         {
             _dataManager.ShowGroups = true;
             await base.Search(query, value);
@@ -53,6 +53,10 @@ namespace AnatoliAndroid.Fragments
                 pl.Add(p);
             }
             _listAdapter.List.InsertRange(0, pl);
+            if (_listAdapter.List.Count > 0)
+                OnFullList();
+            else
+                OnEmptyList();
         }
         public void SetCatId(string id)
         {
