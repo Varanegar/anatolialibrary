@@ -47,7 +47,7 @@ namespace Anatoli.App.Manager
 
             }
         }
-        public static async Task SyncCloudAsync()
+        public static async Task AddFavoritToCloud()
         {
             try
             {

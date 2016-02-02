@@ -29,8 +29,6 @@ namespace AnatoliAndroid.Fragments
         {
             var query = new StringQuery("SELECT * FROM products_price_view ORDER BY cat_id");
             _dataManager.SetQueries(query, null);
-            _listAdapter.SwipeRight += _listAdapter_SwipeRight;
-            _listAdapter.SwipeLeft += _listAdapter_SwipeLeft;
         }
         public override void OnStart()
         {
@@ -39,6 +37,7 @@ namespace AnatoliAndroid.Fragments
         }
         public override async Task Search(DBQuery query, string value)
         {
+            _dataManager.ShowGroups = true;
             await base.Search(query, value);
             var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
             var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
@@ -66,70 +65,10 @@ namespace AnatoliAndroid.Fragments
             _dataManager.SetQueries(query, null);
             try
             {
-                _listAdapter.List = await _dataManager.GetNextAsync();
-                _listAdapter.NotifyDataSetChanged();
-                _listView.SetSelection(0);
+                _dataManager.ShowGroups = false;
+                ForceRefresh = true;
             }
             catch (Exception)
-            {
-
-            }
-        }
-
-        void _listAdapter_SwipeLeft(object sender, int position)
-        {
-            try
-            {
-                int firstPosition = _listView.FirstVisiblePosition;
-                int childPosition = position - firstPosition;
-                var view = _listView.GetChildAt(childPosition);
-                var optionsLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
-                optionsLinearLayout.Visibility = ViewStates.Visible;
-                Animation anim = AnimationUtils.LoadAnimation(AnatoliApp.GetInstance().Activity, Resource.Animation.slideIn);
-                optionsLinearLayout.StartAnimation(anim);
-                //ValueAnimator animator = ValueAnimator.OfInt(1, 500);
-                //animator.SetDuration(300);
-                //animator.SetInterpolator(new AccelerateDecelerateInterpolator());
-                //var parms = optionsLinearLayout.LayoutParameters;
-                //animator.Update += (s, e) =>
-                //{
-                //    int newValue = (int)e.Animation.AnimatedValue;
-                //    parms.Width = newValue;
-                //    optionsLinearLayout.LayoutParameters = parms;
-                //};
-                //animator.Start();
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
-        void _listAdapter_SwipeRight(object sender, int position)
-        {
-            try
-            {
-                int firstPosition = _listView.FirstVisiblePosition;
-                int childPosition = position - firstPosition;
-                var view = _listView.GetChildAt(childPosition);
-                var optionsLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
-                Animation anim = AnimationUtils.LoadAnimation(AnatoliApp.GetInstance().Activity, Resource.Animation.slideOut);
-                optionsLinearLayout.StartAnimation(anim);
-                optionsLinearLayout.Visibility = ViewStates.Gone;
-                //ValueAnimator animator = ValueAnimator.OfInt(500, 1);
-                //animator.SetDuration(300);
-                //animator.SetInterpolator(new AccelerateDecelerateInterpolator());
-                //var parms = optionsLinearLayout.LayoutParameters;
-                //animator.Update += (s, e) =>
-                //{
-                //    int newValue = (int)e.Animation.AnimatedValue;
-                //    parms.Width = newValue;
-                //    optionsLinearLayout.LayoutParameters = parms;
-
-                //};
-                //animator.Start();
-            }
-            catch (Exception e)
             {
 
             }

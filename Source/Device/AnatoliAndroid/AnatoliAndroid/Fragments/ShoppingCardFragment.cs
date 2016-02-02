@@ -21,13 +21,14 @@ using System.Threading.Tasks;
 using Android.Animation;
 using Android.Views.InputMethods;
 using Anatoli.App.Model.Store;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.Fragments
 {
     [FragmentTitle("سبد خرید")]
     class ShoppingCardFragment : Fragment
     {
-        ListView _itemsListView;
+        SwipeListView _itemsListView;
         TextView _factorPrice;
         TextView _itemCountTextView;
         ProductsListAdapter _listAdapter;
@@ -79,7 +80,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ShoppingCardLayout, container, false);
-            _itemsListView = view.FindViewById<ListView>(Resource.Id.shoppingCardListView);
+            _itemsListView = view.FindViewById<SwipeListView>(Resource.Id.shoppingCardListView);
             _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _itemCountTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
             _countRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.countRelativeLayout);
@@ -293,6 +294,9 @@ namespace AnatoliAndroid.Fragments
             _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();
+            _listAdapter.SwipeLeft += (s, p) => { _itemsListView.ShowOptions(p); };
+            _listAdapter.SwipeRight += (s, p) => { _itemsListView.HideOptions(p); };
+            _listAdapter.OptionsClick += (s, p) => { _itemsListView.HideOptions(p); };
             _listAdapter.List = await ShoppingCardManager.GetAllItemsAsync();
             _listAdapter.NotifyDataSetChanged();
             _listAdapter.DataChanged += async (s) =>

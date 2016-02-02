@@ -83,7 +83,6 @@ namespace AnatoliAndroid.Fragments
                 pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
                 pDialog.Show();
                 var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
-                //var userModel = await AnatoliUserManager.LoginAsync(Configuration.AppMobileAppInfo.UserName, Configuration.AppMobileAppInfo.Password);
                 pDialog.Dismiss();
                 if (userModel.IsValid)
                 {

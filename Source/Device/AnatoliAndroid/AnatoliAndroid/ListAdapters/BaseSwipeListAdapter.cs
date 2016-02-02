@@ -12,6 +12,8 @@ using Android.Widget;
 using Anatoli.Framework.Model;
 using Anatoli.Framework.Manager;
 using Anatoli.Framework.DataAdapter;
+using AnatoliAndroid.Components;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -37,14 +39,14 @@ namespace AnatoliAndroid.ListAdapters
         }
         public event SwipeRightEventHandler SwipeRight;
         public delegate void SwipeRightEventHandler(object sender, int position);
-        protected virtual void OnBackClicked(int position)
+        protected virtual void OptionsClicked(int position)
         {
-            if (BackClick != null)
+            if (OptionsClick != null)
             {
-                BackClick(this, position);
+                OptionsClick(this, position);
             }
         }
-        public event BackClickedEventHandler BackClick;
-        public delegate void BackClickedEventHandler(object sender, int position);
+        public event OptionsClickedEventHandler OptionsClick;
+        public delegate void OptionsClickedEventHandler(object sender, int position);
     }
 }

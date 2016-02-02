@@ -18,7 +18,6 @@ namespace Anatoli.App.Manager
         const string _productsView = "products_price_view";
         public static async Task SyncProducts(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
-            //return await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<ProductModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductsView);
             try
             {
                 var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products");
@@ -119,7 +118,7 @@ namespace Anatoli.App.Manager
             var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
-                BasketManager.SyncCloudAsync();
+                BasketManager.AddFavoritToCloud();
             }
             return r;
         }
@@ -130,7 +129,7 @@ namespace Anatoli.App.Manager
             var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
-                BasketManager.SyncCloudAsync();
+                BasketManager.AddFavoritToCloud();
             }
             return r;
         }
@@ -227,10 +226,19 @@ namespace Anatoli.App.Manager
             return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
         }
 
+        public static StringQuery GetFavoritsQueryString()
+        {
+            var query = new StringQuery("SELECT * FROM products_price_view WHERE favorit = 1");
+            return query;
+        }
+
+        public bool ShowGroups = false;
         string lastGroupId = Guid.NewGuid().ToString();
         public override async Task<List<ProductModel>> GetNextAsync()
         {
             var list = await base.GetNextAsync();
+            if (!ShowGroups)
+                return list;
             List<ProductModel> list2 = new List<ProductModel>();
             foreach (var item in list)
             {

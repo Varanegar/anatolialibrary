@@ -16,6 +16,7 @@ using AnatoliAndroid.ListAdapters;
 using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -26,12 +27,12 @@ namespace AnatoliAndroid.Fragments
         where DataModel : BaseDataModel, new()
     {
         protected View _view;
-        protected ListView _listView;
+        protected SwipeListView _listView;
         TextView _resultTextView;
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
-        private bool _firstShow = true;
+        protected bool ForceRefresh = true;
         public BaseListFragment()
             : base()
         {
@@ -69,7 +70,7 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             _view = InflateLayout(inflater, container, savedInstanceState);
-            _listView = _view.FindViewById<ListView>(Resource.Id.itemsListView);
+            _listView = _view.FindViewById<SwipeListView>(Resource.Id.itemsListView);
             _resultTextView = _view.FindViewById<TextView>(Resource.Id.resultTextView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
@@ -100,7 +101,7 @@ namespace AnatoliAndroid.Fragments
         public async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            if (_firstShow)
+            if (ForceRefresh)
             {
                 //SetParameters();
                 try
@@ -117,7 +118,7 @@ namespace AnatoliAndroid.Fragments
 
                 }
             }
-            _firstShow = false;
+            ForceRefresh = false;
         }
 
         async void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
@@ -152,7 +153,7 @@ namespace AnatoliAndroid.Fragments
             var transaction = FragmentManager.BeginTransaction();
             _toolsDialogFragment.Show(transaction, "tools_dialog");
         }
-        void OnEmptyList()
+        protected void OnEmptyList()
         {
             if (EmptyList != null)
             {
@@ -161,7 +162,7 @@ namespace AnatoliAndroid.Fragments
         }
         public event EventHandler EmptyList;
 
-        void OnFullList()
+        protected void OnFullList()
         {
             if (FullList != null)
             {
