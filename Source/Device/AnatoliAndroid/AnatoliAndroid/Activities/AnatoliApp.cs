@@ -23,6 +23,7 @@ using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
+using Android.Views.Animations;
 
 namespace AnatoliAndroid.Activities
 {
@@ -62,6 +63,9 @@ namespace AnatoliAndroid.Activities
             else
                 _shoppingPriceTextView.Visibility = ViewStates.Invisible;
             _shoppingPriceTextView.Text = _price.ToCurrency() + " تومان";
+            Animation anim = AnimationUtils.LoadAnimation(Activity, Resource.Animation.abc_shrink_fade_out_from_bottom);
+            _shoppingPriceTextView.StartAnimation(anim);
+            _shoppingCardTextView.StartAnimation(anim);
         }
         public double GetTotalPrice()
         {
@@ -226,6 +230,7 @@ namespace AnatoliAndroid.Activities
 
         void shoppingbarRelativeLayout_Click(object sender, EventArgs e)
         {
+            _shoppingCardImageButton.Enabled = false;
             if (AnatoliApp.GetInstance().AnatoliUser == null)
             {
                 Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
@@ -237,6 +242,7 @@ namespace AnatoliAndroid.Activities
             }
             SetFragment<AnatoliAndroid.Fragments.ShoppingCardFragment>(_shoppingCardFragment, "shoppingCard_fragment");
             DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+            _shoppingCardImageButton.Enabled = true;
         }
 
         async System.Threading.Tasks.Task Search(string value)

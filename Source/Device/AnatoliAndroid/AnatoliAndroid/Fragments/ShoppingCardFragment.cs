@@ -29,7 +29,6 @@ namespace AnatoliAndroid.Fragments
     class ShoppingCardFragment : Fragment
     {
         SwipeListView _itemsListView;
-        TextView _factorPrice;
         TextView _itemCountTextView;
         ProductsListAdapter _listAdapter;
         RelativeLayout _countRelativeLayout;
@@ -81,7 +80,6 @@ namespace AnatoliAndroid.Fragments
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ShoppingCardLayout, container, false);
             _itemsListView = view.FindViewById<SwipeListView>(Resource.Id.shoppingCardListView);
-            _factorPrice = view.FindViewById<TextView>(Resource.Id.factorPriceTextView);
             _itemCountTextView = view.FindViewById<TextView>(Resource.Id.itemCountTextView);
             _countRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.countRelativeLayout);
             _cardItemsRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.cardItemsRelativeLayout);
@@ -291,7 +289,7 @@ namespace AnatoliAndroid.Fragments
 
 
 
-            _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+            _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";
             _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
             _listAdapter = new ProductsListAdapter();
             _listAdapter.SwipeLeft += (s, p) => { _itemsListView.ShowOptions(p); };
@@ -301,7 +299,7 @@ namespace AnatoliAndroid.Fragments
             _listAdapter.NotifyDataSetChanged();
             _listAdapter.DataChanged += async (s) =>
             {
-                _factorPrice.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+                _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";
                 _itemCountTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
                 _checkoutButton.Enabled = CheckCheckout();
             };
