@@ -57,12 +57,12 @@
                     android:layout_margin="0dp" />
             </LinearLayout>
             <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:id="@+id/productSummaryImageView"
                 android:layout_toRightOf="@id/counterLinearLayout"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/igmart" />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"

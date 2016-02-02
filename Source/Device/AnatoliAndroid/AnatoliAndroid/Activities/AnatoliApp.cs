@@ -38,7 +38,7 @@ namespace AnatoliAndroid.Activities
         private static LinkedList<StackItem> _list;
 
         int _backToExit = 0;
-        public bool ExitApp { get { return (_backToExit == 2) ? true : false; } }
+        public bool ExitApp { get { return (_backToExit >= 2) ? true : false; } }
         Toolbar ToolBar;
         public Android.Support.V4.Widget.DrawerLayout DrawerLayout;
         RelativeLayout _searchBarLayout;
@@ -652,11 +652,11 @@ namespace AnatoliAndroid.Activities
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
-                if (_list.Count == 1)
+                if (_list.Last<StackItem>().FragmentType == typeof(FirstFragment))
                 {
                     _backToExit++;
                 }
-                if (_list.Last<StackItem>().FragmentType != typeof(FirstFragment) || _backToExit == 2)
+                if (_list.Last<StackItem>().FragmentType != typeof(FirstFragment) || _backToExit >= 2)
                 {
                     _list.RemoveLast();
                     var stackItem = _list.Last<StackItem>();

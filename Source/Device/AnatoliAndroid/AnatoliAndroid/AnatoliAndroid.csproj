@@ -257,12 +257,6 @@
     <AndroidResource Include="Resources\layout\OrderItemModelLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\BackProductSummaryLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\FrontProductSummaryLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ProgressDialog.axml" />
     <AndroidResource Include="Resources\layout\bottomToolbar.axml">
       <SubType>Designer</SubType>
