@@ -36,7 +36,7 @@ namespace Anatoli.Cloud.WebApi
 
             ConfigureWebApi(httpConfig);
 
-            ConfigureUserinfo();
+            //ConfigureUserinfo();
 
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 

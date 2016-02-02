@@ -28,10 +28,10 @@ namespace ClientApp
 
                 //string servserURI = "http://46.209.104.2:8000/";
                 //string servserURI = "http://192.168.201.71:8090/";
-                //string servserURI = "http://79.175.166.186/";
+                string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
                 //string servserURI = "http://localhost/";
-                string servserURI = "http://192.168.201.169:8080/";
+                //string servserURI = "http://192.168.201.169:8080/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromHours(1);
@@ -74,7 +74,7 @@ namespace ClientApp
                     
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
                     //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
-                    StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
+                    //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
                     //UserManagement.TestUserInfo(client, servserURI);
