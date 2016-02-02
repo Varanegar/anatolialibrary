@@ -649,31 +649,38 @@ namespace AnatoliAndroid.Activities
         }
         public bool BackFragment()
         {
-            _backToExit++;
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
-                _list.RemoveLast();
-                var stackItem = _list.Last<StackItem>();
-                if (stackItem.FragmentType == typeof(AnatoliAndroid.Fragments.LoginFragment) && AnatoliUser != null)
+                if (_list.Count == 1)
+                {
+                    _backToExit++;
+                }
+                if (_list.Last<StackItem>().FragmentType != typeof(FirstFragment) || _backToExit == 2)
                 {
                     _list.RemoveLast();
-                    stackItem = _list.Last<StackItem>();
+                    var stackItem = _list.Last<StackItem>();
+                    if (stackItem.FragmentType == typeof(AnatoliAndroid.Fragments.LoginFragment) && AnatoliUser != null)
+                    {
+                        _list.RemoveLast();
+                        stackItem = _list.Last<StackItem>();
+                    }
+                    if (stackItem.FragmentType == typeof(AnatoliAndroid.Fragments.ProfileFragment) && AnatoliUser == null)
+                    {
+                        _list.RemoveLast();
+                        stackItem = _list.Last<StackItem>();
+                    }
+                    var fragment = Activator.CreateInstance(stackItem.FragmentType);
+                    transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
+                    transaction.Commit();
+                    _toolBarTextView.Text = (fragment as Fragment).GetTitle();
+                    if (fragment.GetType() != typeof(ProductsListFragment))
+                    {
+                        RefreshMenuItems();
+                    }
+                    return true;
                 }
-                if (stackItem.FragmentType == typeof(AnatoliAndroid.Fragments.ProfileFragment) && AnatoliUser == null)
-                {
-                    _list.RemoveLast();
-                    stackItem = _list.Last<StackItem>();
-                }
-                var fragment = Activator.CreateInstance(stackItem.FragmentType);
-                transaction.Replace(Resource.Id.content_frame, fragment as Fragment, stackItem.FragmentName);
-                transaction.Commit();
-                _toolBarTextView.Text = (fragment as Fragment).GetTitle();
-                if (fragment.GetType() != typeof(ProductsListFragment))
-                {
-                    RefreshMenuItems();
-                }
-                return true;
+                return false;
             }
             catch (Exception)
             {
