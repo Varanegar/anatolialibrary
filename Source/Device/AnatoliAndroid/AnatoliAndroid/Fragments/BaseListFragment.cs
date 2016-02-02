@@ -103,22 +103,25 @@ namespace AnatoliAndroid.Fragments
             base.OnCreate(savedInstanceState);
             if (ForceRefresh)
             {
-                //SetParameters();
-                try
-                {
-                    _listAdapter.List = await _dataManager.GetNextAsync();
-                    if (_listAdapter.Count == 0)
-                        OnEmptyList();
-                    else
-                        OnFullList();
-                    _listAdapter.NotifyDataSetChanged();
-                }
-                catch (Exception)
-                {
-
-                }
+                await Refresh();
             }
             ForceRefresh = false;
+        }
+        internal async Task Refresh()
+        {
+            try
+            {
+                _listAdapter.List = await _dataManager.GetNextAsync();
+                if (_listAdapter.Count == 0)
+                    OnEmptyList();
+                else
+                    OnFullList();
+                _listAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         async void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)

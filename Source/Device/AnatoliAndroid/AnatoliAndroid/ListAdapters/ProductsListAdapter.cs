@@ -166,20 +166,23 @@ namespace AnatoliAndroid.ListAdapters
                     }
                 }
                 _groupNameTextView.Text = item.product_name;
-                _groupNameTextView.Click += async (s, e) =>
+                _groupNameTextView.Click += async(s, e) =>
                 {
-                    if (AnatoliApp.GetInstance().ProductsListF != null)
-                    {
-                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        //AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
-                    }
-                    else
-                    {
+                    if (AnatoliApp.GetInstance().ProductsListF == null)
                         AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
-                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
-                    }
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    await AnatoliApp.GetInstance().ProductsListF.Refresh();
                 };
+                if (_groupImageView != null)
+                {
+                    _groupImageView.Click += async(s, e) =>
+                    {
+                        if (AnatoliApp.GetInstance().ProductsListF == null)
+                            AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
+                        AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                        await AnatoliApp.GetInstance().ProductsListF.Refresh();
+                    };
+                }
                 return view;
             }
             else

@@ -257,7 +257,7 @@ namespace AnatoliAndroid.Activities
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(FirstFragment))
             {
                 ProductsListF = SetFragment(ProductsListF, "products_fragment");
-                await ProductsListF.SetCatId(null);
+                ProductsListF.SetCatId(null);
                 await ProductsListF.Search(ProductManager.Search(value), value);
             }
             if (GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
@@ -357,7 +357,7 @@ namespace AnatoliAndroid.Activities
                         {
                             if (ProductsListF != null)
                             {
-                                await ProductsListF.SetCatId(null);
+                                ProductsListF.SetCatId(null);
                             }
                             var temp = await CategoryManager.GetFirstLevelAsync();
                             var categories = new List<DrawerItemType>();
@@ -455,7 +455,7 @@ namespace AnatoliAndroid.Activities
                 }
                 if ((selectedItem as DrawerPCItem).ItemType == DrawerPCItem.ItemTypes.Leaf)
                 {
-                    await ProductsListF.SetCatId(selectedItem.ItemId);
+                    ProductsListF.SetCatId(selectedItem.ItemId);
                     SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                     AnatoliApp.GetInstance()._toolBarTextView.Text = selectedItem.Name;
                     DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
@@ -464,7 +464,7 @@ namespace AnatoliAndroid.Activities
                 var temp = await CategoryManager.GetCategoriesAsync(selectedItem.ItemId);
                 if (temp != null)
                 {
-                    await ProductsListF.SetCatId(selectedItem.ItemId);
+                    ProductsListF.SetCatId(selectedItem.ItemId);
                     var categories = new List<DrawerItemType>();
                     categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
                     var parent = await CategoryManager.GetParentCategory(selectedItem.ItemId);

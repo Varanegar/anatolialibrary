@@ -135,13 +135,13 @@ namespace AnatoliAndroid.Fragments
             {
                 if (AnatoliApp.GetInstance().ProductsListF != null)
                 {
-                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                 }
                 else
                 {
                     AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
-                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                 }
 

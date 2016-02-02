@@ -54,23 +54,23 @@ namespace AnatoliAndroid.Fragments
             }
             _listAdapter.List.InsertRange(0, pl);
         }
-        public async Task SetCatId(string id)
+        public void SetCatId(string id)
         {
-            var leftRight = CategoryManager.GetLeftRight(id);
-            StringQuery query;
-            if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
-            else
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
-            _dataManager.SetQueries(query, null);
             try
             {
                 _dataManager.ShowGroups = false;
                 ForceRefresh = true;
+                var leftRight = CategoryManager.GetLeftRight(id);
+                StringQuery query;
+                if (leftRight != null)
+                    query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
+                else
+                    query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
+                _dataManager.SetQueries(query, null);
             }
             catch (Exception)
             {
-
+                return;
             }
         }
     }
