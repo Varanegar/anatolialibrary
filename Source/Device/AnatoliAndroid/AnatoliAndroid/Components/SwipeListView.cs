@@ -42,7 +42,7 @@ namespace AnatoliAndroid.Components
         {
             try
             {
-                if (e.ScrollState != ScrollState.Fling)
+                if (e.ScrollState == ScrollState.TouchScroll)
                 {
                     for (int i = FirstVisiblePosition; i < LastVisiblePosition; i++)
                     {
