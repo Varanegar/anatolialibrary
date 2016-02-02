@@ -169,5 +169,15 @@ namespace Anatoli.App.Manager
                 throw ex;
             }
         }
+
+        static void OnItemsChanged(Dictionary<ProductModel, int> items)
+        {
+            if (ItemsChanged != null)
+            {
+                ItemsChanged.Invoke(items);
+            }
+        }
+        public static event ItemsChangedEventHandler ItemsChanged;
+        public delegate void ItemsChangedEventHandler(Dictionary<ProductModel, int> items);
     }
 }
