@@ -25,13 +25,14 @@ namespace AnatoliAndroid.Fragments
                 case MotionEventActions.Up:
                     _upTime = Now();
                     var d = Math.Abs(e.RawX - _downX);
+                    Console.WriteLine(d);
                     if ((_upTime - _downTime) > 1000 && d < 30)
                         OnLongClick();
-                    else if ((_upTime - _downTime) > 100 && d > 100)
+                    else if ((_upTime - _downTime) > 50 && d > 30)
                     {
-                        if ((e.RawX - _downX) < -100)
+                        if ((e.RawX - _downX) < -30)
                             OnSwipeLeft(v);
-                        else if ((e.RawX - _downX) > 100)
+                        else if ((e.RawX - _downX) > 30)
                             OnSwipeRight(v);
                     }
                     else
@@ -41,6 +42,17 @@ namespace AnatoliAndroid.Fragments
                     _downTime = Now();
                     _downX = e.RawX;
                     _downY = e.RawY;
+                    break;
+                case MotionEventActions.Cancel:
+                    _upTime = Now();
+                    d = Math.Abs(e.RawX - _downX);
+                    if ((_upTime - _downTime) > 100 && d > 60)
+                    {
+                        if ((e.RawX - _downX) < -60)
+                            OnSwipeLeft(v);
+                        else if ((e.RawX - _downX) > 60)
+                            OnSwipeRight(v);
+                    }
                     break;
                 default:
                     break;
@@ -68,6 +80,7 @@ namespace AnatoliAndroid.Fragments
 
         void OnSwipeLeft(object sender)
         {
+            Console.WriteLine("Swipe left");
             if (SwipeLeft != null)
             {
                 SwipeLeft.Invoke(sender, new EventArgs());
@@ -77,6 +90,7 @@ namespace AnatoliAndroid.Fragments
 
         void OnSwipeRight(object sender)
         {
+            Console.WriteLine("Swipe right");
             if (SwipeRight != null)
             {
                 SwipeRight.Invoke(sender, new EventArgs());

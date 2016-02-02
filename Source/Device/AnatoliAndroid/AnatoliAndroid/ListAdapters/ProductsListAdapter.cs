@@ -374,13 +374,13 @@ namespace AnatoliAndroid.ListAdapters
                     _productRemoveButton.Enabled = true;
                 };
 
-                SwipeTouchListener tcl = new SwipeTouchListener(AnatoliApp.GetInstance().Activity);
+                OnTouchListener tcl = new OnTouchListener();
                 view.SetOnTouchListener(tcl);
-                tcl.SwipeLeft += (s) =>
+                tcl.SwipeLeft += (s,e) =>
                 {
                     OnSwipeLeft(position);
                 };
-                tcl.SwipeRight += (s) =>
+                tcl.SwipeRight += (s,e) =>
                 {
                     OnSwipeRight(position);
                 };
