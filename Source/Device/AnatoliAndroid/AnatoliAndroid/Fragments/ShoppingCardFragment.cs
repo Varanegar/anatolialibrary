@@ -327,7 +327,7 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Enabled = CheckCheckout();
 
-            _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToString() + " تومان";
+            _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";
             _countTextView.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString() + " عدد";
 
 
