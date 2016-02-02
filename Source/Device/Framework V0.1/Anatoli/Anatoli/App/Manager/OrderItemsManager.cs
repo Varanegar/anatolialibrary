@@ -14,7 +14,9 @@ namespace Anatoli.App.Manager
     {
         public static async Task<List<OrderItemModel>> GetItemsAsync(string orderId)
         {
-            StringQuery query = new StringQuery(String.Format(@"SELECT orders.order_id as order_id,
+            try
+            {
+                StringQuery query = new StringQuery(String.Format(@"SELECT orders.order_id as order_id,
 order_items.product_price * order_items.product_count as item_price,
 products.product_name as product_name,
 products.image as image,
@@ -27,7 +29,13 @@ orders JOIN order_items ON orders.order_id = order_items.order_id
 JOIN stores ON orders.store_id = stores.store_id
 JOIN products ON order_items.product_id = products.product_id
 WHERE orders.order_id = {0}", orderId));
-            return await BaseDataAdapter<OrderItemModel>.GetListAsync(query);
+                return await BaseDataAdapter<OrderItemModel>.GetListAsync(query);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
 
     }

@@ -60,7 +60,6 @@ namespace AnatoliAndroid.Fragments
             AnatoliAndroid.Components.AnatoliSlideShow.OnClick click3 = new AnatoliAndroid.Components.AnatoliSlideShow.OnClick(() => { Toast.MakeText(AnatoliApp.GetInstance().Activity, "Item 3 selected", ToastLength.Short).Show(); });
             var c3 = new Tuple<string, AnatoliAndroid.Components.AnatoliSlideShow.OnClick>("https://pixabay.com/static/uploads/photo/2012/11/06/03/47/background-64259_960_720.jpg", click3);
             _slideShow.Source.Add(c3);
-
             return view;
         }
         public override async void OnStart()
@@ -136,13 +135,13 @@ namespace AnatoliAndroid.Fragments
             {
                 if (AnatoliApp.GetInstance().ProductsListF != null)
                 {
-                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                 }
                 else
                 {
                     AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
-                    await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
                 }
 

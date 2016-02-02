@@ -55,14 +55,28 @@ namespace Anatoli.App.Manager
 
         public static async Task<OrderModel> GetOrderAsync(string orderId)
         {
-            SelectQuery query = new SelectQuery("orders_view", new EqFilterParam("order_id", orderId));
-            return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
+            try
+            {
+                SelectQuery query = new SelectQuery("orders_view", new EqFilterParam("order_id", orderId));
+                return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<OrderModel> GetLatestOrder()
         {
-            SelectQuery query = new SelectQuery("orders", new SortParam("order_id", SortTypes.DESC));
-            return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
+            try
+            {
+                SelectQuery query = new SelectQuery("orders", new SortParam("order_id", SortTypes.DESC));
+                return await BaseDataAdapter<OrderModel>.GetItemAsync(query);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

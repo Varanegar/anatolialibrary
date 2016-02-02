@@ -118,15 +118,29 @@ namespace Anatoli.App.Manager
 
         public static async Task<CityRegionModel> GetParentGroup(string p)
         {
-            var current = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
-            var parent = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", current.parent_id)));
-            return parent;
+            try
+            {
+                var current = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
+                var parent = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", current.parent_id)));
+                return parent;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<CityRegionModel> GetGroupInfo(string p)
         {
-            var c = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
-            return c;
+            try
+            {
+                var c = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
+                return c;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

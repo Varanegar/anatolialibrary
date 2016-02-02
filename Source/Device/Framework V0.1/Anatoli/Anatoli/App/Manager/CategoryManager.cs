@@ -151,24 +151,31 @@ namespace Anatoli.App.Manager
 
         public static async Task<string> GetFullName(string catId)
         {
-            var current = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", catId)));
-            if (current != null)
+            try
             {
-                var parent = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
-                if (parent != null && parent.cat_id != current.cat_id)
+                var current = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", catId)));
+                if (current != null)
                 {
-                    var parent2 = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
-                    if (parent2 != null && parent2.cat_id != parent.cat_id)
+                    var parent = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
+                    if (parent != null && parent.cat_id != current.cat_id)
                     {
-                        return parent2.cat_name + " / " + parent.cat_name + " / " + current.cat_name;
-                    }
-                    else
-                    {
-                        return parent.cat_name + " / " + current.cat_name;
+                        var parent2 = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
+                        if (parent2 != null && parent2.cat_id != parent.cat_id)
+                        {
+                            return parent2.cat_name + " / " + parent.cat_name + " / " + current.cat_name;
+                        }
+                        else
+                        {
+                            return parent.cat_name + " / " + current.cat_name;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception)
+            {
+                return "";
+            }
         }
 
     }

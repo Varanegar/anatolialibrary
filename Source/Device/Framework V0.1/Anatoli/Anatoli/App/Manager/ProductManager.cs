@@ -135,13 +135,21 @@ namespace Anatoli.App.Manager
         }
         public static async Task<List<string>> GetSuggests(string key, int no)
         {
-            var dbQuery = new SelectQuery(_productsTbl, new SearchFilterParam("product_name", key));
-            dbQuery.Limit = 10000;
-            var listModel = await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
-            if (listModel.Count > 0)
-                return ShowSuggests(listModel, no);
-            else
+            try
+            {
+                var dbQuery = new SelectQuery(_productsTbl, new SearchFilterParam("product_name", key));
+                dbQuery.Limit = 10000;
+                var listModel = await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
+                if (listModel.Count > 0)
+                    return ShowSuggests(listModel, no);
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+
                 return null;
+            }
         }
 
         static List<string> ShowSuggests(List<ProductModel> list, int no)
@@ -222,8 +230,15 @@ namespace Anatoli.App.Manager
         }
         public static async Task<List<ProductModel>> GetFavorits()
         {
-            var dbQuery = new SelectQuery(_productsTbl, new EqFilterParam("favorit", "1"));
-            return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
+            try
+            {
+                var dbQuery = new SelectQuery(_productsTbl, new EqFilterParam("favorit", "1"));
+                return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static StringQuery GetFavoritsQueryString()

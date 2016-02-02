@@ -19,7 +19,11 @@ namespace AnatoliAndroid.Fragments
 {
     class OrdersListFragment : BaseListFragment<OrderManager, OrdersListAdapter, NoListToolsDialog, OrderModel>
     {
-
+        public OrdersListFragment()
+        {
+            StringQuery query = new StringQuery("SELECT * FROM orders_view");
+            _dataManager.SetQueries(query, null);
+        }
         public override void OnResume()
         {
             base.OnResume();
