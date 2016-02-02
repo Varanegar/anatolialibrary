@@ -31,6 +31,7 @@ namespace Anatoli.App.Manager
             q += " 1=0";
 
             StringQuery command = new StringQuery(q);
+            command.Unlimited = true;
             var result = await BaseDataAdapter<MessageModel>.UpdateItemAsync(command);
         }
     }
