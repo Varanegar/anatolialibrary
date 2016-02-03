@@ -31,5 +31,5 @@ namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
             };
         }
 
-    }
+    }    
 }

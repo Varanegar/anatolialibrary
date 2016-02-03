@@ -1,6 +1,5 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
@@ -10,5 +9,10 @@ namespace Anatoli.DataAccess.Models.Identity
 
         public virtual Principal Principal { get; set; }
         public virtual Permission Permission { get; set; }
+
+        [ForeignKey("Permission")]
+        public Guid Permission_Id { get; set; }
+        [ForeignKey("Principal")]
+        public Guid Principal_Id { get; set; }
     }
 }

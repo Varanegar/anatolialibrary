@@ -21,4 +21,16 @@ namespace Anatoli.Business
         //void Publish(List<TOut> ProductViewModels);
         Task<List<TOut>> Delete(List<TOut> ProductViewModels);
     }
+
+    public interface IBusinessDomain1<TMainSource>
+        where TMainSource : class, new()
+    {
+        IRepository<TMainSource> MainRepository { get; set; }
+        Guid ApplicationKey { get; }
+
+        Task<ICollection<TMainSource>> GetAllAsync();
+        Task<ICollection<TMainSource>> GetAllChangedAfterAsync(DateTime selectedDate);
+        Task<ICollection<TMainSource>> PublishAsync(List<TMainSource> data);
+        Task DeleteAsync(List<TMainSource> data);
+    }
 }
