@@ -36,7 +36,7 @@ namespace Anatoli.App.Model.Product
     {
         public static string ToCurrency(this double value)
         {
-            return Math.Round(value, 0).ToString("N0");
+            return Math.Round(value / 10, 0).ToString("N0");
         }
     }
 }

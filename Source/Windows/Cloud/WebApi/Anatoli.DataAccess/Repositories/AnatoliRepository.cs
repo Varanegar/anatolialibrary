@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using EntityFramework.Caching;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
+using EntityFramework.Extensions;
 
 namespace Anatoli.DataAccess.Repositories
 {
@@ -36,14 +38,16 @@ namespace Anatoli.DataAccess.Repositories
         {
             return DbSet;
         }
-        public virtual async Task<T> GetByIdAsync(Guid id)
-        {
-            return await DbSet.FindAsync(id);
-        }
+
         public virtual T GetById(Guid id)
         {
             return DbSet.Find(id);
         }
+        public virtual async Task<T> GetByIdAsync(Guid id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
         public virtual async Task<ICollection<T>> GetAllAsync()
         {
             return await DbSet.ToListAsync();
@@ -57,6 +61,15 @@ namespace Anatoli.DataAccess.Repositories
         public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {
             return await DbSet.Where(match).ToListAsync();
+        }
+
+        public virtual IEnumerable<T> GetFromCached(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
+        {
+            return DbSet.Where(predicate).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)));
+        }
+        public virtual async Task<IEnumerable<T>> GetFromCachedAsync(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
+        {
+            return await DbSet.Where(predicate).FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
 
         public virtual void Add(T entity)
@@ -81,6 +94,7 @@ namespace Anatoli.DataAccess.Repositories
 
             return await factory.StartNew(() => entity);
         }
+
         public virtual void Update(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
@@ -103,7 +117,16 @@ namespace Anatoli.DataAccess.Repositories
 
             return await factory.StartNew(() => entity);
         }
-        public virtual async Task DeleteAsync(T entity)
+        public virtual void UpdateBatch(Expression<Func<T, bool>> predicate, T entity)
+        {
+            DbSet.Where(predicate).Update(t => entity);
+        }
+        public virtual async Task UpdateBatchAsync(Expression<Func<T, bool>> predicate, T entity)
+        {
+            await DbSet.Where(predicate).UpdateAsync(t => entity);
+        }
+
+        public virtual void Delete(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
 
@@ -112,12 +135,22 @@ namespace Anatoli.DataAccess.Repositories
             else
                 DbSet.Attach(entity);
 
-            var factory = Task.Factory;
-
-            await factory.StartNew(() => DbSet.Remove(entity));
+            DbSet.Remove(entity);
         }
+        public virtual async Task DeleteAsync(T entity)
+        {
+            await Task.Factory.StartNew(() => Delete(entity));
+        }
+        public virtual async Task DeleteAsync(Guid id)
+        {
+            var entity = GetByIdAsync(id);
 
-        public virtual async Task DeleteRangeAsync(List<T> entities)
+            if (entity == null)
+                return; // not found; assume already deleted.
+
+            await DeleteAsync(entity.Result);
+        }
+        public virtual void DeleteRange(List<T> entities)
         {
             entities.ForEach(entity =>
             {
@@ -129,27 +162,33 @@ namespace Anatoli.DataAccess.Repositories
                     DbSet.Attach(entity);
             });
 
-            await Task.Factory.StartNew(() => DbSet.RemoveRange(entities));
+            DbSet.RemoveRange(entities);
         }
-
-        public virtual async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteRangeAsync(List<T> entities)
         {
-            var entity = GetByIdAsync(id);
-
-            if (entity == null)
-                return; // not found; assume already deleted.
-
-            await DeleteAsync(entity.Result);
+            await Task.Factory.StartNew(() => DeleteRange(entities));
         }
+        public virtual void DeleteBatch(Expression<Func<T, bool>> predicate)
+        {
+            DbSet.Where(predicate).Delete();
+        }
+        public virtual async Task DeleteBatchAsync(Expression<Func<T, bool>> predicate)
+        {
+            await DbSet.Where(predicate).DeleteAsync();
+        }
+
         public virtual void EntryModified(T entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
         }
+
         public virtual void SaveChanges()
         {
             try
             {
                 DbContext.SaveChanges();
+
+                ExpireCache();
             }
             catch (DbEntityValidationException e)
             {
@@ -175,6 +214,8 @@ namespace Anatoli.DataAccess.Repositories
             try
             {
                 await DbContext.SaveChangesAsync();
+
+                ExpireCache();
             }
             catch (DbEntityValidationException e)
             {
@@ -195,9 +236,21 @@ namespace Anatoli.DataAccess.Repositories
                 throw;
             }
         }
+
+        public virtual int Count()
+        {
+            return DbSet.Count();
+        }
         public virtual async Task<int> CountAsync()
         {
             return await DbSet.CountAsync();
+        }
+
+        private void ExpireCache()
+        {
+            var cacheKey = typeof(T).ToString();
+
+            CacheManager.Current.Expire(cacheKey);
         }
         #endregion
 

@@ -42,17 +42,18 @@ namespace AnatoliAndroid.Components
         {
             try
             {
-                //var sl = _listView as SwipeListView;
-                //sl.CloseOpenedItems();
-                for (int i = FirstVisiblePosition; i < LastVisiblePosition; i++)
+                if (e.ScrollState == ScrollState.TouchScroll)
                 {
-                    try
+                    for (int i = FirstVisiblePosition; i < LastVisiblePosition; i++)
                     {
-                        HideOptions(i);
-                    }
-                    catch (Exception)
-                    {
+                        try
+                        {
+                            HideOptions(i);
+                        }
+                        catch (Exception)
+                        {
 
+                        }
                     }
                 }
             }

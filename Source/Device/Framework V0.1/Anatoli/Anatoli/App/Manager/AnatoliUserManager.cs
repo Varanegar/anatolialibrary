@@ -20,7 +20,7 @@ namespace Anatoli.App.Manager
             if (userModel.IsValid)
             {
 #pragma warning disable
-                BasketManager.SyncDataBase();
+                //BasketManager.SyncDataBase();
 #pragma warning restore
             }
             return userModel;

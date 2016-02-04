@@ -168,18 +168,21 @@ namespace AnatoliAndroid.ListAdapters
                 _groupNameTextView.Text = item.product_name;
                 _groupNameTextView.Click += async (s, e) =>
                 {
-                    if (AnatoliApp.GetInstance().ProductsListF != null)
-                    {
-                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        //AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
-                    }
-                    else
-                    {
+                    if (AnatoliApp.GetInstance().ProductsListF == null)
                         AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
-                        await AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
-                    }
+                    AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                    await AnatoliApp.GetInstance().ProductsListF.Refresh();
                 };
+                if (_groupImageView != null)
+                {
+                    _groupImageView.Click += async (s, e) =>
+                    {
+                        if (AnatoliApp.GetInstance().ProductsListF == null)
+                            AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
+                        AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
+                        await AnatoliApp.GetInstance().ProductsListF.Refresh();
+                    };
+                }
                 return view;
             }
             else
@@ -232,6 +235,7 @@ namespace AnatoliAndroid.ListAdapters
                 _removeAllProductsButton.SetOnTouchListener(removeAll);
                 removeAll.Click += async (s, e) =>
                 {
+                    _removeAllProductsButton.Enabled = false;
                     OptionsClicked(position);
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
@@ -269,6 +273,7 @@ namespace AnatoliAndroid.ListAdapters
                         var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         login.Show(transaction, "login_dialog");
                     }
+                    _removeAllProductsButton.Enabled = true;
                 };
 
 
@@ -278,6 +283,7 @@ namespace AnatoliAndroid.ListAdapters
                 _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
                 _favoritsTouchlistener.Click += async (s, e) =>
                 {
+                    _favoritsButton.Enabled = false;
                     if (this[position].IsFavorit)
                     {
                         if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
@@ -297,12 +303,14 @@ namespace AnatoliAndroid.ListAdapters
                         }
                     }
                     OptionsClicked(position);
+                    _favoritsButton.Enabled = true;
                 };
 
                 _addTouchlistener = new OnTouchListener();
                 _productAddButton.SetOnTouchListener(_addTouchlistener);
                 _addTouchlistener.Click += async (s, e) =>
                 {
+                    _productAddButton.Enabled = false;
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
                         if (await ShoppingCardManager.AddProductAsync(item))
@@ -328,12 +336,14 @@ namespace AnatoliAndroid.ListAdapters
                         var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         login.Show(transaction, "login_dialog");
                     }
+                    _productAddButton.Enabled = true;
                 };
 
                 var _removeTouchlistener = new OnTouchListener();
                 _productRemoveButton.SetOnTouchListener(_removeTouchlistener);
                 _removeTouchlistener.Click += async (s, e) =>
                 {
+                    _productRemoveButton.Enabled = false;
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
                         if (await ShoppingCardManager.RemoveProductAsync(item))
@@ -361,15 +371,16 @@ namespace AnatoliAndroid.ListAdapters
                         var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         login.Show(transaction, "login_dialog");
                     }
+                    _productRemoveButton.Enabled = true;
                 };
 
-                SwipeTouchListener tcl = new SwipeTouchListener(AnatoliApp.GetInstance().Activity);
+                OnTouchListener tcl = new OnTouchListener();
                 view.SetOnTouchListener(tcl);
-                tcl.SwipeLeft += (s) =>
+                tcl.SwipeLeft += (s,e) =>
                 {
                     OnSwipeLeft(position);
                 };
-                tcl.SwipeRight += (s) =>
+                tcl.SwipeRight += (s,e) =>
                 {
                     OnSwipeRight(position);
                 };

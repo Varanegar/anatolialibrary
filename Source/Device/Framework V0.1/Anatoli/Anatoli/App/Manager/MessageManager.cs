@@ -22,16 +22,23 @@ namespace Anatoli.App.Manager
 
         public static async void SetViewFlag(List<int> ids)
         {
-            string q = "UPDATE messages SET new_flag=1 WHERE ";
-
-            foreach (var item in ids)
+            try
             {
-                q += " msg_id=" + item.ToString() + " OR";
-            }
-            q += " 1=0";
+                string q = "UPDATE messages SET new_flag=1 WHERE ";
+                foreach (var item in ids)
+                {
+                    q += " msg_id=" + item.ToString() + " OR";
+                }
+                q += " 1=0";
 
-            StringQuery command = new StringQuery(q);
-            var result = await BaseDataAdapter<MessageModel>.UpdateItemAsync(command);
+                StringQuery command = new StringQuery(q);
+                command.Unlimited = true;
+                var result = await BaseDataAdapter<MessageModel>.UpdateItemAsync(command);
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
     }
 }

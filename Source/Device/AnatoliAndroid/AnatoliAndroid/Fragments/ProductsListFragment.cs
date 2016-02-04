@@ -35,7 +35,7 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
         }
-        public override async Task Search(DBQuery query, string value)
+        public async Task Search(DBQuery query, string value)
         {
             _dataManager.ShowGroups = true;
             await base.Search(query, value);
@@ -53,24 +53,28 @@ namespace AnatoliAndroid.Fragments
                 pl.Add(p);
             }
             _listAdapter.List.InsertRange(0, pl);
-        }
-        public async Task SetCatId(string id)
-        {
-            var leftRight = CategoryManager.GetLeftRight(id);
-            StringQuery query;
-            if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
+            if (_listAdapter.List.Count > 0)
+                OnFullList();
             else
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
-            _dataManager.SetQueries(query, null);
+                OnEmptyList();
+        }
+        public void SetCatId(string id)
+        {
             try
             {
                 _dataManager.ShowGroups = false;
                 ForceRefresh = true;
+                var leftRight = CategoryManager.GetLeftRight(id);
+                StringQuery query;
+                if (leftRight != null)
+                    query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
+                else
+                    query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
+                _dataManager.SetQueries(query, null);
             }
             catch (Exception)
             {
-
+                return;
             }
         }
     }

@@ -46,15 +46,7 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _listAdapter.List = await _dataManager.GetNextAsync();
-                _listAdapter.NotifyDataSetChanged();
                 AnatoliApp.GetInstance().SetToolbarTitle(string.Format("جستجو  \"{0}\"", value.Trim()));
-                if (_listAdapter.List.Count == 0)
-                    OnEmptyList();
-                else
-                {
-                    OnFullList();
-                    _listView.SetSelection(0);
-                }
             }
             catch (Exception)
             {
@@ -103,22 +95,26 @@ namespace AnatoliAndroid.Fragments
             base.OnCreate(savedInstanceState);
             if (ForceRefresh)
             {
-                //SetParameters();
-                try
-                {
-                    _listAdapter.List = await _dataManager.GetNextAsync();
-                    if (_listAdapter.Count == 0)
-                        OnEmptyList();
-                    else
-                        OnFullList();
-                    _listAdapter.NotifyDataSetChanged();
-                }
-                catch (Exception)
-                {
-
-                }
+                await Refresh();
             }
             ForceRefresh = false;
+        }
+        internal async Task Refresh()
+        {
+            try
+            {
+                _listAdapter.List = await _dataManager.GetNextAsync();
+                if (_listAdapter.Count == 0)
+                    OnEmptyList();
+                else
+                    OnFullList();
+                _listView.SetSelection(0);
+                _listAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         async void _listView_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)

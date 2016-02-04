@@ -33,6 +33,11 @@ namespace AnatoliAndroid.Activities
         Toolbar _toolbar;
         LocationManager _locationManager;
         public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+
+        }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -100,7 +105,7 @@ namespace AnatoliAndroid.Activities
                 {
 #pragma warning disable
                     AnatoliApp.GetInstance().RefreshCutomerProfile();
-                    BasketManager.SyncDataBase();
+                    //BasketManager.SyncDataBase();
 #pragma warning restore
                 }
             }
@@ -111,41 +116,6 @@ namespace AnatoliAndroid.Activities
 
 
 
-        }
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-
-            //if (resultCode == Result.Ok)
-            //{
-            //    Android.Net.Uri selectedImage = data.Data;
-            //    String[] filePathColumn = { MediaStore.Images.Media.DefaultSortOrder };
-            //    var cursor = ContentResolver.Query(selectedImage, filePathColumn, null, null, null);
-            //    if (cursor.MoveToFirst())
-            //    {
-            //        int columnIndex = cursor.GetColumnIndex(filePathColumn[0]);
-            //        String filePath = cursor.GetString(columnIndex);
-            //        Bitmap bitmap = BitmapFactory.DecodeFile(filePath);
-            //        CustomerManager.UploadImageAsync("aaa", bitmap);
-            //    }
-            //    cursor.Close();
-            //}
-        }
-        private string GetPathToImage(Android.Net.Uri uri)
-        {
-            string path = null;
-            // The projection contains the columns we want to return in our query.
-            string[] projection = new[] { Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data };
-            using (ICursor cursor = AnatoliApp.GetInstance().Activity.ManagedQuery(uri, projection, null, null, null))
-            {
-                if (cursor != null)
-                {
-                    int columnIndex = cursor.GetColumnIndexOrThrow(Android.Provider.MediaStore.Images.Media.InterfaceConsts.Data);
-                    cursor.MoveToFirst();
-                    path = cursor.GetString(columnIndex);
-                }
-            }
-            return path;
         }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
