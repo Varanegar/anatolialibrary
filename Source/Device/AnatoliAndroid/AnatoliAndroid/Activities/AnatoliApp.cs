@@ -442,6 +442,10 @@ namespace AnatoliAndroid.Activities
                         var g = await SyncDatabase();
                         SetFragment<FirstFragment>(null, "first_fragment)");
                         break;
+                    case DrawerMainItem.DrawerMainItems.Settings:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        SetFragment<SettingsFragment>(null, "settings_fragment)");
+                        break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         bool result = await AnatoliUserManager.LogoutAsync();
@@ -805,6 +809,10 @@ namespace AnatoliAndroid.Activities
             updateMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Update);
             mainItems.Add(updateMenuEntry);
 
+            var settingsMenuEntry = new DrawerMainItem();
+            settingsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Settings;
+            settingsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Settings);
+            mainItems.Add(settingsMenuEntry);
 
             AnatoliMenuItems = mainItems;
             _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);

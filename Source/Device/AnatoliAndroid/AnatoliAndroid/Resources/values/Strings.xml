@@ -59,7 +59,8 @@
   <string name="KMeter">کیلومتر</string>
   <string name="UnknownDistance">فاصله نامشخص</string>
   <string name="DistanceFromYou">فاصله از شما</string>
-
+  <string name="Settings">تنظیمات</string>
+  
   <string name="PleaseWait">لطفا صبور باشید</string>
   <string name="SaveSuccess">عضویت انجام شد</string>
   <string name="Cancel">بی خیال</string>

@@ -106,6 +106,7 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                     AnatoliApp.GetInstance().RefreshCutomerProfile();
                     ProductManager.SyncFavorits();
+                    Configuration.ReadConfigFromFile();
 #pragma warning restore
                 }
             }

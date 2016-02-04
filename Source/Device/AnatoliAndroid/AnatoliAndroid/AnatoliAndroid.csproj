@@ -156,6 +156,7 @@
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="Fragments\ProformaFragment.cs" />
+    <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
@@ -283,6 +284,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SimpleOrderItemLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SettingsLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

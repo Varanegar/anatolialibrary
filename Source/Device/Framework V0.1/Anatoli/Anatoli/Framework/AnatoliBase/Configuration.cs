@@ -26,7 +26,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
             //public static readonly string PortalAddress = "http://79.175.166.186/";
             //public static readonly string PortalAddress = "http://192.168.201.46/";
-            public static readonly string PortalAddress = "http://192.168.0.160:8081/";
+            public static string PortalAddress = "http://192.168.0.160:8081/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
             public static readonly string ParseInfo = "api/TestAuth/setParsInfo";
             public static readonly string BaseDatas = "api/gateway/basedata/basedatas/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
@@ -66,6 +66,42 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string ChangePasswordUri = "/api/accounts/changepassword/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public static readonly string CityRegion = "/api/gateway/base/region/cityregions/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+        }
+
+        public static async Task ReadConfigFromFile()
+        {
+            try
+            {
+                var content = await Task.Run(() =>
+                {
+                    return AnatoliClient.GetInstance().FileIO.ReadAllText(AnatoliClient.GetInstance().FileIO.GetDataLoction(), "config");
+                });
+                if (!String.IsNullOrEmpty(content))
+                {
+                    WebService.PortalAddress = content;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
+        public static async Task SaveConfigToFile()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    AnatoliClient.GetInstance().FileIO.WriteAllText(WebService.PortalAddress, AnatoliClient.GetInstance().FileIO.GetDataLoction(), "config");
+                });
+            }
+            catch (Exception)
+            {
+
+            }
+
         }
     }
 }

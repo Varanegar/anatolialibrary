@@ -158,6 +158,7 @@ namespace AnatoliAndroid.ListAdapters
             public const string Avatar = "Avatar";
             public const string Update = "Update";
             public const string FirstPage = "FirstPage";
+            public const string Settings = "Settings";
         }
     }
 }
