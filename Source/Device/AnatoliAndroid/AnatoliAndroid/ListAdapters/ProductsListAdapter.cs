@@ -19,6 +19,7 @@ using AnatoliAndroid.Fragments;
 using Android.Content.Res;
 using Java.Lang;
 using AnatoliAndroid.Components;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.ListAdapters
 {

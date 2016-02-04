@@ -86,6 +86,7 @@
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
     <Compile Include="Framework\AnatoliBase\Configuration.cs" />
     <Compile Include="Framework\AnatoliBase\Crypto.cs" />
+    <Compile Include="Framework\AnatoliBase\Extentions.cs" />
     <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
     <Compile Include="Framework\AnatoliBase\QueryParams.cs" />
     <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />

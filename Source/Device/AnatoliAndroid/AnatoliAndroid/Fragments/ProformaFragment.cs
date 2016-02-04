@@ -10,11 +10,19 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Anatoli.App.Model.Store;
+using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Fragments
 {
     public class ProformaFragment : DialogFragment
     {
+        PurchaseOrderViewModel _orderViewModel;
+        public ProformaFragment(PurchaseOrderViewModel orderViewModel)
+        {
+            _orderViewModel = orderViewModel;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,10 +35,51 @@ namespace AnatoliAndroid.Fragments
 
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ProformaLayout, container, false);
-            view.FindViewById<TextView>(Resource.Id.storeNameTextView).Text = "شعبه شریعتی";
-            view.FindViewById<TextView>(Resource.Id.paymentTypeTextView).Text = "نقدی";
-            view.FindViewById<TextView>(Resource.Id.orderTimeTextView).Text = "1/1/1 12:00";
+            Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+
+            view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = "شعبه شریعتی";
+            view.FindViewById<TextView>(Resource.Id.orderNumberTextView).Text = _orderViewModel.UniqueId;
+            view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = _orderViewModel.OrderDate.ToString();
+            view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = _orderViewModel.FinalAmount.ToCurrency();
+            ListView itemsListView = view.FindViewById<ListView>(Resource.Id.itemsListView);
+            itemsListView.Adapter = new ProformaListAdapter(AnatoliApp.GetInstance().Activity, _orderViewModel.LineItems);
+
             return view;
+        }
+
+        public class ProformaListAdapter : BaseAdapter<PurchaseOrderLineItemViewModel>
+        {
+            List<PurchaseOrderLineItemViewModel> _list;
+            Activity _context;
+            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list)
+            {
+                _list = list;
+                _context = context;
+            }
+            public override int Count
+            {
+                get { return _list.Count; }
+            }
+
+            public override long GetItemId(int position)
+            {
+                return position;
+            }
+
+            public override View GetView(int position, View convertView, ViewGroup parent)
+            {
+                var view = _context.LayoutInflater.Inflate(Resource.Layout.SimpleOrderItemLayout, null);
+                var item = _list[position];
+                view.FindViewById<TextView>(Resource.Id.itemNameTextView).Text = item.UniqueId;
+                view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString();
+                view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.FinalNetAmount.ToCurrency();
+                return view;
+            }
+
+            public override PurchaseOrderLineItemViewModel this[int position]
+            {
+                get { return (_list[position] != null) ? _list[position] : null; }
+            }
         }
     }
 }
