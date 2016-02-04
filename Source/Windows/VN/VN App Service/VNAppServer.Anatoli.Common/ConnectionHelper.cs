@@ -88,6 +88,15 @@ namespace VNAppServer.Anatoli.Common
 
                 requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
                 var response = client.PostAsync(URI + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                if(response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    log.Error("Fail CallServerService URI :" + URI);
+                    throw new Exception("Fail CallServerService URI :" + URI);
+                }
             }
             );
         }

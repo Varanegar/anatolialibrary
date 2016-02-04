@@ -14,6 +14,7 @@ using Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net.Http.Formatting;
@@ -26,6 +27,8 @@ namespace Anatoli.Cloud.WebApi
     {
         public void Configuration(IAppBuilder app)
         {
+            Database.SetInitializer<AnatoliDbContext>(new CreateDatabaseIfNotExists<AnatoliDbContext>());
+
             log4net.Config.XmlConfigurator.Configure();
 
             HttpConfiguration httpConfig = new HttpConfiguration();
@@ -50,7 +53,7 @@ namespace Anatoli.Cloud.WebApi
 
         private void ConfigureUserinfo()
         {
-            
+            /*
             AnatoliDbContext context = new AnatoliDbContext();
 
             var manager = new ApplicationUserManager(new AnatoliUserStore(context));
@@ -160,6 +163,7 @@ namespace Anatoli.Cloud.WebApi
             result = manager.CreateAsync(user5, "Anatoli@App@Vn").Result;
             userInfo2 = manager.FindByNameAsync("AnatoliInterCom").Result;
             result = manager.AddToRolesAsync(userInfo2.Id, new string[] { "AuthorizedApp", "User" }).Result;
+             * */
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)

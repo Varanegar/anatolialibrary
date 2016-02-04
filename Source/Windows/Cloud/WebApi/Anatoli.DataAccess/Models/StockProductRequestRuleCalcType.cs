@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class StockProductRequestRuleCalcType
+    public class StockProductRequestRuleCalcType : BaseModel
     {
         [StringLength(100)]
         public string StockProductRequestRuleCalcTypeName { get; set; }
