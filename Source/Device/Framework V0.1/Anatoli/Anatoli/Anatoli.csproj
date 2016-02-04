@@ -37,7 +37,6 @@
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
     <Compile Include="App\Manager\BaseTypeManager.cs" />
-    <Compile Include="App\Manager\BasketManager.cs" />
     <Compile Include="App\Manager\CategoryManager.cs" />
     <Compile Include="App\Manager\CityRegionManager.cs" />
     <Compile Include="App\Manager\CustomerManager.cs" />

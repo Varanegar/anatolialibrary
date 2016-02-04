@@ -112,13 +112,49 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
+
+        public static async Task SyncFavorits()
+        {
+            try
+            {
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
+                var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
+                await BaseDataAdapter<BasketViewModel>.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
+                foreach (var basket in list)
+                {
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        connection.BeginTransaction();
+                        if (basket.BasketTypeValueId == BasketViewModel.FavoriteBasketTypeId)
+                        {
+                            foreach (var item in basket.BasketItems)
+                            {
+                                UpdateCommand command = new UpdateCommand("products", new EqFilterParam("product_id", item.ProductId.ToString().ToUpper()),
+                              new BasicParam("favorit", "1"));
+                                var query = connection.CreateCommand(command.GetCommand());
+                                int t = query.ExecuteNonQuery();
+                            }
+                        }
+                        connection.Commit();
+                        await SyncManager.SaveUpdateDateAsync("baskets");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
         public static async Task<bool> RemoveFavorit(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
             var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
-                BasketManager.AddFavoritToCloud();
+                RemoveFavoritFromCloud(pId);
             }
             return r;
         }
@@ -129,10 +165,93 @@ namespace Anatoli.App.Manager
             var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
-                BasketManager.AddFavoritToCloud();
+                AddFavoritToCloud();
             }
             return r;
         }
+
+        public static async Task AddFavoritToCloud()
+        {
+            try
+            {
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
+                var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
+                Guid basketId = default(Guid);
+                foreach (var basket in list)
+                {
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        connection.BeginTransaction();
+                        if (basket.BasketTypeValueId == BasketViewModel.FavoriteBasketTypeId)
+                        {
+                            basketId = Guid.Parse(basket.UniqueId);
+                        }
+
+                    }
+                }
+
+                var c = await CustomerManager.ReadCustomerAsync();
+                var f = await ProductManager.GetFavorits();
+                List<BasketItemViewModel> items = new List<BasketItemViewModel>();
+                foreach (var item in f)
+                {
+                    var i = new BasketItemViewModel();
+                    i.Qty = 1;
+                    i.ProductId = Guid.Parse(item.product_id);
+                    i.BasketId = basketId;
+                    items.Add(i);
+                }
+                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<BasketItemViewModel>>(TokenType.UserToken, Configuration.WebService.Users.FavoritSaveItem, items);
+
+            }
+            catch (Exception e)
+            {
+
+
+            }
+        }
+
+        public static async Task RemoveFavoritFromCloud(string productId)
+        {
+            try
+            {
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
+                var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
+                Guid basketId = default(Guid);
+                foreach (var basket in list)
+                {
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        connection.BeginTransaction();
+                        if (basket.BasketTypeValueId == BasketViewModel.FavoriteBasketTypeId)
+                        {
+                            basketId = Guid.Parse(basket.UniqueId);
+                        }
+
+                    }
+                }
+
+                var c = await CustomerManager.ReadCustomerAsync();
+
+                List<BasketItemViewModel> items = new List<BasketItemViewModel>();
+                BasketItemViewModel favoritItem = new BasketItemViewModel();
+                favoritItem.Qty = 1;
+                favoritItem.ProductId = Guid.Parse(productId);
+                favoritItem.BasketId = basketId;
+                items.Add(favoritItem);
+                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<BasketItemViewModel>>(TokenType.UserToken, Configuration.WebService.Users.FavoritDeleteItem, items);
+
+            }
+            catch (Exception e)
+            {
+
+
+            }
+        }
+
+
         public static async Task<List<string>> GetSuggests(string key, int no)
         {
             try

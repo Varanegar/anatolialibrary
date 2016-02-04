@@ -152,10 +152,14 @@ namespace AnatoliAndroid.Fragments
                                 {
                                     ProformaFragment proforma = new ProformaFragment(o);
                                     var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                                    proforma.ProformaAccepted += async (s3, e3) =>
+                                    {
+                                        await SaveOrder();
+                                        pDialog.Dismiss();
+                                    };
                                     proforma.Show(fr, "proforma_fragment");
                                 }
-                                await SaveOrder();
-                                pDialog.Dismiss();
+
                             });
                             lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
                             {
@@ -171,8 +175,17 @@ namespace AnatoliAndroid.Fragments
                             pDialog.SetTitle("در حال ارسال سفارش");
                             pDialog.Show();
                             var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id);
-                            await SaveOrder();
-                            pDialog.Dismiss();
+                            if (o.IsValid)
+                            {
+                                ProformaFragment proforma = new ProformaFragment(o);
+                                var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                                proforma.ProformaAccepted += async (s3, e3) =>
+                                {
+                                    await SaveOrder();
+                                    pDialog.Dismiss();
+                                };
+                                proforma.Show(fr, "proforma_fragment");
+                            }
                         }
 
                     }

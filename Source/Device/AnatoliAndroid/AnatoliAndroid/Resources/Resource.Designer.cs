@@ -1809,9 +1809,6 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0085
 			public const int btoolbar = 2131427461;
 			
-			// aapt resource value: 0x7f0b00d7
-			public const int button1 = 2131427543;
-			
 			// aapt resource value: 0x7f0b0088
 			public const int button2 = 2131427464;
 			
@@ -2129,6 +2126,9 @@ namespace AnatoliAndroid
 			
 			// aapt resource value: 0x7f0b000a
 			public const int normal = 2131427338;
+			
+			// aapt resource value: 0x7f0b00d7
+			public const int okButton = 2131427543;
 			
 			// aapt resource value: 0x7f0b00b8
 			public const int optionslinearLayout = 2131427512;

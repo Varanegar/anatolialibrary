@@ -42,7 +42,7 @@ namespace AnatoliAndroid.Fragments
             view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = _orderViewModel.OrderDate.ToString();
             view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = _orderViewModel.FinalAmount.ToCurrency();
             ListView itemsListView = view.FindViewById<ListView>(Resource.Id.itemsListView);
-            itemsListView.Adapter = new ProformaListAdapter(AnatoliApp.GetInstance().Activity, _orderViewModel.LineItems);
+            itemsListView.Adapter = new ProformaListAdapter(AnatoliApp.GetInstance().Activity, _orderViewModel.LineItems,this);
 
             return view;
         }
@@ -51,10 +51,12 @@ namespace AnatoliAndroid.Fragments
         {
             List<PurchaseOrderLineItemViewModel> _list;
             Activity _context;
-            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list)
+            ProformaFragment _fragment;
+            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list, ProformaFragment fragment)
             {
                 _list = list;
                 _context = context;
+                _fragment = fragment;
             }
             public override int Count
             {
@@ -73,6 +75,12 @@ namespace AnatoliAndroid.Fragments
                 view.FindViewById<TextView>(Resource.Id.itemNameTextView).Text = item.UniqueId;
                 view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString();
                 view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.FinalNetAmount.ToCurrency();
+                var button = view.FindViewById<Button>(Resource.Id.okButton);
+                button.UpdateWidth();
+                button.Click += (s, e) =>
+                {
+                    _fragment.OnProformaAccepted();
+                };
                 return view;
             }
 
@@ -81,5 +89,14 @@ namespace AnatoliAndroid.Fragments
                 get { return (_list[position] != null) ? _list[position] : null; }
             }
         }
+
+        void OnProformaAccepted()
+        {
+            if (ProformaAccepted != null)
+            {
+                ProformaAccepted.Invoke(this, new EventArgs());
+            }
+        }
+        public event EventHandler ProformaAccepted;
     }
 }
