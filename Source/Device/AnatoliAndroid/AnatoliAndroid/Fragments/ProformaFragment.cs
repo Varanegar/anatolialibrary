@@ -13,15 +13,21 @@ using Android.Widget;
 using Anatoli.App.Model.Store;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliAndroid.Activities;
+using Anatoli.App.Manager;
+using Anatoli.App.Model.Product;
+using Java.Lang;
+using Anatoli.App.Model;
 
 namespace AnatoliAndroid.Fragments
 {
     public class ProformaFragment : DialogFragment
     {
         PurchaseOrderViewModel _orderViewModel;
-        public ProformaFragment(PurchaseOrderViewModel orderViewModel)
+        CustomerViewModel _customerViewModel;
+        public ProformaFragment(PurchaseOrderViewModel orderViewModel, CustomerViewModel customerViewModel )
         {
             _orderViewModel = orderViewModel;
+            _customerViewModel = customerViewModel;
         }
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -37,11 +43,20 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.ProformaLayout, container, false);
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
 
-            view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = "شعبه شریعتی";
-            view.FindViewById<TextView>(Resource.Id.orderNumberTextView).Text = _orderViewModel.UniqueId;
-            view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = _orderViewModel.OrderDate.ToString();
-            view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = _orderViewModel.FinalAmount.ToCurrency();
+            view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = _customerViewModel.MainStreet;
+            view.FindViewById<TextView>(Resource.Id.orderNumberTextView).Text = "شماره سفارش: " + _orderViewModel.AppOrderNo;
+            view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = "تاریخ : " + _orderViewModel.OrderDate.ToString();
+            view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = "مبلغ قابل پرداخت : " + _orderViewModel.NetAmount.ToCurrency();
 
+            view.FindViewById<TextView>(Resource.Id.totalPriceTextView).Text = _orderViewModel.Amount.ToCurrency();
+            decimal tCount = 0;
+            foreach (var item in _orderViewModel.LineItems)
+            {
+                tCount += item.Qty;
+            }
+            view.FindViewById<TextView>(Resource.Id.totalCountTextView).Text = tCount.ToString("N0");
+            view.FindViewById<TextView>(Resource.Id.totalDiscountTextView).Text = _orderViewModel.DiscountAmount.ToCurrency();
+            view.FindViewById<TextView>(Resource.Id.taxTextView).Text = (_orderViewModel.ChargeAmount + _orderViewModel.TaxAmount).ToCurrency();
             var button = view.FindViewById<Button>(Resource.Id.okButton);
             button.UpdateWidth();
             button.Click += (s, e) =>
@@ -59,7 +74,7 @@ namespace AnatoliAndroid.Fragments
         {
             List<PurchaseOrderLineItemViewModel> _list;
             Activity _context;
-            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list )
+            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list)
             {
                 _list = list;
                 _context = context;
@@ -78,10 +93,15 @@ namespace AnatoliAndroid.Fragments
             {
                 var view = _context.LayoutInflater.Inflate(Resource.Layout.SimpleOrderItemLayout, null);
                 var item = _list[position];
-                view.FindViewById<TextView>(Resource.Id.itemNameTextView).Text = item.UniqueId;
-                view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString();
-                view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.FinalNetAmount.ToCurrency();
-                
+
+                view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString("N0");
+                view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.NetAmount.ToCurrency();
+                Runnable runnable = new Runnable(async () =>
+                {
+                    var p = await ProductManager.GetItemAsync(item.ProductId.ToString().ToUpper());
+                    view.FindViewById<TextView>(Resource.Id.itemNameTextView).Text = p.product_name;
+                });
+                runnable.Run();
                 return view;
             }
 
