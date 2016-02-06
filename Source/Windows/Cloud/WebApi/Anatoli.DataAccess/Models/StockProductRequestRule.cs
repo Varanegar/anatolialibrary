@@ -33,6 +33,9 @@ namespace Anatoli.DataAccess.Models
         public virtual ReorderCalcType ReorderCalcType { get; set; }
         public virtual MainProductGroup MainProductGroup { get; set; }
         public virtual ProductType ProductType { get; set; }
+        [ForeignKey("StockProductRequestRuleCalcType")]
+        public Guid StockProductRequestRuleCalcTypeId { get; set; }
+        public virtual StockProductRequestRuleCalcType StockProductRequestRuleCalcType { get; set; }
         [ForeignKey("StockProductRequestRuleType")]
         public Guid StockProductRequestRuleTypeId { get; set; }
         public virtual StockProductRequestRuleType StockProductRequestRuleType { get; set; }

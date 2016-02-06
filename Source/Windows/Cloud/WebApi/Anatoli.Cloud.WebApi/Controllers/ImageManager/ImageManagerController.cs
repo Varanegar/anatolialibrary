@@ -76,7 +76,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [HttpPost, Route("Save")]
-        public async Task<string> SaveImage(string token, string imagetype, string privateOwnerId, string imageId)
+        public async Task<IHttpActionResult> SaveImage(string token, string imagetype, string privateOwnerId, string imageId)
         {
             try
             {
@@ -114,12 +114,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 
                 }
 
-                return "";
+                return Ok("");
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
-                return "Invalid Operation!";
+                return GetErrorResult(ex);
                 //todo: log error!
             }
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -74,7 +74,6 @@ namespace AnatoliAndroid.Fragments
                 _groupsGridView.Adapter = groupAdapter;
             }
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
-
         }
 
 

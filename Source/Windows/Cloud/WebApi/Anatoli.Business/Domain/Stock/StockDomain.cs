@@ -30,7 +30,7 @@ namespace Anatoli.Business.Domain
         StockDomain() { }
         public StockDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockRepository(dbc), new PrincipalRepository(dbc), new UserRepository(dbc), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockProxy).FullName), AnatoliProxy<Stock, StockViewModel>.Create(typeof(StockCompleteInfoProxy).FullName))
+            : this(new StockRepository(dbc), new PrincipalRepository(dbc), new UserRepository(dbc), new StockProxy(), new StockCompleteInfoProxy())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
@@ -154,7 +154,7 @@ namespace Anatoli.Business.Domain
             if (stockIds != null)
             {
                 var stocks = await Repository.FindAllAsync(p => stockIds.Contains(p.Id));
-                
+
                 stocks.ToList().ForEach(itm => user.Stocks.Add(itm));
             }
 

@@ -19,6 +19,7 @@ using AnatoliAndroid.Fragments;
 using Android.Content.Res;
 using Java.Lang;
 using AnatoliAndroid.Components;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -192,11 +193,6 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 }
-                //else
-                //{
-                //    _productIimageView.Visibility = ViewStates.Invisible;
-                //}
-
 
                 if (item.IsFavorit)
                 {

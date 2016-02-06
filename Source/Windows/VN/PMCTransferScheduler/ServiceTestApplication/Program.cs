@@ -28,7 +28,7 @@ namespace ServiceTestApplication
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
-
+                    /*
                     log.Info("Transfer fiscal year");
                     FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, privateOwner);
                     log.Info("Transfer supplier");
@@ -48,6 +48,16 @@ namespace ServiceTestApplication
                     log.Info("Transfer stock hand");
                     StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, privateOwner);
                     log.Info("Completed Transfer Data Job");
+                    */
+                    log.Info("Transfer Product Group Picture");
+                    ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, privateOwner);
+                    log.Info("Transfer Product Picture");
+                    ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, privateOwner);
+                    log.Info("Transfer Store Picture");
+                    StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, privateOwner);
+                    log.Info("Completed Transfer Data Job");
+
+
                 }
                 else
                     log.Error("Login Failed user : AnatoliMobileApp");

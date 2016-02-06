@@ -33,7 +33,7 @@ namespace AnatoliAndroid.Activities
         Toolbar _toolbar;
         LocationManager _locationManager;
         public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
-
+        public static readonly int OpenImageRequestCode = 1234;
         protected override void OnSaveInstanceState(Bundle outState)
         {
 
@@ -105,7 +105,8 @@ namespace AnatoliAndroid.Activities
                 {
 #pragma warning disable
                     AnatoliApp.GetInstance().RefreshCutomerProfile();
-                    //BasketManager.SyncDataBase();
+                    ProductManager.SyncFavorits();
+                    Configuration.ReadConfigFromFile();
 #pragma warning restore
                 }
             }
@@ -174,8 +175,47 @@ namespace AnatoliAndroid.Activities
             }
         }
 
+        protected override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == OpenImageRequestCode)
+            {
+                ProgressDialog pDialog = new ProgressDialog(this);
+                try
+                {
+                    var path = AndroidFileIO.GetPathToImage(data.Data, this);
+                    var image = AnatoliClient.GetInstance().FileIO.ReadAllBytes(path);
+                    var customerViewModel = await CustomerManager.ReadCustomerAsync();
+                    pDialog.SetMessage("در حال ارسال تصویر");
+                    pDialog.Show();
+                    await CustomerManager.UploadImageAsync(customerViewModel.UniqueId, image);
+                    pDialog.Dismiss();
+                    OnImageUploaded();
+                }
+                catch (Exception)
+                {
+                    pDialog.Dismiss();
+                    OnImageUploadFailed();
+                }
+            }
+        }
+        void OnImageUploaded()
+        {
+            if (ImageUploaded != null)
+            {
+                ImageUploaded.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploaded;
 
-
+        void OnImageUploadFailed()
+        {
+            if (ImageUploadFailed != null)
+            {
+                ImageUploadFailed.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploadFailed;
     }
 
     [BroadcastReceiver()]

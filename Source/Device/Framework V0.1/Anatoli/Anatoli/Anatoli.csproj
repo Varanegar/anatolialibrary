@@ -37,7 +37,6 @@
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
     <Compile Include="App\Manager\BaseTypeManager.cs" />
-    <Compile Include="App\Manager\BasketManager.cs" />
     <Compile Include="App\Manager\CategoryManager.cs" />
     <Compile Include="App\Manager\CityRegionManager.cs" />
     <Compile Include="App\Manager\CustomerManager.cs" />
@@ -52,6 +51,7 @@
     <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
     <Compile Include="App\Model\BaseTypeViewModel.cs" />
     <Compile Include="App\Model\BaseValueViewModel.cs" />
+    <Compile Include="App\Model\DeliveryTypeModel.cs" />
     <Compile Include="App\Model\Store\BasketItemViewModel.cs" />
     <Compile Include="App\Model\Store\BasketViewModel.cs" />
     <Compile Include="App\Model\Store\IncompletePurchaseOrderLineItemViewModel.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
     <Compile Include="Framework\AnatoliBase\Configuration.cs" />
     <Compile Include="Framework\AnatoliBase\Crypto.cs" />
+    <Compile Include="Framework\AnatoliBase\Extentions.cs" />
     <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
     <Compile Include="Framework\AnatoliBase\QueryParams.cs" />
     <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />

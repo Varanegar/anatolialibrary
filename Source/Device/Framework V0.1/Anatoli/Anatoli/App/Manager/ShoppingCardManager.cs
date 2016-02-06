@@ -142,14 +142,14 @@ namespace Anatoli.App.Manager
             return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
         }
 
-        public static async Task<PurchaseOrderViewModel> CalcPromo(string userId, string storeId)
+        public static async Task<PurchaseOrderViewModel> CalcPromo(string userId, string storeId, string deliveryTypeId)
         {
             try
             {
                 var products = await GetAllItemsAsync();
                 PurchaseOrderViewModel order = new PurchaseOrderViewModel();
                 order.Customer = await CustomerManager.ReadCustomerAsync();
-                order.DeliveryTypeId = Guid.Parse("BE2919AB-5564-447A-BE49-65A81E6AF712");
+                order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);
                 order.UserId = Guid.Parse(userId);
@@ -161,6 +161,34 @@ namespace Anatoli.App.Manager
                     order.LineItems.Add(line);
                 }
                 var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Stores.CalcPromo, order);
+                return o;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<PurchaseOrderViewModel> Checkout(string userId, string storeId, string deliveryTypeId)
+        {
+            try
+            {
+                var products = await GetAllItemsAsync();
+                PurchaseOrderViewModel order = new PurchaseOrderViewModel();
+                order.Customer = await CustomerManager.ReadCustomerAsync();
+                order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
+                order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
+                order.StoreGuid = Guid.Parse(storeId);
+                order.UserId = Guid.Parse(userId);
+                foreach (var item in products)
+                {
+                    PurchaseOrderLineItemViewModel line = new PurchaseOrderLineItemViewModel();
+                    line.ProductId = Guid.Parse(item.product_id);
+                    line.Qty = item.count;
+                    order.LineItems.Add(line);
+                }
+                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Stores.Create, order);
                 return o;
             }
             catch (Exception ex)

@@ -15,118 +15,77 @@ using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Business.Domain.Authorization
 {
-    public class AuthorizationDomain : BusinessDomain<PrincipalPermissionViewModel>, IBusinessDomain<PrincipalPermission, PrincipalPermissionViewModel>
+    public class AuthorizationDomain : BusinessDomain1<PrincipalPermission>, IBusinessDomain1<PrincipalPermission>
     {
         #region Properties
-        public IAnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel> Proxy { get; set; }
-        public IRepository<PrincipalPermission> Repository { get; set; }
+        public override IRepository<PrincipalPermission> MainRepository { get; set; }
         public IRepository<User> UserRepository { get; set; }
-        protected Principal Owner
-        {
-            get
-            {
-                return UserRepository.GetQuery().Where(p => p.Principal.Id == PrivateLabelOwnerId).Select(s => s.Principal).First();
-            }
-        }
-
-
+        public IRepository<Permission> PermissionRepository { get; set; }
         public AnatoliDbContext DBContext { get; set; }
         #endregion
 
         #region Ctors
-        AuthorizationDomain()
-        { }
-        public AuthorizationDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public AuthorizationDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new PrincipalPermissionRepository(dbc), new UserRepository(dbc),
-                  AnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel>.Create())
+        AuthorizationDomain() { }
+        public AuthorizationDomain(Guid applicationKey) : this(applicationKey, new AnatoliDbContext()) { }
+        AuthorizationDomain(Guid applicationKey, AnatoliDbContext dbc)
+            : this(new PrincipalPermissionRepository(dbc), new UserRepository(dbc), new PermissionRepository(dbc))
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+            ApplicationKey = applicationKey;
             DBContext = dbc;
         }
-        public AuthorizationDomain(IPrincipalPermissionRepository principalPermissionRepository, IUserRepository usersRepository,
-                                   IAnatoliProxy<PrincipalPermission, PrincipalPermissionViewModel> proxy)
+        public AuthorizationDomain(IPrincipalPermissionRepository principalPermissionRepository,
+                                   IUserRepository usersRepository, IPermissionRepository permissionRepository)
         {
-            Proxy = proxy;
-            Repository = principalPermissionRepository;
+            MainRepository = principalPermissionRepository;
             UserRepository = usersRepository;
+            PermissionRepository = permissionRepository;
         }
         #endregion
 
         #region Methods
-        public Task<List<PrincipalPermissionViewModel>> Delete(List<PrincipalPermissionViewModel> ProductViewModels)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<PrincipalPermissionViewModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<PrincipalPermissionViewModel> GetPermissionsForPrincipal(string userId, string resource, string action)
+        public List<PrincipalPermission> GetPermissionsForPrincipal(string userId, string resource, string action)
         {
             //Todo: get all other related principal such as roles and groups
-            var user = UserRepository.GetQuery().Where(p => p.Id == userId).FirstOrDefault();
+            var _userId = Guid.Parse(userId);
 
-            var model = Repository.GetQuery().Where(p => p.Principal.Id == user.Principal.Id &&
-                                                    p.Permission.Resource == resource &&
-                                                    p.Permission.Action == action)
-                                             .ToList();
+            var model = MainRepository.GetQuery().Where(p => p.Principal.Id == _userId &&
+                                                        p.Permission.Resource == resource &&
+                                                        p.Permission.Action == action)
+                                                 .ToList();
 
-            return Proxy.Convert(model);
+            return model;
+        }
+
+        public async Task<ICollection<PrincipalPermission>> GetPermissionsForPrincipal(Guid principalId)
+        {
+            //Todo: get all other related principal such as roles and groups
+            var model = await MainRepository.FindAllAsync(p => p.Principal.Id == principalId);
+
+            return model;
         }
 
         public async Task SavePermissions(List<PrincipalPermission> pp, Guid principalId)
         {
             try
             {
-                var pr = new PrincipalRepository(DBContext);
+                await MainRepository.DeleteBatchAsync(p => p.Principal.Id == principalId);
 
-                var old_pricipalPermissions = Repository.GetQuery().Where(p => p.Principal.Id == principalId).ToList();
+                foreach (var item in pp)
+                    await MainRepository.AddAsync(item);
 
-                await Repository.DeleteRangeAsync(old_pricipalPermissions);
-                old_pricipalPermissions.Clear();
-
-                var principal = pr.GetQuery().Where(p => p.Id == principalId).First();
-
-                var permissionDomain = new PermissionDomain(PrivateLabelOwnerId, DBContext);
-                pp.ForEach(itm =>
-                {
-                    itm.Id = Guid.NewGuid();
-
-                    itm.Permission = permissionDomain.GetPermission(itm.Permission.Id);
-
-                    itm.Principal = principal;
-
-                    itm.PrivateLabelOwner = Owner;
-
-                    Repository.Add(itm);
-                });
-
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
             }
         }
 
-        public List<PrincipalPermissionViewModel> GetPermissionsForPrincipal(Guid principalId )
+        public async Task<ICollection<Permission>> GetAllPermissions()
         {
-            //Todo: get all other related principal such as roles and groups
-            var model = Repository.GetQuery().Where(p => p.Principal.Id == principalId)
-                                             .ToList();
+            var data = await PermissionRepository.GetAllAsync();
 
-            return Proxy.Convert(model);
-        }
-        public Task<List<PrincipalPermissionViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<PrincipalPermissionViewModel>> PublishAsync(List<PrincipalPermissionViewModel> ProductViewModels)
-        {
-            throw new NotImplementedException();
+            return data;
         }
         #endregion
     }

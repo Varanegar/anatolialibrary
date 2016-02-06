@@ -10,11 +10,25 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Anatoli.App.Model.Store;
+using Anatoli.Framework.AnatoliBase;
+using AnatoliAndroid.Activities;
+using Anatoli.App.Manager;
+using Anatoli.App.Model.Product;
+using Java.Lang;
+using Anatoli.App.Model;
 
 namespace AnatoliAndroid.Fragments
 {
     public class ProformaFragment : DialogFragment
     {
+        PurchaseOrderViewModel _orderViewModel;
+        CustomerViewModel _customerViewModel;
+        public ProformaFragment(PurchaseOrderViewModel orderViewModel, CustomerViewModel customerViewModel )
+        {
+            _orderViewModel = orderViewModel;
+            _customerViewModel = customerViewModel;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,10 +41,83 @@ namespace AnatoliAndroid.Fragments
 
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ProformaLayout, container, false);
-            view.FindViewById<TextView>(Resource.Id.storeNameTextView).Text = "شعبه شریعتی";
-            view.FindViewById<TextView>(Resource.Id.paymentTypeTextView).Text = "نقدی";
-            view.FindViewById<TextView>(Resource.Id.orderTimeTextView).Text = "1/1/1 12:00";
+            Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+
+            view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = _customerViewModel.MainStreet;
+            view.FindViewById<TextView>(Resource.Id.orderNumberTextView).Text = "شماره سفارش: " + _orderViewModel.AppOrderNo;
+            view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = "تاریخ : " + _orderViewModel.OrderDate.ToString();
+            view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = "مبلغ قابل پرداخت : " + _orderViewModel.NetAmount.ToCurrency();
+
+            view.FindViewById<TextView>(Resource.Id.totalPriceTextView).Text = _orderViewModel.Amount.ToCurrency();
+            decimal tCount = 0;
+            foreach (var item in _orderViewModel.LineItems)
+            {
+                tCount += item.Qty;
+            }
+            view.FindViewById<TextView>(Resource.Id.totalCountTextView).Text = tCount.ToString("N0");
+            view.FindViewById<TextView>(Resource.Id.totalDiscountTextView).Text = _orderViewModel.DiscountAmount.ToCurrency();
+            view.FindViewById<TextView>(Resource.Id.taxTextView).Text = (_orderViewModel.ChargeAmount + _orderViewModel.TaxAmount).ToCurrency();
+            var button = view.FindViewById<Button>(Resource.Id.okButton);
+            button.UpdateWidth();
+            button.Click += (s, e) =>
+            {
+                OnProformaAccepted();
+            };
+
+            ListView itemsListView = view.FindViewById<ListView>(Resource.Id.itemsListView);
+            itemsListView.Adapter = new ProformaListAdapter(AnatoliApp.GetInstance().Activity, _orderViewModel.LineItems);
+
             return view;
         }
+
+        public class ProformaListAdapter : BaseAdapter<PurchaseOrderLineItemViewModel>
+        {
+            List<PurchaseOrderLineItemViewModel> _list;
+            Activity _context;
+            public ProformaListAdapter(Activity context, List<PurchaseOrderLineItemViewModel> list)
+            {
+                _list = list;
+                _context = context;
+            }
+            public override int Count
+            {
+                get { return _list.Count; }
+            }
+
+            public override long GetItemId(int position)
+            {
+                return position;
+            }
+
+            public override View GetView(int position, View convertView, ViewGroup parent)
+            {
+                var view = _context.LayoutInflater.Inflate(Resource.Layout.SimpleOrderItemLayout, null);
+                var item = _list[position];
+
+                view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString("N0");
+                view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.NetAmount.ToCurrency();
+                Runnable runnable = new Runnable(async () =>
+                {
+                    var p = await ProductManager.GetItemAsync(item.ProductId.ToString().ToUpper());
+                    view.FindViewById<TextView>(Resource.Id.itemNameTextView).Text = p.product_name;
+                });
+                runnable.Run();
+                return view;
+            }
+
+            public override PurchaseOrderLineItemViewModel this[int position]
+            {
+                get { return (_list[position] != null) ? _list[position] : null; }
+            }
+        }
+
+        void OnProformaAccepted()
+        {
+            if (ProformaAccepted != null)
+            {
+                ProformaAccepted.Invoke(this, new EventArgs());
+            }
+        }
+        public event EventHandler ProformaAccepted;
     }
 }

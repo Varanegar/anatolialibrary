@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
-    <Compile Include="Domain\Authorization\PermissionDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
     <Compile Include="Domain\Base\FiscalYearDomain.cs" />
