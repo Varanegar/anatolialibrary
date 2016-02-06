@@ -61,6 +61,7 @@ namespace Anatoli.DataAccess
         public DbSet<StockProductRequestProductDetail> StockProductRequestProductDetails { get; set; }
         public DbSet<StockProductRequestRule> StockProductRequestRules { get; set; }
         public DbSet<StockProductRequestRuleType> StockProductRequestRuleTypes { get; set; }
+        public DbSet<StockProductRequestRuleCalcType> StockProductRequestRuleCalcTypes { get; set; }
         public DbSet<StockProductRequestStatus> StockProductRequestStatuses { get; set; }
         public DbSet<StockProductRequestType> StockProductRequestTypes { get; set; }
         public DbSet<StockProductRequestSupplyType> StockProductRequestSupplyTypes { get; set; }

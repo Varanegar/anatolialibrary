@@ -90,6 +90,7 @@
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
+    <Compile Include="Configs\StockProductRequestRuleCalcTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestTypeSupplyConfig.cs" />
     <Compile Include="Configs\StockTypeConfig.cs" />
@@ -311,6 +312,18 @@
     <Compile Include="Migrations\201601301710052_InitialDataInsert.Designer.cs">
       <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602010453357_InitialDataInsert-2.cs" />
+    <Compile Include="Migrations\201602010453357_InitialDataInsert-2.Designer.cs">
+      <DependentUpon>201602010453357_InitialDataInsert-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602020902152_StockProductRequest-20.cs" />
+    <Compile Include="Migrations\201602020902152_StockProductRequest-20.Designer.cs">
+      <DependentUpon>201602020902152_StockProductRequest-20.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602020925536_InitialDataInsert-3.cs" />
+    <Compile Include="Migrations\201602020925536_InitialDataInsert-3.Designer.cs">
+      <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -352,6 +365,7 @@
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
+    <Compile Include="Models\StockProductRequestRuleCalcType.cs" />
     <Compile Include="Models\StockProductRequestRuleType.cs" />
     <Compile Include="Models\StockProductRequestSupplyType.cs" />
     <Compile Include="Models\StockType.cs" />
@@ -555,6 +569,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601301710052_InitialDataInsert.resx">
       <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010453357_InitialDataInsert-2.resx">
+      <DependentUpon>201602010453357_InitialDataInsert-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602020902152_StockProductRequest-20.resx">
+      <DependentUpon>201602020902152_StockProductRequest-20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602020925536_InitialDataInsert-3.resx">
+      <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

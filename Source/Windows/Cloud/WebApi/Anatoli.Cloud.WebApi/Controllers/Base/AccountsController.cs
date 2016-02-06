@@ -19,6 +19,7 @@ using Anatoli.ViewModels.BaseModels;
 using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
+using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -39,18 +40,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("permissions"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissions()
         {
-            var model = await new PermissionDomain(OwnerKey).GetAll();
+            var model = await new AuthorizationDomain(OwnerKey).GetAllPermissions();
 
-            return Ok(model);
+            return Ok(new PermissionProxy().Convert(model.ToList()));
         }
 
         [Authorize(Roles = "Admin")]
         [Route("getPersmissionsOfUser"), HttpPost]
-        public IHttpActionResult GetPersmissionsOfUser([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> GetPersmissionsOfUser([FromBody] RequestModel data)
         {
-            var model = new AuthorizationDomain(OwnerKey).GetPermissionsForPrincipal(Guid.Parse(data.userId));
+            var model = await new AuthorizationDomain(OwnerKey).GetPermissionsForPrincipal(Guid.Parse(data.userId));
 
-            return Ok(model);
+            return Ok(new PrincipalPermissionProxy().Convert(model.ToList()));
         }
 
         [Authorize(Roles = "Admin")]
@@ -61,16 +62,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             var pp = new List<PrincipalPermission>();
             foreach (var itm in model.permissions)
-            {
                 pp.Add(new PrincipalPermission
                 {
+                    Id = Guid.NewGuid(),
                     CreatedDate = DateTime.Now,
                     LastUpdate = DateTime.Now,
                     Grant = itm.grant.Value,
-                    Permission = new Permission { Id = Guid.Parse(itm.id.Value) },
-                    Principal = new Principal { Id = Guid.Parse(model.userId.Value) }
+                    Permission_Id = Guid.Parse(itm.id.Value),
+                    Principal_Id = Guid.Parse(model.userId.Value),
+                    PrivateLabelOwner_Id = OwnerKey
                 });
-            }
 
             await new AuthorizationDomain(OwnerKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
 

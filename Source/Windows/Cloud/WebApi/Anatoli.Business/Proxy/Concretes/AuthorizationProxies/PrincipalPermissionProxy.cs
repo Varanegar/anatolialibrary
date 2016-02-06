@@ -1,4 +1,5 @@
-﻿using Anatoli.Business.Proxy.Interfaces;
+﻿using System;
+using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.AuthorizationModels;
 
@@ -12,8 +13,8 @@ namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
             {
                 UniqueId = data.Id,
                 ID = data.Number_ID,
-                PrincipalId = data.Principal.Id,
-                PermissionId = data.Permission.Id,
+                PrincipalId = data.Principal_Id,
+                PermissionId = data.Permission_Id,
                 Resource = data.Permission.Resource,
                 Action = data.Permission.Action,
                 Grant = data.Grant
@@ -26,8 +27,8 @@ namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
             {
                 Id = data.UniqueId,
                 Number_ID = data.ID,
-                Principal = new Principal { Id = data.PrincipalId },
-                Permission = new Permission { Id = data.PrincipalId, Resource = data.Resource },
+                Principal_Id = data.PrincipalId,
+                Permission_Id = data.PermissionId,
                 Grant = data.Grant
             };
         }

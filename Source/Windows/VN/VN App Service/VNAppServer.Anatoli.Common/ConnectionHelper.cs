@@ -19,7 +19,6 @@ namespace VNAppServer.Anatoli.Common
         public static string CallServerServicePost(string data, string URI, HttpClient client)
         {
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            client.Timeout = TimeSpan.FromMilliseconds(60 * 60 * 1000);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -35,7 +34,6 @@ namespace VNAppServer.Anatoli.Common
         public static T CallServerServicePost<T>(string data, string URI, HttpClient client)
         {
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            client.Timeout = TimeSpan.FromMilliseconds(60 * 60 * 1000);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -52,7 +50,6 @@ namespace VNAppServer.Anatoli.Common
         public static T CallServerServicePost<T>(ConnectionHelperRequestModel data, string URI, HttpClient client)
         {
             HttpContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-            client.Timeout = TimeSpan.FromMilliseconds(60 * 60 * 1000);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -68,7 +65,6 @@ namespace VNAppServer.Anatoli.Common
         public static T CallServerServiceGet<T>(string data, string URI, HttpClient client)
             where T : class, new()
         {
-            client.Timeout = TimeSpan.FromMilliseconds(60 * 60 * 1000);
             var result = client.GetAsync(URI).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -83,7 +79,6 @@ namespace VNAppServer.Anatoli.Common
         }
         public static void CallServerService(List<ItemImageViewModel> dataList, HttpClient client, string URI)
         {
-            client.Timeout = TimeSpan.FromMilliseconds(60 * 60 * 1000);
             dataList.ForEach(item =>
             {
                 var requestContent = new MultipartFormDataContent();
@@ -93,6 +88,15 @@ namespace VNAppServer.Anatoli.Common
 
                 requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
                 var response = client.PostAsync(URI + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                if(response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    log.Error("Fail CallServerService URI :" + URI);
+                    throw new Exception("Fail CallServerService URI :" + URI);
+                }
             }
             );
         }

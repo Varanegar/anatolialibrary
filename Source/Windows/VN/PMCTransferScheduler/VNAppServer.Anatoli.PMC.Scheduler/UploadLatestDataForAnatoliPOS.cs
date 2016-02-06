@@ -29,6 +29,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+                    client.Timeout = TimeSpan.FromMilliseconds(120 * 60 * 1000);
 
                     log.Info("Transfer supplier");
                     SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, GetPrivateOwnerQueryString());

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web;
 using System.Linq;
 using System.Net.Http;
@@ -7,7 +8,6 @@ using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Web.Http.Controllers;
 using Anatoli.Business.Domain.Authorization;
-using System;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
