@@ -97,12 +97,23 @@ namespace Anatoli.App.Manager
             return userModel.First();
         }
 
-        public static async Task<string> UploadImageAsync(string userId , Byte[] obj)
+        public static async Task<string> UploadImageAsync(string userId, Byte[] obj)
         {
             var result = await AnatoliClient.GetInstance().WebClient.SendFileAsync<string>(
                 TokenType.UserToken,
-                Configuration.WebService.ImageManager.ImageSave + "&imageType=" + ItemImageViewModel.CustomerImageType + "&imageId=" + userId + "&token=" + userId, obj);
+                Configuration.WebService.ImageManager.ImageSave + "&imageType=" + ItemImageViewModel.CustomerImageType + "&imageId=" + userId + "&token=" + userId, obj, userId);
             return result;
+        }
+
+        public static string GetImageAddress(string customerId)
+        {
+            if (string.IsNullOrEmpty(customerId))
+                return null;
+            else
+            {
+                string imguri = String.Format("http://{2}/content/Images/73C20167-9B30-4385-95AE-1A0BA89CC415/320x320/{0}/{1}.png", customerId, customerId,Configuration.WebService.PortalAddress);
+                return imguri;
+            }
         }
     }
 }

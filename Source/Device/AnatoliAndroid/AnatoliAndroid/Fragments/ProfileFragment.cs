@@ -73,7 +73,8 @@ namespace AnatoliAndroid.Fragments
                 //intent.SetType("image/*");
                 //intent.SetAction(Intent.ActionGetContent);
                 //AnatoliApp.GetInstance().Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 0);
-                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("http://steezo.com/wp-content/uploads/2012/12/man-in-suit2.jpg"); });
+
+                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)); });
                 System.IO.MemoryStream stream = new System.IO.MemoryStream();
                 _bimage.Compress(Bitmap.CompressFormat.Png, 0, stream);
                 byte[] bitmapData = stream.ToArray();
@@ -230,7 +231,7 @@ namespace AnatoliAndroid.Fragments
                     _telEditText.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
                     //string imgUri = 
-                    Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("https://i1.sndcdn.com/avatars-000022878889-l03kpc-large.jpg"); });
+                    Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)); });
                     Bitmap _bfinal = getRoundedShape(_bimage);
                     _avatarImageView.SetImageBitmap(_bfinal);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
