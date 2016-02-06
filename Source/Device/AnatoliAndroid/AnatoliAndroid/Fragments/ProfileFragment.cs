@@ -21,6 +21,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Android.Provider;
 using Android.Database;
+using AnatoliAndroid.Components;
+using Koush;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -40,7 +42,7 @@ namespace AnatoliAndroid.Fragments
         TextView _exitTextView;
         TextView _fullNametextView;
         Button _saveButton;
-        ImageView _avatarImageView;
+        RoundedImageView _avatarImageView;
         CustomerViewModel _customerViewModel;
         List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
@@ -65,27 +67,11 @@ namespace AnatoliAndroid.Fragments
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
-            _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
+            _avatarImageView = view.FindViewById<RoundedImageView>(Resource.Id.avatarImageView);
 
-            _avatarImageView.Click += async (s, e) =>
+            _avatarImageView.Click += (s, e) =>
             {
-                //Intent intent = new Intent();
-                //intent.SetType("image/*");
-                //intent.SetAction(Intent.ActionGetContent);
-                //AnatoliApp.GetInstance().Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 0);
-
-                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)); });
-                System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                _bimage.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                byte[] bitmapData = stream.ToArray();
-                try
-                {
-                    await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId.ToString(), bitmapData);
-                }
-                catch (Exception ex)
-                {
-
-                }
+                OpenImage();
             };
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
             view.FindViewById<TextView>(Resource.Id.changePassTextView).Click += (s, e) =>
@@ -230,10 +216,8 @@ namespace AnatoliAndroid.Fragments
                     _emailEditText.Text = _customerViewModel.Email;
                     _telEditText.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
-                    //string imgUri = 
-                    Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)); });
-                    Bitmap _bfinal = getRoundedShape(_bimage);
-                    _avatarImageView.SetImageBitmap(_bfinal);
+
+                    UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, UrlImageViewHelper.CacheDurationFiveDays);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
                     for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
                     {
@@ -356,49 +340,26 @@ namespace AnatoliAndroid.Fragments
             }
         }
 
-
-
-
-
-        public Bitmap GetImageBitmapFromUrl(string url)
+        public void OpenImage()
         {
-            Bitmap imageBitmap = null;
-            if (!(url == "null"))
-                using (var webClient = new WebClient())
+            try
+            {
+                Intent intent = new Intent(Intent.ActionGetContent);
+                intent.SetType("image/*");
+                (AnatoliApp.GetInstance().Activity as MainActivity).ImageUploaded += (s, e) =>
                 {
-                    var imageBytes = webClient.DownloadData(url);
-                    if (imageBytes != null && imageBytes.Length > 0)
-                    {
-                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                    }
-                }
+                    Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId));
+                };
+                (AnatoliApp.GetInstance().Activity as MainActivity).ImageUploadFailed += (s, e) =>
+                {
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
+                };
+                AnatoliApp.GetInstance().Activity.StartActivityForResult(intent, MainActivity.OpenImageRequestCode);
+            }
+            catch (ActivityNotFoundException e)
+            {
 
-            System.Console.Out.WriteLine("Return fn");
-            return imageBitmap;
-        }
-
-        public Bitmap getRoundedShape(Bitmap scaleBitmapImage)
-        {
-            int targetWidth = 150;
-            int targetHeight = 150;
-            Bitmap targetBitmap = Bitmap.CreateBitmap(targetWidth,
-                targetHeight, Bitmap.Config.Argb8888);
-
-            Canvas canvas = new Canvas(targetBitmap);
-            Android.Graphics.Path path = new Android.Graphics.Path();
-            path.AddCircle(((float)targetWidth - 1) / 2,
-                ((float)targetHeight - 1) / 2,
-                (Math.Min(((float)targetWidth),
-                    ((float)targetHeight)) / 2),
-                Android.Graphics.Path.Direction.Ccw);
-
-            canvas.ClipPath(path);
-            Bitmap sourceBitmap = scaleBitmapImage;
-            canvas.DrawBitmap(sourceBitmap,
-                new Rect(0, 0, sourceBitmap.Width,
-                    sourceBitmap.Height),
-                new Rect(0, 0, targetWidth, targetHeight), null);
-            return targetBitmap;
+            }
         }
 
         void OnProfileUpdated()

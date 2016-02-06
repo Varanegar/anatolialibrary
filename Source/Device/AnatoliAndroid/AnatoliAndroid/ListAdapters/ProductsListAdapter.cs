@@ -193,11 +193,6 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
                 }
-                //else
-                //{
-                //    _productIimageView.Visibility = ViewStates.Invisible;
-                //}
-
 
                 if (item.IsFavorit)
                 {

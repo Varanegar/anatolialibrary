@@ -137,6 +137,7 @@
     <Compile Include="Components\AnatoliSlideShow.cs" />
     <Compile Include="Components\AnatoliSwitch.cs" />
     <Compile Include="Components\AnatoliTextView.cs" />
+    <Compile Include="Components\RoundedImageView.cs" />
     <Compile Include="Components\SwipeListView.cs" />
     <Compile Include="Components\SwipeTouchListener.cs" />
     <Compile Include="Components\TypeFaceProvider.cs" />

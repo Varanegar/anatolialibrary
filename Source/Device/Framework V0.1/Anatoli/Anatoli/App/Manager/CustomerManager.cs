@@ -111,7 +111,7 @@ namespace Anatoli.App.Manager
                 return null;
             else
             {
-                string imguri = String.Format("http://{2}/content/Images/73C20167-9B30-4385-95AE-1A0BA89CC415/320x320/{0}/{1}.png", customerId, customerId,Configuration.WebService.PortalAddress);
+                string imguri = String.Format("{2}/content/Images/73C20167-9B30-4385-95AE-1A0BA89CC415/320x320/{0}/{1}.png", customerId, customerId,Configuration.WebService.PortalAddress);
                 return imguri;
             }
         }

@@ -24,9 +24,9 @@ namespace Anatoli.Framework.AnatoliBase
         }
         public struct WebService
         {
-            //public static readonly string PortalAddress = "http://79.175.166.186/";
-            //public static readonly string PortalAddress = "http://192.168.201.46/";
-            public static string PortalAddress = "http://192.168.0.160:8081/";
+            public static string PortalAddress = "http://79.175.166.186/";
+            //public static  string PortalAddress = "http://192.168.201.46/";
+            //public static string PortalAddress = "http://192.168.0.160:8081/";
             public static readonly string OAuthTokenUrl = "/oauth/token";
             public static readonly string ParseInfo = "api/TestAuth/setParsInfo";
             public static readonly string BaseDatas = "api/gateway/basedata/basedatas/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";

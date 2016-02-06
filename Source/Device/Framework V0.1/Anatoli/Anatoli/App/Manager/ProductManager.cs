@@ -347,7 +347,7 @@ namespace Anatoli.App.Manager
                 return null;
             else
             {
-                string imguri = String.Format("http://79.175.166.186/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId);
+                string imguri = String.Format("{2}/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId,Configuration.WebService.PortalAddress);
                 return imguri;
             }
         }
