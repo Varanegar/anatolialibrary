@@ -44,6 +44,8 @@ namespace AnatoliAndroid.Fragments
         Button _saveButton;
         RoundedImageView _avatarImageView;
         CustomerViewModel _customerViewModel;
+        ProgressBar _progress;
+        ImageView _cancelImageView;
         List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level3SpinerDataAdapter = new List<CityRegionModel>();
@@ -68,6 +70,21 @@ namespace AnatoliAndroid.Fragments
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
             _avatarImageView = view.FindViewById<RoundedImageView>(Resource.Id.avatarImageView);
+            _progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
+            _cancelImageView = view.FindViewById<ImageView>(Resource.Id.cancelImageView);
+
+            ImageUploaded += (s, e) =>
+            {
+                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId),Resource.Drawable.ic_account_circle_white_24dp,Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, "تصویر ارسال شد", ToastLength.Short).Show();
+                _progress.Visibility = ViewStates.Gone;
+            };
+            ImageUploadFailed += (s, e) =>
+            {
+                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
+                _progress.Visibility = ViewStates.Gone;
+            };
 
             _avatarImageView.Click += (s, e) =>
             {
@@ -339,22 +356,71 @@ namespace AnatoliAndroid.Fragments
 
             }
         }
+        public static readonly int OpenImageRequestCode = 1234;
+        public override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == OpenImageRequestCode)
+            {
+                try
+                {
+                    _progress.Visibility = ViewStates.Visible;
+                    _cancelImageView.Visibility = ViewStates.Visible;
+                    _avatarImageView.Enabled = false;
+                    if (data.Data != null)
+                    {
+                        var path = AndroidFileIO.GetPathToImage(data.Data, AnatoliApp.GetInstance().Activity);
+                        var image = AnatoliClient.GetInstance().FileIO.ReadAllBytes(path);
+                        System.Threading.CancellationTokenSource cancelToken = new System.Threading.CancellationTokenSource();
+                        _cancelImageView.Click += delegate
+                        {
+                            cancelToken.Cancel();
+                            _progress.Visibility = ViewStates.Gone;
+                            _cancelImageView.Visibility = ViewStates.Gone;
+                        };
+                        await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId, image, cancelToken);
+                        OnImageUploaded();
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (e.GetType() != typeof(TaskCanceledException))
+                    {
+                        OnImageUploadFailed();
+                    }
+                }
+                finally
+                {
+                    _progress.Visibility = ViewStates.Gone;
+                    _cancelImageView.Visibility = ViewStates.Gone;
+                    _avatarImageView.Enabled = true;
+                }
+            }
+        }
+        void OnImageUploaded()
+        {
+            if (ImageUploaded != null)
+            {
+                ImageUploaded.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploaded;
 
+        void OnImageUploadFailed()
+        {
+            if (ImageUploadFailed != null)
+            {
+                ImageUploadFailed.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploadFailed;
         public void OpenImage()
         {
             try
             {
                 Intent intent = new Intent(Intent.ActionGetContent);
                 intent.SetType("image/*");
-                (AnatoliApp.GetInstance().Activity as MainActivity).ImageUploaded += (s, e) =>
-                {
-                    Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId));
-                };
-                (AnatoliApp.GetInstance().Activity as MainActivity).ImageUploadFailed += (s, e) =>
-                {
-                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
-                };
-                AnatoliApp.GetInstance().Activity.StartActivityForResult(intent, MainActivity.OpenImageRequestCode);
+                StartActivityForResult(intent, OpenImageRequestCode);
             }
             catch (ActivityNotFoundException e)
             {
