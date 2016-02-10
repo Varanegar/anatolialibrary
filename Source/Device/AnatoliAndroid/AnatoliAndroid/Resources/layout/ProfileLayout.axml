@@ -24,13 +24,31 @@
                     android:id="@+id/avatarRelativeLayout"
                     android:background="@drawable/blue2_background"
                     android:padding="20dp">
-                    <ImageView
+                    <AnatoliAndroid.Components.RoundedImageView
                         android:src="@android:drawable/ic_menu_gallery"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:id="@+id/avatarImageView"
                         android:layout_centerInParent="true"
-                        android:layout_margin="10dp" />
+                        local:border="true"
+                        local:border_color="#eeeeee"
+                        local:border_width="4dp"
+                        local:shadow="true"
+                        android:layout_margin="10dp"
+                        android:visibility="visible" />
+                    <ImageView
+                        android:src="@drawable/ic_exit_gray_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"
+                        android:id="@+id/cancelImageView" />
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
                     <AnatoliAndroid.Components.AnatoliTextView
                         android:text=""
                         android:textColor="@color/white"

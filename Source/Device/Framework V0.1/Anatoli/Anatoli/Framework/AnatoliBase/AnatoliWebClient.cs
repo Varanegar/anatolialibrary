@@ -53,7 +53,7 @@ namespace Anatoli.Framework.AnatoliBase
 
         }
 
-       
+
         public async Task<bool> SaveTokenFileAsync()
         {
             string content = "";
@@ -123,7 +123,7 @@ namespace Anatoli.Framework.AnatoliBase
                 return _appTokenInfo;
             }
         }
-    
+
         RestRequest CreateRequest(AnatoliTokenInfo tokenInfo, string requestUrl, HttpMethod method, params Tuple<string, string>[] parameters)
         {
             var request = new RestRequest(requestUrl, method);
@@ -231,14 +231,14 @@ namespace Anatoli.Framework.AnatoliBase
             request = CreateRequest(token, requestUri, HttpMethod.Post, obj, parameters);
             return await ExecRequestAsync<Result>(client, request);
         }
-        public async Task<Result> SendFileAsync<Result>(TokenType tokenType, string requestUri, Byte[] bytes,string fileName)
+        public async Task<Result> SendFileAsync<Result>(TokenType tokenType, string requestUri, Byte[] bytes, string fileName, System.Threading.CancellationTokenSource cancelToken)
         {
             var client = new RestClient(Configuration.WebService.PortalAddress);
             RestRequest request;
             var token = await GetTokenAsync(tokenType);
             request = CreateRequest(token, requestUri, HttpMethod.Post);
             request.AddFile(fileName, bytes, "ttt");
-            return await ExecRequestAsync<Result>(client, request);
+            return await ExecRequestAsync<Result>(client, request, cancelToken);
         }
         public async Task<Result> SendGetRequestAsync<Result>(TokenType tokenType, string requestUri, System.Threading.CancellationTokenSource cancelToken, params Tuple<string, string>[] parameters)
         {
@@ -256,7 +256,7 @@ namespace Anatoli.Framework.AnatoliBase
             request = CreateRequest(token, requestUri, HttpMethod.Get, parameters);
             return await ExecRequestAsync<Result>(client, request);
         }
-    
+
         async Task<Result> ExecRequestAsync<Result>(RestClient client, RestRequest request, System.Threading.CancellationTokenSource cancelToken)
         {
             client.IgnoreResponseStatusCode = true;
