@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.Product;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -122,7 +123,7 @@ namespace AnatoliAndroid.Fragments
             {
                 if (imguri != null)
                 {
-                    Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(imguri).Placeholder(Resource.Drawable.igmart).Into(imageView1);
                 }
             }
             catch (Exception)

@@ -14,7 +14,7 @@ using Anatoli.App.Model.Store;
 using Anatoli.App.Manager;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
-using Koush;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -156,7 +156,7 @@ namespace AnatoliAndroid.Fragments
                 {
                     string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
                     if (imguri != null)
-                        UrlImageViewHelper.SetUrlDrawable(productSummaryImageView, item.image, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                        Picasso.With(AnatoliApp.GetInstance().Activity).Load(imguri).Placeholder(Resource.Drawable.igmart).Into(productSummaryImageView);
                     else
                         productSummaryImageView.Visibility = ViewStates.Invisible;
                 }

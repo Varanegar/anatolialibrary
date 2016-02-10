@@ -13,6 +13,8 @@ using Android.Graphics;
 using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
 using System.IO;
+using Square.Picasso;
+using AnatoliAndroid.Activities;
 
 namespace AnatoliAndroid.Components
 {
@@ -42,7 +44,7 @@ namespace AnatoliAndroid.Components
                     }
                     progress.Visibility = ViewStates.Visible;
                     
-                    Koush.UrlImageViewHelper.SetUrlDrawable(_imageView, Source[_imageIndex].Item1);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load( Source[_imageIndex].Item1).Into(_imageView);
                     progress.Visibility = ViewStates.Invisible;
                     if (_continue)
                     {

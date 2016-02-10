@@ -69,6 +69,16 @@
       <HintPath>..\Packages\Cheesebaron.SlidingUpPanel.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android.Export" />
+    <Reference Include="Square.OkHttp">
+      <HintPath>..\..\Framework V0.1\Anatoli\packages\Square.OkHttp.2.4.0.0\lib\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\..\Framework V0.1\Anatoli\packages\Square.OkIO.1.5.0.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.Picasso, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Framework V0.1\Anatoli\packages\Square.Picasso.2.5.2.1\lib\MonoAndroid\Square.Picasso.dll</HintPath>
+    </Reference>
     <Reference Include="System.Collections" />
     <Reference Include="HockeyApp.Android">
       <HintPath>..\Packages\HockeyApp.Android.dll</HintPath>
@@ -114,9 +124,6 @@
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="UrlImageViewHelper">
-      <HintPath>..\Packages\UrlImageViewHelper.dll</HintPath>
-    </Reference>
     <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Packages\Validation.dll</HintPath>
@@ -187,6 +194,7 @@
     <AndroidAsset Include="Assets\paa.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\ProductSummaryLayout.axml">

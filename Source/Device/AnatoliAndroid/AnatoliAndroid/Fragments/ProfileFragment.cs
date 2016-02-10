@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using Android.Provider;
 using Android.Database;
 using AnatoliAndroid.Components;
-using Koush;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -75,13 +75,14 @@ namespace AnatoliAndroid.Fragments
 
             ImageUploaded += (s, e) =>
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId),Resource.Drawable.ic_account_circle_white_24dp,Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                var imageUri = CustomerManager.GetImageAddress(_customerViewModel.UniqueId);
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(imageUri).MemoryPolicy(MemoryPolicy.NoCache).NetworkPolicy(NetworkPolicy.NoCache).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                 Toast.MakeText(AnatoliApp.GetInstance().Activity, "تصویر ارسال شد", ToastLength.Short).Show();
                 _progress.Visibility = ViewStates.Gone;
             };
             ImageUploadFailed += (s, e) =>
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                 Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
                 _progress.Visibility = ViewStates.Gone;
             };
@@ -234,7 +235,7 @@ namespace AnatoliAndroid.Fragments
                     _telEditText.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
 
-                    UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, UrlImageViewHelper.CacheDurationFiveDays);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
                     for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
                     {
