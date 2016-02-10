@@ -67,8 +67,9 @@ namespace AnatoliAndroid.Fragments
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                     alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
                     alert.Show();
                 }

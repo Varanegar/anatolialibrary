@@ -102,6 +102,7 @@ namespace AnatoliAndroid.Fragments
                                 }
                                 catch (Exception ex)
                                 {
+                                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                                     if (ex.GetType() == typeof(TokenException))
                                     {
                                         errDialog.SetMessage(Resource.String.SaveFailed);
@@ -120,6 +121,7 @@ namespace AnatoliAndroid.Fragments
                         }
                         catch (Exception ex)
                         {
+                            HockeyApp.TraceWriter.WriteTrace(ex, false);
                             pDialog.Dismiss();
                             if (ex.GetType() == typeof(ServerUnreachable))
                             {
@@ -146,6 +148,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 dialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {

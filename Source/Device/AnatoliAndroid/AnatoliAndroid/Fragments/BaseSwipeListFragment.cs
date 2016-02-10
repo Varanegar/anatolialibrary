@@ -44,9 +44,10 @@ namespace AnatoliAndroid.Fragments
                 {
                     _listView.HideOptions(p);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    var exp = new Exception("Hiding swipe list view options failed", ex);
+                    HockeyApp.TraceWriter.WriteTrace(exp, false);
                 }
             };
             return view;

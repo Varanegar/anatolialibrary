@@ -110,6 +110,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
+                        HockeyApp.TraceWriter.WriteTrace(ex, false);
                         if (ex.GetType() == typeof(TokenException))
                         {
                             errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
@@ -128,6 +129,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 pDialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {

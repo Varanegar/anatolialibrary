@@ -123,8 +123,9 @@ namespace AnatoliAndroid.Fragments
                             errDialog.Show();
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        HockeyApp.TraceWriter.WriteTrace(ex, false);
                         pDialog.Dismiss();
                         errDialog.SetMessage(Resource.String.ErrorOccured);
                         errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
@@ -234,9 +235,9 @@ namespace AnatoliAndroid.Fragments
                 _level3SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
                 _level3Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level3SpinerDataAdapter);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
         }
 

@@ -174,8 +174,9 @@ namespace AnatoliAndroid.Fragments
                         dialog.Show();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
                     dialog.SetTitle("خطا");
@@ -286,9 +287,9 @@ namespace AnatoliAndroid.Fragments
                     _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
 
         }
@@ -384,6 +385,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception e)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(e, false);
                     if (e.GetType() != typeof(TaskCanceledException))
                     {
                         OnImageUploadFailed();
