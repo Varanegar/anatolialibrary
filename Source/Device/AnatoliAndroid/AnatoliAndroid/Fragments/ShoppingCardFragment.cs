@@ -118,6 +118,15 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Click += async (s, e) =>
             {
+                if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alertDialog.SetMessage(Resource.String.PleaseConnectToInternet);
+                    alertDialog.SetTitle(Resource.String.Error);
+                    alertDialog.SetPositiveButton(Resource.String.Ok, delegate { });
+                    alertDialog.Show();
+                    return;
+                }
                 var store = await StoreManager.GetDefaultAsync();
                 if (AnatoliApp.GetInstance().AnatoliUser == null)
                 {

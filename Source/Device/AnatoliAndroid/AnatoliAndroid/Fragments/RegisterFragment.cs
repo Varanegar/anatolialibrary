@@ -40,6 +40,14 @@ namespace AnatoliAndroid.Fragments
         async void _registerButton_Click(object sender, EventArgs e)
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                alertDialog.SetMessage(Resource.String.PleaseConnectToInternet);
+                alertDialog.SetTitle(Resource.String.Error);
+                alertDialog.SetPositiveButton(Resource.String.Ok, (s, ev) => { });
+                alertDialog.Show();
+                return;
+            }
             if (String.IsNullOrEmpty(_telEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
                 alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.EneterUserNamePass));
