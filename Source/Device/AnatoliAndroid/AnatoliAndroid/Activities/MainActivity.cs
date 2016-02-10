@@ -104,9 +104,16 @@ namespace AnatoliAndroid.Activities
                 if (AnatoliApp.GetInstance().AnatoliUser != null)
                 {
 #pragma warning disable
-                    AnatoliApp.GetInstance().RefreshCutomerProfile();
-                    ProductManager.SyncFavorits();
-                    Configuration.ReadConfigFromFile();
+                    try
+                    {
+                        AnatoliApp.GetInstance().RefreshCutomerProfile();
+                        ProductManager.SyncFavorits();
+                        Configuration.ReadConfigFromFile();
+                    }
+                    catch (Exception)
+                    {
+                        
+                    }
 #pragma warning restore
                 }
             }
@@ -178,7 +185,7 @@ namespace AnatoliAndroid.Activities
         //protected override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
         //{
         //    base.OnActivityResult(requestCode, resultCode, data);
-            
+
         //}
         //void OnImageUploaded()
         //{

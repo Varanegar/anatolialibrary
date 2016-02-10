@@ -542,11 +542,14 @@ namespace AnatoliAndroid.Activities
                     }
                     return c;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
+                    if (cancelable && e.GetType() == typeof(TaskCanceledException))
+                    {
+                        errDialog.SetMessage(Resource.String.ErrorOccured);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                        errDialog.Show();
+                    }
                 }
             }
             return null;
