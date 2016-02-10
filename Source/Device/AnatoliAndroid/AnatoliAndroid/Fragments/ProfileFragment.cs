@@ -32,7 +32,7 @@ namespace AnatoliAndroid.Fragments
         EditText _firstNameEditText;
         EditText _lastNameEditText;
         EditText _emailEditText;
-        EditText _telEditText;
+        TextView _telTextView;
         EditText _addressEditText;
         EditText _idEditText;
         Spinner _level3Spinner;
@@ -63,7 +63,7 @@ namespace AnatoliAndroid.Fragments
             _lastNameEditText = view.FindViewById<EditText>(Resource.Id.lastNameEditText);
             _emailEditText = view.FindViewById<EditText>(Resource.Id.emailEditText);
             _idEditText = view.FindViewById<EditText>(Resource.Id.idEditText);
-            _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
+            _telTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
             _level3Spinner = view.FindViewById<Spinner>(Resource.Id.level4Spinner);
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
@@ -107,7 +107,6 @@ namespace AnatoliAndroid.Fragments
 
 
 
-            _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
             {
                 if (!IsValidEmail(_emailEditText.Text))
@@ -232,8 +231,8 @@ namespace AnatoliAndroid.Fragments
                     _idEditText.Text = _customerViewModel.NationalCode;
                     _addressEditText.Text = _customerViewModel.MainStreet;
                     _emailEditText.Text = _customerViewModel.Email;
-                    _telEditText.Text = _customerViewModel.Mobile;
-                    _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
+                    _telTextView.Text = _customerViewModel.Mobile;
+                    _fullNametextView.Text = _customerViewModel.FirstName.Trim() + " " + _customerViewModel.LastName.Trim();
 
                     Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
