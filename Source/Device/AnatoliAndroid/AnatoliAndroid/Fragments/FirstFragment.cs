@@ -75,6 +75,21 @@ namespace AnatoliAndroid.Fragments
                 _groupsGridView.Adapter = groupAdapter;
             }
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
+
+
+            //Anatoli.App.Model.Store.PurchaseOrderViewModel o = new Anatoli.App.Model.Store.PurchaseOrderViewModel();
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    Anatoli.App.Model.Store.PurchaseOrderLineItemViewModel item = new Anatoli.App.Model.Store.PurchaseOrderLineItemViewModel();
+            //    item.Qty = i * 12;
+            //    item.UniqueId = "شایک یحیخ بیمثخ بخب 44 یخی";
+            //    item.NetAmount = 145056 * i;
+            //    o.LineItems.Add(item);
+            //}
+            //var customerViewModel = await CustomerManager.ReadCustomerAsync();
+            //ProformaFragment proforma = new ProformaFragment(o, customerViewModel);
+            //var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+            //proforma.Show(fr, "proforma_fragment");
         }
 
 
