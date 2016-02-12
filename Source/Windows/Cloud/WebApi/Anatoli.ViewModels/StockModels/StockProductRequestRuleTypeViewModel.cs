@@ -13,4 +13,8 @@ namespace Anatoli.ViewModels.StockModels
 
         public string StockProductRequestRuleTypeName { get; set; }
     }
+    public class StockProductRequestRuleCalcTypeViewModel : BaseViewModel
+    {
+        public string StockProductRequestRuleCalcTypeName { get; set; }
+    }
 }

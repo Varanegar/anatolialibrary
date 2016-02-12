@@ -44,6 +44,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 StoreId = data.StoreId,
                 MainSCMStockId = data.MainSCMStock2Id,
                 RelatedSCMStockId = data.RelatedSCMStock2Id,
+
             };
             
             if (data.StockOnHandSyncs.Count > 0)

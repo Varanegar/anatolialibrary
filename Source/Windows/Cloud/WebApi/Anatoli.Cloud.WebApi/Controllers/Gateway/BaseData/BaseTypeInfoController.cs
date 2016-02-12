@@ -1,29 +1,17 @@
-﻿using Anatoli.Cloud.WebApi.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System;
 using System.Web.Http;
-using System.Net.Http;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
-using Anatoli.Cloud.WebApi.Models;
-using System.Security.Claims;
 using Anatoli.Business.Domain;
+using System.Collections.Generic;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StockModels;
+using Anatoli.Cloud.WebApi.Classes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/basedata")]
-    public class BaseTypeInfoController : BaseApiController
+    public class BaseTypeInfoController : AnatoliApiController
     {
-        public class RequestModel
-        {
-            public string privateOwnerId { get; set; }
-        }
-
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("basedatas")]
         public async Task<IHttpActionResult> GetBaseTypes(string privateOwnerId)
@@ -36,7 +24,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
@@ -127,7 +115,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
         #endregion
 
-
         #region Stock Requests Type List
         [Authorize(Roles = "User")]
         [Route("stockrequesttypes")]
@@ -166,6 +153,5 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
         #endregion
-
     }
 }
