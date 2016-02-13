@@ -1,7 +1,4 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.ViewModels.StockModels
 {
@@ -13,5 +10,10 @@ namespace Anatoli.ViewModels.StockModels
         public static readonly Guid BranchStock = Guid.Parse("92a9b97a-0e51-4ed3-b012-f1bde2e62f9b");
         public string StockTypeName { get; set; }
 
+
+        public StockTypeViewModel()
+        {
+            StockTypeName = "";
+        }
     }
 }

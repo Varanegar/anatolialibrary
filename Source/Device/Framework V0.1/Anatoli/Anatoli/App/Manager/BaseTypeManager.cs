@@ -23,26 +23,26 @@ namespace Anatoli.App.Manager
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
+                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
+                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
                     foreach (var item in list)
                     {
-                        if (item.UniqueId == BaseTypeViewModel.DeliveryType)
+                        if (item.UniqueId.ToUpper() == BaseTypeViewModel.DeliveryType)
                         {
-                            var c = await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
                             foreach (var value in item.BaseValues)
                             {
                                 InsertCommand command = new InsertCommand("delivery_types", new BasicParam("name", value.BaseValueName),
-                                 new BasicParam("id", value.UniqueId.ToString()));
+                                 new BasicParam("id", value.UniqueId.ToString().ToUpper()));
                                 var query = connection.CreateCommand(command.GetCommand());
                                 int t = query.ExecuteNonQuery();
                             }
                         }
-                        else if (item.UniqueId == BaseTypeViewModel.PayType)
+                        else if (item.UniqueId.ToUpper() == BaseTypeViewModel.PayType)
                         {
-                            var c = await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
                             foreach (var value in item.BaseValues)
                             {
                                 InsertCommand command = new InsertCommand("pay_types", new BasicParam("name", value.BaseValueName),
-                                 new BasicParam("id", value.UniqueId.ToString()));
+                                 new BasicParam("id", value.UniqueId.ToString().ToUpper()));
                                 var query = connection.CreateCommand(command.GetCommand());
                                 int t = query.ExecuteNonQuery();
                             }
@@ -59,6 +59,10 @@ namespace Anatoli.App.Manager
             }
         }
 
+        public static async Task<List<DeliveryTypeModel>> GetDeliveryTypesAsync()
+        {
+            return await BaseDataAdapter<DeliveryTypeModel>.GetListAsync(new StringQuery("SELECT * FROM delivery_types"));
+        }
 
     }
 }

@@ -24,13 +24,32 @@
                     android:id="@+id/avatarRelativeLayout"
                     android:background="@drawable/blue2_background"
                     android:padding="20dp">
-                    <ImageView
+                    <AnatoliAndroid.Components.RoundedImageView
                         android:src="@android:drawable/ic_menu_gallery"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:id="@+id/avatarImageView"
                         android:layout_centerInParent="true"
-                        android:layout_margin="10dp" />
+                        local:border="true"
+                        local:border_color="#eeeeee"
+                        local:border_width="4dp"
+                        local:shadow="true"
+                        android:layout_margin="20dp"
+                        android:visibility="visible" />
+                    <ImageView
+                        android:src="@drawable/ic_exit_gray_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"
+                        android:layout_margin="20dp"
+                        android:id="@+id/cancelImageView" />
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
                     <AnatoliAndroid.Components.AnatoliTextView
                         android:text=""
                         android:textColor="@color/white"
@@ -40,7 +59,19 @@
                         local:customFont="Fonts/anatoli.ttf"
                         android:id="@+id/fullNametextView"
                         android:layout_centerHorizontal="true"
-                        android:layout_margin="10dp" />
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="3dp" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/telTextView"
+                        android:gravity="center"
+                        local:customFont="Fonts/anatoli.ttf"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/fullNametextView" />
                 </RelativeLayout>
                 <AnatoliAndroid.Components.AnatoliEditText
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -86,17 +117,6 @@
                     android:imeOptions="actionNext"
                     android:singleLine="true"
                     android:inputType="textEmailAddress" />
-                <AnatoliAndroid.Components.AnatoliEditText
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/telEditText"
-                    android:hint="@string/Tel"
-                    local:customFont="Fonts/anatoli.ttf"
-                    style="@style/AnatoliTextField"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:inputType="phone" />
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

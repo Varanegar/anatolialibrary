@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
@@ -275,6 +274,7 @@ namespace Anatoli.Business.Domain
             });
             return data;
         }
+  
         #endregion
     }
 }

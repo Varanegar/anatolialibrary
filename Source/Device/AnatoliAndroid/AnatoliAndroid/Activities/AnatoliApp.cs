@@ -442,6 +442,10 @@ namespace AnatoliAndroid.Activities
                         var g = await SyncDatabase();
                         SetFragment<FirstFragment>(null, "first_fragment)");
                         break;
+                    case DrawerMainItem.DrawerMainItems.Settings:
+                        DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                        SetFragment<SettingsFragment>(null, "settings_fragment)");
+                        break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         bool result = await AnatoliUserManager.LogoutAsync();
@@ -538,11 +542,15 @@ namespace AnatoliAndroid.Activities
                     }
                     return c;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
+                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    if (cancelable && e.GetType() == typeof(TaskCanceledException))
+                    {
+                        errDialog.SetMessage(Resource.String.ErrorOccured);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                        errDialog.Show();
+                    }
                 }
             }
             return null;
@@ -560,6 +568,17 @@ namespace AnatoliAndroid.Activities
         }
         internal async Task<bool> SyncDatabase()
         {
+            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetMessage(Resource.String.PleaseConnectToInternet);
+                alert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                {
+                    Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
+                    AnatoliApp.GetInstance().Activity.StartActivity(intent);
+                });
+                return false;
+            }
             Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
             pDialog.SetMessage(" بروز رسانی لیست شهر ها");
@@ -596,6 +615,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 pDialog.Dismiss();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
@@ -805,6 +825,10 @@ namespace AnatoliAndroid.Activities
             updateMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Update);
             mainItems.Add(updateMenuEntry);
 
+            var settingsMenuEntry = new DrawerMainItem();
+            settingsMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Settings;
+            settingsMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Settings);
+            mainItems.Add(settingsMenuEntry);
 
             AnatoliMenuItems = mainItems;
             _drawerListView.Adapter = new DrawerMenuItems(AnatoliMenuItems, _activity);
@@ -857,9 +881,9 @@ namespace AnatoliAndroid.Activities
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex,false);
             }
         }
 

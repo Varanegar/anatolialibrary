@@ -76,6 +76,10 @@ namespace Anatoli.Cloud.WebApi.Classes
                 return true;
 
             var user = HttpContext.Current.User;
+
+            if (user == null || string.IsNullOrEmpty(user.Identity.GetUserId()))
+                return false;
+
             var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.Identity.GetUserId(), Resource, Action);
 
             if (permissions == null || permissions.Count == 0 || permissions.Any(a => a.Grant == false))

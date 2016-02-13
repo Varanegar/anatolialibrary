@@ -72,8 +72,9 @@ namespace AnatoliAndroid.Fragments
                     query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
                 _dataManager.SetQueries(query, null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 return;
             }
         }

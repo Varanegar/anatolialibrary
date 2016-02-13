@@ -33,7 +33,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
-            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+            var model = this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u));
+
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]

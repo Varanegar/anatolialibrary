@@ -38,6 +38,13 @@ namespace AnatoliAndroid.Fragments
             AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
             _saveButton.Click += async (s, e) =>
             {
+                if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                {
+                    alert.SetTitle(Resource.String.Error);
+                    alert.SetMessage(Resource.String.PleaseConnectToInternet);
+                    alert.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    return;
+                }
                 ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
                 pDialog.SetMessage("در حال ارسال درخواست");
                 pDialog.Show();
@@ -60,9 +67,11 @@ namespace AnatoliAndroid.Fragments
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    HockeyApp.TraceWriter.WriteTrace(ex, false);
+                    alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
+                    alert.Show();
                 }
                 finally
                 {

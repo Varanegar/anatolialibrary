@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.Product;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -34,22 +35,11 @@ namespace AnatoliAndroid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
-            //return base.OnCreateView(inflater, container, savedInstanceState);
-
             var view = inflater.Inflate(Resource.Layout.FirstLayout, container, false);
             _slideShowImageView = view.FindViewById<ImageView>(Resource.Id.slideShowImageView);
             var progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
             _groupsGridView = view.FindViewById<GridView>(Resource.Id.groupsGridView);
             _slideShow = new AnatoliSlideShow(_slideShowImageView, progress);
-            //var tl = new OnTouchListener();
-            //_slideShowImageView.SetOnTouchListener(tl);
-            //tl.SwipeRight += (s, e) =>
-            //{
-            //    _slideShow.Stop();
-            //};
 
             AnatoliAndroid.Components.AnatoliSlideShow.OnClick click1 = new AnatoliAndroid.Components.AnatoliSlideShow.OnClick(() => { Toast.MakeText(AnatoliApp.GetInstance().Activity, "Item 1 selected", ToastLength.Short).Show(); });
             var c1 = new Tuple<string, AnatoliAndroid.Components.AnatoliSlideShow.OnClick>("http://www.psdgraphics.com/wp-content/uploads/2015/06/mosaic-background.png", click1);
@@ -74,7 +64,6 @@ namespace AnatoliAndroid.Fragments
                 _groupsGridView.Adapter = groupAdapter;
             }
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
-
         }
 
 
@@ -123,7 +112,7 @@ namespace AnatoliAndroid.Fragments
             {
                 if (imguri != null)
                 {
-                    Koush.UrlImageViewHelper.SetUrlDrawable(imageView1, imguri);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(imguri).Placeholder(Resource.Drawable.igmart).Into(imageView1);
                 }
             }
             catch (Exception)

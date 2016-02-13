@@ -23,6 +23,7 @@ using Anatoli.App.Model;
 using Android.Provider;
 using Android.Graphics;
 using Android.Database;
+using HockeyApp;
 
 
 namespace AnatoliAndroid.Activities
@@ -33,7 +34,7 @@ namespace AnatoliAndroid.Activities
         Toolbar _toolbar;
         LocationManager _locationManager;
         public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
-
+        //public static readonly int OpenImageRequestCode = 1234;
         protected override void OnSaveInstanceState(Bundle outState)
         {
 
@@ -42,7 +43,7 @@ namespace AnatoliAndroid.Activities
         {
             base.OnCreate(bundle);
 
-            HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
+            HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID, new AnatoliCrashManagerListener());
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
             AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
@@ -104,8 +105,16 @@ namespace AnatoliAndroid.Activities
                 if (AnatoliApp.GetInstance().AnatoliUser != null)
                 {
 #pragma warning disable
-                    AnatoliApp.GetInstance().RefreshCutomerProfile();
-                    //BasketManager.SyncDataBase();
+                    try
+                    {
+                        AnatoliApp.GetInstance().RefreshCutomerProfile();
+                        ProductManager.SyncFavorits();
+                        Configuration.ReadConfigFromFile();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
 #pragma warning restore
                 }
             }
@@ -174,8 +183,28 @@ namespace AnatoliAndroid.Activities
             }
         }
 
+        //protected override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        //{
+        //    base.OnActivityResult(requestCode, resultCode, data);
 
+        //}
+        //void OnImageUploaded()
+        //{
+        //    if (ImageUploaded != null)
+        //    {
+        //        ImageUploaded.Invoke(this, new EventArgs());
+        //    }
+        //}
+        //public EventHandler ImageUploaded;
 
+        //void OnImageUploadFailed()
+        //{
+        //    if (ImageUploadFailed != null)
+        //    {
+        //        ImageUploadFailed.Invoke(this, new EventArgs());
+        //    }
+        //}
+        //public EventHandler ImageUploadFailed;
     }
 
     [BroadcastReceiver()]
@@ -209,5 +238,12 @@ namespace AnatoliAndroid.Activities
         public string name { get; set; }
     }
 
+    class AnatoliCrashManagerListener : CrashManagerListener
+    {
+        public override bool ShouldAutoUploadCrashes()
+        {
+            return true;
+        }
+    }
 }
 

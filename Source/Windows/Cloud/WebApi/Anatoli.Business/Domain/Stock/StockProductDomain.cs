@@ -8,7 +8,6 @@ using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
@@ -69,46 +68,42 @@ namespace Anatoli.Business.Domain
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
                 var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+
                 var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
 
                 dataList.ForEach(item =>
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = currentDataList.Find(p => p.Id == item.Id);
-                    if (currentData != null)
+                    var data = currentDataList.Find(p => p.Id == item.Id);
+                    if (data != null)
                     {
-                        if (currentData.MinQty != item.MinQty ||
-                            currentData.ReorderLevel != item.ReorderLevel ||
-                            currentData.MaxQty != item.MaxQty ||
-                            currentData.IsEnable != item.IsEnable ||
-                            currentData.StockId != item.StockId ||
-                            currentData.FiscalYearId != item.FiscalYearId ||
-                            currentData.ProductId != item.ProductId
-                            )
-                        {
-                            currentData.MinQty = item.MinQty;
-                            currentData.ReorderLevel = item.ReorderLevel;
-                            currentData.MaxQty = item.MaxQty;
-                            currentData.IsEnable = item.IsEnable;
-                            currentData.StockId = item.StockId;
-                            currentData.FiscalYearId = item.FiscalYearId;
-                            currentData.ProductId = item.ProductId;
+                        data.MinQty = item.MinQty;
+                        data.ReorderLevel = item.ReorderLevel;
+                        data.MaxQty = item.MaxQty;
+                        data.IsEnable = item.IsEnable;
+                        data.StockId = item.StockId;
+                        data.FiscalYearId = item.FiscalYearId;
+                        data.ProductId = item.ProductId;
 
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.Update(currentData);
-                        }
+                        data.LastUpdate = DateTime.Now;
+
+                        if (item.ReorderCalcType != null && item.ReorderCalcType.Id != Guid.Empty)
+                            data.ReorderCalcTypeId = item.ReorderCalcType.Id;
+
+                        Repository.Update(data);
                     }
                     else
                     {
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
+
+                        item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
+
                         Repository.Add(item);
                     }
                 });
 
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
@@ -130,7 +125,7 @@ namespace Anatoli.Business.Domain
                 dataList.ForEach(item =>
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
+
                     Repository.DbContext.StockProducts.Remove(data);
                 });
 

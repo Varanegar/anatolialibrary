@@ -21,6 +21,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Android.Provider;
 using Android.Database;
+using AnatoliAndroid.Components;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -30,7 +32,7 @@ namespace AnatoliAndroid.Fragments
         EditText _firstNameEditText;
         EditText _lastNameEditText;
         EditText _emailEditText;
-        EditText _telEditText;
+        TextView _telTextView;
         EditText _addressEditText;
         EditText _idEditText;
         Spinner _level3Spinner;
@@ -40,8 +42,10 @@ namespace AnatoliAndroid.Fragments
         TextView _exitTextView;
         TextView _fullNametextView;
         Button _saveButton;
-        ImageView _avatarImageView;
+        RoundedImageView _avatarImageView;
         CustomerViewModel _customerViewModel;
+        ProgressBar _progress;
+        ImageView _cancelImageView;
         List<CityRegionModel> _level1SpinerDataAdapter;
         List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
         List<CityRegionModel> _level3SpinerDataAdapter = new List<CityRegionModel>();
@@ -59,32 +63,33 @@ namespace AnatoliAndroid.Fragments
             _lastNameEditText = view.FindViewById<EditText>(Resource.Id.lastNameEditText);
             _emailEditText = view.FindViewById<EditText>(Resource.Id.emailEditText);
             _idEditText = view.FindViewById<EditText>(Resource.Id.idEditText);
-            _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
+            _telTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
             _level3Spinner = view.FindViewById<Spinner>(Resource.Id.level4Spinner);
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
             _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
             _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
-            _avatarImageView = view.FindViewById<ImageView>(Resource.Id.avatarImageView);
+            _avatarImageView = view.FindViewById<RoundedImageView>(Resource.Id.avatarImageView);
+            _progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
+            _cancelImageView = view.FindViewById<ImageView>(Resource.Id.cancelImageView);
 
-            _avatarImageView.Click += async (s, e) =>
+            ImageUploaded += (s, e) =>
             {
-                //Intent intent = new Intent();
-                //intent.SetType("image/*");
-                //intent.SetAction(Intent.ActionGetContent);
-                //AnatoliApp.GetInstance().Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 0);
-                Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("http://steezo.com/wp-content/uploads/2012/12/man-in-suit2.jpg"); });
-                System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                _bimage.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                byte[] bitmapData = stream.ToArray();
-                try
-                {
-                    await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId.ToString(), bitmapData);
-                }
-                catch (Exception ex)
-                {
+                var imageUri = CustomerManager.GetImageAddress(_customerViewModel.UniqueId);
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(imageUri).MemoryPolicy(MemoryPolicy.NoCache).NetworkPolicy(NetworkPolicy.NoCache).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, "تصویر ارسال شد", ToastLength.Short).Show();
+                _progress.Visibility = ViewStates.Gone;
+            };
+            ImageUploadFailed += (s, e) =>
+            {
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
+                Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
+                _progress.Visibility = ViewStates.Gone;
+            };
 
-                }
+            _avatarImageView.Click += (s, e) =>
+            {
+                OpenImage();
             };
             _fullNametextView = view.FindViewById<TextView>(Resource.Id.fullNametextView);
             view.FindViewById<TextView>(Resource.Id.changePassTextView).Click += (s, e) =>
@@ -102,7 +107,6 @@ namespace AnatoliAndroid.Fragments
 
 
 
-            _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
             {
                 if (!IsValidEmail(_emailEditText.Text))
@@ -170,8 +174,9 @@ namespace AnatoliAndroid.Fragments
                         dialog.Show();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
                     dialog.SetTitle("خطا");
@@ -227,12 +232,10 @@ namespace AnatoliAndroid.Fragments
                     _idEditText.Text = _customerViewModel.NationalCode;
                     _addressEditText.Text = _customerViewModel.MainStreet;
                     _emailEditText.Text = _customerViewModel.Email;
-                    _telEditText.Text = _customerViewModel.Mobile;
-                    _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
-                    //string imgUri = 
-                    Bitmap _bimage = await Task.Run(() => { return GetImageBitmapFromUrl("https://i1.sndcdn.com/avatars-000022878889-l03kpc-large.jpg"); });
-                    Bitmap _bfinal = getRoundedShape(_bimage);
-                    _avatarImageView.SetImageBitmap(_bfinal);
+                    _telTextView.Text = _customerViewModel.Mobile;
+                    _fullNametextView.Text = _customerViewModel.FirstName.Trim() + " " + _customerViewModel.LastName.Trim();
+
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
                     for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
                     {
@@ -284,9 +287,9 @@ namespace AnatoliAndroid.Fragments
                     _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
 
         }
@@ -354,50 +357,77 @@ namespace AnatoliAndroid.Fragments
 
             }
         }
-
-
-
-
-
-        public Bitmap GetImageBitmapFromUrl(string url)
+        public static readonly int OpenImageRequestCode = 1234;
+        public override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            Bitmap imageBitmap = null;
-            if (!(url == "null"))
-                using (var webClient = new WebClient())
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == OpenImageRequestCode)
+            {
+                try
                 {
-                    var imageBytes = webClient.DownloadData(url);
-                    if (imageBytes != null && imageBytes.Length > 0)
+                    _progress.Visibility = ViewStates.Visible;
+                    _cancelImageView.Visibility = ViewStates.Visible;
+                    _avatarImageView.Enabled = false;
+                    if (data.Data != null)
                     {
-                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                        var path = AndroidFileIO.GetPathToImage(data.Data, AnatoliApp.GetInstance().Activity);
+                        var image = AnatoliClient.GetInstance().FileIO.ReadAllBytes(path);
+                        System.Threading.CancellationTokenSource cancelToken = new System.Threading.CancellationTokenSource();
+                        _cancelImageView.Click += delegate
+                        {
+                            cancelToken.Cancel();
+                            _progress.Visibility = ViewStates.Gone;
+                            _cancelImageView.Visibility = ViewStates.Gone;
+                        };
+                        await CustomerManager.UploadImageAsync(_customerViewModel.UniqueId, image, cancelToken);
+                        OnImageUploaded();
                     }
                 }
-
-            System.Console.Out.WriteLine("Return fn");
-            return imageBitmap;
+                catch (Exception e)
+                {
+                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    if (e.GetType() != typeof(TaskCanceledException))
+                    {
+                        OnImageUploadFailed();
+                    }
+                }
+                finally
+                {
+                    _progress.Visibility = ViewStates.Gone;
+                    _cancelImageView.Visibility = ViewStates.Gone;
+                    _avatarImageView.Enabled = true;
+                }
+            }
         }
-
-        public Bitmap getRoundedShape(Bitmap scaleBitmapImage)
+        void OnImageUploaded()
         {
-            int targetWidth = 150;
-            int targetHeight = 150;
-            Bitmap targetBitmap = Bitmap.CreateBitmap(targetWidth,
-                targetHeight, Bitmap.Config.Argb8888);
+            if (ImageUploaded != null)
+            {
+                ImageUploaded.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploaded;
 
-            Canvas canvas = new Canvas(targetBitmap);
-            Android.Graphics.Path path = new Android.Graphics.Path();
-            path.AddCircle(((float)targetWidth - 1) / 2,
-                ((float)targetHeight - 1) / 2,
-                (Math.Min(((float)targetWidth),
-                    ((float)targetHeight)) / 2),
-                Android.Graphics.Path.Direction.Ccw);
+        void OnImageUploadFailed()
+        {
+            if (ImageUploadFailed != null)
+            {
+                ImageUploadFailed.Invoke(this, new EventArgs());
+            }
+        }
+        public EventHandler ImageUploadFailed;
+        public void OpenImage()
+        {
+            try
+            {
+                Intent intent = new Intent(Intent.ActionGetContent);
+                intent.SetType("image/*");
+                StartActivityForResult(intent, OpenImageRequestCode);
+            }
+            catch (ActivityNotFoundException e)
+            {
 
-            canvas.ClipPath(path);
-            Bitmap sourceBitmap = scaleBitmapImage;
-            canvas.DrawBitmap(sourceBitmap,
-                new Rect(0, 0, sourceBitmap.Width,
-                    sourceBitmap.Height),
-                new Rect(0, 0, targetWidth, targetHeight), null);
-            return targetBitmap;
+            }
         }
 
         void OnProfileUpdated()

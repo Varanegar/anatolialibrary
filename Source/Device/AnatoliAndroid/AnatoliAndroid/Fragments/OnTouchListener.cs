@@ -26,13 +26,13 @@ namespace AnatoliAndroid.Fragments
                     _upTime = Now();
                     var d = Math.Abs(e.RawX - _downX);
                     Console.WriteLine(d);
-                    if ((_upTime - _downTime) > 1000 && d < 30)
+                    if ((_upTime - _downTime) > 1000 && d < 10)
                         OnLongClick();
-                    else if ((_upTime - _downTime) > 50 && d > 30)
+                    else if ((_upTime - _downTime) > 30 && d > 10)
                     {
-                        if ((e.RawX - _downX) < -30)
+                        if ((e.RawX - _downX) < -10)
                             OnSwipeLeft(v);
-                        else if ((e.RawX - _downX) > 30)
+                        else if ((e.RawX - _downX) > 10)
                             OnSwipeRight(v);
                     }
                     else
@@ -46,11 +46,11 @@ namespace AnatoliAndroid.Fragments
                 case MotionEventActions.Cancel:
                     _upTime = Now();
                     d = Math.Abs(e.RawX - _downX);
-                    if ((_upTime - _downTime) > 100 && d > 60)
+                    if ((_upTime - _downTime) > 50 && d > 20)
                     {
-                        if ((e.RawX - _downX) < -60)
+                        if ((e.RawX - _downX) < -20)
                             OnSwipeLeft(v);
-                        else if ((e.RawX - _downX) > 60)
+                        else if ((e.RawX - _downX) > 20)
                             OnSwipeRight(v);
                     }
                     break;
