@@ -81,6 +81,7 @@
     <Compile Include="StockModels\StockTypeViewModel.cs" />
     <Compile Include="StockModels\StockViewModel.cs" />
     <Compile Include="StockModels\StockActiveOnHandViewModel.cs" />
+    <Compile Include="StockModels\UserViewModel.cs" />
     <Compile Include="StoreModels\StoreActivePriceListViewModel.cs" />
     <Compile Include="StoreModels\StoreCalendarViewModel.cs" />
     <Compile Include="StoreModels\StoreActiveOnhandViewModel.cs" />

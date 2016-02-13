@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using Android.Provider;
 using Android.Database;
 using AnatoliAndroid.Components;
-using Koush;
+using Square.Picasso;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -32,7 +32,7 @@ namespace AnatoliAndroid.Fragments
         EditText _firstNameEditText;
         EditText _lastNameEditText;
         EditText _emailEditText;
-        EditText _telEditText;
+        TextView _telTextView;
         EditText _addressEditText;
         EditText _idEditText;
         Spinner _level3Spinner;
@@ -63,7 +63,7 @@ namespace AnatoliAndroid.Fragments
             _lastNameEditText = view.FindViewById<EditText>(Resource.Id.lastNameEditText);
             _emailEditText = view.FindViewById<EditText>(Resource.Id.emailEditText);
             _idEditText = view.FindViewById<EditText>(Resource.Id.idEditText);
-            _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);
+            _telTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
             _level3Spinner = view.FindViewById<Spinner>(Resource.Id.level4Spinner);
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
@@ -75,13 +75,14 @@ namespace AnatoliAndroid.Fragments
 
             ImageUploaded += (s, e) =>
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId),Resource.Drawable.ic_account_circle_white_24dp,Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                var imageUri = CustomerManager.GetImageAddress(_customerViewModel.UniqueId);
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(imageUri).MemoryPolicy(MemoryPolicy.NoCache).NetworkPolicy(NetworkPolicy.NoCache).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                 Toast.MakeText(AnatoliApp.GetInstance().Activity, "تصویر ارسال شد", ToastLength.Short).Show();
                 _progress.Visibility = ViewStates.Gone;
             };
             ImageUploadFailed += (s, e) =>
             {
-                Koush.UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, Koush.UrlImageViewHelper.CacheDurationOneWeek);
+                Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                 Toast.MakeText(AnatoliApp.GetInstance().Activity, "خطا در ارسال تصویر", ToastLength.Short).Show();
                 _progress.Visibility = ViewStates.Gone;
             };
@@ -106,7 +107,6 @@ namespace AnatoliAndroid.Fragments
 
 
 
-            _telEditText.Enabled = false;
             _saveButton.Click += async (s, e) =>
             {
                 if (!IsValidEmail(_emailEditText.Text))
@@ -174,8 +174,9 @@ namespace AnatoliAndroid.Fragments
                         dialog.Show();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
                     dialog.SetTitle("خطا");
@@ -231,10 +232,10 @@ namespace AnatoliAndroid.Fragments
                     _idEditText.Text = _customerViewModel.NationalCode;
                     _addressEditText.Text = _customerViewModel.MainStreet;
                     _emailEditText.Text = _customerViewModel.Email;
-                    _telEditText.Text = _customerViewModel.Mobile;
-                    _fullNametextView.Text = _customerViewModel.FirstName + " " + _customerViewModel.LastName;
+                    _telTextView.Text = _customerViewModel.Mobile;
+                    _fullNametextView.Text = _customerViewModel.FirstName.Trim() + " " + _customerViewModel.LastName.Trim();
 
-                    UrlImageViewHelper.SetUrlDrawable(_avatarImageView, CustomerManager.GetImageAddress(_customerViewModel.UniqueId), Resource.Drawable.ic_account_circle_white_24dp, UrlImageViewHelper.CacheDurationFiveDays);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
                     _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
                     for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
                     {
@@ -286,9 +287,9 @@ namespace AnatoliAndroid.Fragments
                     _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
 
         }
@@ -384,6 +385,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception e)
                 {
+                    HockeyApp.TraceWriter.WriteTrace(e, false);
                     if (e.GetType() != typeof(TaskCanceledException))
                     {
                         OnImageUploadFailed();

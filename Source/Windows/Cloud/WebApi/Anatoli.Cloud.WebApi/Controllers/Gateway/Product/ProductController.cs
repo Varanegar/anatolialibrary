@@ -1,19 +1,16 @@
-﻿using Anatoli.Business;
-using Anatoli.Business.Domain;
+﻿using Anatoli.Business.Domain;
+using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/product")]
-    public class ProductController : BaseApiController
+    public class ProductController : AnatoliApiController
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Char Group
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chargroups")]
@@ -183,6 +180,23 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var productDomain = new ProductDomain(owner);
                 var result = await productDomain.PublishAsync(data);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Product", Action = "ProductTypes")]
+        [Route("productTypes"), HttpPost]
+        public async Task<IHttpActionResult> GetProductTypes()
+        {
+            try
+            {
+                var model = await new ProductTypeDomain(OwnerKey).GetAll();
+
+                return Ok(model);
             }
             catch (Exception ex)
             {

@@ -96,6 +96,7 @@ namespace AnatoliAndroid.Fragments
 
                 view.FindViewById<TextView>(Resource.Id.itemCountTextView).Text = item.Qty.ToString("N0");
                 view.FindViewById<TextView>(Resource.Id.itemPriceTextView).Text = item.NetAmount.ToCurrency();
+                view.FindViewById<TextView>(Resource.Id.rowTextView).Text = (position + 1).ToString();
                 Runnable runnable = new Runnable(async () =>
                 {
                     var p = await ProductManager.GetItemAsync(item.ProductId.ToString().ToUpper());

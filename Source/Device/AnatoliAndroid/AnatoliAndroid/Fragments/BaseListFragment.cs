@@ -48,9 +48,10 @@ namespace AnatoliAndroid.Fragments
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 AnatoliApp.GetInstance().SetToolbarTitle(string.Format("جستجو  \"{0}\"", value.Trim()));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                var exp = new Exception("Search in base list fragment", ex);
+                HockeyApp.TraceWriter.WriteTrace(exp, false);
             }
         }
         protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -111,9 +112,9 @@ namespace AnatoliAndroid.Fragments
                 _listView.SetSelection(0);
                 _listAdapter.NotifyDataSetChanged();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
         }
 
@@ -132,9 +133,9 @@ namespace AnatoliAndroid.Fragments
                             _listAdapter.NotifyDataSetChanged();
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        HockeyApp.TraceWriter.WriteTrace(ex, false);
                     }
                 }
             }

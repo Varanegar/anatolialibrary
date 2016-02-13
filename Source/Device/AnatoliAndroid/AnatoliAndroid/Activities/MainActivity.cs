@@ -23,6 +23,7 @@ using Anatoli.App.Model;
 using Android.Provider;
 using Android.Graphics;
 using Android.Database;
+using HockeyApp;
 
 
 namespace AnatoliAndroid.Activities
@@ -42,7 +43,7 @@ namespace AnatoliAndroid.Activities
         {
             base.OnCreate(bundle);
 
-            HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID);
+            HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID, new AnatoliCrashManagerListener());
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
             AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
@@ -104,9 +105,16 @@ namespace AnatoliAndroid.Activities
                 if (AnatoliApp.GetInstance().AnatoliUser != null)
                 {
 #pragma warning disable
-                    AnatoliApp.GetInstance().RefreshCutomerProfile();
-                    ProductManager.SyncFavorits();
-                    Configuration.ReadConfigFromFile();
+                    try
+                    {
+                        AnatoliApp.GetInstance().RefreshCutomerProfile();
+                        ProductManager.SyncFavorits();
+                        Configuration.ReadConfigFromFile();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
 #pragma warning restore
                 }
             }
@@ -178,7 +186,7 @@ namespace AnatoliAndroid.Activities
         //protected override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
         //{
         //    base.OnActivityResult(requestCode, resultCode, data);
-            
+
         //}
         //void OnImageUploaded()
         //{
@@ -230,5 +238,12 @@ namespace AnatoliAndroid.Activities
         public string name { get; set; }
     }
 
+    class AnatoliCrashManagerListener : CrashManagerListener
+    {
+        public override bool ShouldAutoUploadCrashes()
+        {
+            return true;
+        }
+    }
 }
 

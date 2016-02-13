@@ -40,6 +40,14 @@ namespace AnatoliAndroid.Fragments
         async void _registerButton_Click(object sender, EventArgs e)
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                alertDialog.SetMessage(Resource.String.PleaseConnectToInternet);
+                alertDialog.SetTitle(Resource.String.Error);
+                alertDialog.SetPositiveButton(Resource.String.Ok, (s, ev) => { });
+                alertDialog.Show();
+                return;
+            }
             if (String.IsNullOrEmpty(_telEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
                 alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.EneterUserNamePass));
@@ -94,6 +102,7 @@ namespace AnatoliAndroid.Fragments
                                 }
                                 catch (Exception ex)
                                 {
+                                    HockeyApp.TraceWriter.WriteTrace(ex, false);
                                     if (ex.GetType() == typeof(TokenException))
                                     {
                                         errDialog.SetMessage(Resource.String.SaveFailed);
@@ -112,6 +121,7 @@ namespace AnatoliAndroid.Fragments
                         }
                         catch (Exception ex)
                         {
+                            HockeyApp.TraceWriter.WriteTrace(ex, false);
                             pDialog.Dismiss();
                             if (ex.GetType() == typeof(ServerUnreachable))
                             {
@@ -138,6 +148,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 dialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {

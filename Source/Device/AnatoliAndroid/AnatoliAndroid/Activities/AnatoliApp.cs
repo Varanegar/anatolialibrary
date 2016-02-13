@@ -542,11 +542,15 @@ namespace AnatoliAndroid.Activities
                     }
                     return c;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    errDialog.SetMessage(Resource.String.ErrorOccured);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                    errDialog.Show();
+                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    if (cancelable && e.GetType() == typeof(TaskCanceledException))
+                    {
+                        errDialog.SetMessage(Resource.String.ErrorOccured);
+                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                        errDialog.Show();
+                    }
                 }
             }
             return null;
@@ -564,6 +568,17 @@ namespace AnatoliAndroid.Activities
         }
         internal async Task<bool> SyncDatabase()
         {
+            if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetMessage(Resource.String.PleaseConnectToInternet);
+                alert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                {
+                    Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
+                    AnatoliApp.GetInstance().Activity.StartActivity(intent);
+                });
+                return false;
+            }
             Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
             pDialog.SetMessage(" بروز رسانی لیست شهر ها");
@@ -600,6 +615,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 pDialog.Dismiss();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
@@ -865,9 +881,9 @@ namespace AnatoliAndroid.Activities
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                HockeyApp.TraceWriter.WriteTrace(ex,false);
             }
         }
 

@@ -65,16 +65,6 @@ namespace AnatoliAndroid.Fragments
         public override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
-            //_toolsDialog = new ShoppingCardListToolsFragment();
-            //_toolsDialog.ShoppingCardCleared += () =>
-            //{
-            //    _listAdapter.List.Clear();
-            //    _listAdapter.NotifyDataSetChanged();
-            //    _itemsListView.InvalidateViews();
-            //    _listAdapter.OnDataChanged();
-            //    AnatoliApp.GetInstance().ShoppingCardItemCount.Text = "0";
-            //};
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -118,6 +108,15 @@ namespace AnatoliAndroid.Fragments
 
             _checkoutButton.Click += async (s, e) =>
             {
+                if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    alertDialog.SetMessage(Resource.String.PleaseConnectToInternet);
+                    alertDialog.SetTitle(Resource.String.Error);
+                    alertDialog.SetPositiveButton(Resource.String.Ok, delegate { });
+                    alertDialog.Show();
+                    return;
+                }
                 var store = await StoreManager.GetDefaultAsync();
                 if (AnatoliApp.GetInstance().AnatoliUser == null)
                 {
@@ -237,8 +236,9 @@ namespace AnatoliAndroid.Fragments
                         }
 
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        HockeyApp.TraceWriter.WriteTrace(ex, false);
                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                         alert.SetTitle(Resource.String.Error);
@@ -310,6 +310,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
                 if (ex.GetType() == typeof(StoreManager.NullStoreException))
                 {
                     AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");

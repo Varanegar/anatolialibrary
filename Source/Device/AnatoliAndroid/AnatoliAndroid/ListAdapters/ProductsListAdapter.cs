@@ -12,7 +12,6 @@ using Android.Widget;
 using Anatoli.App.Model.Product;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.App.Manager;
-using Koush;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
@@ -20,6 +19,7 @@ using Android.Content.Res;
 using Java.Lang;
 using AnatoliAndroid.Components;
 using Anatoli.Framework.AnatoliBase;
+using Square.Picasso;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -159,7 +159,7 @@ namespace AnatoliAndroid.ListAdapters
                     var imguriii = CategoryManager.GetImageAddress(item.cat_id, item.image);
                     if (imguriii != null)
                     {
-                        UrlImageViewHelper.SetUrlDrawable(_groupImageView, imguriii, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                        Picasso.With(AnatoliApp.GetInstance().Activity).Load(imguriii).Placeholder(Resource.Drawable.igmart).Into(_groupImageView);
                     }
                     else
                     {
@@ -191,7 +191,7 @@ namespace AnatoliAndroid.ListAdapters
                 string imguri = ProductManager.GetImageAddress(item.product_id, item.image);
                 if (imguri != null)
                 {
-                    UrlImageViewHelper.SetUrlDrawable(_productIimageView, imguri, Resource.Drawable.igmart, UrlImageViewHelper.CacheDurationFiveDays);
+                    Picasso.With(AnatoliApp.GetInstance().Activity).Load(imguri).Placeholder(Resource.Drawable.igmart).Into(_productIimageView);
                 }
 
                 if (item.IsFavorit)
@@ -372,11 +372,11 @@ namespace AnatoliAndroid.ListAdapters
 
                 OnTouchListener tcl = new OnTouchListener();
                 view.SetOnTouchListener(tcl);
-                tcl.SwipeLeft += (s,e) =>
+                tcl.SwipeLeft += (s, e) =>
                 {
                     OnSwipeLeft(position);
                 };
-                tcl.SwipeRight += (s,e) =>
+                tcl.SwipeRight += (s, e) =>
                 {
                     OnSwipeRight(position);
                 };

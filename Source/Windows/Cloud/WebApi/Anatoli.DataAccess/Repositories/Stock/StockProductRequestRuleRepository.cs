@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
-using System.Data.Entity;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Repositories
@@ -12,6 +8,27 @@ namespace Anatoli.DataAccess.Repositories
         #region Ctors
         public StockProductRequestRuleRepository() : this(new AnatoliDbContext()) { }
         public StockProductRequestRuleRepository(AnatoliDbContext context)
+            : base(context)
+        {
+        }
+        #endregion
+    }
+
+    public class StockProductRequestRuleTypeRepository : AnatoliRepository<StockProductRequestRuleType>, IStockProductRequestRuleTypeRepository
+    {
+        #region Ctors
+        public StockProductRequestRuleTypeRepository() : this(new AnatoliDbContext()) { }
+        public StockProductRequestRuleTypeRepository(AnatoliDbContext context)
+            : base(context)
+        {
+        }
+        #endregion
+    }
+    public class StockProductRequestRuleCalcTypeRepository : AnatoliRepository<StockProductRequestRuleCalcType>, IStockProductRequestRuleCalcTypeRepository
+    {
+        #region Ctors
+        public StockProductRequestRuleCalcTypeRepository() : this(new AnatoliDbContext()) { }
+        public StockProductRequestRuleCalcTypeRepository(AnatoliDbContext context)
             : base(context)
         {
         }
