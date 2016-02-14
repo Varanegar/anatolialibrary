@@ -356,7 +356,7 @@ namespace AnatoliAndroid.Activities
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+                        if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
@@ -557,7 +557,7 @@ namespace AnatoliAndroid.Activities
         }
         async Task CancelSync()
         {
-            if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+            if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
@@ -883,7 +883,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex,false);
+                HockeyApp.TraceWriter.WriteTrace(ex, false);
             }
         }
 

@@ -9,15 +9,14 @@ namespace Anatoli.App.Manager
 {
     public class SyncManager
     {
-        //public static async Task SyncDatabase()
-        //{
-        //    await CityRegionUpdateManager.SyncDataBase();
-        //    await StoreUpdateManager.SyncDataBase();
-        //    await ProductGroupManager.SyncDataBase();
-        //    await ProductUpdateManager.SyncDataBase();
-        //    await ProductPriceManager.SyncDataBase();
-        //    await SaveDBVersionAsync();
-        //}
+        public static string StoresTbl = "stores";
+        public static string BaseTypesTbl = "basetypes";
+        public static string GroupsTbl = "categories";
+        public static string CityRegionTbl = "cityregion";
+        public static string ImagesTbl = "images";
+        public static string PriceTbl = "products_price";
+        public static string ProductTbl = "products";
+        public static string BasketTbl = "baskets";
         public static async Task<bool> SaveUpdateDateAsync(string tableName)
         {
             try

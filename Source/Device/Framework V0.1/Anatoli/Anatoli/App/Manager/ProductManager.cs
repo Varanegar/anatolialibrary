@@ -24,7 +24,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductUpdateModel>.GetListAsync(q);
@@ -62,7 +62,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("products");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.ProductTbl);
             }
             catch (Exception e)
             {
@@ -73,7 +73,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products_price");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductPriceUpdateModel>.GetListAsync(q);
@@ -109,7 +109,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("products_price");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.PriceTbl);
             }
             catch (Exception e)
             {
@@ -121,7 +121,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 await BaseDataAdapter<BasketViewModel>.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
@@ -141,7 +141,7 @@ namespace Anatoli.App.Manager
                             }
                         }
                         connection.Commit();
-                        await SyncManager.SaveUpdateDateAsync("baskets");
+                        await SyncManager.SaveUpdateDateAsync(SyncManager.BasketTbl);
                     }
                 }
             }
@@ -178,7 +178,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);
@@ -220,7 +220,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);
