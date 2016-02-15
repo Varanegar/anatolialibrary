@@ -33,7 +33,7 @@ namespace AnatoliAndroid.Activities
     {
         Toolbar _toolbar;
         LocationManager _locationManager;
-        public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
+        public const string HOCKEYAPP_APPID = "74cf61c0125342949c98afc10b5f9e21";
         //public static readonly int OpenImageRequestCode = 1234;
         protected override void OnSaveInstanceState(Bundle outState)
         {
