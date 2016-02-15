@@ -562,7 +562,7 @@ namespace AnatoliAndroid.Activities
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
-                alert.SetNegativeButton("بی خیال و خروج", (s3, e3) => { _activity.Finish(); });
+                alert.SetNegativeButton("بی خیال", (s3, e3) => { });
                 alert.SetPositiveButton("دوباره تلاش کن", async (s3, e3) => { await SyncDatabase(); });
                 alert.Show();
             }
