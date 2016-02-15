@@ -85,6 +85,18 @@ namespace AnatoliAndroid.Activities
         {
             base.OnPostCreate(savedInstanceState);
 
+            AnatoliClient.GetInstance().WebClient.TokenExpire += async (s, e) =>
+            {
+                await AnatoliUserManager.LogoutAsync();
+                var currentFragmentType = AnatoliApp.GetInstance().GetCurrentFragmentType();
+                if (currentFragmentType == typeof(ProfileFragment))
+                {
+                    AnatoliApp.GetInstance().BackFragment();
+                }
+                LoginFragment login = new LoginFragment();
+                var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                login.Show(transaction, "login_fragment");
+            };
             var user = await AnatoliUserManager.ReadUserInfoAsync();
             AnatoliApp.Initialize(this, user, FindViewById<ListView>(Resource.Id.drawer_list), _toolbar);
             _locationManager = (LocationManager)GetSystemService(LocationService);
