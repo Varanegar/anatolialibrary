@@ -22,6 +22,7 @@ using Android.Animation;
 using Android.Views.InputMethods;
 using Anatoli.App.Model.Store;
 using AnatoliAndroid.Components;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -238,7 +239,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(ex, false);
+                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                         alert.SetTitle(Resource.String.Error);
@@ -310,7 +311,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 if (ex.GetType() == typeof(StoreManager.NullStoreException))
                 {
                     AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");

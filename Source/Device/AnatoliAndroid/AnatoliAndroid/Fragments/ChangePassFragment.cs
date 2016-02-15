@@ -14,6 +14,7 @@ using AnatoliAndroid.Activities;
 using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -69,7 +70,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(ex, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                     alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
                     alert.Show();
                 }

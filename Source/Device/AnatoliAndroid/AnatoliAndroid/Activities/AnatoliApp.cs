@@ -24,6 +24,7 @@ using Anatoli.App.Model;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
 using Android.Views.Animations;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Activities
 {
@@ -544,7 +545,7 @@ namespace AnatoliAndroid.Activities
                 }
                 catch (Exception e)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(e), false);
                     if (cancelable && e.GetType() == typeof(TaskCanceledException))
                     {
                         errDialog.SetMessage(Resource.String.ErrorOccured);
@@ -615,7 +616,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 pDialog.Dismiss();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
@@ -883,7 +884,8 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+
             }
         }
 

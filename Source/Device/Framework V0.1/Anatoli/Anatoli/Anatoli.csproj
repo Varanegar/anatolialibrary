@@ -89,6 +89,7 @@
     <Compile Include="Framework\AnatoliBase\Extentions.cs" />
     <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
     <Compile Include="Framework\AnatoliBase\QueryParams.cs" />
+    <Compile Include="Framework\AnatoliHandledException.cs" />
     <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />
     <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
     <Compile Include="Framework\Manager\BaseManager.cs" />

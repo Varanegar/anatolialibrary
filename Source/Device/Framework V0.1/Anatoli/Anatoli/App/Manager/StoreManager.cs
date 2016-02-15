@@ -55,6 +55,11 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
+
+                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                //q2.cancellationTokenSource = cancellationTokenSource;
+                //var list2 = await BaseDataAdapter<StoreUpdateModel>.GetListAsync(q2);
+
                 await SyncManager.SaveUpdateDateAsync(SyncManager.StoresTbl);
             }
             catch (Exception e)

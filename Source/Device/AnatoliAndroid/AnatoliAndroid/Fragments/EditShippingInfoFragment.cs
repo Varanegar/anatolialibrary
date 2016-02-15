@@ -16,6 +16,7 @@ using AnatoliAndroid.Activities;
 using Anatoli.App.Model;
 using Anatoli.App.Manager;
 using Anatoli.Framework.AnatoliBase;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -125,7 +126,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(ex, false);
+                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                         pDialog.Dismiss();
                         errDialog.SetMessage(Resource.String.ErrorOccured);
                         errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
@@ -237,7 +238,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
             }
         }
 

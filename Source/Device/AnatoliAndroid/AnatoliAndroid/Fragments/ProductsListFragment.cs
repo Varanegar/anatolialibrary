@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Anatoli.Framework.DataAdapter;
 using Android.Animation;
 using Android.Views.Animations;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -74,7 +75,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 return;
             }
         }

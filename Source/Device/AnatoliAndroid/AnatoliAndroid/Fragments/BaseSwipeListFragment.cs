@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Components;
 using Android.Views.Animations;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -47,7 +48,7 @@ namespace AnatoliAndroid.Fragments
                 catch (Exception ex)
                 {
                     var exp = new Exception("Hiding swipe list view options failed", ex);
-                    HockeyApp.TraceWriter.WriteTrace(exp, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 }
             };
             return view;

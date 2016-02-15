@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 using AnatoliAndroid.Activities;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -102,7 +103,7 @@ namespace AnatoliAndroid.Fragments
                                 }
                                 catch (Exception ex)
                                 {
-                                    HockeyApp.TraceWriter.WriteTrace(ex, false);
+                                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                                     if (ex.GetType() == typeof(TokenException))
                                     {
                                         errDialog.SetMessage(Resource.String.SaveFailed);
@@ -121,7 +122,7 @@ namespace AnatoliAndroid.Fragments
                         }
                         catch (Exception ex)
                         {
-                            HockeyApp.TraceWriter.WriteTrace(ex, false);
+                            HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                             pDialog.Dismiss();
                             if (ex.GetType() == typeof(ServerUnreachable))
                             {
@@ -148,7 +149,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 dialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {

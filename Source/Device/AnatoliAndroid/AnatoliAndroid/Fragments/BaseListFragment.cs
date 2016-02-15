@@ -17,6 +17,7 @@ using Anatoli.Framework.AnatoliBase;
 using System.Threading.Tasks;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Components;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -51,7 +52,7 @@ namespace AnatoliAndroid.Fragments
             catch (Exception ex)
             {
                 var exp = new Exception("Search in base list fragment", ex);
-                HockeyApp.TraceWriter.WriteTrace(exp, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(exp), false);
             }
         }
         protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -114,7 +115,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
             }
         }
 
@@ -135,7 +136,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(ex, false);
+                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                     }
                 }
             }

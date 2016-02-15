@@ -23,6 +23,7 @@ using Android.Provider;
 using Android.Database;
 using AnatoliAndroid.Components;
 using Square.Picasso;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -176,7 +177,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(ex, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
                     dialog.SetTitle("خطا");
@@ -289,7 +290,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
             }
 
         }
@@ -385,7 +386,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception e)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(e), false);
                     if (e.GetType() != typeof(TaskCanceledException))
                     {
                         OnImageUploadFailed();
