@@ -36,7 +36,7 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        if (items.ContainsKey(item.UniqueId))
+                        if (items.ContainsKey(item.UniqueId.ToUpper()))
                         {
                             UpdateCommand command = new UpdateCommand("cityregion", new BasicParam("group_name", item.GroupName),
                             new EqFilterParam("group_id", item.UniqueId.ToUpper()),
