@@ -2,7 +2,7 @@
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
-        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/?privateOwnerId=' + privateOwnerId,
+        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/', //?privateOwnerId=' + privateOwnerId,
         userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
         saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
         productsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/?privateOwnerId=' + privateOwnerId,
@@ -13,6 +13,16 @@
         permissionsUrl: baseBackendUrl + "/api/accounts/permissions",
         savePermissionsUrl: baseBackendUrl + "/api/accounts/savePermissions",
         permissionsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionsOfUser",
+
+        stocksUrl: baseBackendUrl + "/api/gateway/stock/stocks",
+        stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes?privateOwnerId=' + privateOwnerId,
+        saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
+
+        productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
+        productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',
+
+        StockProductRequestRuleTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleTypes',
+        StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
 
         stockPageUrl: "/Products/",
     },
@@ -211,7 +221,7 @@ function productManagerViewModel() {
     self.flg_initGrid = ko.observable(true);
 
     self.refreshStores = function () {
-        accountManagerApp.callApi(urls.storesUrl, 'GET', {}, function (data) {
+        accountManagerApp.callApi(urls.storesUrl, 'POST', {}, function (data) {
             self.stores(data);
             if (self.stores().length > 0) {
                 //find query string stock id in store list
@@ -308,6 +318,7 @@ function productManagerViewModel() {
         });
 
         function categoryDropDownEditor(container, options) {
+
             $('<input required data-text-field="reorderTypeName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoDropDownList({
@@ -763,4 +774,339 @@ function UserPermissionsViewModel() {
     };
 
     self.refreshUsers();
+};
+//******************************************************************//
+
+function stocksManagerViewModel() {
+    // Data
+    var self = this;
+
+    self.initStocksGrid = function (id) {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: urls.stocksUrl,
+                    dataType: "json",
+                    contentType: "application/json",
+                    type: "POST",
+                    data: {},
+                    beforeSend: gridAuthHeader
+                },
+                update: {
+                    url: urls.saveStocksUrl,
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    beforeSend: gridAuthHeader
+                },
+                parameterMap: function (options, operation) {
+                    if (operation == "read")
+                        return kendo.stringify(options);
+
+                    if (operation !== "read" && options.models)
+                        return kendo.stringify(options.models);
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "uniqueId",
+                    fields: {
+                        uniqueId: { editable: false, nullable: true },
+                        stockCode: { editable: false },
+                        stockName: { editable: false },
+                        approver1: { defaultValue: { uniqueId: "", userName: "" } },
+                        approver2: { defaultValue: { uniqueId: "", userName: "" } },
+                        approver3: { defaultValue: { uniqueId: "", userName: "" } },
+                        stockType: { defaultValue: { uniqueId: "", stockTypeName: "" } },
+                        mainStock: { defaultValue: { uniqueId: "", stockName: "" } },
+                        relatedStock: { defaultValue: { uniqueId: "", stockName: "" } }
+                    }
+                }
+            }
+        });
+
+        $(".stocks-grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: true,
+            height: 650,
+            toolbar: ["save", "cancel"],
+            columns: [
+                { field: "stockCode", title: "کد انبار", width: 100 },
+                { field: "stockName", title: "نام انبار", width: 150 },
+                { field: "approver1", title: "تایید کننده اول", width: "150px", editor: approverDropDownEditor, template: "#=approver1.userName#" },
+                { field: "approver2", title: "تایید کننده دوم", width: "150px", editor: approverDropDownEditor, template: "#=approver2.userName#" },
+                { field: "approver3", title: "تایید کننده سوم", width: "150px", editor: approverDropDownEditor, template: "#=approver3.userName#" },
+                { field: "stockType", title: "نوع انبار", width: "150px", editor: stockTypeDropDownEditor, template: "#=stockType.stockTypeName#" },
+                { field: "mainStock", title: "انباراصلی", width: "150px", editor: nestedStockDropDownEditor, template: "#=mainStock.stockName#" },
+                { field: "relatedStock", title: "تامین کننده", width: "150px", editor: nestedStockDropDownEditor, template: "#=relatedStock.stockName#" },
+            ],
+            editable: true
+        });
+
+        dropdownEditorParameterMap = function (options, operation) {
+            if (operation == "read")
+                return kendo.stringify(options);
+        };
+
+        function approverDropDownEditor(container, options) {
+            $('<input required data-text-field="userName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: urls.usersUrl,
+                                dataType: "json",
+                                contentType: "application/json",
+                                type: "GET",
+                                beforeSend: gridAuthHeader,
+                            },
+                            parameterMap: dropdownEditorParameterMap
+                        }
+                    },
+                    change: function (e) {
+                        var dataItem = e.sender.dataItem();
+
+                        dataItem["uniqueId"] = dataItem.id;
+                        options.model.set(options.field, dataItem);
+                    }
+                });
+        }
+        function stockTypeDropDownEditor(container, options) {
+            $('<input required data-text-field="stockTypeName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: urls.stockTypesUrl,
+                                dataType: "json",
+                                contentType: "application/json",
+                                type: "GET",
+                                beforeSend: gridAuthHeader,
+                            },
+                            parameterMap: dropdownEditorParameterMap
+                        }
+                    },
+                    change: function (e) {
+                        var dataItem = e.sender.dataItem();
+
+                        options.model.set(options.field, dataItem);
+                    }
+                });
+        }
+        function nestedStockDropDownEditor(container, options) {
+            $('<input required data-text-field="stockName" data-value-field="uniqueId" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: urls.stocksUrl,
+                                dataType: "json",
+                                contentType: "application/json",
+                                type: "POST",
+                                beforeSend: gridAuthHeader,
+                            },
+                            parameterMap: dropdownEditorParameterMap
+                        }
+                    },
+                    change: function (e) {
+                        var dataItem = e.sender.dataItem();
+
+                        options.model.set(options.field, dataItem);
+                    }
+                });
+        }
+
+    };
+
+    self.initStocksGrid();
+};
+//******************************************************************//
+
+function productRequestRulesManagerViewModel() {
+    // Data
+    var self = this;
+
+    self.initProductRulesGrid = function (id) {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: urls.productRequestRulesUrl,
+                    dataType: "json",
+                    contentType: "application/json",
+                    type: "POST",
+                    data: {},
+                    beforeSend: gridAuthHeader
+                },
+                parameterMap: function (options, operation) {
+                    if (operation == "read")
+                        return kendo.stringify(options);
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "uniqueId",
+                    fields: {
+                        uniqueId: { editable: false, nullable: true },
+                        stockProductRequestRuleName: { editable: false },
+                        fromPDate: { editable: false },
+                        topDate: { editable: false },
+                    }
+                }
+            }
+        });
+
+        $(".product-rules-grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: true,
+            toolbar: kendo.template($("#toolbar-template").html()),
+            height: 500,
+            columns: [
+                { field: "stockProductRequestRuleName", title: "نام", width: 100 },
+                { field: "fromPDate", title: "از تاریخ", width: 150 },
+                { field: "topDate", title: "تا تاریخ", width: 150 },
+                { command: { text: "ویرایش", click: self.showEdit }, title: " ", width: "180px" }
+            ],
+            editable: false
+        });
+    };
+
+    self.addProductRequestRule = function () {
+        self.openWindow("/stocks/productRequestRule");
+    }
+
+    self.openWindow = function (url) {
+        var editWindow = $(".edit-window").kendoWindow({
+            title: "ویرایش",
+            content: url,
+            modal: true,
+            visible: false,
+            resizable: true,
+            width: 700,
+            actions: [
+                "Pin",
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            close: onClose
+        }).data("kendoWindow").center().open();;
+    }
+
+    function onClose() {
+        $('.product-rules-grid').data('kendoGrid').dataSource.read();
+        $('.product-rules-grid').data('kendoGrid').refresh();
+    }
+
+    self.showEdit = function (e) {
+        e.preventDefault();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        self.openWindow("/stocks/productRequestRule?id=" + dataItem.uniqueId);
+    }
+
+    self.initProductRulesGrid();
+};
+//******************************************************************//
+
+function productRequestRuleEditManagerViewModel() {
+    // Data
+    var self = this;
+
+    function dropdownParameterMap(options, operation) {
+        if (operation == "read")
+            return kendo.stringify(options);
+    }
+
+    self.RefreshReorderCalcType = function () {
+        $("#reOrderCalcType").kendoDropDownList({
+            dataTextField: "reorderTypeName",
+            dataValueField: "uniqueId",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.reorderCalcTypeUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        data: { privateOwnerId: privateOwnerId },
+                        beforeSend: gridAuthHeader
+                    },
+                    parameterMap: dropdownParameterMap
+                }
+            }
+        });
+    }
+
+    self.RefreshProductType = function () {
+        $("#productType").kendoDropDownList({
+            dataTextField: "productTypeName",
+            dataValueField: "uniqueId",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.productTypesUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        beforeSend: gridAuthHeader
+                    },
+                    parameterMap: dropdownParameterMap
+                }
+            }
+        });
+    }
+
+    self.RefreshStockProductRequestRuleTypes = function () {
+        $("#stockProductRequestRuleType").kendoDropDownList({
+            dataTextField: "stockProductRequestRuleTypeName",
+            dataValueField: "uniqueId",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.StockProductRequestRuleTypesUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        beforeSend: gridAuthHeader
+                    },
+                    parameterMap: dropdownParameterMap
+                }
+            }
+        });
+    }
+
+    self.RefreshStockProductRequestRuleCalcTypes = function () {
+        $("#stockProductRequestRuleCalcType").kendoDropDownList({
+            dataTextField: "stockProductRequestRuleCalcTypeName",
+            dataValueField: "uniqueId",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.StockProductRequestRuleCalcTypesUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        beforeSend: gridAuthHeader
+                    },
+                    parameterMap: dropdownParameterMap
+                }
+            }
+        });
+    }
+
+
+    self.RefreshReorderCalcType();
+    self.RefreshProductType();
+    self.RefreshStockProductRequestRuleTypes();
+    self.RefreshStockProductRequestRuleCalcTypes();
 };

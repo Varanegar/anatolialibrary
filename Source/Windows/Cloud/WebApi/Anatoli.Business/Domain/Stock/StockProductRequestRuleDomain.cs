@@ -16,26 +16,44 @@ namespace Anatoli.Business.Domain
     public class StockProductRequestRuleDomain : BusinessDomain<StockProductRequestRuleViewModel>, IBusinessDomain<StockProductRequestRule, StockProductRequestRuleViewModel>
     {
         #region Properties
+        public IAnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel> RuleTypeProxy { get; set; }
+        public IAnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel> RuleCalcTypeProxy { get; set; }
         public IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> Proxy { get; set; }
-        public IRepository<StockProductRequestRule> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
 
+        public IRepository<StockProductRequestRule> Repository { get; set; }
+        public IRepository<StockProductRequestRuleType> RuleTypeRepository { get; set; }
+        public IRepository<StockProductRequestRuleCalcType> RuleCalcTypeRepository { get; set; }
         #endregion
 
         #region Ctors
         StockProductRequestRuleDomain() { }
         public StockProductRequestRuleDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockProductRequestRuleDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestRuleRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel>.Create())
+            : this(new StockProductRequestRuleRepository(dbc),
+                   new PrincipalRepository(dbc),
+                   new StockProductRequestRuleTypeRepository(dbc),
+                   new StockProductRequestRuleCalcTypeRepository(dbc),
+                   AnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel>.Create(),
+                   AnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel>.Create(),
+                   AnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public StockProductRequestRuleDomain(IStockProductRequestRuleRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> proxy)
+        public StockProductRequestRuleDomain(IStockProductRequestRuleRepository dataRepository,
+                                             IPrincipalRepository principalRepository,
+                                             IStockProductRequestRuleTypeRepository ruleTypeRepository,
+                                             IStockProductRequestRuleCalcTypeRepository ruleCalcTypeRepository,
+                                             IAnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel> ruleTypeProxy,
+                                             IAnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel> ruleCalcTypeProxy,
+                                             IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> proxy)
         {
             Proxy = proxy;
             Repository = dataRepository;
             PrincipalRepository = principalRepository;
+            RuleTypeRepository = ruleTypeRepository;
+            RuleCalcTypeRepository = ruleCalcTypeRepository;
+            RuleTypeProxy = ruleTypeProxy;
+            RuleCalcTypeProxy = ruleCalcTypeProxy;
         }
         #endregion
 
@@ -49,7 +67,7 @@ namespace Anatoli.Business.Domain
 
         public async Task<List<StockProductRequestRuleViewModel>> GetAll(DateTime validDate)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.FromDate.CompareTo(validDate) <=0 && p.ToDate.CompareTo(validDate) >=0);
+            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.FromDate.CompareTo(validDate) <= 0 && p.ToDate.CompareTo(validDate) >= 0);
 
             return Proxy.Convert(dataList.ToList()); ;
         }
@@ -98,7 +116,7 @@ namespace Anatoli.Business.Domain
 
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
@@ -123,6 +141,19 @@ namespace Anatoli.Business.Domain
             });
 
             return dataViewModels;
+        }
+
+        public async Task<List<StockProductRequestRuleTypeViewModel>> GetAllStockProductRequestRuleTypes()
+        {
+            var model = await RuleTypeRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+
+            return RuleTypeProxy.Convert(model.ToList());
+        }
+        public async Task<List<StockProductRequestRuleCalcTypeViewModel>> GetAllStockProductRequestRuleCalcTypes()
+        {
+            var model = await RuleCalcTypeRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+
+            return RuleCalcTypeProxy.Convert(model.ToList());
         }
         #endregion
     }

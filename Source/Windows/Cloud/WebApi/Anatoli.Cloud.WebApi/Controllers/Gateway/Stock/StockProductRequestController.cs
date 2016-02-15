@@ -1,28 +1,16 @@
-﻿using Anatoli.Business;
-using Anatoli.Business.Domain;
-using Anatoli.ViewModels.StoreModels;
-using Anatoli.PMC.Business.Domain.Store;
+﻿using Anatoli.Business.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Anatoli.ViewModels.StockModels;
+using Anatoli.Cloud.WebApi.Classes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/stockproductrequest")]
-    public class StockProductRequestController : BaseApiController
+    public class StockProductRequestController : AnatoliApiController
     {
-        public class RequestModel
-        {
-            public string privateOwnerId { get; set; }
-            public string stockId { get; set; }
-            public string dateAfter { get; set; }
-            public string ruleDate { get; set; }
-        }
-
         #region Stock Product Request Rules List
         [Authorize(Roles = "AuthorizedApp")]
         [Route("rules")]
@@ -100,6 +88,39 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var stockDomain = new StockProductRequestRuleDomain(owner);
                 await stockDomain.PublishAsync(data);
                 return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestRuleType")]
+        [Route("stockProductRequestRuleTypes"), HttpPost]
+        public async Task<IHttpActionResult> GetStockProductRequestRuleTypes([FromBody] RequestModel data)
+        {
+            try
+            {
+                var result = await new StockProductRequestRuleDomain(OwnerKey).GetAllStockProductRequestRuleTypes();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestRuleCalcType")]
+        [Route("stockProductRequestRuleCalcTypes"), HttpPost]
+        public async Task<IHttpActionResult> GetStockProductRequestRuleCalcTypes([FromBody] RequestModel data)
+        {
+            try
+            {
+                var result = await new StockProductRequestRuleDomain(OwnerKey).GetAllStockProductRequestRuleCalcTypes();
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

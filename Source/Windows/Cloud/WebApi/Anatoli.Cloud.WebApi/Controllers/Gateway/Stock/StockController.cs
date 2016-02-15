@@ -13,14 +13,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/stock")]
     public class StockController : AnatoliApiController
     {
-        //public class RequestModel
-        //{
-        //    public string privateOwnerId { get; set; }
-        //    public string stockId { get; set; }
-        //    public string userId { get; set; }
-        //    public string dateAfter { get; set; }
-        //}
-
         #region stock On Hand List
         [Authorize(Roles = "AuthorizedApp")]
         [Route("stockOnhand")]
@@ -97,15 +89,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock List
-        [Authorize(Roles = "AuthorizedApp")]
-        [Route("stocks")]
-        public async Task<IHttpActionResult> GetStocks(string privateOwnerId)
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "List")]
+        [Route("stocks"), HttpPost]
+        public async Task<IHttpActionResult> GetStocks()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockDomain(owner);
+                var stockDomain = new StockDomain(OwnerKey);
+
                 var result = await stockDomain.GetAll();
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -114,6 +107,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "SaveStocks"),
+         Route("saveStocks"), HttpPost]
+        public async Task<IHttpActionResult> SaveStocks([FromBody] List<StockViewModel> data)
+        {
+            try
+            {
+                await new StockDomain(OwnerKey).SaveStocks(data);
+
+                return Ok(new { });
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
 
         [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "UserStocks"),
          Route("userStocks"), HttpPost]
@@ -131,6 +142,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
         [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "SaveUserStocks"),
          Route("saveUserStocks"), HttpPost]
         public async Task<IHttpActionResult> SaveUserStocks([FromBody] RequestModel data)
@@ -270,8 +282,31 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var owner = Guid.Parse(privateOwnerId);
                 var stockDomain = new StockProductDomain(owner);
+
                 await stockDomain.PublishAsync(data);
-                return Ok(data);
+
+                return Ok(new { });
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        #endregion
+
+        #region Product Rules
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "ProductRequestRules")]
+        [Route("productRequestRules"), HttpPost]
+        public async Task<IHttpActionResult> ProductRequestRules()
+        {
+            try
+            {
+                var stockDomain = new StockDomain(OwnerKey);
+
+                var result = await stockDomain.ProductRequestRules();
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

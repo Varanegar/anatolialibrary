@@ -1,7 +1,4 @@
-﻿\
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System;
 using Anatoli.DataAccess.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
