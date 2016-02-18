@@ -413,7 +413,7 @@ namespace Anatoli.App.Manager
 
         public static StringQuery GetAll(string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id WHERE store_id = '{0}'", storeId));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view  WHERE store_id = '{0}' ORDER BY cat_id", storeId));
             return query;
         }
     }
