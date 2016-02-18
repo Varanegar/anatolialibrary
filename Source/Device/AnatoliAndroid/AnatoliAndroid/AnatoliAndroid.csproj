@@ -189,11 +189,12 @@
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <AndroidAsset Include="Assets\Fonts\anatoli.ttf" />
-    <AndroidAsset Include="Assets\paa.db">
+    <AndroidAsset Include="..\..\db\paa.db">
+      <Link>Assets\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
+    <None Include="app.config" />
+    <AndroidAsset Include="Assets\Fonts\anatoli.ttf" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
