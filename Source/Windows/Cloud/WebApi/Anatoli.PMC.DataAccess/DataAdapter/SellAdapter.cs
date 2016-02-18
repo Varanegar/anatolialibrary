@@ -37,9 +37,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     IEnumerable<PurchaseOrderViewModel> data = null;
                     if(statusId != null)
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.GetSellInfo() + " where customerId='" + customerId + "' and statusId = '" + statusId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " where customerId='" + customerId + "' and statusId = '" + statusId + "'");
                     else
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.GetSellInfo() + " where customerId='" + customerId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " where customerId='" + customerId + "'");
 
                     result = data.ToList();
                 }
@@ -64,7 +64,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.GetSellDetailInfo() + " where sellId='" + pOId + "'");
+                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where sellId='" + pOId + "'");
                     result = data.ToList();
                 }
                 catch (Exception ex)
@@ -88,7 +88,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderStatusHistoryViewModel>(DBQuery.GetSellActionInfo() + " where sellId='" + pOId + "'");
+                    var data = context.All<PurchaseOrderStatusHistoryViewModel>(DBQuery.Instance.GetSellActionInfo() + " where sellId='" + pOId + "'");
                     result = data.ToList();
                 }
                 catch (Exception ex)
@@ -103,7 +103,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return result;
         }
-        public int SavePurchaseOrder(PMCSellViewModel orderInfo, PMCCustomerViewModel customer)
+        public long SavePurchaseOrder(PMCSellViewModel orderInfo, PMCCustomerViewModel customer)
         {
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(orderInfo.CenterId).ConnectionString;
 
@@ -168,10 +168,15 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     DataObject<PMCSellViewModel> sellDataObject = new DataObject<PMCSellViewModel>("Sell", "InvalidId");
                     orderInfo.SellId = GeneralCommands.GetId(context, "Sell");
                     orderInfo.FiscalYearId = GeneralCommands.GetFiscalYearId(context);
+                    orderInfo.CashSessionId = GeneralCommands.GetCashSessionId(context);
+                    orderInfo.CashSessionStatusId = 0;
+                    orderInfo.RequestNo = GeneralCommands.GetRequestNo(context, orderInfo.FiscalYearId);
+                    orderInfo.RequestDateTime = PersianDate.Now.ToString();
+
                     sellDataObject.Insert(orderInfo, context);
                     DataObject<PMCSellDetailViewModel> lineItemDataObject = new DataObject<PMCSellDetailViewModel>("SellDetail", "InvalidId");
                     orderInfo.SellDetail.ForEach(item =>
-                    {
+                    {   
                         item.SellId = orderInfo.SellId;
                         item.SellDetailId = GeneralCommands.GetId(context, "SellDetail");
                         lineItemDataObject.Insert(item, context);
@@ -191,7 +196,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 }
             }
 
-            return orderInfo.SellId;
+            return orderInfo.RequestNo;
         }
     }
 }

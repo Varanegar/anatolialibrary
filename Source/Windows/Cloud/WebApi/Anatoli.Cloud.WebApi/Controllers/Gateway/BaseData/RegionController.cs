@@ -67,7 +67,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
-        }        
+        }
 
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var cityRegionDomain = new CityRegionDomain(owner);
+                var result = await cityRegionDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
     }
 }

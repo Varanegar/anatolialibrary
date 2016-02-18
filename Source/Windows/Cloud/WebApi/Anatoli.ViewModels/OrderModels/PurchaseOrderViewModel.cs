@@ -10,6 +10,7 @@ namespace Anatoli.ViewModels.Order
     public class PurchaseOrderViewModel : BaseViewModel
     {
         public Guid UserId { get; set; }
+        public Guid ShipAddressId { get; set; }
         public Guid StoreGuid { get; set; }
         public Guid PurchaseOrderStatusValueId { get; set; }
         public Guid PaymentTypeValueId { get; set; }

@@ -30,7 +30,19 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public static int GetFiscalYearId(DataContext context)
         {
             if (context == null) context = new DataContext();
-            return context.GetValue<int>(DBQuery.GetFiscalYearId());
+            return context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
+        }
+
+        public static int GetCashSessionId(DataContext context)
+        {
+            if (context == null) context = new DataContext();
+            return context.GetValue<int>(DBQuery.Instance.GetCashSessionId());
+        }
+
+        public static int GetRequestNo(DataContext context, int fiscalYearId)
+        {
+            if (context == null) context = new DataContext();
+            return context.GetValue<int>(DBQuery.Instance.GetLatestRequestNo(fiscalYearId));
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<CityRegionViewModel> productGroup = new List<CityRegionViewModel>();
                 using (var context = new DataContext())
                 {
-                    var data = context.All<CityRegionViewModel>(DBQuery.GetCityRegion());
+                    var data = context.All<CityRegionViewModel>(DBQuery.Instance.GetCityRegion());
                     productGroup = data.ToList();
                 }
                 return productGroup;

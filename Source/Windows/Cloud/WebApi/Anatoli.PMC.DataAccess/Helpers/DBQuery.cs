@@ -1,42 +1,65 @@
-﻿using System;
+﻿using Anatoli.PMC.ViewModels.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thunderstruck;
 
 namespace Anatoli.PMC.DataAccess.Helpers
 {
-    public static class DBQuery
+    public  class DBQuery
     {
-        public static string GetFiscalYearQuery()
+        private static List<PMCDBQueryViewModel> queryList = new List<PMCDBQueryViewModel>();
+        private static  DBQuery instance = null;
+        public static DBQuery Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new DBQuery();
+                    using (var context = new DataContext())
+                    {
+                        var data = context.All<PMCDBQueryViewModel>(@"select UniqueId, QueryName, QueryTSQL from AnatoliQuery");
+                        queryList = data.ToList();
+                    }
+                }
+                return instance;
+            }
+        }
+        DBQuery() { }
+        public string GetFiscalYearQuery()
         {
             return @"select FiscalYearId as id, convert(uniqueidentifier,uniqueid) as UniqueId, dbo.ToMiladi(StartDate) as FromDate, StartDate as fromPDate, dbo.ToMiladi(EndDate) as toDate, EndDate as ToPdate  from fiscalyear ";
         }
-        public static string GetStoreQuery()
+        public  string GetStoreQuery()
         {
-            return @"SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, 0 as Lat, 0 as Lng, 0 as Hasdelivery, 1 as HasCourier, 1 as SupportAppOrder, 1 as SupportWebOrder, 0 as SupportCallCenterOrder FROM Center ";//where centertypeid=3 ";
+            return @"SELECT Convert(Uniqueidentifier, UniqueID) as UniqueID,  CenterId as ID, CenterId CenterId, CenterCode as StoreCode, CenterName as StoreName, Address, Lat, Lng, Hasdelivery, HasCourier, SupportAppOrder, SupportWebOrder, SupportCallCenterOrder FROM Center ";//where centertypeid=3 ";
         }
-        public static string GetStockQuery()
+        public  string GetStockQuery()
         {
             return @"SELECT Convert(Uniqueidentifier, stock.UniqueID) as UniqueID,  stock.StockId as ID, Convert(Uniqueidentifier, center.UniqueId) as StoreId, stock.Stockid as StockCode, StockName , Center.Address
 	                    FROM stock, Center where stock.centerid=Center.centerid
                     ";
         }
-        public static string GetStoreCalendarQuery(int storeId) 
+        public  string GetStoreCalendarQuery(int storeId) 
         {
-            return @"select Convert(uniqueidentifier, uniqueId) as uniqueId,  DayTimeWorkingId as ID, WorkingDate as PDate, dbo.ToMiladi(WorkingDate) as Date, FromHour as FromTimeString, '23:59' as ToTimeString from DayTimeWorking where CenterId = " + storeId;
+            return @"select Convert(uniqueidentifier, uniqueId) as uniqueId, case DayTimeWorkingTypeId when 1 then convert(uniqueidentifier, 'E4A73D47-8AC7-41D1-8EEA-21EDFBA90424') when 2 then convert(uniqueidentifier, 'D5C5E5BF-9235-48D8-B026-B7EB8DB14100') end as CalendarTypeValueId, DayTimeWorkingId as ID, WorkingDate as PDate, dbo.ToMiladi(WorkingDate) as Date, FromHour as FromTimeString, '23:59' as ToTimeString from DayTimeWorking where CenterId = " + storeId;
         }
-        public static string GetStoreDeliveryRegion(int storeId) 
+        public  string GetStoreDeliveryRegion(int storeId) 
         {
             return @"select DeliveryRegionTreeId as ID, CityRegionID as UniqueIdString from (
-                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=CityId and  center.CenterId =  CenterDeliveryRegion.CenterId and RegionId is null and AreaId is null and CenterDeliveryRegion.CenterId =" + storeId + @" 
+                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=CityId and  center.CenterId =  CenterDeliveryRegion.CenterId and ZoneId is null and RegionId is null and AreaId is null and CenterDeliveryRegion.CenterId =" + storeId + @" 
                                 union all
-                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=RegionId and  center.CenterId =  CenterDeliveryRegion.CenterId and  RegionId is not null and AreaId is null and CenterDeliveryRegion.CenterId =" + storeId + @" 
+                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=RegionId and  center.CenterId =  CenterDeliveryRegion.CenterId and ZoneId is null and  RegionId is not null and AreaId is null and CenterDeliveryRegion.CenterId =" + storeId + @" 
                                 union all
-                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=AreaId and  center.CenterId =  CenterDeliveryRegion.CenterId and  AreaId is not null and CenterDeliveryRegion.CenterId =" + storeId + @" 
+                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=AreaId and  center.CenterId =  CenterDeliveryRegion.CenterId and ZoneId is null and  AreaId is not null and CenterDeliveryRegion.CenterId =" + storeId + @" 
+                                union all
+                                select DeliveryRegionTreeId, center.CenterId, center.UniqueId as StoreId, DeliveryRegionTree.UniqueId CityRegionID from CenterDeliveryRegion, center, DeliveryRegionTree where DeliveryRegionTreeid=ZoneId and  center.CenterId =  CenterDeliveryRegion.CenterId and ZoneId is not null and CenterDeliveryRegion.CenterId =" + storeId + @" 
                                 ) as tt ";
         }
-        public static string GetStorePriceList() 
+        public  string GetStorePriceList() 
         {
             return @"IF OBJECT_ID('tempdb..#CenterPrice') IS NOT NULL drop table  #CenterPrice
                         select ROW_NUMBER() over (order by p.ProductId) as rowNo, p.ProductId, c.CenterId, c.UniqueId as StoreGuidString,  p.SellPrice as price, Product.UniqueId as ProductGuidString, p.Modifieddate 
@@ -64,11 +87,19 @@ namespace Anatoli.PMC.DataAccess.Helpers
                             where StoreGuidString in (select uniqueid FROM Center where centertypeid=3) 
                         ";
         }
-        public static string GetFiscalYearId()
+        public  string GetFiscalYearId()
         {
             return @"select FiscalYearId from FiscalYear where StartDate <= dbo.ToShamsi(getdate()) and enddate>= dbo.ToShamsi(getdate())";
         }
-        public static string GetStockProducts(int fiscalYear)
+        public  string GetCashSessionId()
+        {
+            return @"SELECT top 1 c.CashSessionId FROM CashSession c where c.CashSessionTypeId = 2 and c.CashSessionStatusId = 1";
+        }
+        public  string GetLatestRequestNo(int fiscalYear)
+        {
+            return @"SELECT isnull(MAX(s.RequestNo),0)+1 FROM Sell s where s.SellCategoryId = 2 and s.FiscalYearId = " + fiscalYear;
+        }
+        public  string GetStockProducts(int fiscalYear)
         {
             return
             @" select convert(uniqueidentifier, stockproduct.uniqueId) as UniqueId,convert(uniqueidentifier, stock.uniqueId) as StockGuid,
@@ -80,8 +111,8 @@ namespace Anatoli.PMC.DataAccess.Helpers
 
                 ";
 
-        }
-        public static string GetStockOnHand(int fiscalYear)
+        }   
+        public  string GetStockOnHand(int fiscalYear)
         {
             return
             @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Stock.UniqueId) as StockGuid from (      
@@ -137,7 +168,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     ) as onhand, Product, Stock where onhand.ProductId = Product.ProductId and Stock.StockId = onhand.StockId";
 
         }
-        public static string GetStockOnHandByStockId(int fiscalYear, string stockId)
+        public  string GetStockOnHandByStockId(int fiscalYear, string stockId)
         {
             return
             @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Stock.UniqueId) as StockGuid from (      
@@ -193,7 +224,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     ) as onhand, Product, Stock where onhand.ProductId = Product.ProductId and Stock.StockId = onhand.StockId";
 
         }
-        public static string GetStoreStockOnHand(int fiscalYear)
+        public  string GetStoreStockOnHand(int fiscalYear)
         {
             return
             @"select convert(uniqueidentifier, Product.UniqueId) as ProductGuid, Qty, convert(uniqueidentifier, Center.UniqueId) as StoreGuid from (      
@@ -249,7 +280,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     ) as onhand, Product, Center where onhand.ProductId = Product.ProductId and Center.centerid = onhand.CenterId and centertypeid = 3";
 
         }
-        public static string GetProduct()
+        public  string GetProduct()
         {
             return @"SELECT p.QtyPerPack, p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, 
                          p.PackWeight, p.Description, NULL AS PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
@@ -262,17 +293,17 @@ namespace Anatoli.PMC.DataAccess.Helpers
                          Manufacturer AS m ON p.ManufacturerId = m.ManufacturerId ON pg.ProductGroupTreeSiteId = p.ProductGroupTreeSiteId
                     ";
         }
-        public static string GetProductSupplier(int productId)
+        public  string GetProductSupplier(int productId)
         {
             return @"select CONVERT(uniqueidentifier, s.uniqueId) as uniqueId from SupplierProduct as sp, supplier as s, product as p 
 	                        where sp.SupplierId = s.SupplierId and p.ProductId = sp.ProductId and sp.ProductId='" + productId + "'";
         }
-        public static string GetProductCharValue(int productId)
+        public  string GetProductCharValue(int productId)
         {
             return @"select CONVERT(uniqueidentifier, pv.uniqueId) as uniqueId from ProductSpecificRel as ps , product as p, ProductSpecificityValue as pv
 	                            where ps.ProductSpecificityValueId = pv.ProductSpecificityValueId and p.productId = ps.ProductID and p.productId ='" + productId + "'";
         }
-        public static string GetProductGroupData()
+        public  string GetProductGroupData()
         {
             return @"IF OBJECT_ID('tempdb..#GroupRec') IS NOT NULL drop table  #GroupRec
                     select p.ProductGroupTreeSiteId as ProductGroupTreeId, p.ParentId, p.Title, p.uniqueid, p2.uniqueid as Parentuniqueid, null  as CharGroupId
@@ -281,7 +312,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                                              ProductGroupTreeSite AS p2 ON p.ParentId = p2.ProductGroupTreeSiteId 
 		                     where p.parentid = p2.ProductGroupTreeSiteId";
         }
-        public static string GetProductGroupTree()
+        public  string GetProductGroupTree()
         {
             return @"
                     WITH ProductGroupTreeLevels AS
@@ -339,7 +370,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     FROM ProductGroupTreeRows ER
                     ORDER BY thePath";
         }
-        public static string GetMainProductGroupData()
+        public  string GetMainProductGroupData()
         {
             return @"IF OBJECT_ID('tempdb..#GroupRec') IS NOT NULL drop table  #GroupRec
                     select p.ProductGroupTreeId as ProductGroupTreeId, p.ParentId, p.Title, p.uniqueid, p2.uniqueid as Parentuniqueid, null  as CharGroupId
@@ -348,7 +379,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                                              ProductGroupTree AS p2 ON p.ParentId = p2.ProductGroupTreeId 
 		                     where p.parentid = p2.ProductGroupTreeId";
         }
-        public static string GetMainProductGroupTree()
+        public  string GetMainProductGroupTree()
         {
             return @"
                     WITH ProductGroupTreeLevels AS
@@ -406,35 +437,35 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     FROM ProductGroupTreeRows ER
                     ORDER BY thePath";
         }
-        public static string GetManufacture()
+        public  string GetManufacture()
         {
             return "select ManufacturerId as Id, convert(uniqueidentifier, uniqueid) as uniqueid, ManufacturerName as ManufactureName from Manufacturer";
         }
-        public static string GetCharType()
+        public  string GetCharType()
         {
             return @"SELECT ProductSpecificityId as Id, ProductSpecificityName as CharTypeDesc, Convert(uniqueidentifier, UniqueId)  as UniqueId
                         FROM            ProductSpecificity";
         }
-        public static string GetCharGroupCharType(int charGroupId )
+        public  string GetCharGroupCharType(int charGroupId )
         {
             return @"select Convert(uniqueidentifier,UniqueId) as UniqueId from ProductSpecificityGDetail g,  ProductSpecificity p 
                                     where p.ProductSpecificityId = g.ProductSpecificityId and ProductSpecificityGId=" + charGroupId;
         }
-        public static string GetCharValue(int charTypeId)
+        public  string GetCharValue(int charTypeId)
         {
             return @"SELECT ProductSpecificityValueName as CharValueText, Convert(uniqueidentifier,UniqueId) as UniqueId
                                 FROM ProductSpecificityValue where ProductSpecificityId=" + charTypeId;
         }
-        public static string GetCharGroup()
+        public  string GetCharGroup()
         {
             return @"SELECT ProductSpecificityGId as Id, ProductSpecificityGroupName as CharGroupName, Convert(uniqueidentifier, UniqueId)  as UniqueId
                         FROM ProductSpecificityG";
         }
-        public static string GetSupplir()
+        public  string GetSupplir()
         {
             return "select SupplierId as Id, convert(uniqueidentifier, uniqueid) as uniqueid, SupplierName from Supplier ";
         }
-        public static string GetCityRegion()
+        public  string GetCityRegion()
         {
             return @"WITH DeliveryRegionTreeLevels AS
                     (
@@ -489,25 +520,25 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     FROM DeliveryRegionTreeRows ER
                     ";
         }
-        public static string GetCenterPicture()
+        public  string GetCenterPicture()
         {
             return @"select center.UniqueId as baseDataId, centerimageId as ID,  convert(uniqueidentifier, CenterImage.uniqueid) as uniqueid, CenterImage as image, CenterImageName as ImageName,
                                                     '9CED6F7E-D08E-40D7-94BF-A6950EE23915' as ImageType from CenterImage, Center
 													where Center.CenterId = CenterImage.CenterId and CenterTypeId = 3";
         }
-        public static string GetProductPicture()
+        public  string GetProductPicture()
         {
             return @"select Product.UniqueId as baseDataId, ProductimageId as ID,  convert(uniqueidentifier, ProductImage.uniqueid) as uniqueid, ProductImage as image, ProductImageName as ImageName,
                                                     '635126C3-D648-4575-A27C-F96C595CDAC5' as ImageType from ProductImage, Product
 													where Product.ProductId = ProductImage.ProductId ";
         }
-        public static string GetProductSiteGroupPicture()
+        public  string GetProductSiteGroupPicture()
         {
             return @"select ProductGroupTreeSite.UniqueId as baseDataId, ProductGroupTreeSiteimageId as ID,  convert(uniqueidentifier, ProductGroupTreeSiteImage.uniqueid) as uniqueid, ProductGroupTreeSiteImage as image, ProductGroupTreeSiteImageName as ImageName,
                                                     '149E61EF-C4DC-437D-8BC9-F6037C0A1ED1' as ImageType from ProductGroupTreeSiteImage, ProductGroupTreeSite
 													where ProductGroupTreeSite.ProductGroupTreeSiteId = ProductGroupTreeSiteImage.ProductGroupTreeSiteId  ";
         }
-        public static string GetBaseValue()
+        public  string GetBaseValue()
         {
             return @"select paytypename as BaseValueName, uniqueid, PayTypeId as id, convert(uniqueidentifier, 'F17B8898-D39F-4955-9757-A6B31767F5C7') as BaseTypeId from PayType
                     union all
@@ -532,7 +563,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                     select 'سایر' as BaseValueName,  convert(uniqueidentifier, '6CF27F09-E162-4802-A451-9BC3304A8130') as uniqueid, 2 as id, convert(uniqueidentifier, 'A0EA0430-6E42-4E5F-B809-E05E13D73E54') as BaseTypeId  --OrderSource : Others
                     ";
         }
-        public static string GetBaseType()
+        public  string GetBaseType()
         {
             return @"select 1 as id, convert(uniqueidentifier, 'A0EA0430-6E42-4E5F-B809-E05E13D73E54') as uniqueid, 'OrderSource' as BaseTypeDesc
                         union all 
@@ -545,17 +576,21 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         select 6 as id, convert(uniqueidentifier, 'F17B8898-D39F-4955-9757-A6B31767F5C7') as uniqueid, 'PayType' as BaseTypeDesc
                         ";
         }
-        public static string GetSellInfo()
+        public  string GetSellInfo()
         {
             return @"select * from sell ";
         }
-        public static string GetSellDetailInfo()
+        public  string GetSellDetailInfo()
         {
             return @"select * from sell ";
         }
-        public static string GetSellActionInfo()
+        public  string GetSellActionInfo()
         {
             return @"select * from sell ";
+        }
+        public  string GetNewCustomers()
+        {
+            return "select UniqueId, Mobile as username, Mobile, Mobile as Password, Mobile as ConfirmPassword, Email, CustomerName as FullName from Customer where CustomerSiteUserId is null and Mobile is not null ";
         }
     }
 }

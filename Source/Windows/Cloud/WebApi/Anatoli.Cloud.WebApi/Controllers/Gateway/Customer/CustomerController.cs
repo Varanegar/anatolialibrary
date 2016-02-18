@@ -1,4 +1,5 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.ViewModels.CustomerModels;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 List<CustomerViewModel> dataList = new List<CustomerViewModel>();
                 dataList.Add(data);
                 var result = await customerDomain.PublishAsync(dataList);
+                await AppUserManager.SetEmailAsync(data.UniqueId.ToString(), data.Email);
+                await AppUserManager.IsEmailConfirmedAsync(data.UniqueId.ToString());
                 return Ok(result);
             }
             catch (Exception ex)

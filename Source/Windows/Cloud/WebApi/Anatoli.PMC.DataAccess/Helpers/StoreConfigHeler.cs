@@ -33,7 +33,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
             using (DataContext context = new DataContext())
             {
                 DataObject<PMCStoreConfigEntity> configDataObject = new DataObject<PMCStoreConfigEntity>("Center");
-                AllStoreConfigs= configDataObject.Select.All().ToList();
+                AllStoreConfigs= configDataObject.Select.All("where isReal=1").ToList();
             }
         }
 
@@ -49,7 +49,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
                         currentConfig = configDataObject.Select.First("where centerId in (select top 1 centerid from CenterSetting)");
 
                     }
-                    currentConfig.FiscalYearId = context.GetValue<int>(DBQuery.GetFiscalYearId());
+                    currentConfig.FiscalYearId = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
                 }
 
                 return currentConfig;
@@ -59,14 +59,14 @@ namespace Anatoli.PMC.DataAccess.Helpers
         public PMCStoreConfigEntity GetStoreConfig(string storeUniqueId)
         {
             var config = AllStoreConfigs.Find(p => p.UniqueId.ToLower() == storeUniqueId.ToLower());
-            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.GetFiscalYearId());
+            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.Instance.GetFiscalYearId());
             return config;
         }
 
         public PMCStoreConfigEntity GetStoreConfig(int storeId)
         {
             var config = AllStoreConfigs.Find(p => p.CenterId == storeId);
-            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.GetFiscalYearId());
+            config.FiscalYearId = new DataContext().GetValue<int>(DBQuery.Instance.GetFiscalYearId());
             return config;
         }
     }

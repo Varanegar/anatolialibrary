@@ -36,17 +36,17 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    var data = context.All<StoreViewModel>(DBQuery.GetStoreQuery());
+                    var data = context.All<StoreViewModel>(DBQuery.Instance.GetStoreQuery());
                     storeList = data.ToList();
                     storeList.ForEach(item =>
                     {
                         var ts = TimeSpan.ParseExact("0:0", @"h\:m",
                              CultureInfo.InvariantCulture);
 
-                        var storeCalendar = context.All<StoreCalendarViewModel>(DBQuery.GetStoreCalendarQuery(item.CenterId));
+                        var storeCalendar = context.All<StoreCalendarViewModel>(DBQuery.Instance.GetStoreCalendarQuery(item.CenterId));
                         item.StoreCalendar = storeCalendar.ToList();
 
-                        var storeValidRegion = context.All<CityRegionViewModel>(DBQuery.GetStoreDeliveryRegion(item.CenterId));
+                        var storeValidRegion = context.All<CityRegionViewModel>(DBQuery.Instance.GetStoreDeliveryRegion(item.CenterId));
                         item.StoreValidRegionInfo = storeValidRegion.ToList();
                     });
                 }
@@ -68,7 +68,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    var data = context.All<StoreActivePriceListViewModel>(DBQuery.GetStorePriceList() + where);
+                    var data = context.All<StoreActivePriceListViewModel>(DBQuery.Instance.GetStorePriceList() + where);
 
                     storeOnhandList = data.ToList();
                 }
@@ -101,8 +101,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<StoreActiveOnhandViewModel> storeOnhandList = new List<StoreActiveOnhandViewModel>();
                 using (var context = new DataContext(storeId, connectionString, Transaction.No))
                 {
-                    var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
-                    var data = context.All<StoreActiveOnhandViewModel>(DBQuery.GetStoreStockOnHand(fiscalYear) + dynamicWhere);
+                    var fiscalYear = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
+                    var data = context.All<StoreActiveOnhandViewModel>(DBQuery.Instance.GetStoreStockOnHand(fiscalYear) + dynamicWhere);
 
                     storeOnhandList = data.ToList();
                 }

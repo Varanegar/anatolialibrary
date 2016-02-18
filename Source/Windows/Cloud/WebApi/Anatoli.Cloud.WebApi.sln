@@ -26,6 +26,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.PMC.Business", "Ana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thunderstruck", "Thunderstruck\Thunderstruck.csproj", "{0DC5AB48-1DA5-4185-A18E-46C111A82454}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Rastak.Business", "Anatoli.Rastak.Business\Anatoli.Rastak.Business.csproj", "{7C2C276C-FEBB-4212-B2C6-343E1FCC48C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Rastak.DataAccess", "Anatoli.Rastak.DataAccess\Anatoli.Rastak.DataAccess.csproj", "{50715B5E-6345-4768-80BE-BD5FB411D189}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Rastak.ViewModels", "Anatoli.Rastak.ViewModels\Anatoli.Rastak.ViewModels.csproj", "{A7938BCC-748B-43D8-859D-F62DFBF642EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +74,18 @@ Global
 		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DC5AB48-1DA5-4185-A18E-46C111A82454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C2C276C-FEBB-4212-B2C6-343E1FCC48C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C2C276C-FEBB-4212-B2C6-343E1FCC48C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C2C276C-FEBB-4212-B2C6-343E1FCC48C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C2C276C-FEBB-4212-B2C6-343E1FCC48C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50715B5E-6345-4768-80BE-BD5FB411D189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50715B5E-6345-4768-80BE-BD5FB411D189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50715B5E-6345-4768-80BE-BD5FB411D189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50715B5E-6345-4768-80BE-BD5FB411D189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7938BCC-748B-43D8-859D-F62DFBF642EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7938BCC-748B-43D8-859D-F62DFBF642EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7938BCC-748B-43D8-859D-F62DFBF642EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7938BCC-748B-43D8-859D-F62DFBF642EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

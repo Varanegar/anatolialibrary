@@ -12,6 +12,7 @@ namespace Anatoli.PMC.ViewModels.Order
         public int SellId { get; set; }
         [Ignore]
         public int InvoiceNo { get; set; }
+        [Ignore]
         public string InvoiceDate { get; set; }
         public int StockId { get; set; }
         public int SellTypeId { get; set; }
@@ -47,6 +48,8 @@ namespace Anatoli.PMC.ViewModels.Order
         [Ignore]
         public int? DeliveryStatusId { get; set; }
         public int SellStatusId { get; set; }
+        public int CashSessionId { get; set; }
+        public int CashSessionStatusId { get; set; }
         public decimal FreightCustomerAmount { get; set; }
         [Ignore]
         public List<PMCSellDetailViewModel> SellDetail { get; set; }

@@ -150,6 +150,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storeOnhand/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedStoreOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var storeDomain = new StoreActiveOnhandDomain(owner);
+                var result = await storeDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
         #region Store Price List
@@ -244,6 +262,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storepricelist/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedPriceLists(string privateOwnerId, List<StoreActivePriceListViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var storeDomain = new StoreActivePriceListDomain(owner);
+                var result = await storeDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
         #region Store List
@@ -301,6 +337,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedStores(string privateOwnerId, List<StoreViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var storeDomain = new StoreDomain(owner);
+                var result = await storeDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
         #region Store Calendar
@@ -339,6 +393,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storecalendar/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedStoreCalendars(string privateOwnerId, List<StoreCalendarViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var storeCalendarDomain = new StoreCalendarDomain(owner);
+                var result = await storeCalendarDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+
         #endregion
     }
 }
