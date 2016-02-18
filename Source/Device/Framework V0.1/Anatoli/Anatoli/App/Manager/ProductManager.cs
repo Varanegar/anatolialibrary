@@ -84,7 +84,7 @@ namespace Anatoli.App.Manager
                     var currentList = query.ExecuteQuery<ProductPriceModel>();
                     foreach (var item in currentList)
                     {
-                        items.Add(item.product_id, item);
+                        items.Add(item.product_id + item.store_id, item);
                     }
                 }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -92,7 +92,7 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        if (items.ContainsKey(item.UniqueId))
+                        if (items.ContainsKey(item.UniqueId + item.StoreGuid.ToString().ToUpper()))
                         {
                             UpdateCommand command = new UpdateCommand("products_price", new BasicParam("price", item.Price.ToString()),
                             new EqFilterParam("product_id", item.ProductGuid.ToUpper()),
