@@ -574,6 +574,9 @@ namespace AnatoliAndroid.Activities
                 alert.Show();
             }
         }
+        internal async Task ClearDatabase(){
+            await SyncManager.ClearDatabase();
+        }
         internal async Task<bool> SyncDatabase()
         {
             if (!AnatoliClient.GetInstance().WebClient.IsOnline())
