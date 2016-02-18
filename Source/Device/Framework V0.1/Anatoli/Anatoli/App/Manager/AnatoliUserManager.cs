@@ -9,6 +9,7 @@ using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.DataAdapter;
 using PCLCrypto;
 using Anatoli.App.Model;
+using Anatoli.Framework.Model;
 namespace Anatoli.App.Manager
 {
     public class AnatoliUserManager
@@ -43,9 +44,6 @@ namespace Anatoli.App.Manager
                 Configuration.WebService.Users.UserCreateUrl,
                 user
                 );
-                //ParseObject userParseObject = new ParseObject("AnatoliUser");
-                //userParseObject.Add("UserId", result.UserId);
-                //await userParseObject.SaveAsync();
                 return result;
             }
             catch (Exception e)
@@ -128,6 +126,23 @@ namespace Anatoli.App.Manager
             obj.NewPassword = p2;
             obj.OldPassword = p1;
             var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ChangePasswordBindingModel>(TokenType.UserToken, Configuration.WebService.Users.ChangePasswordUri, obj);
+            return result;
+        }
+
+        public static async Task<ConfirmCodeResult> SendConfirmCode(string userName, string code)
+        {
+            var result = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<ConfirmCodeResult>(TokenType.AppToken, Configuration.WebService.Users.ConfirmMobile + "?username=" + userName + "&code=" + code);
+            return result;
+        }
+
+        public class ConfirmCodeResult : BaseDataModel
+        {
+
+        }
+
+        public static async Task<ConfirmCodeResult> RequestConfirmCode(string userName)
+        {
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ConfirmCodeResult>(TokenType.AppToken, Configuration.WebService.Users.ResendConfirmCode + "?username=" + userName);
             return result;
         }
     }

@@ -150,6 +150,7 @@
     <Compile Include="Components\TypeFaceProvider.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Fragments\BaseSwipeListFragment.cs" />
+    <Compile Include="Fragments\ConfirmDialog.cs" />
     <Compile Include="Fragments\EditShippingInfoFragment.cs" />
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FavoritsToolsFragment.cs" />
@@ -297,6 +298,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SettingsLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConfirmDialog.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
