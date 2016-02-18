@@ -80,6 +80,11 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                dataViewModels.ForEach(item =>
+                    {
+                        if (item.UniqueId == null || item.UniqueId == Guid.Empty)
+                            item.UniqueId = Guid.NewGuid();
+                    });
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
                 var customerShipAddresses = Proxy.ReverseConvert(dataViewModels);
@@ -92,6 +97,7 @@ namespace Anatoli.Business.Domain
                     if (currentCustomerShipAddress != null)
                     {
                         currentCustomerShipAddress.Phone = item.Phone;
+                        currentCustomerShipAddress.AddressName = item.AddressName;
                         currentCustomerShipAddress.Email = item.Email;
                         currentCustomerShipAddress.MainStreet = item.MainStreet;
                         currentCustomerShipAddress.OtherStreet = item.OtherStreet;
@@ -116,8 +122,6 @@ namespace Anatoli.Business.Domain
                     }
                     else
                     {
-                        if (item.Id == null || item.Id == Guid.Empty)
-                            item.Id = Guid.NewGuid();
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         Repository.AddAsync(item);
                     }

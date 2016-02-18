@@ -37,7 +37,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    var data = context.All<StockViewModel>(DBQuery.GetStockQuery());
+                    var data = context.All<StockViewModel>(DBQuery.Instance.GetStockQuery());
                     stockList = data.ToList();
                     stockList.ForEach(item =>
                     {
@@ -68,8 +68,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<StockActiveOnHandViewModel> StockOnHandList = new List<StockActiveOnHandViewModel>();
                 using (var context = new DataContext())//centerId, connectionString, Transaction.No))
                 {
-                    var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
-                    var data = context.All<StockActiveOnHandViewModel>(DBQuery.GetStockOnHand(fiscalYear));
+                    var fiscalYear = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
+                    var data = context.All<StockActiveOnHandViewModel>(DBQuery.Instance.GetStockOnHand(fiscalYear));
 
                     StockOnHandList = data.ToList();
                 }
@@ -93,8 +93,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<StockActiveOnHandViewModel> StockOnHandList = new List<StockActiveOnHandViewModel>();
                 using (var context = new DataContext(centerId, connectionString, Transaction.No))
                 {
-                    var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
-                    var data = context.All<StockActiveOnHandViewModel>(DBQuery.GetStockOnHandByStockId(fiscalYear, stockId));
+                    var fiscalYear = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
+                    var data = context.All<StockActiveOnHandViewModel>(DBQuery.Instance.GetStockOnHandByStockId(fiscalYear, stockId));
 
                     StockOnHandList = data.ToList();
                 }
@@ -120,8 +120,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<StockProductViewModel> StockProductList = new List<StockProductViewModel>();
                 using (var context = new DataContext())//centerId, connectionString, Transaction.No))
                 {
-                    var fiscalYear = context.GetValue<int>(DBQuery.GetFiscalYearId());
-                    var data = context.All<StockProductViewModel>(DBQuery.GetStockProducts(fiscalYear) + where);
+                    var fiscalYear = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
+                    var data = context.All<StockProductViewModel>(DBQuery.Instance.GetStockProducts(fiscalYear) + where);
 
                     StockProductList = data.ToList();
                 }

@@ -29,10 +29,10 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             List<CharTypeViewModel> charTypes = new List<CharTypeViewModel>();
             using (var context = new DataContext())
             {
-                var data = context.All<CharTypeViewModel>(DBQuery.GetCharType());
+                var data = context.All<CharTypeViewModel>(DBQuery.Instance.GetCharType());
                 data.ToList().ForEach(item =>
                 {
-                    var detail = context.All<CharValueViewModel>(DBQuery.GetCharValue(item.ID));
+                    var detail = context.All<CharValueViewModel>(DBQuery.Instance.GetCharValue(item.ID));
                     item.CharValues = detail.ToList();
                 });
                 charTypes = data.ToList();
@@ -44,10 +44,10 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             List<CharGroupViewModel> charGroups = new List<CharGroupViewModel>();
             using (var context = new DataContext())
             {
-                var data = context.All<CharGroupViewModel>(DBQuery.GetCharGroup());
+                var data = context.All<CharGroupViewModel>(DBQuery.Instance.GetCharGroup());
                 data.ToList().ForEach(item =>
                 {
-                    var detail = context.All<CharTypeViewModel>(DBQuery.GetCharGroupCharType(item.ID));
+                    var detail = context.All<CharTypeViewModel>(DBQuery.Instance.GetCharGroupCharType(item.ID));
                     item.CharTypes = detail.ToList();
                 });
                 charGroups = data.ToList();

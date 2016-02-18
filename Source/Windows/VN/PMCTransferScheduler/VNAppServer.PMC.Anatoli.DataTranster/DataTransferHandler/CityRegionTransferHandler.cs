@@ -25,10 +25,23 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(CityRegionDataType);
                 var dbData = CityRegionAdapter.Instance.GetAllCityRegions(lastUpload);
+                if (dbData != null)
+                {
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.SaveCityRegionURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
 
-                string data =JsonConvert.SerializeObject(dbData);
-                string URI = serverURI + UriInfo.SaveCityRegionURI + privateOwnerQueryString;
-                var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+
+                dbData = CityRegionAdapter.Instance.GetAllCityRegions(DateTime.MinValue);
+                if (dbData != null)
+                {
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.CheckDeletedCityRegionURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+
+                }
+                
                 Utility.SetLastUploadTime(CityRegionDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

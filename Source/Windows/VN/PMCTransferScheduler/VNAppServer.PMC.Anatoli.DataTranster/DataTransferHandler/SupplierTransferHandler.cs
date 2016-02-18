@@ -24,11 +24,21 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 log.Info("Start CallServerService URI ");
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(SupplierDataType);
-                var supplier = SupplierAdapter.Instance.GetAllSuppliers(lastUpload);
-
-                string data = JsonConvert.SerializeObject(supplier);
-                string URI = serverURI + UriInfo.SaveSupplierURI + privateOwnerQueryString;
-                var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                var dbData = SupplierAdapter.Instance.GetAllSuppliers(lastUpload);
+                if (dbData != null)
+                {
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.SaveSupplierURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
+                
+                dbData = SupplierAdapter.Instance.GetAllSuppliers(DateTime.MinValue);
+                if (dbData != null)
+                {
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.CheckDeletedSupplierURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
                 Utility.SetLastUploadTime(SupplierDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

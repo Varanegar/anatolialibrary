@@ -58,8 +58,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
             var data = Proxy.ReverseConvert(baseViewModels, storeConfig);
 
             var customerData = CustomerProxy.ReverseConvert(baseViewModels.Customer, storeConfig);
-
-            SellAdapter.Instance.SavePurchaseOrder(data, customerData);
+            baseViewModels.AppOrderNo = SellAdapter.Instance.SavePurchaseOrder(data, customerData);
             return baseViewModels;
         }
 

@@ -20,6 +20,7 @@ using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
 using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
+using Anatoli.ViewModels.User;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -224,6 +225,29 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 return GetErrorResult(result);
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ConfirmMobile", Name = "ConfirmMobileRoute")]
+        public async Task<IHttpActionResult> ConfirmPhoneNumber(string userId = "", string code = "")
+        {
+            //if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
+            //{
+            //    ModelState.AddModelError("", "User Id and Code are required");
+            //    return BadRequest(ModelState);
+            //}
+
+            //IdentityResult result = await this.AppUserManager.ConfirmMobileAsync(userId, code);
+
+            //if (result.Succeeded)
+            //{
+                return Ok();
+            //}
+            //else
+            //{
+            //    return GetErrorResult(result);
+            //}
         }
 
         [Authorize(Roles = "AuthorizedApp,User")]

@@ -30,10 +30,19 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     string data =JsonConvert.SerializeObject(dbData);
                     string URI = serverURI + UriInfo.SaveStoreURI + privateOwnerQueryString;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
-                    Utility.SetLastUploadTime(StoreDataType, currentTime);
                 }
                 else
                     log.Info("Null data to transfer " + serverURI);
+
+                dbData = StoreAdapter.Instance.GetAllStores(DateTime.MinValue);
+                if (dbData != null)
+                {
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.CheckDeletedStoreURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
+
+                Utility.SetLastUploadTime(StoreDataType, currentTime);
 
 
                 log.Info("Completed CallServerService ");

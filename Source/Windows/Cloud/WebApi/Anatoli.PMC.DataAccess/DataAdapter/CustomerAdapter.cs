@@ -2,6 +2,8 @@
 using Anatoli.PMC.DataAccess.Helpers.Entity;
 using Anatoli.PMC.ViewModels.Base;
 using Anatoli.PMC.ViewModels.Order;
+using Anatoli.ViewModels.CustomerModels;
+using Anatoli.ViewModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,16 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             int count = new DataContext().GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
             return (count > 0) ? true : false;
         }
+        public void SetCustomerSiteUserId(string UserId, string Mobile)
+        {
+            try { 
+            new DataContext().Execute("update Customer set customerSiteUserId ='" +  UserId + "' where mobile='" + Mobile + "'");
+            }
+            catch (Exception ex)
+            {
+                log.Error("save UserId to site data ", ex);
+            }
+        }
 
         public long GetNewCustomerCode(string UserId)
         {
@@ -43,6 +55,28 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 set @CustomerCode = (SELECT isnull(MAX(CAST(CustomerCode AS int)),0)+ 1 as CustomerCode FROM Customer)
                 select @CustomerCode");
             return customerCode;
+        }
+
+        public List<CreateUserBindingModel> GetNewUsers(DateTime lastUpload)
+        {
+            try
+            {
+                List<CreateUserBindingModel> userList = new List<CreateUserBindingModel>();
+                using (var context = new DataContext())
+                {
+                    string where = "";
+                    if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                    var data = context.All<CreateUserBindingModel>(DBQuery.Instance.GetNewCustomers());
+                    userList = data.ToList();
+                }
+
+                return userList;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Failed fetch data ", ex);
+                return null;
+            }
         }
     }
 }

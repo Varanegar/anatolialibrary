@@ -12,7 +12,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/base/supplier")]
     public class SupplierController : BaseApiController
     {
-        #region Products
+        #region Supplier
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("suppliers")]
         public async Task<IHttpActionResult> GetSuppliers(string privateOwnerId)
@@ -70,6 +70,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeleteSuppliers(string privateOwnerId, List<SupplierViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var supplierDomain = new SupplierDomain(owner);
+                var result = await supplierDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }       
         #endregion
     }
 }

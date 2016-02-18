@@ -20,6 +20,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
+                AddressName = data.AddressName,
                 Phone = data.Phone,
                 Mobile = data.Mobile,
                 MainStreet = data.MainStreet,
@@ -49,7 +50,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
-
+                AddressName = data.AddressName,
                 Phone = data.Phone,
                 Mobile = data.Mobile,
                 MainStreet = data.MainStreet,

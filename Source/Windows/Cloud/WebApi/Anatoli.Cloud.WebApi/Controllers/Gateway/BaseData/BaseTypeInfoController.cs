@@ -70,6 +70,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("basedatas/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedBaseTypes(string privateOwnerId, List<BaseTypeViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var baseTypeDomain = new BaseTypeDomain(owner);
+                var result = await baseTypeDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+
+        }
+
         #region Stock Reorder Calc Type List
         [Authorize(Roles = "User")]
         [Route("reordercalctypes")]
@@ -123,8 +142,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockProductDomain(owner);
-                var result = await stockDomain.GetAll();
+                var domain = new StockProductRequestTypeDomain(owner);
+                var result = await domain.GetAll();
                 return Ok(result);
             }
             catch (Exception ex)

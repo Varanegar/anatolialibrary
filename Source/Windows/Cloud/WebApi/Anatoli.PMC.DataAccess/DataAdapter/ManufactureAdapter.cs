@@ -34,7 +34,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " where ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                    var data = context.All<ManufactureViewModel>(DBQuery.GetManufacture() );
+                    var data = context.All<ManufactureViewModel>(DBQuery.Instance.GetManufacture());
                     manufacture = data.ToList();
                 }
                 return manufacture;
