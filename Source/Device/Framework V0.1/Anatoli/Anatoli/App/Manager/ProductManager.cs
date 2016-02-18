@@ -95,14 +95,16 @@ namespace Anatoli.App.Manager
                         if (items.ContainsKey(item.UniqueId))
                         {
                             UpdateCommand command = new UpdateCommand("products_price", new BasicParam("price", item.Price.ToString()),
-                            new EqFilterParam("product_id", item.ProductGuid.ToUpper()));
+                            new EqFilterParam("product_id", item.ProductGuid.ToUpper()),
+                            new EqFilterParam("store_id", item.StoreGuid.ToString().ToUpper()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
                         }
                         else
                         {
                             InsertCommand command = new InsertCommand("products_price", new BasicParam("price", item.Price.ToString()),
-                            new BasicParam("product_id", item.ProductGuid.ToUpper()));
+                            new BasicParam("product_id", item.ProductGuid.ToUpper()),
+                            new BasicParam("store_id", item.StoreGuid.ToString().ToUpper()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
                         }
@@ -335,9 +337,9 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static StringQuery Search(string value)
+        public static StringQuery Search(string value, string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') ORDER BY cat_id", value));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId));
             return query;
         }
 
@@ -347,7 +349,7 @@ namespace Anatoli.App.Manager
                 return null;
             else
             {
-                string imguri = String.Format("{2}/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId,Configuration.WebService.PortalAddress);
+                string imguri = String.Format("{2}/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId, Configuration.WebService.PortalAddress);
                 return imguri;
             }
         }
@@ -395,6 +397,24 @@ namespace Anatoli.App.Manager
                     list2.Add(item);
             }
             return list2;
+        }
+
+
+        public static StringQuery SetCatId(string catId, string storeId)
+        {
+            var leftRight = CategoryManager.GetLeftRight(catId);
+            StringQuery query;
+            if (leftRight != null)
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id AND store_id = '{2}'", leftRight.left, leftRight.right, storeId));
+            else
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId));
+            return query;
+        }
+
+        public static StringQuery GetAll(string storeId)
+        {
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id WHERE store_id = '{0}'", storeId));
+            return query;
         }
     }
 }

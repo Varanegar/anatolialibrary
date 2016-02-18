@@ -178,5 +178,12 @@ namespace Anatoli.App.Manager
             }
         }
 
+
+        public static async Task<List<CategoryInfoModel>> Search(string value)
+        {
+            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
+            var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
+            return groups;
+        }
     }
 }

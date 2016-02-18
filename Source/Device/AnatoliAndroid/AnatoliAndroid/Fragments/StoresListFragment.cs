@@ -38,7 +38,7 @@ namespace AnatoliAndroid.Fragments
                         else
                             item.selected = 1;
                     }
-                    AnatoliApp.GetInstance().DefaultStore = store.store_name;
+                    AnatoliApp.GetInstance().SetDefaultStore(store);
                     AnatoliApp.GetInstance().RefreshMenuItems();
                     _listAdapter.NotifyDataSetChanged();
                 };

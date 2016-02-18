@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
 using Android.Views.Animations;
 using Anatoli.Framework;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.Activities
 {
@@ -54,7 +55,13 @@ namespace AnatoliAndroid.Activities
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
         double _price;
-        public string DefaultStore;
+        public string DefaultStoreName { get; private set; }
+        public string DefaultStoreId { get; private set; }
+        public void SetDefaultStore(StoreDataModel store)
+        {
+            DefaultStoreId = store.store_id;
+            DefaultStoreName = store.store_name;
+        }
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
         public void SetTotalPrice(double price)
         {
@@ -258,7 +265,7 @@ namespace AnatoliAndroid.Activities
                     ProductsListF = _currentFragment as ProductsListFragment;
                 }
 
-                await ProductsListF.Search(ProductManager.Search(value), value);
+                await ProductsListF.Search(ProductManager.Search(value, AnatoliApp.GetInstance().DefaultStoreId), value);
 
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(FirstFragment))
@@ -266,7 +273,7 @@ namespace AnatoliAndroid.Activities
                 ProductsListF = SetFragment(ProductsListF, "products_fragment");
                 ProductsListF.SetCatId(null);
                 await ProductsListF.Refresh();
-                await ProductsListF.Search(ProductManager.Search(value), value);
+                await ProductsListF.Search(ProductManager.Search(value, AnatoliApp.GetInstance().DefaultStoreId), value);
             }
             if (GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
             {
@@ -770,8 +777,8 @@ namespace AnatoliAndroid.Activities
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            if (DefaultStore != null)
-                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStore + " ) ";
+            if (DefaultStoreName != null)
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStoreName + " ) ";
             else
                 storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);

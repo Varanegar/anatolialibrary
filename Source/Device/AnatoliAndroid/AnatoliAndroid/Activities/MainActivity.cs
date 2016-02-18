@@ -109,7 +109,7 @@ namespace AnatoliAndroid.Activities
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
-                AnatoliApp.GetInstance().DefaultStore = (await StoreManager.GetDefaultAsync()).store_name;
+                AnatoliApp.GetInstance().SetDefaultStore(await StoreManager.GetDefaultAsync());
                 AnatoliApp.GetInstance().RefreshMenuItems();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
