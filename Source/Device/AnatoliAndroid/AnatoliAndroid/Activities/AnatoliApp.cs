@@ -271,8 +271,8 @@ namespace AnatoliAndroid.Activities
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(FirstFragment))
             {
                 ProductsListF = SetFragment(ProductsListF, "products_fragment");
-                ProductsListF.SetCatId(null);
-                await ProductsListF.Refresh();
+                //ProductsListF.SetCatId(null);
+                //await ProductsListF.Refresh();
                 await ProductsListF.Search(ProductManager.Search(value, AnatoliApp.GetInstance().DefaultStoreId), value);
             }
             if (GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
@@ -388,6 +388,7 @@ namespace AnatoliAndroid.Activities
                                 }
                                 AnatoliApp.GetInstance().RefreshMenuItems(categories);
                                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
+                                await ProductsListF.Refresh();
                             }
                         }
 

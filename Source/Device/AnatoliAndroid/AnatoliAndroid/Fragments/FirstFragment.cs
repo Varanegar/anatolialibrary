@@ -126,12 +126,14 @@ namespace AnatoliAndroid.Fragments
                 {
                     AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                    await AnatoliApp.GetInstance().ProductsListF.Refresh();
                 }
                 else
                 {
                     AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
                     AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
                     AnatoliApp.GetInstance().ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(AnatoliApp.GetInstance().ProductsListF, "products_fragment");
+                    await AnatoliApp.GetInstance().ProductsListF.Refresh();
                 }
 
             };

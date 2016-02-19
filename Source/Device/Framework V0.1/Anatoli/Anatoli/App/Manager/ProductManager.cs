@@ -339,7 +339,7 @@ namespace Anatoli.App.Manager
 
         public static StringQuery Search(string value, string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
             return query;
         }
 
@@ -405,15 +405,15 @@ namespace Anatoli.App.Manager
             var leftRight = CategoryManager.GetLeftRight(catId);
             StringQuery query;
             if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id AND store_id = '{2}'", leftRight.left, leftRight.right, storeId));
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id AND store_id = '{2}'", leftRight.left, leftRight.right, storeId).PersianToArabic());
             else
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId));
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId).PersianToArabic());
             return query;
         }
 
         public static StringQuery GetAll(string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view  WHERE store_id = '{0}' ORDER BY cat_id", storeId));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view  WHERE store_id = '{0}' ORDER BY cat_id", storeId).PersianToArabic());
             return query;
         }
     }

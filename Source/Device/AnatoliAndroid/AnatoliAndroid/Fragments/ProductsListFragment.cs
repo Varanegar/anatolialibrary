@@ -63,7 +63,6 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _dataManager.ShowGroups = false;
-                ForceRefresh = true;
                 var query = ProductManager.SetCatId(id, AnatoliApp.GetInstance().DefaultStoreId);
                 _dataManager.SetQueries(query, null);
             }
