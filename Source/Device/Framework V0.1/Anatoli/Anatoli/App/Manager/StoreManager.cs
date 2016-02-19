@@ -56,9 +56,9 @@ namespace Anatoli.App.Manager
                     connection.Commit();
                 }
 
-                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
                 //q2.cancellationTokenSource = cancellationTokenSource;
-                //var list2 = await BaseDataAdapter<StoreUpdateModel>.GetListAsync(q2);
+                //var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 
                 await SyncManager.SaveUpdateDateAsync(SyncManager.StoresTbl);
             }
@@ -99,7 +99,7 @@ namespace Anatoli.App.Manager
             }
             catch (Exception ex)
             {
-                throw ex;
+                return null;
             }
         }
         public class NullStoreException : Exception
