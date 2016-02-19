@@ -64,12 +64,19 @@ namespace AnatoliAndroid.Fragments
         }
         async Task<bool> RequestConfirmCode()
         {
-            var result = await AnatoliUserManager.RequestConfirmCode(UserName);
-            if (result.IsValid)
+            try
             {
-                return true;
+                var result = await AnatoliUserManager.RequestConfirmCode(UserName);
+                if (result.IsValid)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
         }
         void OnCodeConfirmed()
         {
