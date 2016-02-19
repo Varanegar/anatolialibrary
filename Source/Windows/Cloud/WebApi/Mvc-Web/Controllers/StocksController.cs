@@ -21,6 +21,11 @@ namespace Mvc_Web.Controllers
 
         public ActionResult ProductRequestRule(string id)
         {
+            ViewBag.ruleId = id;
+
+            ViewBag.pToday = PersianDate.ConvertDate.ToFa(DateTime.Now);
+            ViewBag.pNextMonth = PersianDate.ConvertDate.ToFa(DateTime.Now.AddMonths(1));
+
             return View();
         }
     }

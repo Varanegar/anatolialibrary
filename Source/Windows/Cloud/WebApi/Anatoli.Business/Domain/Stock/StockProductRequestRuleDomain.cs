@@ -84,28 +84,28 @@ namespace Anatoli.Business.Domain
             try
             {
                 var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
 
                 dataList.ForEach(item =>
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
-                        if (currentData.StockProductRequestRuleName != item.StockProductRequestRuleName)
-                        {
-                            currentData.StockProductRequestRuleName = item.StockProductRequestRuleName;
-                            currentData.FromDate = item.FromDate;
-                            currentData.FromPDate = item.FromPDate;
-                            currentData.MainProductGroupId = item.MainProductGroupId;
-                            currentData.ProductId = item.ProductId;
-                            currentData.ProductTypeId = item.ProductTypeId;
-                            currentData.ToDate = item.ToDate;
-                            currentData.ToPDate = item.ToPDate;
+                        currentData.StockProductRequestRuleName = item.StockProductRequestRuleName;
+                        currentData.FromDate = item.FromDate;
+                        currentData.FromPDate = item.FromPDate;
+                        currentData.ToDate = item.ToDate;
+                        currentData.ToPDate = item.ToPDate;
+                        currentData.ProductId = item.ProductId;
+                        currentData.ProductTypeId = item.ProductTypeId;
+                        currentData.MainProductGroupId = item.MainProductGroupId;
+                        currentData.StockProductRequestRuleTypeId = item.StockProductRequestRuleTypeId;
+                        currentData.StockProductRequestRuleCalcTypeId = item.StockProductRequestRuleCalcTypeId;
+                        currentData.Qty = item.Qty;
+                        currentData.SupplierId = item.SupplierId;
+                        currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
+                        currentData.LastUpdate = DateTime.Now;
 
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
-                        }
+                        Repository.UpdateAsync(currentData);
                     }
                     else
                     {

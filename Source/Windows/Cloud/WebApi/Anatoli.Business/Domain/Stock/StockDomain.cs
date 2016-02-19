@@ -20,7 +20,7 @@ namespace Anatoli.Business.Domain
         public IAnatoliProxy<Stock, StockViewModel> Proxy { get; set; }
         public IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> ProductRequestRuleProxy { get; set; }
         public IAnatoliProxy<Stock, StockViewModel> ProxyCompleteInfo { get; set; }
-        
+
         public IRepository<Stock> Repository { get; set; }
         public IRepository<StockProductRequestRule> ProductRequestRuleRepository { get; set; }
         public IRepository<User> UserRepository { get; set; }
@@ -222,6 +222,13 @@ namespace Anatoli.Business.Domain
                 log.Error("Get All Product Request Rules", ex);
                 throw ex;
             }
+        }
+
+        public async Task<StockProductRequestRuleViewModel> GetAllById(Guid id)
+        {
+            var model = await ProductRequestRuleRepository.GetByIdAsync(id);
+
+            return ProductRequestRuleProxy.Convert(model);
         }
         #endregion
     }
