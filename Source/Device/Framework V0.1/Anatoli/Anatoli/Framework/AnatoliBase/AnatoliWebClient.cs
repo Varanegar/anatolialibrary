@@ -265,6 +265,11 @@ namespace Anatoli.Framework.AnatoliBase
                 respone = await client.Execute(request, cancelToken.Token);
             else
                 respone = await client.Execute(request);
+            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                OnTokenExpire();
+                throw new TokenException();
+            }
             JsonDeserializer deserializer = new JsonDeserializer();
             try
             {
@@ -280,6 +285,11 @@ namespace Anatoli.Framework.AnatoliBase
         {
             client.IgnoreResponseStatusCode = true;
             RestSharp.Portable.IRestResponse respone = await client.Execute(request);
+            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                OnTokenExpire();
+                throw new TokenException();
+            }
             JsonDeserializer deserializer = new JsonDeserializer();
             try
             {
@@ -295,29 +305,43 @@ namespace Anatoli.Framework.AnatoliBase
         {
             client.IgnoreResponseStatusCode = true;
             RestSharp.Portable.IRestResponse respone = await client.Execute(request);
+            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                OnTokenExpire();
+                throw new TokenException();
+            }
         }
-        Result ExecRequest<Result>(RestClient client, RestRequest request, System.Threading.CancellationTokenSource tokenSource)
+        //Result ExecRequest<Result>(RestClient client, RestRequest request, System.Threading.CancellationTokenSource tokenSource)
+        //{
+        //    client.IgnoreResponseStatusCode = true;
+        //    var token = tokenSource.Token;
+        //    var respone = client.Execute(request, token);
+        //    while (!respone.IsCompleted && !token.IsCancellationRequested)
+        //    {
+
+        //    }
+        //    JsonDeserializer deserializer = new JsonDeserializer();
+        //    try
+        //    {
+        //        var result = deserializer.Deserialize<Result>(respone.Result);
+        //        string aa = Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length);
+        //        return result;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length), e);
+        //    }
+        //}
+
+        public void OnTokenExpire()
         {
-            client.IgnoreResponseStatusCode = true;
-            var token = tokenSource.Token;
-            var respone = client.Execute(request, token);
-            while (!respone.IsCompleted && !token.IsCancellationRequested)
+            if (TokenExpire != null)
             {
-
-            }
-            JsonDeserializer deserializer = new JsonDeserializer();
-            try
-            {
-                var result = deserializer.Deserialize<Result>(respone.Result);
-                string aa = Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length);
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length), e);
+                TokenExpire.Invoke(this, new EventArgs());
             }
         }
 
+        public EventHandler TokenExpire;
     }
     public class AnatoliTokenInfo
     {
@@ -362,4 +386,5 @@ namespace Anatoli.Framework.AnatoliBase
     {
         public NoInternetAccess(string message = "No Internet Access", Exception ex = null) : base(message, ex) { }
     }
+
 }

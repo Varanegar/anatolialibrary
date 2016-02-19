@@ -24,7 +24,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductUpdateModel>.GetListAsync(q);
@@ -62,7 +62,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("products");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.ProductTbl);
             }
             catch (Exception e)
             {
@@ -73,7 +73,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("products_price");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductPriceUpdateModel>.GetListAsync(q);
@@ -84,7 +84,7 @@ namespace Anatoli.App.Manager
                     var currentList = query.ExecuteQuery<ProductPriceModel>();
                     foreach (var item in currentList)
                     {
-                        items.Add(item.product_id, item);
+                        items.Add(item.product_id + item.store_id, item);
                     }
                 }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -92,24 +92,26 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        if (items.ContainsKey(item.UniqueId))
+                        if (items.ContainsKey(item.UniqueId + item.StoreGuid.ToString().ToUpper()))
                         {
                             UpdateCommand command = new UpdateCommand("products_price", new BasicParam("price", item.Price.ToString()),
-                            new EqFilterParam("product_id", item.ProductGuid.ToUpper()));
+                            new EqFilterParam("product_id", item.ProductGuid.ToUpper()),
+                            new EqFilterParam("store_id", item.StoreGuid.ToString().ToUpper()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
                         }
                         else
                         {
                             InsertCommand command = new InsertCommand("products_price", new BasicParam("price", item.Price.ToString()),
-                            new BasicParam("product_id", item.ProductGuid.ToUpper()));
+                            new BasicParam("product_id", item.ProductGuid.ToUpper()),
+                            new BasicParam("store_id", item.StoreGuid.ToString().ToUpper()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
                         }
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("products_price");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.PriceTbl);
             }
             catch (Exception e)
             {
@@ -121,7 +123,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 await BaseDataAdapter<BasketViewModel>.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
@@ -141,7 +143,7 @@ namespace Anatoli.App.Manager
                             }
                         }
                         connection.Commit();
-                        await SyncManager.SaveUpdateDateAsync("baskets");
+                        await SyncManager.SaveUpdateDateAsync(SyncManager.BasketTbl);
                     }
                 }
             }
@@ -178,7 +180,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);
@@ -220,7 +222,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("baskets");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);
@@ -335,9 +337,9 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static StringQuery Search(string value)
+        public static StringQuery Search(string value, string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') ORDER BY cat_id", value));
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId));
             return query;
         }
 
@@ -347,7 +349,7 @@ namespace Anatoli.App.Manager
                 return null;
             else
             {
-                string imguri = String.Format("{2}/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId,Configuration.WebService.PortalAddress);
+                string imguri = String.Format("{2}/content/Images/635126C3-D648-4575-A27C-F96C595CDAC5/100x100/{0}/{1}.png", productId, imageId, Configuration.WebService.PortalAddress);
                 return imguri;
             }
         }
@@ -395,6 +397,24 @@ namespace Anatoli.App.Manager
                     list2.Add(item);
             }
             return list2;
+        }
+
+
+        public static StringQuery SetCatId(string catId, string storeId)
+        {
+            var leftRight = CategoryManager.GetLeftRight(catId);
+            StringQuery query;
+            if (leftRight != null)
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id AND store_id = '{2}'", leftRight.left, leftRight.right, storeId));
+            else
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId));
+            return query;
+        }
+
+        public static StringQuery GetAll(string storeId)
+        {
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view  WHERE store_id = '{0}' ORDER BY cat_id", storeId));
+            return query;
         }
     }
 }

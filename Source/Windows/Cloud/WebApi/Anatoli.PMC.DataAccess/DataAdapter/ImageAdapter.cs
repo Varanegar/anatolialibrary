@@ -32,7 +32,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " and CenterImage.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                var data = context.All<ItemImageViewModel>(DBQuery.GetCenterPicture() + where);
+                var data = context.All<ItemImageViewModel>(DBQuery.Instance.GetCenterPicture() + where);
                 imageList = data.ToList();
 
             }
@@ -48,7 +48,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " and ProductImage.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                var data = context.All<ItemImageViewModel>(DBQuery.GetProductPicture() + where);
+                var data = context.All<ItemImageViewModel>(DBQuery.Instance.GetProductPicture() + where);
                 imageList = data.ToList();
 
             }
@@ -64,7 +64,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " and ProductGroupTreeSiteImage.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                var data = context.All<ItemImageViewModel>(DBQuery.GetProductSiteGroupPicture() + where);
+                var data = context.All<ItemImageViewModel>(DBQuery.Instance.GetProductSiteGroupPicture() + where);
                 imageList = data.ToList();
 
             }

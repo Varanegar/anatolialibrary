@@ -192,6 +192,14 @@
       <Project>{e22af1cb-59a4-4182-9d05-d71d9f459764}</Project>
       <Name>Anatoli.PMC.ViewModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Anatoli.Rastak.DataAccess\Anatoli.Rastak.DataAccess.csproj">
+      <Project>{50715b5e-6345-4768-80be-bd5fb411d189}</Project>
+      <Name>Anatoli.Rastak.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.Rastak.ViewModels\Anatoli.Rastak.ViewModels.csproj">
+      <Project>{a7938bcc-748b-43d8-859d-f62dfbf642ef}</Project>
+      <Name>Anatoli.Rastak.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
       <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
       <Name>Anatoli.ViewModels</Name>

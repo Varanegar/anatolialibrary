@@ -91,6 +91,33 @@ namespace Anatoli.Business.Domain
             return dataViewModels;
         }
 
+        public async Task<List<SupplierViewModel>> CheckDeletedAsync(List<SupplierViewModel> dataViewModels)
+        {
+            try
+            {
+                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+
+                currentDataList.ForEach(item =>
+                {
+                    if(dataViewModels.Find(p => p.UniqueId == item.Id) == null)
+                    {
+                        item.IsRemoved = true;
+                        Repository.UpdateAsync(item);
+                    }
+                });
+
+                await Repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("CheckForDeletedAsync", ex);
+                throw ex;
+            }
+
+            return dataViewModels;
+        }
+
         public async Task<List<SupplierViewModel>> Delete(List<SupplierViewModel> dataViewModels)
         {
             await Task.Factory.StartNew(() =>

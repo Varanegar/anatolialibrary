@@ -41,12 +41,12 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                var data = context.All<ProductViewModel>(DBQuery.GetProduct() + where);
+                var data = context.All<ProductViewModel>(DBQuery.Instance.GetProduct() + where);
                 data.ToList().ForEach(item =>
                 {
-                    var productSuppllier = context.All<SupplierViewModel>(DBQuery.GetProductSupplier(item.ID));
+                    var productSuppllier = context.All<SupplierViewModel>(DBQuery.Instance.GetProductSupplier(item.ID));
                     item.Suppliers = productSuppllier.ToList();
-                    var productValue = context.All<CharValueViewModel>(DBQuery.GetProductCharValue(item.ID));
+                    var productValue = context.All<CharValueViewModel>(DBQuery.Instance.GetProductCharValue(item.ID));
                     item.CharValues = productValue.ToList();
                 });
                 products = data.ToList();
@@ -62,8 +62,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                context.Execute(DBQuery.GetProductGroupData());
-                var data = context.All<ProductGroupViewModel>(DBQuery.GetProductGroupTree());
+                context.Execute(DBQuery.Instance.GetProductGroupData());
+                var data = context.All<ProductGroupViewModel>(DBQuery.Instance.GetProductGroupTree());
                 productGroup = data.ToList();
             }
             return productGroup;
@@ -76,8 +76,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 string where = "";
                 if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                context.Execute(DBQuery.GetMainProductGroupData());
-                var data = context.All<MainProductGroupViewModel>(DBQuery.GetMainProductGroupTree());
+                context.Execute(DBQuery.Instance.GetMainProductGroupData());
+                var data = context.All<MainProductGroupViewModel>(DBQuery.Instance.GetMainProductGroupTree());
                 productGroup = data.ToList();
             }
             return productGroup;

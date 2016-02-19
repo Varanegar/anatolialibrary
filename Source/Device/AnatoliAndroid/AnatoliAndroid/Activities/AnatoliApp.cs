@@ -24,6 +24,8 @@ using Anatoli.App.Model;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Product;
 using Android.Views.Animations;
+using Anatoli.Framework;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.Activities
 {
@@ -53,7 +55,13 @@ namespace AnatoliAndroid.Activities
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
         double _price;
-        public string DefaultStore;
+        public string DefaultStoreName { get; private set; }
+        public string DefaultStoreId { get; private set; }
+        public void SetDefaultStore(StoreDataModel store)
+        {
+            DefaultStoreId = store.store_id;
+            DefaultStoreName = store.store_name;
+        }
         public TextView ShoppingCardItemCount { get { return _shoppingCardTextView; } }
         public void SetTotalPrice(double price)
         {
@@ -257,7 +265,7 @@ namespace AnatoliAndroid.Activities
                     ProductsListF = _currentFragment as ProductsListFragment;
                 }
 
-                await ProductsListF.Search(ProductManager.Search(value), value);
+                await ProductsListF.Search(ProductManager.Search(value, AnatoliApp.GetInstance().DefaultStoreId), value);
 
             }
             if (AnatoliApp.GetInstance().GetCurrentFragmentType() == typeof(FirstFragment))
@@ -265,7 +273,7 @@ namespace AnatoliAndroid.Activities
                 ProductsListF = SetFragment(ProductsListF, "products_fragment");
                 ProductsListF.SetCatId(null);
                 await ProductsListF.Refresh();
-                await ProductsListF.Search(ProductManager.Search(value), value);
+                await ProductsListF.Search(ProductManager.Search(value, AnatoliApp.GetInstance().DefaultStoreId), value);
             }
             if (GetInstance().GetCurrentFragmentType() == typeof(StoresListFragment))
             {
@@ -356,7 +364,7 @@ namespace AnatoliAndroid.Activities
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+                        if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
@@ -544,7 +552,7 @@ namespace AnatoliAndroid.Activities
                 }
                 catch (Exception e)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(e, false);
+                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(e), false);
                     if (cancelable && e.GetType() == typeof(TaskCanceledException))
                     {
                         errDialog.SetMessage(Resource.String.ErrorOccured);
@@ -557,14 +565,17 @@ namespace AnatoliAndroid.Activities
         }
         async Task CancelSync()
         {
-            if ((await SyncManager.GetLastUpdateDateAsync("products_price")) == DateTime.MinValue)
+            if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
-                alert.SetNegativeButton("بی خیال و خروج", (s3, e3) => { _activity.Finish(); });
+                alert.SetNegativeButton("بی خیال", (s3, e3) => { });
                 alert.SetPositiveButton("دوباره تلاش کن", async (s3, e3) => { await SyncDatabase(); });
                 alert.Show();
             }
+        }
+        internal async Task ClearDatabase(){
+            await SyncManager.ClearDatabase();
         }
         internal async Task<bool> SyncDatabase()
         {
@@ -615,7 +626,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 pDialog.Dismiss();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
@@ -769,8 +780,8 @@ namespace AnatoliAndroid.Activities
 
             var storesMenuEntry = new DrawerMainItem();
             storesMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.StoresList;
-            if (DefaultStore != null)
-                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStore + " ) ";
+            if (DefaultStoreName != null)
+                storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore) + " ( " + DefaultStoreName + " ) ";
             else
                 storesMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.MyStore);
             mainItems.Add(storesMenuEntry);
@@ -883,7 +894,8 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex,false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+
             }
         }
 

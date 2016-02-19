@@ -33,7 +33,7 @@ namespace AnatoliAndroid.Activities
     {
         Toolbar _toolbar;
         LocationManager _locationManager;
-        public const string HOCKEYAPP_APPID = "1de510d412d34929b0e5db5c446a9f32";
+        public const string HOCKEYAPP_APPID = "74cf61c0125342949c98afc10b5f9e21";
         //public static readonly int OpenImageRequestCode = 1234;
         protected override void OnSaveInstanceState(Bundle outState)
         {
@@ -85,6 +85,18 @@ namespace AnatoliAndroid.Activities
         {
             base.OnPostCreate(savedInstanceState);
 
+            AnatoliClient.GetInstance().WebClient.TokenExpire += async (s, e) =>
+            {
+                await AnatoliUserManager.LogoutAsync();
+                var currentFragmentType = AnatoliApp.GetInstance().GetCurrentFragmentType();
+                if (currentFragmentType == typeof(ProfileFragment))
+                {
+                    AnatoliApp.GetInstance().BackFragment();
+                }
+                LoginFragment login = new LoginFragment();
+                var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                login.Show(transaction, "login_fragment");
+            };
             var user = await AnatoliUserManager.ReadUserInfoAsync();
             AnatoliApp.Initialize(this, user, FindViewById<ListView>(Resource.Id.drawer_list), _toolbar);
             _locationManager = (LocationManager)GetSystemService(LocationService);
@@ -97,7 +109,7 @@ namespace AnatoliAndroid.Activities
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
-                AnatoliApp.GetInstance().DefaultStore = (await StoreManager.GetDefaultAsync()).store_name;
+                AnatoliApp.GetInstance().SetDefaultStore(await StoreManager.GetDefaultAsync());
                 AnatoliApp.GetInstance().RefreshMenuItems();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                 AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());

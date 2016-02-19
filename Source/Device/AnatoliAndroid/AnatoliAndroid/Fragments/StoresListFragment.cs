@@ -29,7 +29,7 @@ namespace AnatoliAndroid.Fragments
         {
             StringQuery query = new StringQuery("SELECT * FROM stores");
             _dataManager.SetQueries(query, null);
-            _listAdapter.StoreSelected += (store) =>
+            _listAdapter.StoreSelected += async (store) =>
                 {
                     foreach (var item in _listAdapter.List)
                     {
@@ -38,8 +38,13 @@ namespace AnatoliAndroid.Fragments
                         else
                             item.selected = 1;
                     }
-                    AnatoliApp.GetInstance().DefaultStore = store.store_name;
+                    AnatoliApp.GetInstance().SetDefaultStore(store);
                     AnatoliApp.GetInstance().RefreshMenuItems();
+                    if (await ShoppingCardManager.ClearAsync())
+                    {
+                        AnatoliApp.GetInstance().ShoppingCardItemCount.Text = "0";
+                        AnatoliApp.GetInstance().SetTotalPrice(0);
+                    }
                     _listAdapter.NotifyDataSetChanged();
                 };
         }

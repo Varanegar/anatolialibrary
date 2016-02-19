@@ -69,6 +69,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("chargroups/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedCharGroups(string privateOwnerId, List<CharGroupViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var charGroupDomain = new CharGroupDomain(owner);
+                var result = await charGroupDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
         #region Char Type
@@ -120,6 +138,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var owner = Guid.Parse(privateOwnerId);
                 var charTypeDomain = new CharTypeDomain(owner);
                 var result = await charTypeDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("chartypes/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedCharTypes(string privateOwnerId, List<CharTypeViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var charTypeDomain = new CharTypeDomain(owner);
+                var result = await charTypeDomain.CheckDeletedAsync(data);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -205,6 +241,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkdeleted")]
+        public async Task<IHttpActionResult> CheckeDeletedProducts(string privateOwnerId, List<ProductViewModel> data)
+        {
+            try
+            {
+                if (data != null) log.Info("save product count : " + data.Count);
+                var owner = Guid.Parse(privateOwnerId);
+                var productDomain = new ProductDomain(owner);
+                var result = await productDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
         [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Product", Action = "ProductTypes")]
         [Route("productTypes"), HttpPost]
         public async Task<IHttpActionResult> GetProductTypes()
@@ -278,6 +333,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("productgroups/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedProductGroups(string privateOwnerId, List<ProductGroupViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var productGroupDomain = new ProductGroupDomain(owner);
+                var result = await productGroupDomain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
         #region Product Main Groups
@@ -343,6 +416,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var owner = Guid.Parse(privateOwnerId);
                 var productGroupDomain = new MainProductGroupDomain(owner);
                 var result = await productGroupDomain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("mainproductgroups/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedMainProductGroups(string privateOwnerId, List<MainProductGroupViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var productGroupDomain = new MainProductGroupDomain(owner);
+                var result = await productGroupDomain.CheckDeletedAsync(data);
                 return Ok(result);
             }
             catch (Exception ex)

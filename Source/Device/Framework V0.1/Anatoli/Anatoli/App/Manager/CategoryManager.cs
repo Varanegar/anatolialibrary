@@ -15,7 +15,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("categories");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.GroupsTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductGroupModel>.GetListAsync(q);
@@ -56,7 +56,7 @@ namespace Anatoli.App.Manager
                         }
                     }
                     connection.Commit();
-                    await SyncManager.SaveUpdateDateAsync("categories");
+                    await SyncManager.SaveUpdateDateAsync(SyncManager.GroupsTbl);
                 }
             }
             catch (Exception e)
@@ -178,5 +178,12 @@ namespace Anatoli.App.Manager
             }
         }
 
+
+        public static async Task<List<CategoryInfoModel>> Search(string value)
+        {
+            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
+            var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
+            return groups;
+        }
     }
 }

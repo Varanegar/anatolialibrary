@@ -33,7 +33,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    var data = context.All<FiscalYearViewModel>(DBQuery.GetFiscalYearQuery());
+                    var data = context.All<FiscalYearViewModel>(DBQuery.Instance.GetFiscalYearQuery());
                     storeList = data.ToList();
                 }
 

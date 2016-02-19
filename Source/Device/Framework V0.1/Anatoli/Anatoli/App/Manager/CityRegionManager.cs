@@ -17,7 +17,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("cityregion");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.CityRegionTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.CityRegion + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<CityRegionUpdateModel>.GetListAsync(q);
@@ -36,7 +36,7 @@ namespace Anatoli.App.Manager
                     connection.BeginTransaction();
                     foreach (var item in list)
                     {
-                        if (items.ContainsKey(item.UniqueId))
+                        if (items.ContainsKey(item.UniqueId.ToUpper()))
                         {
                             UpdateCommand command = new UpdateCommand("cityregion", new BasicParam("group_name", item.GroupName),
                             new EqFilterParam("group_id", item.UniqueId.ToUpper()),
@@ -62,7 +62,7 @@ namespace Anatoli.App.Manager
 
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("cityregion");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.CityRegionTbl);
             }
             catch (Exception e)
             {

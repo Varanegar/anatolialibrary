@@ -65,6 +65,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var result = await manufactureDomain.PublishAsync(data);
             return Ok(result);
         }
+        
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedManufactures(string privateOwnerId, List<ManufactureViewModel> data)
+        {
+            if (data != null) log.Info("save manufacture count : " + data.Count);
+            var owner = Guid.Parse(privateOwnerId);
+            var manufactureDomain = new ManufactureDomain(owner);
+            var result = await manufactureDomain.CheckDeletedAsync(data);
+            return Ok(result);
+        }
         #endregion
     }
 }

@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model;
+using Anatoli.Framework.DataAdapter;
 namespace Anatoli.App.Manager
 {
     public class SyncManager
     {
-        //public static async Task SyncDatabase()
-        //{
-        //    await CityRegionUpdateManager.SyncDataBase();
-        //    await StoreUpdateManager.SyncDataBase();
-        //    await ProductGroupManager.SyncDataBase();
-        //    await ProductUpdateManager.SyncDataBase();
-        //    await ProductPriceManager.SyncDataBase();
-        //    await SaveDBVersionAsync();
-        //}
+        public static string StoresTbl = "stores";
+        public static string BaseTypesTbl = "basetypes";
+        public static string GroupsTbl = "categories";
+        public static string CityRegionTbl = "cityregion";
+        public static string ImagesTbl = "images";
+        public static string PriceTbl = "products_price";
+        public static string ProductTbl = "products";
+        public static string BasketTbl = "baskets";
         public static async Task<bool> SaveUpdateDateAsync(string tableName)
         {
             try
@@ -91,6 +91,26 @@ namespace Anatoli.App.Manager
             {
                 AnatoliClient.GetInstance().FileIO.WriteAllText("1", AnatoliClient.GetInstance().FileIO.GetDataLoction(), "dbVersion");
             });
+        }
+
+        public static async Task ClearDatabase()
+        {
+            try
+            {
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("cityregion"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("products_price"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("products"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("stores"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("categories"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("updates"));
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
     }
 }

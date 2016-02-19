@@ -16,7 +16,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync("basetypes");
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BaseTypesTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<BaseTypeViewModel>.GetListAsync(q);
@@ -51,7 +51,7 @@ namespace Anatoli.App.Manager
 
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync("basetypes");
+                await SyncManager.SaveUpdateDateAsync(SyncManager.BaseTypesTbl);
             }
             catch (Exception e)
             {

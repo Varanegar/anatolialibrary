@@ -25,10 +25,23 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(StoreOnHandDataType);
                 var dbData = StoreAdapter.Instance.GetAllStoreOnHands(lastUpload);
+                if (dbData != null)
+                {
 
-                string data =JsonConvert.SerializeObject(dbData);
-                string URI = serverURI + UriInfo.SaveStoreOnHandURI + privateOwnerQueryString;
-                var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.SaveStoreOnHandURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
+
+                dbData = StoreAdapter.Instance.GetAllStoreOnHands(DateTime.MinValue);
+                if (dbData != null)
+                {
+
+                    string data = JsonConvert.SerializeObject(dbData);
+                    string URI = serverURI + UriInfo.SaveStoreOnHandURI + privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                }
+
                 Utility.SetLastUploadTime(StoreOnHandDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

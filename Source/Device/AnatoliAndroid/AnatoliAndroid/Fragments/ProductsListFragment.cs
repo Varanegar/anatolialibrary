@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Anatoli.Framework.DataAdapter;
 using Android.Animation;
 using Android.Views.Animations;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -27,7 +28,7 @@ namespace AnatoliAndroid.Fragments
     {
         public ProductsListFragment()
         {
-            var query = new StringQuery("SELECT * FROM products_price_view ORDER BY cat_id");
+            var query = ProductManager.GetAll(AnatoliApp.GetInstance().DefaultStoreId);
             _dataManager.SetQueries(query, null);
         }
         public override void OnStart()
@@ -35,12 +36,11 @@ namespace AnatoliAndroid.Fragments
             base.OnStart();
             AnatoliApp.GetInstance().ShowSearchIcon();
         }
-        public async Task Search(DBQuery query, string value)
+        public override async Task Search(DBQuery query, string value)
         {
             _dataManager.ShowGroups = true;
             await base.Search(query, value);
-            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
-            var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
+            var groups = await CategoryManager.Search(value);
             List<ProductModel> pl = new List<ProductModel>();
             foreach (var item in groups)
             {
@@ -64,17 +64,12 @@ namespace AnatoliAndroid.Fragments
             {
                 _dataManager.ShowGroups = false;
                 ForceRefresh = true;
-                var leftRight = CategoryManager.GetLeftRight(id);
-                StringQuery query;
-                if (leftRight != null)
-                    query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id ", leftRight.left, leftRight.right));
-                else
-                    query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id"));
+                var query = ProductManager.SetCatId(id, AnatoliApp.GetInstance().DefaultStoreId);
                 _dataManager.SetQueries(query, null);
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 return;
             }
         }

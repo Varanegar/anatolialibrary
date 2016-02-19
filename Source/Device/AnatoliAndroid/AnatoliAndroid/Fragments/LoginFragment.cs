@@ -15,6 +15,7 @@ using Anatoli.App.Manager;
 using Anatoli.App.Model.AnatoliUser;
 using Anatoli.Framework.AnatoliBase;
 using Parse;
+using Anatoli.Framework;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -110,7 +111,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(ex, false);
+                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                         if (ex.GetType() == typeof(TokenException))
                         {
                             errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
@@ -129,7 +130,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(ex, false);
+                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                 pDialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {

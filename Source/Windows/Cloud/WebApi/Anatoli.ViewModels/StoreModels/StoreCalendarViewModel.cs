@@ -6,6 +6,9 @@ namespace Anatoli.ViewModels.StoreModels
 
     public class StoreCalendarViewModel : BaseViewModel
     {
+        public static string StoreOpenTime = "635126C3-D648-4575-A27C-F96C595CDAC5";
+        public static string StoreActivedeliveryTime = "9CED6F7E-D08E-40D7-94BF-A6950EE23915";
+
       	public DateTime Date { get; set; }
         public string PDate { get; set; }
         public string FromTimeString { get; set; }

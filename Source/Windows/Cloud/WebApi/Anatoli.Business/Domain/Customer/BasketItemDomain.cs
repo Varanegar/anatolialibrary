@@ -138,7 +138,7 @@ namespace Anatoli.Business.Domain
 
                 dataListInfo.ForEach(item =>
                 {
-                    var basketItem = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    var basketItem = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
 
                     Repository.DeleteAsync(basketItem);
                 });

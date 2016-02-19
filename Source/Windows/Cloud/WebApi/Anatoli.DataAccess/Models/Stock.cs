@@ -40,6 +40,11 @@ namespace Anatoli.DataAccess.Models
         public virtual Principal Accept1By { get; set; }
         public virtual Principal Accept2By { get; set; }
         public virtual Principal Accept3By { get; set; }
+        public virtual bool OverRequest { get; set; }
+        public virtual bool OverAfterFirstAcceptance { get; set; }
+        public virtual bool OverAfterSecondAcceptance { get; set; }
+        public virtual bool OverAfterThirdAcceptance { get; set; }
+
 
         public virtual ICollection<User> Users { get; set; }
 
