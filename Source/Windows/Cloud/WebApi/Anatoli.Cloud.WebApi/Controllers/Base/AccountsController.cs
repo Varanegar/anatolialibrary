@@ -26,6 +26,19 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : AnatoliApiController
     {
+        [AnatoliAuthorize(Roles = "Admin,AuthorizedApp", Resource = "Pages", Action = "List")]
+        [Route("myWebpages"), HttpPost]
+        public async Task<IHttpActionResult> GetPages()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+
+            var data = await new AuthorizationDomain(OwnerKey).GetPermissionsForPrincipal(Guid.Parse(userId));
+
+            var model = data.Where(p => p.Permission.Resource == "Pages").Select(s=>s.Permission).ToList();
+
+            return Ok(new PermissionProxy().Convert(model.ToList()));
+        }
+
         [Authorize(Roles = "Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()

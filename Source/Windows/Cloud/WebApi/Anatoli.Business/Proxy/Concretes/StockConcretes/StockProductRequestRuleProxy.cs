@@ -20,12 +20,16 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
                 FromPDate = data.FromPDate,
                 MainProductGroupId = data.MainProductGroupId,
                 ProductId = data.ProductId,
+                ProductName = data.Product != null ? data.Product.ProductName : "",
                 ProductTypeId = data.ProductTypeId,
                 SupplierId = data.SupplierId,
                 ReorderCalcTypeId = data.ReorderCalcTypeId,
                 RuleTypeId = data.StockProductRequestRuleTypeId,
                 ToDate = data.ToDate,
                 ToPDate = data.ToPDate,
+
+                Qty = data.Qty,
+                RuleCalcTypeId = data.StockProductRequestRuleCalcTypeId,
 
                 StockProductRequestRuleName = data.StockProductRequestRuleName
             };
@@ -37,7 +41,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                PrivateLabelOwner_Id = data.PrivateOwnerId,
 
                 FromDate = data.FromDate,
                 FromPDate = data.FromPDate,
@@ -49,6 +53,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
                 StockProductRequestRuleTypeId = data.RuleTypeId,
                 ToDate = data.ToDate,
                 ToPDate = data.ToPDate,
+
+                Qty = data.Qty,
+                StockProductRequestRuleCalcTypeId = data.RuleCalcTypeId,
 
                 StockProductRequestRuleName = data.StockProductRequestRuleName
             };
@@ -96,9 +103,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
         {
             return new StockProductRequestRuleCalcType
             {
-                Id=data.UniqueId,
-                Number_ID=data.ID,
-                StockProductRequestRuleCalcTypeName=data.StockProductRequestRuleCalcTypeName
+                Id = data.UniqueId,
+                Number_ID = data.ID,
+                StockProductRequestRuleCalcTypeName = data.StockProductRequestRuleCalcTypeName
             };
         }
     }

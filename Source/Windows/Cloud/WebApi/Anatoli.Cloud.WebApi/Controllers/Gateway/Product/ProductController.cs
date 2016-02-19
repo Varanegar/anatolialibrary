@@ -3,6 +3,7 @@ using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -148,6 +149,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]
+        [Route("searchProducts"), HttpPost]
+        public async Task<IHttpActionResult> SearchProductList([FromBody] RequestModel data)
+        {
+            try
+            {
+                var model = await new ProductDomain(OwnerKey).Search(data.searchTerm);
+
+                return Ok(model.Select(s => new { id = s.UniqueId, name = s.ProductName }).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("products/after")]
@@ -274,6 +291,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var productGroupDomain = new MainProductGroupDomain(owner);
                 var result = await productGroupDomain.GetAll();
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "MainProductGroupList")]
+        [Route("mainProductGroupList"), HttpPost]
+        public async Task<IHttpActionResult> GetMainProductGroupList()
+        {
+            try
+            {
+                var model = await new MainProductGroupDomain(OwnerKey).GetAll();
+
+                return Ok(model.Select(s => new { id = s.UniqueId, groupName = s.GroupName, parent = s.ParentUniqueIdString }).ToList());
             }
             catch (Exception ex)
             {

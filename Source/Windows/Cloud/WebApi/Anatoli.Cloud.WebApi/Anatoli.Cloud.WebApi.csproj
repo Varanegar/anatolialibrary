@@ -105,6 +105,10 @@
       <HintPath>..\packages\parse.1.6.2\lib\net45\Parse.NetFx45.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PersianDate, Version=1.3.5419.21406, Culture=neutral, PublicKeyToken=0690767615cbef5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\PersianDate.1.3.5\lib\PersianDate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SendGrid">
       <HintPath>..\packages\Sendgrid.6.3.4\lib\SendGrid.dll</HintPath>
     </Reference>
