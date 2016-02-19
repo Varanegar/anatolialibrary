@@ -109,30 +109,40 @@ namespace AnatoliAndroid.Activities
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
-                AnatoliApp.GetInstance().SetDefaultStore(await StoreManager.GetDefaultAsync());
-                AnatoliApp.GetInstance().RefreshMenuItems();
-                AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
-                AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
-                if (AnatoliApp.GetInstance().AnatoliUser != null)
+                var defaultStore = await StoreManager.GetDefaultAsync();
+                if (defaultStore != null)
                 {
+                    AnatoliApp.GetInstance().SetDefaultStore(defaultStore);
+                    AnatoliApp.GetInstance().RefreshMenuItems();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                    AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                    AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
+                    if (AnatoliApp.GetInstance().AnatoliUser != null)
+                    {
 #pragma warning disable
-                    try
-                    {
-                        AnatoliApp.GetInstance().RefreshCutomerProfile();
-                        ProductManager.SyncFavorits();
-                        Configuration.ReadConfigFromFile();
-                    }
-                    catch (Exception)
-                    {
+                        try
+                        {
+                            AnatoliApp.GetInstance().RefreshCutomerProfile();
+                            ProductManager.SyncFavorits();
+                            Configuration.ReadConfigFromFile();
+                        }
+                        catch (Exception)
+                        {
 
-                    }
+                        }
 #pragma warning restore
+                    }
+
+                }
+                else
+                {
+                    var storesF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(null, "stores_fragment");
+                    await storesF.Refresh();
                 }
             }
             catch (Exception)
             {
-                AnatoliApp.GetInstance().SetFragment<StoresListFragment>(null, "stores_fragment");
+
             }
 
 

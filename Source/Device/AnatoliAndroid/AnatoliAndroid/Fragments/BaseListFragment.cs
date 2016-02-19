@@ -33,7 +33,6 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
-        //protected bool ForceRefresh = true;
         public BaseListFragment()
             : base()
         {

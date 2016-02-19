@@ -82,7 +82,7 @@ namespace AnatoliAndroid.Fragments
                     {
                         // Show confirmation dialog
                         ConfirmDialog confirmDialog = new ConfirmDialog();
-                        confirmDialog.UserName = result.Id.ToUpper();
+                        confirmDialog.UserName = _telEditText.Text;
                         confirmDialog.CodeConfirmed += async (sss, e2d) =>
                         {
                             // Login 

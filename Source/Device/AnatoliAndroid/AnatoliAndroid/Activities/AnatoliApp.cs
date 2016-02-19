@@ -409,6 +409,7 @@ namespace AnatoliAndroid.Activities
                     case DrawerMainItem.DrawerMainItems.StoresList:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
+                        await _storesListF.Refresh();
                         break;
                     case DrawerMainItem.DrawerMainItems.FirstPage:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
