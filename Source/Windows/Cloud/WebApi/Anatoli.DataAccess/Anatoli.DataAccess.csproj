@@ -324,6 +324,22 @@
     <Compile Include="Migrations\201602020925536_InitialDataInsert-3.Designer.cs">
       <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602181301249_ChangeStockRequest-1.cs" />
+    <Compile Include="Migrations\201602181301249_ChangeStockRequest-1.Designer.cs">
+      <DependentUpon>201602181301249_ChangeStockRequest-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181524209_UserResetPass-2.cs" />
+    <Compile Include="Migrations\201602181524209_UserResetPass-2.Designer.cs">
+      <DependentUpon>201602181524209_UserResetPass-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181544103_InitialDataInsert-4.cs" />
+    <Compile Include="Migrations\201602181544103_InitialDataInsert-4.Designer.cs">
+      <DependentUpon>201602181544103_InitialDataInsert-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181623458_InitialDataInsert-5.cs" />
+    <Compile Include="Migrations\201602181623458_InitialDataInsert-5.Designer.cs">
+      <DependentUpon>201602181623458_InitialDataInsert-5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -578,6 +594,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602020925536_InitialDataInsert-3.resx">
       <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181301249_ChangeStockRequest-1.resx">
+      <DependentUpon>201602181301249_ChangeStockRequest-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181524209_UserResetPass-2.resx">
+      <DependentUpon>201602181524209_UserResetPass-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181544103_InitialDataInsert-4.resx">
+      <DependentUpon>201602181544103_InitialDataInsert-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181623458_InitialDataInsert-5.resx">
+      <DependentUpon>201602181623458_InitialDataInsert-5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -45,6 +45,10 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual Principal Principal { get; set; }
         public virtual Role Role { get; set; }
         public virtual Group Group { get; set; }
+        public virtual string ResetSMSCode { get; set; }
+        public virtual string ResetSMSPass { get; set; }
+        public virtual Nullable<DateTime> ResetSMSRequestTime { get; set; }
+
 
         public virtual ICollection<Stock> Stocks { get; set; }
     }

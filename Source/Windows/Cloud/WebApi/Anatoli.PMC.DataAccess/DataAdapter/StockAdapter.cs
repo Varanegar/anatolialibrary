@@ -52,7 +52,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
         public List<StockActiveOnHandViewModel> GetAllStockOnHands(DateTime lastUpload)
@@ -79,7 +79,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
         public List<StockActiveOnHandViewModel> GetAllStockOnHandsByStockId(DateTime lastUpload, string stockId, string centerId)
@@ -104,7 +104,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
         public List<StockProductViewModel> GetAllStockProducts(DateTime lastUpload)
@@ -131,7 +131,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
     }

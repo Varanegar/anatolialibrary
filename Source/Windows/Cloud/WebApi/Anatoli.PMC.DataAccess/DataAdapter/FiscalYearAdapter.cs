@@ -42,7 +42,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
     }

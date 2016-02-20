@@ -8,7 +8,7 @@ namespace Anatoli.PMC.ViewModels.BaseModels
     public class PMCDBQueryViewModel : PMCBaseViewModel
     {
         public Guid UniqueId { get; set; }
-        public string QueryName { get; set; }
-        public string QueryTSQL { get; set; }
+        public string AnatoliQueryName { get; set; }
+        public string QueryTSql { get; set; }
     }
 }

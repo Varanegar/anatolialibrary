@@ -17,7 +17,7 @@ namespace ServiceTestApplication
             try
             {
                 var restul = log4net.Config.XmlConfigurator.Configure();
-                string ServerURI = "http://localhost/";
+                string ServerURI = "http://192.168.0.160:8081/";
                 string privateOwner = "?privateOwnerId=" + "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 log.Info("Start Transfer Data Job");
                 var oauthClient = new OAuth2Client(new Uri(ServerURI + "/oauth/token"));
@@ -28,7 +28,9 @@ namespace ServiceTestApplication
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
-                    /*
+
+                    log.Info("Transfer new customers");
+                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, privateOwner, "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
                     log.Info("Transfer fiscal year");
                     FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, privateOwner);
                     log.Info("Transfer supplier");
@@ -48,7 +50,7 @@ namespace ServiceTestApplication
                     log.Info("Transfer stock hand");
                     StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, privateOwner);
                     log.Info("Completed Transfer Data Job");
-                    */
+                    
                     log.Info("Transfer Product Group Picture");
                     ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, privateOwner);
                     log.Info("Transfer Product Picture");

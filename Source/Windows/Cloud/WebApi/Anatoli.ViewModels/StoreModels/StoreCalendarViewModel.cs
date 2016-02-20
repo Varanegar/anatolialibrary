@@ -6,8 +6,8 @@ namespace Anatoli.ViewModels.StoreModels
 
     public class StoreCalendarViewModel : BaseViewModel
     {
-        public static string StoreOpenTime = "635126C3-D648-4575-A27C-F96C595CDAC5";
-        public static string StoreActivedeliveryTime = "9CED6F7E-D08E-40D7-94BF-A6950EE23915";
+        public static string StoreOpenTime = "E4A73D47-8AC7-41D1-8EEA-21EDFBA90424";
+        public static string StoreActivedeliveryTime = "D5C5E5BF-9235-48D8-B026-B7EB8DB14100";
 
       	public DateTime Date { get; set; }
         public string PDate { get; set; }
@@ -48,6 +48,7 @@ namespace Anatoli.ViewModels.StoreModels
             }
         }
         public Guid CalendarTypeValueId { get; set; }
+        public Guid StoreId { get; set; }
         public string Description { get; set; }
     }
 }

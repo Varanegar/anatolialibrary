@@ -36,7 +36,7 @@ namespace VNAppServer.Anatoli.Common
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
-            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Created)
             {
                 return JsonConvert.DeserializeObject<T>(str);
             }
@@ -62,7 +62,7 @@ namespace VNAppServer.Anatoli.Common
                 throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
             }
         }        
-        public static T CallServerServiceGet<T>(string data, string URI, HttpClient client)
+        public static T CallServerServiceGet<T>(string URI, HttpClient client)
             where T : class, new()
         {
             var result = client.GetAsync(URI).Result;
