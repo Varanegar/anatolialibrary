@@ -40,7 +40,7 @@ namespace Anatoli.Framework.Manager
             {
                 _remoteP.Limit = _limit;
             }
-            var list = await Task.Run(() => { return BaseDataAdapter<DataModel>.GetListAsync(_localP); });
+            var list = await  BaseDataAdapter<DataModel>.GetListAsync(_localP);
             if (_localP != null)
             {
                 _localP.Index += Math.Min(list.Count, _limit);

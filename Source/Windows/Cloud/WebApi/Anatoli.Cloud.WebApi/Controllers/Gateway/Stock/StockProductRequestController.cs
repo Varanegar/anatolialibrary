@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.Cloud.WebApi.Classes;
+using Newtonsoft.Json;
+using System.Globalization;
+using PersianDate;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -96,6 +99,46 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "SaveStockProductRequestRule")]
+        [Route("saveStockRequestProduct"), HttpPost]
+        public async Task<IHttpActionResult> SaveStockProductRequestRule([FromBody] RequestModel data)
+        {
+            try
+            {
+                dynamic tmp = JsonConvert.DeserializeObject(data.stockRequestProduct);
+
+                var model = new StockProductRequestRuleViewModel
+                {
+                    UniqueId = Guid.NewGuid(),
+                    StockProductRequestRuleName = tmp.ruleName,
+                    FromPDate = tmp.fromDate,
+                    ToPDate = tmp.toDate,
+                    FromDate = ConvertDate.ToEn(tmp.fromDate.ToString()),
+                    ToDate = ConvertDate.ToEn(tmp.toDate.ToString()),
+                    Qty = tmp.quantity,
+                    ProductTypeId = tmp.productType,
+                    ReorderCalcTypeId = tmp.reOrderCalcType,
+                    RuleTypeId = tmp.stockProductRequestRuleType,
+                    RuleCalcTypeId = tmp.stockProductRequestRuleCalcType,
+                    SupplierId = tmp.supplierId,
+                    MainProductGroupId = tmp.mainProductGroupId,
+                    ProductId = tmp.productId,
+                    PrivateOwnerId = OwnerKey
+                };
+
+                if (tmp.ruleId != "")
+                    model.UniqueId = tmp.ruleId;
+
+                await new StockProductRequestRuleDomain(OwnerKey).PublishAsync(new List<StockProductRequestRuleViewModel> { model });
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestRuleType")]
         [Route("stockProductRequestRuleTypes"), HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestRuleTypes([FromBody] RequestModel data)

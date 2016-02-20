@@ -25,10 +25,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("درخواست محصول", "Index", "Products", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("بازنگری درخواست ها", "ReviewProductRequest", "Products", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("سوابق درخواست ها", "StoreRequestsHistory", "Products", new { area = "" }, null)</li>
-                    <li data-bind="visible: shouldShowLogout"><a href="#" class="glyphicon glyphicon-log-out"> خروج </a></li>
+                    <li class="exit-menu-item" data-bind="visible: shouldShowLogout"><a href="#" class="glyphicon glyphicon-log-out"> خروج </a></li>
                 </ul>
             </div>
         </div>
@@ -64,6 +61,9 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.bootstrap.min.js"></script>
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/kendo")
     <script src="~/Scripts/persianDatepicker.min.js"></script>
@@ -79,6 +79,8 @@
             $(document).on("click", ".glyphicon-log-out", function () {
                 accountManagerApp.logout();
             });
+
+            headerMenu.refreshHeaderMenu();
         });
     </script>
     @RenderSection("scripts", required: false)

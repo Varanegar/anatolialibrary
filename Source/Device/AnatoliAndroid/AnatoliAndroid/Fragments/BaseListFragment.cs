@@ -33,7 +33,6 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
-        protected bool ForceRefresh = true;
         public BaseListFragment()
             : base()
         {
@@ -92,16 +91,7 @@ namespace AnatoliAndroid.Fragments
             };
             return _view;
         }
-        public async override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            if (ForceRefresh)
-            {
-                await Refresh();
-            }
-            ForceRefresh = false;
-        }
-        internal async Task Refresh()
+        internal async Task RefreshAsync()
         {
             try
             {

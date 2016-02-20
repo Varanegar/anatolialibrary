@@ -30,11 +30,13 @@ namespace AnatoliAndroid.Fragments
             var ipAddress = view.FindViewById<EditText>(Resource.Id.serverIpEditText);
             var saveButton = view.FindViewById<Button>(Resource.Id.button1);
             ipAddress.Text = Anatoli.Framework.AnatoliBase.Configuration.WebService.PortalAddress;
-            saveButton.Click += (s, e) =>
+            saveButton.Click += async (s, e) =>
             {
                 Anatoli.Framework.AnatoliBase.Configuration.WebService.PortalAddress = ipAddress.Text;
-                Anatoli.Framework.AnatoliBase.Configuration.SaveConfigToFile();
+                await Anatoli.Framework.AnatoliBase.Configuration.SaveConfigToFile();
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
+                await AnatoliApp.GetInstance().ClearDatabase();
+                await AnatoliApp.GetInstance().SyncDatabase();
             };
 
             return view;

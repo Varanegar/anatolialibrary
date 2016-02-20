@@ -75,68 +75,92 @@ namespace AnatoliAndroid.Fragments
             {
                 var result = await usermanager.RegisterAsync(_passwordEditText.Text, _passwordEditText.Text, _telEditText.Text, _emailEditText.Text);
                 dialog.Dismiss();
-                if (result.IsValid)
+                if (result.IsValid) // register success
                 {
                     alertDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.SaveSuccess));
-                    alertDialog.SetPositiveButton(Resource.String.Ok, async (s, a) =>
+                    alertDialog.SetPositiveButton(Resource.String.Ok, (s, a) =>
                     {
-                        ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
-                        AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                        errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
-
-                        pDialog.SetTitle(Resources.GetText(Resource.String.Login));
-                        pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
-                        pDialog.Show();
-                        try
+                        // Show confirmation dialog
+                        ConfirmDialog confirmDialog = new ConfirmDialog();
+                        confirmDialog.UserName = _telEditText.Text;
+                        confirmDialog.CodeConfirmed += async (sss, e2d) =>
                         {
-                            var userModel = await AnatoliUserManager.LoginAsync(_telEditText.Text, _passwordEditText.Text);
-                            pDialog.Dismiss();
-                            if (userModel.IsValid)
+                            // Login 
+                            ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                            errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
+
+                            pDialog.SetTitle(Resources.GetText(Resource.String.Login));
+                            pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
+                            pDialog.Show();
+                            try
                             {
-                                AnatoliApp.GetInstance().AnatoliUser = userModel;
-                                try
+                                var userModel = await AnatoliUserManager.LoginAsync(_telEditText.Text, _passwordEditText.Text);
+                                pDialog.Dismiss();
+                                if (userModel.IsValid)
                                 {
-                                    await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                                    AnatoliApp.GetInstance().RefreshMenuItems();
-                                    Dismiss();
-                                    AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
-                                }
-                                catch (Exception ex)
-                                {
-                                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
-                                    if (ex.GetType() == typeof(TokenException))
+                                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                                    try
                                     {
-                                        errDialog.SetMessage(Resource.String.SaveFailed);
-                                        errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                        errDialog.Show();
+                                        await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+                                        AnatoliApp.GetInstance().RefreshMenuItems();
+                                        Dismiss();
+                                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                                        if (ex.GetType() == typeof(TokenException))
+                                        {
+                                            errDialog.SetMessage(Resource.String.SaveFailed);
+                                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                            errDialog.Show();
+                                        }
                                     }
                                 }
+                                else
+                                {
+                                    errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
+                                    errDialog.SetMessage(userModel.ModelStateString);
+                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                    errDialog.Show();
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
-                                errDialog.SetMessage(userModel.ModelStateString);
-                                errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                errDialog.Show();
+                                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                                pDialog.Dismiss();
+                                if (ex.GetType() == typeof(ServerUnreachable))
+                                {
+                                    errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
+                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                    errDialog.Show();
+                                }
+                                else if (ex.GetType() == typeof(TokenException))
+                                {
+                                    errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
+                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                    errDialog.Show();
+                                }
+                                else if (ex.GetType() == typeof(System.Threading.Tasks.TaskCanceledException))
+                                {
+                                    errDialog.SetMessage("خطا در برقراری ارتباط");
+                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                    errDialog.Show();
+                                }
                             }
-                        }
-                        catch (Exception ex)
+
+                        };
+                        confirmDialog.ConfirmFailed += (msg) =>
                         {
-                            HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
-                            pDialog.Dismiss();
-                            if (ex.GetType() == typeof(ServerUnreachable))
-                            {
-                                errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
-                                errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                errDialog.Show();
-                            }
-                            else if (ex.GetType() == typeof(TokenException))
-                            {
-                                errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
-                                errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                errDialog.Show();
-                            }
-                        }
+                            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                            alert.SetMessage(msg);
+                            alert.SetTitle(Resource.String.Error);
+                            alert.Show();
+                        };
+                        FragmentTransaction t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                        confirmDialog.Show(t, "confirm_dialog");
+                        Dismiss();
                     });
                     alertDialog.Show();
                 }

@@ -314,6 +314,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "ProductRequestRules")]
+        [Route("productRequestRule"), HttpPost]
+        public async Task<IHttpActionResult> ProductRequestRule([FromBody] RequestModel data)
+        {
+            try
+            {
+                var result = await new StockDomain(OwnerKey).GetAllById(data.ruleId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
     }
 }

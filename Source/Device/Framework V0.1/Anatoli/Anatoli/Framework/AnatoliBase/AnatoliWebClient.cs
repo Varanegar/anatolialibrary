@@ -185,7 +185,10 @@ namespace Anatoli.Framework.AnatoliBase
                 {
                     oauthresult = await tclient.RequestResourceOwnerPasswordAsync(parameters.UserName, parameters.Password, parameters.Scope);
                     if (oauthresult.AccessToken == null)
-                        throw new TokenException();
+                        if (oauthresult.Raw.Equals("{\"error\":\"خطا در ورود به سیستم\",\"error_description\":\"تایید نام کاربری دریافت نشده است\"}"))
+                            throw new UnConfirmedUser();
+                        else
+                            throw new TokenException();
                     _userTokenInfo = new AnatoliTokenInfo();
                     _userTokenInfo.AccessToken = oauthresult.AccessToken;
                     _userTokenInfo.ExpiresIn = oauthresult.ExpiresIn;
@@ -369,7 +372,10 @@ namespace Anatoli.Framework.AnatoliBase
     {
 
     }
+    public class UnConfirmedUser : Exception
+    {
 
+    }
     public class TokenException : Exception
     {
 

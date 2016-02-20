@@ -150,10 +150,12 @@
     <Compile Include="Components\TypeFaceProvider.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Fragments\BaseSwipeListFragment.cs" />
+    <Compile Include="Fragments\ConfirmDialog.cs" />
     <Compile Include="Fragments\EditShippingInfoFragment.cs" />
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FavoritsToolsFragment.cs" />
     <Compile Include="Fragments\FirstFragment.cs" />
+    <Compile Include="Fragments\ForgetPasswordDialog.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\ChangePassFragment.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="Fragments\ProformaFragment.cs" />
+    <Compile Include="Fragments\ResetPasswordDialog.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
@@ -189,11 +192,12 @@
     <Compile Include="SQLiteAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <AndroidAsset Include="Assets\Fonts\anatoli.ttf" />
-    <AndroidAsset Include="Assets\paa.db">
+    <AndroidAsset Include="..\..\db\paa.db">
+      <Link>Assets\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
+    <None Include="app.config" />
+    <AndroidAsset Include="Assets\Fonts\anatoli.ttf" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -296,6 +300,15 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SettingsLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConfirmDialog.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ForgetPasswordLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ResetPassWordLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

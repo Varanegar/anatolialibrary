@@ -32,13 +32,13 @@ namespace Anatoli.Business.Domain
         ProductDomain() { }
         public ProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public ProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc), 
+            : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc),
                    new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductCompleteInfoProxy())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
         public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IMainProductGroupRepository mainProductGroupRepository,
-                             IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository, 
+                             IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository,
                              IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
         {
             Proxy = proxy;
@@ -61,6 +61,22 @@ namespace Anatoli.Business.Domain
                 var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
                 return Proxy.Convert(products.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll ", ex);
+                throw ex;
+            }
+        }
+        public async Task<List<ProductViewModel>> Search(string term)
+        {
+            try
+            {
+                var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId &&
+                                                                  p.ProductName.Contains(term) ||
+                                                                  p.ProductCode.Contains(term));
+
+                return Proxy.Convert(products.ToList());
             }
             catch (Exception ex)
             {
@@ -131,7 +147,7 @@ namespace Anatoli.Business.Domain
 
                         Repository.Add(item);
                     }
-                    
+
                 });
                 await Repository.SaveChangesAsync();
             }
@@ -230,7 +246,7 @@ namespace Anatoli.Business.Domain
         public Product SetProductPictureData(Product data, List<ProductPicture> productPictures, AnatoliDbContext context)
         {
             if (productPictures == null) return data;
-            Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductPictures where ProductId='" + data.Id +"'");
+            Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductPictures where ProductId='" + data.Id + "'");
             data.ProductPictures.Clear();
             productPictures.ForEach(item =>
             {
@@ -302,7 +318,7 @@ namespace Anatoli.Business.Domain
             });
             return data;
         }
-  
+
         #endregion
     }
 }

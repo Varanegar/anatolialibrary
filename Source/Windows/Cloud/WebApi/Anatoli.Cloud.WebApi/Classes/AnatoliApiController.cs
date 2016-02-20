@@ -17,6 +17,10 @@ namespace Anatoli.Cloud.WebApi.Classes
 
             public string data { get; set; }
             public string ruleDate { get; set; }
+
+            public string searchTerm { get; set; }
+            public string stockRequestProduct { get; set; }
+            public Guid ruleId { get; set; }
         }
 
         public Guid OwnerKey

@@ -16,5 +16,11 @@ namespace Anatoli.Framework.AnatoliBase
         {
             return Math.Round(value / 10, 0).ToString("N0");
         }
+        public static string PersianToArabic(this string str)
+        {
+            str = str.Replace("ی", "ي");
+            str = str.Replace("ک", "ك");
+            return str;
+        }
     }
 }

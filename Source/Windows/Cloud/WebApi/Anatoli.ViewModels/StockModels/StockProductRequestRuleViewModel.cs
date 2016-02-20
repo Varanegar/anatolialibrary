@@ -28,5 +28,7 @@ namespace Anatoli.ViewModels.StockModels
         public Guid? SupplierId { get; set; }
         public Guid ReorderCalcTypeId { get; set; }
         public decimal Qty { get; set; }
+        public dynamic RuleCalcTypeId { get; set; }
+        public string ProductName { get; set; }
     }
 }

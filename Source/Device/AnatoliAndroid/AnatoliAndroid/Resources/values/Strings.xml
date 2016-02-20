@@ -66,4 +66,5 @@
   <string name="Cancel">بی خیال</string>
   <string name="ServerUnreachable">خطا در برقراری ارتباط</string>
   <string name="AuthenticationFailed">نام کاربری یا کلمه عبور نادرست است</string>
+  <string name="WrongCode">کد اشتباه است</string>
 </resources>

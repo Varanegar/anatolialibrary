@@ -1,11 +1,13 @@
-﻿var baseBackendUrl = 'http://localhost',
+﻿'use strict'
+var baseBackendUrl = 'http://localhost',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
         storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/', //?privateOwnerId=' + privateOwnerId,
         userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
         saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
-        productsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/?privateOwnerId=' + privateOwnerId,
+        productsUrl: baseBackendUrl + '/api/gateway/product/products',
+        searchProductsUrl: baseBackendUrl + '/api/gateway/product/searchProducts',
         stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
         saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
         reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
@@ -19,16 +21,32 @@
         saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
 
         productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
+        productRequestRuleUrl: baseBackendUrl + '/api/gateway/stock/productRequestRule',
         productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',
 
         StockProductRequestRuleTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleTypes',
         StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
 
-        stockPageUrl: "/Products/",
+        SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers?privateOwnerId=' + privateOwnerId,
+
+        mainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/mainProductGroupList',
+        saveStockRequestProductUrl: baseBackendUrl + '/api/gateway/stockproductrequest/saveStockRequestProduct',
+
+        myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
+
+        pages: {
+            products: { url: '/products', title: 'محصولات در انبار' },
+            reviewproductrequest: { url: '/products/reviewProductRequest', title: 'بازنگری درخواست ها' },
+            storerequestshistory: { url: '/products/storeRequestsHistory', title: 'سوابق درخواست ها' },
+            stocks: { url: '/stocks', title: 'انبارها' },
+            productrequestrules: { url: '/stocks/productRequestRules', title: 'قوانین کالاها' },
+            usermanager: { url: '/userManager', title: 'تخصیص فروشگاه' },
+            permissions: { url: '/userManager/permissions', title: 'تخصیص مجوز' },
+        }
     },
-    errorMessage = {
-        unAuthorized: "شما مجوز لازم را برای این درخواست ندارید!",
-    },
+errorMessage = {
+    unAuthorized: "شما مجوز لازم را برای این درخواست ندارید!",
+},
 gridAuthHeader = function (req) {
     var tokenKey = 'accessToken',
         token = $.cookie("token");
@@ -53,10 +71,10 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 };
-showError = function (title, message) {
+var showError = function (title, message) {
     toastr["error"](title, message);
 };
-showSuccess = function (title, message) {
+var showSuccess = function (title, message) {
     toastr["success"](title, message);
 };
 
@@ -65,12 +83,38 @@ function getParameterByName(name) {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+};
 //******************************************************************//
 
 function headerMenuViewModel() {
     var self = this;
     self.shouldShowLogout = ko.observable(false);
+
+    self.refreshHeaderMenu = function () {
+        
+        if ($(".header-menu .navbar-nav li").length < 2)
+            accountManagerApp.callApi(urls.myWebpages, "POST", {}, function (data) {
+
+                data.forEach(function (itm) {
+                    if (itm.action !== '' && itm.action !== 'List') {
+
+                        var url = urls.pages[itm.action.toLowerCase()].url;
+
+                        var title = urls.pages[itm.action.toLowerCase()].title;
+
+                        $(".header-menu .navbar-nav .exit-menu-item").before('<li><a href="' + url + '">' + title + '</a></li>');
+                    }
+                });
+            });
+    };
+
+    self.shouldShowLogout.subscribe(function (newValue) {
+        if (newValue === true) {
+
+           // self.refreshHeaderMenu();
+        }
+    });
+
 };
 var headerMenu = new headerMenuViewModel();
 //******************************************************************//
@@ -254,7 +298,7 @@ function productManagerViewModel() {
     };
 
     self.initGrid = function (id) {
-        dataSource = new kendo.data.DataSource({
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: urls.stockProductsUrl,
@@ -345,7 +389,7 @@ function productManagerViewModel() {
 
     self.testAuth = function () {
         accountManagerApp.callApi(baseBackendUrl + '/api/TestAuth/getsample', 'POST', {}, function (data) {
-            debugger
+            
         });
     }
     self.testAuth();
@@ -392,7 +436,7 @@ function ReviewProductRequestViewModel() {
     };
 
     self.initRequestReviewGrid = function () {
-        dataSource = new kendo.data.DataSource({
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: fakeUrls.requestReviewUrl,
@@ -502,7 +546,7 @@ function ReviewProductRequestViewModel() {
 
         var id = $(this).attr('data-id');
 
-        window.location = urls.stockPageUrl + "?stockId=" + id;
+        window.location = urls.pages.products.url + "?stockId=" + id;
     });
 };
 //******************************************************************//
@@ -660,7 +704,7 @@ function UsersStocksViewModel() {
         self.chosenStocks([]);
         var userId = data.id;
 
-        accountManagerApp.callApi(urls.storesUrl, 'GET', {}, function (data) {
+        accountManagerApp.callApi(urls.storesUrl, 'POST', {}, function (data) {
             self.stocks(data);
 
             accountManagerApp.callApi(urls.userStocksUrl, 'POST', { userId: userId }, function (data) {
@@ -782,7 +826,7 @@ function stocksManagerViewModel() {
     var self = this;
 
     self.initStocksGrid = function (id) {
-        dataSource = new kendo.data.DataSource({
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: urls.stocksUrl,
@@ -933,7 +977,7 @@ function productRequestRulesManagerViewModel() {
     var self = this;
 
     self.initProductRulesGrid = function (id) {
-        dataSource = new kendo.data.DataSource({
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: urls.productRequestRulesUrl,
@@ -984,13 +1028,17 @@ function productRequestRulesManagerViewModel() {
     }
 
     self.openWindow = function (url) {
+        $('.product-rules-page').append('<div class="edit-window"></div>');
         var editWindow = $(".edit-window").kendoWindow({
             title: "ویرایش",
             content: url,
+            deactivate: function () {
+                this.destroy();
+            },
             modal: true,
             visible: false,
             resizable: true,
-            width: 700,
+            width: 800,
             actions: [
                 "Pin",
                 "Minimize",
@@ -998,7 +1046,7 @@ function productRequestRulesManagerViewModel() {
                 "Close"
             ],
             close: onClose
-        }).data("kendoWindow").center().open();;
+        }).data("kendoWindow").center().maximize().open();;
     }
 
     function onClose() {
@@ -1016,7 +1064,6 @@ function productRequestRulesManagerViewModel() {
 
     self.initProductRulesGrid();
 };
-//******************************************************************//
 
 function productRequestRuleEditManagerViewModel() {
     // Data
@@ -1027,7 +1074,7 @@ function productRequestRuleEditManagerViewModel() {
             return kendo.stringify(options);
     }
 
-    self.RefreshReorderCalcType = function () {
+    self.refreshReorderCalcType = function () {
         $("#reOrderCalcType").kendoDropDownList({
             dataTextField: "reorderTypeName",
             dataValueField: "uniqueId",
@@ -1043,11 +1090,16 @@ function productRequestRuleEditManagerViewModel() {
                     },
                     parameterMap: dropdownParameterMap
                 }
+            },
+            dataBound: function () {
+
+                if (self.selectedRule() && self.selectedRule() !== '')
+                    this.value(self.selectedRule().reorderCalcTypeId);
             }
         });
     }
 
-    self.RefreshProductType = function () {
+    self.refreshProductType = function () {
         $("#productType").kendoDropDownList({
             dataTextField: "productTypeName",
             dataValueField: "uniqueId",
@@ -1061,12 +1113,16 @@ function productRequestRuleEditManagerViewModel() {
                         beforeSend: gridAuthHeader
                     },
                     parameterMap: dropdownParameterMap
-                }
+                },
+            },
+            dataBound: function () {
+                if (self.selectedRule() && self.selectedRule() !== '')
+                    this.value(self.selectedRule().productTypeId);
             }
         });
     }
 
-    self.RefreshStockProductRequestRuleTypes = function () {
+    self.refreshStockProductRequestRuleTypes = function () {
         $("#stockProductRequestRuleType").kendoDropDownList({
             dataTextField: "stockProductRequestRuleTypeName",
             dataValueField: "uniqueId",
@@ -1081,11 +1137,15 @@ function productRequestRuleEditManagerViewModel() {
                     },
                     parameterMap: dropdownParameterMap
                 }
+            },
+            dataBound: function () {
+                if (self.selectedRule() && self.selectedRule() !== '')
+                    this.value(self.selectedRule().ruleTypeId);
             }
         });
     }
 
-    self.RefreshStockProductRequestRuleCalcTypes = function () {
+    self.refreshStockProductRequestRuleCalcTypes = function () {
         $("#stockProductRequestRuleCalcType").kendoDropDownList({
             dataTextField: "stockProductRequestRuleCalcTypeName",
             dataValueField: "uniqueId",
@@ -1100,13 +1160,231 @@ function productRequestRuleEditManagerViewModel() {
                     },
                     parameterMap: dropdownParameterMap
                 }
+            },
+            dataBound: function () {
+                if (self.selectedRule() && self.selectedRule() !== '')
+                    this.value(self.selectedRule().ruleCalcTypeId);
             }
         });
     }
 
+    self.refreshSuppliers = function () {
+        $("#suppliers").kendoDropDownList({
+            dataTextField: "supplierName",
+            dataValueField: "uniqueId",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.SuppliersUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "Get",
+                        beforeSend: gridAuthHeader
+                    },
+                    parameterMap: dropdownParameterMap
+                }
+            }
+        });
+    }
 
-    self.RefreshReorderCalcType();
-    self.RefreshProductType();
-    self.RefreshStockProductRequestRuleTypes();
-    self.RefreshStockProductRequestRuleCalcTypes();
+    self.selectedProductId = ko.observable('');
+    self.refreshProduct = function () {
+        $("#product").kendoAutoComplete({
+            dataTextField: "name",
+            minLength: 3,
+            delay: 500,
+            dataSource: {
+                transport: {
+                    read: {
+                        url: urls.searchProductsUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        beforeSend: gridAuthHeader,
+                    },
+                    parameterMap: function (options, operation) {
+                        options.searchTerm = $("#product").val();
+
+                        if (operation == "read")
+                            return kendo.stringify(options);
+                    }
+                }
+            },
+            select: function (e) {
+                var dataItem = this.dataItem(e.item.index());
+
+                self.selectedProductId(dataItem.id);
+            }
+        });
+    }
+
+    self.mainProductGroups = ko.observableArray([]);
+    self.selectedMainProductGroupId = ko.observable('');
+    self.initMainProductGroup = function (data) {
+        data.forEach(function (itm) {
+            itm["expanded"] = true;
+        });
+
+        $(".main-product-group-tree-view").kendoTreeView({
+            dataTextField: "groupName",
+            loadOnDemand: false,
+            dataSource: {
+                transport: {
+                    read: function (options) {
+                        var id = options.data.id || "00000000-0000-0000-0000-000000000000";
+
+                        options.success($.grep(data, function (x) {
+                            return x.parent == id;
+                        }));
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "id",
+                        hasChildren: function (x) {
+                            var id = x.id;
+
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].parent == id) {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        }
+                    }
+                }
+            },
+            select: function (e) {
+                var dataItem = this.dataItem(e.node);
+
+                self.selectedMainProductGroupId(dataItem.id);
+            }
+        });
+    }
+    self.refreshMainProductGroup = function () {
+        accountManagerApp.callApi(urls.mainProductGroupsUrl, 'POST', {}, function (data) {
+            self.mainProductGroups(data);
+            self.initMainProductGroup(data);
+        });
+    }
+
+    self.selectedRule = ko.observable('');
+    self.checkEditMode = function () {
+        var id = $('#ruleId').val();
+        if (id)
+            accountManagerApp.callApi(urls.productRequestRuleUrl, "POST", { ruleId: id }, function (data) {
+                $('#ruleId').val(data.uniqueId);
+                $('#ruleName').val(data.stockProductRequestRuleName);
+                $('#fromDate').val(data.fromPDate);
+                $('#toDate').val(data.topDate);
+                $('#quantity').val(data.qty);
+
+                self.selectedRule(data);
+
+                $("#productType").data("kendoDropDownList").value(data.productTypeId);
+                $('#reOrderCalcType').data("kendoDropDownList").value(data.reorderCalcTypeId);
+
+                $('#stockProductRequestRuleCalcType').data("kendoDropDownList").value(data.ruleCalcTypeId);
+                $('#stockProductRequestRuleType').data("kendoDropDownList").value(data.ruleTypeId);
+
+                if (data.supplierId && data.supplierId !== '') {
+                    $('#suppliers').data("kendoDropDownList").value(data.supplierId);
+                    if ($('#via-filter').val() !== 1)
+                        $('#via-filter').val(1).trigger("change");
+                }
+
+                if (data.productId && data.productId !== '') {
+
+                    self.selectedProductId(data.productId);
+                    $('#product').val(data.productName);
+
+                    if ($('#via-filter').val() !== 2)
+                        $('#via-filter').val(2).trigger("change");
+                }
+
+                if (data.mainProductGroupId && data.mainProductGroupId !== '') {
+
+                    var treeview = $(".main-product-group-tree-view").data("kendoTreeView");
+                    var getitem = treeview.dataSource.get(data.mainProductGroupId);
+                    treeview.findByUid(getitem.uid);
+                    var selectitem = treeview.findByUid(getitem.uid);
+                    treeview.select(selectitem);
+
+                    if ($('#via-filter').val() !== 3)
+                        $('#via-filter').val(3).trigger("change");
+                }
+
+            });
+
+    };
+
+    self.refreshReorderCalcType();
+    self.refreshProductType();
+    self.refreshStockProductRequestRuleTypes();
+    self.refreshStockProductRequestRuleCalcTypes();
+    self.refreshSuppliers();
+    self.refreshProduct();
+    self.refreshMainProductGroup();
+    self.checkEditMode();
+
+    $(".product-rule-edit-page").on("change", "#via-filter", function () {
+        var id = $(this).val();
+
+        $('.row[data-via-filter]').addClass('hide');
+        $('.row[data-via-filter=' + id + ']').removeClass('hide');
+    });
+
+    $(".product-rule-edit-page").on("click", '.btn-cancel', function (e) {
+        e.preventDefault;
+        $(".edit-window").data("kendoWindow").close();
+    });
+
+    $(".product-rule-edit-page").on("click", '.btn-save', function (e) {
+        e.preventDefault;
+
+        var data = {
+            ruleId: $('#ruleId').val(),
+            ruleName: $('input[name=ruleName]').val(),
+            fromDate: $('input[name=fromDate]').val(),
+            toDate: $('input[name=toDate]').val(),
+            quantity: $('input[name=quantity]').val(),
+            productType: $('#productType').val(),
+            reOrderCalcType: $('#reOrderCalcType').val(),
+            stockProductRequestRuleType: $('#stockProductRequestRuleType').val(),
+            stockProductRequestRuleCalcType: $('#stockProductRequestRuleCalcType').val(),
+        };
+
+        var viaFilter = $('#via-filter').val();
+        if (viaFilter === "1")
+            data["supplierId"] = $('#suppliers').val();
+        if (viaFilter === "2")
+            data["productId"] = self.selectedProductId();
+        if (viaFilter === "3")
+            data["mainProductGroupId"] = self.selectedMainProductGroupId();
+
+        var errors = [];
+        if (data.ruleName === '')
+            errors.push('نام را وارد نمایید');
+        if (data.fromDate === '' || data.toDate === '')
+            errors.push('تاریخ را انتخاب نمایید');
+        if (viaFilter === "2" && data["productId"] === '')
+            errors.push('نام محصول را وارد نمایید');
+        if (viaFilter === "3" && data["mainProductGroupId"] === '')
+            errors.push('گروه اصلی محصول را انتخاب نمایید');
+
+        if (errors.length > 0) {
+            errors.forEach(function (err) {
+                showError('', err);
+            });
+            return;
+        }
+        console.log(JSON.stringify(data));
+
+        accountManagerApp.callApi(urls.saveStockRequestProductUrl, 'POST', { stockRequestProduct: JSON.stringify(data) }, function (data) {
+            $(".edit-window").data("kendoWindow").close();
+        });
+    });
+
 };
+//******************************************************************//
