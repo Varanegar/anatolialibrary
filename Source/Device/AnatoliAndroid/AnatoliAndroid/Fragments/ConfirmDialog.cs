@@ -45,7 +45,10 @@ namespace AnatoliAndroid.Fragments
                 {
                     var result = await AnatoliUserManager.SendConfirmCode(UserName, codeEditText.Text.Trim());
                     if (result.IsValid)
+                    {
                         OnCodeConfirmed();
+                        Dismiss();
+                    }
                     else
                         OnConfirmFailed(result.message);
                 }
@@ -99,6 +102,6 @@ namespace AnatoliAndroid.Fragments
         public ConfirmFailedEventHandler ConfirmFailed;
         public delegate void ConfirmFailedEventHandler(string msg);
 
-        
+
     }
 }
