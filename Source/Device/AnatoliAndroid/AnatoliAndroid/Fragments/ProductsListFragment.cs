@@ -68,7 +68,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
                 return;
             }
         }

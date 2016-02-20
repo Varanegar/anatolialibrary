@@ -34,6 +34,8 @@ namespace AnatoliAndroid.Fragments
             Button okButton = view.FindViewById<Button>(Resource.Id.okButton);
             TextView resendTextView = view.FindViewById<TextView>(Resource.Id.resendTextView);
 
+            Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+
             okButton.Click += async (s, e) =>
             {
                 ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
@@ -45,11 +47,11 @@ namespace AnatoliAndroid.Fragments
                     if (result.IsValid)
                         OnCodeConfirmed();
                     else
-                        OnConfirmFailed();
+                        OnConfirmFailed(result.message);
                 }
                 catch (Exception)
                 {
-                    OnConfirmFailed();
+                    OnConfirmFailed("ÎØÇ!");
                 }
                 finally
                 {
@@ -87,13 +89,16 @@ namespace AnatoliAndroid.Fragments
         }
         public EventHandler CodeConfirmed;
 
-        void OnConfirmFailed()
+        void OnConfirmFailed(string msg)
         {
             if (ConfirmFailed != null)
             {
-                ConfirmFailed.Invoke(this, new EventArgs());
+                ConfirmFailed.Invoke(msg);
             }
         }
-        public EventHandler ConfirmFailed;
+        public ConfirmFailedEventHandler ConfirmFailed;
+        public delegate void ConfirmFailedEventHandler(string msg);
+
+        
     }
 }

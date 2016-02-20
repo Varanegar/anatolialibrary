@@ -53,6 +53,46 @@ namespace Anatoli.DataAccess.Repositories
             await UserRepository.SaveChangesAsync();
         }
 
+        public async Task<bool> ResetPasswordByCodeAsync(User user, string password, string code)
+        {
+            if (code == user.ResetSMSCode && user.ResetSMSRequestTime != null && user.ResetSMSRequestTime > DateTime.Now.AddMinutes(-5))
+            {
+                user.PasswordHash = password;
+                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;
+                await UserRepository.UpdateAsync(user);
+                await UserRepository.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> VerifySMSCodeAsync(User user, string code)
+        {
+            if (code == user.ResetSMSCode && user.ResetSMSRequestTime != null && user.ResetSMSRequestTime > DateTime.Now.AddMinutes(-5))
+            {
+                if (user.ResetSMSPass != null)
+                    user.PasswordHash = user.ResetSMSPass;
+                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;
+                await UserRepository.UpdateAsync(user);
+                await UserRepository.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task SetResetSMSCodeAsync(User user, string smsCode, string newPassword)
+        {
+            user.ResetSMSCode = smsCode;
+            user.ResetSMSPass = newPassword;
+            user.ResetSMSRequestTime = DateTime.Now;
+            await UserRepository.UpdateAsync(user);
+            await UserRepository.SaveChangesAsync();
+        }
+
         public async Task<User> FindByIdAsync(string userId)
         {
             var model = await UserRepository.FindAsync(p => p.Id == userId);

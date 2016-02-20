@@ -100,6 +100,7 @@ namespace Anatoli.Business.Domain
                 {
                     if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
                     {
+                        item.LastUpdate = DateTime.Now;
                         item.IsRemoved = true;
                         Repository.UpdateAsync(item);
                     }

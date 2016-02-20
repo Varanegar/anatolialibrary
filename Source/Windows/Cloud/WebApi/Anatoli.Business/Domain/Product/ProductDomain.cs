@@ -105,6 +105,7 @@ namespace Anatoli.Business.Domain
 
                 products.ForEach(item =>
                 {
+                    log.Debug("Save item info " + item.Id);
                     var currentProduct = currentProductList.Find(p => p.Id == item.Id);
 
                     if (currentProduct != null)
@@ -112,7 +113,7 @@ namespace Anatoli.Business.Domain
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.ProductGroupId = item.ProductGroupId;
                         currentProduct.ManufactureId = item.ManufactureId;
-                        currentProduct.MainSupplierId = item.MainSupplierId;
+                        //currentProduct.MainSupplierId = item.MainSupplierId;
                         currentProduct.Desctription = item.Desctription;
                         currentProduct.QtyPerPack = item.QtyPerPack;
                         currentProduct.PackVolume = item.PackVolume;
@@ -126,10 +127,10 @@ namespace Anatoli.Business.Domain
                         if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
                         if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
-                        currentProduct = SetMainSupplierData(currentProduct, item.MainSupplier, Repository.DbContext);
-                        currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
-                        currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
-                        currentProduct = SetMainProductGroupData(currentProduct, item.MainProductGroup, Repository.DbContext);
+                        currentProduct = SetMainSupplierData(currentProduct, item.Suppliers.FirstOrDefault(), Repository.DbContext);
+                        //currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
+                        //currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
+                        //currentProduct = SetMainProductGroupData(currentProduct, item.MainProductGroup, Repository.DbContext);
                         Repository.Update(currentProduct);
                     }
                     else
@@ -152,13 +153,13 @@ namespace Anatoli.Business.Domain
             }
             catch (Exception ex)
             {
-                log.Info("PublishAsync ", ex);
+                log.Error("PublishAsync ", ex);
                 throw ex;
             }
             finally
             {
                 Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
+                log.Error("PublishAsync Finish" + dataViewModels.Count);
             }
             return dataViewModels;
 
@@ -174,6 +175,7 @@ namespace Anatoli.Business.Domain
                 {
                     if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
                     {
+                        item.LastUpdate = DateTime.Now;
                         item.IsRemoved = true;
                         Repository.UpdateAsync(item);
                     }

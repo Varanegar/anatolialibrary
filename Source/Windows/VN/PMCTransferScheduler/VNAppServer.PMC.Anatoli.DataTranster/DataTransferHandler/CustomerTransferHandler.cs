@@ -18,23 +18,38 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CustomerDataType = "Customer";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCustomerToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadCustomerToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
         {
             try
             {
                 log.Info("Start CallServerService URI ");
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(CustomerDataType);
-                var dbData = CustomerAdapter.Instance.GetNewUsers(lastUpload);
+                var dbData = CustomerAdapter.Instance.GetNewUsers(DateTime.MinValue);
                 if (dbData != null)
                 {
                     dbData.ForEach(item =>
                         {
-                            item.PrivateOwnerId = Guid.Parse(privateOwnerQueryString);
-                            string data = JsonConvert.SerializeObject(item);
-                            string URI = serverURI + UriInfo.SaveUserURI + privateOwnerQueryString;
-                            UserReturnModel result = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, URI, client);
-                            CustomerAdapter.Instance.SetCustomerSiteUserId(result.Id, result.Mobile);
+                            try
+                            {
+                                item.SendPassSMS = false;
+                                item.PrivateOwnerId = Guid.Parse(privateOwnerId);
+                                string data = JsonConvert.SerializeObject(item);
+                                string getUserURI = serverURI + UriInfo.GetUserURI + "/" + item.Mobile;
+                                var user = ConnectionHelper.CallServerServiceGet<UserReturnModel>(getUserURI, client);
+                                if (user != null)
+                                    CustomerAdapter.Instance.SetCustomerSiteUserId(user.Id, user.Mobile);
+                                else
+                                {
+                                    string URI = serverURI + UriInfo.SaveUserURI + privateOwnerQueryString;
+                                    UserReturnModel result = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, URI, client);
+                                    CustomerAdapter.Instance.SetCustomerSiteUserId(result.Id, result.Mobile);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                log.Error("Failed CallServerService ", ex);
+                            }
 
                         });
                 }

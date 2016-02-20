@@ -359,8 +359,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         #region Store Calendar
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("storecalendar")]
+        [Route("storecalendarbyid")]
         public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId, string id)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var storeCalendarDomain = new StoreCalendarDomain(owner);
+                var result = await storeCalendarDomain.GetCalendarByStoreId(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("storecalendar")]
+        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId)
         {
             try
             {

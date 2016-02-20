@@ -123,13 +123,13 @@ namespace AnatoliAndroid.Fragments
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     lAlert.SetMessage(Resource.String.PleaseLogin);
-                    lAlert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    lAlert.SetPositiveButton(Resource.String.Ok, delegate
                     {
                         var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         var loginFragment = new LoginFragment();
                         loginFragment.Show(transaction, "shipping_dialog");
                     });
-                    lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
+                    lAlert.SetNegativeButton(Resource.String.Cancel, delegate { });
                     lAlert.Show();
                     return;
                 }
@@ -142,7 +142,7 @@ namespace AnatoliAndroid.Fragments
                         {
                             AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                             lAlert.SetMessage("امکان ارسال برای امروز وجود ندارد. آیا مایل هستید سفارش شما فردا ارسال شود؟");
-                            lAlert.SetPositiveButton(Resource.String.Yes, async (s2, e2) =>
+                            lAlert.SetPositiveButton(Resource.String.Yes, async delegate
                             {
                                 pDialog.SetCancelable(false);
                                 pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
@@ -154,11 +154,19 @@ namespace AnatoliAndroid.Fragments
                                 {
                                     ProformaFragment proforma = new ProformaFragment(o, _customerViewModel);
                                     var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                                    proforma.ProformaAccepted += async (s3, e3) =>
+                                    proforma.ProformaAccepted += async delegate
                                     {
                                         pDialog.Show();
                                         var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
-                                        if (result.IsValid)
+                                        if (result == null)
+                                        {
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                            alert.SetMessage("عدم دریافت اطلاعات از سرور");
+                                            alert.SetTitle(Resource.String.Error);
+                                            alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                            alert.Show();
+                                        }
+                                        else if (result.IsValid)
                                         {
                                             await SaveOrder();
                                         }
@@ -167,7 +175,7 @@ namespace AnatoliAndroid.Fragments
                                             AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                             alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                             alert.SetTitle(Resource.String.Error);
-                                            alert.SetNegativeButton(Resource.String.Ok, (s4, e4) => { });
+                                            alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                             alert.Show();
                                         }
                                         pDialog.Dismiss();
@@ -181,12 +189,12 @@ namespace AnatoliAndroid.Fragments
                                     AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                     alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                     alert.SetTitle(Resource.String.Error);
-                                    alert.SetNegativeButton(Resource.String.Ok, (s4, e4) => { });
+                                    alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                     alert.Show();
                                 }
                                 pDialog.Dismiss();
                             });
-                            lAlert.SetNegativeButton(Resource.String.Cancel, (s2, e2) =>
+                            lAlert.SetNegativeButton(Resource.String.Cancel, delegate
                             {
                                 Toast.MakeText(AnatoliApp.GetInstance().Activity, "سفارش شما کنسل شد", ToastLength.Short).Show();
                                 AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(null, "products_fragment");
@@ -204,11 +212,19 @@ namespace AnatoliAndroid.Fragments
                             {
                                 ProformaFragment proforma = new ProformaFragment(o, _customerViewModel);
                                 var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                                proforma.ProformaAccepted += async (s3, e3) =>
+                                proforma.ProformaAccepted += async delegate
                                 {
                                     pDialog.Show();
                                     var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
-                                    if (result.IsValid)
+                                    if (result == null)
+                                    {
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                        alert.SetMessage("عدم دریافت اطلاعات از سرور");
+                                        alert.SetTitle(Resource.String.Error);
+                                        alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                        alert.Show();
+                                    }
+                                    else if (result.IsValid)
                                     {
                                         await SaveOrder();
                                     }
@@ -217,7 +233,7 @@ namespace AnatoliAndroid.Fragments
                                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                         alert.SetTitle(Resource.String.Error);
-                                        alert.SetNegativeButton(Resource.String.Ok, (s2, e2) => { });
+                                        alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                         alert.Show();
                                     }
                                     pDialog.Dismiss();
@@ -230,7 +246,7 @@ namespace AnatoliAndroid.Fragments
                                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                 alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                 alert.SetTitle(Resource.String.Error);
-                                alert.SetNegativeButton(Resource.String.Ok, (s4, e4) => { });
+                                alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                 alert.Show();
                             }
                             pDialog.Dismiss();
@@ -239,11 +255,11 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                        ex.SendTrace();
                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                         alert.SetTitle(Resource.String.Error);
-                        alert.SetNegativeButton(Resource.String.Ok, (s2, e2) => { });
+                        alert.SetNegativeButton(Resource.String.Ok, delegate { });
                         alert.Show();
                     }
                     finally
@@ -311,7 +327,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
                 if (ex.GetType() == typeof(StoreManager.NullStoreException))
                 {
                     AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
@@ -408,7 +424,7 @@ namespace AnatoliAndroid.Fragments
                 {
                     AlertDialog.Builder lAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     lAlert.SetMessage("لطفا مشخصات خود را کامل کنید");
-                    lAlert.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                    lAlert.SetPositiveButton(Resource.String.Ok, delegate
                     {
                         var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         var profileFragment = new ProfileFragment();
@@ -436,7 +452,7 @@ namespace AnatoliAndroid.Fragments
         {
             var builder = new AlertDialog.Builder(Activity)
                 .SetMessage("سفارش شما با موفقیت ثبت گردید. برای اطلاع از وضعیت سفارش خود به بخش پیغام ها یا سفارشات قبلی مراجعه نمایید")
-                .SetPositiveButton("Ok", (sender, args) =>
+                .SetPositiveButton("Ok", delegate
                 {
                 })
                 .SetTitle("ثبت سفارش");

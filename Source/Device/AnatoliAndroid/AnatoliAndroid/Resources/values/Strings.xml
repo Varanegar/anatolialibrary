@@ -67,4 +67,5 @@
   <string name="ServerUnreachable">خطا در برقراری ارتباط</string>
   <string name="AuthenticationFailed">نام کاربری یا کلمه عبور نادرست است</string>
   <string name="WrongCode">کد اشتباه است</string>
+  <string name="CurrentPassword">کلمه عبور فعلی</string>
 </resources>

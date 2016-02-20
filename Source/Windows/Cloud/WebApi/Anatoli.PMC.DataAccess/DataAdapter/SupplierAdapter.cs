@@ -33,7 +33,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " where ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                    var data = context.All<SupplierViewModel>(DBQuery.Instance.GetSupplir() + where);
+                    var data = context.All<SupplierViewModel>(DBQuery.Instance.GetSupplier() + where);
                     supplier = data.ToList();
                 }
                 return supplier;
@@ -41,7 +41,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
 
         }

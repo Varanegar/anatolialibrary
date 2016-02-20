@@ -36,6 +36,7 @@ namespace AnatoliAndroid.Fragments
                 await Anatoli.Framework.AnatoliBase.Configuration.SaveConfigToFile();
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
                 await AnatoliApp.GetInstance().ClearDatabase();
+                await AnatoliApp.GetInstance().LogoutAsync();
                 await AnatoliApp.GetInstance().SyncDatabase();
             };
 

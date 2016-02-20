@@ -177,7 +177,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                    ex.SendTrace();
                     pDialog.Dismiss();
                     dialog.SetMessage(Resource.String.ErrorOccured);
                     dialog.SetTitle("خطا");
@@ -192,11 +192,9 @@ namespace AnatoliAndroid.Fragments
                 alert.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.AreYouSure));
                 alert.SetPositiveButton(AnatoliApp.GetResources().GetText(Resource.String.Yes), async (s2, e2) =>
                 {
-                    bool result = await AnatoliUserManager.LogoutAsync();
+                    bool result = await AnatoliApp.GetInstance().LogoutAsync();
                     if (result)
                     {
-                        AnatoliApp.GetInstance().AnatoliUser = null;
-                        AnatoliApp.GetInstance().RefreshMenuItems();
                         AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
                         Dismiss();
                     }
@@ -290,7 +288,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
             }
 
         }
@@ -386,7 +384,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception e)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(e), false);
+                    e.SendTrace();
                     if (e.GetType() != typeof(TaskCanceledException))
                     {
                         OnImageUploadFailed();

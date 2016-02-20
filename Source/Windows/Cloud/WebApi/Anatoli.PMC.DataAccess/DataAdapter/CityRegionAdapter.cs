@@ -27,21 +27,13 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 
         public List<CityRegionViewModel> GetAllCityRegions(DateTime lastUpload)
         {
-            try
+            List<CityRegionViewModel> productGroup = new List<CityRegionViewModel>();
+            using (var context = new DataContext())
             {
-                List<CityRegionViewModel> productGroup = new List<CityRegionViewModel>();
-                using (var context = new DataContext())
-                {
-                    var data = context.All<CityRegionViewModel>(DBQuery.Instance.GetCityRegion());
-                    productGroup = data.ToList();
-                }
-                return productGroup;
+                var data = context.All<CityRegionViewModel>(DBQuery.Instance.GetCityRegion());
+                productGroup = data.ToList();
             }
-            catch (Exception ex)
-            {
-                log.Error("Failed fetch data ", ex);
-                return null;
-            }
+            return productGroup;
         }
 
     }

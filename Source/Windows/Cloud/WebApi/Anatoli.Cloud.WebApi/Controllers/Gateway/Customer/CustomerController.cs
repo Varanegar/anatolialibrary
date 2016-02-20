@@ -44,6 +44,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 List<CustomerViewModel> dataList = new List<CustomerViewModel>();
                 dataList.Add(data);
                 var result = await customerDomain.PublishAsync(dataList);
+                if(data.Email != null)
+                {
+                    var emailUser = await this.AppUserManager.FindByEmailAsync(data.Email);
+                    if (emailUser != null)
+                    {
+                        var phoneUser = await this.AppUserManager.FindByIdAsync(data.UniqueId.ToString());
+                        if(phoneUser.Id != emailUser.Id)
+                            return GetErrorResult("ایمیل شما قبلا استفاده شده است");
+                    }
+
+                }
                 await AppUserManager.SetEmailAsync(data.UniqueId.ToString(), data.Email);
                 await AppUserManager.IsEmailConfirmedAsync(data.UniqueId.ToString());
                 return Ok(result);
