@@ -101,26 +101,23 @@ namespace AnatoliAndroid.Fragments
                 pDialog.Dismiss();
                 if (userModel.IsValid)
                 {
-                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                    await AnatoliApp.GetInstance().LoginAsync(userModel);
                     try
                     {
-                        await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                        await AnatoliApp.GetInstance().RefreshCutomerProfile();
-                        AnatoliApp.GetInstance().RefreshMenuItems();
                         OnLoginSuccess();
-                        ParseInstallation installation = ParseInstallation.CurrentInstallation;
-                        try
-                        {
+                        //                        ParseInstallation installation = ParseInstallation.CurrentInstallation;
+                        //                        try
+                        //                        {
 
-                            installation["userUniqueId"] = userModel.UniqueId;
-                            installation.AddUniqueToList("channels", "b2c");
-#pragma warning disable
-                            installation.SaveAsync();
-#pragma warning restore
-                        }
-                        catch (Exception)
-                        {
-                        }
+                        //                            installation["userUniqueId"] = userModel.UniqueId;
+                        //                            installation.AddUniqueToList("channels", "b2c");
+                        //#pragma warning disable
+                        //                            installation.SaveAsync();
+                        //#pragma warning restore
+                        //                        }
+                        //                        catch (Exception)
+                        //                        {
+                        //                        }
                         Dismiss();
                     }
                     catch (Exception ex)
@@ -192,11 +189,9 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.Dismiss();
                                 if (userModel.IsValid)
                                 {
-                                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                                    await AnatoliApp.GetInstance().LoginAsync(userModel);
                                     try
                                     {
-                                        await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                                        AnatoliApp.GetInstance().RefreshMenuItems();
                                         Dismiss();
                                         OnLoginSuccess();
                                     }
@@ -207,6 +202,13 @@ namespace AnatoliAndroid.Fragments
                                         {
                                             AlertDialog.Builder errDialog2 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                             errDialog2.SetMessage(Resource.String.SaveFailed);
+                                            errDialog2.SetPositiveButton(Resource.String.Ok, delegate { });
+                                            errDialog2.Show();
+                                        }
+                                        else
+                                        {
+                                            AlertDialog.Builder errDialog2 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                            errDialog2.SetMessage(ex2.Message);
                                             errDialog2.SetPositiveButton(Resource.String.Ok, delegate { });
                                             errDialog2.Show();
                                         }
@@ -244,6 +246,13 @@ namespace AnatoliAndroid.Fragments
                                 {
                                     AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                     errDialog4.SetMessage("خطا در برقراری ارتباط");
+                                    errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
+                                    errDialog4.Show();
+                                }
+                                else
+                                {
+                                    AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                    errDialog4.SetMessage(ex2.Message);
                                     errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
                                     errDialog4.Show();
                                 }

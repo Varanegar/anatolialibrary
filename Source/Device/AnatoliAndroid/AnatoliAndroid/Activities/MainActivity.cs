@@ -87,7 +87,7 @@ namespace AnatoliAndroid.Activities
 
             AnatoliClient.GetInstance().WebClient.TokenExpire += async (s, e) =>
             {
-                await AnatoliUserManager.LogoutAsync();
+                await AnatoliApp.GetInstance().LogoutAsync();
                 var currentFragmentType = AnatoliApp.GetInstance().GetCurrentFragmentType();
                 if (currentFragmentType == typeof(ProfileFragment))
                 {
@@ -145,7 +145,14 @@ namespace AnatoliAndroid.Activities
 
             }
 
+            try
+            {
+                AnatoliApp.GetInstance().CustomerId = (await CustomerManager.ReadCustomerAsync()).UniqueId;
+            }
+            catch (Exception)
+            {
 
+            }
 
         }
         private void OnNetworkStatusChanged(object sender, EventArgs e)

@@ -99,11 +99,9 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.Dismiss();
                                 if (userModel.IsValid)
                                 {
-                                    AnatoliApp.GetInstance().AnatoliUser = userModel;
+                                    await AnatoliApp.GetInstance().LoginAsync(userModel);
                                     try
                                     {
-                                        await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-                                        AnatoliApp.GetInstance().RefreshMenuItems();
                                         Dismiss();
                                         AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
                                     }

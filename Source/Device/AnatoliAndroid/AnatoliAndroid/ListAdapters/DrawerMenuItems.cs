@@ -9,6 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AnatoliAndroid.Activities;
+using Square.Picasso;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -61,6 +63,15 @@ namespace AnatoliAndroid.ListAdapters
             ImageView itemImageView = convertView.FindViewById<ImageView>(Resource.Id.itemIconImageView);
             RelativeLayout relativeLayout = convertView.FindViewById<RelativeLayout>(Resource.Id.relativeLayout1);
             itemTextView.Text = item.Name;
+            //if (item.ImageUrl == null)
+            //{
+            //    if (item.ImageResId != -1)
+            //        itemImageView.SetImageResource(item.ImageResId);
+            //}
+            //else if (item.ImageUrl != null)
+            //{
+            //    Picasso.With(AnatoliApp.GetInstance().Activity).Load(item.ImageUrl).Into(itemImageView);
+            //}
             if (item.ImageResId != -1)
                 itemImageView.SetImageResource(item.ImageResId);
             else if (item.GetType() == typeof(DrawerPCItem))
@@ -99,7 +110,13 @@ namespace AnatoliAndroid.ListAdapters
                 }
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
                 {
-                    relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
+
+                    if (AnatoliApp.GetInstance().AnatoliUser != null)
+                    {
+
+                    }
+                    else
+                        relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
                 }
 
             }
@@ -111,6 +128,7 @@ namespace AnatoliAndroid.ListAdapters
         public string ItemId { get; set; }
         public string Name { get; set; }
         public int ImageResId { get; set; }
+        public string ImageUrl { get; set; }
         public DrawerItemType(string itemId = "", string name = "Menu Item", int imageResId = -1)
         {
             ItemId = itemId;

@@ -34,7 +34,7 @@ namespace AnatoliAndroid.Activities
         private static AnatoliApp instance;
         private Activity _activity;
         public Android.Locations.LocationManager LocationManager;
-        public AnatoliUserModel AnatoliUser;
+        public AnatoliUserModel AnatoliUser { get; private set; }
         public List<DrawerItemType> AnatoliMenuItems;
         ListView _drawerListView;
         public ListView DrawerListView { get { return _drawerListView; } }
@@ -54,6 +54,7 @@ namespace AnatoliAndroid.Activities
         ImageButton _menuIconImageButton;
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
+        public string CustomerId;
         double _price;
         public string DefaultStoreName { get; private set; }
         public string DefaultStoreId { get; private set; }
@@ -462,11 +463,9 @@ namespace AnatoliAndroid.Activities
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-                        bool result = await AnatoliUserManager.LogoutAsync();
+                        var result = await LogoutAsync();
                         if (result)
                         {
-                            AnatoliApp.GetInstance().AnatoliUser = null;
-                            AnatoliApp.GetInstance().RefreshMenuItems();
                             AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                         }
                         break;
@@ -751,6 +750,7 @@ namespace AnatoliAndroid.Activities
 
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
+                //avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
                 avatarMenuEntry.Name = AnatoliUser.FullName;
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
                 mainItems.Add(avatarMenuEntry);
@@ -924,5 +924,25 @@ namespace AnatoliAndroid.Activities
         }
         public event LocationChangedEventHandler LocationChanged;
         public delegate void LocationChangedEventHandler(Location location);
+
+        internal async Task<bool> LogoutAsync()
+        {
+            var result = await AnatoliUserManager.LogoutAsync();
+            if (result)
+            {
+                AnatoliUser = null;
+                CustomerId = null;
+                RefreshMenuItems();
+            }
+            return result;
+        }
+
+        internal async Task LoginAsync(AnatoliUserModel userModel)
+        {
+            AnatoliUser = userModel;
+            await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
+            await AnatoliApp.GetInstance().RefreshCutomerProfile();
+            AnatoliApp.GetInstance().RefreshMenuItems();
+        }
     }
 }
