@@ -27,7 +27,7 @@ namespace Anatoli.Cloud.WebApi
     {
         public void Configuration(IAppBuilder app)
         {
-            Database.SetInitializer<AnatoliDbContext>(new CreateDatabaseIfNotExists<AnatoliDbContext>());
+            Database.SetInitializer<AnatoliDbContext>(new MigrateDatabaseToLatestVersion<AnatoliDbContext, Anatoli.DataAccess.Migrations.Configuration>());
 
             log4net.Config.XmlConfigurator.Configure();
 

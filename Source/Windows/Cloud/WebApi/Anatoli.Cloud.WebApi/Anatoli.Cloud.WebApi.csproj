@@ -179,6 +179,7 @@
     <Compile Include="Classes\FileManager.cs" />
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />
+    <Compile Include="Classes\SMSManager.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />

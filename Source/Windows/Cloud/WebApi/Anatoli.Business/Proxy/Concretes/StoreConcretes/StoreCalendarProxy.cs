@@ -22,6 +22,7 @@ namespace Anatoli.Business.Proxy.Concretes
                     FromTimeString = data.FromTime.ToString(),
                     ToTimeString = data.ToTime.ToString(),
                     Description = data.Description,
+                    StoreId = data.StoreId,
                     CalendarTypeValueId = data.CalendarTypeValueId?? Guid.Empty,
                 };
         }
@@ -32,6 +33,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 {
                     Number_ID = data.ID,
                     Id = data.UniqueId,
+                    StoreId = data.StoreId,
 
                     PDate = data.PDate,
                     Date = data.Date,

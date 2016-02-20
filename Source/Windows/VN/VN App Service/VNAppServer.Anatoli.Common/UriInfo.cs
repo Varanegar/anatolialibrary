@@ -35,7 +35,8 @@ namespace VNAppServer.Anatoli.Common
         public static readonly string SaveStockProductURI = "/api/gateway/stock/stockproduct/save";
         public static readonly string SaveStockProductRequestURI = "/api/gateway/stock/stockproduct/save";
         public static readonly string SaveMainProductGroupURI = "/api/gateway/product/mainproductgroups/save";
-        public static readonly string SaveUserURI = "/api/accounts/create";
+        public static readonly string SaveUserURI = "/api/accounts/createbybackoffice";
+        public static readonly string GetUserURI = "/api/accounts/user";
 
         public static readonly string GetProductRequestRulesURI = "/api/gateway/stockproductrequest/rules/valid";
         public static readonly string GetProductsURI = "/api/gateway/product/products";

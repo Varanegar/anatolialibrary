@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace Anatoli.ViewModels.User
 {
-    public class CreateUserBindingModel : BaseViewModel
+    public class CreateUserBindingModel 
     {
+        public int? ID { get; set; }
+
+        public Guid? UniqueId { get; set; }
+
         //[Required]
         [EmailAddress(ErrorMessage = "فرمت ایمیل نا معتبر است.")]
         [Display(Name = "Email")]
@@ -39,5 +43,8 @@ namespace Anatoli.ViewModels.User
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "کلمه عبور و تکرار آن برابر نمی باشند.")]
         public string ConfirmPassword { get; set; }
+
+        public bool SendPassSMS { get; set; }
+
     }
 }

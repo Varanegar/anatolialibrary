@@ -1,4 +1,5 @@
-﻿using Anatoli.PMC.DataAccess.Helpers;
+﻿
+using Anatoli.PMC.DataAccess.Helpers;
 using Anatoli.PMC.ViewModels.Base;
 using Anatoli.PMC.ViewModels.Order;
 using Anatoli.ViewModels.Order;
@@ -118,9 +119,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                         DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
                         customer.CustomerId = GeneralCommands.GetId(context, "Customer");
                         customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);
-                        context.Execute(@"update CenterSetting set LogIsActive = 0");
                         customerDataObject.Insert(customer, context);
-                        context.Execute(@"update CenterSetting set LogIsActive = 1");
                         orderInfo.CustomerId = customer.CustomerId;
                         var genScript = context.GetValue<string>(@"EXEC usp_GenData 'Customer','customerid=" + customer.CustomerId + "' ,1,1");
 
@@ -169,7 +168,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     orderInfo.SellId = GeneralCommands.GetId(context, "Sell");
                     orderInfo.FiscalYearId = GeneralCommands.GetFiscalYearId(context);
                     orderInfo.CashSessionId = GeneralCommands.GetCashSessionId(context);
-                    orderInfo.CashSessionStatusId = 0;
+                    //orderInfo.CashSessionStatusId = 0;
                     orderInfo.RequestNo = GeneralCommands.GetRequestNo(context, orderInfo.FiscalYearId);
                     orderInfo.RequestDateTime = PersianDate.Now.ToString();
 

@@ -40,12 +40,16 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         }
         public void SetCustomerSiteUserId(string UserId, string Mobile)
         {
-            try { 
-            new DataContext().Execute("update Customer set customerSiteUserId ='" +  UserId + "' where mobile='" + Mobile + "'");
+            try {
+                using (var context = new DataContext())
+                {
+                    context.Execute("update Customer set customerSiteUserId ='" + UserId + "' where mobile='" + Mobile + "'");
+                }
             }
             catch (Exception ex)
             {
                 log.Error("save UserId to site data ", ex);
+                throw ex;
             }
         }
 
@@ -75,7 +79,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             catch (Exception ex)
             {
                 log.Error("Failed fetch data ", ex);
-                return null;
+                throw ex;
             }
         }
     }

@@ -9,7 +9,8 @@ namespace Anatoli.ViewModels.User
 {
     public class ChangePasswordBindingModel
     {
-
+        public string UserId { get; set; }
+        public bool ForgetPassword { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
