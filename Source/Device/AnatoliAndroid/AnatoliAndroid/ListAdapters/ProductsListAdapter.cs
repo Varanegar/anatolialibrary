@@ -172,7 +172,7 @@ namespace AnatoliAndroid.ListAdapters
                     if (AnatoliApp.GetInstance().ProductsListF == null)
                         AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
                     AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                    await AnatoliApp.GetInstance().ProductsListF.Refresh();
+                    await AnatoliApp.GetInstance().ProductsListF.RefreshAsync();
                 };
                 if (_groupImageView != null)
                 {
@@ -181,7 +181,7 @@ namespace AnatoliAndroid.ListAdapters
                         if (AnatoliApp.GetInstance().ProductsListF == null)
                             AnatoliApp.GetInstance().ProductsListF = new ProductsListFragment();
                         AnatoliApp.GetInstance().ProductsListF.SetCatId(item.cat_id.ToString());
-                        await AnatoliApp.GetInstance().ProductsListF.Refresh();
+                        await AnatoliApp.GetInstance().ProductsListF.RefreshAsync();
                     };
                 }
                 return view;

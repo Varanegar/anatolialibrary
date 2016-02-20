@@ -190,7 +190,7 @@ namespace AnatoliAndroid.Fragments
                                         await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
                                         AnatoliApp.GetInstance().RefreshMenuItems();
                                         Dismiss();
-                                        AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(new ProductsListFragment(), "products_fragment");
+                                        OnLoginSuccess();
                                     }
                                     catch (Exception ex2)
                                     {

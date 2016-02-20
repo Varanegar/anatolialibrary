@@ -91,7 +91,7 @@ namespace AnatoliAndroid.Fragments
             };
             return _view;
         }
-        internal async Task Refresh()
+        internal async Task RefreshAsync()
         {
             try
             {
