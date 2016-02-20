@@ -72,7 +72,7 @@ namespace AnatoliAndroid.Fragments
                 }
                 catch (Exception ex)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                    ex.SendTrace();
                     alert.SetMessage("تغییر کلمه عبور با خطا مواجه شد");
                     alert.SetPositiveButton(Resource.String.Ok, delegate { });
                     alert.Show();

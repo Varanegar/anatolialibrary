@@ -558,7 +558,7 @@ namespace AnatoliAndroid.Activities
                 }
                 catch (Exception e)
                 {
-                    HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(e), false);
+                    e.SendTrace();
                     if (cancelable && e.GetType() == typeof(TaskCanceledException))
                     {
                         errDialog.SetMessage(Resource.String.ErrorOccured);
@@ -633,7 +633,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
                 pDialog.Dismiss();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (ex.GetType() == typeof(Anatoli.Framework.Helper.SyncPolicyHelper.SyncPolicyException))
@@ -901,8 +901,7 @@ namespace AnatoliAndroid.Activities
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
-
+                ex.SendTrace();
             }
         }
 

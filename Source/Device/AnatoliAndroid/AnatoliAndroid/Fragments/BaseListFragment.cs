@@ -50,8 +50,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                var exp = new Exception("Search in base list fragment", ex);
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(exp), false);
+                ex.SendTrace();
             }
         }
         protected virtual View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -105,7 +104,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
             }
         }
 
@@ -126,7 +125,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                        ex.SendTrace();
                     }
                 }
             }

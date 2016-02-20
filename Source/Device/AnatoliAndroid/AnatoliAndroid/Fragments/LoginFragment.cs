@@ -125,7 +125,7 @@ namespace AnatoliAndroid.Fragments
                     }
                     catch (Exception ex)
                     {
-                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                        ex.SendTrace();
                         if (ex.GetType() == typeof(TokenException))
                         {
                             AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
@@ -153,7 +153,7 @@ namespace AnatoliAndroid.Fragments
             }
             catch (Exception ex)
             {
-                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
+                ex.SendTrace();
                 pDialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {
@@ -202,7 +202,7 @@ namespace AnatoliAndroid.Fragments
                                     }
                                     catch (Exception ex2)
                                     {
-                                        HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex2), false);
+                                        ex2.SendTrace();
                                         if (ex2.GetType() == typeof(TokenException))
                                         {
                                             AlertDialog.Builder errDialog2 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
@@ -224,7 +224,7 @@ namespace AnatoliAndroid.Fragments
                             }
                             catch (Exception ex2)
                             {
-                                HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex2), false);
+                                ex2.SendTrace();
                                 pDialog.Dismiss();
                                 if (ex2.GetType() == typeof(ServerUnreachable))
                                 {
