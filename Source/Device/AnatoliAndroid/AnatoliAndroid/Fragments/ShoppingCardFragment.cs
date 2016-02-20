@@ -347,27 +347,37 @@ namespace AnatoliAndroid.Fragments
 
             try
             {
-                string tel = (await StoreManager.GetDefaultAsync()).store_tel;
-                if (String.IsNullOrEmpty(tel))
+                var defaultStore = await StoreManager.GetDefaultAsync();
+                if (defaultStore != null)
                 {
-                    _storeTelTextView.Text = "نا مشخص";
-                    _callImageButton.Visibility = ViewStates.Invisible;
+                    string tel = defaultStore.store_tel;
+                    if (String.IsNullOrEmpty(tel))
+                    {
+                        _storeTelTextView.Text = "نا مشخص";
+                        _callImageButton.Visibility = ViewStates.Invisible;
+                    }
+                    else
+                    {
+                        _storeTelTextView.Text = tel;
+                        _callImageButton.Visibility = ViewStates.Visible;
+                        _callImageButton.Click += (s, e) =>
+                        {
+                            var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
+                            var intent = new Intent(Intent.ActionDial, uri);
+                            StartActivity(intent);
+                        };
+                    }
                 }
                 else
                 {
-                    _storeTelTextView.Text = tel;
-                    _callImageButton.Visibility = ViewStates.Visible;
-                    _callImageButton.Click += (s, e) =>
-                    {
-                        var uri = Android.Net.Uri.Parse(String.Format("tel:{0}", tel));
-                        var intent = new Intent(Intent.ActionDial, uri);
-                        StartActivity(intent);
-                    };
+                    var storef = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+                    await storef.RefreshAsync();
                 }
+
             }
             catch (Exception)
             {
-                AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+
             }
 
             _deliveryTypes = await BaseTypeManager.GetDeliveryTypesAsync();

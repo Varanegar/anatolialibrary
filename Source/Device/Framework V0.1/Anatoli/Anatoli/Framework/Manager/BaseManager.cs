@@ -20,6 +20,17 @@ namespace Anatoli.Framework.Manager
             get { return _limit; }
             set { _limit = value; }
         }
+        public void ResetQueryLimits()
+        {
+            if (_localP != null)
+            {
+                _localP.Index = 0;
+            }
+            if (_remoteP != null)
+            {
+                _remoteP.Index = 0;
+            }
+        }
         public void SetQueries(DBQuery dbQuery, RemoteQuery remoteQuery)
         {
             _localP = dbQuery;
@@ -40,7 +51,7 @@ namespace Anatoli.Framework.Manager
             {
                 _remoteP.Limit = _limit;
             }
-            var list = await  BaseDataAdapter<DataModel>.GetListAsync(_localP);
+            var list = await BaseDataAdapter<DataModel>.GetListAsync(_localP);
             if (_localP != null)
             {
                 _localP.Index += Math.Min(list.Count, _limit);

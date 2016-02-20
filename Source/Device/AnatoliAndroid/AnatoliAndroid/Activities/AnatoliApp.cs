@@ -371,7 +371,15 @@ namespace AnatoliAndroid.Activities
                         }
                         if (go)
                         {
-                            if (ProductsListF != null)
+                            if (await StoreManager.GetDefaultAsync() == null)
+                            {
+                                Toast.MakeText(Activity, "لطفا ابتدا فروشگاه مورد نظر را انتخاب نمایید", ToastLength.Short).Show();
+                                DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                                _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
+                                await _storesListF.RefreshAsync();
+                                return;
+                            }
+                            else if (ProductsListF != null)
                             {
                                 ProductsListF.SetCatId(null);
                                 await ProductsListF.RefreshAsync();
@@ -422,6 +430,14 @@ namespace AnatoliAndroid.Activities
                         var loginFragment = new LoginFragment();
                         loginFragment.LoginSuceeded += async () =>
                         {
+                            if (await StoreManager.GetDefaultAsync() == null)
+                            {
+                                Toast.MakeText(Activity, "لطفا ابتدا فروشگاه مورد نظر را انتخاب نمایید", ToastLength.Short).Show();
+                                DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
+                                _storesListF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(_storesListF, "stores_fragment");
+                                await _storesListF.RefreshAsync();
+                                return;
+                            }
                             ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                             await ProductsListF.RefreshAsync();
                         };
@@ -628,6 +644,8 @@ namespace AnatoliAndroid.Activities
                 await ProductManager.SyncPrices(tokenSource);
                 await SyncManager.SaveDBVersionAsync();
                 pDialog.Dismiss();
+                ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
+                await ProductsListF.RefreshAsync();
                 return true;
             }
             catch (Exception ex)

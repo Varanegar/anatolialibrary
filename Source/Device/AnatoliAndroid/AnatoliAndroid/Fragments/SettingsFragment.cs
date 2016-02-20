@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +37,13 @@ namespace AnatoliAndroid.Fragments
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
                 await AnatoliApp.GetInstance().ClearDatabase();
                 await AnatoliApp.GetInstance().LogoutAsync();
-                await AnatoliApp.GetInstance().SyncDatabase();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetMessage("به علت تغییر آی پی باید برنامه دوباره راه اندازی شود");
+                alert.SetPositiveButton(Resource.String.Ok, delegate
+                {
+                    AnatoliApp.GetInstance().Activity.Finish();
+                });
+                alert.Show();
             };
 
             return view;
