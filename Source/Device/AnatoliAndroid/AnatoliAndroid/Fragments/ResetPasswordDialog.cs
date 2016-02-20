@@ -10,15 +10,15 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Anatoli.App.Manager;
 using AnatoliAndroid.Activities;
-using System.Threading.Tasks;
+using Anatoli.App.Manager;
 
 namespace AnatoliAndroid.Fragments
 {
-    public class ConfirmDialog : DialogFragment
+    public class ResetPasswordDialog : DialogFragment
     {
         public string UserName;
+        public string PassWord;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,11 +28,11 @@ namespace AnatoliAndroid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            base.OnCreateView(inflater, container, savedInstanceState);
-            var view = inflater.Inflate(Resource.Layout.ConfirmDialog, container, false);
+            base.OnCreate(savedInstanceState);
+            var view = inflater.Inflate(Resource.Layout.ResetPassWordLayout, container, false);
+
             EditText codeEditText = view.FindViewById<EditText>(Resource.Id.codeEditText);
             Button okButton = view.FindViewById<Button>(Resource.Id.okButton);
-            TextView resendTextView = view.FindViewById<TextView>(Resource.Id.resendTextView);
 
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
 
@@ -45,60 +45,38 @@ namespace AnatoliAndroid.Fragments
                 {
                     var result = await AnatoliUserManager.SendConfirmCode(UserName, codeEditText.Text.Trim());
                     if (result.IsValid)
-                        OnCodeConfirmed();
+                        OnPassWordChanged();
                     else
-                        OnConfirmFailed(result.message);
+                        OnPassWordFailed(result.message);
                 }
                 catch (Exception)
                 {
-                    OnConfirmFailed("ÎØÇ!");
+                    OnPassWordFailed("ÎØÇ!");
                 }
                 finally
                 {
                     pDialog.Dismiss();
                 }
             };
-            resendTextView.Click += async (s, e) =>
-            {
-                await RequestConfirmCode();
-            };
+
             return view;
         }
-        async Task<bool> RequestConfirmCode()
+        void OnPassWordChanged()
         {
-            try
+            if (PassWordChanged != null)
             {
-                var result = await AnatoliUserManager.RequestConfirmCode(UserName);
-                if (result.IsValid)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
+                PassWordChanged.Invoke(this, new EventArgs());
             }
         }
-        void OnCodeConfirmed()
+        public EventHandler PassWordChanged;
+        void OnPassWordFailed(string msg)
         {
-            if (CodeConfirmed != null)
+            if (PassWordFailed != null)
             {
-                CodeConfirmed.Invoke(this, new EventArgs());
+                PassWordFailed.Invoke(msg);
             }
         }
-        public EventHandler CodeConfirmed;
-
-        void OnConfirmFailed(string msg)
-        {
-            if (ConfirmFailed != null)
-            {
-                ConfirmFailed.Invoke(msg);
-            }
-        }
-        public ConfirmFailedEventHandler ConfirmFailed;
-        public delegate void ConfirmFailedEventHandler(string msg);
-
-        
+        public event PassWordFailedEventHandler PassWordFailed;
+        public delegate void PassWordFailedEventHandler(string msg);
     }
 }

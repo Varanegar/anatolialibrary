@@ -155,6 +155,7 @@
     <Compile Include="Fragments\FavoritsListFragment.cs" />
     <Compile Include="Fragments\FavoritsToolsFragment.cs" />
     <Compile Include="Fragments\FirstFragment.cs" />
+    <Compile Include="Fragments\ForgetPasswordDialog.cs" />
     <Compile Include="Fragments\FragmentTitle.cs" />
     <Compile Include="Fragments\ListToolsDialog.cs" />
     <Compile Include="Fragments\ChangePassFragment.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Fragments\OrdersListFragment.cs" />
     <Compile Include="Fragments\ProfileFragment.cs" />
     <Compile Include="Fragments\ProformaFragment.cs" />
+    <Compile Include="Fragments\ResetPasswordDialog.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
@@ -301,6 +303,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ConfirmDialog.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ForgetPasswordLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ResetPassWordLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

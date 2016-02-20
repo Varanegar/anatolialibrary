@@ -25,8 +25,8 @@ namespace Anatoli.Framework.AnatoliBase
         public struct WebService
         {
             //public static string PortalAddress = "http://192.168.201.119";
-            public static string PortalAddress = "http://46.209.104.2:7000";
-            //public static string PortalAddress = "http://46.32.2.234:8081";
+            //public static string PortalAddress = "http://46.209.104.2:7000";
+            public static string PortalAddress = "http://46.32.2.234:8081";
             //public static string PortalAddress = "http://79.175.166.186/";
             //public static  string PortalAddress = "http://192.168.201.46/";
             //public static string PortalAddress = "http://192.168.0.160:8081/";
@@ -59,6 +59,7 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string UserAuthUrl = "/api/accounts/create";
                 public static readonly string ConfirmMobile = "/api/accounts/confirmmobile/";
                 public static readonly string ResendConfirmCode = "/api/accounts/resendpasscode/";
+                public static readonly string ResetPassWord = "/api/accounts/resetpassword/";
                 public static readonly string ViewProfileUrl = "/api/gateway/customer/customers";
                 public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
                 public static readonly string OrdersHistory = "api/gateway/purchaseorder/history";

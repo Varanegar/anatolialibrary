@@ -142,13 +142,19 @@ namespace AnatoliAndroid.Fragments
                                     errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
                                     errDialog.Show();
                                 }
+                                else if (ex.GetType() == typeof(System.Threading.Tasks.TaskCanceledException))
+                                {
+                                    errDialog.SetMessage("خطا در برقراری ارتباط");
+                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                                    errDialog.Show();
+                                }
                             }
 
                         };
-                        confirmDialog.ConfirmFailed += (s2, e2) =>
+                        confirmDialog.ConfirmFailed += (msg) =>
                         {
                             AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                            alert.SetMessage(Resource.String.WrongCode);
+                            alert.SetMessage(msg);
                             alert.SetTitle(Resource.String.Error);
                             alert.Show();
                         };
