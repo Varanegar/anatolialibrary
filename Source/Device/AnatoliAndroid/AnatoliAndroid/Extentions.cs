@@ -74,14 +74,7 @@ namespace AnatoliAndroid
         }
         public static void SendTrace(this Exception exception)
         {
-            try
-            {
-                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-            }
-            catch (Exception e)
-            {
-                HockeyApp.TraceWriter.WriteTrace(e, false);
-            }
+            HockeyApp.TraceWriter.WriteTrace(exception, false);
         }
     }
 }
