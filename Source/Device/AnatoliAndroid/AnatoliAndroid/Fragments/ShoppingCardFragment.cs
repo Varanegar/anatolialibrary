@@ -317,6 +317,14 @@ namespace AnatoliAndroid.Fragments
         {
             try
             {
+                var defaultStore = await StoreManager.GetDefaultAsync();
+                if (defaultStore == null)
+                {
+                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "ابتدا فروشگاه دلخواه را انتخاب نمایید", ToastLength.Short).Show();
+                    var storeFrgment = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
+                    await storeFrgment.RefreshAsync();
+                    return;
+                }
                 await OrderManager.SaveOrder();
                 OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
                 var transaction = FragmentManager.BeginTransaction();
@@ -328,10 +336,6 @@ namespace AnatoliAndroid.Fragments
             catch (Exception ex)
             {
                 ex.SendTrace();
-                if (ex.GetType() == typeof(StoreManager.NullStoreException))
-                {
-                    AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
-                }
             }
         }
 

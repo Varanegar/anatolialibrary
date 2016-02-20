@@ -98,16 +98,13 @@ namespace Anatoli.App.Manager
             {
                 var store = await BaseDataAdapter<StoreDataModel>.GetItemAsync(query);
                 if (store == null)
-                    throw new NullStoreException();
+                    return null;
                 return store;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
-        }
-        public class NullStoreException : Exception
-        {
         }
 
         public static async Task<bool> UpdateDistanceAsync(string store_id, float dist)
