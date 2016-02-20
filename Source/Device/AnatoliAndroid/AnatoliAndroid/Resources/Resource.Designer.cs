@@ -2907,6 +2907,9 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f050045
 			public const int ConnectionFailed = 2131034181;
 			
+			// aapt resource value: 0x7f050054
+			public const int CurrentPassword = 2131034196;
+			
 			// aapt resource value: 0x7f05004c
 			public const int DistanceFromYou = 2131034188;
 			

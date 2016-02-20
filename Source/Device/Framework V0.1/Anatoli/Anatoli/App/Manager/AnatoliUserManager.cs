@@ -131,7 +131,7 @@ namespace Anatoli.App.Manager
 
         public static async Task<ConfirmResult> SendConfirmCode(string userName, string code)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<ConfirmResult>(TokenType.AppToken, Configuration.WebService.Users.ConfirmMobile + "?username=" + userName + "&code=" + code);
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ConfirmResult>(TokenType.AppToken, Configuration.WebService.Users.ConfirmMobile + "?username=" + userName + "&code=" + code);
             return result;
         }
 

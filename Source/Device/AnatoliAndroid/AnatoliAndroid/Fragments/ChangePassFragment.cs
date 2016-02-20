@@ -59,11 +59,13 @@ namespace AnatoliAndroid.Fragments
                         if (result.IsValid)
                         {
                             alert.SetMessage("کلمه عبور با موفقیت تغییر کرد");
+                            alert.SetPositiveButton(Resource.String.Ok, delegate { Dismiss(); });
                             alert.Show();
                         }
                         else
                         {
-                            alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
+                            alert.SetMessage("تغییر کلمه عبور با خطا مواجه شد");
+                            alert.SetPositiveButton(Resource.String.Ok, delegate { });
                             alert.Show();
                         }
                     }
@@ -71,7 +73,8 @@ namespace AnatoliAndroid.Fragments
                 catch (Exception ex)
                 {
                     HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
-                    alert.SetMessage("تغییر کلمه عبور با خطا مواحه شد");
+                    alert.SetMessage("تغییر کلمه عبور با خطا مواجه شد");
+                    alert.SetPositiveButton(Resource.String.Ok, delegate { });
                     alert.Show();
                 }
                 finally

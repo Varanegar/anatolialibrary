@@ -51,6 +51,7 @@ namespace AnatoliAndroid.Fragments
 
         void _fgTextView_Click(object sender, EventArgs e)
         {
+            Dismiss();
             ForgetPasswordDialog fDialog = new ForgetPasswordDialog();
             var t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
             fDialog.Show(t, "forgetpass_dialog");
@@ -66,24 +67,26 @@ namespace AnatoliAndroid.Fragments
 
         async void loginButton_Click(object sender, EventArgs e)
         {
-            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-            errDialog.SetPositiveButton("خب", (s1, e1) => { });
+
             if (String.IsNullOrEmpty(_userNameEditText.Text) || String.IsNullOrEmpty(_passwordEditText.Text))
             {
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 errDialog.SetMessage(Resources.GetText(Resource.String.EneterUserNamePass));
+                errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                 errDialog.Show();
                 return;
             }
             if (!AnatoliClient.GetInstance().WebClient.IsOnline())
             {
+                AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 errDialog.SetTitle(Resources.GetText(Resource.String.NetworkAccessFailed));
                 errDialog.SetMessage(Resources.GetText(Resource.String.PleaseConnectToInternet));
-                errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) =>
+                errDialog.SetPositiveButton(Resource.String.Ok, delegate
                 {
                     Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
                     AnatoliApp.GetInstance().Activity.StartActivity(intent);
                 });
-                errDialog.SetNegativeButton(Resource.String.Cancel, (s2, e2) => { });
+                errDialog.SetNegativeButton(Resource.String.Cancel, delegate { });
                 errDialog.Show();
                 return;
             }
@@ -125,23 +128,26 @@ namespace AnatoliAndroid.Fragments
                         HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex), false);
                         if (ex.GetType() == typeof(TokenException))
                         {
+                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                             errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
-                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                            errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                             errDialog.Show();
                         }
                         else if (ex.GetType() == typeof(System.Threading.Tasks.TaskCanceledException))
                         {
+                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                             errDialog.SetMessage("خطا در برقراری ارتباط");
-                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                            errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                             errDialog.Show();
                         }
                     }
                 }
                 else
                 {
+                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
                     errDialog.SetMessage(userModel.ModelStateString);
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                     errDialog.Show();
                 }
             }
@@ -151,14 +157,16 @@ namespace AnatoliAndroid.Fragments
                 pDialog.Dismiss();
                 if (ex.GetType() == typeof(ServerUnreachable))
                 {
+                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                     errDialog.Show();
                 }
                 else if (ex.GetType() == typeof(TokenException))
                 {
+                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
-                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
+                    errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                     errDialog.Show();
                 }
                 else if (ex.GetType() == typeof(UnConfirmedUser))
@@ -166,14 +174,14 @@ namespace AnatoliAndroid.Fragments
                     AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                     alert.SetTitle(Resource.String.Error);
                     alert.SetMessage("شماره شما هنوز تایید نشده است. کد فعال سازی ارسال شود؟");
-                    alert.SetPositiveButton(Resource.String.Yes, async (ssss, eeee) =>
+                    alert.SetPositiveButton(Resource.String.Yes, async delegate
                     {
-                        await AnatoliUserManager.RequestConfirmCode(_userNameEditText.Text);
                         ConfirmDialog confirmDialog = new ConfirmDialog();
                         confirmDialog.UserName = _userNameEditText.Text;
                         confirmDialog.CodeConfirmed += async (sss, e2d) =>
                         {
                             // Login 
+                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                             errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
                             pDialog.SetTitle(Resources.GetText(Resource.String.Login));
                             pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
@@ -197,19 +205,21 @@ namespace AnatoliAndroid.Fragments
                                         HockeyApp.TraceWriter.WriteTrace(new AnatoliHandledException(ex2), false);
                                         if (ex2.GetType() == typeof(TokenException))
                                         {
-                                            errDialog.SetMessage(Resource.String.SaveFailed);
-                                            errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                            errDialog.Show();
+                                            AlertDialog.Builder errDialog2 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                            errDialog2.SetMessage(Resource.String.SaveFailed);
+                                            errDialog2.SetPositiveButton(Resource.String.Ok, delegate { });
+                                            errDialog2.Show();
                                         }
 
                                     }
                                 }
                                 else
                                 {
-                                    errDialog.SetTitle(Resources.GetText(Resource.String.LoginFailed));
-                                    errDialog.SetMessage(userModel.ModelStateString);
-                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                    errDialog.Show();
+                                    AlertDialog.Builder errDialog3 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                    errDialog3.SetTitle(Resources.GetText(Resource.String.LoginFailed));
+                                    errDialog3.SetMessage(userModel.ModelStateString);
+                                    errDialog3.SetPositiveButton(Resource.String.Ok, delegate { });
+                                    errDialog3.Show();
                                 }
                             }
                             catch (Exception ex2)
@@ -218,21 +228,24 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.Dismiss();
                                 if (ex2.GetType() == typeof(ServerUnreachable))
                                 {
-                                    errDialog.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
-                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                    errDialog.Show();
+                                    AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                    errDialog4.SetMessage(Resources.GetText(Resource.String.ServerUnreachable));
+                                    errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
+                                    errDialog4.Show();
                                 }
                                 else if (ex2.GetType() == typeof(TokenException))
                                 {
-                                    errDialog.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
-                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                    errDialog.Show();
+                                    AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                    errDialog4.SetMessage(Resources.GetText(Resource.String.AuthenticationFailed));
+                                    errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
+                                    errDialog4.Show();
                                 }
                                 else if (ex.GetType() == typeof(System.Threading.Tasks.TaskCanceledException))
                                 {
-                                    errDialog.SetMessage("خطا در برقراری ارتباط");
-                                    errDialog.SetPositiveButton(Resource.String.Ok, (s2, e2) => { });
-                                    errDialog.Show();
+                                    AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                    errDialog4.SetMessage("خطا در برقراری ارتباط");
+                                    errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
+                                    errDialog4.Show();
                                 }
                             }
 
@@ -245,8 +258,9 @@ namespace AnatoliAndroid.Fragments
                         };
                         FragmentTransaction t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                         confirmDialog.Show(t, "confirm_dialog");
+                        await AnatoliUserManager.RequestConfirmCode(_userNameEditText.Text);
                     });
-                    alert.SetNegativeButton(Resource.String.Cancel, (ssss, eeee) => { });
+                    alert.SetNegativeButton(Resource.String.Cancel, delegate { });
                     alert.Show();
                 }
             }

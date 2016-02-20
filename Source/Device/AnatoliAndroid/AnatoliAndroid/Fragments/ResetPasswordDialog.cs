@@ -33,10 +33,10 @@ namespace AnatoliAndroid.Fragments
 
             EditText codeEditText = view.FindViewById<EditText>(Resource.Id.codeEditText);
             Button okButton = view.FindViewById<Button>(Resource.Id.okButton);
+            okButton.UpdateWidth();
+            Dialog.SetTitle(Resource.String.ChangePassword);
 
-            Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
-
-            okButton.Click += async (s, e) =>
+            okButton.Click += async delegate
             {
                 ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
                 pDialog.SetMessage(AnatoliApp.GetResources().GetString(Resource.String.PleaseWait));
@@ -44,6 +44,7 @@ namespace AnatoliAndroid.Fragments
                 try
                 {
                     var result = await AnatoliUserManager.SendConfirmCode(UserName, codeEditText.Text.Trim());
+                    pDialog.Dismiss();
                     if (result.IsValid)
                         OnPassWordChanged();
                     else
@@ -56,6 +57,7 @@ namespace AnatoliAndroid.Fragments
                 finally
                 {
                     pDialog.Dismiss();
+                    Dismiss();
                 }
             };
 

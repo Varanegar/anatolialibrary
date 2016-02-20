@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using AnatoliAndroid.Activities;
 using Anatoli.App.Manager;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -27,49 +28,88 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Dialog.SetTitle("تغییر رمز عبور");
             var view = inflater.Inflate(Resource.Layout.ForgetPasswordLayout, container, false);
             var editText1 = view.FindViewById<EditText>(Resource.Id.editText1);
             var editText2 = view.FindViewById<EditText>(Resource.Id.editText2);
             var editText3 = view.FindViewById<EditText>(Resource.Id.editText3);
             var button1 = view.FindViewById<Button>(Resource.Id.button1);
-            button1.Click += async (s, e) =>
-            {
-                AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                if (editText2.Text.Equals(editText3.Text))
-                {
-                    var result = await AnatoliUserManager.ResetPassword(editText1.Text, editText2.Text);
-                    ResetPasswordDialog resetDialog = new ResetPasswordDialog();
-                    resetDialog.UserName = editText1.Text;
-                    var t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                    resetDialog.Show(t, "confirm_dialog");
-                    resetDialog.PassWordChanged += (s2, e2) =>
-                    {
-                        eAlert.SetMessage("کلمه عبور با موفقیت تغییر یافت");
-                        eAlert.Show();
-                        eAlert.SetPositiveButton(Resource.String.Ok, (s3, e3) =>
-                        {
-                            Dismiss();
-                        });
-                    };
-                    resetDialog.PassWordFailed += (msg) =>
-                    {
-                        eAlert.SetTitle(Resource.String.Error);
-                        eAlert.SetMessage(msg);
-                        eAlert.SetPositiveButton(Resource.String.Ok, (s3, e3) =>
-                        {
-                            Dismiss();
-                        });
-                        eAlert.Show();
-                    };
-                }
-                else
-                {
-                    eAlert.SetTitle(Resource.String.Error);
-                    eAlert.SetMessage("کلمه عبور و تکرار آن یکسان نیستند");
-                    eAlert.SetPositiveButton(Resource.String.Ok, (s3, e3) => { });
-                    eAlert.Show();
-                }
-            };
+            button1.UpdateWidth();
+            button1.Click += async delegate
+             {
+
+                 if (!AnatoliClient.GetInstance().WebClient.IsOnline())
+                 {
+                     AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                     eAlert.SetMessage("لطفا دستگاه خود را به اینترنت متصل کنید");
+                     eAlert.SetPositiveButton(Resource.String.Ok, delegate
+                     {
+                         Intent intent = new Intent(Android.Provider.Settings.ActionSettings);
+                         AnatoliApp.GetInstance().Activity.StartActivity(intent);
+                     });
+                     eAlert.SetNegativeButton(Resource.String.Cancel, delegate
+                     {
+                         Dismiss();
+                     });
+                     eAlert.Show();
+                     return;
+                 }
+                 if (editText2.Text.Equals(editText3.Text))
+                 {
+                     ProgressDialog pDialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                     pDialog.SetMessage(AnatoliApp.GetResources().GetString(Resource.String.PleaseWait));
+                     pDialog.Show();
+                     try
+                     {
+                         var result = await AnatoliUserManager.ResetPassword(editText1.Text, editText2.Text);
+                         pDialog.Dismiss();
+                         ResetPasswordDialog resetDialog = new ResetPasswordDialog();
+                         resetDialog.UserName = editText1.Text;
+                         var t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                         resetDialog.Show(t, "confirm_dialog");
+                         resetDialog.PassWordChanged += delegate
+                         {
+                             AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                             eAlert.SetMessage("کلمه عبور با موفقیت تغییر یافت");
+                             eAlert.SetPositiveButton(Resource.String.Ok, delegate
+                             {
+                                 Dismiss();
+                             });
+                             eAlert.Show();
+                         };
+                         resetDialog.PassWordFailed += (msg) =>
+                         {
+                             AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                             eAlert.SetTitle(Resource.String.Error);
+                             eAlert.SetMessage(msg);
+                             eAlert.SetPositiveButton(Resource.String.Ok, delegate
+                             {
+                                 Dismiss();
+                             });
+                             eAlert.Show();
+                         };
+                     }
+                     catch (Exception)
+                     {
+                         pDialog.Dismiss();
+                         AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                         eAlert.SetMessage("اجرای درخواست شما با خطا مواجه شد");
+                         eAlert.SetPositiveButton(Resource.String.Ok, delegate
+                         {
+                             Dismiss();
+                         });
+                         eAlert.Show();
+                     }
+                 }
+                 else
+                 {
+                     AlertDialog.Builder eAlert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                     eAlert.SetTitle(Resource.String.Error);
+                     eAlert.SetMessage("کلمه عبور و تکرار آن یکسان نیستند");
+                     eAlert.SetPositiveButton(Resource.String.Ok, delegate { });
+                     eAlert.Show();
+                 }
+             };
             return view;
         }
     }
