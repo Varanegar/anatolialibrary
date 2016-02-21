@@ -58,11 +58,18 @@ namespace AnatoliAndroid.ListAdapters
                 else
                     view = _context.LayoutInflater.Inflate(Resource.Layout.GroupSummaryLayout, null);
             else
-                if (convertView != null)
-                    view = convertView;
+                //if (convertView != null)
+                //    view = convertView;
+                //else
+                if (_viewCache.ContainsKey(item.product_id))
+                {
+                    view = _viewCache[item.product_id];
+                }
                 else
+                {
                     view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
-
+                    _viewCache.Add(item.product_id, view);
+                }
             if (item.IsGroup)
             {
                 _groupNameTextView = view.FindViewById<TextView>(Resource.Id.textView1);
@@ -70,84 +77,84 @@ namespace AnatoliAndroid.ListAdapters
             }
             else
             {
-                if (convertView == null)
-                {
-                    _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
-                    _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
-                    _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
-                    _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
-                    _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
-                    _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-                    _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
-                    _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
-                    _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
-                    _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
-                    _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
-                    _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
-                    _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
+                //if (convertView == null)
+                //{
+                _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
+                _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
+                _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
+                _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
+                _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
+                _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
+                _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
+                _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
+                _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
+                _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
+                _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
+                _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
 
-                    view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
-                    view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
-                    view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
-                    view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
-                    view.SetTag(Resource.Id.addImageButton, _productAddButton);
-                    view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
-                    view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
-                    view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-                    view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
-                    view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
-                    view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
-                    view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
-                    view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
-                }
+                //    view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
+                //    view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
+                //    view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
+                //    view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
+                //    view.SetTag(Resource.Id.addImageButton, _productAddButton);
+                //    view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
+                //    view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
+                //    view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
+                //    view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
+                //    view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
+                //    view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
+                //    view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
+                //    view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
+                //}
 
-                else
-                {
-                    _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
-                    _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
-                    _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
-                    _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
-                    _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
-                    _productAddButton = (ImageButton)view.GetTag(Resource.Id.addImageButton);
-                    _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
-                    _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
-                    _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
-                    _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
-                    _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
-                    _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
-                    _optionslinearLayout = (LinearLayout)view.GetTag(Resource.Id.optionslinearLayout);
-                    if (_productCountTextView == null)
-                    {
-                        view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
-                        _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
-                        _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
-                        _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
-                        _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
-                        _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
-                        _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-                        _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
-                        _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
-                        _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
-                        _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
-                        _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
-                        _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
-                        _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
+                //else
+                //{
+                //    _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
+                //    _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
+                //    _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
+                //    _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
+                //    _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
+                //    _productAddButton = (ImageButton)view.GetTag(Resource.Id.addImageButton);
+                //    _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
+                //    _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
+                //    _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
+                //    _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
+                //    _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
+                //    _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
+                //    _optionslinearLayout = (LinearLayout)view.GetTag(Resource.Id.optionslinearLayout);
+                //    if (_productCountTextView == null)
+                //    {
+                //        view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+                //        _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
+                //        _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
+                //        _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
+                //        _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
+                //        _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
+                //        _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                //        _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
+                //        _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
+                //        _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
+                //        _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
+                //        _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
+                //        _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
+                //        _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
 
-                        view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
-                        view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
-                        view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
-                        view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
-                        view.SetTag(Resource.Id.addImageButton, _productAddButton);
-                        view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
-                        view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
-                        view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-                        view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
-                        view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
-                        view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
-                        view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
-                        view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
-                    }
-                }
+                //        view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
+                //        view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
+                //        view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
+                //        view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
+                //        view.SetTag(Resource.Id.addImageButton, _productAddButton);
+                //        view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
+                //        view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
+                //        view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
+                //        view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
+                //        view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
+                //        view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
+                //        view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
+                //        view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
+                //    }
+                //}
             }
             if (item.IsGroup)
             {

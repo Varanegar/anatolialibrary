@@ -34,15 +34,20 @@ namespace AnatoliAndroid.Fragments
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
         private bool _refresh = true;
+        Dictionary<string, View> _viewCache;
         public BaseListFragment()
             : base()
         {
+            _viewCache = new Dictionary<string, View>();
             _listAdapter = new DataListAdapter();
+            _listAdapter.SetCache(_viewCache);
             _dataManager = new BaseDataManager();
             _toolsDialogFragment = new ListTools();
+
         }
         public virtual async Task Search(DBQuery query, string value)
         {
+            _viewCache.Clear();
             _dataManager.SetQueries(query, null);
             try
             {
@@ -63,6 +68,7 @@ namespace AnatoliAndroid.Fragments
         public async override void OnStart()
         {
             base.OnStart();
+            _viewCache.Clear();
             if (_refresh)
             {
                 await RefreshAsync();
@@ -80,6 +86,7 @@ namespace AnatoliAndroid.Fragments
             _resultTextView = _view.FindViewById<TextView>(Resource.Id.resultTextView);
             _listView.ScrollStateChanged += _listView_ScrollStateChanged;
             _listView.Adapter = _listAdapter;
+            _viewCache.Clear();
 
             if (_toolsDialogFragment.GetType() == typeof(NoListToolsDialog))
             {
@@ -109,6 +116,7 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _refresh = false;
+                _viewCache.Clear();
                 _dataManager.ResetQueryLimits();
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 if (_listAdapter.Count == 0)
