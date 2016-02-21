@@ -12,6 +12,7 @@ namespace Anatoli.PMC.ViewModels.EVC
         public int EvcDetailId { get; set; }
         public decimal Amount { get; set; }
         public int ProductId { get; set; }
+        public int PriceId { get; set; }
         public double Qty { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ChargeAmount { get; set; }
