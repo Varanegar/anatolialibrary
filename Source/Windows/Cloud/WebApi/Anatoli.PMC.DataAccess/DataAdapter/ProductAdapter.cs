@@ -27,11 +27,21 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 
         public int GetProductId(Guid productUniqueId)
         {
-            return new DataContext().GetValue<int>("select productId from Product where uniqueId='" + productUniqueId.ToString() + "'");
+            int result;
+            using (var context = new DataContext())
+            {
+                result = context.GetValue<int>("select productId from Product where uniqueId='" + productUniqueId.ToString() + "'");
+            }
+            return result;
         }
         public string GetProductUniqueId(int productId)
         {
-            return new DataContext().GetValue<string>("select uniqueId from Product where productId='" + productId + "'");
+            string result = "";
+            using (var context = new DataContext())
+            {
+                result = context.GetValue<string>("select uniqueId from Product where productId='" + productId + "'");
+            }
+            return result;
         }
         public List<ProductViewModel> GetAllProducts(DateTime lastUpload)
         {

@@ -113,12 +113,14 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
                         if(evcDetailData.IsPrize)
                         {
                             isProductExists = true;
+                            item.PriceId = evcDetailData.PriceId;
                             item.Qty += evcDetailData.Qty;
                         }
                         else
                         {
                             item.Qty = evcDetailData.Qty;
                             item.UnitPrice = evcDetailData.UnitPrice;
+                            item.PriceId = evcDetailData.PriceId;
                             item.TaxAmount = evcDetailData.TaxAmount;
                             item.ChargeAmount = evcDetailData.ChargeAmount;
                             item.Amount = evcDetailData.AmountCalcBase;
@@ -133,6 +135,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
                 data.IsPrize = true;
                 data.SellId = sellData.SellId;
                 data.ProductId = evcDetailData.ProductId;
+                data.PriceId = evcDetailData.PriceId;
                 data.Qty = evcDetailData.Qty;
                 sellData.SellDetail.Add(data);
             }

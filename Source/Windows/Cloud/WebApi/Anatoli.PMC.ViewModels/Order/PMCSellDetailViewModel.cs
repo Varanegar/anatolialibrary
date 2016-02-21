@@ -13,6 +13,7 @@ namespace Anatoli.PMC.ViewModels.Order
         public int SellId { get; set; }
         public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }
+        public int PriceId { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ChargeAmount { get; set; }

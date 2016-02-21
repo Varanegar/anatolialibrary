@@ -30,12 +30,22 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         CustomerAdapter() { }
         public int GetCustomerId(string UserId)
         {
-            return new DataContext().GetValue<int>("select CustomerId from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+            int result;
+            using(var context = new DataContext())
+            {
+                result = context.GetValue<int>("select CustomerId from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+            }
+            return result;
         }
 
         public bool IsCustomerValid(string UserId)
         {
-            int count = new DataContext().GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+            int count = 0;
+            using (var context = new DataContext())
+            {
+                count = new DataContext().GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+            }
+            
             return (count > 0) ? true : false;
         }
         public void SetCustomerSiteUserId(string UserId, string Mobile)

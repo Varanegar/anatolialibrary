@@ -27,6 +27,7 @@ namespace Anatoli.ViewModels.Order
         public decimal FinalQty { get; set; }
         public bool FinalIsPrize { get; set; }
         public Guid PurchaseOrderId { get; set; }
+        public int PriceId { get; set; }
 
     }
 }

@@ -15,6 +15,13 @@ namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
+        public Guid OwnerKey
+        {
+            get
+            {
+                return Guid.Parse(HttpContext.Current.Request.Headers["OwnerKey"]);
+            }
+        }
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {

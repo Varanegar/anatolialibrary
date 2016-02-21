@@ -205,7 +205,7 @@ namespace Anatoli.Business.Domain
 
             await Task.Factory.StartNew(() =>
             {
-                order = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data);
+                order = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
             });
             return order;
         }
