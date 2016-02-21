@@ -102,42 +102,8 @@ namespace AnatoliAndroid.Fragments
                 if (userModel.IsValid)
                 {
                     await AnatoliApp.GetInstance().LoginAsync(userModel);
-                    try
-                    {
-                        OnLoginSuccess();
-                        //                        ParseInstallation installation = ParseInstallation.CurrentInstallation;
-                        //                        try
-                        //                        {
-
-                        //                            installation["userUniqueId"] = userModel.UniqueId;
-                        //                            installation.AddUniqueToList("channels", "b2c");
-                        //#pragma warning disable
-                        //                            installation.SaveAsync();
-                        //#pragma warning restore
-                        //                        }
-                        //                        catch (Exception)
-                        //                        {
-                        //                        }
-                        Dismiss();
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.SendTrace();
-                        if (ex.GetType() == typeof(TokenException))
-                        {
-                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                            errDialog.SetMessage("خطا در ذخیره سازی اطلاعات");
-                            errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
-                            errDialog.Show();
-                        }
-                        else if (ex.GetType() == typeof(System.Threading.Tasks.TaskCanceledException))
-                        {
-                            AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                            errDialog.SetMessage("خطا در برقراری ارتباط");
-                            errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
-                            errDialog.Show();
-                        }
-                    }
+                    Dismiss();
+                    OnLoginSuccess();
                 }
                 else
                 {

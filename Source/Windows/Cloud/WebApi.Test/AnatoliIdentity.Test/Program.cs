@@ -28,9 +28,9 @@ namespace ClientApp
 
                 //string servserURI = "http://46.209.104.2:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
-                //string servserURI = "http://79.175.166.186/";
+                string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
-                string servserURI = "http://localhost/";
+                //string servserURI = "http://localhost/";
                 //string servserURI = "http://192.168.0.160:8081/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
@@ -59,9 +59,9 @@ namespace ClientApp
                     var result8 = client.PostAsync(servserURI + "/api/accounts/changepassword/?username=0912073282&password=123456", content).Result;
                     var json8 = result8.Content.ReadAsStringAsync().Result;
 
-                    HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
-                    var json8 = result8.Content.ReadAsStringAsync().Result;
+                    //HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+                    //var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
+                    //var json8 = result8.Content.ReadAsStringAsync().Result;
 
                     HttpContent content2 = new StringContent("", Encoding.UTF8, "application/json");
                     var result2 = client.PostAsync(servserURI + "/api/accounts/ConfirmMobile/?username=0912073282&code=752468", content2).Result;

@@ -33,6 +33,7 @@ namespace AnatoliAndroid.Fragments
         protected DataListAdapter _listAdapter;
         protected BaseDataManager _dataManager;
         protected ListTools _toolsDialogFragment;
+        private bool _refresh = true;
         public BaseListFragment()
             : base()
         {
@@ -58,6 +59,19 @@ namespace AnatoliAndroid.Fragments
             var view = inflater.Inflate(
                 Resource.Layout.ItemsListLayout, container, false);
             return view;
+        }
+        public async override void OnStart()
+        {
+            base.OnStart();
+            if (_refresh)
+            {
+                await RefreshAsync();
+            }
+        }
+        public override void OnDetach()
+        {
+            _refresh = true;
+            base.OnDetach();
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -94,6 +108,8 @@ namespace AnatoliAndroid.Fragments
         {
             try
             {
+                _refresh = false;
+                _dataManager.ResetQueryLimits();
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 if (_listAdapter.Count == 0)
                     OnEmptyList();

@@ -405,7 +405,7 @@ namespace Anatoli.App.Manager
             var leftRight = CategoryManager.GetLeftRight(catId);
             StringQuery query;
             if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} ORDER BY cat_id AND store_id = '{2}'", leftRight.left, leftRight.right, storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} AND store_id = '{2}' ORDER BY cat_id ", leftRight.left, leftRight.right, storeId).PersianToArabic());
             else
                 query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId).PersianToArabic());
             return query;
