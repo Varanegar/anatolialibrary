@@ -169,6 +169,8 @@ namespace AnatoliAndroid.Fragments
                                         else if (result.IsValid)
                                         {
                                             await SaveOrder();
+                                            await ShoppingCardManager.ClearAsync();
+                                            proforma.Dismiss();
                                         }
                                         else
                                         {
@@ -227,6 +229,8 @@ namespace AnatoliAndroid.Fragments
                                     else if (result.IsValid)
                                     {
                                         await SaveOrder();
+                                        await ShoppingCardManager.ClearAsync();
+                                        proforma.Dismiss();
                                     }
                                     else
                                     {
