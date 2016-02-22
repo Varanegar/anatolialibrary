@@ -18,7 +18,15 @@ namespace Anatoli.App.Model.Store
         public string store_id { get; set; }
         public int selected { get; set; }
         public string store_tel { get; set; }
-        public string location { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
+        public string location
+        {
+            get
+            {
+                return (lat != 0 && lng != 0) ? lat.ToString() + "," + lng.ToString() : null;
+            }
+        }
         public float distance { get; set; }
     }
 }

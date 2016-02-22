@@ -40,6 +40,8 @@ namespace Anatoli.App.Manager
                         {
                             UpdateCommand command = new UpdateCommand("stores", new EqFilterParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("lat", item.lat.ToString()),
+                            new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
@@ -48,6 +50,8 @@ namespace Anatoli.App.Manager
                         {
                             InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("lat", item.lat.ToString()),
+                            new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
