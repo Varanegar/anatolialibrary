@@ -339,7 +339,8 @@ namespace Anatoli.App.Manager
 
         public static StringQuery Search(string value, string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
+            //StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
+            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '%{0}%' OR cat_name LIKE '%{0}%') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
             return query;
         }
 
