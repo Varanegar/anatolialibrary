@@ -613,11 +613,11 @@ namespace AnatoliAndroid.Activities
                 return false;
             }
             Android.App.ProgressDialog pDialog = new Android.App.ProgressDialog(_activity);
+            pDialog.SetCancelable(false);
             pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 1 از 6");
             pDialog.SetMessage(" بروز رسانی لیست شهر ها");
             System.Threading.CancellationTokenSource tokenSource = new System.Threading.CancellationTokenSource();
-            pDialog.CancelEvent += async (s, e) => { tokenSource.Cancel(); await CancelSync(); };
-            pDialog.SetButton("بی خیال", async (s, e) =>
+            pDialog.SetButton("بی خیال", async delegate
             {
                 tokenSource.Cancel();
                 await CancelSync();
