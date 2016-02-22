@@ -99,7 +99,8 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                SelectQuery query = new SelectQuery("shopping_card_view");
+                var defaultStore = await StoreManager.GetDefaultAsync();
+                StringQuery query = new StringQuery(string.Format("SELECT * FROM shopping_card_view LEFT JOIN store_onhand ON shopping_card_view.product_id = store_onhand.product_id WHERE store_onhand.store_id = '{0}'", defaultStore.store_id));
                 query.Unlimited = true;
                 var list = await BaseDataAdapter<ProductModel>.GetListAsync(query);
                 return list;

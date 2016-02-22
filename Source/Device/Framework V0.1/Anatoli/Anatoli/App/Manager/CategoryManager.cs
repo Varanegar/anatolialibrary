@@ -38,6 +38,7 @@ namespace Anatoli.App.Manager
                            new BasicParam("cat_parent", item.ParentUniqueIdString.ToUpper()),
                            new BasicParam("cat_left", item.NLeft.ToString()),
                            new BasicParam("cat_right", item.NRight.ToString()),
+                           new BasicParam("is_removed", (item.IsRemoved) ? "1" : "0"),
                            new BasicParam("cat_depth", item.NLevel.ToString()));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
@@ -48,6 +49,7 @@ namespace Anatoli.App.Manager
                            new BasicParam("cat_name", item.GroupName.Trim()),
                            new BasicParam("cat_parent", item.ParentUniqueIdString.ToUpper()),
                            new BasicParam("cat_left", item.NLeft.ToString()),
+                           new BasicParam("is_removed", (item.IsRemoved) ? "1" : "0"),
                            new BasicParam("cat_right", item.NRight.ToString()),
                            new BasicParam("cat_depth", item.NLevel.ToString()));
                             string qq = command.GetCommand();
@@ -89,7 +91,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var query = new StringQuery("SELECT * FROM categories WHERE cat_depth = 1");
+                var query = new StringQuery("SELECT * FROM categories WHERE cat_depth = 1 AND is_removed = 0");
                 query.Unlimited = true;
                 var list = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(query);
                 return list;
@@ -103,7 +105,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var query = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_parent = '{0}'", catId));
+                var query = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_parent = '{0}' AND is_removed = 0", catId));
                 var list = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(query);
                 return list;
             }
@@ -157,18 +159,10 @@ namespace Anatoli.App.Manager
                 if (current != null)
                 {
                     var parent = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
-                    if (parent != null && parent.cat_id != current.cat_id)
-                    {
-                        var parent2 = await BaseDataAdapter<CategoryInfoModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM categories WHERE cat_id = '{0}'", current.cat_parent)));
-                        if (parent2 != null && parent2.cat_id != parent.cat_id)
-                        {
-                            return parent2.cat_name + " / " + parent.cat_name + " / " + current.cat_name;
-                        }
-                        else
-                        {
-                            return parent.cat_name + " / " + current.cat_name;
-                        }
-                    }
+                    if (parent != null)
+                        return parent.cat_name + " / " + current.cat_name;
+                    else
+                        return current.cat_name;
                 }
                 return "";
             }
@@ -181,7 +175,7 @@ namespace Anatoli.App.Manager
 
         public static async Task<List<CategoryInfoModel>> Search(string value)
         {
-            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%'", value));
+            var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%' AND is_removed = 0", value));
             var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);
             return groups;
         }
