@@ -216,7 +216,13 @@ namespace AnatoliAndroid.ListAdapters
 
                 _productCountTextView.Text = item.count.ToString() + " عدد";
                 _productNameTextView.Text = item.product_name;
-                _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
+                if (item.IsAvailable)
+                    _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
+                else
+                {
+                    _productPriceTextView.Text = "موجود نیست";
+                    _productAddButton.Enabled = false;
+                }
 
                 if (item.product_name.Equals(_productNameTextView.Text))
                 {

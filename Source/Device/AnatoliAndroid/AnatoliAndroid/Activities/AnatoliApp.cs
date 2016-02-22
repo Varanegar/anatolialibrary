@@ -642,6 +642,7 @@ namespace AnatoliAndroid.Activities
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                 pDialog.SetMessage("بروز رسانی قیمت ها");
                 await ProductManager.SyncPrices(tokenSource);
+                await ProductManager.SyncOnHand(tokenSource);
                 await SyncManager.SaveDBVersionAsync();
                 pDialog.Dismiss();
                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
