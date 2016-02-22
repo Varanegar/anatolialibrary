@@ -44,7 +44,6 @@ namespace AnatoliAndroid.Fragments
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
 
             view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = _customerViewModel.MainStreet;
-            view.FindViewById<TextView>(Resource.Id.orderNumberTextView).Text = "شماره سفارش: " + _orderViewModel.AppOrderNo;
             view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = "تاریخ : " + _orderViewModel.OrderDate.ToString();
             view.FindViewById<TextView>(Resource.Id.orderPriceTextView).Text = "مبلغ قابل پرداخت : " + _orderViewModel.NetAmount.ToCurrency();
 
