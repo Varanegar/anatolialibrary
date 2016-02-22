@@ -105,7 +105,7 @@ namespace AnatoliAndroid.Fragments
             _saveButton.UpdateWidth();
 
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
-
+            Dialog.SetCanceledOnTouchOutside(false);
 
 
             _saveButton.Click += async (s, e) =>

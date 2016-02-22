@@ -42,6 +42,7 @@ namespace AnatoliAndroid.Fragments
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ProformaLayout, container, false);
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+            Dialog.SetCanceledOnTouchOutside(false);
 
             view.FindViewById<TextView>(Resource.Id.deliveryAddressTextView).Text = _customerViewModel.MainStreet;
             view.FindViewById<TextView>(Resource.Id.orderDateTextView).Text = "تاریخ : " + _orderViewModel.OrderDate.ToString();

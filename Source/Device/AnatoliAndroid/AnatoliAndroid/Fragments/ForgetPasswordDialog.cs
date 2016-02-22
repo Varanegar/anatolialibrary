@@ -29,6 +29,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             Dialog.SetTitle("تغییر رمز عبور");
+            Dialog.SetCanceledOnTouchOutside(false);
             var view = inflater.Inflate(Resource.Layout.ForgetPasswordLayout, container, false);
             var editText1 = view.FindViewById<EditText>(Resource.Id.editText1);
             var editText2 = view.FindViewById<EditText>(Resource.Id.editText2);
