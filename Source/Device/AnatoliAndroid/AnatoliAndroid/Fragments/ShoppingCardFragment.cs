@@ -50,7 +50,7 @@ namespace AnatoliAndroid.Fragments
         ImageButton _editAddressImageButton;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
-        Spinner _typeSpinner;
+        AnatoliListBox<DeliveryTypeListAdapter, DeliveryTypeManager, DeliveryTypeModel> _typeSpinner;
         List<DeliveryTypeModel> _deliveryTypes;
         //Spinner _zoneSpinner;
         //Spinner _districtSpinner;
@@ -105,7 +105,7 @@ namespace AnatoliAndroid.Fragments
             _editAddressImageButton = view.FindViewById<ImageButton>(Resource.Id.editAddressImageButton);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
             _deliveryTime = view.FindViewById<AnatoliListBox<DeliveryTimeListAdapter, DeliveryTimeManager, DeliveryTimeModel>>(Resource.Id.timeSpinner);
-            _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
+            _typeSpinner = view.FindViewById<AnatoliListBox<DeliveryTypeListAdapter, DeliveryTypeManager, DeliveryTypeModel>>(Resource.Id.typeSpinner);
 
             _checkoutButton.Click += async (s, e) =>
             {
@@ -149,7 +149,7 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.SetTitle("در حال ارسال سفارش");
                                 pDialog.Show();
                                 // "BE2919AB-5564-447A-BE49-65A81E6AF712"
-                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                                 pDialog.Dismiss();
                                 if (o.IsValid)
                                 {
@@ -164,7 +164,7 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -228,7 +228,7 @@ namespace AnatoliAndroid.Fragments
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.SetTitle("در حال ارسال سفارش");
                             pDialog.Show();
-                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                             pDialog.Dismiss();
                             if (o.IsValid)
                             {
@@ -243,7 +243,7 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
@@ -435,7 +435,11 @@ namespace AnatoliAndroid.Fragments
             }
 
             _deliveryTypes = await BaseTypeManager.GetDeliveryTypesAsync();
-            _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _deliveryTypes);
+            foreach (var item in _deliveryTypes)
+            {
+                _typeSpinner.ListAdapter.List.Add(item);
+            }
+            _typeSpinner.SelectItem(1);
 
 
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";

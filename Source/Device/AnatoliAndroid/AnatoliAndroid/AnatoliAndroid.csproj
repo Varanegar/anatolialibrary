@@ -172,6 +172,7 @@
     <Compile Include="Fragments\ShoppingCardListToolsFragment.cs" />
     <Compile Include="ListAdapters\BaseSwipeListAdapter.cs" />
     <Compile Include="ListAdapters\DeliveryTimeListAdapter.cs" />
+    <Compile Include="ListAdapters\DeliveryTypeListAdapter.cs" />
     <Compile Include="ListAdapters\DrawerMenuItems.cs" />
     <Compile Include="Fragments\LoginFragment.cs" />
     <Compile Include="Fragments\RegisterFragment.cs" />

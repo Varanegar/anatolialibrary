@@ -60,13 +60,10 @@ namespace Anatoli.App.Manager
                     connection.Commit();
                 }
 
-                //foreach (var item in list)
-                //{
-                //    var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime + "&Id=" + item.UniqueId);
-                //    q2.cancellationTokenSource = cancellationTokenSource;
-                //    var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
-
-                //}
+                // todo: add delivery times to database
+                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
+                //q2.cancellationTokenSource = cancellationTokenSource;
+                //var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 
                 await SyncManager.SaveUpdateDateAsync(SyncManager.StoresTbl);
             }

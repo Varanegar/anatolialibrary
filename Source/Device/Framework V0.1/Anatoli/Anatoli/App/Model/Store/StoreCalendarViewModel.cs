@@ -52,6 +52,8 @@ namespace Anatoli.App.Model.Store
                 }
             }
         }
+        string _storeId;
+        public string StoreId { get { return _storeId == null ? null : _storeId.ToUpper(); } set { _storeId = value == null ? null : value.ToUpper(); } }
         public string CalendarTypeValueId { get; set; }
         public string Description { get; set; }
     }
