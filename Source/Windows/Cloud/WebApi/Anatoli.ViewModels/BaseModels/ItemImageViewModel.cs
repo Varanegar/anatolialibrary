@@ -15,7 +15,7 @@ namespace Anatoli.ViewModels.BaseModels
         public byte[] image { get; set; }
         public string ImageName { get; set; }
         public string ImageType { get; set; }
-          
+        public bool IsDefault { get; set; }
         public string BaseDataId { get; set; }
     }
 }

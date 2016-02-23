@@ -35,11 +35,12 @@ namespace Anatoli.Business.Proxy.Concretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-
+                IsRemoved = data.IsRemoved,
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
                 StoreCode = data.StoreCode,
                 StoreName = data.StoreName,
                 Address = data.Address,
+                Phone = data.Phone,
                 HasDelivery = (data.HasDelivery == 0) ? false : true,
                 HasCourier = (data.HasCourier == 0) ? false : true,
                 SupportAppOrder = (data.SupportAppOrder == 0) ? false : true,
@@ -60,10 +61,12 @@ namespace Anatoli.Business.Proxy.Concretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                IsRemoved = data.IsRemoved,
 
                 StoreCode = data.StoreCode,
                 StoreName = data.StoreName,
                 Address = data.Address,
+                Phone = data.Phone,
                 HasDelivery = (byte)(data.HasDelivery ? 1 : 0),
                 HasCourier = (byte)(data.HasCourier ? 1 : 0),
                 SupportAppOrder = (byte)(data.SupportAppOrder ? 1 : 0),

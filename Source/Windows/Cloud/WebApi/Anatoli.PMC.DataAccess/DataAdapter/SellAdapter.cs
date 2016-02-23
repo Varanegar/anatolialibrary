@@ -170,7 +170,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     orderInfo.CashSessionId = GeneralCommands.GetCashSessionId(context);
                     //orderInfo.CashSessionStatusId = 0;
                     orderInfo.RequestNo = GeneralCommands.GetRequestNo(context, orderInfo.FiscalYearId);
-                    orderInfo.RequestDateTime = PersianDate.Now.ToString();
+                    orderInfo.RequestDateTime = PersianDate.Now.ToString() + DateTime.Now.ToString("HH:mm");
                     orderInfo.SellNotInPersonTypeId = 1;
                     sellDataObject.Insert(orderInfo, context);
                     DataObject<PMCSellDetailViewModel> lineItemDataObject = new DataObject<PMCSellDetailViewModel>("SellDetail", "InvalidId");

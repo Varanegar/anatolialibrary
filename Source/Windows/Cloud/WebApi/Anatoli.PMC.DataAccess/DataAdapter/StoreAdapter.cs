@@ -66,9 +66,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 List<StoreActivePriceListViewModel> storeOnhandList = new List<StoreActivePriceListViewModel>();
                 using (var context = new DataContext())
                 {
-                    string where = "";
-                    if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    var data = context.All<StoreActivePriceListViewModel>(DBQuery.Instance.GetStorePriceList() + where);
+                    //string where = "";
+                    //if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                    var data = context.All<StoreActivePriceListViewModel>(DBQuery.Instance.GetStorePriceList());
 
                     storeOnhandList = data.ToList();
                 }
@@ -95,8 +95,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         {
             try
             {
-                string where = "";
-                if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                //string where = "";
+                //if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 List<StoreActiveOnhandViewModel> storeOnhandList = new List<StoreActiveOnhandViewModel>();
                 using (var context = new DataContext(storeId, connectionString, Transaction.No))

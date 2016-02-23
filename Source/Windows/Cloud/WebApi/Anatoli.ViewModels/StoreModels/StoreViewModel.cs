@@ -11,6 +11,7 @@ namespace Anatoli.ViewModels.StoreModels
         public int StoreCode { get; set; }
         public string StoreName { get; set; }
         public string Address { get; set; }
+        public string Phone { get; set; }
         public long Lat { get; set; }
         public long Lng { get; set; }
         public bool HasDelivery { get; set; }
@@ -23,5 +24,7 @@ namespace Anatoli.ViewModels.StoreModels
 
         public List<StoreCalendarViewModel> StoreCalendar { get; set; }
         public List<CityRegionViewModel> StoreValidRegionInfo { get; set; }
+        public bool IsRemoved { get; set; }
+
     }
 }

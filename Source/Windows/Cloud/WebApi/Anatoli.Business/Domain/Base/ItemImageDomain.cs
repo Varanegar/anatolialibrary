@@ -68,6 +68,7 @@ namespace Anatoli.Business.Domain
                         currentItemImage.LastUpdate = DateTime.Now;
                         currentItemImage.TokenId = item.TokenId;
                         currentItemImage.ImageName = item.ImageName;
+                        currentItemImage.IsDefault = item.IsDefault;
                         currentItemImage.ImageType = item.ImageType;
                         await Repository.UpdateAsync(currentItemImage);
                     }

@@ -334,60 +334,60 @@ namespace Anatoli.PMC.DataAccess.Helpers
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetProductGroupTree".ToLower()).QueryTSql;
 
 //            return @"
-//                    WITH ProductGroupTreeLevels AS
-//                    (
-//                        SELECT
-//                            p.ProductGroupTreeSiteId as ProductGroupTreeId,
-//		                    p.ParentId,
-//		                    p.Title,
-//		                    p.uniqueid,
-//		                    convert(varchar(66),null) as Parentuniqueid,
-//		                    null as CharGroupId,
-//                            CONVERT(VARCHAR(MAX), p.ProductGroupTreeSiteId) AS thePath,
-//                            1 AS Level
-//	                    FROM            ProductGroupTreeSite AS p 
-//                        WHERE p.ParentId IS NULL 
-//
-//                        UNION ALL
-//
-//                        SELECT
-//                            e.ProductGroupTreeId,
-//		                    e.ParentId,
-//		                    e.Title,
-//		                    e.uniqueid,
-//		                    e.Parentuniqueid,
-//		                    e.CharGroupId,
-//                            x.thePath + '.' + CONVERT(VARCHAR(MAX), e.ProductGroupTreeId) AS thePath,
-//                            x.Level + 1 AS Level
-//                        FROM ProductGroupTreeLevels x
-//                        JOIN #GroupRec e on e.ParentId = x.ProductGroupTreeId
-//                    ),
-//                    ProductGroupTreeRows AS
-//                    (
-//                        SELECT
-//                             ProductGroupTreeLevels.*,
-//                             ROW_NUMBER() OVER (ORDER BY thePath) AS Row
-//                        FROM ProductGroupTreeLevels
-//                    )
-//                    SELECT
-//	                    Er.UniqueId as UniqueIdString,
-//	                    Er.ParentUniqueId as ParentUniqueIdString,
-//                         ER.ProductGroupTreeId as Row,
-//                         ER.ParentId as ParentId,
-//	                     ER.Title as GroupName,
-//	                     ER.CharGroupId as CharGroupIdString,
-//                         --ER.thePath,
-//                         ER.Level as NLevel,
-//                         ER.Row as Id,
-//                         (ER.Row * 2) - ER.Level AS NLeft,
-//                         ((ER.Row * 2) - ER.Level) + 
-//                            (
-//                                SELECT COUNT(*) * 2
-//                                FROM ProductGroupTreeRows ER2 
-//                                WHERE ER2.thePath LIKE ER.thePath + '.%'
-//                            ) + 1 AS NRight
-//                    FROM ProductGroupTreeRows ER
-//                    ORDER BY thePath";
+                    //WITH ProductGroupTreeLevels AS
+                    //(
+                    //    SELECT
+                    //        p.ProductGroupTreeSiteId as ProductGroupTreeId,
+                    //        p.ParentId,
+                    //        p.Title,
+                    //        p.uniqueid,
+                    //        convert(varchar(66),null) as Parentuniqueid,
+                    //        null as CharGroupId,
+                    //        CONVERT(VARCHAR(MAX), p.ProductGroupTreeSiteId) AS thePath,
+                    //        1 AS Level
+                    //    FROM            ProductGroupTreeSite AS p 
+                    //    WHERE p.ParentId IS NULL 
+
+                    //    UNION ALL
+
+                    //    SELECT
+                    //        e.ProductGroupTreeId,
+                    //        e.ParentId,
+                    //        e.Title,
+                    //        e.uniqueid,
+                    //        e.Parentuniqueid,
+                    //        e.CharGroupId,
+                    //        x.thePath + '.' + CONVERT(VARCHAR(MAX), e.ProductGroupTreeId) AS thePath,
+                    //        x.Level + 1 AS Level
+                    //    FROM ProductGroupTreeLevels x
+                    //    JOIN #GroupRec e on e.ParentId = x.ProductGroupTreeId
+                    //),
+                    //ProductGroupTreeRows AS
+                    //(
+                    //    SELECT
+                    //         ProductGroupTreeLevels.*,
+                    //         ROW_NUMBER() OVER (ORDER BY thePath) AS Row
+                    //    FROM ProductGroupTreeLevels
+                    //)
+                    //SELECT
+                    //    Er.UniqueId as UniqueIdString,
+                    //    Er.ParentUniqueId as ParentUniqueIdString,
+                    //     ER.ProductGroupTreeId as Row,
+                    //     ER.ParentId as ParentId,
+                    //     ER.Title as GroupName,
+                    //     ER.CharGroupId as CharGroupIdString,
+                    //     --ER.thePath,
+                    //     ER.Level as NLevel,
+                    //     ER.Row as Id,
+                    //     (ER.Row * 2) - ER.Level AS NLeft,
+                    //     ((ER.Row * 2) - ER.Level) + 
+                    //        (
+                    //            SELECT COUNT(*) * 2
+                    //            FROM ProductGroupTreeRows ER2 
+                    //            WHERE ER2.thePath LIKE ER.thePath + '.%'
+                    //        ) + 1 AS NRight
+                    //FROM ProductGroupTreeRows ER
+                    //ORDER BY thePath";
         }
         public  string GetMainProductGroupData()
         {
@@ -439,7 +439,9 @@ namespace Anatoli.PMC.DataAccess.Helpers
 //                        FROM ProductGroupTreeLevels
 //                    )
 //                    SELECT
+                        //convert(uniqueidentifier,Er.UniqueId) as UniqueId,
 //	                    Er.UniqueId as UniqueIdString,
+                        //convert(uniqueidentifier,Er.ParentUniqueId) as ParentUniqueId,
 //	                    Er.ParentUniqueId as ParentUniqueIdString,
 //                         ER.ProductGroupTreeId as Row,
 //                         ER.ParentId as ParentId,

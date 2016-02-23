@@ -28,9 +28,9 @@ namespace ClientApp
 
                 //string servserURI = "http://46.209.104.2:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
-                string servserURI = "http://79.175.166.186/";
+                //string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
-                //string servserURI = "http://localhost/";
+                string servserURI = "http://localhost/";
                 //string servserURI = "http://192.168.0.160:8081/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
@@ -47,7 +47,7 @@ namespace ClientApp
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
 
-                    var requestData = new RequestModel();
+                    //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
                     //string data = new JavaScriptSerializer().Serialize(requestData);
                     //HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
@@ -55,20 +55,29 @@ namespace ClientApp
                     //var json8 = result8.Content.ReadAsStringAsync().Result;
                     //var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
                     //var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
-                    HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    var result8 = client.PostAsync(servserURI + "/api/accounts/changepassword/?username=0912073282&password=123456", content).Result;
-                    var json8 = result8.Content.ReadAsStringAsync().Result;
 
+                    //var requestData = new PurchaseOrderViewModel();
+                    //string data = new JavaScriptSerializer().Serialize(requestData);
+
+                    
                     //HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    //var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
+                    //var result8 = client.PostAsync(servserURI + "/api/accounts/changepassword/?username=0912073282&password=123456", content).Result;
                     //var json8 = result8.Content.ReadAsStringAsync().Result;
 
-                    HttpContent content2 = new StringContent("", Encoding.UTF8, "application/json");
-                    var result2 = client.PostAsync(servserURI + "/api/accounts/ConfirmMobile/?username=0912073282&code=752468", content2).Result;
-                    var json2 = result2.Content.ReadAsStringAsync().Result;
+                    ////HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+                    ////var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
+                    ////var json8 = result8.Content.ReadAsStringAsync().Result;
 
-                    var oauthresult2 = oauthClient.RequestResourceOwnerPasswordAsync("0912073282", "123456", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                    //HttpContent content2 = new StringContent("", Encoding.UTF8, "application/json");
+                    //var result2 = client.PostAsync(servserURI + "/api/accounts/ResendPassCode/?username=09125793221", content2).Result;
+                    //var json2 = result2.Content.ReadAsStringAsync().Result;
 
+
+                    //HttpContent content3 = new StringContent("", Encoding.UTF8, "application/json");
+                    //var result3 = client.PostAsync(servserURI + "/api/accounts/ConfirmMobile/?username=09125793221&code=782035", content3).Result;
+                    //var json3 = result3.Content.ReadAsStringAsync().Result;
+
+                    var oauthresult2 = oauthClient.RequestResourceOwnerPasswordAsync("maryamshkr@gmail.com", "1234567", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                     
                     //ProductManagement.DownloadProductRateFromServer(client, servserURI);
 
@@ -79,10 +88,11 @@ namespace ClientApp
                     //ProductManagement.UploadSupplierToServer(client, servserURI);
                     //ProductManagement.UploadManufactureToServer(client, servserURI);
                     //ProductManagement.UploadProductGroupToServer(client, servserURI);
+                    ProductManagement.DownloadProductGroupFromServer(client, servserURI);
                     //CharGroupManagement.SaveCharTypeInfoToServer(client, servserURI);
                     //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
-                    StoreManagement.GetStoreFromServer(client, servserURI);
+                    //StoreManagement.GetStoreFromServer(client, servserURI);
                     //StoreManagement.UploadStoreDataToServer(client, servserURI);
                     //ProductManagement.UploadProductToServer(client, servserURI);
                     

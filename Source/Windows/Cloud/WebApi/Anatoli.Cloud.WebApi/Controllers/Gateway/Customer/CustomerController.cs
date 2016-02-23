@@ -1,5 +1,7 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.DataAccess;
 using Anatoli.ViewModels.CustomerModels;
 using System;
 using System.Collections.Generic;
@@ -7,11 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Net.Http;
+using Microsoft.AspNet.Identity.Owin;
+using Anatoli.DataAccess.Repositories;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/customer")]
-    public class CustomerController : BaseApiController
+    public class CustomerController : AnatoliApiController
     {
         #region Customer
         [Authorize(Roles = "AuthorizedApp, User")]
@@ -41,22 +46,28 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var owner = Guid.Parse(privateOwnerId);
                 var customerDomain = new CustomerDomain(owner);
-                List<CustomerViewModel> dataList = new List<CustomerViewModel>();
-                dataList.Add(data);
-                var result = await customerDomain.PublishAsync(dataList);
-                if(data.Email != null)
+                if (data.Email != null)
                 {
                     var emailUser = await this.AppUserManager.FindByEmailAsync(data.Email);
                     if (emailUser != null)
                     {
                         var phoneUser = await this.AppUserManager.FindByIdAsync(data.UniqueId.ToString());
-                        if(phoneUser.Id != emailUser.Id)
+                        if (phoneUser.Id != emailUser.Id)
                             return GetErrorResult("ایمیل شما قبلا استفاده شده است");
+                        else
+                        {
+                            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
+                            await userStore.ChangeEmailAddress(emailUser, data.Email);
+                        }
                     }
 
                 }
-                await AppUserManager.SetEmailAsync(data.UniqueId.ToString(), data.Email);
-                await AppUserManager.IsEmailConfirmedAsync(data.UniqueId.ToString());
+
+
+                List<CustomerViewModel> dataList = new List<CustomerViewModel>();
+                dataList.Add(data);
+                var result = await customerDomain.PublishAsync(dataList);
+
                 return Ok(result);
             }
             catch (Exception ex)
