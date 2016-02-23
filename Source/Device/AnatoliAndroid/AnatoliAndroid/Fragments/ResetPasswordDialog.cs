@@ -35,6 +35,7 @@ namespace AnatoliAndroid.Fragments
             Button okButton = view.FindViewById<Button>(Resource.Id.okButton);
             okButton.UpdateWidth();
             Dialog.SetTitle(Resource.String.ChangePassword);
+            Dialog.SetCanceledOnTouchOutside(false);
 
             okButton.Click += async delegate
             {

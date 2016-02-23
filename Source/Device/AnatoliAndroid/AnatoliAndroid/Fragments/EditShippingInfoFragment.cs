@@ -49,6 +49,7 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ShippingInfoEditLayout, container, false);
+            Dialog.SetCanceledOnTouchOutside(false);
 
             _level3Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
             _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level4Spinner);

@@ -33,6 +33,9 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnCreate(savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.ChangePassLayout, container, false);
+
+            Dialog.SetCanceledOnTouchOutside(false);
+
             _currentPassEditText = view.FindViewById<EditText>(Resource.Id.currentPassEditText);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _saveButton = view.FindViewById<Button>(Resource.Id.saveButton);

@@ -105,7 +105,7 @@ namespace AnatoliAndroid.Fragments
             _saveButton.UpdateWidth();
 
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
-
+            Dialog.SetCanceledOnTouchOutside(false);
 
 
             _saveButton.Click += async (s, e) =>
@@ -211,7 +211,6 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
-            AnatoliApp.GetInstance().HideSearchIcon();
             // manipulate spin boxes
             _level1SpinerDataAdapter = await CityRegionManager.GetFirstLevelAsync();
             _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);

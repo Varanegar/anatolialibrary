@@ -18,6 +18,7 @@ namespace Anatoli.App.Manager
         public static string PriceTbl = "products_price";
         public static string ProductTbl = "products";
         public static string BasketTbl = "baskets";
+        public static string OnHand = "onhand";
         public static async Task<bool> SaveUpdateDateAsync(string tableName)
         {
             try
@@ -105,6 +106,7 @@ namespace Anatoli.App.Manager
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("stores"));
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("categories"));
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("updates"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("store_onhand"));
             }
             catch (Exception e)
             {

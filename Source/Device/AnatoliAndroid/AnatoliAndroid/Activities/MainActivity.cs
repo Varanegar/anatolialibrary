@@ -28,7 +28,7 @@ using HockeyApp;
 
 namespace AnatoliAndroid.Activities
 {
-    [Activity(Label = "ایگ مارکت", Icon = "@drawable/icon", ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
+    [Activity(Label = "ایگ", Icon = "@drawable/icon", ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
     public class MainActivity : ActionBarActivity, ILocationListener
     {
         Toolbar _toolbar;
@@ -147,7 +147,7 @@ namespace AnatoliAndroid.Activities
 
             try
             {
-                AnatoliApp.GetInstance().CustomerId = (await CustomerManager.ReadCustomerAsync()).UniqueId;
+                AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
             }
             catch (Exception)
             {

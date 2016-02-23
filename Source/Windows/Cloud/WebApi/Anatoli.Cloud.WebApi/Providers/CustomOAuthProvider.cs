@@ -10,19 +10,14 @@ using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity;
+using log4net;
 
 namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
-        public Guid OwnerKey
-        {
-            get
-            {
-                return Guid.Parse(HttpContext.Current.Request.Headers["OwnerKey"]);
-            }
-        }
-
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -64,6 +59,8 @@ namespace Anatoli.Cloud.WebApi.Providers
             }
             catch (Exception ex)
             {
+                logger.ErrorFormat("GrantResourceOwnerCredentials", ex);
+
                 throw;
             }
            

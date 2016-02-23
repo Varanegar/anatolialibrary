@@ -23,6 +23,7 @@ namespace Anatoli.App.Model.Product
         public int count { get; set; }
         public string image { get; set; }
         public int is_group { get; set; }
+        public decimal qty { get; set; }
         public bool IsGroup
         {
             get { return is_group == 1 ? true : false; }
@@ -31,6 +32,10 @@ namespace Anatoli.App.Model.Product
         {
             get { return favorit == 1 ? true : false; }
         }
+        public bool IsAvailable
+        {
+            get { return qty > 0 ? true : false; }
+        }
     }
-    
+
 }

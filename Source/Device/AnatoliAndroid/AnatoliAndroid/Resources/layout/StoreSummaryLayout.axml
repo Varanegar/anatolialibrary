@@ -31,13 +31,13 @@
         local:customFont="Fonts/anatoli.ttf"
         p1:layout_gravity="right"
         p1:gravity="center"
-        p1:layout_width="70dp"
-        p1:layout_height="30dp"
+        p1:layout_width="50dp"
+        p1:layout_height="20dp"
         p1:layout_alignParentLeft="true"
         p1:layout_centerVertical="true"
-        p1:layout_margin="20dp"
+        p1:layout_margin="10dp"
         p1:background="@drawable/textcorner"
-        p1:textSize="13dp" />
+        p1:textSize="11dp" />
     <LinearLayout
         p1:orientation="vertical"
         p1:minWidth="50dp"

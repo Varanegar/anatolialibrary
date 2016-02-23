@@ -35,6 +35,7 @@ namespace AnatoliAndroid.Fragments
             TextView resendTextView = view.FindViewById<TextView>(Resource.Id.resendTextView);
 
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle);
+            Dialog.SetCanceledOnTouchOutside(false);
 
             okButton.Click += async (s, e) =>
             {

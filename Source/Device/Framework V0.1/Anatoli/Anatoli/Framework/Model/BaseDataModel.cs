@@ -18,6 +18,7 @@ namespace Anatoli.Framework.Model
         public string UniqueId { get { return (_uniqueId != null) ? _uniqueId.ToUpper() : null; } set { _uniqueId = (value != null) ? value.ToUpper() : null; } }
         public bool IsSaveRequired { get; set; }
         public bool ReadOnly { get { return false; } }
+        public bool IsRemoved { get; set; }
         public bool IsValid { get { return (String.IsNullOrEmpty(message)) ? true : false; } private set { IsValid = value; } }
         public string message { get; set; }
         public string ModelStateString

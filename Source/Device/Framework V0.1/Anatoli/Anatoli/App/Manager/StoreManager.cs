@@ -40,6 +40,8 @@ namespace Anatoli.App.Manager
                         {
                             UpdateCommand command = new UpdateCommand("stores", new EqFilterParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("lat", item.lat.ToString()),
+                            new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
@@ -48,6 +50,8 @@ namespace Anatoli.App.Manager
                         {
                             InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("lat", item.lat.ToString()),
+                            new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
@@ -56,13 +60,10 @@ namespace Anatoli.App.Manager
                     connection.Commit();
                 }
 
-                //foreach (var item in list)
-                //{
-                //    var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime + "&Id=" + item.UniqueId);
-                //    q2.cancellationTokenSource = cancellationTokenSource;
-                //    var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
-
-                //}
+                // todo: add delivery times to database
+                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
+                //q2.cancellationTokenSource = cancellationTokenSource;
+                //var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 
                 await SyncManager.SaveUpdateDateAsync(SyncManager.StoresTbl);
             }

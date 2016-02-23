@@ -29,6 +29,8 @@ namespace AnatoliAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Dialog.SetCanceledOnTouchOutside(false);
+            Dialog.SetTitle("ثبت نام");
             var view = inflater.Inflate(Resource.Layout.RegisterLayout, container, false);
             _passwordEditText = view.FindViewById<EditText>(Resource.Id.passwordEditText);
             _telEditText = view.FindViewById<EditText>(Resource.Id.telEditText);

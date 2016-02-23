@@ -119,6 +119,56 @@ namespace Anatoli.App.Manager
             }
         }
 
+        public static async Task SyncOnHand(System.Threading.CancellationTokenSource cancellationTokenSource)
+        {
+            try
+            {
+                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.OnHand + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                q.cancellationTokenSource = cancellationTokenSource;
+                var list = await BaseDataAdapter<StoreActiveOnhandViewModel>.GetListAsync(q);
+                Dictionary<string, StoreActiveOnhandViewModel> currentOnHand = new Dictionary<string, StoreActiveOnhandViewModel>();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var query = connection.CreateCommand("SELECT * FROM store_onhand");
+                    var onhandList = query.ExecuteQuery<StoreActiveOnhandViewModel>();
+                    foreach (var item in onhandList)
+                    {
+                        currentOnHand.Add(item.ProductGuid + item.StoreGuid, item);
+                    }
+                }
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    connection.BeginTransaction();
+                    foreach (var item in list)
+                    {
+                        if (currentOnHand.ContainsKey(item.ProductGuid + item.StoreGuid))
+                        {
+                            UpdateCommand command = new UpdateCommand("store_onhand", new BasicParam("qty", item.Qty.ToString()),
+                            new EqFilterParam("product_id", item.ProductGuid.ToUpper()),
+                            new EqFilterParam("store_id", item.StoreGuid.ToString().ToUpper()));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            InsertCommand command = new InsertCommand("store_onhand", new BasicParam("qty", item.Qty.ToString()),
+                            new BasicParam("product_id", item.ProductGuid),
+                            new BasicParam("store_id", item.StoreGuid));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                    }
+                    connection.Commit();
+                }
+                await SyncManager.SaveUpdateDateAsync(SyncManager.OnHand);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public static async Task SyncFavorits()
         {
             try
@@ -339,7 +389,8 @@ namespace Anatoli.App.Manager
 
         public static StringQuery Search(string value, string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
+            //StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
+            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE (product_name LIKE '%{0}%' OR cat_name LIKE '%{0}%') AND (products_price_view.store_id = '{1}') AND (store_onhand.store_id = '{1}') ORDER BY cat_id , product_name", value, storeId).PersianToArabic());
             return query;
         }
 
@@ -405,15 +456,15 @@ namespace Anatoli.App.Manager
             var leftRight = CategoryManager.GetLeftRight(catId);
             StringQuery query;
             if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE cat_left >= {0} AND cat_right <= {1} AND store_id = '{2}' ORDER BY cat_id ", leftRight.left, leftRight.right, storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE cat_left >= {0} AND cat_right <= {1} AND products_price_view.store_id = '{2}' AND store_onhand.store_id = '{2}' ORDER BY product_name", leftRight.left, leftRight.right, storeId).PersianToArabic());
             else
-                query = new StringQuery(string.Format("SELECT * FROM products_price_view ORDER BY cat_id AND store_id='{0}'", storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id ORDER BY cat_id AND products_price_view.store_id='{0}' AND store_onhand.store_id='{0}' ORDER BY product_name", storeId).PersianToArabic());
             return query;
         }
 
         public static StringQuery GetAll(string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view  WHERE store_id = '{0}' ORDER BY cat_id", storeId).PersianToArabic());
+            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE products_price_view.store_id = '{0}' AND store_onhand.store_id = '{0}' ORDER BY product_name", storeId).PersianToArabic());
             return query;
         }
     }

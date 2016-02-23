@@ -60,9 +60,8 @@ namespace AnatoliAndroid.Fragments
                 if (store != null && !String.IsNullOrEmpty(store.location))
                 {
                     Location loc = new Location("destination");
-                    string[] l = store.location.Split(new char[] { ',' });
-                    double latitude = double.Parse(l[0]);
-                    double langitude = double.Parse(l[1]);
+                    double latitude = store.lat;
+                    double langitude = store.lng;
                     loc.Latitude = latitude;
                     loc.Longitude = langitude;
                     var dist = CalcDistance(_currentLocation, loc);

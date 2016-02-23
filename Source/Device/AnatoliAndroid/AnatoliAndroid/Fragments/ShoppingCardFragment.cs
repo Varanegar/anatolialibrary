@@ -41,7 +41,7 @@ namespace AnatoliAndroid.Fragments
         TextView _countTextView;
         //TextView _nameTextView;
         Spinner _delivaryDate;
-        Spinner _deliveryTime;
+        AnatoliListBox<DeliveryTimeListAdapter, DeliveryTimeManager, DeliveryTimeModel> _deliveryTime;
         //ImageView _editAddressImageView;
         ImageView _slideupmageView;
         ImageView _slidedownImageView;
@@ -50,7 +50,7 @@ namespace AnatoliAndroid.Fragments
         ImageButton _editAddressImageButton;
         DateOption[] _dateOptions;
         TimeOption[] _timeOptions;
-        Spinner _typeSpinner;
+        AnatoliListBox<DeliveryTypeListAdapter, DeliveryTypeManager, DeliveryTypeModel> _typeSpinner;
         List<DeliveryTypeModel> _deliveryTypes;
         //Spinner _zoneSpinner;
         //Spinner _districtSpinner;
@@ -104,8 +104,8 @@ namespace AnatoliAndroid.Fragments
             _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
             _editAddressImageButton = view.FindViewById<ImageButton>(Resource.Id.editAddressImageButton);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
-            _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
-            _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
+            _deliveryTime = view.FindViewById<AnatoliListBox<DeliveryTimeListAdapter, DeliveryTimeManager, DeliveryTimeModel>>(Resource.Id.timeSpinner);
+            _typeSpinner = view.FindViewById<AnatoliListBox<DeliveryTypeListAdapter, DeliveryTypeManager, DeliveryTypeModel>>(Resource.Id.typeSpinner);
 
             _checkoutButton.Click += async (s, e) =>
             {
@@ -149,40 +149,61 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.SetTitle("در حال ارسال سفارش");
                                 pDialog.Show();
                                 // "BE2919AB-5564-447A-BE49-65A81E6AF712"
-                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                pDialog.Dismiss();
                                 if (o.IsValid)
                                 {
                                     ProformaFragment proforma = new ProformaFragment(o, _customerViewModel);
                                     var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                                     proforma.ProformaAccepted += async delegate
                                     {
-                                        pDialog.Show();
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
-                                        if (result == null)
+                                        ProgressDialog pDialog2 = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                                        pDialog2.SetCancelable(false);
+                                        pDialog2.SetMessage("سفارش شما در فاصله زمانی نیم ساعته به دست شما خواهد رسید");
+                                        pDialog2.SetTitle("در حال ارسال سفارش");
+                                        pDialog2.Show();
+                                        try
                                         {
-                                            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                                            alert.SetMessage("عدم دریافت اطلاعات از سرور");
-                                            alert.SetTitle(Resource.String.Error);
-                                            alert.SetNegativeButton(Resource.String.Ok, delegate { });
-                                            alert.Show();
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                            pDialog2.Dismiss();
+                                            if (result == null)
+                                            {
+                                                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                                alert.SetMessage("عدم دریافت اطلاعات از سرور");
+                                                alert.SetTitle(Resource.String.Error);
+                                                alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                                alert.Show();
+                                            }
+                                            else if (result.IsValid)
+                                            {
+                                                await SaveOrder();
+                                                await ShoppingCardManager.ClearAsync();
+                                                proforma.Dismiss();
+                                            }
+                                            else
+                                            {
+                                                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                                alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
+                                                alert.SetTitle(Resource.String.Error);
+                                                alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                                alert.Show();
+                                            }
                                         }
-                                        else if (result.IsValid)
+                                        catch (Exception ex)
                                         {
-                                            await SaveOrder();
-                                        }
-                                        else
-                                        {
+                                            ex.SendTrace();
                                             AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                             alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                             alert.SetTitle(Resource.String.Error);
                                             alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                             alert.Show();
                                         }
-                                        pDialog.Dismiss();
+                                        finally
+                                        {
+                                            pDialog2.Dismiss();
+                                        }
                                     };
                                     proforma.Show(fr, "proforma_fragment");
-                                    pDialog.Dismiss();
-
                                 }
                                 else
                                 {
@@ -192,7 +213,7 @@ namespace AnatoliAndroid.Fragments
                                     alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                     alert.Show();
                                 }
-                                pDialog.Dismiss();
+
                             });
                             lAlert.SetNegativeButton(Resource.String.Cancel, delegate
                             {
@@ -207,36 +228,59 @@ namespace AnatoliAndroid.Fragments
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.SetTitle("در حال ارسال سفارش");
                             pDialog.Show();
-                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
+                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                            pDialog.Dismiss();
                             if (o.IsValid)
                             {
                                 ProformaFragment proforma = new ProformaFragment(o, _customerViewModel);
                                 var fr = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
                                 proforma.ProformaAccepted += async delegate
                                 {
-                                    pDialog.Show();
-                                    var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _deliveryTypes[_typeSpinner.SelectedItemPosition].id);
-                                    if (result == null)
+                                    ProgressDialog pDialog2 = new ProgressDialog(AnatoliApp.GetInstance().Activity);
+                                    pDialog2.SetCancelable(false);
+                                    pDialog2.SetMessage("سفارش شما در فاصله زمانی نیم ساعته به دست شما خواهد رسید");
+                                    pDialog2.SetTitle("در حال ارسال سفارش");
+                                    pDialog2.Show();
+                                    try
                                     {
-                                        AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                                        alert.SetMessage("عدم دریافت اطلاعات از سرور");
-                                        alert.SetTitle(Resource.String.Error);
-                                        alert.SetNegativeButton(Resource.String.Ok, delegate { });
-                                        alert.Show();
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                        pDialog2.Dismiss();
+                                        if (result == null)
+                                        {
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                            alert.SetMessage("عدم دریافت اطلاعات از سرور");
+                                            alert.SetTitle(Resource.String.Error);
+                                            alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                            alert.Show();
+                                        }
+                                        else if (result.IsValid)
+                                        {
+                                            await SaveOrder();
+                                            await ShoppingCardManager.ClearAsync();
+                                            proforma.Dismiss();
+                                        }
+                                        else
+                                        {
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                                            alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
+                                            alert.SetTitle(Resource.String.Error);
+                                            alert.SetNegativeButton(Resource.String.Ok, delegate { });
+                                            alert.Show();
+                                        }
                                     }
-                                    else if (result.IsValid)
+                                    catch (Exception ex)
                                     {
-                                        await SaveOrder();
-                                    }
-                                    else
-                                    {
+                                        ex.SendTrace();
                                         AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                                         alert.SetMessage("ارسال سفارش با مشکل مواجه شد");
                                         alert.SetTitle(Resource.String.Error);
                                         alert.SetNegativeButton(Resource.String.Ok, delegate { });
                                         alert.Show();
                                     }
-                                    pDialog.Dismiss();
+                                    finally
+                                    {
+                                        pDialog2.Dismiss();
+                                    }
                                 };
                                 proforma.Show(fr, "proforma_fragment");
                                 pDialog.Dismiss();
@@ -289,9 +333,19 @@ namespace AnatoliAndroid.Fragments
                 _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Tommorow);
                 _tomorrow = true;
             }
-            _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
-
-
+            // _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
+            var list = new List<ProductModel>();
+            foreach (var item in _timeOptions)
+            {
+                DeliveryTimeModel p = new DeliveryTimeModel();
+                p.time = item.itemName;
+                _deliveryTime.ListAdapter.List.Add(p);
+            }
+            _deliveryTime.ItemSelected += (s) =>
+            {
+                Console.WriteLine((s as DeliveryTimeModel).time);
+            };
+            _deliveryTime.SelectItem(0);
             _editAddressImageButton.Click += (s, e) =>
             {
                 var transaction = FragmentManager.BeginTransaction();
@@ -381,7 +435,11 @@ namespace AnatoliAndroid.Fragments
             }
 
             _deliveryTypes = await BaseTypeManager.GetDeliveryTypesAsync();
-            _typeSpinner.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _deliveryTypes);
+            foreach (var item in _deliveryTypes)
+            {
+                _typeSpinner.ListAdapter.List.Add(item);
+            }
+            _typeSpinner.SelectItem(1);
 
 
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";

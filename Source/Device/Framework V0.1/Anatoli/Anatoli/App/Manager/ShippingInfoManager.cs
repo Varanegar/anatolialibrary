@@ -56,47 +56,47 @@ namespace Anatoli.App.Manager
             {
                 if (now.Hour < 16)
                 {
-                    times = new TimeOption[] { new TimeOption("18 To 20", ShippingTimeOptions._18To20) };
+                    times = new TimeOption[] { new TimeOption("18 تا 20", ShippingTimeOptions._18To20) };
                 }
                 if (now.Hour < 14)
                 {
                     times = new TimeOption[] {
-                        new TimeOption("16 To 18", ShippingTimeOptions._16To18),
-                        new TimeOption("18 To 20",ShippingTimeOptions._18To20)};
+                        new TimeOption("16 تا 18", ShippingTimeOptions._16To18),
+                        new TimeOption("18 تا 20",ShippingTimeOptions._18To20)};
                 }
                 if (now.Hour < 12)
                 {
                     times = new TimeOption[] { 
-                        new TimeOption("14 To 16", ShippingTimeOptions._14To16),
-                        new TimeOption("16 To 18", ShippingTimeOptions._16To18),
-                        new TimeOption("18 To 20",ShippingTimeOptions._18To20)};
+                        new TimeOption("14 تا 16", ShippingTimeOptions._14To16),
+                        new TimeOption("16 تا 18", ShippingTimeOptions._16To18),
+                        new TimeOption("18 تا 20",ShippingTimeOptions._18To20)};
                 }
                 if (now.Hour < 10)
                 {
                     times = new TimeOption[] { 
-                        new TimeOption("12 To 14", ShippingTimeOptions._12To14),
-                        new TimeOption("14 To 16", ShippingTimeOptions._14To16),
-                        new TimeOption("16 To 18", ShippingTimeOptions._16To18),
-                        new TimeOption("18 To 20",ShippingTimeOptions._18To20)};
+                        new TimeOption("12 تا 14", ShippingTimeOptions._12To14),
+                        new TimeOption("14 تا 16", ShippingTimeOptions._14To16),
+                        new TimeOption("16 تا 18", ShippingTimeOptions._16To18),
+                        new TimeOption("18 تا 20",ShippingTimeOptions._18To20)};
                 }
                 if (now.Hour < 8)
                 {
-                    times = new TimeOption[] { new TimeOption("10 To 12", ShippingTimeOptions._10To12),
-                        new TimeOption("12 To 14", ShippingTimeOptions._12To14),
-                        new TimeOption("14 To 16", ShippingTimeOptions._14To16),
-                        new TimeOption("16 To 18", ShippingTimeOptions._16To18),
-                        new TimeOption("18 To 20",ShippingTimeOptions._18To20)};
+                    times = new TimeOption[] { new TimeOption("10 تا 12", ShippingTimeOptions._10To12),
+                        new TimeOption("12 تا 14", ShippingTimeOptions._12To14),
+                        new TimeOption("14 تا 16", ShippingTimeOptions._14To16),
+                        new TimeOption("16 تا 18", ShippingTimeOptions._16To18),
+                        new TimeOption("18 تا 20",ShippingTimeOptions._18To20)};
                 }
             }
             else if (dateOption == ShippingInfoManager.ShippingDateOptions.Tommorow)
             {
                 times = new TimeOption[] { 
-                        new TimeOption("8 To 10", ShippingTimeOptions._8To10),
-                        new TimeOption("10 To 12", ShippingTimeOptions._10To12),
-                        new TimeOption("12 To 14", ShippingTimeOptions._12To14),
-                        new TimeOption("14 To 16", ShippingTimeOptions._14To16),
-                        new TimeOption("16 To 18", ShippingTimeOptions._16To18),
-                        new TimeOption("18 To 20",ShippingTimeOptions._18To20)};
+                        new TimeOption("8 تا 10", ShippingTimeOptions._8To10),
+                        new TimeOption("10 تا 12", ShippingTimeOptions._10To12),
+                        new TimeOption("12 تا 14", ShippingTimeOptions._12To14),
+                        new TimeOption("14 تا 16", ShippingTimeOptions._14To16),
+                        new TimeOption("16 تا 18", ShippingTimeOptions._16To18),
+                        new TimeOption("18 تا 20",ShippingTimeOptions._18To20)};
             }
             return times;
         }

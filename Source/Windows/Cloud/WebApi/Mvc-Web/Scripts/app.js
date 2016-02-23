@@ -1,5 +1,5 @@
 ﻿'use strict'
-var baseBackendUrl = 'http://localhost',
+var baseBackendUrl = 'http://localhost:59822',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
