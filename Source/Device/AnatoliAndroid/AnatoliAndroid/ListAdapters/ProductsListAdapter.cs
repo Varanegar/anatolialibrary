@@ -210,7 +210,7 @@ namespace AnatoliAndroid.ListAdapters
                 else
                 {
                     _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
-                    _favoritsTextView.SetTextColor(Android.Graphics.Color.Green);
+                    _favoritsTextView.SetTextColor(Android.Graphics.Color.DarkGreen);
                     _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_green_24dp);
                 }
 
