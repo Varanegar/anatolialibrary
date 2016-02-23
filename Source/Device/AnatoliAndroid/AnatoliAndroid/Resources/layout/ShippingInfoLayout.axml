@@ -213,9 +213,10 @@
           android:layout_centerVertical="true"
           local:customFont="Fonts/anatoli.ttf"
           android:minWidth="100dp" />
-      <Spinner
+      <AnatoliAndroid.Components.AnatoliTextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:text="test"
           android:layout_toLeftOf="@id/textView3"
           android:id="@+id/timeSpinner"
           android:layout_centerVertical="true" />

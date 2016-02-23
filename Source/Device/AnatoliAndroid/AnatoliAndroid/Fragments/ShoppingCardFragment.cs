@@ -41,7 +41,7 @@ namespace AnatoliAndroid.Fragments
         TextView _countTextView;
         //TextView _nameTextView;
         Spinner _delivaryDate;
-        Spinner _deliveryTime;
+        AnatoliListBox<DeliveryTimeListAdapter, DeliveryTimeManager, DeliveryTimeModel> _deliveryTime;
         //ImageView _editAddressImageView;
         ImageView _slideupmageView;
         ImageView _slidedownImageView;
@@ -104,7 +104,7 @@ namespace AnatoliAndroid.Fragments
             _deliveryAddress = view.FindViewById<TextView>(Resource.Id.addressTextView);
             _editAddressImageButton = view.FindViewById<ImageButton>(Resource.Id.editAddressImageButton);
             _delivaryDate = view.FindViewById<Spinner>(Resource.Id.dateSpinner);
-            _deliveryTime = view.FindViewById<Spinner>(Resource.Id.timeSpinner);
+            _deliveryTime = view.FindViewById<AnatoliListBox<DeliveryTimeListAdapter, DeliveryTimeManager, DeliveryTimeModel>>(Resource.Id.timeSpinner);
             _typeSpinner = view.FindViewById<Spinner>(Resource.Id.typeSpinner);
 
             _checkoutButton.Click += async (s, e) =>
@@ -333,9 +333,19 @@ namespace AnatoliAndroid.Fragments
                 _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Tommorow);
                 _tomorrow = true;
             }
-            _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
-
-
+            // _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
+            var list = new List<ProductModel>();
+            foreach (var item in _timeOptions)
+            {
+                DeliveryTimeModel p = new DeliveryTimeModel();
+                p.time = item.itemName;
+                _deliveryTime.ListAdapter.List.Add(p);
+            }
+            _deliveryTime.ItemSelected += (s) =>
+            {
+                Console.WriteLine((s as DeliveryTimeModel).time);
+            };
+            _deliveryTime.SelectItem(0);
             _editAddressImageButton.Click += (s, e) =>
             {
                 var transaction = FragmentManager.BeginTransaction();
