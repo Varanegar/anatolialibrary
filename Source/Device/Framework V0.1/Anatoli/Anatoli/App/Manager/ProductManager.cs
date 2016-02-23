@@ -390,7 +390,7 @@ namespace Anatoli.App.Manager
         public static StringQuery Search(string value, string storeId)
         {
             //StringQuery query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE (product_name LIKE '{0}%' OR cat_name LIKE '{0}%') OR (product_name LIKE '% {0} %' OR cat_name LIKE '% {0} %') OR (product_name LIKE '% {0}' OR cat_name LIKE '% {0}') AND (store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
-            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE (product_name LIKE '%{0}%' OR cat_name LIKE '%{0}%') AND (products_price_view.store_id = '{1}') AND (store_onhand.store_id = '{1}') ORDER BY cat_id", value, storeId).PersianToArabic());
+            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE (product_name LIKE '%{0}%' OR cat_name LIKE '%{0}%') AND (products_price_view.store_id = '{1}') AND (store_onhand.store_id = '{1}') ORDER BY cat_id , product_name", value, storeId).PersianToArabic());
             return query;
         }
 
@@ -456,15 +456,15 @@ namespace Anatoli.App.Manager
             var leftRight = CategoryManager.GetLeftRight(catId);
             StringQuery query;
             if (leftRight != null)
-                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE cat_left >= {0} AND cat_right <= {1} AND products_price_view.store_id = '{2}' AND store_onhand.store_id = '{2}' ORDER BY cat_id ", leftRight.left, leftRight.right, storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE cat_left >= {0} AND cat_right <= {1} AND products_price_view.store_id = '{2}' AND store_onhand.store_id = '{2}' ORDER BY product_name", leftRight.left, leftRight.right, storeId).PersianToArabic());
             else
-                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id ORDER BY cat_id AND products_price_view.store_id='{0}' AND store_onhand.store_id='{0}'", storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id ORDER BY cat_id AND products_price_view.store_id='{0}' AND store_onhand.store_id='{0}' ORDER BY product_name", storeId).PersianToArabic());
             return query;
         }
 
         public static StringQuery GetAll(string storeId)
         {
-            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE products_price_view.store_id = '{0}' AND store_onhand.store_id = '{0}' ORDER BY cat_id", storeId).PersianToArabic());
+            StringQuery query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view LEFT JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE products_price_view.store_id = '{0}' AND store_onhand.store_id = '{0}' ORDER BY product_name", storeId).PersianToArabic());
             return query;
         }
     }
