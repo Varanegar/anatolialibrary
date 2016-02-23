@@ -210,16 +210,20 @@ namespace AnatoliAndroid.ListAdapters
                 else
                 {
                     _favoritsTextView.Text = AnatoliApp.GetResources().GetText(Resource.String.AddToList);
-                    _favoritsTextView.SetTextColor(Android.Graphics.Color.Green);
+                    _favoritsTextView.SetTextColor(Android.Graphics.Color.DarkGreen);
                     _favoritsButton.SetImageResource(Resource.Drawable.ic_mylist_green_24dp);
                 }
 
                 _productCountTextView.Text = item.count.ToString() + " عدد";
                 _productNameTextView.Text = item.product_name;
                 if (item.IsAvailable)
+                {
                     _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
+                    view.FindViewById<RelativeLayout>(Resource.Id.ttt).Visibility = ViewStates.Gone;
+                }
                 else
                 {
+                    view.FindViewById<RelativeLayout>(Resource.Id.ttt).Visibility = ViewStates.Visible;
                     _productPriceTextView.Text = "موجود نیست";
                     _productAddButton.Enabled = false;
                 }
@@ -319,6 +323,11 @@ namespace AnatoliAndroid.ListAdapters
                 _productAddButton.SetOnTouchListener(_addTouchlistener);
                 _addTouchlistener.Click += async (s, e) =>
                 {
+                    if (item.count+ 1 > item.qty)
+                    {
+                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "موجودی کالا کافی نیست", ToastLength.Short).Show();
+                        return;
+                    }
                     _productAddButton.Enabled = false;
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {

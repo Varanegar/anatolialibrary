@@ -54,7 +54,8 @@ namespace AnatoliAndroid.Activities
         ImageButton _menuIconImageButton;
         TextView _shoppingCardTextView;
         TextView _shoppingPriceTextView;
-        public string CustomerId;
+        public string CustomerId { get { return Customer != null ? Customer.UniqueId : null; } }
+        public CustomerViewModel Customer { get; set; }
         double _price;
         public string DefaultStoreName { get; private set; }
         public string DefaultStoreId { get; private set; }
@@ -564,6 +565,7 @@ namespace AnatoliAndroid.Activities
                 try
                 {
                     var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser, cancellationTokenSource);
+                    Customer = c;
                     pDialog.Dismiss();
                     if (c.IsValid)
                     {
@@ -770,7 +772,10 @@ namespace AnatoliAndroid.Activities
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
                 //avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
-                avatarMenuEntry.Name = AnatoliUser.FullName;
+                if (Customer != null)
+                    avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
+                else
+                    avatarMenuEntry.Name = "";
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
                 mainItems.Add(avatarMenuEntry);
 
@@ -814,10 +819,10 @@ namespace AnatoliAndroid.Activities
 
             if (AnatoliUser != null)
             {
-                var msgMenuEntry = new DrawerMainItem();
-                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
-                mainItems.Add(msgMenuEntry);
+                //var msgMenuEntry = new DrawerMainItem();
+                //msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                //msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
+                //mainItems.Add(msgMenuEntry);
 
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
@@ -950,7 +955,6 @@ namespace AnatoliAndroid.Activities
             if (result)
             {
                 AnatoliUser = null;
-                CustomerId = null;
                 RefreshMenuItems();
             }
             return result;

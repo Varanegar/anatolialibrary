@@ -147,7 +147,7 @@ namespace AnatoliAndroid.Activities
 
             try
             {
-                AnatoliApp.GetInstance().CustomerId = (await CustomerManager.ReadCustomerAsync()).UniqueId;
+                AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
             }
             catch (Exception)
             {
