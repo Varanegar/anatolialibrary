@@ -819,10 +819,10 @@ namespace AnatoliAndroid.Activities
 
             if (AnatoliUser != null)
             {
-                var msgMenuEntry = new DrawerMainItem();
-                msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
-                msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
-                mainItems.Add(msgMenuEntry);
+                //var msgMenuEntry = new DrawerMainItem();
+                //msgMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Messages;
+                //msgMenuEntry.Name = AnatoliApp.GetResources().GetText(Resource.String.Messages);
+                //mainItems.Add(msgMenuEntry);
 
                 var ordersMenuEntry = new DrawerMainItem();
                 ordersMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Orders;
