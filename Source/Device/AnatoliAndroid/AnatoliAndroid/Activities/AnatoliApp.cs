@@ -723,8 +723,9 @@ namespace AnatoliAndroid.Activities
                 if (_list.Last<StackItem>().FragmentType == typeof(FirstFragment))
                 {
                     _backToExit++;
+                    return false;
                 }
-                if (_list.Last<StackItem>().FragmentType != typeof(FirstFragment) || _backToExit >= 2)
+                else
                 {
                     _list.RemoveLast();
                     var stackItem = _list.Last<StackItem>();
