@@ -125,7 +125,7 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         local:customFont="Fonts/anatoli.ttf"
                         style="@style/AnatoliTextField"
-                        android:textSize="12dp"
+                        android:textSize="13dp"
                         android:id="@+id/level1Spinner"
                         android:text="شهر"
                         android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         local:customFont="Fonts/anatoli.ttf"
                         style="@style/AnatoliTextField"
-                        android:textSize="12dp"
+                        android:textSize="13dp"
                         android:text="منطقه"
                         android:id="@+id/level2Spinner"
                         android:layout_width="match_parent"
@@ -143,7 +143,7 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         local:customFont="Fonts/anatoli.ttf"
                         style="@style/AnatoliTextField"
-                        android:textSize="12dp"
+                        android:textSize="13dp"
                         android:id="@+id/level3Spinner"
                         android:text="محله1"
                         android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                     <AnatoliAndroid.Components.AnatoliTextView
                         local:customFont="Fonts/anatoli.ttf"
                         style="@style/AnatoliTextField"
-                        android:textSize="12dp"
+                        android:textSize="13dp"
                         android:id="@+id/level4Spinner"
                         android:text="محله2"
                         android:layout_width="match_parent"
