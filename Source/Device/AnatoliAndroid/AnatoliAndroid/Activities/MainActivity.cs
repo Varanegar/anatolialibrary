@@ -109,6 +109,11 @@ namespace AnatoliAndroid.Activities
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
+                var latestUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                if ((latestUpdateTime - DateTime.Now).TotalMinutes > 10)
+                {
+                    StartService(new Intent(this, typeof(StockFeedService)));
+                }
                 var defaultStore = await StoreManager.GetDefaultAsync();
                 if (defaultStore != null)
                 {
@@ -273,6 +278,34 @@ namespace AnatoliAndroid.Activities
         {
             return true;
         }
+    }
+
+    [Service]
+    class StockFeedService : Service
+    {
+
+        public override IBinder OnBind(Intent intent)
+        {
+            throw new NotImplementedException();
+        }
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            Console.WriteLine("Service started");
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                try
+                {
+                    await ProductManager.SyncOnHand(null);
+                }
+                catch (Exception e)
+                {
+                    e.SendTrace();
+                }
+                StopSelf();
+            });
+            return StartCommandResult.Sticky;
+        }
+
     }
 }
 
