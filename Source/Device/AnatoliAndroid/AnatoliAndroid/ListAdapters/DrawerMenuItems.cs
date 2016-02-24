@@ -110,13 +110,16 @@ namespace AnatoliAndroid.ListAdapters
                 }
                 if (item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
                 {
-
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
 
                     }
                     else
                         relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
+                }
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Profile)
+                {
+                    itemTextView.SetTextSize(Android.Util.ComplexUnitType.Dip, 10);
                 }
 
             }
