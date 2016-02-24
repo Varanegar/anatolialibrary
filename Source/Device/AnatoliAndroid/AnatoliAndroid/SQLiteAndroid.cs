@@ -26,6 +26,13 @@ namespace AnatoliAndroid
             return conn;
 
         }
+        public static void ExportDb()
+        {
+
+            string path = FileAccessHelper.GetLocalFilePath("paa.db");
+            System.IO.File.Copy(path, Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/paa.db", true);
+
+        }
         public class FileAccessHelper
         {
             public static string GetLocalFilePath(string filename)

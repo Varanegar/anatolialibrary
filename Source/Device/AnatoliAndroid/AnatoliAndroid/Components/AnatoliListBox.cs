@@ -20,19 +20,32 @@ namespace AnatoliAndroid.Components
         where DataListAdapter : ListAdapters.BaseListAdapter<DataManager, DataModel>, new()
         where DataModel : BaseDataModel, new()
         where DataManager : BaseManager<DataModel>, new()
-
     {
         private new const string Tag = "AnatoliListBox";
-        public DataListAdapter ListAdapter;
+        DataListAdapter _listAdapter;
+        Dictionary<string, DataModel> _dict;
         ListBoxDialog<DataListAdapter, DataManager, DataModel> _listDialog;
         public DataModel SelectedItem { get; private set; }
+        
+        public void AddItem(DataModel item)
+        {
+            if (!_dict.ContainsKey(item.UniqueId))
+            {
+                _listAdapter.List.Add(item);
+                _dict.Add(item.UniqueId, item);
+            }
+        }
         void CreateListBox()
         {
-            ListAdapter = new DataListAdapter();
-
+            _listAdapter = new DataListAdapter();
+            _dict = new Dictionary<string, DataModel>();
             Click += delegate
             {
-                _listDialog = new ListBoxDialog<DataListAdapter, DataManager, DataModel>(ListAdapter);
+                if (_listAdapter.List.Count == 0)
+                {
+                    return;
+                }
+                _listDialog = new ListBoxDialog<DataListAdapter, DataManager, DataModel>(_listAdapter);
                 _listDialog.ItemSelected += (s) =>
                 {
                     _listDialog.Dismiss();
@@ -42,42 +55,52 @@ namespace AnatoliAndroid.Components
                 _listDialog.Show(t, "list_dialog");
             };
         }
+        public void SelectItem(string uniqueId)
+        {
+            if (_dict.ContainsKey(uniqueId))
+            {
+                OnItemSelected(_listAdapter.List.Where(i => i == _dict[uniqueId]).FirstOrDefault());
+            }
+        }
         public void SelectItem(int position)
         {
-            if (ListAdapter.List.Count > position)
+            if (_listAdapter.List.Count > position)
             {
-                OnItemSelected(ListAdapter.List[position]);
+                OnItemSelected(_listAdapter.List[position]);
             }
         }
 
         public void SelectItem(DataModel item)
         {
-            if (ListAdapter.List.Contains(item))
+            if (_listAdapter.List.Contains(item))
             {
-                OnItemSelected(ListAdapter.List.Where(i => i == item).FirstOrDefault());
+                OnItemSelected(_listAdapter.List.Where(i => i == item).FirstOrDefault());
             }
         }
         protected AnatoliListBox(IntPtr javaReference, JniHandleOwnership transfer)
-                : base(javaReference, transfer)
+            : base(javaReference, transfer)
         {
             CreateListBox();
         }
 
         public AnatoliListBox(Context context)
-                : this(context, null)
+            : this(context, null)
         {
 
         }
 
         public AnatoliListBox(Context context, IAttributeSet attrs)
-                : base(context, attrs, 0)
+            : base(context, attrs, 0)
         {
             CreateListBox();
         }
         void OnItemSelected(DataModel item)
         {
             SelectedItem = item;
-            Text = item.ToString();
+            if (item != null)
+                Text = item.ToString();
+            else
+                Text = " - - - ";
             if (ItemSelected != null)
             {
                 ItemSelected.Invoke(item);
@@ -85,6 +108,22 @@ namespace AnatoliAndroid.Components
         }
         public event ItemSelectedEventHandler ItemSelected;
         public delegate void ItemSelectedEventHandler(DataModel item);
+
+        internal void Deselect()
+        {
+            OnItemSelected(null);
+        }
+
+        internal void SetList(List<DataModel> list)
+        {
+            _listAdapter.List = list;
+            _dict = new Dictionary<string, DataModel>();
+            foreach (var item in list)
+            {
+                _dict.Add(item.UniqueId, item);
+            }
+            Deselect();
+        }
     }
 
     class ListBoxDialog<DataListAdapter, DataManager, DataModel> : DialogFragment

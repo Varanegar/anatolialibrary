@@ -2082,17 +2082,17 @@ namespace AnatoliAndroid
 			// aapt resource value: 0x7f0b0095
 			public const int leftRelativeLayout = 2131427477;
 			
-			// aapt resource value: 0x7f0b00d2
-			public const int level1Spinner = 2131427538;
-			
 			// aapt resource value: 0x7f0b00d1
-			public const int level2Spinner = 2131427537;
+			public const int level1Spinner = 2131427537;
 			
-			// aapt resource value: 0x7f0b00d4
-			public const int level3Spinner = 2131427540;
+			// aapt resource value: 0x7f0b00d2
+			public const int level2Spinner = 2131427538;
 			
 			// aapt resource value: 0x7f0b00d3
-			public const int level4Spinner = 2131427539;
+			public const int level3Spinner = 2131427539;
+			
+			// aapt resource value: 0x7f0b00d4
+			public const int level4Spinner = 2131427540;
 			
 			// aapt resource value: 0x7f0b00db
 			public const int line = 2131427547;
