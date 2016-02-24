@@ -62,6 +62,12 @@ namespace AnatoliAndroid.Fragments
             {
                 var groupAdapter = new GroupListAdapter(AnatoliApp.GetInstance().Activity, categories);
                 _groupsGridView.Adapter = groupAdapter;
+                ViewGroup.LayoutParams lparams = _groupsGridView.LayoutParameters;
+                var scale = AnatoliApp.GetResources().DisplayMetrics.Density;
+                int pixels = (int)(120 * scale + 0.5f);
+                lparams.Height = pixels * (groupAdapter.Count / 2 + 1);
+                _groupsGridView.LayoutParameters = lparams;
+                _groupsGridView.RequestLayout();
             }
             await System.Threading.Tasks.Task.Run(() => { _slideShow.Start(); });
         }
