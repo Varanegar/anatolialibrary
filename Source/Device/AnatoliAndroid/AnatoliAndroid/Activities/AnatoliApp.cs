@@ -566,6 +566,7 @@ namespace AnatoliAndroid.Activities
                 {
                     var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser, cancellationTokenSource);
                     Customer = c;
+                    RefreshMenuItems();
                     pDialog.Dismiss();
                     if (c.IsValid)
                     {
