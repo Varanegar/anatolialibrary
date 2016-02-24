@@ -12,6 +12,8 @@ namespace Anatoli.DataAccess.Models
         public string StoreName { get; set; }
         [StringLength(200)]
         public string Address { get; set; }
+        [StringLength(200)]
+        public string Phone { get; set; }
         public long Lat { get; set; }
         public long Lng { get; set; }
         public byte HasDelivery { get; set; }

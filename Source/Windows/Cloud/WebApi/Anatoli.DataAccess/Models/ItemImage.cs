@@ -12,5 +12,6 @@ namespace Anatoli.DataAccess.Models
         public string ImageName { get; set; }
         [StringLength(50)]
         public string ImageType { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

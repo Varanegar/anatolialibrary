@@ -20,6 +20,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
                 ImageName = data.ImageName,
                 BaseDataId = data.TokenId,
+                IsDefault = data.IsDefault,
                 ImageType = data.ImageType,
 
             };
@@ -31,7 +32,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-
+                IsDefault = data.IsDefault,
+                
                 ImageName = data.ImageName,
                 TokenId = data.BaseDataId,
                 ImageType = data.ImageType,

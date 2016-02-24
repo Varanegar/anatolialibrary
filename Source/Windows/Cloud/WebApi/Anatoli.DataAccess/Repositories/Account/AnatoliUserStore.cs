@@ -53,6 +53,15 @@ namespace Anatoli.DataAccess.Repositories
             await UserRepository.SaveChangesAsync();
         }
 
+        public async Task ChangeEmailAddress(User user, string email)
+        {
+            user.Email = email;
+            user.EmailConfirmed = true;
+            user.PhoneNumberConfirmed = true;
+            await UserRepository.UpdateAsync(user);
+            await UserRepository.SaveChangesAsync();
+        }
+
         public async Task<bool> ResetPasswordByCodeAsync(User user, string password, string code)
         {
             if (code == user.ResetSMSCode && user.ResetSMSRequestTime != null && user.ResetSMSRequestTime > DateTime.Now.AddMinutes(-5))
