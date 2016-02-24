@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using AnatoliAndroid.Activities;
 using Square.Picasso;
+using AnatoliAndroid.Components;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -108,20 +109,17 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
                 }
-                if (item.ItemId == DrawerMainItem.DrawerMainItems.Avatar)
+                if (item.ItemId == DrawerMainItem.DrawerMainItems.Profile)
                 {
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
-
+                        Picasso.With(AnatoliApp.GetInstance().Activity).Load(item.ImageUrl).Into(itemImageView);
                     }
                     else
                         relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
+                    itemTextView.SetTextSize(Android.Util.ComplexUnitType.Dip, 15);
+                    convertView.FindViewById<ImageView>(Resource.Id.inside_imageview).Visibility = ViewStates.Visible;
                 }
-                if (item.ItemId == DrawerMainItem.DrawerMainItems.Profile)
-                {
-                    itemTextView.SetTextSize(Android.Util.ComplexUnitType.Dip, 10);
-                }
-
             }
             return convertView;
         }
@@ -176,7 +174,6 @@ namespace AnatoliAndroid.ListAdapters
             public const string Logout = "Logout";
             public const string Messages = "Messages";
             public const string Orders = "Orders";
-            public const string Avatar = "Avatar";
             public const string Update = "Update";
             public const string FirstPage = "FirstPage";
             public const string Settings = "Settings";

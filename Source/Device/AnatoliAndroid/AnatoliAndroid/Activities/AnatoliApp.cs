@@ -452,7 +452,7 @@ namespace AnatoliAndroid.Activities
                         _favoritsFragment = new FavoritsListFragment();
                         AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
                         break;
-                    case DrawerMainItem.DrawerMainItems.Avatar:
+                    case DrawerMainItem.DrawerMainItems.Profile:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _profileFragment = new ProfileFragment();
                         var tr = _activity.FragmentManager.BeginTransaction();
@@ -750,7 +750,6 @@ namespace AnatoliAndroid.Activities
                     }
                     return true;
                 }
-                return false;
             }
             catch (Exception)
             {
@@ -772,8 +771,8 @@ namespace AnatoliAndroid.Activities
             {
 
                 var avatarMenuEntry = new DrawerMainItem();
-                avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
-                //avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+                avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
                 if (Customer != null)
                     avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
                 else
