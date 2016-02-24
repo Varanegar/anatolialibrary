@@ -46,7 +46,7 @@ namespace Anatoli.App.Manager
                         if (items.ContainsKey(item.UniqueId))
                         {
                             UpdateCommand command = new UpdateCommand("products", new EqFilterParam("product_id", item.UniqueId.ToUpper()),
-                            new BasicParam("product_name", item.ProductName),
+                            new BasicParam("product_name", item.StoreProductName),
                             new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
@@ -54,7 +54,7 @@ namespace Anatoli.App.Manager
                         else
                         {
                             InsertCommand command = new InsertCommand("products", new BasicParam("product_id", item.UniqueId.ToUpper()),
-                            new BasicParam("product_name", item.ProductName),
+                            new BasicParam("product_name", item.StoreProductName),
                             new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
                             var query = connection.CreateCommand(command.GetCommand());
                             int t = query.ExecuteNonQuery();
