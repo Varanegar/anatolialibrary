@@ -666,6 +666,13 @@ namespace AnatoliAndroid.Activities
                         AnatoliApp.GetInstance().Activity.StartActivity(intent);
                     });
                 }
+                else if (ex.GetType() == typeof(TokenException))
+                {
+                    alert.SetMessage(Resource.String.PleaseLogin);
+                    alert.SetPositiveButton(Resource.String.Ok, delegate
+                    {
+                    });
+                }
                 else
                     alert.SetMessage(Resource.String.ErrorOccured);
                 alert.SetNegativeButton(Resource.String.Cancel, async (s2, e2) =>

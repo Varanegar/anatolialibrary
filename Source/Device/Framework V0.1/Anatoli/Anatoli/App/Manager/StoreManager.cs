@@ -60,12 +60,56 @@ namespace Anatoli.App.Manager
                     connection.Commit();
                 }
 
-                // todo: add delivery times to database
-                //var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
-                //q2.cancellationTokenSource = cancellationTokenSource;
-                //var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 
-                await SyncManager.SaveUpdateDateAsync(SyncManager.StoresTbl);
+
+                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
+                q2.cancellationTokenSource = cancellationTokenSource;
+                var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
+
+
+                Dictionary<string, StoreCalendarViewModel> timeItems = new Dictionary<string, StoreCalendarViewModel>();
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    var query = connection.CreateCommand("SELECT * FROM stores_calendar");
+                    var currentList = query.ExecuteQuery<StoreCalendarViewModel>();
+                    foreach (var item in currentList)
+                    {
+                        timeItems.Add(item.UniqueId, item);
+                    }
+                }
+                using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                {
+                    connection.BeginTransaction();
+                    foreach (var item in list2)
+                    {
+                        if (timeItems.ContainsKey(item.UniqueId))
+                        {
+                            UpdateCommand command = new UpdateCommand(SyncManager.StoreCalendarTbl, new EqFilterParam("UniqueId", item.UniqueId),
+                                new BasicParam("StoreId", item.StoreId),
+                                new BasicParam("Date", item.Date.ConvertToUnixTimestamp().ToString()),
+                            new BasicParam("PDate", item.PDate),
+                            new BasicParam("FromTimeString", item.FromTimeString),
+                            new BasicParam("ToTimeString", item.ToTimeString),
+                            new BasicParam("CalendarTypeValueId", item.CalendarTypeValueId.ToUpper()));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            InsertCommand command = new InsertCommand(SyncManager.StoreCalendarTbl, new BasicParam("UniqueId", item.UniqueId),
+                            new BasicParam("StoreId", item.StoreId),
+                            new BasicParam("Date", item.Date.ConvertToUnixTimestamp().ToString()),
+                            new BasicParam("PDate", item.PDate),
+                            new BasicParam("FromTimeString", item.FromTimeString),
+                            new BasicParam("ToTimeString", item.ToTimeString),
+                            new BasicParam("CalendarTypeValueId", item.CalendarTypeValueId.ToUpper()));
+                            var query = connection.CreateCommand(command.GetCommand());
+                            int t = query.ExecuteNonQuery();
+                        }
+                    }
+                    connection.Commit();
+                }
+                await SyncManager.SaveUpdateDateAsync(SyncManager.StoreCalendarTbl);
             }
             catch (Exception e)
             {

@@ -419,7 +419,7 @@ namespace Anatoli.App.Manager
 
         public static StringQuery GetFavoritsQueryString(string storeId)
         {
-            var query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE favorit = 1 AND store_id = '{0}'", storeId));
+            var query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view JOIN store_onhand  ON store_onhand.product_id = products_price_view.product_id WHERE favorit = 1 AND products_price_view.store_id = '{0}' AND store_onhand.store_id='{0}' ORDER BY product_name", storeId));
             return query;
         }
 

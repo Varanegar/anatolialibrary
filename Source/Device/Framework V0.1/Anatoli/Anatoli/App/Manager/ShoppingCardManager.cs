@@ -171,7 +171,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<PurchaseOrderViewModel> Checkout(string userId, string storeId, string deliveryTypeId)
+        public static async Task<PurchaseOrderViewModel> Checkout(string userId, string storeId, string deliveryTypeId, DeliveryTimeModel time)
         {
             try
             {
@@ -181,6 +181,7 @@ namespace Anatoli.App.Manager
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);
+                order.DeliveryFromTime = time.timespan;
                 order.UserId = Guid.Parse(userId);
                 foreach (var item in products)
                 {
