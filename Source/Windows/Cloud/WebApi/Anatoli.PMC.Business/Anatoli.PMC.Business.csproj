@@ -60,6 +60,7 @@
     <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCEvcDetailProxy.cs" />
     <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCEvcProxy.cs" />
     <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCPurchaseOrderLineItemProxy.cs" />
+    <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCPurchaseOrderStatusHistoryProxy.cs" />
     <Compile Include="Proxy\Concretes\PurchaseOrderCencretes\PMCPurchaseOrderProxy.cs" />
     <Compile Include="Proxy\Concretes\StoreCencretes\PMCStoreOnHandProxy.cs" />
     <Compile Include="Proxy\Interfaces\IPMCBusinessDomain.cs" />

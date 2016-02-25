@@ -10,7 +10,14 @@ namespace Anatoli.ViewModels.CustomerModels
     public class CustomerViewModel : BaseViewModel
     {
         public long? CustomerCode { get; set; }
-        public string CustomerName { get; set; }
+        public string CustomerName
+        {
+            get
+            {
+                return LastName + ", " + FirstName;
+            }
+            set { }
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? BirthDay { get; set; }

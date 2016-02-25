@@ -68,6 +68,8 @@ namespace Anatoli.DataAccess
         public DbSet<MainProductGroup> MainProductGroups { get; set; }
         public DbSet<StockType> StockTypes { get; set; }
         public DbSet<ProductType> ProductType { get; set; }
+        public DbSet<ProductTag> ProductTag { get; set; }
+        public DbSet<ProductTagValue> ProductTagValue { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
         public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
@@ -108,6 +110,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new MainProductGroupConfig());
             modelBuilder.Configurations.Add(new ManufactureConfig());
             modelBuilder.Configurations.Add(new ProductConfig());
+            modelBuilder.Configurations.Add(new ProductTagConfig());
             modelBuilder.Configurations.Add(new ProductGroupConfig());
             modelBuilder.Configurations.Add(new ProductTypeConfig());
             modelBuilder.Configurations.Add(new PurchaseOrderConfig());

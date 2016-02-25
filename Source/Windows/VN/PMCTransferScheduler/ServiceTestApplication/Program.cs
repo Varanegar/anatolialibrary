@@ -17,7 +17,9 @@ namespace ServiceTestApplication
             try
             {
                 var restul = log4net.Config.XmlConfigurator.Configure();
-                string ServerURI = "http://192.168.0.160:8081/";
+                //string ServerURI = "http://localhost/";
+                string ServerURI = "http://46.209.104.2:7000/";
+                //string ServerURI = "http://192.168.0.160:8081/";
                 string privateOwner = "?privateOwnerId=" + "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 log.Info("Start Transfer Data Job");
                 var oauthClient = new OAuth2Client(new Uri(ServerURI + "/oauth/token"));
@@ -50,14 +52,15 @@ namespace ServiceTestApplication
                     //log.Info("Transfer stock hand");
                     //StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, privateOwner);
                     //log.Info("Completed Transfer Data Job");
-                    
+                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, privateOwner);
+
                     //log.Info("Transfer Product Group Picture");
                     //ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, privateOwner);
-                    log.Info("Transfer Product Picture");
-                    ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, privateOwner);
-                    log.Info("Transfer Store Picture");
-                    StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, privateOwner);
-                    log.Info("Completed Transfer Data Job");
+                    //log.Info("Transfer Product Picture");
+                    //ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, privateOwner);
+                    //log.Info("Transfer Store Picture");
+                    //StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, privateOwner);
+                    //log.Info("Completed Transfer Data Job");
 
 
                 }

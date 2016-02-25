@@ -29,6 +29,11 @@ namespace Anatoli.PMC.DataAccess.Helpers
             }
         }
         DBQuery() { }
+        public string GetDBQuery(Type t)
+        {
+            return queryList.Find(item => item.AnatoliQueryDataType.ToLower() == t.ToString().ToLower()).QueryTSql;
+
+        }
         public string GetFiscalYearQuery()
         {
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetFiscalYearQuery".ToLower()).QueryTSql;

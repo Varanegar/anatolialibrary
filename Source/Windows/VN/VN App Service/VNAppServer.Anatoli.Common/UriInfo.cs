@@ -8,6 +8,16 @@ namespace VNAppServer.Anatoli.Common
 {
     public static class UriInfo
     {
+        public static string GetSaveURI(Type entityType)
+        {
+            return "";
+        }
+
+        public static string GetCheckDeletedURI(Type entityType)
+        {
+            return "";
+        }
+
         public static readonly string SaveSupplierURI = "/api/gateway/base/supplier/save";
         public static readonly string CheckDeletedSupplierURI = "/api/gateway/base/supplier/checkdeleted";
         public static readonly string SaveManufactureURI = "/api/gateway/base/manufacture/save";

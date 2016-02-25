@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PurchaseOrderManagement.cs" />
     <Compile Include="BasketManagement.cs" />
     <Compile Include="BaseDataManagement.cs" />
     <Compile Include="CharGroupManagement.cs" />

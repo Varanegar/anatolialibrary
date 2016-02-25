@@ -76,7 +76,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [HttpPost, Route("Save")]
-        public async Task<IHttpActionResult> SaveImage(string token, string imagetype, string privateOwnerId, string imageId)
+        public async Task<IHttpActionResult> SaveImage(string token, string imagetype, string privateOwnerId, string imageId, bool isDefault)
         {
             try
             {
@@ -106,6 +106,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                                 UniqueId = Guid.Parse(imageId),
                                 ImageType = imagetype,
                                 ImageName = file,
+                                IsDefault = isDefault,
                             };
                         dataList.Add(imageViewModel);
                     }

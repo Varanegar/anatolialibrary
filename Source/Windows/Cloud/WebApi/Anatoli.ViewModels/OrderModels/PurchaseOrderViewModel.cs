@@ -9,13 +9,24 @@ namespace Anatoli.ViewModels.Order
 {
     public class PurchaseOrderViewModel : BaseViewModel
     {
+        private string orderTimeString = "";
         public Guid UserId { get; set; }
         public Guid ShipAddressId { get; set; }
+        public String ShipAddress { get; set; }
         public Guid StoreGuid { get; set; }
         public Guid PurchaseOrderStatusValueId { get; set; }
         public Guid PaymentTypeValueId { get; set; }
         public DateTime? OrderDate { get; set; }
         public TimeSpan? OrderTime { get; set; }
+        public string OrderTimeString
+        {
+            get { return orderTimeString; }
+            set
+            {
+                orderTimeString = value;
+                OrderTime = TimeSpan.Parse(value);
+            }
+        }
         public string OrderPDate { get; set; }
         public string DeviceIMEI { get; set; }
         public Guid ActionSourceValueId { get; set; }

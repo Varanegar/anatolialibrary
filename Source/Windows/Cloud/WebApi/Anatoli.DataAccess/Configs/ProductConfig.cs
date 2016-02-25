@@ -81,6 +81,10 @@ namespace Anatoli.DataAccess.Configs
                 .WithRequired(p => p.Product)
                 .WillCascadeOnDelete(false);
 
+            this.HasMany<ProductTagValue>(sap => sap.ProductTagValues)
+                .WithRequired(p => p.Product)
+                .WillCascadeOnDelete(false);
+
         }
     }
 }

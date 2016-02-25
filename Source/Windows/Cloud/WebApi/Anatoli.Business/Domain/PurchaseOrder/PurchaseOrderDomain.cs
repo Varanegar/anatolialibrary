@@ -198,16 +198,22 @@ namespace Anatoli.Business.Domain
 
         public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderViewModel order)
         {
-            var returnData = new List<PurchaseOrderViewModel>();
+            var returnData = new PurchaseOrderViewModel();
             order.Customer = CustomerProxy.Convert(CustomerRepository.GetById(order.UserId));
             string data = JsonConvert.SerializeObject(order);
             
 
             await Task.Factory.StartNew(() =>
             {
-                order = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
+                returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
             });
-            return order;
+            
+            var dataList = new List<PurchaseOrderViewModel>();
+            order.AppOrderNo = returnData.AppOrderNo;
+            dataList.Add(order);
+            await PublishAsync(dataList);
+
+            return returnData;
         }
 
         public async Task<PurchaseOrderViewModel> CalcPromoOnline(PurchaseOrderViewModel order)

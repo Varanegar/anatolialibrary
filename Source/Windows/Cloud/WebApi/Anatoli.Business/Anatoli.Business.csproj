@@ -95,6 +95,8 @@
     <Compile Include="Domain\Product\MainProductGroupDomain.cs" />
     <Compile Include="Domain\Product\ProductPictureDomain.cs" />
     <Compile Include="Domain\Product\ProductRateDomain.cs" />
+    <Compile Include="Domain\Product\ProductTagValueDomain.cs" />
+    <Compile Include="Domain\Product\ProductTagDomain.cs" />
     <Compile Include="Domain\Product\ProductTypeDomain.cs" />
     <Compile Include="Domain\Product\SupplierDomain.cs" />
     <Compile Include="Domain\Product\ManufactureDomain.cs" />
@@ -136,6 +138,8 @@
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\ProductTagProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\ProductTagValueProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharValueProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharTypeProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\MainProductGroupProxy.cs" />

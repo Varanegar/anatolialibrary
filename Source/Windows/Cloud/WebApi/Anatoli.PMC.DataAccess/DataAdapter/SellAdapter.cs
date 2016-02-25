@@ -38,9 +38,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 {
                     IEnumerable<PurchaseOrderViewModel> data = null;
                     if(statusId != null)
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " where customerId='" + customerId + "' and statusId = '" + statusId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.UniqueId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
                     else
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " where customerId='" + customerId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.UniqueId='" + customerId + "'");
 
                     result = data.ToList();
                 }
@@ -65,7 +65,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where sellId='" + pOId + "'");
+                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where S.UniqueId='" + pOId + "'");
                     result = data.ToList();
                 }
                 catch (Exception ex)
@@ -89,7 +89,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderStatusHistoryViewModel>(DBQuery.Instance.GetSellActionInfo() + " where sellId='" + pOId + "'");
+                    var data = context.All<PurchaseOrderStatusHistoryViewModel>(DBQuery.Instance.GetSellActionInfo() + " where S.UniqueId='" + pOId + "'");
                     result = data.ToList();
                 }
                 catch (Exception ex)
@@ -168,10 +168,10 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     orderInfo.SellId = GeneralCommands.GetId(context, "Sell");
                     orderInfo.FiscalYearId = GeneralCommands.GetFiscalYearId(context);
                     orderInfo.CashSessionId = GeneralCommands.GetCashSessionId(context);
-                    //orderInfo.CashSessionStatusId = 0;
                     orderInfo.RequestNo = GeneralCommands.GetRequestNo(context, orderInfo.FiscalYearId);
-                    orderInfo.RequestDateTime = PersianDate.Now.ToString() + DateTime.Now.ToString("HH:mm");
-                    orderInfo.SellNotInPersonTypeId = 1;
+                    orderInfo.RequestDateTime = PersianDate.Now.ToString() + " " + DateTime.Now.ToString("HH:mm");
+                    orderInfo.SellNotInPersonTypeId = GetActionSourceId(orderInfo.SellNotInPersonTypeGuid.ToString());
+                    orderInfo.DeliveryTypeId = GetDeliveryTypeId(orderInfo.DeliveryTypeGuid.ToString());
                     sellDataObject.Insert(orderInfo, context);
                     DataObject<PMCSellDetailViewModel> lineItemDataObject = new DataObject<PMCSellDetailViewModel>("SellDetail", "InvalidId");
                     orderInfo.SellDetail.ForEach(item =>
@@ -196,6 +196,45 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
 
             return orderInfo.RequestNo;
+        }
+
+
+        private int GetDeliveryTypeId(string DeliveryTypeGuid)
+        {
+            int result = 0;
+            switch (DeliveryTypeGuid)
+            {
+                case "CE4AEE25-F8A7-404F-8DBA-80340F7339CC":
+                    result = 1;
+                    break;
+                case "BE2919AB-5564-447A-BE49-65A81E6AF712":
+                    result = 2;
+                    break;
+                default:
+                    result = 1;
+                    break;
+            }
+            return result;
+        }
+        private int GetActionSourceId(string ActionSourceGuid)
+        {
+            int result = 0;
+            switch (ActionSourceGuid)
+            {
+                case "65DEC223-059E-48BA-8281-E4FAAFF6E32D":
+                    result = 1;
+                    break;
+                case "0410F5BD-0C01-4E32-A4D9-D2F4DCC46003":
+                    result = 2;
+                    break;
+                case "6CF27F09-E162-4802-A451-9BC3304A8130":
+                    result = 3;
+                    break;
+                default:
+                    result = 3;
+                    break;
+            }
+            return result;
         }
     }
 }
