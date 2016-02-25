@@ -25,6 +25,7 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual Principal PrivateLabelOwner { get; set; }
         #endregion
 
+        [StringLength(200)]
         public string FullName { get; set; }
         public override string UserName { get; set; }
         public string Password { get; set; }
@@ -45,7 +46,9 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual Principal Principal { get; set; }
         public virtual Role Role { get; set; }
         public virtual Group Group { get; set; }
+        [StringLength(200)]
         public virtual string ResetSMSCode { get; set; }
+        [StringLength(200)]
         public virtual string ResetSMSPass { get; set; }
         public virtual Nullable<DateTime> ResetSMSRequestTime { get; set; }
 

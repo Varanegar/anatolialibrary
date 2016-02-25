@@ -126,7 +126,7 @@ namespace Anatoli.Business.Domain
 
                         if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
-                        if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
+                        //if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
                         currentProduct = SetMainSupplierData(currentProduct, item.Suppliers.FirstOrDefault(), Repository.DbContext);
                         //currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
                         //currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);

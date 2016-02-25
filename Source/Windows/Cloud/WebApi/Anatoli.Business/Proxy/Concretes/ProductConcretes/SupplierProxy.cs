@@ -17,7 +17,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 SupplierName = data.SupplierName,
-                PrivateOwnerId = data.PrivateLabelOwner.Id
+                PrivateOwnerId = data.PrivateLabelOwner_Id
             };
         }
 

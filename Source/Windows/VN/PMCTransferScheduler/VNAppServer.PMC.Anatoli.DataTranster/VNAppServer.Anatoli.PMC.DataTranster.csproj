@@ -77,6 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferHandler\GeneralDataTransferHandler.cs" />
     <Compile Include="DataTransferHandler\CustomerTransferHandler.cs" />
     <Compile Include="DataTransferHandler\ProductGroupPictureTransferHandler.cs" />
     <Compile Include="DataTransferHandler\FiscalYearTransferHandler.cs" />

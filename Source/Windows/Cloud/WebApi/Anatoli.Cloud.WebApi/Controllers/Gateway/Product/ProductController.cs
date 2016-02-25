@@ -166,6 +166,160 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
         #endregion
 
+        #region Product Tag
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("producttags")]
+        public async Task<IHttpActionResult> GetProductTags(string privateOwnerId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagDomain(owner);
+                var result = await domain.GetAll();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("producttags/after")]
+        public async Task<IHttpActionResult> GetProductTags(string privateOwnerId, string dateAfter)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagDomain(owner);
+                var validDate = DateTime.Parse(dateAfter);
+                var result = await domain.GetAllChangedAfter(validDate);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("producttags/save")]
+        public async Task<IHttpActionResult> SaveProductTags(string privateOwnerId, List<ProductTagViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagDomain(owner);
+                var result = await domain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("producttags/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedProductTags(string privateOwnerId, List<ProductTagViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagDomain(owner);
+                var result = await domain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        #endregion
+
+        #region Product Tag Value
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("producttagvalues")]
+        public async Task<IHttpActionResult> GetProductTagValues(string privateOwnerId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagValueDomain(owner);
+                var result = await domain.GetAll();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("producttagvalues/after")]
+        public async Task<IHttpActionResult> GetProductTagValues(string privateOwnerId, string dateAfter)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagValueDomain(owner);
+                var validDate = DateTime.Parse(dateAfter);
+                var result = await domain.GetAllChangedAfter(validDate);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("producttagvalues/save")]
+        public async Task<IHttpActionResult> SaveProductTagValues(string privateOwnerId, List<ProductTagValueViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagValueDomain(owner);
+                var result = await domain.PublishAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("producttagvalues/checkdeleted")]
+        public async Task<IHttpActionResult> CheckDeletedProductTagValues(string privateOwnerId, List<ProductTagValueViewModel> data)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var domain = new ProductTagValueDomain(owner);
+                var result = await domain.CheckDeletedAsync(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        #endregion
+
         #region Products
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("products")]

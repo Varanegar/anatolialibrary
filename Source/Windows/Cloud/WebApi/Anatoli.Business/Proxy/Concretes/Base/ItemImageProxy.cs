@@ -17,7 +17,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner_Id,
                 ImageName = data.ImageName,
                 BaseDataId = data.TokenId,
                 IsDefault = data.IsDefault,

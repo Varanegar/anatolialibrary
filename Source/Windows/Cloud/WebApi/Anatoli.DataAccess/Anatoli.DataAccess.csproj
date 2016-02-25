@@ -105,6 +105,7 @@
     <Compile Include="Configs\StockOnHandSyncConfig.cs" />
     <Compile Include="Configs\StoreCalendarConfig.cs" />
     <Compile Include="Configs\StockConfig.cs" />
+    <Compile Include="Configs\ProductTagConfig.cs" />
     <Compile Include="Configs\SupplierConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
@@ -126,6 +127,8 @@
     <Compile Include="Interfaces\Product\IMainProductGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductTagValueRepository.cs" />
+    <Compile Include="Interfaces\Product\IProductTagRepository.cs" />
     <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
@@ -348,6 +351,18 @@
     <Compile Include="Migrations\201602221922004_Store-Phone.Designer.cs">
       <DependentUpon>201602221922004_Store-Phone.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602250816198_InitialDataInsert-6.cs" />
+    <Compile Include="Migrations\201602250816198_InitialDataInsert-6.Designer.cs">
+      <DependentUpon>201602250816198_InitialDataInsert-6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602251144503_ProductTag-1.cs" />
+    <Compile Include="Migrations\201602251144503_ProductTag-1.Designer.cs">
+      <DependentUpon>201602251144503_ProductTag-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602251208529_ProductTag-2.cs" />
+    <Compile Include="Migrations\201602251208529_ProductTag-2.Designer.cs">
+      <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -377,6 +392,8 @@
     <Compile Include="Models\Identity\PrincipalPermission.cs" />
     <Compile Include="Models\Identity\Role.cs" />
     <Compile Include="Models\Identity\User.cs" />
+    <Compile Include="Models\ProductTagValue.cs" />
+    <Compile Include="Models\ProductTag.cs" />
     <Compile Include="Models\Manufacture.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductComment.cs" />
@@ -442,6 +459,8 @@
     <Compile Include="Repositories\Base\SupplierRepository.cs" />
     <Compile Include="Repositories\Product\ProductGroupRepository.cs" />
     <Compile Include="Repositories\Base\ManufactureRepository.cs" />
+    <Compile Include="Repositories\Product\ProductTagValueRepository.cs" />
+    <Compile Include="Repositories\Product\ProductTagRepository.cs" />
     <Compile Include="Repositories\Product\ProductTypeRepository.cs" />
     <Compile Include="Repositories\Product\ProductRepository.cs" />
     <Compile Include="Repositories\Customer\BasketRepository.cs" />
@@ -620,6 +639,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221922004_Store-Phone.resx">
       <DependentUpon>201602221922004_Store-Phone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602250816198_InitialDataInsert-6.resx">
+      <DependentUpon>201602250816198_InitialDataInsert-6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251144503_ProductTag-1.resx">
+      <DependentUpon>201602251144503_ProductTag-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251208529_ProductTag-2.resx">
+      <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

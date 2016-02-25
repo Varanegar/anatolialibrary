@@ -17,13 +17,13 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner_Id,
                 NLeft = data.NLeft,
                 NRight = data.NRight,
                 NLevel = data.NLevel,
                 GroupName = data.GroupName,
-                ParentId = data.CityRegion2 != null ? data.CityRegion2.Number_ID : -1,
-                ParentUniqueIdString = data.CityRegion2 != null ? data.CityRegion2.Id.ToString() : Guid.Empty.ToString(),
+                //ParentId = data.CityRegion2 != null ? data.CityRegion2.Number_ID : -1,
+                ParentUniqueIdString = data.CityRegion2Id.ToString(),
                 Priority = data.Priority,
             };
         }

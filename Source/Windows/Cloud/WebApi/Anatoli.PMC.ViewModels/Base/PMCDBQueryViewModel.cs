@@ -9,6 +9,7 @@ namespace Anatoli.PMC.ViewModels.BaseModels
     {
         public Guid UniqueId { get; set; }
         public string AnatoliQueryName { get; set; }
+        public string AnatoliQueryDataType { get; set; }
         public string QueryTSql { get; set; }
     }
 }

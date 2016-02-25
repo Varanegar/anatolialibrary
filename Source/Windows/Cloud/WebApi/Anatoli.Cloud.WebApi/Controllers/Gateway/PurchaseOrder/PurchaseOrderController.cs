@@ -93,7 +93,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("bycustomerid/online")]
+        [Route("bycustomerid")]
         public async Task<IHttpActionResult> GetPurchaseOrderOnlineByCustomerId(string privateOwnerId, string customerId)
         {
             try
@@ -136,14 +136,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("lineitem/online")]
+        [Route("lineitem")]
         public async Task<IHttpActionResult> GetPurchaseOrderLineItemOnline(string privateOwnerId, string poId)
         {
             try
             {
                 var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderDomain(owner);
-                var result = await orderDomain.GetAllByCustomerIdOnLine(poId);
+                var orderDomain = new PurchaseOrderLineItemDomain(owner);
+                var result = await orderDomain.GetAllByPOIdOnLine(poId);
                 result.ForEach(item =>
                 {
                     item.PrivateOwnerId = owner;
@@ -163,11 +163,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var result = new List<PurchaseOrderViewModel>();
+                var result = new List<PurchaseOrderLineItemViewModel>();
                 await Task.Factory.StartNew(() =>
                 {
-                    var orderDomain = new PMCPurchaseOrderDomain();
-                    result = orderDomain.GetAllByCustomerId(poId, null, centerId);
+                    var orderDomain = new PMCPurchaseOrderLineItemDomain();
+                    result = orderDomain.GetAllByOrderId(poId, centerId);
                 });
                 return Ok(result);
             }
@@ -179,7 +179,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("statushistory/online")]
+        [Route("statushistory")]
         public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryOnline(string privateOwnerId, string poId)
         {
             try

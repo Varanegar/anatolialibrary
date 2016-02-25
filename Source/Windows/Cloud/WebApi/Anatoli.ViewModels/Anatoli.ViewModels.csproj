@@ -57,6 +57,7 @@
     <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
     <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
+    <Compile Include="ProductModels\ProductTagValueViewModel.cs" />
     <Compile Include="ProductModels\MainProductGroupViewModel.cs" />
     <Compile Include="ProductModels\CharGroupViewModel.cs" />
     <Compile Include="ProductModels\CharTypeViewModel.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="ProductModels\ProductPictureViewModel.cs" />
     <Compile Include="BaseModels\ManufactureViewModel.cs" />
     <Compile Include="ProductModels\ProductGroupViewModel.cs" />
+    <Compile Include="ProductModels\ProductTagViewModel.cs" />
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
