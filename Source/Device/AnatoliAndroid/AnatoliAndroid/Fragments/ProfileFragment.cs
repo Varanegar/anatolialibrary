@@ -24,6 +24,7 @@ using Android.Database;
 using AnatoliAndroid.Components;
 using Square.Picasso;
 using Anatoli.Framework;
+using AnatoliAndroid.ListAdapters;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -36,10 +37,10 @@ namespace AnatoliAndroid.Fragments
         TextView _telTextView;
         EditText _addressEditText;
         EditText _idEditText;
-        Spinner _level3Spinner;
-        Spinner _level4Spinner;
-        Spinner _level2Spinner;
-        Spinner _level1Spinner;
+        AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel> _level4List;
+        AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel> _level3List;
+        AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel> _level2List;
+        AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel> _level1List;
         TextView _exitTextView;
         TextView _fullNametextView;
         Button _saveButton;
@@ -47,10 +48,6 @@ namespace AnatoliAndroid.Fragments
         CustomerViewModel _customerViewModel;
         ProgressBar _progress;
         ImageView _cancelImageView;
-        List<CityRegionModel> _level1SpinerDataAdapter;
-        List<CityRegionModel> _level2SpinerDataAdapter = new List<CityRegionModel>();
-        List<CityRegionModel> _level3SpinerDataAdapter = new List<CityRegionModel>();
-        List<CityRegionModel> _level4SpinerDataAdapter = new List<CityRegionModel>();
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -66,10 +63,10 @@ namespace AnatoliAndroid.Fragments
             _idEditText = view.FindViewById<EditText>(Resource.Id.idEditText);
             _telTextView = view.FindViewById<TextView>(Resource.Id.telTextView);
             _addressEditText = view.FindViewById<EditText>(Resource.Id.addressEditText);
-            _level3Spinner = view.FindViewById<Spinner>(Resource.Id.level4Spinner);
-            _level4Spinner = view.FindViewById<Spinner>(Resource.Id.level3Spinner);
-            _level2Spinner = view.FindViewById<Spinner>(Resource.Id.level2Spinner);
-            _level1Spinner = view.FindViewById<Spinner>(Resource.Id.level1Spinner);
+            _level4List = view.FindViewById<AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel>>(Resource.Id.level4Spinner);
+            _level3List = view.FindViewById<AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel>>(Resource.Id.level3Spinner);
+            _level2List = view.FindViewById<AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel>>(Resource.Id.level2Spinner);
+            _level1List = view.FindViewById<AnatoliListBox<CityRegionListAdapter, CityRegionManager, CityRegionModel>>(Resource.Id.level1Spinner);
             _avatarImageView = view.FindViewById<RoundedImageView>(Resource.Id.avatarImageView);
             _progress = view.FindViewById<ProgressBar>(Resource.Id.progress);
             _cancelImageView = view.FindViewById<ImageView>(Resource.Id.cancelImageView);
@@ -131,10 +128,22 @@ namespace AnatoliAndroid.Fragments
                 _customerViewModel.NationalCode = _idEditText.Text;
                 _customerViewModel.FirstName = _firstNameEditText.Text;
                 _customerViewModel.LastName = _lastNameEditText.Text;
-                _customerViewModel.RegionLevel1Id = _level1SpinerDataAdapter[_level1Spinner.SelectedItemPosition].group_id;
-                _customerViewModel.RegionLevel2Id = _level2SpinerDataAdapter[_level2Spinner.SelectedItemPosition].group_id;
-                _customerViewModel.RegionLevel3Id = _level3SpinerDataAdapter[_level3Spinner.SelectedItemPosition].group_id;
-                _customerViewModel.RegionLevel4Id = _level4SpinerDataAdapter[_level4Spinner.SelectedItemPosition].group_id;
+                if (_level1List.SelectedItem != null)
+                {
+                    _customerViewModel.RegionLevel1Id = _level1List.SelectedItem.group_id;
+                }
+                if (_level2List.SelectedItem != null)
+                {
+                    _customerViewModel.RegionLevel2Id = _level2List.SelectedItem.group_id;
+                }
+                if (_level3List.SelectedItem != null)
+                {
+                    _customerViewModel.RegionLevel3Id = _level3List.SelectedItem.group_id;
+                }
+                if (_level4List.SelectedItem != null)
+                {
+                    _customerViewModel.RegionLevel4Id = _level4List.SelectedItem.group_id;
+                }
                 AlertDialog.Builder dialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 if (!AnatoliClient.GetInstance().WebClient.IsOnline())
                 {
@@ -211,12 +220,16 @@ namespace AnatoliAndroid.Fragments
         {
             base.OnStart();
             AnatoliApp.GetInstance().HideMenuIcon();
-            // manipulate spin boxes
-            _level1SpinerDataAdapter = await CityRegionManager.GetFirstLevelAsync();
-            _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
-            _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;
-            _level2Spinner.ItemSelected += _level2Spinner_ItemSelected;
-            _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
+
+            _level1List.ItemSelected += _level1_ItemSelected;
+            _level2List.ItemSelected += _level2_ItemSelected;
+            _level3List.ItemSelected += _level3_ItemSelected;
+            var list = await CityRegionManager.GetFirstLevelAsync();
+            foreach (var item in list)
+            {
+                item.UniqueId = item.group_id;
+            }
+            _level1List.SetList(list);
             try
             {
                 if (_customerViewModel == null)
@@ -232,57 +245,13 @@ namespace AnatoliAndroid.Fragments
                     _emailEditText.Text = _customerViewModel.Email;
                     _telTextView.Text = _customerViewModel.Mobile;
                     _fullNametextView.Text = _customerViewModel.FirstName.Trim() + " " + _customerViewModel.LastName.Trim();
-
                     Picasso.With(AnatoliApp.GetInstance().Activity).Load(CustomerManager.GetImageAddress(_customerViewModel.UniqueId)).Placeholder(Resource.Drawable.ic_account_circle_white_24dp).Into(_avatarImageView);
-                    _level1Spinner.ItemSelected -= _level1Spinner_ItemSelected;
-                    for (int i = 0; i < _level1SpinerDataAdapter.Count; i++)
+
+                    if (!String.IsNullOrEmpty(_customerViewModel.RegionLevel1Id))
                     {
-                        if (_level1SpinerDataAdapter[i].group_id == _customerViewModel.RegionLevel1Id)
-                        {
-                            _level1Spinner.SetSelection(i);
-                            break;
-                        }
+                        var level1 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel1Id);
+                        _level1List.SelectItem(level1.group_id);
                     }
-                    CityRegionModel selectedItem = _level1SpinerDataAdapter[_level1Spinner.SelectedItemPosition];
-                    _level2SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                    _level2Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level2SpinerDataAdapter);
-                    _level2Spinner.ItemSelected -= _level2Spinner_ItemSelected;
-                    for (int i = 0; i < _level2SpinerDataAdapter.Count; i++)
-                    {
-                        if (_level2SpinerDataAdapter[i].group_id == _customerViewModel.RegionLevel2Id)
-                        {
-                            _level2Spinner.SetSelection(i);
-                        }
-                    }
-
-                    selectedItem = _level2SpinerDataAdapter[_level2Spinner.SelectedItemPosition];
-                    _level3SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                    _level3Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level3SpinerDataAdapter);
-                    _level3Spinner.ItemSelected -= _level3Spinner_ItemSelected;
-                    for (int i = 0; i < _level3SpinerDataAdapter.Count; i++)
-                    {
-                        if (_level3SpinerDataAdapter[i].group_id == _customerViewModel.RegionLevel3Id)
-                        {
-                            _level3Spinner.SetSelection(i);
-                        }
-                    }
-
-                    selectedItem = _level3SpinerDataAdapter[_level3Spinner.SelectedItemPosition];
-                    _level4SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                    _level4Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level4SpinerDataAdapter);
-
-
-                    for (int i = 0; i < _level4SpinerDataAdapter.Count; i++)
-                    {
-                        if (_level4SpinerDataAdapter[i].group_id == _customerViewModel.RegionLevel4Id)
-                        {
-                            _level4Spinner.SetSelection(i);
-                        }
-                    }
-
-                    _level1Spinner.ItemSelected += _level1Spinner_ItemSelected;
-                    _level2Spinner.ItemSelected += _level2Spinner_ItemSelected;
-                    _level3Spinner.ItemSelected += _level3Spinner_ItemSelected;
                 }
             }
             catch (Exception ex)
@@ -313,13 +282,25 @@ namespace AnatoliAndroid.Fragments
                 return Android.Util.Patterns.Phone.Matcher(target).Matches();
             }
         }
-        async void _level2Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        async void _level2_ItemSelected(CityRegionModel item)
         {
             try
             {
-                CityRegionModel selectedItem = _level2SpinerDataAdapter[e.Position];
-                _level3SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                _level3Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level3SpinerDataAdapter);
+                var list = await CityRegionManager.GetGroupsAsync(item.group_id);
+                foreach (var t in list)
+                {
+                    t.UniqueId = t.group_id;
+                }
+                _level3List.SetList(list);
+                if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel3Id))
+                {
+                    var level3 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel3Id);
+                    _level3List.SelectItem(level3.group_id);
+                }
+                else
+                {
+                    _level3List.Text = "محله 1";
+                }
             }
             catch (Exception)
             {
@@ -327,13 +308,25 @@ namespace AnatoliAndroid.Fragments
             }
         }
 
-        async void _level3Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        async void _level3_ItemSelected(CityRegionModel item)
         {
             try
             {
-                CityRegionModel selectedItem = _level3SpinerDataAdapter[e.Position];
-                _level4SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                _level4Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level4SpinerDataAdapter);
+                var list = await CityRegionManager.GetGroupsAsync(item.group_id);
+                foreach (var t in list)
+                {
+                    t.UniqueId = t.group_id;
+                }
+                _level4List.SetList(list);
+                if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel4Id))
+                {
+                    var level4 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel4Id);
+                    _level4List.SelectItem(level4.group_id);
+                }
+                else
+                {
+                    _level4List.Text = "محله 2";
+                }
             }
             catch (Exception)
             {
@@ -341,14 +334,25 @@ namespace AnatoliAndroid.Fragments
             }
         }
 
-        async void _level1Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        async void _level1_ItemSelected(CityRegionModel item)
         {
-
             try
             {
-                CityRegionModel selectedItem = _level1SpinerDataAdapter[e.Position];
-                _level2SpinerDataAdapter = await CityRegionManager.GetGroupsAsync(selectedItem.group_id);
-                _level2Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level2SpinerDataAdapter);
+                var list = await CityRegionManager.GetGroupsAsync(item.group_id);
+                foreach (var t in list)
+                {
+                    t.UniqueId = t.group_id;
+                }
+                _level2List.SetList(list);
+                if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel2Id))
+                {
+                    var level2 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel2Id);
+                    _level2List.SelectItem(level2.group_id);
+                }
+                else
+                {
+                    _level2List.Deselect();
+                }
             }
             catch (Exception)
             {

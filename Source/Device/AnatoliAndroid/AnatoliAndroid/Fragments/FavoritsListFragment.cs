@@ -31,7 +31,7 @@ namespace AnatoliAndroid.Fragments
         public FavoritsListFragment()
         {
             _listAdapter.FavoritRemoved += _listAdapter_FavoritRemoved;
-            var query = ProductManager.GetFavoritsQueryString();
+            var query = ProductManager.GetFavoritsQueryString(AnatoliApp.GetInstance().DefaultStoreId);
             _dataManager.SetQueries(query, null);
         }
         void _toolsFragment_FavoritsRemoved()

@@ -339,7 +339,7 @@ namespace AnatoliAndroid.Fragments
             {
                 DeliveryTimeModel p = new DeliveryTimeModel();
                 p.time = item.itemName;
-                _deliveryTime.ListAdapter.List.Add(p);
+                _deliveryTime.AddItem(p);
             }
             _deliveryTime.ItemSelected += (s) =>
             {
@@ -437,7 +437,7 @@ namespace AnatoliAndroid.Fragments
             _deliveryTypes = await BaseTypeManager.GetDeliveryTypesAsync();
             foreach (var item in _deliveryTypes)
             {
-                _typeSpinner.ListAdapter.List.Add(item);
+                _typeSpinner.AddItem(item);
             }
             _typeSpinner.SelectItem(1);
 

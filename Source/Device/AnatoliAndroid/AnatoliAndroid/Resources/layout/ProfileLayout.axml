@@ -120,43 +120,44 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField"
+                        android:textSize="12dp"
+                        android:id="@+id/level1Spinner"
+                        android:text="شهر"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-                        <Spinner
-                            android:id="@+id/level2Spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right" />
-                        <Spinner
-                            android:id="@+id/level1Spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:gravity="right" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField"
+                        android:textSize="12dp"
+                        android:text="منطقه"
+                        android:id="@+id/level2Spinner"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-                        <Spinner
-                            android:id="@+id/level4Spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right" />
-                        <Spinner
-                            android:id="@+id/level3Spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right" />
-                    </LinearLayout>
+                        android:gravity="right" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField"
+                        android:textSize="12dp"
+                        android:id="@+id/level3Spinner"
+                        android:text="محله1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right" />
+                    <AnatoliAndroid.Components.AnatoliTextView
+                        local:customFont="Fonts/anatoli.ttf"
+                        style="@style/AnatoliTextField"
+                        android:textSize="12dp"
+                        android:id="@+id/level4Spinner"
+                        android:text="محله2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right" />
                 </LinearLayout>
                 <AnatoliAndroid.Components.AnatoliEditText
                     android:textAppearance="?android:attr/textAppearanceMedium"

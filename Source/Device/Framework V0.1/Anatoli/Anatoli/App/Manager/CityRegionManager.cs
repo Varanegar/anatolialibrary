@@ -106,7 +106,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var query = new StringQuery(string.Format("SELECT * FROM cityregion WHERE parent_id = '{0}'", groupId));
+                var query = new StringQuery(string.Format("SELECT * FROM cityregion WHERE parent_id = '{0}'", groupId.ToUpper()));
                 var list = await BaseDataAdapter<CityRegionModel>.GetListAsync(query);
                 return list;
             }
@@ -120,8 +120,8 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var current = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
-                var parent = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", current.parent_id)));
+                var current = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p.ToUpper())));
+                var parent = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", current.parent_id.ToUpper())));
                 return parent;
             }
             catch (Exception)
@@ -134,7 +134,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var c = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p)));
+                var c = await BaseDataAdapter<CityRegionModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM cityregion WHERE group_id='{0}'", p.ToUpper())));
                 return c;
             }
             catch (Exception)

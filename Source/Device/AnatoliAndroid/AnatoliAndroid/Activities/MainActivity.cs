@@ -42,7 +42,15 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            try
+            {
+                SQLiteAndroid.ExportDb();
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }
             HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID, new AnatoliCrashManagerListener());
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
@@ -102,12 +110,18 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+           
             try
             {
                 int v = Anatoli.App.Manager.SyncManager.LoadDBVersion();
                 if (v == 0)
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
+                }
+                var latestUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                if ((latestUpdateTime - DateTime.Now).TotalMinutes > 10)
+                {
+                    StartService(new Intent(this, typeof(StockFeedService)));
                 }
                 var defaultStore = await StoreManager.GetDefaultAsync();
                 if (defaultStore != null)
@@ -155,6 +169,8 @@ namespace AnatoliAndroid.Activities
             }
 
         }
+
+
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
 
@@ -273,6 +289,34 @@ namespace AnatoliAndroid.Activities
         {
             return true;
         }
+    }
+
+    [Service]
+    class StockFeedService : Service
+    {
+
+        public override IBinder OnBind(Intent intent)
+        {
+            throw new NotImplementedException();
+        }
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            Console.WriteLine("Service started");
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                try
+                {
+                    await ProductManager.SyncOnHand(null);
+                }
+                catch (Exception e)
+                {
+                    e.SendTrace();
+                }
+                StopSelf();
+            });
+            return StartCommandResult.Sticky;
+        }
+
     }
 }
 

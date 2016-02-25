@@ -566,6 +566,7 @@ namespace AnatoliAndroid.Activities
                 {
                     var c = await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().AnatoliUser, cancellationTokenSource);
                     Customer = c;
+                    RefreshMenuItems();
                     pDialog.Dismiss();
                     if (c.IsValid)
                     {
@@ -723,8 +724,9 @@ namespace AnatoliAndroid.Activities
                 if (_list.Last<StackItem>().FragmentType == typeof(FirstFragment))
                 {
                     _backToExit++;
+                    return false;
                 }
-                if (_list.Last<StackItem>().FragmentType != typeof(FirstFragment) || _backToExit >= 2)
+                else
                 {
                     _list.RemoveLast();
                     var stackItem = _list.Last<StackItem>();
@@ -890,7 +892,7 @@ namespace AnatoliAndroid.Activities
 
         string _locationProvider = "";
         bool _canclelLocation = false;
-
+        bool _locationDialog = true;
         public void StartLocationUpdates()
         {
             try
@@ -906,15 +908,20 @@ namespace AnatoliAndroid.Activities
                     LocationManager.RequestLocationUpdates(_locationProvider, 10000, 100, (ILocationListener)_activity);
                     if (_locationProvider != LocationManager.GpsProvider)
                     {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
-                        alert.SetMessage("برای فاصله یابی دقیق از فروشگاه ها gps دستگاه خود را روشن نمایید");
-                        alert.SetPositiveButton("روشن کردن gps", (s, e) =>
+                        if (_locationDialog)
                         {
-                            Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
-                            _activity.StartActivity(callGPSSettingIntent);
-                        });
-                        alert.SetNegativeButton("بی خیال", (s, e) => { _canclelLocation = true; });
-                        alert.Show();
+                            AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
+                            alert.SetMessage("برای فاصله یابی دقیق از فروشگاه ها gps دستگاه خود را روشن نمایید");
+                            alert.SetPositiveButton("روشن کردن gps", (s, e) =>
+                            {
+                                Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+                                _activity.StartActivity(callGPSSettingIntent);
+                            });
+                            alert.SetNegativeButton("بی خیال", (s, e) => { _canclelLocation = true; });
+                            alert.Show();
+                            _locationDialog = false;
+                        }
+
                     }
                 }
                 else
