@@ -19,6 +19,7 @@ namespace Anatoli.App.Manager
         public static string ProductTbl = "products";
         public static string BasketTbl = "baskets";
         public static string OnHand = "onhand";
+        public static string StoreCalendarTbl = "stores_calendar";
         public static async Task<bool> SaveUpdateDateAsync(string tableName)
         {
             try
@@ -114,5 +115,7 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
+
+        
     }
 }

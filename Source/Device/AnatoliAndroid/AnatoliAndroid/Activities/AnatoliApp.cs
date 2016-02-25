@@ -452,7 +452,7 @@ namespace AnatoliAndroid.Activities
                         _favoritsFragment = new FavoritsListFragment();
                         AnatoliApp.GetInstance().SetFragment<FavoritsListFragment>(_favoritsFragment, "favorits_fragment");
                         break;
-                    case DrawerMainItem.DrawerMainItems.Avatar:
+                    case DrawerMainItem.DrawerMainItems.Profile:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
                         _profileFragment = new ProfileFragment();
                         var tr = _activity.FragmentManager.BeginTransaction();
@@ -666,6 +666,13 @@ namespace AnatoliAndroid.Activities
                         AnatoliApp.GetInstance().Activity.StartActivity(intent);
                     });
                 }
+                else if (ex.GetType() == typeof(TokenException))
+                {
+                    alert.SetMessage(Resource.String.PleaseLogin);
+                    alert.SetPositiveButton(Resource.String.Ok, delegate
+                    {
+                    });
+                }
                 else
                     alert.SetMessage(Resource.String.ErrorOccured);
                 alert.SetNegativeButton(Resource.String.Cancel, async (s2, e2) =>
@@ -750,7 +757,6 @@ namespace AnatoliAndroid.Activities
                     }
                     return true;
                 }
-                return false;
             }
             catch (Exception)
             {
@@ -772,8 +778,8 @@ namespace AnatoliAndroid.Activities
             {
 
                 var avatarMenuEntry = new DrawerMainItem();
-                avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Avatar;
-                //avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
+                avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
                 if (Customer != null)
                     avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
                 else

@@ -73,7 +73,7 @@
                 <AnatoliAndroid.Components.AnatoliTextView
                     local:customFont="Fonts/anatoli.ttf"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:id="@+id/productNameTextView"
                     android:gravity="right|top"
                     android:layout_marginRight="5dp"

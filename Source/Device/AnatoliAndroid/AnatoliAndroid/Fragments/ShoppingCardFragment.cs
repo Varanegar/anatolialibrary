@@ -49,7 +49,7 @@ namespace AnatoliAndroid.Fragments
         ImageButton _callImageButton;
         ImageButton _editAddressImageButton;
         DateOption[] _dateOptions;
-        TimeOption[] _timeOptions;
+        List<DeliveryTimeModel> _timeOptions;
         AnatoliListBox<DeliveryTypeListAdapter, DeliveryTypeManager, DeliveryTypeModel> _typeSpinner;
         List<DeliveryTypeModel> _deliveryTypes;
         //Spinner _zoneSpinner;
@@ -164,7 +164,7 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -243,7 +243,7 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
@@ -315,49 +315,16 @@ namespace AnatoliAndroid.Fragments
 
 
             };
-            //if (DateTime.Now.ToLocalTime().Hour < 16)
-            //    _dateOptions = new DateOption[] { new DateOption("امروز", ShippingInfoManager.ShippingDateOptions.Today), new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
-            //else
-            //    _dateOptions = new DateOption[] { new DateOption("فردا", ShippingInfoManager.ShippingDateOptions.Tommorow) };
-            //_delivaryDate.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _dateOptions);
-            //_delivaryDate.ItemSelected += (s, e) =>
-            //{
-            //    var selectedDateOption = _dateOptions[_delivaryDate.SelectedItemPosition];
-            //    _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), selectedDateOption.date);
-            //    _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
-            //};
 
-            _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Today);
-            if (_timeOptions.Length == 0)
-            {
-                _timeOptions = ShippingInfoManager.GetAvailableDeliveryTimes(DateTime.Now.ToLocalTime(), ShippingInfoManager.ShippingDateOptions.Tommorow);
-                _tomorrow = true;
-            }
-            // _deliveryTime.Adapter = new ArrayAdapter(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _timeOptions);
-            var list = new List<ProductModel>();
-            foreach (var item in _timeOptions)
-            {
-                DeliveryTimeModel p = new DeliveryTimeModel();
-                p.time = item.itemName;
-                _deliveryTime.AddItem(p);
-            }
-            _deliveryTime.ItemSelected += (s) =>
-            {
-                Console.WriteLine((s as DeliveryTimeModel).time);
-            };
             _deliveryTime.SelectItem(0);
             _editAddressImageButton.Click += (s, e) =>
             {
                 var transaction = FragmentManager.BeginTransaction();
                 EditShippingInfoFragment editShippingDialog = new EditShippingInfoFragment();
                 editShippingDialog.SetAddress(_deliveryAddress.Text);
-                //editShippingDialog.SetTel(_deliveryTelTextView.Text);
-                //editShippingDialog.SetName(_nameTextView.Text);
                 editShippingDialog.ShippingInfoChanged += (address, name, tel) =>
                 {
                     _deliveryAddress.Text = address;
-                    //_deliveryTelTextView.Text = tel;
-                    //_nameTextView.Text = name;
                     _checkoutButton.Enabled = CheckCheckout();
                 };
                 editShippingDialog.Show(transaction, "shipping_dialog");
@@ -437,9 +404,16 @@ namespace AnatoliAndroid.Fragments
             _deliveryTypes = await BaseTypeManager.GetDeliveryTypesAsync();
             foreach (var item in _deliveryTypes)
             {
+                item.UniqueId = item.id;
                 _typeSpinner.AddItem(item);
             }
+            _typeSpinner.ItemSelected += async (item) =>
+            {
+                _timeOptions = await ShippingInfoManager.GetAvailableDeliveryTimes(AnatoliApp.GetInstance().DefaultStoreId, DateTime.Now.ToLocalTime(), _typeSpinner.SelectedItem.id);
+                _deliveryTime.SetList(_timeOptions);
+            };
             _typeSpinner.SelectItem(1);
+
 
 
             _factorePriceTextView.Text = (await ShoppingCardManager.GetTotalPriceAsync()).ToCurrency() + " تومان";
@@ -469,10 +443,6 @@ namespace AnatoliAndroid.Fragments
                 Toast.MakeText(AnatoliAndroid.Activities.AnatoliApp.GetInstance().Activity, "سبد خرید خالی است", ToastLength.Short).Show();
                 _checkoutButton.Enabled = CheckCheckout();
             }
-            //_listAdapter.BackClick += async (s, p) =>
-            //{
-            //    await Task.Run(() => { (_itemsListView as SwipeListView).CloseAnimate(p); });
-            //};
 
             await UpdateShippingInfo();
 

@@ -48,7 +48,7 @@
             <GridView
                 android:id="@+id/groupsGridView"
                 android:layout_below="@id/imageRelativeLayout"
-                android:layout_height="1300dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:numColumns="2"
                 android:stretchMode="columnWidth"
