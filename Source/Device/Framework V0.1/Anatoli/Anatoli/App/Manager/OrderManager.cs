@@ -79,6 +79,11 @@ namespace Anatoli.App.Manager
             }
         }
 
-        
+        public static async Task<List<PurchaseOrderViewModel>> GetOrdersAsync(string customerId)
+        {
+            var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrdersList + "&customerId="+ customerId);
+            return list;
+        }
+
     }
 }

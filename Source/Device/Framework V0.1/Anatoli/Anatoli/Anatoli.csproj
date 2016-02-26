@@ -78,6 +78,7 @@
     <Compile Include="App\Model\Store\ProductPriceModel.cs" />
     <Compile Include="App\Model\Store\ProductPriceUpdateModel.cs" />
     <Compile Include="App\Model\Store\PurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderStatusHistoryViewModel.cs" />
     <Compile Include="App\Model\Store\PurchaseOrderViewModel.cs" />
     <Compile Include="App\Model\Store\StoreActiveOnhandViewModel.cs" />
     <Compile Include="App\Model\Store\StoreCalendarViewModel.cs" />

@@ -41,7 +41,6 @@ namespace Anatoli.Framework.AnatoliBase
             public struct Products
             {
                 public static readonly string ProductsView = "/api/gateway/product/products/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string FOGList = "list.php";
                 public static readonly string ProductGroups = "/api/gateway/product/productgroups/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Stores
@@ -51,8 +50,12 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string OnHand = "/api/gateway/store/storeOnhand/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string CityRegion = "/api/gateway/base/region/cityregions/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string DeliveryTime = "/api/gateway/store/storecalendar/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string CalcPromo = "/api/gateway/purchaseorder/calcpromo/?Id=23fc03ff-53f0-432c-b6f4-e560b9088d54&PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string Create = "/api/gateway/purchaseorder/create/?Id=23fc03ff-53f0-432c-b6f4-e560b9088d54&PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+            }
+            public struct Purchase
+            {
+                public static readonly string OrdersList = "/api/gateway/purchaseorder/bycustomerid/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string CalcPromo = "/api/gateway/purchaseorder/calcpromo/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string Create = "/api/gateway/purchaseorder/create/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Users
             {
@@ -63,7 +66,6 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string ResetPassWord = "/api/accounts/resetpassword/";
                 public static readonly string ViewProfileUrl = "/api/gateway/customer/customers";
                 public static readonly string SaveProfileUrl = "/api/gateway/customer/save";
-                public static readonly string OrdersHistory = "api/gateway/purchaseorder/history";
                 public static readonly string ShoppingCardSave = "/api/gateway/incompletepurchaseorder/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ShoppingCardView = "/api/gateway/incompletepurchaseorder?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C&customerId=E42F8E97-BFD2-4B18-8C06-6F3BCFF9A42D";
                 public static readonly string FavoritSaveItem = "/api/gateway/basket/basketitem/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";

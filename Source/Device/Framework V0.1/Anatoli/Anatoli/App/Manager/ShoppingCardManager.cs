@@ -161,7 +161,7 @@ namespace Anatoli.App.Manager
                     line.Qty = item.count;
                     order.LineItems.Add(line);
                 }
-                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Stores.CalcPromo, order);
+                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Purchase.CalcPromo, order);
                 return o;
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace Anatoli.App.Manager
                     line.Qty = item.count;
                     order.LineItems.Add(line);
                 }
-                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Stores.Create, order);
+                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Purchase.Create, order);
                 return o;
             }
             catch (Exception ex)

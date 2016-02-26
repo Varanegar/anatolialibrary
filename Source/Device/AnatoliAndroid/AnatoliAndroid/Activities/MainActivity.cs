@@ -110,7 +110,6 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
-
             try
             {
                 var updateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
@@ -136,13 +135,15 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                         try
                         {
+                            AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
+                            var orders = await OrderManager.GetOrdersAsync(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
                             ProductManager.SyncFavorits();
                             Configuration.ReadConfigFromFile();
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-
+                            
                         }
 #pragma warning restore
                     }
@@ -153,15 +154,6 @@ namespace AnatoliAndroid.Activities
                     var storesF = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(null, "stores_fragment");
                     await storesF.RefreshAsync();
                 }
-            }
-            catch (Exception)
-            {
-
-            }
-
-            try
-            {
-                AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
             }
             catch (Exception)
             {
