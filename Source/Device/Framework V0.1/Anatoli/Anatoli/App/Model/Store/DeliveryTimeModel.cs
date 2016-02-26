@@ -12,7 +12,7 @@ namespace Anatoli.App.Model.Store
         public TimeSpan timespan;
         public override string ToString()
         {
-            return timespan.Hours + ":" + timespan.Minutes;
+            return "ساعت " + timespan.Hours + ":" + timespan.Minutes;
         }
     }
 }

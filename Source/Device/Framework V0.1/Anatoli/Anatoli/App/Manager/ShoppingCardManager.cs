@@ -183,6 +183,7 @@ namespace Anatoli.App.Manager
                 order.StoreGuid = Guid.Parse(storeId);
                 order.DeliveryFromTime = time.timespan;
                 order.UserId = Guid.Parse(userId);
+                order.ActionSourceValueId = "65DEC223-059E-48BA-8281-E4FAAFF6E32D";
                 foreach (var item in products)
                 {
                     PurchaseOrderLineItemViewModel line = new PurchaseOrderLineItemViewModel();
