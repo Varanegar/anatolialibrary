@@ -9,7 +9,7 @@ namespace Anatoli.App.Model.Store
 {
     public class PurchaseOrderLineItemViewModel : BaseDataModel
     {
-        public Guid FinalProductId { get; set; }
+        public Guid? FinalProductId { get; set; }
         public Guid ProductId { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal DiscountAmount { get; set; }

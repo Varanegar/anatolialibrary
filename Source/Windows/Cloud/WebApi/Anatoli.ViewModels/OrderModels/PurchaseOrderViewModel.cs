@@ -11,7 +11,7 @@ namespace Anatoli.ViewModels.Order
     {
         private string orderTimeString = "";
         public Guid UserId { get; set; }
-        public Guid ShipAddressId { get; set; }
+        public Guid? ShipAddressId { get; set; }
         public String ShipAddress { get; set; }
         public Guid StoreGuid { get; set; }
         public Guid PurchaseOrderStatusValueId { get; set; }
@@ -24,7 +24,15 @@ namespace Anatoli.ViewModels.Order
             set
             {
                 orderTimeString = value;
-                OrderTime = TimeSpan.Parse(value);
+                try
+                {
+                    if (value != null)
+                        OrderTime = TimeSpan.Parse(value);
+                }
+                catch(Exception)
+                {
+
+                }
             }
         }
         public string OrderPDate { get; set; }

@@ -50,6 +50,10 @@ namespace Anatoli.DataAccess.Configs
                 .WithRequired(p => p.Product)
                 .WillCascadeOnDelete(false);
 
+            this.HasMany<PurchaseOrderLineItem>(pr2 => pr2.PurchaseOrderLineItems)
+                .WithOptional(p => p.FinalProduct)
+                .WillCascadeOnDelete(false);
+
             this.HasMany<ProductRate>(pr => pr.ProductRates)
                 .WithRequired(p => p.Product)
                 .WillCascadeOnDelete(false);

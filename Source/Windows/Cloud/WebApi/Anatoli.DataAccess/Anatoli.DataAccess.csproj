@@ -363,6 +363,14 @@
     <Compile Include="Migrations\201602251208529_ProductTag-2.Designer.cs">
       <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261915533_PurchaseOrder-Address.cs" />
+    <Compile Include="Migrations\201602261915533_PurchaseOrder-Address.Designer.cs">
+      <DependentUpon>201602261915533_PurchaseOrder-Address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.cs" />
+    <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.Designer.cs">
+      <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
@@ -648,6 +656,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602251208529_ProductTag-2.resx">
       <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261915533_PurchaseOrder-Address.resx">
+      <DependentUpon>201602261915533_PurchaseOrder-Address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261953126_PurchaseOrder-LineItem.resx">
+      <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

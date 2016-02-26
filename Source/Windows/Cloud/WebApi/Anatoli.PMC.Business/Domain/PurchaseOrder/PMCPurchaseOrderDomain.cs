@@ -42,8 +42,10 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
         }
         public List<PurchaseOrderViewModel> GetAllByCustomerId(string customerId, string statusId, string centerId)
         {
-            var orders = SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId, statusId, centerId);
-            return orders;
+            if (centerId.ToLower() == "all")
+                return SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId, statusId);
+            else
+                return null;
         }
 
         public List<PurchaseOrderViewModel> GetAllChangedAfter(DateTime selectedDate)

@@ -31,7 +31,7 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("Product")]
         public Guid ProductId { get; set; }
         [ForeignKey("FinalProduct")]
-        public Guid FinalProductId { get; set; }
+        public Nullable<Guid> FinalProductId { get; set; }
         [ForeignKey("PurchaseOrder")]
         public Guid PurchaseOrderId { get; set; }
         public virtual Product Product { get; set; }
