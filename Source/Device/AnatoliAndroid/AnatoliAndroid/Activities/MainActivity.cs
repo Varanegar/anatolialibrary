@@ -110,16 +110,16 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
-           
+
             try
             {
-                int v = Anatoli.App.Manager.SyncManager.LoadDBVersion();
-                if (v == 0)
+                var updateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
+                if (updateTime == DateTime.MinValue)
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
                 var latestUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
-                if ((latestUpdateTime - DateTime.Now).TotalMinutes > 10)
+                if ((DateTime.Now - latestUpdateTime).TotalMinutes > 10)
                 {
                     StartService(new Intent(this, typeof(StockFeedService)));
                 }
