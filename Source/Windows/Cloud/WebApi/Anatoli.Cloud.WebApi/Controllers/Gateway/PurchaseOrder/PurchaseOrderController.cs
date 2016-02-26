@@ -116,7 +116,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("bycustomerid/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string customerId, string centerId)
+        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string privateOwnerId, string customerId, string centerId)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("lineitem/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLineItemLocal(string poId, string centerId)
+        public async Task<IHttpActionResult> GetPurchaseOrderLineItemLocal(string privateOwnerId, string poId, string centerId)
         {
             try
             {
@@ -202,7 +202,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("statushistory/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryLocal(string poId, string centerId)
+        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryLocal(string privateOwnerId, string poId, string centerId)
         {
             try
             {

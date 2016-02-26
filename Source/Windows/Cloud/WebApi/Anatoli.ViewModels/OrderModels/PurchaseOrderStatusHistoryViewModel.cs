@@ -23,7 +23,15 @@ namespace Anatoli.ViewModels.Order
             set
             {
                 actionTimeString = value;
-                ActionTime = TimeSpan.Parse(value);
+                try
+                {
+                    if (value != null)
+                        ActionTime = TimeSpan.Parse(value);
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
         public string Comment { get; set; }

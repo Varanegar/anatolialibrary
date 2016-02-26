@@ -181,7 +181,11 @@ namespace Anatoli.App.Manager
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);
-                order.DeliveryFromTime = time.timespan;
+                order.OrderDate = DateTime.Now;
+                order.OrderTime = DateTime.Now.TimeOfDay;
+                if (time != null)
+                    order.DeliveryFromTime = time.timespan;
+                order.PurchaseOrderStatusValueId = Guid.Parse("A591658A-E46B-440D-9ADB-E3E5B01B7489");
                 order.UserId = Guid.Parse(userId);
                 order.ActionSourceValueId = "65DEC223-059E-48BA-8281-E4FAAFF6E32D";
                 foreach (var item in products)

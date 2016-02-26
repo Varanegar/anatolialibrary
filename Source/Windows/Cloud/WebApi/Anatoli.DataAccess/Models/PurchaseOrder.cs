@@ -52,7 +52,7 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("Customer")]
         public Guid CustomerId { get; set; }
         [ForeignKey("CustomerShipAddress")]
-        public Guid CustomerShipAddressId { get; set; }
+        public Guid? CustomerShipAddressId { get; set; }
         public virtual CustomerShipAddress CustomerShipAddress { get; set; }
         public virtual Store Store { get; set; }
         public virtual Customer Customer { get; set; }

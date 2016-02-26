@@ -67,12 +67,7 @@ namespace Anatoli.Business.Domain
 
             await Task.Factory.StartNew(() =>
             {
-
-                var storeList = Repository.DbContext.Stores.Select(m => m.Id);
-                Parallel.ForEach(storeList, (currentStore) =>
-                    {
-                        returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoByCustomerIdLocalURI, "id=" + custoemrId + "&centerId=" + currentStore));
-                    });
+                 returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoByCustomerIdLocalURI, "customerid=" + custoemrId + "&centerId=all" ));
             });
             return returnData;
         }
@@ -88,7 +83,7 @@ namespace Anatoli.Business.Domain
                 {
 
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.CustomerId == item.CustomerId).FirstOrDefault();
+                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
                         currentData.ActionSourceId = item.ActionSourceId;
@@ -144,6 +139,7 @@ namespace Anatoli.Business.Domain
                         {
                             item.PurchaseOrderLineItems.ToList().ForEach(itemDetail =>
                             {
+                                itemDetail.Id = Guid.NewGuid();
                                 itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
                                 itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                             });
@@ -171,7 +167,9 @@ namespace Anatoli.Business.Domain
                 {
                     item.PrivateLabelOwner = data.PrivateLabelOwner;
                     item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                    item.Id = Guid.NewGuid();
                     //LineItemRepository.Add(item);
+                    data.PurchaseOrderLineItems.Add(item);
                 }
             });
             return data;
@@ -198,11 +196,13 @@ namespace Anatoli.Business.Domain
 
         public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderViewModel order)
         {
+            if (order.UniqueId == Guid.Empty)
+                order.UniqueId = Guid.NewGuid();
+
             var returnData = new PurchaseOrderViewModel();
+
             order.Customer = CustomerProxy.Convert(CustomerRepository.GetById(order.UserId));
             string data = JsonConvert.SerializeObject(order);
-            
-
             await Task.Factory.StartNew(() =>
             {
                 returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);

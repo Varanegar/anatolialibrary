@@ -27,20 +27,31 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
         }
         SellAdapter() { }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId)
         {
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
-            var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+            var stores = StoreConfigHeler.Instance.AllStoreConfigs;
+            stores.ForEach(item =>
+            {
+                if(item.CenterId != 1)
+                result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, item.ConnectionString));
+            });
+            return result;
+        }
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId, string connectionString)
+        {
+            log.Debug(" customerId " + customerId + " & centerId " + centerId);
+            List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
 
-            using (var context = new DataContext(Transaction.No))
+            using (var context = new DataContext(centerId, connectionString, Transaction.No))
             {
                 try
                 {
                     IEnumerable<PurchaseOrderViewModel> data = null;
                     if(statusId != null)
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.UniqueId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
                     else
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.UniqueId='" + customerId + "'");
+                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "'");
 
                     result = data.ToList();
                 }

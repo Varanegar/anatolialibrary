@@ -34,6 +34,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
         {
             return new PurchaseOrderViewModel()
             {
+                UniqueId = Guid.Parse(data.UniqueId),
                 Amount = data.Amount,
                 AppOrderNo = data.RequestNo,
                 ChargeAmount = data.ChargeAmount,
@@ -57,6 +58,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
             int fiscalYearId = GeneralCommands.GetFiscalYearId(null);
             return new PMCSellViewModel()
             {
+                UniqueId = data.UniqueId.ToString(),
                 AppUserId = storeConfig.AppUserId,
                 CenterId = storeConfig.CenterId,
                 Amount = data.Amount,
