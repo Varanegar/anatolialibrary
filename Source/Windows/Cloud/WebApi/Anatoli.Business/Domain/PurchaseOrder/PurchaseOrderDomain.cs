@@ -83,7 +83,7 @@ namespace Anatoli.Business.Domain
                 {
 
                     item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.CustomerId == item.CustomerId).FirstOrDefault();
+                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
                         currentData.ActionSourceId = item.ActionSourceId;
@@ -139,7 +139,7 @@ namespace Anatoli.Business.Domain
                         {
                             item.PurchaseOrderLineItems.ToList().ForEach(itemDetail =>
                             {
-                                item.Id = Guid.NewGuid();
+                                itemDetail.Id = Guid.NewGuid();
                                 itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
                                 itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                             });
@@ -167,6 +167,7 @@ namespace Anatoli.Business.Domain
                 {
                     item.PrivateLabelOwner = data.PrivateLabelOwner;
                     item.CreatedDate = item.LastUpdate = data.CreatedDate;
+                    item.Id = Guid.NewGuid();
                     //LineItemRepository.Add(item);
                     data.PurchaseOrderLineItems.Add(item);
                 }

@@ -183,7 +183,7 @@ namespace Anatoli.App.Manager
                 order.StoreGuid = Guid.Parse(storeId);
                 order.OrderDate = DateTime.Now;
                 order.OrderTime = DateTime.Now.TimeOfDay;
-                if (time.timespan != null)
+                if (time != null)
                     order.DeliveryFromTime = time.timespan;
                 order.PurchaseOrderStatusValueId = Guid.Parse("A591658A-E46B-440D-9ADB-E3E5B01B7489");
                 order.UserId = Guid.Parse(userId);
