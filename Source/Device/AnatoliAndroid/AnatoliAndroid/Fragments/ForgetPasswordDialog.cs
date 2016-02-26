@@ -18,6 +18,7 @@ namespace AnatoliAndroid.Fragments
 {
     public class ForgetPasswordDialog : DialogFragment
     {
+        public string UserName;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -32,6 +33,10 @@ namespace AnatoliAndroid.Fragments
             Dialog.SetCanceledOnTouchOutside(false);
             var view = inflater.Inflate(Resource.Layout.ForgetPasswordLayout, container, false);
             var editText1 = view.FindViewById<EditText>(Resource.Id.editText1);
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                editText1.Text = UserName;
+            }
             var editText2 = view.FindViewById<EditText>(Resource.Id.editText2);
             var editText3 = view.FindViewById<EditText>(Resource.Id.editText3);
             var button1 = view.FindViewById<Button>(Resource.Id.button1);

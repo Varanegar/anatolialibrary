@@ -53,6 +53,10 @@ namespace AnatoliAndroid.Fragments
         {
             Dismiss();
             ForgetPasswordDialog fDialog = new ForgetPasswordDialog();
+            if (!string.IsNullOrEmpty(_userNameEditText.Text))
+            {
+                fDialog.UserName = _userNameEditText.Text;
+            }
             var t = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
             fDialog.Show(t, "forgetpass_dialog");
         }
