@@ -199,17 +199,14 @@ namespace Anatoli.Business.Domain
                 order.UniqueId = Guid.NewGuid();
 
             var returnData = new PurchaseOrderViewModel();
-            returnData = order;
-            /*
+
             order.Customer = CustomerProxy.Convert(CustomerRepository.GetById(order.UserId));
             string data = JsonConvert.SerializeObject(order);
-            
-
             await Task.Factory.StartNew(() =>
             {
                 returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
             });
-          */  
+            
             var dataList = new List<PurchaseOrderViewModel>();
             order.AppOrderNo = returnData.AppOrderNo;
             dataList.Add(order);

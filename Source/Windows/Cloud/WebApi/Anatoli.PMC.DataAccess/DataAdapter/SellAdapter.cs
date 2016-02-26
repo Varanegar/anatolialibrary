@@ -33,6 +33,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             var stores = StoreConfigHeler.Instance.AllStoreConfigs;
             stores.ForEach(item =>
             {
+                if(item.CenterId != 1)
                 result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, item.ConnectionString));
             });
             return result;

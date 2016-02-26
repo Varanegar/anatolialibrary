@@ -9,6 +9,8 @@ namespace Anatoli.PMC.ViewModels.Order
 {
     public class PMCSellDetailViewModel : PMCBaseViewModel
     {
+        [Ignore]
+        public string UniqueId { get; set; }
         public int SellDetailId { get; set; }
         public int SellId { get; set; }
         public int ProductId { get; set; }
