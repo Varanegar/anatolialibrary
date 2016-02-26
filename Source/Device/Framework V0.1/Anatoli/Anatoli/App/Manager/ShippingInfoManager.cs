@@ -68,7 +68,6 @@ namespace Anatoli.App.Manager
                 for (TimeSpan i = time; i < result.First().ToTime; i += TimeSpan.FromMinutes(30))
                 {
                     var t = new DeliveryTimeModel();
-                    t.time = i.ToString();
                     t.timespan = i;
                     t.UniqueId = Guid.NewGuid().ToString().ToUpper();
                     times.Add(t);
