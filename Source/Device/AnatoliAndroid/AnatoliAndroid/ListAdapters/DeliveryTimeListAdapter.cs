@@ -25,7 +25,7 @@ namespace AnatoliAndroid.ListAdapters
             else
                 return convertView;
             TextView textView = convertView.FindViewById<TextView>(Resource.Id.textView);
-            textView.Text = item.time;
+            textView.Text = item.ToString();
             return convertView;
         }
     }

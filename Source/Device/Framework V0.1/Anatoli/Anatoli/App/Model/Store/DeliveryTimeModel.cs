@@ -10,10 +10,9 @@ namespace Anatoli.App.Model.Store
     public class DeliveryTimeModel : BaseDataModel
     {
         public TimeSpan timespan;
-        public string time { get; set; }
         public override string ToString()
         {
-            return time;
+            return "ساعت " + timespan.Hours + ":" + timespan.Minutes;
         }
     }
 }

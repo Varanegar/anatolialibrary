@@ -62,18 +62,6 @@ namespace Anatoli.App.Manager
                 return DateTime.MinValue;
             }
         }
-        public static int LoadDBVersion()
-        {
-            try
-            {
-                string versionString = AnatoliClient.GetInstance().FileIO.ReadAllText(AnatoliClient.GetInstance().FileIO.GetDataLoction(), "dbVersion");
-                return int.Parse(versionString);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
         static DateTime ConvertFromUnixTimestamp(double timestamp)
         {
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -87,13 +75,7 @@ namespace Anatoli.App.Manager
             TimeSpan diff = date - origin;
             return Math.Floor(diff.TotalSeconds);
         }
-        public static async Task SaveDBVersionAsync()
-        {
-            await Task.Run(() =>
-            {
-                AnatoliClient.GetInstance().FileIO.WriteAllText("1", AnatoliClient.GetInstance().FileIO.GetDataLoction(), "dbVersion");
-            });
-        }
+        
 
         public static async Task ClearDatabase()
         {

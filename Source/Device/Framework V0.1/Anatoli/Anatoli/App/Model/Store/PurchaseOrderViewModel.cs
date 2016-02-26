@@ -17,7 +17,7 @@ namespace Anatoli.App.Model.Store
         public TimeSpan? OrderTime { get; set; }
         public string OrderPDate { get; set; }
         public string DeviceIMEI { get; set; }
-        public Guid ActionSourceValueId { get; set; }
+        public string ActionSourceValueId { get; set; }
         public String Comment { get; set; }
         public long AppOrderNo { get; set; }
         public decimal Amount { get; set; }

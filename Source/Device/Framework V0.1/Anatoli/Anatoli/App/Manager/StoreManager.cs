@@ -28,7 +28,10 @@ namespace Anatoli.App.Manager
                     var currentList = query.ExecuteQuery<StoreDataModel>();
                     foreach (var item in currentList)
                     {
-                        items.Add(item.store_id, item);
+                        if (!items.ContainsKey(item.store_id))
+                        {
+                            items.Add(item.store_id, item);
+                        }
                     }
                 }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -74,7 +77,10 @@ namespace Anatoli.App.Manager
                     var currentList = query.ExecuteQuery<StoreCalendarViewModel>();
                     foreach (var item in currentList)
                     {
-                        timeItems.Add(item.UniqueId, item);
+                        if (!timeItems.ContainsKey(item.UniqueId))
+                        {
+                            timeItems.Add(item.UniqueId, item);
+                        }
                     }
                 }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

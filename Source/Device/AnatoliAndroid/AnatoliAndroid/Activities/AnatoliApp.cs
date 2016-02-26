@@ -646,7 +646,7 @@ namespace AnatoliAndroid.Activities
                 pDialog.SetMessage("بروز رسانی قیمت ها");
                 await ProductManager.SyncPrices(tokenSource);
                 await ProductManager.SyncOnHand(tokenSource);
-                await SyncManager.SaveDBVersionAsync();
+                
                 pDialog.Dismiss();
                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                 await ProductsListF.RefreshAsync();
