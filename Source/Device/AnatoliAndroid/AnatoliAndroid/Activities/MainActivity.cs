@@ -112,12 +112,12 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             try
             {
-                var updateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
+                var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);
                 if (updateTime == DateTime.MinValue)
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
-                var latestUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                var latestUpdateTime = await SyncManager.GetLogAsync(SyncManager.OnHand);
                 if ((DateTime.Now - latestUpdateTime).TotalMinutes > 10)
                 {
                     StartService(new Intent(this, typeof(StockFeedService)));
@@ -143,7 +143,7 @@ namespace AnatoliAndroid.Activities
                         }
                         catch (Exception e)
                         {
-                            
+
                         }
 #pragma warning restore
                     }

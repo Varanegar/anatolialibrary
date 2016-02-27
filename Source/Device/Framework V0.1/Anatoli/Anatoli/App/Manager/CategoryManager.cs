@@ -15,7 +15,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.GroupsTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.GroupsTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductGroupModel>.GetListAsync(q);
@@ -58,7 +58,7 @@ namespace Anatoli.App.Manager
                         }
                     }
                     connection.Commit();
-                    await SyncManager.SaveUpdateDateAsync(SyncManager.GroupsTbl);
+                    await SyncManager.AddLogAsync(SyncManager.GroupsTbl);
                 }
             }
             catch (Exception e)

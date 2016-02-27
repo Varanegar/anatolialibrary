@@ -20,7 +20,8 @@ namespace Anatoli.App.Manager
         public static string BasketTbl = "baskets";
         public static string OnHand = "onhand";
         public static string StoreCalendarTbl = "stores_calendar";
-        public static async Task<bool> SaveUpdateDateAsync(string tableName)
+        public static string UpdateCompleted = "CompleteUpdate";
+        public static async Task<bool> AddLogAsync(string tableName)
         {
             try
             {
@@ -42,7 +43,28 @@ namespace Anatoli.App.Manager
                 return false;
             }
         }
-        public static async Task<DateTime> GetLastUpdateDateAsync(string tableName)
+        public static async Task<bool> RemoveLogAsync(string tableName)
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
+                    {
+                        DeleteCommand command = new DeleteCommand("updates", new EqFilterParam("table_name", tableName));
+                        var query = connection.CreateCommand(command.GetCommand());
+                        int t = query.ExecuteNonQuery();
+                        if (t > 0) return true; else return false;
+                    }
+                });
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+        public static async Task<DateTime> GetLogAsync(string tableName)
         {
             try
             {
@@ -75,7 +97,7 @@ namespace Anatoli.App.Manager
             TimeSpan diff = date - origin;
             return Math.Floor(diff.TotalSeconds);
         }
-        
+
 
         public static async Task ClearDatabase()
         {
@@ -90,6 +112,7 @@ namespace Anatoli.App.Manager
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("categories"));
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("updates"));
                 await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("store_onhand"));
+                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("stores_calendar"));
             }
             catch (Exception e)
             {
@@ -97,7 +120,5 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
-
-        
     }
 }

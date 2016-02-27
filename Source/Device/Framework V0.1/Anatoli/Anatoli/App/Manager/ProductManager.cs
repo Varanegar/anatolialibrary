@@ -24,7 +24,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.ProductTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductUpdateModel>.GetListAsync(q);
@@ -64,7 +64,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync(SyncManager.ProductTbl);
+                await SyncManager.AddLogAsync(SyncManager.ProductTbl);
             }
             catch (Exception e)
             {
@@ -75,7 +75,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.PriceTbl);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.PricesView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductPriceUpdateModel>.GetListAsync(q);
@@ -113,7 +113,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync(SyncManager.PriceTbl);
+                await SyncManager.AddLogAsync(SyncManager.PriceTbl);
             }
             catch (Exception e)
             {
@@ -125,7 +125,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.OnHand);
                 var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.OnHand + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<StoreActiveOnhandViewModel>.GetListAsync(q);
@@ -163,7 +163,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync(SyncManager.OnHand);
+                await SyncManager.AddLogAsync(SyncManager.OnHand);
             }
             catch (Exception e)
             {
@@ -175,7 +175,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 await BaseDataAdapter<BasketViewModel>.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
@@ -195,7 +195,7 @@ namespace Anatoli.App.Manager
                             }
                         }
                         connection.Commit();
-                        await SyncManager.SaveUpdateDateAsync(SyncManager.BasketTbl);
+                        await SyncManager.AddLogAsync(SyncManager.BasketTbl);
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);
@@ -274,7 +274,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BasketTbl);
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
                 Guid basketId = default(Guid);

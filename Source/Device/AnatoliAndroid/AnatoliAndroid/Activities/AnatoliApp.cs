@@ -366,7 +366,7 @@ namespace AnatoliAndroid.Activities
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
+                        if ((await SyncManager.GetLogAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
@@ -589,7 +589,7 @@ namespace AnatoliAndroid.Activities
         }
         async Task CancelSync()
         {
-            if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
+            if ((await SyncManager.GetLogAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
@@ -644,9 +644,10 @@ namespace AnatoliAndroid.Activities
                 await ItemImageManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                 pDialog.SetMessage("بروز رسانی قیمت ها");
+                await SyncManager.RemoveLogAsync(SyncManager.UpdateCompleted);
                 await ProductManager.SyncPrices(tokenSource);
                 await ProductManager.SyncOnHand(tokenSource);
-                
+                await SyncManager.AddLogAsync(SyncManager.UpdateCompleted);
                 pDialog.Dismiss();
                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                 await ProductsListF.RefreshAsync();
@@ -728,6 +729,11 @@ namespace AnatoliAndroid.Activities
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
+                if (_list.Count <= 1)
+                {
+                    _backToExit++;
+                    return false;
+                }
                 if (_list.Last<StackItem>().FragmentType == typeof(FirstFragment))
                 {
                     _backToExit++;
