@@ -785,9 +785,11 @@ namespace AnatoliAndroid.Activities
 
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
-                avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
                 if (Customer != null)
+                {
                     avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
+                    avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                }
                 else
                     avatarMenuEntry.Name = "";
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
