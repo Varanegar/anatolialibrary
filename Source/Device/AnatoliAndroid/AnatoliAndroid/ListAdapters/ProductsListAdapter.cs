@@ -248,45 +248,55 @@ namespace AnatoliAndroid.ListAdapters
                 _removeAllProductsButton.SetOnTouchListener(removeAll);
                 removeAll.Click += async (s, e) =>
                 {
-                    _removeAllProductsButton.Enabled = false;
-                    OptionsClicked(position);
-                    if (AnatoliApp.GetInstance().AnatoliUser != null)
+                    try
                     {
-                        int a = await ShoppingCardManager.GetItemsCountAsync();
-                        TextView counter = AnatoliApp.GetInstance().ShoppingCardItemCount;
-                        double p = AnatoliApp.GetInstance().GetTotalPrice();
-                        if (await ShoppingCardManager.RemoveProductAsync(item, true))
+                        _removeAllProductsButton.Enabled = false;
+                        OptionsClicked(position);
+                        if (AnatoliApp.GetInstance().AnatoliUser != null)
                         {
-                            while (item.count > 0)
+                            int a = await ShoppingCardManager.GetItemsCountAsync();
+                            TextView counter = AnatoliApp.GetInstance().ShoppingCardItemCount;
+                            double p = AnatoliApp.GetInstance().GetTotalPrice();
+                            if (await ShoppingCardManager.RemoveProductAsync(item, true))
                             {
-                                await Task.Delay(90);
-                                item.count--;
-                                counter.Text = (--a).ToString();
-                                p = p - item.price;
-                                AnatoliApp.GetInstance().SetTotalPrice(p);
+                                while (item.count > 0)
+                                {
+                                    await Task.Delay(90);
+                                    item.count--;
+                                    counter.Text = (--a).ToString();
+                                    p = p - item.price;
+                                    AnatoliApp.GetInstance().SetTotalPrice(p);
+                                    NotifyDataSetChanged();
+                                    OnDataChanged();
+                                }
+                                if (item.product_name.Equals(_productNameTextView.Text))
+                                {
+                                    _counterLinearLayout.Visibility = ViewStates.Gone;
+                                    _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                                }
                                 NotifyDataSetChanged();
                                 OnDataChanged();
+                                OnShoppingCardItemRemoved(item);
+                                Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.ItemRemoved, ToastLength.Short).Show();
                             }
-                            if (item.product_name.Equals(_productNameTextView.Text))
-                            {
-                                _counterLinearLayout.Visibility = ViewStates.Gone;
-                                _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
-                            }
-                            NotifyDataSetChanged();
-                            OnDataChanged();
-                            OnShoppingCardItemRemoved(item);
-                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.ItemRemoved, ToastLength.Short).Show();
+
                         }
+                        else
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                            LoginFragment login = new LoginFragment();
+                            var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                            login.Show(transaction, "login_dialog");
+                        }
+                    }
+                    catch (System.Exception)
+                    {
 
                     }
-                    else
+                    finally
                     {
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
-                        LoginFragment login = new LoginFragment();
-                        var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                        login.Show(transaction, "login_dialog");
+                        _removeAllProductsButton.Enabled = true;
                     }
-                    _removeAllProductsButton.Enabled = true;
                 };
 
 
@@ -323,73 +333,94 @@ namespace AnatoliAndroid.ListAdapters
                 _productAddButton.SetOnTouchListener(_addTouchlistener);
                 _addTouchlistener.Click += async (s, e) =>
                 {
-                    if (item.count+ 1 > item.qty)
+                    try
                     {
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, "موجودی کالا کافی نیست", ToastLength.Short).Show();
-                        return;
-                    }
-                    _productAddButton.Enabled = false;
-                    if (AnatoliApp.GetInstance().AnatoliUser != null)
-                    {
-                        if (await ShoppingCardManager.AddProductAsync(item))
+                        if (item.count + 1 > item.qty)
                         {
-                            item.count++;
-                            if (item.product_name.Equals(_productNameTextView.Text))
-                                if (item.count == 1)
-                                {
-                                    _counterLinearLayout.Visibility = ViewStates.Visible;
-                                    _removeAllRelativeLayout.Visibility = ViewStates.Visible;
-                                }
-                            NotifyDataSetChanged();
-                            OnDataChanged();
-                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "موجودی کالا کافی نیست", ToastLength.Short).Show();
+                            return;
                         }
+                        _productAddButton.Enabled = false;
+                        if (AnatoliApp.GetInstance().AnatoliUser != null)
+                        {
+                            if (await ShoppingCardManager.AddProductAsync(item))
+                            {
+                                item.count++;
+                                if (item.product_name.Equals(_productNameTextView.Text))
+                                    if (item.count == 1)
+                                    {
+                                        _counterLinearLayout.Visibility = ViewStates.Visible;
+                                        _removeAllRelativeLayout.Visibility = ViewStates.Visible;
+                                    }
+                                NotifyDataSetChanged();
+                                OnDataChanged();
+                                AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                                AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                            }
+
+                        }
+                        else
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                            LoginFragment login = new LoginFragment();
+                            var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                            login.Show(transaction, "login_dialog");
+                        }
+                        _productAddButton.Enabled = true;
+                    }
+                    catch (System.Exception)
+                    {
 
                     }
-                    else
+                    finally
                     {
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
-                        LoginFragment login = new LoginFragment();
-                        var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                        login.Show(transaction, "login_dialog");
+                        _productAddButton.Enabled = true;
                     }
-                    _productAddButton.Enabled = true;
                 };
 
                 var _removeTouchlistener = new OnTouchListener();
                 _productRemoveButton.SetOnTouchListener(_removeTouchlistener);
                 _removeTouchlistener.Click += async (s, e) =>
                 {
-                    _productRemoveButton.Enabled = false;
-                    if (AnatoliApp.GetInstance().AnatoliUser != null)
+                    try
                     {
-                        if (await ShoppingCardManager.RemoveProductAsync(item))
+                        _productRemoveButton.Enabled = false;
+                        if (AnatoliApp.GetInstance().AnatoliUser != null)
                         {
-                            item.count--;
-                            if (item.count == 0)
+                            if (await ShoppingCardManager.RemoveProductAsync(item))
                             {
-                                if (item.product_name.Equals(_productNameTextView.Text))
+                                item.count--;
+                                if (item.count == 0)
                                 {
-                                    _counterLinearLayout.Visibility = ViewStates.Gone;
-                                    _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                                    if (item.product_name.Equals(_productNameTextView.Text))
+                                    {
+                                        _counterLinearLayout.Visibility = ViewStates.Gone;
+                                        _removeAllRelativeLayout.Visibility = ViewStates.Invisible;
+                                    }
+                                    OnShoppingCardItemRemoved(item);
                                 }
-                                OnShoppingCardItemRemoved(item);
+                                NotifyDataSetChanged();
+                                OnDataChanged();
+                                AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
+                                AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
                             }
-                            NotifyDataSetChanged();
-                            OnDataChanged();
-                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
-                            AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
+                        }
+                        else
+                        {
+                            Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
+                            LoginFragment login = new LoginFragment();
+                            var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
+                            login.Show(transaction, "login_dialog");
                         }
                     }
-                    else
+                    catch (System.Exception)
                     {
-                        Toast.MakeText(AnatoliApp.GetInstance().Activity, Resource.String.PleaseLogin, ToastLength.Short).Show();
-                        LoginFragment login = new LoginFragment();
-                        var transaction = AnatoliApp.GetInstance().Activity.FragmentManager.BeginTransaction();
-                        login.Show(transaction, "login_dialog");
+
                     }
-                    _productRemoveButton.Enabled = true;
+                    finally
+                    {
+                        _productRemoveButton.Enabled = true;
+                    }
                 };
 
                 OnTouchListener tcl = new OnTouchListener();
