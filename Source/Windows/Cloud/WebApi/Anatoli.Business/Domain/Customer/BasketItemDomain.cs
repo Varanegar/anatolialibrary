@@ -132,19 +132,18 @@ namespace Anatoli.Business.Domain
 
         public async Task<List<BasketItemViewModel>> Delete(List<BasketItemViewModel> dataViewModels)
         {
-            await Task.Factory.StartNew(() =>
+            var dataListInfo = Proxy.ReverseConvert(dataViewModels);
+
+            foreach (BasketItem item in dataListInfo)
             {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
+                var basketItem = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
 
-                dataListInfo.ForEach(item =>
-                {
-                    var basketItem = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
+                await Repository.DeleteAsync(basketItem);
 
-                    Repository.DeleteAsync(basketItem);
-                });
+            }
 
-                Repository.SaveChangesAsync();
-            });
+            await Repository.SaveChangesAsync();
+
             return dataViewModels;
         }
         #endregion
