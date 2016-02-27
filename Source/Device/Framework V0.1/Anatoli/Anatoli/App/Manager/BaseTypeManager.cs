@@ -17,7 +17,11 @@ namespace Anatoli.App.Manager
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BaseTypesTbl);
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                RemoteQuery q;
+                if (lastUpdateTime == DateTime.MinValue)
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas);
+                else
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<BaseTypeViewModel>.GetListAsync(q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

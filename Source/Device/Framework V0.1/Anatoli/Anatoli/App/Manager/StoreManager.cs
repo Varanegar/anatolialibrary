@@ -18,7 +18,11 @@ namespace Anatoli.App.Manager
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.StoresTbl);
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                RemoteQuery q;
+                if (lastUpdateTime == DateTime.MinValue)
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
+                else
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresViewAfter + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<StoreUpdateModel>.GetListAsync(q);
                 Dictionary<string, StoreDataModel> items = new Dictionary<string, StoreDataModel>();
@@ -65,7 +69,7 @@ namespace Anatoli.App.Manager
 
 
 
-                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
+                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoreCalendar);
                 q2.cancellationTokenSource = cancellationTokenSource;
                 var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 

@@ -480,7 +480,7 @@ namespace AnatoliAndroid.Activities
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-                        var result = await LogoutAsync();
+                        var result = await SaveLogoutAsync();
                         if (result)
                         {
                             AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
@@ -970,7 +970,7 @@ namespace AnatoliAndroid.Activities
         public event LocationChangedEventHandler LocationChanged;
         public delegate void LocationChangedEventHandler(Location location);
 
-        internal async Task<bool> LogoutAsync()
+        internal async Task<bool> SaveLogoutAsync()
         {
             var result = await AnatoliUserManager.LogoutAsync();
             if (result)
@@ -981,7 +981,7 @@ namespace AnatoliAndroid.Activities
             return result;
         }
 
-        internal async Task LoginAsync(AnatoliUserModel userModel)
+        internal async Task SaveLoginAsync(AnatoliUserModel userModel)
         {
             AnatoliUser = userModel;
             await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);

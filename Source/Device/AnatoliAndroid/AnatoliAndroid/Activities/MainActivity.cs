@@ -95,7 +95,7 @@ namespace AnatoliAndroid.Activities
 
             AnatoliClient.GetInstance().WebClient.TokenExpire += async (s, e) =>
             {
-                await AnatoliApp.GetInstance().LogoutAsync();
+                await AnatoliApp.GetInstance().SaveLogoutAsync();
                 var currentFragmentType = AnatoliApp.GetInstance().GetCurrentFragmentType();
                 if (currentFragmentType == typeof(ProfileFragment))
                 {
