@@ -149,7 +149,7 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.SetTitle("در حال ارسال سفارش");
                                 pDialog.Show();
                                 // "BE2919AB-5564-447A-BE49-65A81E6AF712"
-                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                var o = await ShoppingCardManager.CalcPromo(AnatoliApp.GetInstance().Customer, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                                 pDialog.Dismiss();
                                 if (o.IsValid)
                                 {
@@ -164,7 +164,7 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -228,7 +228,7 @@ namespace AnatoliAndroid.Fragments
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.SetTitle("در حال ارسال سفارش");
                             pDialog.Show();
-                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                            var o = await ShoppingCardManager.CalcPromo(AnatoliApp.GetInstance().Customer, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                             pDialog.Dismiss();
                             if (o.IsValid)
                             {
@@ -243,7 +243,7 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
@@ -456,7 +456,7 @@ namespace AnatoliAndroid.Fragments
 
         async Task<bool> UpdateShippingInfo()
         {
-            _customerViewModel = await CustomerManager.ReadCustomerAsync();
+            _customerViewModel = AnatoliApp.GetInstance().Customer;
             if (_customerViewModel == null)
                 _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile();
             if (_customerViewModel != null)

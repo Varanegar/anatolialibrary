@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Store;
+using Anatoli.App.Model;
 
 namespace Anatoli.App.Manager
 {
@@ -143,13 +144,13 @@ namespace Anatoli.App.Manager
             return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
         }
 
-        public static async Task<PurchaseOrderViewModel> CalcPromo(string userId, string storeId, string deliveryTypeId)
+        public static async Task<PurchaseOrderViewModel> CalcPromo(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId)
         {
             try
             {
                 var products = await GetAllItemsAsync();
                 PurchaseOrderViewModel order = new PurchaseOrderViewModel();
-                order.Customer = await CustomerManager.ReadCustomerAsync();
+                order.Customer = customerModel;
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);
@@ -171,13 +172,13 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<PurchaseOrderViewModel> Checkout(string userId, string storeId, string deliveryTypeId, DeliveryTimeModel time)
+        public static async Task<PurchaseOrderViewModel> Checkout(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId, DeliveryTimeModel time)
         {
             try
             {
                 var products = await GetAllItemsAsync();
                 PurchaseOrderViewModel order = new PurchaseOrderViewModel();
-                order.Customer = await CustomerManager.ReadCustomerAsync();
+                order.Customer = customerModel;
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);

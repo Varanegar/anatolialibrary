@@ -249,7 +249,6 @@ namespace Anatoli.App.Manager
                     }
                 }
 
-                var c = await CustomerManager.ReadCustomerAsync();
                 var f = await ProductManager.GetFavorits();
                 List<BasketItemViewModel> items = new List<BasketItemViewModel>();
                 foreach (var item in f)
@@ -290,8 +289,6 @@ namespace Anatoli.App.Manager
 
                     }
                 }
-
-                var c = await CustomerManager.ReadCustomerAsync();
 
                 List<BasketItemViewModel> items = new List<BasketItemViewModel>();
                 BasketItemViewModel favoritItem = new BasketItemViewModel();

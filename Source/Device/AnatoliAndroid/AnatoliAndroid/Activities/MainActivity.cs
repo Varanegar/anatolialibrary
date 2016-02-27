@@ -126,6 +126,7 @@ namespace AnatoliAndroid.Activities
                 if (defaultStore != null)
                 {
                     AnatoliApp.GetInstance().SetDefaultStore(defaultStore);
+                    AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
                     AnatoliApp.GetInstance().RefreshMenuItems();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
@@ -135,7 +136,6 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                         try
                         {
-                            AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
                             var orders = await OrderManager.GetOrdersAsync(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
                             ProductManager.SyncFavorits();

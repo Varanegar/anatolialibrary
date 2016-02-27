@@ -233,7 +233,7 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 if (_customerViewModel == null)
-                    _customerViewModel = await CustomerManager.ReadCustomerAsync();
+                    _customerViewModel = AnatoliApp.GetInstance().Customer;
                 if (_customerViewModel == null)
                     _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile(true);
                 if (_customerViewModel != null)

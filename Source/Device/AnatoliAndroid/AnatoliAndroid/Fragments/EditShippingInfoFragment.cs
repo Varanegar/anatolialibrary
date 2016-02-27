@@ -145,7 +145,7 @@ namespace AnatoliAndroid.Fragments
             _level1Spinner.Adapter = new ArrayAdapter<CityRegionModel>(AnatoliApp.GetInstance().Activity, Android.Resource.Layout.SimpleListItem1, _level1SpinerDataAdapter);
 
             if (_customerViewModel == null)
-                _customerViewModel = await CustomerManager.ReadCustomerAsync();
+                _customerViewModel = AnatoliApp.GetInstance().Customer;
             if (_customerViewModel == null)
                 _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile(true);
 
