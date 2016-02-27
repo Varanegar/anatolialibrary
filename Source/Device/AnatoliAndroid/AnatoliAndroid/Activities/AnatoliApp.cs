@@ -780,7 +780,7 @@ namespace AnatoliAndroid.Activities
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
                 avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
-                if (Customer != null)
+                if (Customer != null && Customer.FirstName != null && Customer.LastName != null)
                     avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
                 else
                     avatarMenuEntry.Name = "";

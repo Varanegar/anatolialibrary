@@ -188,6 +188,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     orderInfo.SellDetail.ForEach(item =>
                     {   
                         item.SellId = orderInfo.SellId;
+                        item.UnitQty = item.RequestQty;
                         item.SellDetailId = GeneralCommands.GetId(context, "SellDetail");
                         lineItemDataObject.Insert(item, context);
                     });
