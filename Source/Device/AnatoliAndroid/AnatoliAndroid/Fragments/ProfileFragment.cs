@@ -201,7 +201,7 @@ namespace AnatoliAndroid.Fragments
                 alert.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.AreYouSure));
                 alert.SetPositiveButton(AnatoliApp.GetResources().GetText(Resource.String.Yes), async (s2, e2) =>
                 {
-                    bool result = await AnatoliApp.GetInstance().LogoutAsync();
+                    bool result = await AnatoliApp.GetInstance().SaveLogoutAsync();
                     if (result)
                     {
                         AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
@@ -233,7 +233,7 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 if (_customerViewModel == null)
-                    _customerViewModel = await CustomerManager.ReadCustomerAsync();
+                    _customerViewModel = AnatoliApp.GetInstance().Customer;
                 if (_customerViewModel == null)
                     _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile(true);
                 if (_customerViewModel != null)

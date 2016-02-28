@@ -18,8 +18,10 @@ namespace Anatoli.App.Model
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string NationalCode { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        string _firstName;
+        public string FirstName { get { return _firstName == null ? "" : _firstName.Trim(); } set { _firstName = value; } }
+        string _lastName;
+        public string LastName { get { return _lastName == null ? "" : _lastName.Trim(); } set { _lastName = value; } }
         public string MainStreet { get; set; }
         public string OtherStreet { get; set; }
         public string RegionInfoId { get; set; }

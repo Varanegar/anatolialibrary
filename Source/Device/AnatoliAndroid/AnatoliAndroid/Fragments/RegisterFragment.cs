@@ -101,7 +101,7 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.Dismiss();
                                 if (userModel.IsValid)
                                 {
-                                    await AnatoliApp.GetInstance().LoginAsync(userModel);
+                                    await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                                     try
                                     {
                                         Dismiss();

@@ -13,6 +13,7 @@ namespace Anatoli.App.Model.Store
         public int storeCode { get; set; }
         public string storeName { get; set; }
         public string address { get; set; }
+        public string Phone { get; set; }
         public long lat { get; set; }
         public long lng { get; set; }
         public bool hasDelivery { get; set; }

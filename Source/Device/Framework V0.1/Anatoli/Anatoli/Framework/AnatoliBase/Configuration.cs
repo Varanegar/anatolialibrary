@@ -35,25 +35,31 @@ namespace Anatoli.Framework.AnatoliBase
             public static readonly string BaseDatas = "api/gateway/basedata/basedatas/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             public struct ImageManager
             {
-                public static readonly string Images = "/api/imageManager/images/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ImagesAfter = "/api/imageManager/images/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string Images = "/api/imageManager/images/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ImageSave = "/api/imageManager/save/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Products
             {
-                public static readonly string ProductsView = "/api/gateway/product/products/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string ProductGroups = "/api/gateway/product/productgroups/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ProductsListAfter = "/api/gateway/product/products/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ProductsList = "/api/gateway/product/products/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ProductGroupsAfter = "/api/gateway/product/productgroups/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ProductGroups = "/api/gateway/product/productgroups/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Stores
             {
-                public static readonly string StoresView = "/api/gateway/store/stores/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string PricesView = "/api/gateway/store/storepricelist/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string OnHand = "/api/gateway/store/storeOnhand/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string CityRegion = "/api/gateway/base/region/cityregions/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
-                public static readonly string DeliveryTime = "/api/gateway/store/storecalendar/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string StoresViewAfter = "/api/gateway/store/stores/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string StoresView = "/api/gateway/store/stores/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string PricesViewAfter = "/api/gateway/store/storepricelist/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string PricesView = "/api/gateway/store/storepricelist/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string OnHandAfter = "/api/gateway/store/storeOnhand/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string OnHand = "/api/gateway/store/storeOnhand/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string StoreCalendar = "/api/gateway/store/storecalendar/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Purchase
             {
                 public static readonly string OrdersList = "/api/gateway/purchaseorder/bycustomerid/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string OrderHistory = "/api/gateway/purchaseorder/statushistory/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string CalcPromo = "/api/gateway/purchaseorder/calcpromo/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string Create = "/api/gateway/purchaseorder/create/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
@@ -74,7 +80,8 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string BasketView = "/api/gateway/basket/customerbaskets/bycustomer?customerId=4ED993BB-B746-4AC7-B455-EBE91834364F&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ChangePasswordUri = "/api/accounts/changepassword/?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
-            public static readonly string CityRegion = "/api/gateway/base/region/cityregions/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+            public static readonly string CityRegionAfter = "/api/gateway/base/region/cityregions/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+            public static readonly string CityRegion = "/api/gateway/base/region/cityregions/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
         }
 
         public static async Task ReadConfigFromFile()

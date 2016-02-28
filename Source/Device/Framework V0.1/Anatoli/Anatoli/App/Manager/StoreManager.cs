@@ -17,8 +17,12 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.StoresTbl);
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.StoresTbl);
+                RemoteQuery q;
+                if (lastUpdateTime == DateTime.MinValue)
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
+                else
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresViewAfter + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<StoreUpdateModel>.GetListAsync(q);
                 Dictionary<string, StoreDataModel> items = new Dictionary<string, StoreDataModel>();
@@ -43,6 +47,7 @@ namespace Anatoli.App.Manager
                         {
                             UpdateCommand command = new UpdateCommand("stores", new EqFilterParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("store_tel", item.Phone),
                             new BasicParam("lat", item.lat.ToString()),
                             new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
@@ -53,6 +58,7 @@ namespace Anatoli.App.Manager
                         {
                             InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("store_tel", item.Phone),
                             new BasicParam("lat", item.lat.ToString()),
                             new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
@@ -65,7 +71,7 @@ namespace Anatoli.App.Manager
 
 
 
-                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.DeliveryTime);
+                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoreCalendar);
                 q2.cancellationTokenSource = cancellationTokenSource;
                 var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
 
@@ -115,7 +121,7 @@ namespace Anatoli.App.Manager
                     }
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync(SyncManager.StoreCalendarTbl);
+                await SyncManager.AddLogAsync(SyncManager.StoreCalendarTbl);
             }
             catch (Exception e)
             {
@@ -133,8 +139,8 @@ namespace Anatoli.App.Manager
             UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new EqFilterParam("store_id", store.store_id));
             try
             {
-                int clear = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command1);
-                int result = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command2);
+                int clear = await DataAdapter.UpdateItemAsync(command1);
+                int result = await DataAdapter.UpdateItemAsync(command2);
                 return (result > 0) ? true : false;
             }
             catch (Exception)
@@ -163,7 +169,7 @@ namespace Anatoli.App.Manager
             UpdateCommand command = new UpdateCommand("stores", new BasicParam("distance", dist.ToString()), new EqFilterParam("store_id", store_id));
             try
             {
-                int result = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command);
+                int result = await DataAdapter.UpdateItemAsync(command);
                 return (result > 0) ? true : false;
             }
             catch (Exception)

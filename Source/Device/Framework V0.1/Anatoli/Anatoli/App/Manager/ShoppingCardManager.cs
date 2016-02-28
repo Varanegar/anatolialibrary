@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.App.Model.Store;
+using Anatoli.App.Model;
 
 namespace Anatoli.App.Manager
 {
@@ -36,7 +37,7 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (count).ToString()), new BasicParam("product_id", productId));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
             }
             catch (Exception)
             {
@@ -52,7 +53,7 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
             }
             catch (Exception)
             {
@@ -68,7 +69,7 @@ namespace Anatoli.App.Manager
                     query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
             }
             catch (Exception)
             {
@@ -114,7 +115,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
-            return (await BaseDataAdapter<ProductModel>.UpdateItemAsync(command) > 0) ? true : false;
+            return (await DataAdapter.UpdateItemAsync(command) > 0) ? true : false;
         }
 
         public static async Task<int> GetItemsCountAsync()
@@ -140,16 +141,16 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await BaseDataAdapter<ProductModel>.UpdateItemAsync(query) > 0 ? true : false;
+            return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
         }
 
-        public static async Task<PurchaseOrderViewModel> CalcPromo(string userId, string storeId, string deliveryTypeId)
+        public static async Task<PurchaseOrderViewModel> CalcPromo(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId)
         {
             try
             {
                 var products = await GetAllItemsAsync();
                 PurchaseOrderViewModel order = new PurchaseOrderViewModel();
-                order.Customer = await CustomerManager.ReadCustomerAsync();
+                order.Customer = customerModel;
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);
@@ -171,13 +172,13 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<PurchaseOrderViewModel> Checkout(string userId, string storeId, string deliveryTypeId, DeliveryTimeModel time)
+        public static async Task<PurchaseOrderViewModel> Checkout(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId, DeliveryTimeModel time)
         {
             try
             {
                 var products = await GetAllItemsAsync();
                 PurchaseOrderViewModel order = new PurchaseOrderViewModel();
-                order.Customer = await CustomerManager.ReadCustomerAsync();
+                order.Customer = customerModel;
                 order.DeliveryTypeId = Guid.Parse(deliveryTypeId);
                 order.PaymentTypeValueId = Guid.Parse("3a27504c-a9ba-46ce-9376-a63403bfe82a");
                 order.StoreGuid = Guid.Parse(storeId);

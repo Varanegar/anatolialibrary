@@ -105,7 +105,7 @@ namespace AnatoliAndroid.Fragments
                 pDialog.Dismiss();
                 if (userModel.IsValid)
                 {
-                    await AnatoliApp.GetInstance().LoginAsync(userModel);
+                    await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                     Dismiss();
                     OnLoginSuccess();
                 }
@@ -159,7 +159,7 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.Dismiss();
                                 if (userModel.IsValid)
                                 {
-                                    await AnatoliApp.GetInstance().LoginAsync(userModel);
+                                    await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                                     try
                                     {
                                         Dismiss();
@@ -241,6 +241,14 @@ namespace AnatoliAndroid.Fragments
                     });
                     alert.SetNegativeButton(Resource.String.Cancel, delegate { });
                     alert.Show();
+                }
+                else
+                {
+                    AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                    errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
+                    errDialog.SetTitle(Resource.String.Error);
+                    errDialog.SetMessage(Resource.String.ErrorOccured);
+                    errDialog.Show();
                 }
             }
             _loginButton.Enabled = true;

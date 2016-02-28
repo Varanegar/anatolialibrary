@@ -16,15 +16,19 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.BaseTypesTbl);
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BaseTypesTbl);
+                RemoteQuery q;
+                if (lastUpdateTime == DateTime.MinValue)
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas);
+                else
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.BaseDatas + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<BaseTypeViewModel>.GetListAsync(q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
-                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
-                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
+                    await DataAdapter.UpdateItemAsync(new DeleteCommand("delivery_types"));
+                    await DataAdapter.UpdateItemAsync(new DeleteCommand("pay_types"));
                     foreach (var item in list)
                     {
                         if (item.UniqueId.ToUpper() == BaseTypeViewModel.DeliveryType)
@@ -51,7 +55,7 @@ namespace Anatoli.App.Manager
 
                     connection.Commit();
                 }
-                await SyncManager.SaveUpdateDateAsync(SyncManager.BaseTypesTbl);
+                await SyncManager.AddLogAsync(SyncManager.BaseTypesTbl);
             }
             catch (Exception e)
             {

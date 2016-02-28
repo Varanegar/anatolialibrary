@@ -116,7 +116,10 @@ namespace AnatoliAndroid.Fragments
             try
             {
                 _refresh = false;
-                _viewCache.Clear();
+                if (_viewCache != null)
+                {
+                    _viewCache.Clear();
+                }
                 _dataManager.ResetQueryLimits();
                 _listAdapter.List = await _dataManager.GetNextAsync();
                 if (_listAdapter.Count == 0)

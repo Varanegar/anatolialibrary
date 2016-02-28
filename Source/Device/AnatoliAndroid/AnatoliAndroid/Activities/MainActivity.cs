@@ -95,7 +95,7 @@ namespace AnatoliAndroid.Activities
 
             AnatoliClient.GetInstance().WebClient.TokenExpire += async (s, e) =>
             {
-                await AnatoliApp.GetInstance().LogoutAsync();
+                await AnatoliApp.GetInstance().SaveLogoutAsync();
                 var currentFragmentType = AnatoliApp.GetInstance().GetCurrentFragmentType();
                 if (currentFragmentType == typeof(ProfileFragment))
                 {
@@ -112,12 +112,12 @@ namespace AnatoliAndroid.Activities
             AnatoliApp.GetInstance().LocationManager = _locationManager;
             try
             {
-                var updateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ProductTbl);
+                var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);
                 if (updateTime == DateTime.MinValue)
                 {
                     await AnatoliApp.GetInstance().SyncDatabase();
                 }
-                var latestUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.OnHand);
+                var latestUpdateTime = await SyncManager.GetLogAsync(SyncManager.OnHand);
                 if ((DateTime.Now - latestUpdateTime).TotalMinutes > 10)
                 {
                     StartService(new Intent(this, typeof(StockFeedService)));
@@ -126,6 +126,7 @@ namespace AnatoliAndroid.Activities
                 if (defaultStore != null)
                 {
                     AnatoliApp.GetInstance().SetDefaultStore(defaultStore);
+                    AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
                     AnatoliApp.GetInstance().RefreshMenuItems();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().ShoppingCardItemCount.Text = (await ShoppingCardManager.GetItemsCountAsync()).ToString();
                     AnatoliAndroid.Activities.AnatoliApp.GetInstance().SetTotalPrice(await ShoppingCardManager.GetTotalPriceAsync());
@@ -135,15 +136,14 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                         try
                         {
-                            AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
-                            var orders = await OrderManager.GetOrdersAsync(AnatoliApp.GetInstance().CustomerId);
+                            await OrderManager.SyncOrders(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
                             ProductManager.SyncFavorits();
                             Configuration.ReadConfigFromFile();
                         }
                         catch (Exception e)
                         {
-                            
+                            e.SendTrace();
                         }
 #pragma warning restore
                     }

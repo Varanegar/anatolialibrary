@@ -21,7 +21,7 @@ namespace AnatoliAndroid.Fragments
     {
         public OrdersListFragment()
         {
-            StringQuery query = new StringQuery("SELECT * FROM orders_view");
+            StringQuery query = OrderManager.GetOrderQueryString();
             _dataManager.SetQueries(query, null);
         }
         public override void OnResume()

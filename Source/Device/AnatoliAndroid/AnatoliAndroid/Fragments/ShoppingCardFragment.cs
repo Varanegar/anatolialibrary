@@ -149,7 +149,7 @@ namespace AnatoliAndroid.Fragments
                                 pDialog.SetTitle("در حال ارسال سفارش");
                                 pDialog.Show();
                                 // "BE2919AB-5564-447A-BE49-65A81E6AF712"
-                                var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                                var o = await ShoppingCardManager.CalcPromo(AnatoliApp.GetInstance().Customer, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                                 pDialog.Dismiss();
                                 if (o.IsValid)
                                 {
@@ -164,7 +164,7 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -176,8 +176,7 @@ namespace AnatoliAndroid.Fragments
                                             }
                                             else if (result.IsValid)
                                             {
-                                                await SaveOrder();
-                                                await ShoppingCardManager.ClearAsync();
+                                                await SaveOrder(result);
                                                 proforma.Dismiss();
                                             }
                                             else
@@ -228,7 +227,7 @@ namespace AnatoliAndroid.Fragments
                             pDialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
                             pDialog.SetTitle("در حال ارسال سفارش");
                             pDialog.Show();
-                            var o = await ShoppingCardManager.CalcPromo(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
+                            var o = await ShoppingCardManager.CalcPromo(AnatoliApp.GetInstance().Customer, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id);
                             pDialog.Dismiss();
                             if (o.IsValid)
                             {
@@ -243,7 +242,7 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id,_deliveryTime.SelectedItem);
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
@@ -255,8 +254,7 @@ namespace AnatoliAndroid.Fragments
                                         }
                                         else if (result.IsValid)
                                         {
-                                            await SaveOrder();
-                                            await ShoppingCardManager.ClearAsync();
+                                            await SaveOrder(result);
                                             proforma.Dismiss();
                                         }
                                         else
@@ -334,19 +332,11 @@ namespace AnatoliAndroid.Fragments
 
             return view;
         }
-        async Task SaveOrder()
+        async Task SaveOrder(PurchaseOrderViewModel order)
         {
             try
             {
-                var defaultStore = await StoreManager.GetDefaultAsync();
-                if (defaultStore == null)
-                {
-                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "ابتدا فروشگاه دلخواه را انتخاب نمایید", ToastLength.Short).Show();
-                    var storeFrgment = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
-                    await storeFrgment.RefreshAsync();
-                    return;
-                }
-                await OrderManager.SaveOrder();
+                await OrderManager.SaveOrder(order);
                 OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
                 var transaction = FragmentManager.BeginTransaction();
                 dialog.Show(transaction, "order_saved_dialog");
@@ -357,6 +347,11 @@ namespace AnatoliAndroid.Fragments
             catch (Exception ex)
             {
                 ex.SendTrace();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetTitle(Resource.String.Error);
+                alert.SetMessage("سفارش شما ارسال شد");
+                alert.SetPositiveButton(Resource.String.Ok, delegate { });
+                alert.Show();
             }
         }
 
@@ -456,7 +451,7 @@ namespace AnatoliAndroid.Fragments
 
         async Task<bool> UpdateShippingInfo()
         {
-            _customerViewModel = await CustomerManager.ReadCustomerAsync();
+            _customerViewModel = AnatoliApp.GetInstance().Customer;
             if (_customerViewModel == null)
                 _customerViewModel = await AnatoliApp.GetInstance().RefreshCutomerProfile();
             if (_customerViewModel != null)

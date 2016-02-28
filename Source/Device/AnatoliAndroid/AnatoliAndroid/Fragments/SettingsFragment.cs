@@ -36,7 +36,7 @@ namespace AnatoliAndroid.Fragments
                 await Anatoli.Framework.AnatoliBase.Configuration.SaveConfigToFile();
                 AnatoliApp.GetInstance().SetFragment<FirstFragment>(null, "first_fragment");
                 await AnatoliApp.GetInstance().ClearDatabase();
-                await AnatoliApp.GetInstance().LogoutAsync();
+                await AnatoliApp.GetInstance().SaveLogoutAsync();
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("به علت تغییر آی پی باید برنامه دوباره راه اندازی شود");
                 alert.SetPositiveButton(Resource.String.Ok, delegate

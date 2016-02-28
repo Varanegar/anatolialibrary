@@ -366,7 +366,7 @@ namespace AnatoliAndroid.Activities
                 {
                     case DrawerMainItem.DrawerMainItems.ProductCategries:
                         bool go = true;
-                        if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
+                        if ((await SyncManager.GetLogAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
                         {
                             go = await AnatoliApp.GetInstance().SyncDatabase();
                         }
@@ -480,7 +480,7 @@ namespace AnatoliAndroid.Activities
                         break;
                     case DrawerMainItem.DrawerMainItems.Logout:
                         DrawerLayout.CloseDrawer(AnatoliApp.GetInstance().DrawerListView);
-                        var result = await LogoutAsync();
+                        var result = await SaveLogoutAsync();
                         if (result)
                         {
                             AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
@@ -589,7 +589,7 @@ namespace AnatoliAndroid.Activities
         }
         async Task CancelSync()
         {
-            if ((await SyncManager.GetLastUpdateDateAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
+            if ((await SyncManager.GetLogAsync(SyncManager.PriceTbl)) == DateTime.MinValue)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
                 alert.SetMessage("هیچ اطلاعاتی در درسترس نیست. لطفا دوباره تلاش کنید");
@@ -644,9 +644,10 @@ namespace AnatoliAndroid.Activities
                 await ItemImageManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                 pDialog.SetMessage("بروز رسانی قیمت ها");
+                await SyncManager.RemoveLogAsync(SyncManager.UpdateCompleted);
                 await ProductManager.SyncPrices(tokenSource);
                 await ProductManager.SyncOnHand(tokenSource);
-                
+                await SyncManager.AddLogAsync(SyncManager.UpdateCompleted);
                 pDialog.Dismiss();
                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");
                 await ProductsListF.RefreshAsync();
@@ -728,6 +729,11 @@ namespace AnatoliAndroid.Activities
             var transaction = _activity.FragmentManager.BeginTransaction();
             try
             {
+                if (_list.Count <= 1)
+                {
+                    _backToExit++;
+                    return false;
+                }
                 if (_list.Last<StackItem>().FragmentType == typeof(FirstFragment))
                 {
                     _backToExit++;
@@ -779,9 +785,11 @@ namespace AnatoliAndroid.Activities
 
                 var avatarMenuEntry = new DrawerMainItem();
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
-                avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
-                if (Customer != null && Customer.FirstName != null && Customer.LastName != null)
-                    avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
+                if (Customer != null)
+                {
+                    avatarMenuEntry.Name = Customer.FirstName + " " + Customer.LastName;
+                    avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                }
                 else
                     avatarMenuEntry.Name = "";
                 avatarMenuEntry.ImageResId = Resource.Drawable.ic_person_gray_24dp;
@@ -962,22 +970,31 @@ namespace AnatoliAndroid.Activities
         public event LocationChangedEventHandler LocationChanged;
         public delegate void LocationChangedEventHandler(Location location);
 
-        internal async Task<bool> LogoutAsync()
+        internal async Task<bool> SaveLogoutAsync()
         {
             var result = await AnatoliUserManager.LogoutAsync();
             if (result)
             {
                 AnatoliUser = null;
+                ShoppingCardItemCount.Text = "0";
+                SetTotalPrice(0);
                 RefreshMenuItems();
             }
             return result;
         }
 
-        internal async Task LoginAsync(AnatoliUserModel userModel)
+        internal async Task SaveLoginAsync(AnatoliUserModel userModel)
         {
             AnatoliUser = userModel;
-            await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-            await AnatoliApp.GetInstance().RefreshCutomerProfile();
+            try
+            {
+                Customer = await CustomerManager.ReadCustomerAsync();
+                RefreshMenuItems();
+            }
+            catch (Exception e)
+            {
+                e.SendTrace();
+            }
             AnatoliApp.GetInstance().RefreshMenuItems();
         }
     }

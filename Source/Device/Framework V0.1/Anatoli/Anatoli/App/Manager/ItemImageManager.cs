@@ -16,8 +16,12 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var lastUpdateTime = await SyncManager.GetLastUpdateDateAsync(SyncManager.ImagesTbl);
-                var q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.ImageManager.Images + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
+                var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.ImagesTbl);
+                RemoteQuery q;
+                if (lastUpdateTime == DateTime.MinValue)
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.ImageManager.Images);
+                else
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.ImageManager.ImagesAfter + "&dateafter=" + lastUpdateTime.ToString(), new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ItemImageViewModel>.GetListAsync(q);
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -43,7 +47,7 @@ namespace Anatoli.App.Manager
                         }
                     }
                     connection.Commit();
-                    await SyncManager.SaveUpdateDateAsync(SyncManager.ImagesTbl);
+                    await SyncManager.AddLogAsync(SyncManager.ImagesTbl);
                 }
             }
             catch (Exception e)

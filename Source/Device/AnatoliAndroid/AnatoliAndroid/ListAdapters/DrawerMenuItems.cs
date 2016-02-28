@@ -113,7 +113,7 @@ namespace AnatoliAndroid.ListAdapters
                 {
                     if (AnatoliApp.GetInstance().AnatoliUser != null)
                     {
-                        Picasso.With(AnatoliApp.GetInstance().Activity).Load(item.ImageUrl).Into(itemImageView);
+                        Picasso.With(AnatoliApp.GetInstance().Activity).Load(item.ImageUrl).Placeholder(Resource.Drawable.ic_person_gray_24dp).Into(itemImageView);
                     }
                     else
                         relativeLayout.SetBackgroundResource(Resource.Color.lightgray);
