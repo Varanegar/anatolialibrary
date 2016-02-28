@@ -32,7 +32,7 @@ namespace ClientApp
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
             //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local?customerId=2BFFBDF6-9362-4CB6-807B-37D2DFBEBB96&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
-            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/lineitem/?poId=8f2101c9-bd05-4833-b416-5c2c9706502b&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/lineitem/?poId=406de307-39aa-40e9-9ecc-4779b181a11e&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<PurchaseOrderLineItemViewModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);
@@ -43,7 +43,7 @@ namespace ClientApp
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
             //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local?customerId=2BFFBDF6-9362-4CB6-807B-37D2DFBEBB96&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
-            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/statushistory/?poId=8f2101c9-bd05-4833-b416-5c2c9706502b&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/statushistory/?poId=406de307-39aa-40e9-9ecc-4779b181a11e&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<PurchaseOrderStatusHistoryViewModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);

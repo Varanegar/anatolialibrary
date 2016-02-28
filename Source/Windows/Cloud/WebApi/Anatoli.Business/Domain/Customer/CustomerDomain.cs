@@ -163,3 +163,4 @@ namespace Anatoli.Business.Domain
         #endregion
     }
 }
+

@@ -64,10 +64,10 @@ namespace ClientApp
                     //var requestData = new PurchaseOrderViewModel();
                     //string data = new JavaScriptSerializer().Serialize(requestData);
 
-                    
-                    //HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    //var result8 = client.PostAsync(servserURI + "/api/accounts/changepassword/?username=0912073282&password=123456", content).Result;
-                    //var json8 = result8.Content.ReadAsStringAsync().Result;
+
+                    HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+                    var result8 = client.PostAsync(servserURI + "/api/accounts/user/?username=0912073282&password=123456", content).Result;
+                    var json8 = result8.Content.ReadAsStringAsync().Result;
 
                     ////HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
                     ////var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
