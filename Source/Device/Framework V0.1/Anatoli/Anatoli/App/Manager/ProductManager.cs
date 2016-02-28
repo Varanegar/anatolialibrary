@@ -190,7 +190,7 @@ namespace Anatoli.App.Manager
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.BasketTbl);
                 var q = new RemoteQuery(TokenType.UserToken, Configuration.WebService.Users.BasketView, new BasicParam("after", lastUpdateTime.ToString()));
                 var list = await BaseDataAdapter<BasketViewModel>.GetListAsync(q);
-                await BaseDataAdapter<BasketViewModel>.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
+                await DataAdapter.UpdateItemAsync(new UpdateCommand("products", new BasicParam("favorit", "0")));
                 foreach (var basket in list)
                 {
                     using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
@@ -221,7 +221,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> RemoveFavorit(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
-            var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
+            var r = await DataAdapter.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
                 RemoveFavoritFromCloud(pId);
@@ -232,7 +232,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> AddToFavorits(string pId)
         {
             var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "1"));
-            var r = await BaseDataAdapter<ProductModel>.UpdateItemAsync(dbQuery) > 0 ? true : false;
+            var r = await DataAdapter.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
                 AddFavoritToCloud();
@@ -389,7 +389,7 @@ namespace Anatoli.App.Manager
             UpdateCommand command = new UpdateCommand("products", new BasicParam("favorit", "0"));
             try
             {
-                var result = await BaseDataAdapter<ProductModel>.UpdateItemAsync(command);
+                var result = await DataAdapter.UpdateItemAsync(command);
                 return (result > 0) ? true : false;
             }
             catch (Exception e)

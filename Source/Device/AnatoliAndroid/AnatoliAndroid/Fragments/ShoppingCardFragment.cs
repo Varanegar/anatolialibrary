@@ -164,7 +164,8 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
+                                            //var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
+                                            var result = o;
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -176,8 +177,7 @@ namespace AnatoliAndroid.Fragments
                                             }
                                             else if (result.IsValid)
                                             {
-                                                await SaveOrder();
-                                                await ShoppingCardManager.ClearAsync();
+                                                await SaveOrder(result);
                                                 proforma.Dismiss();
                                             }
                                             else
@@ -243,7 +243,8 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
+                                        //var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
+                                        var result = o;
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
@@ -255,8 +256,7 @@ namespace AnatoliAndroid.Fragments
                                         }
                                         else if (result.IsValid)
                                         {
-                                            await SaveOrder();
-                                            await ShoppingCardManager.ClearAsync();
+                                            await SaveOrder(result);
                                             proforma.Dismiss();
                                         }
                                         else
@@ -334,19 +334,11 @@ namespace AnatoliAndroid.Fragments
 
             return view;
         }
-        async Task SaveOrder()
+        async Task SaveOrder(PurchaseOrderViewModel order)
         {
             try
             {
-                var defaultStore = await StoreManager.GetDefaultAsync();
-                if (defaultStore == null)
-                {
-                    Toast.MakeText(AnatoliApp.GetInstance().Activity, "ابتدا فروشگاه دلخواه را انتخاب نمایید", ToastLength.Short).Show();
-                    var storeFrgment = AnatoliApp.GetInstance().SetFragment<StoresListFragment>(new StoresListFragment(), "stores_fragment");
-                    await storeFrgment.RefreshAsync();
-                    return;
-                }
-                await OrderManager.SaveOrder();
+                await OrderManager.SaveOrder(order);
                 OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
                 var transaction = FragmentManager.BeginTransaction();
                 dialog.Show(transaction, "order_saved_dialog");
@@ -357,6 +349,11 @@ namespace AnatoliAndroid.Fragments
             catch (Exception ex)
             {
                 ex.SendTrace();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert.SetTitle(Resource.String.Error);
+                alert.SetMessage("سفارش شما ارسال شد");
+                alert.SetPositiveButton(Resource.String.Ok, delegate { });
+                alert.Show();
             }
         }
 

@@ -98,6 +98,9 @@ namespace Anatoli.Framework.DataAdapter
                 throw;
             }
         }
+    }
+    public class DataAdapter
+    {
         public static async Task<int> UpdateItemAsync(DBQuery query)
         {
             try

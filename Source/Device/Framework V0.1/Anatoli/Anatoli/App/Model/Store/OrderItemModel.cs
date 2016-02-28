@@ -9,7 +9,7 @@ namespace Anatoli.App.Model.Store
 {
     public class OrderItemModel : BaseDataModel
     {
-        public int order_id { get; set; }
+        public long order_id { get; set; }
         public double item_price { get; set; }
         public string product_name { get; set; }
         public string product_id { get; set; }

@@ -47,6 +47,7 @@ namespace Anatoli.App.Manager
                         {
                             UpdateCommand command = new UpdateCommand("stores", new EqFilterParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("store_tel", item.Phone),
                             new BasicParam("lat", item.lat.ToString()),
                             new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
@@ -57,6 +58,7 @@ namespace Anatoli.App.Manager
                         {
                             InsertCommand command = new InsertCommand("stores", new BasicParam("store_id", item.UniqueId.ToUpper()),
                             new BasicParam("store_name", item.storeName.Trim()),
+                            new BasicParam("store_tel", item.Phone),
                             new BasicParam("lat", item.lat.ToString()),
                             new BasicParam("lng", item.lng.ToString()),
                             new BasicParam("store_address", item.address));
@@ -137,8 +139,8 @@ namespace Anatoli.App.Manager
             UpdateCommand command2 = new UpdateCommand("stores", new BasicParam("selected", "1"), new EqFilterParam("store_id", store.store_id));
             try
             {
-                int clear = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command1);
-                int result = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command2);
+                int clear = await DataAdapter.UpdateItemAsync(command1);
+                int result = await DataAdapter.UpdateItemAsync(command2);
                 return (result > 0) ? true : false;
             }
             catch (Exception)
@@ -167,7 +169,7 @@ namespace Anatoli.App.Manager
             UpdateCommand command = new UpdateCommand("stores", new BasicParam("distance", dist.ToString()), new EqFilterParam("store_id", store_id));
             try
             {
-                int result = await BaseDataAdapter<StoreDataModel>.UpdateItemAsync(command);
+                int result = await DataAdapter.UpdateItemAsync(command);
                 return (result > 0) ? true : false;
             }
             catch (Exception)

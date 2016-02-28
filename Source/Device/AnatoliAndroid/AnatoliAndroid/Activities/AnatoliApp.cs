@@ -787,7 +787,7 @@ namespace AnatoliAndroid.Activities
                 avatarMenuEntry.ItemId = DrawerMainItem.DrawerMainItems.Profile;
                 if (Customer != null)
                 {
-                    avatarMenuEntry.Name = Customer.FirstName.Trim() + " " + Customer.LastName.Trim();
+                    avatarMenuEntry.Name = Customer.FirstName + " " + Customer.LastName;
                     avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
                 }
                 else
@@ -976,6 +976,8 @@ namespace AnatoliAndroid.Activities
             if (result)
             {
                 AnatoliUser = null;
+                ShoppingCardItemCount.Text = "0";
+                SetTotalPrice(0);
                 RefreshMenuItems();
             }
             return result;
@@ -984,8 +986,15 @@ namespace AnatoliAndroid.Activities
         internal async Task SaveLoginAsync(AnatoliUserModel userModel)
         {
             AnatoliUser = userModel;
-            await AnatoliUserManager.SaveUserInfoAsync(AnatoliApp.GetInstance().AnatoliUser);
-            await AnatoliApp.GetInstance().RefreshCutomerProfile();
+            try
+            {
+                Customer = await CustomerManager.ReadCustomerAsync();
+                RefreshMenuItems();
+            }
+            catch (Exception e)
+            {
+                e.SendTrace();
+            }
             AnatoliApp.GetInstance().RefreshMenuItems();
         }
     }

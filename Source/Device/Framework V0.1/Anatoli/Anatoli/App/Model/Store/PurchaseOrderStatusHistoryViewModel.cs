@@ -32,7 +32,7 @@ namespace Anatoli.App.Model.Store
         public string Comment { get; set; }
         public Guid PurchaseOrderId { get; set; }
 
-        public string GetStatusName(string statusId)
+        public static string GetStatusName(string statusId)
         {
             string status = "نا مشخص";
             switch (statusId)

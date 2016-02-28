@@ -13,6 +13,7 @@ using Anatoli.App.Manager;
 using Anatoli.App.Model.Store;
 using AnatoliAndroid.Activities;
 using AnatoliAndroid.Fragments;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.ListAdapters
 {
@@ -34,13 +35,13 @@ namespace AnatoliAndroid.ListAdapters
 
             convertView.Click += (s, e) =>
              {
-                 AnatoliApp.GetInstance().SetFragment<OrderDetailFragment>(null, "order_detail_fragment", new Tuple<string, string>("order_id", item.order_id));
+                 AnatoliApp.GetInstance().SetFragment<OrderDetailFragment>(null, "order_detail_fragment", new Tuple<string, string>("order_id", item.order_id.ToString()));
              };
-            dateTextView.Text = item.order_date;
-            storeNameTextView.Text = item.store_name;
-            priceTextView.Text = item.order_price.ToString();
-            orderIdTextView.Text = item.order_id;
-            orderStatusTextView.Text = item.order_status.ToString();
+            dateTextView.Text = " " + item.order_date;
+            storeNameTextView.Text = " " + item.store_name;
+            priceTextView.Text = " " + item.order_price.ToCurrency() + "  Ê„«‰" ;
+            orderIdTextView.Text = item.order_id.ToString();
+            orderStatusTextView.Text = PurchaseOrderStatusHistoryViewModel.GetStatusName(item.order_status);
 
             return convertView;
         }

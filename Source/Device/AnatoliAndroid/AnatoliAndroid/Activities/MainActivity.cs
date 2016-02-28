@@ -136,14 +136,14 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                         try
                         {
-                            var orders = await OrderManager.GetOrdersAsync(AnatoliApp.GetInstance().CustomerId);
+                            await OrderManager.SyncOrders(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
                             ProductManager.SyncFavorits();
                             Configuration.ReadConfigFromFile();
                         }
                         catch (Exception e)
                         {
-
+                            e.SendTrace();
                         }
 #pragma warning restore
                     }

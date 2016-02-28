@@ -16,7 +16,7 @@ namespace Anatoli.App.Manager
         public static async Task<bool> DeleteAsync(int id)
         {
             DeleteCommand command = new DeleteCommand("messages", new EqFilterParam("msg_id", id.ToString()));
-            var result = await BaseDataAdapter<MessageModel>.UpdateItemAsync(command);
+            var result = await DataAdapter.UpdateItemAsync(command);
             return (result > 0) ? true : false;
         }
 
@@ -33,7 +33,7 @@ namespace Anatoli.App.Manager
 
                 StringQuery command = new StringQuery(q);
                 command.Unlimited = true;
-                var result = await BaseDataAdapter<MessageModel>.UpdateItemAsync(command);
+                var result = await DataAdapter.UpdateItemAsync(command);
             }
             catch (Exception)
             {

@@ -32,7 +32,7 @@ namespace Anatoli.App.Manager
             UpdateCommand command1 = new UpdateCommand("shipping_info", new BasicParam("default_shipping", "0"));
             try
             {
-                await BaseDataAdapter<ShippingInfoModel>.UpdateItemAsync(command1);
+                await DataAdapter.UpdateItemAsync(command1);
                 BasicParam cityP = new BasicParam("city", city);
                 BasicParam provinceP = new BasicParam("province", province);
                 BasicParam zoneP = new BasicParam("zone", zone);
@@ -42,7 +42,7 @@ namespace Anatoli.App.Manager
                 BasicParam telP = new BasicParam("tel", tel);
                 BasicParam defaultShipping = new BasicParam("default_shipping", "1");
                 var command2 = new InsertCommand("shipping_info", cityP, provinceP, zoneP, districtP, addressP, nameP, telP, defaultShipping);
-                return await BaseDataAdapter<ShippingInfoModel>.UpdateItemAsync(command2) > 0 ? true : false;
+                return await DataAdapter.UpdateItemAsync(command2) > 0 ? true : false;
             }
             catch (Exception)
             {

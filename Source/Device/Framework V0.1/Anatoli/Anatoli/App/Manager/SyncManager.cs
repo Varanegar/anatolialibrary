@@ -103,16 +103,16 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("cityregion"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("products_price"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("products"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("stores"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("categories"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("updates"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("store_onhand"));
-                await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("stores_calendar"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("delivery_types"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("pay_types"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("cityregion"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("products_price"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("products"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("stores"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("categories"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("updates"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("store_onhand"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("stores_calendar"));
             }
             catch (Exception e)
             {

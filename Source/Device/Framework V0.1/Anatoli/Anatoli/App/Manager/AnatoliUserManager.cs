@@ -20,9 +20,21 @@ namespace Anatoli.App.Manager
             var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
             if (userModel.IsValid)
             {
-#pragma warning disable
-                //BasketManager.SyncDataBase();
-#pragma warning restore
+                await AnatoliUserManager.SaveUserInfoAsync(userModel);
+                try
+                {
+                    var customer = await CustomerManager.DownloadCustomerAsync(userModel, null);
+                    if (customer.IsValid)
+                    {
+                        await CustomerManager.SaveCustomerAsync(customer);
+                        await OrderManager.SyncOrders(customer.UniqueId);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
             }
             return userModel;
         }
@@ -108,8 +120,14 @@ namespace Anatoli.App.Manager
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.customerInfoFile);
+                        
                     }
                     );
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("messages"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("order_items"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("orders"));
+                await DataAdapter.UpdateItemAsync(new DeleteCommand("shipping_info"));
+                await ShoppingCardManager.ClearAsync();
                 return true;
             }
             catch (Exception)

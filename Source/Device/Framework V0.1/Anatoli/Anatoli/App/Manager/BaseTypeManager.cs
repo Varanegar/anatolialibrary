@@ -27,8 +27,8 @@ namespace Anatoli.App.Manager
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
                     connection.BeginTransaction();
-                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("delivery_types"));
-                    await BaseDataAdapter<BaseTypeViewModel>.UpdateItemAsync(new DeleteCommand("pay_types"));
+                    await DataAdapter.UpdateItemAsync(new DeleteCommand("delivery_types"));
+                    await DataAdapter.UpdateItemAsync(new DeleteCommand("pay_types"));
                     foreach (var item in list)
                     {
                         if (item.UniqueId.ToUpper() == BaseTypeViewModel.DeliveryType)

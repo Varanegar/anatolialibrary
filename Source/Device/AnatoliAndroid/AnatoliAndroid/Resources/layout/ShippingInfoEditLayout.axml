@@ -27,7 +27,9 @@
                     local:customFont="Fonts/anatoli.ttf"
                     style="@style/AnatoliTextField"
                     android:layout_alignParentRight="true" />
-                <Spinner
+                <AnatoliAndroid.Components.AnatoliTextView
+                  local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
                     android:id="@+id/level1Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +47,9 @@
                     local:customFont="Fonts/anatoli.ttf"
                     style="@style/AnatoliTextField"
                     android:layout_alignParentRight="true" />
-                <Spinner
+                <AnatoliAndroid.Components.AnatoliTextView
+                  local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
                     android:id="@+id/level2Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +66,9 @@
                     local:customFont="Fonts/anatoli.ttf"
                     style="@style/AnatoliTextField"
                     android:layout_alignParentRight="true" />
-                <Spinner
+                <AnatoliAndroid.Components.AnatoliTextView
+                  local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
                     android:id="@+id/level3Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +85,9 @@
                     local:customFont="Fonts/anatoli.ttf"
                     style="@style/AnatoliTextField"
                     android:layout_alignParentRight="true" />
-                <Spinner
+                <AnatoliAndroid.Components.AnatoliTextView
+                  local:customFont="Fonts/anatoli.ttf"
+                    style="@style/AnatoliTextField"
                     android:id="@+id/level4Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

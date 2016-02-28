@@ -15,6 +15,7 @@ using Anatoli.App.Manager;
 using AnatoliAndroid.Activities;
 using System.Threading.Tasks;
 using Square.Picasso;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliAndroid.Fragments
 {
@@ -66,11 +67,11 @@ namespace AnatoliAndroid.Fragments
             else
             {
                 OrderModel order = await OrderManager.GetOrderAsync(_orderId);
-                _dateTextView.Text = order.order_date;
-                _storeNameTextView.Text = order.store_name;
-                _priceTextView.Text = order.order_price.ToString();
-                _orderIdTextView.Text = order.order_id;
-                _orderStatusTextView.Text = order.order_status.ToString();
+                _dateTextView.Text = " " + order.order_date;
+                _storeNameTextView.Text = " " + order.store_name;
+                _priceTextView.Text = " " + order.order_price.ToCurrency() + " تومان";
+                _orderIdTextView.Text = order.order_id.ToString();
+                _orderStatusTextView.Text = PurchaseOrderStatusHistoryViewModel.GetStatusName(order.order_status);
 
 
                 List<OrderItemModel> items = await OrderItemsManager.GetItemsAsync(_orderId);
