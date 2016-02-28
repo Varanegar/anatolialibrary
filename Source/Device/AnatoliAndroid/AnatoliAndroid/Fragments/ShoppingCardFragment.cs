@@ -164,8 +164,7 @@ namespace AnatoliAndroid.Fragments
                                         pDialog2.Show();
                                         try
                                         {
-                                            //var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
-                                            var result = o;
+                                            var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                             pDialog2.Dismiss();
                                             if (result == null)
                                             {
@@ -243,8 +242,7 @@ namespace AnatoliAndroid.Fragments
                                     pDialog2.Show();
                                     try
                                     {
-                                        //var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
-                                        var result = o;
+                                        var result = await ShoppingCardManager.Checkout(_customerViewModel, _customerViewModel.UniqueId, store.store_id, _typeSpinner.SelectedItem.id, _deliveryTime.SelectedItem);
                                         pDialog2.Dismiss();
                                         if (result == null)
                                         {
