@@ -102,6 +102,7 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+            await ProductManager.SyncProductTags();
             try
             {
                 var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);

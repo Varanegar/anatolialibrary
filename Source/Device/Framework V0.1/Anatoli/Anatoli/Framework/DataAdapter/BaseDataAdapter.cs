@@ -11,7 +11,7 @@ using Anatoli.Framework.AnatoliBase;
 namespace Anatoli.Framework.DataAdapter
 {
     public class BaseDataAdapter<DataModel>
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
     {
         public static async Task<List<DataModel>> GetListAsync(RemoteQuery query)
         {

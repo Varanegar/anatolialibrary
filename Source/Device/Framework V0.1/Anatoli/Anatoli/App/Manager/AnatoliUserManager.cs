@@ -165,7 +165,7 @@ namespace Anatoli.App.Manager
             return result;
         }
 
-        public class ConfirmResult : BaseDataModel
+        public class ConfirmResult : BaseViewModel
         {
 
         }

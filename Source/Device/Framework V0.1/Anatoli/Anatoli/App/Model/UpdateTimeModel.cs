@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model
 {
-    public class UpdateTimeModel : BaseDataModel
+    public class UpdateTimeModel : BaseViewModel
     {
         public string table_name { get; set; }
         public string update_time { get; set; }

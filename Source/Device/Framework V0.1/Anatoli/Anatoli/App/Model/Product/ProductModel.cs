@@ -10,7 +10,7 @@ using SQLite;
 namespace Anatoli.App.Model.Product
 {
     [Table("products")]
-    public class ProductModel : BaseDataModel
+    public class ProductModel : BaseViewModel
     {
         public int order_count { get; set; }
         public string cat_id { get; set; }

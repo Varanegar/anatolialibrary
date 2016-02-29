@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class CityRegionUpdateModel : BaseDataModel
+    public class CityRegionUpdateModel : BaseViewModel
     {
         private string uniqueIdString;
         public string UniqueIdString

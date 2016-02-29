@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Product
 {
-    public class CategoryInfoModel : BaseDataModel
+    public class CategoryInfoModel : BaseViewModel
     {
         public string cat_id { get; set; }
         public string cat_parent { get; set; }

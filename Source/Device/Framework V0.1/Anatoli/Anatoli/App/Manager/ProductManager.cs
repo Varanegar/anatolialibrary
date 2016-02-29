@@ -16,6 +16,11 @@ namespace Anatoli.App.Manager
     {
         const string _productsTbl = "products";
         const string _productsView = "products_price_view";
+        public static async Task SyncProductTags()
+        {
+            RemoteQuery q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsTags);
+            var list = await BaseDataAdapter<ProductTagViewModel>.GetListAsync(q);
+        }
         public static async Task<ProductModel> GetItemAsync(string id)
         {
             return await Anatoli.Framework.DataAdapter.BaseDataAdapter<ProductModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM products_price_view WHERE product_id='{0}'", id)));

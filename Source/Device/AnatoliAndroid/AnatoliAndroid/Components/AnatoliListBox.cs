@@ -18,7 +18,7 @@ namespace AnatoliAndroid.Components
 {
     class AnatoliListBox<DataListAdapter, DataManager, DataModel> : AnatoliTextView
         where DataListAdapter : ListAdapters.BaseListAdapter<DataManager, DataModel>, new()
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
         where DataManager : BaseManager<DataModel>, new()
     {
         private new const string Tag = "AnatoliListBox";
@@ -128,7 +128,7 @@ namespace AnatoliAndroid.Components
 
     class ListBoxDialog<DataListAdapter, DataManager, DataModel> : DialogFragment
         where DataListAdapter : ListAdapters.BaseListAdapter<DataManager, DataModel>, new()
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
         where DataManager : BaseManager<DataModel>, new()
     {
         ListView _listView;
