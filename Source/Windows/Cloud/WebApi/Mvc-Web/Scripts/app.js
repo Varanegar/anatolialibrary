@@ -1,5 +1,6 @@
 ﻿'use strict'
 var baseBackendUrl = 'http://localhost:59822',
+    sslBackendUrl = 'https://localhost:44300',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
@@ -388,7 +389,7 @@ function productManagerViewModel() {
     self.refreshStores();
 
     self.testAuth = function () {
-        accountManagerApp.callApi(baseBackendUrl + '/api/TestAuth/getsample', 'POST', {}, function (data) {
+        accountManagerApp.callApi(sslBackendUrl + '/api/TestAuth/getsample', 'POST', {}, function (data) {
             
         });
     }
@@ -890,7 +891,7 @@ function stocksManagerViewModel() {
             editable: true
         });
 
-        dropdownEditorParameterMap = function (options, operation) {
+        var dropdownEditorParameterMap = function (options, operation) {
             if (operation == "read")
                 return kendo.stringify(options);
         };
