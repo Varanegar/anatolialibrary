@@ -103,7 +103,7 @@ namespace AnatoliAndroid.Fragments
                 pDialog.Show();
                 var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
                 pDialog.Dismiss();
-                if (userModel.IsValid)
+                if (userModel != null && userModel.IsValid)
                 {
                     await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                     Dismiss();
@@ -145,11 +145,10 @@ namespace AnatoliAndroid.Fragments
                     {
                         ConfirmDialog confirmDialog = new ConfirmDialog();
                         confirmDialog.UserName = _userNameEditText.Text;
-                        confirmDialog.CodeConfirmed += async (sss, e2d) =>
+                        confirmDialog.CodeConfirmed += async delegate
                         {
-                            // Login 
                             AlertDialog.Builder errDialog = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                            errDialog.SetPositiveButton(Resource.String.Ok, (s1, e1) => { });
+                            errDialog.SetPositiveButton(Resource.String.Ok, delegate { });
                             pDialog.SetTitle(Resources.GetText(Resource.String.Login));
                             pDialog.SetMessage(Resources.GetText(Resource.String.PleaseWait));
                             pDialog.Show();
@@ -157,11 +156,11 @@ namespace AnatoliAndroid.Fragments
                             {
                                 var userModel = await AnatoliUserManager.LoginAsync(_userNameEditText.Text, _passwordEditText.Text);
                                 pDialog.Dismiss();
-                                if (userModel.IsValid)
+                                if (userModel != null && userModel.IsValid)
                                 {
-                                    await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                                     try
                                     {
+                                        await AnatoliApp.GetInstance().SaveLoginAsync(userModel);
                                         Dismiss();
                                         OnLoginSuccess();
                                     }
@@ -178,7 +177,7 @@ namespace AnatoliAndroid.Fragments
                                         else
                                         {
                                             AlertDialog.Builder errDialog2 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                                            errDialog2.SetMessage(ex2.Message);
+                                            errDialog2.SetMessage(Resource.String.ErrorOccured);
                                             errDialog2.SetPositiveButton(Resource.String.Ok, delegate { });
                                             errDialog2.Show();
                                         }
@@ -222,7 +221,7 @@ namespace AnatoliAndroid.Fragments
                                 else
                                 {
                                     AlertDialog.Builder errDialog4 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
-                                    errDialog4.SetMessage(ex2.Message);
+                                    errDialog4.SetMessage(Resource.String.ErrorOccured);
                                     errDialog4.SetPositiveButton(Resource.String.Ok, delegate { });
                                     errDialog4.Show();
                                 }

@@ -18,7 +18,7 @@ using AnatoliAndroid.Activities;
 namespace AnatoliAndroid.ListAdapters
 {
     abstract class BaseSwipeListAdapter<BaseDataManager, DataModel> : BaseListAdapter<BaseDataManager, DataModel>
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
         where BaseDataManager : BaseManager<DataModel>, new()
     {
         public void OnSwipeLeft(int position)

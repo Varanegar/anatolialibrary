@@ -42,15 +42,7 @@ namespace AnatoliAndroid.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            try
-            {
-                SQLiteAndroid.ExportDb();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+           
             HockeyApp.CrashManager.Register(this, HOCKEYAPP_APPID, new AnatoliCrashManagerListener());
             HockeyApp.TraceWriter.Initialize();
             // Wire up Unhandled Expcetion handler from Android
@@ -110,6 +102,7 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
+            await ProductManager.SyncProductTags();
             try
             {
                 var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);

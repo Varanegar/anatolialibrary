@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Anatoli.Framework.Manager
 {
     public abstract class BaseManager<DataModel>
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
     {
         int _limit = 50;
         protected DBQuery _localP;

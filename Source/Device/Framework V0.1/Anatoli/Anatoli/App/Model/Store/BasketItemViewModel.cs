@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class BasketItemViewModel : BaseDataModel
+    public class BasketItemViewModel : BaseViewModel
     {
         public int? Qty { get; set; }
         public string Comment { get; set; }

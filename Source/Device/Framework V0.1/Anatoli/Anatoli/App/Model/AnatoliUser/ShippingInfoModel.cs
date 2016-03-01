@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.AnatoliUser
 {
-    public class ShippingInfoModel : BaseDataModel
+    public class ShippingInfoModel : BaseViewModel
     {
         public string shipping_id { get; set; }
         public string city { get; set; }

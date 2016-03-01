@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class StoreActiveOnhandViewModel : BaseDataModel
+    public class StoreActiveOnhandViewModel : BaseViewModel
     {
         public string store_id { get; set; }
         public string product_id { get; set; }

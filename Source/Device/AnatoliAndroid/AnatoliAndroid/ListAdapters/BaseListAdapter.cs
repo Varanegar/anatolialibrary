@@ -17,7 +17,7 @@ using Anatoli.Framework.Manager;
 namespace AnatoliAndroid.ListAdapters
 {
     class BaseListAdapter<BaseDataManager, DataModel> : BaseAdapter<DataModel>
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
         where BaseDataManager : BaseManager<DataModel>, new()
     {
         public List<DataModel> List;

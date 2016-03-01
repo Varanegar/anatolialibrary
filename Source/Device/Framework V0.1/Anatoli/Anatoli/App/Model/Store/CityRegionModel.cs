@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class CityRegionModel : BaseDataModel
+    public class CityRegionModel : BaseViewModel
     {
         public string group_name { get; set; }
         public string group_id { get; set; }

@@ -3,16 +3,15 @@ using Anatoli.Cloud.WebApi.Classes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
-    [AnatoliAuthorizeAttribute(Resource = "TestAuth")]
+    [AnatoliAuthorize(Resource = "TestAuth")]
     [RoutePrefix("api/TestAuth")]
     public class TestAuthController : AnatoliApiController
     {
-        [AnatoliAuthorizeAttribute(Resource = "TestAuth", Action = "GetSample")]
+        [AnatoliAuthorize(Resource = "TestAuth", Action = "GetSample"), RequireHttps]
         [Route("getsample"), HttpPost]
         public IHttpActionResult GetSample()
         {
             return Ok(OwnerKey);
         }
-
     }
 }

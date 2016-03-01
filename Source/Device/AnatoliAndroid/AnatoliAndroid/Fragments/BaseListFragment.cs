@@ -25,7 +25,7 @@ namespace AnatoliAndroid.Fragments
         where BaseDataManager : BaseManager<DataModel>, new()
         where DataListAdapter : BaseListAdapter<BaseDataManager, DataModel>, new()
         where ListTools : ListToolsDialog, new()
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
     {
         protected View _view;
         protected SwipeListView _listView;

@@ -111,4 +111,22 @@ namespace Anatoli.Cloud.WebApi.Classes
         }
         #endregion
     }
+
+    public class RequireHttpsAttribute : AuthorizeAttribute
+    {
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
+            {
+                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
+                {
+                    ReasonPhrase = "HTTPS Required"
+                };
+            }
+            else
+            {
+                base.OnAuthorization(actionContext);
+            }
+        }
+    }
 }

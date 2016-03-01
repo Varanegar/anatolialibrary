@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class StoreCalendarViewModel : BaseDataModel
+    public class StoreCalendarViewModel : BaseViewModel
     {
         public static string StoreOpenTime = "E4A73D47-8AC7-41D1-8EEA-21EDFBA90424";
         public static string StoreActivedeliveryTime = "D5C5E5BF-9235-48D8-B026-B7EB8DB14100";

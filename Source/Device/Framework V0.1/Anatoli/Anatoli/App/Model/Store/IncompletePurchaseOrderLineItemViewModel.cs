@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.App.Model.Store
 {
-    public class IncompletePurchaseOrderLineItemViewModel : BaseDataModel
+    public class IncompletePurchaseOrderLineItemViewModel : BaseViewModel
     {
         public decimal Qty { get; set; }
         public Guid ProductId { get; set; }

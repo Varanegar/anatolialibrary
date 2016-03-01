@@ -25,7 +25,7 @@ namespace AnatoliAndroid.Fragments
         where BaseDataManager : BaseManager<DataModel>, new()
         where DataListAdapter : BaseSwipeListAdapter<BaseDataManager, DataModel>, new()
         where ListTools : ListToolsDialog, new()
-        where DataModel : BaseDataModel, new()
+        where DataModel : BaseViewModel, new()
     {
         protected override View InflateLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {

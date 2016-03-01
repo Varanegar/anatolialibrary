@@ -788,7 +788,10 @@ namespace AnatoliAndroid.Activities
                 if (Customer != null)
                 {
                     avatarMenuEntry.Name = Customer.FirstName + " " + Customer.LastName;
-                    avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                    if (CustomerId != null)
+                    {
+                        avatarMenuEntry.ImageUrl = CustomerManager.GetImageAddress(CustomerId);
+                    }
                 }
                 else
                     avatarMenuEntry.Name = "";

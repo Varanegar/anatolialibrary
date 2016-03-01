@@ -45,6 +45,9 @@ namespace Anatoli.Framework.AnatoliBase
                 public static readonly string ProductsList = "/api/gateway/product/products/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ProductGroupsAfter = "/api/gateway/product/productgroups/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ProductGroups = "/api/gateway/product/productgroups/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static string ProductsTags = "/api/gateway/product/producttags/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static string ProductsTagsAfter = "/api/gateway/product/producttags/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static string ProductsTagValuesAfter = "/api/gateway/product/producttagvalues/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }
             public struct Stores
             {

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Framework.Model
 {
-    public abstract class BaseDataModel
+    public abstract class BaseViewModel
     {
-        public BaseDataModel()
+        public BaseViewModel()
         {
 
         }

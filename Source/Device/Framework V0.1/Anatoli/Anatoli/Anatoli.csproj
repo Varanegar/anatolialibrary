@@ -54,6 +54,8 @@
     <Compile Include="App\Model\BaseTypeViewModel.cs" />
     <Compile Include="App\Model\BaseValueViewModel.cs" />
     <Compile Include="App\Model\DeliveryTypeModel.cs" />
+    <Compile Include="App\Model\Product\ProductTagValueViewModel.cs" />
+    <Compile Include="App\Model\Product\ProductTagViewModel.cs" />
     <Compile Include="App\Model\Store\BasketItemViewModel.cs" />
     <Compile Include="App\Model\Store\BasketViewModel.cs" />
     <Compile Include="App\Model\Store\DeliveryTimeModel.cs" />
