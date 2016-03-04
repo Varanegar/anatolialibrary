@@ -124,6 +124,9 @@ namespace Anatoli.Business.Domain
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
                         currentProduct.LastUpdate = DateTime.Now;
 
+                        if (item.ProductType != null)
+                            currentProduct.ProductTypeId = item.ProductType.Id;
+
                         if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
                         //if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Collections.Generic;
+using Anatoli.ViewModels.StockModels;
 using Anatoli.Cloud.WebApi.Controllers;
 
 namespace Anatoli.Cloud.WebApi.Classes
@@ -21,7 +22,12 @@ namespace Anatoli.Cloud.WebApi.Classes
             public string searchTerm { get; set; }
             public string stockRequestProduct { get; set; }
             public Guid ruleId { get; set; }
-        }
+
+            public Guid stockProductRequestId { get; set; }
+            public Guid stockProductRequestProductId { get; set; }
+
+            public List<StockProductRequestProductViewModel> StockProductRequestProductList { get; set; }
+    }
 
         public Guid OwnerKey
         {

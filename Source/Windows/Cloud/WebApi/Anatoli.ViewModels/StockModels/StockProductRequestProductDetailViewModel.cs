@@ -1,25 +1,21 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.ViewModels.StockModels
 {
     public class StockProductRequestProductDetailViewModel : BaseViewModel
     {
-        public StockProductRequestProductDetailViewModel()
+        public StockProductRequestProductDetailViewModel() { }
+
+        public StockProductRequestProductDetailViewModel(Guid stockProductRequestProductId, Guid stockProductRequestRuleId, string ruleDesc,
+                                                         decimal requestQty, bool isMainRule)
         {
+            UniqueId = Guid.NewGuid();
 
-        }
-
-        public StockProductRequestProductDetailViewModel(Guid StockProductRequestProductId, Guid StockProductRequestRuleId, string RuleDesc, decimal RequestQty, bool IsMainRule)
-        {
-            this.UniqueId = Guid.NewGuid();
-            this.StockProductRequestProductId = StockProductRequestProductId;
-            this.StockProductRequestRuleId = StockProductRequestRuleId;
-            this.RequestQty = RequestQty;
-            this.IsMainRule = IsMainRule;
-
+            StockProductRequestProductId = stockProductRequestProductId;
+            StockProductRequestRuleId = stockProductRequestRuleId;
+            RuleDesc = RuleDesc;
+            RequestQty = requestQty;
+            IsMainRule = isMainRule;
         }
 
         public decimal RequestQty { get; set; }
@@ -27,6 +23,6 @@ namespace Anatoli.ViewModels.StockModels
         public Guid StockProductRequestRuleId { get; set; }
         public string RuleDesc { get; set; }
         public bool IsMainRule { get; set; }
-
+        public string StockProductRequestRuleName { get; set; }
     }
 }

@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.ViewModels.StockModels
 {
@@ -36,5 +34,11 @@ namespace Anatoli.ViewModels.StockModels
         public Guid? Accept3ById { get; set; }
         public Guid? StockOnHandSyncId { get; set; }
         public List<StockProductRequestProductViewModel> StockProductRequestProducts { get; set; }
+
+        public string AcceptName1 { get; set; }
+        public string AcceptName2 { get; set; }
+        public string AcceptName3 { get; set; }
+        public string StockProductRequestStatus { get; set; }
+        public string StockName { get; set; }
     }
 }

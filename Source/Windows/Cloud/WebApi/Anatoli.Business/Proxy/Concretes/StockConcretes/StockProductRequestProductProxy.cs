@@ -41,6 +41,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
                 StockProductRequestId = data.StockProductRequestId,
 
                 StockProductRequestProductDetails = (data.StockProductRequestProductDetails == null) ? null : StockProductRequestProductDetailProxy.Convert(data.StockProductRequestProductDetails.ToList()),
+
+                ProductCode = data.Product.ProductCode,
+                ProductName = data.Product.ProductName
             };
         }
 

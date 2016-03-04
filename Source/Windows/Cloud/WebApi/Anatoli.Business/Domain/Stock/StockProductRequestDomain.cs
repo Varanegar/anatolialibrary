@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
+using Anatoli.DataAccess;
 using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
+using Anatoli.ViewModels.StockModels;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
-using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
@@ -17,25 +16,49 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         public IAnatoliProxy<StockProductRequest, StockProductRequestViewModel> Proxy { get; set; }
-        public IRepository<StockProductRequest> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
+        public IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> StockProductRequestProductProxy { get; set; }
+        public IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> StockProductRequestProductDetailProxy { get; set; }
 
+        public IRepository<StockProductRequest> Repository { get; set; }
+        public IRepository<Stock> StockRepository { get; set; }
+        public IRepository<StockProductRequestProduct> StockProductRequestProductRepository { get; set; }
+        public IRepository<StockProductRequestProductDetail> StockProductRequestProductDetailRepository { get; set; }
         #endregion
 
         #region Ctors
         StockProductRequestDomain() { }
         public StockProductRequestDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public StockProductRequestDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProductRequest, StockProductRequestViewModel>.Create())
+            : this(new StockProductRequestRepository(dbc),
+                  new PrincipalRepository(dbc),
+                  new StockProductRequestProductRepository(dbc),
+                  new StockProductRequestProductDetailRepository(dbc),
+                  new StockRepository(dbc),
+                  AnatoliProxy<StockProductRequest, StockProductRequestViewModel>.Create(),
+                  AnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel>.Create(),
+                  AnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
-        public StockProductRequestDomain(IStockProductRequestRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProductRequest, StockProductRequestViewModel> proxy)
+        public StockProductRequestDomain(IStockProductRequestRepository repository,
+                                         IPrincipalRepository principalRepository,
+                                         IRepository<StockProductRequestProduct> stockProductRequestProductRepository,
+                                         IRepository<StockProductRequestProductDetail> stockProductRequestProductDetailRepository,
+                                         IRepository<Stock> stockRepository,
+                                         IAnatoliProxy<StockProductRequest, StockProductRequestViewModel> proxy,
+                                         IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> stockProductRequestProductProxy,
+                                         IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> stockProductRequestProductDetailProxy
+                                        )
         {
             Proxy = proxy;
-            Repository = dataRepository;
+            StockProductRequestProductProxy = stockProductRequestProductProxy;
+            StockProductRequestProductDetailProxy = stockProductRequestProductDetailProxy;
+
+            Repository = repository;
+            StockRepository = stockRepository;
             PrincipalRepository = principalRepository;
+            StockProductRequestProductRepository = stockProductRequestProductRepository;
+            StockProductRequestProductDetailRepository = stockProductRequestProductDetailRepository;
         }
         #endregion
 
@@ -80,7 +103,7 @@ namespace Anatoli.Business.Domain
 
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
@@ -97,13 +120,61 @@ namespace Anatoli.Business.Domain
                 dataList.ForEach(item =>
                 {
                     var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
+
                     Repository.DbContext.StockProductRequests.Remove(data);
                 });
 
                 Repository.SaveChangesAsync();
             });
             return dataViewModels;
+        }
+
+        public async Task<List<StockProductRequestViewModel>> GetHistory(Guid stockId)
+        {
+            var model = await Repository.GetFromCachedAsync(p => stockId == Guid.Empty || p.StockId == stockId);
+
+            return Proxy.Convert(model.ToList());
+        }
+
+        public async Task<List<StockProductRequestProductViewModel>> GetDetailsHistory(Guid stockProductRequestId)
+        {
+            var model = await StockProductRequestProductRepository.GetFromCachedAsync(p => p.StockProductRequestId == stockProductRequestId);
+
+            return StockProductRequestProductProxy.Convert(model.ToList());
+        }
+
+        public async Task<List<StockProductRequestViewModel>> GetStockProductRequests(string searchTerm)
+        {
+            var model = await Repository.GetFromCachedAsync(p => string.IsNullOrEmpty(searchTerm) ||
+                                                            p.Stock.StockName.Contains(searchTerm) ||
+                                                            p.SourceStockRequestNo.Contains(searchTerm));
+
+            return Proxy.Convert(model.ToList());
+        }
+
+        public async Task<List<StockProductRequestProductDetailViewModel>> GetStockProductRequestProductDetails(Guid stockProductRequestProductId)
+        {
+            var model = await StockProductRequestProductDetailRepository.GetFromCachedAsync(p => p.StockProductRequestProductId == stockProductRequestProductId);
+
+            return StockProductRequestProductDetailProxy.Convert(model.ToList());
+        }
+
+        public async Task<List<StockProductRequestProductViewModel>> UpdateStockProductRequestProductDetails(List<StockProductRequestProductViewModel> model,
+                                                                                                             Guid stockId, Guid currentUserId)
+        {
+            foreach (var item in model)
+            {
+                var stock = await StockRepository.GetByIdAsync(stockId);
+
+                if (stock.Accept1ById == currentUserId)
+                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted1Qty = item.MyAcceptedQty });
+                if (stock.Accept2ById == currentUserId)
+                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted2Qty = item.MyAcceptedQty });
+                if (stock.Accept3ById == currentUserId)
+                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted3Qty = item.MyAcceptedQty });
+            }
+
+            return model;
         }
         #endregion
     }

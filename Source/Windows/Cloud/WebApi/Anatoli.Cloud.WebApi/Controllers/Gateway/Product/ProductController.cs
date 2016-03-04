@@ -321,24 +321,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Products
-        [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("products")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
+        [Route("products"), HttpPost]
+        public async Task<IHttpActionResult> GetProducts()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ProductDomain(owner);
-                var result = await productDomain.GetAll();
+                var result = await new ProductDomain(OwnerKey).GetAll();
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
+
                 return GetErrorResult(ex);
             }
         }
+
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]
         [Route("searchProducts"), HttpPost]
         public async Task<IHttpActionResult> SearchProductList([FromBody] RequestModel data)
@@ -421,6 +421,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var model = await new ProductTypeDomain(OwnerKey).GetAll();
+
+                model.Add(new ViewModels.StockModels.ProductTypeViewModel { UniqueId = Guid.Empty, ProductTypeName = string.Empty });
 
                 return Ok(model);
             }

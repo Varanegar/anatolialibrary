@@ -22,7 +22,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductDetailConcr
                 StockProductRequestProductId = data.StockProductRequestProductId,
                 RequestQty = data.RequestQty,
                 StockProductRequestRuleId = data.StockProductRequestRuleId,
-
+                StockProductRequestRuleName = data.StockProductRequestRule.StockProductRequestRuleName
             };
         }
 

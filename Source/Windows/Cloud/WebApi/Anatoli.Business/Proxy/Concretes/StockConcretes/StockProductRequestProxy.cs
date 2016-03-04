@@ -62,6 +62,14 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 StockOnHandSyncId = data.StockOnHandSyncId,
 
                 StockProductRequestProducts = (data.StockProductRequestProducts == null) ? null : StockProductRequestProductProxy.Convert(data.StockProductRequestProducts.ToList()),
+
+                AcceptName1 = string.Format("{0}  |  {1}", data.Accept1By.Title, data.Accept1PDate),
+                AcceptName2 = string.Format("{0}  |  {1}", data.Accept2By.Title, data.Accept2PDate),
+                AcceptName3 = string.Format("{0}  |  {1}", data.Accept3By.Title, data.Accept3PDate),
+                StockProductRequestStatus = data.StockProductRequestStatus.StockProductRequestStatusName,
+
+                StockName = data.Stock.StockName,
+
             };
         }
 
@@ -103,7 +111,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 StockOnHandSyncId = data.StockOnHandSyncId,
 
                 StockProductRequestProducts = (data.StockProductRequestProducts == null) ? null : StockProductRequestProductProxy.ReverseConvert(data.StockProductRequestProducts),
-           
+
             };
         }
     }
