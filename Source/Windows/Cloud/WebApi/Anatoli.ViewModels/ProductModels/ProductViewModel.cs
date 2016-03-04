@@ -26,7 +26,7 @@ namespace Anatoli.ViewModels.ProductModels
         public string ProductGroupIdString { get; set; }
         public string ManufactureIdString { get; set; }
 
-        public bool IsRemoved { get; set; }
+        //public bool IsRemoved { get; set; }
         public List<CharValueViewModel> CharValues { get; set; }
         public List<ProductPictureViewModel> ProductPictures { get; set; }
     }

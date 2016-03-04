@@ -22,6 +22,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 BaseDataId = data.TokenId,
                 IsDefault = data.IsDefault,
                 ImageType = data.ImageType,
+                IsRemoved = data.IsRemoved,
 
             };
         }
@@ -33,6 +34,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 IsDefault = data.IsDefault,
+                IsRemoved = data.IsRemoved,
                 
                 ImageName = data.ImageName,
                 TokenId = data.BaseDataId,

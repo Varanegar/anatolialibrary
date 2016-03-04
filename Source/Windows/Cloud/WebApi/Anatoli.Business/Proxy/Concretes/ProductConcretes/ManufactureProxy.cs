@@ -15,6 +15,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
             return new ManufactureViewModel
             {
                 ID = data.Number_ID,
+                IsRemoved = data.IsRemoved,
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner_Id,
                 ManufactureName = data.ManufactureName
@@ -27,6 +28,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
+                IsRemoved = data.IsRemoved,
                 ManufactureName = data.ManufactureName,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },

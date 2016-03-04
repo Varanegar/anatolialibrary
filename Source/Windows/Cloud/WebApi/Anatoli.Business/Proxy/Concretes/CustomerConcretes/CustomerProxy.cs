@@ -52,6 +52,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 RegionLevel3Id = data.RegionLevel3Id,
                 RegionLevel4Id = data.RegionLevel4Id,
                 DefauleStoreId = data.DefauleStoreId,
+                IsRemoved = data.IsRemoved,
 
                 CustomerShipAddress  = (data.CustomerShipAddresses != null)?CustomerShipAddressProxy.Convert(data.CustomerShipAddresses.ToList()):null,
             };
@@ -64,6 +65,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                IsRemoved = data.IsRemoved,
 
                 CustomerCode = data.CustomerCode,
                 CustomerName = data.CustomerName,

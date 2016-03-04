@@ -16,6 +16,7 @@ namespace Anatoli.DataAccess.Models
 
         public virtual ICollection<Store> StoreValidRegionInfoes { get; set; }
         public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public virtual ICollection<CustomerNotVerified> CustomerNotVerifiedInfos { get; set; }
         public virtual ICollection<Customer> CustomerInfos { get; set; }
         public virtual ICollection<CityRegion> CityRegion1 { get; set; }
         [ForeignKey("CityRegion2Id")]

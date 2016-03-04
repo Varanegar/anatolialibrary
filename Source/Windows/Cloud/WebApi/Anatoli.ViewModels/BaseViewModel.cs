@@ -9,6 +9,7 @@ namespace Anatoli.ViewModels
         public int ID { get; set; }
         public Guid UniqueId { get; set; }
         public Guid PrivateOwnerId { get; set; }
+        public bool IsRemoved { get; set; }
 
     }
 }

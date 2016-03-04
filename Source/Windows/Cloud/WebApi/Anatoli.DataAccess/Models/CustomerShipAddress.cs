@@ -49,6 +49,7 @@ namespace Anatoli.DataAccess.Models
         public virtual CityRegion RegionLevel3 { get; set; }
         public virtual CityRegion RegionLevel4 { get; set; }
 
+        public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
 
     }

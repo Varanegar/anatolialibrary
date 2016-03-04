@@ -22,6 +22,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 NRight = data.NRight,
                 NLevel = data.NLevel,
                 GroupName = data.GroupName,
+                IsRemoved = data.IsRemoved,
                 //ParentId = data.CityRegion2 != null ? data.CityRegion2.Number_ID : -1,
                 ParentUniqueIdString = data.CityRegion2Id.ToString(),
                 Priority = data.Priority,
@@ -34,6 +35,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
+                IsRemoved = data.IsRemoved,
 
                 NLeft = data.NLeft,
                 NRight = data.NRight,

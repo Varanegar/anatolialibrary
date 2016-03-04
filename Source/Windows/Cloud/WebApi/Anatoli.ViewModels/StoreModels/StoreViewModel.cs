@@ -24,7 +24,7 @@ namespace Anatoli.ViewModels.StoreModels
 
         public List<StoreCalendarViewModel> StoreCalendar { get; set; }
         public List<CityRegionViewModel> StoreValidRegionInfo { get; set; }
-        public bool IsRemoved { get; set; }
+        //public bool IsRemoved { get; set; }
 
     }
 }

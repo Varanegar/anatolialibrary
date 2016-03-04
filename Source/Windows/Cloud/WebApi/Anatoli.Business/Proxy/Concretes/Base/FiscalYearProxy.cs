@@ -22,6 +22,7 @@ namespace Anatoli.Business.Proxy.Concretes.BaseConcretes
                 FromPDate = data.FromPdate,
                 ToDate = data.ToDate,
                 ToPDate = data.ToPdate,
+                IsRemoved = data.IsRemoved,
 
 
             };
@@ -34,6 +35,7 @@ namespace Anatoli.Business.Proxy.Concretes.BaseConcretes
                 Number_ID = data.ID,
                 Id = data.UniqueId,
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                IsRemoved = data.IsRemoved,
 
                 FromDate = data.FromDate,
                 FromPdate = data.FromPDate,
