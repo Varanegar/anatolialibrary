@@ -21,7 +21,7 @@ var baseBackendUrl = 'http://localhost:59822',
         saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
 
         productsUrl: baseBackendUrl + '/api/gateway/product/products',
-        saveProductsUrl: baseBackendUrl + '/api/gateway/product/save?privateOwnerId=' + privateOwnerId,
+        saveProductsUrl: baseBackendUrl + '/api/gateway/product/saveProducts',
         productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
         productRequestRuleUrl: baseBackendUrl + '/api/gateway/stock/productRequestRule',
         productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',
@@ -1425,10 +1425,9 @@ function productManagerViewModel() {
                 },
                 update: {
                     url: urls.saveProductsUrl,
-                    type: "GET",
+                    type: "POST",
                     contentType: "application/json",
                     dataType: "json",
-                    data: {},
                     beforeSend: gridAuthHeader
                 },
                 parameterMap: function (options, operation) {
@@ -1443,9 +1442,9 @@ function productManagerViewModel() {
             pageSize: 20,
             schema: {
                 model: {
-                    id: "productGuid",
+                    id: "uniqueId",
                     fields: {
-                        productGuid: { editable: false, nullable: true },
+                        uniqueId: { editable: false, nullable: true },
                         productCode: { editable: false },
                         productName: { editable: false },
                         productTypeInfo: { defaultValue: { uniqueId: "", productTypeName: "" } },

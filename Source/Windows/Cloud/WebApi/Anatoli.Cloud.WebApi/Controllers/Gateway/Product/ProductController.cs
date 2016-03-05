@@ -395,6 +395,23 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Product", Action = "SaveProducts"), Route("saveProducts"), HttpPost]
+        public async Task<IHttpActionResult> UpdateProducts([FromBody] List<ProductViewModel> data)
+        {
+            try
+            {
+                await new ProductDomain(OwnerKey).SaveProducts(data);
+
+                return Ok(new { });
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+
         [Authorize(Roles = "AuthorizedApp")]
         [Route("checkdeleted")]
         public async Task<IHttpActionResult> CheckeDeletedProducts(string privateOwnerId, List<ProductViewModel> data)

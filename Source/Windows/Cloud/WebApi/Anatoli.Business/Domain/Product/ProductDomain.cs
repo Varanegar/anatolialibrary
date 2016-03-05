@@ -308,6 +308,19 @@ namespace Anatoli.Business.Domain
             return data;
         }
 
+        public async Task SaveProducts(List<ProductViewModel> data)
+        {
+            foreach (var item in data)
+            {
+                var product = await Repository.GetByIdAsync(item.UniqueId);
+
+                product.ProductTypeId = item.ProductTypeInfo.UniqueId;
+
+                await Repository.SaveChangesAsync();
+            }
+
+        }
+
         public Product SetCharValueData(Product data, List<CharValue> charValues, AnatoliDbContext context)
         {
             if (charValues == null) return data;
