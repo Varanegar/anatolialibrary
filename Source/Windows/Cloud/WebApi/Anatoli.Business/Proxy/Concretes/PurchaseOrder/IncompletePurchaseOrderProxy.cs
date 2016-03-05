@@ -31,6 +31,7 @@ namespace Anatoli.Business.Proxy.Concretes
                     ID = data.Number_ID,
                     UniqueId = data.Id,
                     PrivateOwnerId = data.PrivateLabelOwner_Id,
+                    ShipAddressId = data.CustomerShipAddressId,
 
                     CityRegionId = data.CityRegionId,
                     DeliveryDate = data.DeliveryDate,
@@ -57,6 +58,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 {
                     Number_ID = data.ID,
                     Id = data.UniqueId,
+                    CustomerShipAddressId = data.ShipAddressId,
 
                     CityRegionId = data.CityRegionId,
                     DeliveryDate = data.DeliveryDate,

@@ -16,6 +16,9 @@
         public Guid DeliveryTypeId { get; set; }
         public Guid? PaymentTypeId { get; set; }
         public string OrderShipAddress { get; set; }
+        [ForeignKey("CustomerShipAddress")]
+        public Guid? CustomerShipAddressId { get; set; }
+        public virtual CustomerShipAddress CustomerShipAddress { get; set; }
         //تحویل گیرنده
         [StringLength(100)]
         public string Transferee { get; set; }

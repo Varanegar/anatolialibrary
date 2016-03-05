@@ -39,6 +39,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 CustomerId = data.CustomerId,
                 IsActive = data.IsActive,
                 IsDefault = data.IsDefault,
+                IsRemoved = data.IsRemoved,
 
             };
         }
@@ -69,6 +70,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 CustomerId = data.CustomerId,
                 IsActive = data.IsActive,
                 IsDefault = data.IsDefault,
+                IsRemoved = data.IsRemoved,
 
             };
         }

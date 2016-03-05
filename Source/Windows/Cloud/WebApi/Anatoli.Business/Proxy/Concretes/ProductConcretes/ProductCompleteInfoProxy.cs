@@ -58,6 +58,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
                 ProductTypeId = data.ProductTypeId,
+                IsRemoved = data.IsRemoved,
 
                 PrivateOwnerId = data.PrivateLabelOwner.Id,
 
@@ -83,6 +84,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
                 ProductTypeId = data.ProductTypeId,
+                IsRemoved = data.IsRemoved,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
                 Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),

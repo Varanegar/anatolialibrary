@@ -76,9 +76,12 @@
     <Compile Include="Configs\CharGroupConfig.cs" />
     <Compile Include="Configs\CharTypeConfig.cs" />
     <Compile Include="Configs\CharValueConfig.cs" />
+    <Compile Include="Configs\CompanyConfig.cs" />
+    <Compile Include="Configs\CustomerNotVerifiedConfig.cs" />
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
+    <Compile Include="Configs\DistCompanyRegionConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\PermissionConfig.cs" />
@@ -86,8 +89,10 @@
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
     <Compile Include="Configs\MainProductGroupConfig.cs" />
+    <Compile Include="Configs\DistCompanyCenterConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\FiscalYearConfig.cs" />
+    <Compile Include="Configs\DistCompanyRegionLevelTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleCalcTypeConfig.cs" />
@@ -371,7 +376,16 @@
     <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.Designer.cs">
       <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603051523493_Tracking-1.cs" />
+    <Compile Include="Migrations\201603051523493_Tracking-1.Designer.cs">
+      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\DistCompanyRegionPolygon.cs" />
+    <Compile Include="Models\DistCompanyRegion.cs" />
+    <Compile Include="Models\CustomerNotVerified.cs" />
+    <Compile Include="Models\DistCompanyCenter.cs" />
     <Compile Include="Models\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\ItemImage.cs" />
@@ -411,6 +425,7 @@
     <Compile Include="Models\ProductRate.cs" />
     <Compile Include="Models\ProductSupplierGuarantee.cs" />
     <Compile Include="Models\PurchaseOrderStatusHistory.cs" />
+    <Compile Include="Models\DistCompanyRegionLevelType.cs" />
     <Compile Include="Models\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\StockProductRequestRule.cs" />
     <Compile Include="Models\FiscalYear.cs" />
@@ -662,6 +677,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261953126_PurchaseOrder-LineItem.resx">
       <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603051523493_Tracking-1.resx">
+      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

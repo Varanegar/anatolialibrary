@@ -17,6 +17,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 PrivateOwnerId = data.PrivateLabelOwner_Id,
+                IsRemoved = data.IsRemoved,
 
                 ProductId = data.ProductId,
                 ProductTagId = data.ProductTagId,
@@ -33,6 +34,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
+                IsRemoved = data.IsRemoved,
 
                 ProductId = data.ProductId,
                 ProductTagId = data.ProductTagId,

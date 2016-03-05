@@ -34,6 +34,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 PrivateOwnerId = data.PrivateLabelOwner_Id,
                 CharTypeDesc = data.CharTypeDesc,
                 DefaultCharValueID = data.DefaultCharValueGuid,
+                IsRemoved = data.IsRemoved,
 
                 CharValues = CharValueProxy.Convert(data.CharValues.ToList()),
             };
@@ -45,6 +46,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
+                IsRemoved = data.IsRemoved,
 
                 CharTypeDesc = data.CharTypeDesc,
                 DefaultCharValueGuid = data.DefaultCharValueID,

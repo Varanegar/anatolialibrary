@@ -24,11 +24,16 @@ namespace Anatoli.DataAccess
         public DbSet<CharType> CharTypes { get; set; }
         public DbSet<CharValue> CharValues { get; set; }
         public DbSet<CityRegion> CityRegions { get; set; }
+        public DbSet<Company> Companys { get; set; }
         public DbSet<Clearance> Clearances { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerNotVerified> CustomerNoneVerifieds { get; set; }
         public DbSet<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
+        public DbSet<DistCompanyCenter> DistCompanyCenters { get; set; }
+        public DbSet<DistCompanyRegion> DistCompanyRegions { get; set; }
+        public DbSet<DistCompanyRegionLevelType> DistCompanyRegionLevelTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
@@ -102,9 +107,14 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CharTypeConfig());
             modelBuilder.Configurations.Add(new CharValueConfig());
             modelBuilder.Configurations.Add(new CityRegionConfig());
+            modelBuilder.Configurations.Add(new CompanyConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
+            modelBuilder.Configurations.Add(new CustomerNotVerifiedConfig());
             modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
+            modelBuilder.Configurations.Add(new DistCompanyCenterConfig());
+            modelBuilder.Configurations.Add(new DistCompanyRegionConfig());
+            modelBuilder.Configurations.Add(new DistCompanyRegionLevelTypeConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
             modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());
             modelBuilder.Configurations.Add(new MainProductGroupConfig());

@@ -17,6 +17,10 @@ namespace Anatoli.DataAccess.Configs
             this.HasMany<PurchaseOrder>(pc => pc.PurchaseOrders)
                 .WithOptional(p => p.CustomerShipAddress)
                 .WillCascadeOnDelete(false);
+
+            this.HasMany<IncompletePurchaseOrder>(pc => pc.IncompletePurchaseOrders)
+                .WithOptional(p => p.CustomerShipAddress)
+                .WillCascadeOnDelete(false);
         }
     }
 }

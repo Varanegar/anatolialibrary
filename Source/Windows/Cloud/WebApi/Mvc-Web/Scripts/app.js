@@ -22,6 +22,7 @@ var baseBackendUrl = 'http://localhost:59822',
 
         productsUrl: baseBackendUrl + '/api/gateway/product/products',
         saveProductsUrl: baseBackendUrl + '/api/gateway/product/saveProducts',
+
         productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
         productRequestRuleUrl: baseBackendUrl + '/api/gateway/stock/productRequestRule',
         productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',

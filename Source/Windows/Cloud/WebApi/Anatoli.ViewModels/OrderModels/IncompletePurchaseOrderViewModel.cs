@@ -11,6 +11,7 @@ namespace Anatoli.ViewModels.Order
     {
         public Guid CustomerId { get; set; }
         public Guid StoreId { get; set; }
+        public Guid? ShipAddressId { get; set; }
         public Guid CityRegionId { get; set; }
         public Guid DeliveryTypeId { get; set; }
         public string OrderShipAddress { get; set; }

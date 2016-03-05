@@ -74,7 +74,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 MainSupplierName = (data.MainSupplierId == null) ? string.Empty : data.MainSupplier.SupplierName,
             };
 
-            result.ProductTypeInfo = (result.ProductTypeInfo == null) ? new ProductTypeViewModel() : new ProductTypeViewModel
+            result.ProductTypeInfo = (data.ProductType == null) ? new ProductTypeViewModel() : new ProductTypeViewModel
             {
                 ProductTypeName = data.ProductType.ProductTypeName,
                 UniqueId = data.ProductType.Id

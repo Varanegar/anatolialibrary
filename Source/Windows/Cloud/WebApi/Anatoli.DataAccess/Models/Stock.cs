@@ -45,8 +45,11 @@ namespace Anatoli.DataAccess.Models
         public virtual bool OverAfterSecondAcceptance { get; set; }
         public virtual bool OverAfterThirdAcceptance { get; set; }
 
-
         public virtual ICollection<User> Users { get; set; }
+
+        [ForeignKey("Company")]
+        public Guid? CompanyId { get; set; }
+        public virtual Company Company { get; set; }
 
     }
 }
