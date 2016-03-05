@@ -11,14 +11,18 @@ namespace Anatoli.DataAccess.Configs
         public CompanyConfig()
         {
             this.HasMany<Stock>(csa => csa.Stocks)
-                .WithRequired(c => c.Company)
+                .WithOptional(c => c.Company)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<Store>(csa => csa.Stores)
-                .WithRequired(c => c.Company)
+                .WithOptional(c => c.Company)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<DistCompanyCenter>(csa => csa.DistCompanyCenters)
+                .WithRequired(c => c.Company)
+                .WillCascadeOnDelete(false);
+
+            this.HasMany<CustomerNotVerified>(csa => csa.CustomerNotVerifieds)
                 .WithRequired(c => c.Company)
                 .WillCascadeOnDelete(false);
 

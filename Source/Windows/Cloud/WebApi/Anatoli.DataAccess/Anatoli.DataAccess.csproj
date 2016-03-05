@@ -376,8 +376,13 @@
     <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.Designer.cs">
       <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603051523493_Tracking-1.cs" />
+    <Compile Include="Migrations\201603051523493_Tracking-1.Designer.cs">
+      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\DistCompanyRegionPolygon.cs" />
     <Compile Include="Models\DistCompanyRegion.cs" />
     <Compile Include="Models\CustomerNotVerified.cs" />
     <Compile Include="Models\DistCompanyCenter.cs" />
@@ -672,6 +677,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261953126_PurchaseOrder-LineItem.resx">
       <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603051523493_Tracking-1.resx">
+      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

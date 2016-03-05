@@ -48,6 +48,13 @@ namespace Anatoli.DataAccess.Models
         public virtual CityRegion RegionLevel2 { get; set; }
         public virtual CityRegion RegionLevel3 { get; set; }
         public virtual CityRegion RegionLevel4 { get; set; }
+        [ForeignKey("Company")]
+        public Guid CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+
+        [ForeignKey("Customer")]
+        public Guid? CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
 
     }
 }

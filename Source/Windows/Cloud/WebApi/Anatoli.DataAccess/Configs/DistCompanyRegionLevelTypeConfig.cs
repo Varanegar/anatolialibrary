@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Configs
         public DistCompanyRegionLevelTypeConfig()
         {
             this.HasMany<DistCompanyRegion>(pp => pp.DistCompanyRegions)
-                .WithOptional(p => p.DistCompanyRegionLevelType)
+                .WithRequired(p => p.DistCompanyRegionLevelType)
                 .WillCascadeOnDelete(false);
 
         }

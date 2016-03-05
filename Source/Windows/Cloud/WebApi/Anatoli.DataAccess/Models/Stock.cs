@@ -48,7 +48,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<User> Users { get; set; }
 
         [ForeignKey("Company")]
-        public Guid CompanyId { get; set; }
+        public Guid? CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
     }

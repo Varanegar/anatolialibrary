@@ -15,6 +15,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Store> Stores { get; set; }
         public virtual ICollection<DistCompanyCenter> DistCompanyCenters { get; set; }
+        public virtual ICollection<CustomerNotVerified> CustomerNotVerifieds { get; set; }
 
     }
 }

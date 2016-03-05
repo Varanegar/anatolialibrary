@@ -15,6 +15,7 @@ namespace Anatoli.DataAccess.Models
         public Nullable<int> Priority { get; set; }
         public Guid? ParentId { get; set; }
         public virtual ICollection<DistCompanyRegion> DistCompanyRegions { get; set; }
+        public virtual ICollection<DistCompanyRegionPolygon> DistCompanyRegionPolygons { get; set; }
         [ForeignKey("ParentId")]
         public virtual DistCompanyRegion Parent { get; set; }
         [ForeignKey("DistCompanyRegionLevelType")]

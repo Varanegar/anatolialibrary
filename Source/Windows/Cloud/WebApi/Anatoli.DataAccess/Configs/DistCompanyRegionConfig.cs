@@ -14,6 +14,9 @@ namespace Anatoli.DataAccess.Configs
                 .WithOptional(pg => pg.Parent)
                 .WillCascadeOnDelete(false);
 
+            this.HasMany<DistCompanyRegionPolygon>(pg => pg.DistCompanyRegionPolygons)
+                .WithRequired(pg => pg.DistCompanyRegion)
+                .WillCascadeOnDelete(true);
 
         }
     }
