@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.ProductModels;
+using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Proxy.ProductConcretes
 {
@@ -47,7 +48,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
         #region Methods
         public override ProductViewModel Convert(Product data)
         {
-            return new ProductViewModel
+            var result = new ProductViewModel
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
@@ -63,11 +64,24 @@ namespace Anatoli.Business.Proxy.ProductConcretes
 
                 PrivateOwnerId = data.PrivateLabelOwner_Id,
 
-                ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
+                ManufactureIdString = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
+                ManufactureName = (data.ManufactureId == null) ? string.Empty : data.Manufacture.ManufactureName,
+
                 ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
                 MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
+
                 MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
+                MainSupplierName = (data.MainSupplierId == null) ? string.Empty : data.MainSupplier.SupplierName,
             };
+
+            result.ProductTypeInfo = (result.ProductTypeInfo == null) ? new ProductTypeViewModel() : new ProductTypeViewModel
+            {
+                ProductTypeName = data.ProductType.ProductTypeName,
+                UniqueId = data.ProductType.Id
+            };
+
+            return result;
+
         }
 
         public override Product ReverseConvert(ProductViewModel data)
@@ -82,7 +96,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductCode = data.ProductCode,
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
-                QtyPerPack = (data.QtyPerPack==0)?1:data.QtyPerPack,
+                QtyPerPack = (data.QtyPerPack == 0) ? 1 : data.QtyPerPack,
                 IsRemoved = data.IsRemoved,
 
                 PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
@@ -92,6 +106,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
                 CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
 
+                ProductType = data.ProductTypeInfo == null ? new ProductType() : new ProductType { Id = data.ProductTypeInfo.UniqueId }
             };
         }
         #endregion

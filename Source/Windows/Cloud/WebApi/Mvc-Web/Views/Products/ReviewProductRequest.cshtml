@@ -12,7 +12,7 @@
                 <div class="list-group-box stock-requests">
                     <div class="list-group" data-bind="foreach: stockRequests">
                         <div class="stock-request-row">
-                            <a href="#" class="list-group-item" data-bind="text: StoreName + '، ' + RequestNumber + '، ' + RequestDate,
+                            <a href="#" class="list-group-item" data-bind="text: stockName + '، ' + sourceStockRequestNo + '، ' + requestDate,
                                    css: { active:  $data == $root.chosenStoreRequest() },
                                    click: $root.refreshStoreRequestInfo">
                             </a>

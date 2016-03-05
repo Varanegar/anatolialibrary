@@ -8,6 +8,8 @@ using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
 using System.Globalization;
 using PersianDate;
+using System.Web;
+using Microsoft.AspNet.Identity;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -233,5 +235,102 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
         #endregion
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestHistory")]
+        [Route("history"), HttpPost, RequireHttps]
+        public async Task<IHttpActionResult> StockProductRequestHistory([FromBody] RequestModel data)
+        {
+            try
+            {
+                Guid stockId;
+                Guid.TryParse(data.stockId, out stockId);
+
+                var model = await new StockProductRequestDomain(OwnerKey).GetHistory(stockId);
+
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestDetailsHistory")]
+        [Route("detailshistory"), HttpPost, RequireHttps]
+        public async Task<IHttpActionResult> StockProductRequestDetailsHistory([FromBody] RequestModel data)
+        {
+            try
+            {
+                var model = await new StockProductRequestDomain(OwnerKey).GetDetailsHistory(data.stockProductRequestId);
+
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequests")]
+        [Route("requests"), HttpPost, RequireHttps]
+        public async Task<IHttpActionResult> GetStockProductRequests([FromBody] RequestModel data)
+        {
+            try
+            {
+                var term = data != null ? data.searchTerm : string.Empty;
+
+                var model = await new StockProductRequestDomain(OwnerKey).GetStockProductRequests(term);
+
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "requestProductDetails")]
+        [Route("requestProductDetails"), HttpPost, RequireHttps]
+        public async Task<IHttpActionResult> GetStockProductRequestProductDetails([FromBody] RequestModel data)
+        {
+            try
+            {
+                var model = await new StockProductRequestDomain(OwnerKey).GetStockProductRequestProductDetails(data.stockProductRequestProductId);
+
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "updateRequestProductDetails")]
+        [Route("updateRequestProductDetails"), HttpPost, RequireHttps]
+        public async Task<IHttpActionResult> UpdateStockProductRequestProductDetails([FromBody] RequestModel data)
+        {
+            try
+            {
+                var currentUserId = Guid.Parse(HttpContext.Current.User.Identity.GetUserId());
+
+                await new StockProductRequestDomain(OwnerKey).UpdateStockProductRequestProductDetails(data.StockProductRequestProductList, Guid.Parse(data.stockId), currentUserId);
+
+                return Ok(data.StockProductRequestProductList);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
     }
 }

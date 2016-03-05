@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.ViewModels.ProductModels
 {
@@ -29,6 +30,10 @@ namespace Anatoli.ViewModels.ProductModels
         //public bool IsRemoved { get; set; }
         public List<CharValueViewModel> CharValues { get; set; }
         public List<ProductPictureViewModel> ProductPictures { get; set; }
+
+        public ProductTypeViewModel ProductTypeInfo { get; set; }
+        public string MainSupplierName { get; set; }
+        public string ManufactureName { get; set; }
     }
     
 }
