@@ -28,7 +28,7 @@ namespace AnatoliAndroid.Fragments
                     var dd = Android.Content.Res.Resources.System.DisplayMetrics.WidthPixels / d;
                     if ((_upTime - _downTime) > 2000 && d < 10)
                         OnLongClick();
-                    else if ((_upTime - _downTime) > 100 && dd < 10)
+                    else if ((_upTime - _downTime) > 100 && dd < 20)
                     {
                         if ((e.RawX - _downX) < -20)
                             OnSwipeLeft(v);
@@ -49,7 +49,7 @@ namespace AnatoliAndroid.Fragments
                     dd = Android.Content.Res.Resources.System.DisplayMetrics.WidthPixels / d;
                     if ((_upTime - _downTime) > 2000 && d < 10)
                         OnLongClick();
-                    else if ((_upTime - _downTime) > 100 && dd < 10)
+                    else if ((_upTime - _downTime) > 100 && dd < 20)
                     {
                         if ((e.RawX - _downX) < -20)
                             OnSwipeLeft(v);

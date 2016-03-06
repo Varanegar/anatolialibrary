@@ -40,7 +40,6 @@ namespace AnatoliAndroid.Fragments
         {
             _viewCache = new Dictionary<string, View>();
             _listAdapter = new DataListAdapter();
-            _listAdapter.SetCache(_viewCache);
             _dataManager = new BaseDataManager();
             _toolsDialogFragment = new ListTools();
 
