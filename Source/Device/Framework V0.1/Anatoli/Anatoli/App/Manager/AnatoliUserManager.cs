@@ -38,7 +38,7 @@ namespace Anatoli.App.Manager
             }
             return userModel;
         }
-        public async Task<RegisterResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
+        public async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
         {
             AnatoliUserModel user = new AnatoliUserModel();
             if (!String.IsNullOrEmpty(email))
@@ -51,7 +51,7 @@ namespace Anatoli.App.Manager
             user.Mobile = tel;
             try
             {
-                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(
+                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<BaseWebClientResult>(
                     TokenType.AppToken,
                 Configuration.WebService.Users.UserCreateUrl,
                 user
