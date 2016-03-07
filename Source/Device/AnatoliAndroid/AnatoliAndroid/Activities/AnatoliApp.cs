@@ -638,15 +638,15 @@ namespace AnatoliAndroid.Activities
                 await CategoryManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
                 pDialog.SetMessage("بروز رسانی لیست کالاها");
-                await ProductManager.SyncProducts(tokenSource);
+                await ProductManager.SyncProductsAsync(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
                 pDialog.SetMessage("بروز رسانی تصاویر");
                 await ItemImageManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                 pDialog.SetMessage("بروز رسانی قیمت ها");
                 await SyncManager.RemoveLogAsync(SyncManager.UpdateCompleted);
-                await ProductManager.SyncPrices(tokenSource);
-                await ProductManager.SyncOnHand(tokenSource);
+                await ProductManager.SyncPricesAsync(tokenSource);
+                await ProductManager.SyncOnHandAsync(tokenSource);
                 await SyncManager.AddLogAsync(SyncManager.UpdateCompleted);
                 pDialog.Dismiss();
                 ProductsListF = AnatoliApp.GetInstance().SetFragment<ProductsListFragment>(ProductsListF, "products_fragment");

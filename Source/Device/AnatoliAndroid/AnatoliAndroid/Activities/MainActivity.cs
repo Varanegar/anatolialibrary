@@ -131,7 +131,7 @@ namespace AnatoliAndroid.Activities
                         {
                             await OrderManager.SyncOrders(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
-                            ProductManager.SyncFavorits();
+                            ProductManager.SyncFavoritsAsync();
                             Configuration.ReadConfigFromFile();
                         }
                         catch (Exception e)
@@ -291,7 +291,7 @@ namespace AnatoliAndroid.Activities
             {
                 try
                 {
-                    await ProductManager.SyncOnHand(null);
+                    await ProductManager.SyncOnHandAsync(null);
                 }
                 catch (Exception e)
                 {

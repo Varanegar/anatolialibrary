@@ -14,8 +14,6 @@ namespace Anatoli.App.Manager
 {
     public class ProductManager : BaseManager<ProductModel>
     {
-        const string _productsTbl = "products";
-        const string _productsView = "products_price_view";
         public static async Task SyncProductTags()
         {
             RemoteQuery q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsTags);
@@ -25,7 +23,7 @@ namespace Anatoli.App.Manager
         {
             return await Anatoli.Framework.DataAdapter.BaseDataAdapter<ProductModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM products_price_view WHERE product_id='{0}'", id)));
         }
-        public static async Task SyncProducts(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncProductsAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -80,7 +78,7 @@ namespace Anatoli.App.Manager
                 throw e;
             }
         }
-        public static async Task SyncPrices(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncPricesAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -134,7 +132,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task SyncOnHand(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncOnHandAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -188,7 +186,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task SyncFavorits()
+        public static async Task SyncFavoritsAsync()
         {
             try
             {
@@ -223,9 +221,9 @@ namespace Anatoli.App.Manager
         }
 
 
-        public static async Task<bool> RemoveFavorit(string pId)
+        public static async Task<bool> RemoveFavoritAsync(string pId)
         {
-            var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
+            var dbQuery = new UpdateCommand("products", new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "0"));
             var r = await DataAdapter.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
@@ -234,9 +232,9 @@ namespace Anatoli.App.Manager
             return r;
         }
 
-        public static async Task<bool> AddToFavorits(string pId)
+        public static async Task<bool> AddToFavoritsAsync(string pId)
         {
-            var dbQuery = new UpdateCommand(_productsTbl, new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "1"));
+            var dbQuery = new UpdateCommand("products", new EqFilterParam("product_id", pId.ToString()), new BasicParam("favorit", "1"));
             var r = await DataAdapter.UpdateItemAsync(dbQuery) > 0 ? true : false;
             if (r)
             {
@@ -328,7 +326,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var dbQuery = new SelectQuery(_productsTbl, new SearchFilterParam("product_name", key));
+                var dbQuery = new SelectQuery("products", new SearchFilterParam("product_name", key));
                 dbQuery.Limit = 10000;
                 var listModel = await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
                 if (listModel.Count > 0)
@@ -424,7 +422,7 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                var dbQuery = new SelectQuery(_productsTbl, new EqFilterParam("favorit", "1"));
+                var dbQuery = new SelectQuery("products", new EqFilterParam("favorit", "1"));
                 return await BaseDataAdapter<ProductModel>.GetListAsync(dbQuery);
             }
             catch (Exception)

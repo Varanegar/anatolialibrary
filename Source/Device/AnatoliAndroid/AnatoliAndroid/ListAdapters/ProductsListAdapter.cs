@@ -304,7 +304,7 @@ namespace AnatoliAndroid.ListAdapters
                     _favoritsButton.Enabled = false;
                     if (this[position].IsFavorit)
                     {
-                        if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
+                        if (await ProductManager.RemoveFavoritAsync(this[position].product_id.ToString()) == true)
                         {
                             this[position].favorit = 0;
                             NotifyDataSetChanged();
@@ -313,7 +313,7 @@ namespace AnatoliAndroid.ListAdapters
                     }
                     else
                     {
-                        if (await ProductManager.AddToFavorits(this[position].product_id.ToString()) == true)
+                        if (await ProductManager.AddToFavoritsAsync(this[position].product_id.ToString()) == true)
                         {
                             this[position].favorit = 1;
                             NotifyDataSetChanged();
