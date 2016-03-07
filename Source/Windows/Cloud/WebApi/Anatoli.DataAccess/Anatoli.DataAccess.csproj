@@ -380,6 +380,14 @@
     <Compile Include="Migrations\201603051523493_Tracking-1.Designer.cs">
       <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603072044273_Barcode.cs" />
+    <Compile Include="Migrations\201603072044273_Barcode.Designer.cs">
+      <DependentUpon>201603072044273_Barcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603072320245_ReorderCalcInfo.cs" />
+    <Compile Include="Migrations\201603072320245_ReorderCalcInfo.Designer.cs">
+      <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\DistCompanyRegionPolygon.cs" />
@@ -680,6 +688,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603051523493_Tracking-1.resx">
       <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603072044273_Barcode.resx">
+      <DependentUpon>201603072044273_Barcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603072320245_ReorderCalcInfo.resx">
+      <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

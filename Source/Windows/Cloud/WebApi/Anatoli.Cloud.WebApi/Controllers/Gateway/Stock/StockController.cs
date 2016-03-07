@@ -90,7 +90,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock List
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "List")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp")] //, Resource = "Stock", Action = "List"
         [Route("stocks"), HttpPost]
         public async Task<IHttpActionResult> GetStocks()
         {
