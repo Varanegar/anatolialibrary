@@ -27,7 +27,7 @@ namespace Anatoli.App.Manager
                     if (customer.IsValid)
                     {
                         await CustomerManager.SaveCustomerAsync(customer);
-                        await OrderManager.SyncOrders(customer.UniqueId);
+                        await OrderManager.SyncOrdersAsync(customer.UniqueId);
                     }
                 }
                 catch (Exception e)
@@ -38,7 +38,7 @@ namespace Anatoli.App.Manager
             }
             return userModel;
         }
-        public async Task<RegisterResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
+        public async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
         {
             AnatoliUserModel user = new AnatoliUserModel();
             if (!String.IsNullOrEmpty(email))
@@ -51,7 +51,7 @@ namespace Anatoli.App.Manager
             user.Mobile = tel;
             try
             {
-                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<RegisterResult>(
+                var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<BaseWebClientResult>(
                     TokenType.AppToken,
                 Configuration.WebService.Users.UserCreateUrl,
                 user
@@ -120,7 +120,7 @@ namespace Anatoli.App.Manager
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.userInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.tokenInfoFile);
                         fileIO.DeleteFile(fileIO.GetDataLoction(), Configuration.customerInfoFile);
-                        
+
                     }
                     );
                 await DataAdapter.UpdateItemAsync(new DeleteCommand("messages"));
@@ -147,27 +147,24 @@ namespace Anatoli.App.Manager
             return result;
         }
 
-        public static async Task<ConfirmResult> SendConfirmCode(string userName, string code)
+        public static async Task<BaseWebClientResult> SendConfirmCode(string userName, string code)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ConfirmResult>(TokenType.AppToken, Configuration.WebService.Users.ConfirmMobile + "?username=" + userName + "&code=" + code);
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<BaseWebClientResult>(TokenType.AppToken, Configuration.WebService.Users.ConfirmMobile + "?username=" + userName + "&code=" + code);
             return result;
         }
 
-        public static async Task<ConfirmResult> RequestConfirmCode(string userName)
+        public static async Task<BaseWebClientResult> RequestConfirmCode(string userName)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ConfirmResult>(TokenType.AppToken, Configuration.WebService.Users.ResendConfirmCode + "?username=" + userName);
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<BaseWebClientResult>(TokenType.AppToken, Configuration.WebService.Users.ResendConfirmCode + "?username=" + userName);
             return result;
         }
 
-        public static async Task<ConfirmResult> ResetPassword(string userName, string passWord)
+        public static async Task<BaseWebClientResult> ResetPassword(string userName, string passWord)
         {
-            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<ConfirmResult>(TokenType.AppToken, Configuration.WebService.Users.ResetPassWord + "?username=" + userName + "&password=" + passWord);
+            var result = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<BaseWebClientResult>(TokenType.AppToken, Configuration.WebService.Users.ResetPassWord + "?username=" + userName + "&password=" + passWord);
             return result;
         }
 
-        public class ConfirmResult : BaseViewModel
-        {
 
-        }
     }
 }

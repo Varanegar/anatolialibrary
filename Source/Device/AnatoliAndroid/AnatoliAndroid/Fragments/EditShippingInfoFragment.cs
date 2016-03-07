@@ -164,7 +164,7 @@ namespace AnatoliAndroid.Fragments
                 _level1List.SetList(list);
                 if (!String.IsNullOrEmpty(_customerViewModel.RegionLevel1Id))
                 {
-                    var level1 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel1Id);
+                    var level1 = await CityRegionManager.GetGroupInfoAsync(_customerViewModel.RegionLevel1Id);
                     _level1List.SelectItem(level1.group_id);
                 }
             }
@@ -184,7 +184,7 @@ namespace AnatoliAndroid.Fragments
                 _level3List.SetList(list);
                 if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel3Id))
                 {
-                    var level3 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel3Id);
+                    var level3 = await CityRegionManager.GetGroupInfoAsync(_customerViewModel.RegionLevel3Id);
                     _level3List.SelectItem(level3.group_id);
                 }
                 else
@@ -210,7 +210,7 @@ namespace AnatoliAndroid.Fragments
                 _level4List.SetList(list);
                 if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel4Id))
                 {
-                    var level4 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel4Id);
+                    var level4 = await CityRegionManager.GetGroupInfoAsync(_customerViewModel.RegionLevel4Id);
                     _level4List.SelectItem(level4.group_id);
                 }
                 else
@@ -236,7 +236,7 @@ namespace AnatoliAndroid.Fragments
                 _level2List.SetList(list);
                 if (!string.IsNullOrEmpty(_customerViewModel.RegionLevel2Id))
                 {
-                    var level2 = await CityRegionManager.GetGroupInfo(_customerViewModel.RegionLevel2Id);
+                    var level2 = await CityRegionManager.GetGroupInfoAsync(_customerViewModel.RegionLevel2Id);
                     _level2List.SelectItem(level2.group_id);
                 }
                 else

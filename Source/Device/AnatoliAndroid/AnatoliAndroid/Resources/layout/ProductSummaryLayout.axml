@@ -151,9 +151,4 @@
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_height="80dp"
-        android:id="@+id/ttt"
-        android:layout_width="match_parent"
-        android:background="#55FFFFFF" />
 </RelativeLayout>

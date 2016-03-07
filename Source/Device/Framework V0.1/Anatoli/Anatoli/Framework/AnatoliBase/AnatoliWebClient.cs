@@ -314,27 +314,6 @@ namespace Anatoli.Framework.AnatoliBase
                 throw new TokenException();
             }
         }
-        //Result ExecRequest<Result>(RestClient client, RestRequest request, System.Threading.CancellationTokenSource tokenSource)
-        //{
-        //    client.IgnoreResponseStatusCode = true;
-        //    var token = tokenSource.Token;
-        //    var respone = client.Execute(request, token);
-        //    while (!respone.IsCompleted && !token.IsCancellationRequested)
-        //    {
-
-        //    }
-        //    JsonDeserializer deserializer = new JsonDeserializer();
-        //    try
-        //    {
-        //        var result = deserializer.Deserialize<Result>(respone.Result);
-        //        string aa = Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length);
-        //        return result;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.Result.RawBytes, 0, respone.Result.RawBytes.Length), e);
-        //    }
-        //}
 
         public void OnTokenExpire()
         {
@@ -393,4 +372,8 @@ namespace Anatoli.Framework.AnatoliBase
         public NoInternetAccess(string message = "No Internet Access", Exception ex = null) : base(message, ex) { }
     }
 
+    public class BaseWebClientResult : BaseViewModel
+    {
+
+    }
 }

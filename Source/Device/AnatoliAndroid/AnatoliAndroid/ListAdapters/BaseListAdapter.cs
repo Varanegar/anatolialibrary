@@ -22,15 +22,10 @@ namespace AnatoliAndroid.ListAdapters
     {
         public List<DataModel> List;
         protected Activity _context;
-        protected Dictionary<string, View> _viewCache;
         public BaseListAdapter()
         {
             List = new List<DataModel>();
             _context = AnatoliApp.GetInstance().Activity;
-            _viewCache = new Dictionary<string, View>();
-        }
-        public void SetCache(Dictionary<string, View> viewCache){
-            _viewCache = viewCache;
         }
 
         public override int Count

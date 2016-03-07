@@ -61,8 +61,6 @@
     <Compile Include="App\Model\Store\DeliveryTimeModel.cs" />
     <Compile Include="App\Model\Store\IncompletePurchaseOrderLineItemViewModel.cs" />
     <Compile Include="App\Model\Store\IncompletePurchaseOrderViewModel.cs" />
-    <Compile Include="App\Model\AnatoliUser\LoginResult.cs" />
-    <Compile Include="App\Model\AnatoliUser\RegisterResult.cs" />
     <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
     <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
     <Compile Include="App\Manager\ItemImageManager.cs" />

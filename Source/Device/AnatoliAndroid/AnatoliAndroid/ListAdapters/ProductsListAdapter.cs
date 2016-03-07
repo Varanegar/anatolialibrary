@@ -61,15 +61,8 @@ namespace AnatoliAndroid.ListAdapters
                 //if (convertView != null)
                 //    view = convertView;
                 //else
-                if (_viewCache.ContainsKey(item.product_id))
-                {
-                    view = _viewCache[item.product_id];
-                }
-                else
-                {
-                    view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
-                    _viewCache.Add(item.product_id, view);
-                }
+                view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+
             if (item.IsGroup)
             {
                 _groupNameTextView = view.FindViewById<TextView>(Resource.Id.textView1);
@@ -106,55 +99,55 @@ namespace AnatoliAndroid.ListAdapters
                 //    view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
                 //    view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
                 //    view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
-                //}
-
-                //else
-                //{
-                //    _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
-                //    _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
-                //    _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
-                //    _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
-                //    _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
-                //    _productAddButton = (ImageButton)view.GetTag(Resource.Id.addImageButton);
-                //    _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
-                //    _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
-                //    _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
-                //    _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
-                //    _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
-                //    _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
-                //    _optionslinearLayout = (LinearLayout)view.GetTag(Resource.Id.optionslinearLayout);
-                //    if (_productCountTextView == null)
-                //    {
-                //        view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
-                //        _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
-                //        _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
-                //        _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
-                //        _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
-                //        _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
-                //        _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
-                //        _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
-                //        _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
-                //        _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
-                //        _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
-                //        _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
-                //        _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
-                //        _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
-
-                //        view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
-                //        view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
-                //        view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
-                //        view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
-                //        view.SetTag(Resource.Id.addImageButton, _productAddButton);
-                //        view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
-                //        view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
-                //        view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
-                //        view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
-                //        view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
-                //        view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
-                //        view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
-                //        view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
                 //    }
-                //}
+
+                //    else
+                //    {
+                //        _productCountTextView = (TextView)view.GetTag(Resource.Id.productCountTextView);
+                //        _favoritsTextView = (TextView)view.GetTag(Resource.Id.favoritsTextView);
+                //        _removeFromBasketTextView = (TextView)view.GetTag(Resource.Id.removeFromBasketTextView);
+                //        _productNameTextView = (TextView)view.GetTag(Resource.Id.productNameTextView);
+                //        _productRemoveButton = (ImageButton)view.GetTag(Resource.Id.removeProductImageView);
+                //        _productAddButton = (ImageButton)view.GetTag(Resource.Id.addImageButton);
+                //        _productIimageView = (ImageView)view.GetTag(Resource.Id.productSummaryImageView);
+                //        _productPriceTextView = (TextView)view.GetTag(Resource.Id.productPriceTextView);
+                //        _removeAllProductsButton = (ImageButton)view.GetTag(Resource.Id.removeAllProductsButton);
+                //        _removeAllRelativeLayout = (RelativeLayout)view.GetTag(Resource.Id.removeAllRelativeLayout);
+                //        _favoritsButton = (ImageButton)view.GetTag(Resource.Id.favoritsButton);
+                //        _counterLinearLayout = (LinearLayout)view.GetTag(Resource.Id.counterLinearLayout);
+                //        _optionslinearLayout = (LinearLayout)view.GetTag(Resource.Id.optionslinearLayout);
+                //        if (_productCountTextView == null)
+                //        {
+                //            view = _context.LayoutInflater.Inflate(Resource.Layout.ProductSummaryLayout, null);
+                //            _productNameTextView = view.FindViewById<TextView>(Resource.Id.productNameTextView);
+                //            _favoritsTextView = view.FindViewById<TextView>(Resource.Id.favoritsTextView);
+                //            _removeFromBasketTextView = view.FindViewById<TextView>(Resource.Id.removeFromBasketTextView);
+                //            _productPriceTextView = view.FindViewById<TextView>(Resource.Id.productPriceTextView);
+                //            _productCountTextView = view.FindViewById<TextView>(Resource.Id.productCountTextView);
+                //            _productIimageView = view.FindViewById<ImageView>(Resource.Id.productSummaryImageView);
+                //            _productAddButton = view.FindViewById<ImageButton>(Resource.Id.addImageButton);
+                //            _productRemoveButton = view.FindViewById<ImageButton>(Resource.Id.removeProductImageView);
+                //            _removeAllProductsButton = view.FindViewById<ImageButton>(Resource.Id.removeAllProductsButton);
+                //            _removeAllRelativeLayout = view.FindViewById<RelativeLayout>(Resource.Id.removeAllRelativeLayout);
+                //            _favoritsButton = view.FindViewById<ImageButton>(Resource.Id.favoritsButton);
+                //            _counterLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.counterLinearLayout);
+                //            _optionslinearLayout = view.FindViewById<LinearLayout>(Resource.Id.optionslinearLayout);
+
+                //            view.SetTag(Resource.Id.productPriceTextView, _productPriceTextView);
+                //            view.SetTag(Resource.Id.removeProductImageView, _productRemoveButton);
+                //            view.SetTag(Resource.Id.favoritsTextView, _favoritsTextView);
+                //            view.SetTag(Resource.Id.removeFromBasketTextView, _removeFromBasketTextView);
+                //            view.SetTag(Resource.Id.addImageButton, _productAddButton);
+                //            view.SetTag(Resource.Id.productSummaryImageView, _productIimageView);
+                //            view.SetTag(Resource.Id.productCountTextView, _productCountTextView);
+                //            view.SetTag(Resource.Id.productNameTextView, _productNameTextView);
+                //            view.SetTag(Resource.Id.removeAllProductsButton, _removeAllProductsButton);
+                //            view.SetTag(Resource.Id.removeAllRelativeLayout, _removeAllRelativeLayout);
+                //            view.SetTag(Resource.Id.favoritsButton, _favoritsButton);
+                //            view.SetTag(Resource.Id.counterLinearLayout, _counterLinearLayout);
+                //            view.SetTag(Resource.Id.optionslinearLayout, _optionslinearLayout);
+                //        }
+                //    }
             }
             if (item.IsGroup)
             {
@@ -219,11 +212,15 @@ namespace AnatoliAndroid.ListAdapters
                 if (item.IsAvailable)
                 {
                     _productPriceTextView.Text = string.Format(" {0} تومان", item.price.ToCurrency());
-                    view.FindViewById<RelativeLayout>(Resource.Id.ttt).Visibility = ViewStates.Gone;
+                    _productIimageView.Alpha = 1f;
+                    _productAddButton.Alpha = 1f;
+                    _productNameTextView.Alpha = 1f;
                 }
                 else
                 {
-                    view.FindViewById<RelativeLayout>(Resource.Id.ttt).Visibility = ViewStates.Visible;
+                    _productIimageView.Alpha = .4f;
+                    _productAddButton.Alpha = .4f;
+                    _productNameTextView.Alpha = 0.4f;
                     _productPriceTextView.Text = "موجود نیست";
                     _productAddButton.Enabled = false;
                 }
@@ -245,7 +242,6 @@ namespace AnatoliAndroid.ListAdapters
 
                 var removeAll = new OnTouchListener();
                 _removeFromBasketTextView.SetOnTouchListener(removeAll);
-                _removeAllProductsButton.SetOnTouchListener(removeAll);
                 removeAll.Click += async (s, e) =>
                 {
                     try
@@ -298,18 +294,17 @@ namespace AnatoliAndroid.ListAdapters
                         _removeAllProductsButton.Enabled = true;
                     }
                 };
-
+                _removeAllProductsButton.SetOnTouchListener(removeAll);
 
 
                 var _favoritsTouchlistener = new OnTouchListener();
                 _favoritsTextView.SetOnTouchListener(_favoritsTouchlistener);
-                _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
                 _favoritsTouchlistener.Click += async (s, e) =>
                 {
                     _favoritsButton.Enabled = false;
                     if (this[position].IsFavorit)
                     {
-                        if (await ProductManager.RemoveFavorit(this[position].product_id.ToString()) == true)
+                        if (await ProductManager.RemoveFavoritAsync(this[position].product_id.ToString()) == true)
                         {
                             this[position].favorit = 0;
                             NotifyDataSetChanged();
@@ -318,7 +313,7 @@ namespace AnatoliAndroid.ListAdapters
                     }
                     else
                     {
-                        if (await ProductManager.AddToFavorits(this[position].product_id.ToString()) == true)
+                        if (await ProductManager.AddToFavoritsAsync(this[position].product_id.ToString()) == true)
                         {
                             this[position].favorit = 1;
                             NotifyDataSetChanged();
@@ -328,16 +323,20 @@ namespace AnatoliAndroid.ListAdapters
                     OptionsClicked(position);
                     _favoritsButton.Enabled = true;
                 };
+                _favoritsButton.SetOnTouchListener(_favoritsTouchlistener);
 
+                AlertDialog.Builder alert1 = new AlertDialog.Builder(AnatoliApp.GetInstance().Activity);
+                alert1.SetMessage("موجودی کالا کافی نیست");
+                alert1.SetPositiveButton(Resource.String.Ok, delegate { });
+                alert1.SetCancelable(false);
                 _addTouchlistener = new OnTouchListener();
-                _productAddButton.SetOnTouchListener(_addTouchlistener);
                 _addTouchlistener.Click += async (s, e) =>
                 {
                     try
                     {
                         if (item.count + 1 > item.qty)
                         {
-                            Toast.MakeText(AnatoliApp.GetInstance().Activity, "موجودی کالا کافی نیست", ToastLength.Short).Show();
+                            alert1.Show();
                             return;
                         }
                         _productAddButton.Enabled = false;
@@ -377,9 +376,9 @@ namespace AnatoliAndroid.ListAdapters
                         _productAddButton.Enabled = true;
                     }
                 };
+                _productAddButton.SetOnTouchListener(_addTouchlistener);
 
                 var _removeTouchlistener = new OnTouchListener();
-                _productRemoveButton.SetOnTouchListener(_removeTouchlistener);
                 _removeTouchlistener.Click += async (s, e) =>
                 {
                     try
@@ -422,6 +421,7 @@ namespace AnatoliAndroid.ListAdapters
                         _productRemoveButton.Enabled = true;
                     }
                 };
+                _productRemoveButton.SetOnTouchListener(_removeTouchlistener);
 
                 OnTouchListener tcl = new OnTouchListener();
                 view.SetOnTouchListener(tcl);

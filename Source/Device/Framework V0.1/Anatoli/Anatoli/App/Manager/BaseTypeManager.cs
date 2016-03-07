@@ -12,7 +12,7 @@ namespace Anatoli.App.Manager
 {
     public class BaseTypeManager : BaseManager<BaseTypeViewModel>
     {
-        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncDataBaseAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -63,10 +63,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<List<DeliveryTypeModel>> GetDeliveryTypesAsync()
-        {
-            return await BaseDataAdapter<DeliveryTypeModel>.GetListAsync(new StringQuery("SELECT * FROM delivery_types"));
-        }
+        
 
     }
 }

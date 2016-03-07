@@ -40,7 +40,7 @@ namespace AnatoliAndroid.Fragments
         {
             _dataManager.ShowGroups = true;
             await base.Search(query, value);
-            var groups = await CategoryManager.Search(value);
+            var groups = await CategoryManager.SearchAsync(value);
             List<ProductModel> pl = new List<ProductModel>();
             foreach (var item in groups)
             {
@@ -49,7 +49,7 @@ namespace AnatoliAndroid.Fragments
                 p.product_name = item.cat_name;
                 p.is_group = 1;
                 p.message = "group";
-                p.image = (await CategoryManager.GetCategoryInfo(item.cat_id)).cat_image;
+                p.image = (await CategoryManager.GetCategoryInfoAsync(item.cat_id)).cat_image;
                 pl.Add(p);
             }
             _listAdapter.List.InsertRange(0, pl);

@@ -13,9 +13,9 @@ namespace Anatoli.App.Model.Store
         public override string ToString()
         {
             if (timespan.Minutes == 0)
-                return "ساعت " + timespan.Hours;
+                return timespan.Hours + " : 00";
             else
-                return "ساعت " + timespan.Hours + ":" + timespan.Minutes;
+                return timespan.Hours + " : " + timespan.Minutes;
         }
     }
 }

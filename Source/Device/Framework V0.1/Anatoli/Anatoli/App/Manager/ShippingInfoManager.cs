@@ -14,13 +14,6 @@ namespace Anatoli.App.Manager
 {
     public class ShippingInfoManager : BaseManager<ShippingInfoModel>
     {
-
-        //public static ShippingInfoModel GetDefault()
-        //{
-        //    SearchFilterParam f = new EqFilterParam("default_shipping", "1");
-        //    SelectQuery dbQuery = new SelectQuery("shipping_info", f);
-        //    return GetItem(dbQuery);
-        //}
         public static async Task<ShippingInfoModel> GetDefaultAsync()
         {
             SearchFilterParam f = new EqFilterParam("default_shipping", "1");
@@ -51,74 +44,5 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<List<DeliveryTimeModel>> GetAvailableDeliveryTimes(string storeId, DateTime now, string deliveryType)
-        {
-            List<DeliveryTimeModel> times = new List<DeliveryTimeModel>();
-            //SelectQuery query = new SelectQuery("stores_calendar", new EqFilterParam("StoreId", storeId), new GreaterFilterParam("Date", now.ConvertToUnixTimestamp().ToString()));
-            SelectQuery query;
-            if (deliveryType.Equals(DeliveryTypeModel.DeliveryType.Equals(deliveryType)))
-                query = new SelectQuery("stores_calendar", new EqFilterParam("StoreId", storeId), new EqFilterParam("CalendarTypeValueId", StoreCalendarViewModel.StoreActivedeliveryTime));
-            else
-                query = new SelectQuery("stores_calendar", new EqFilterParam("StoreId", storeId), new EqFilterParam("CalendarTypeValueId", StoreCalendarViewModel.StoreOpenTime));
-
-            var result = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(query);
-            var time = new TimeSpan(DateTime.Now.Hour, 30, 0);
-            if (time > result.First().FromTime)
-            {
-                for (TimeSpan i = time; i < result.First().ToTime; i += TimeSpan.FromMinutes(30))
-                {
-                    var t = new DeliveryTimeModel();
-                    t.timespan = i;
-                    t.UniqueId = Guid.NewGuid().ToString().ToUpper();
-                    times.Add(t);
-                }
-            }
-            return times;
-        }
-
-        public enum ShippingDateOptions
-        {
-            Today = 1,
-            Tommorow = 2
-        }
-        public enum ShippingTimeOptions
-        {
-            _8To10 = 1,
-            _10To12 = 2,
-            _12To14 = 3,
-            _14To16 = 4,
-            _16To18 = 5,
-            _18To20 = 6,
-        }
-    }
-
-    public class DateOption
-    {
-        public ShippingInfoManager.ShippingDateOptions date;
-        public string itemName;
-        public DateOption(string name, ShippingInfoManager.ShippingDateOptions date)
-        {
-            this.itemName = name;
-            this.date = date;
-        }
-        public override string ToString()
-        {
-            return itemName;
-        }
-    }
-
-    public class TimeOption
-    {
-        public ShippingInfoManager.ShippingTimeOptions time;
-        public string itemName;
-        public TimeOption(string name, ShippingInfoManager.ShippingTimeOptions time)
-        {
-            this.itemName = name;
-            this.time = time;
-        }
-        public override string ToString()
-        {
-            return itemName;
-        }
     }
 }
