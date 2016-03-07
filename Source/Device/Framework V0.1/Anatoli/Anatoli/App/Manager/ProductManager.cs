@@ -454,7 +454,7 @@ namespace Anatoli.App.Manager
                     g.is_group = 1;
                     g.cat_id = lastGroupId;
                     g.cat_name = item.cat_name;
-                    g.product_name = await CategoryManager.GetFullName(item.cat_id);
+                    g.product_name = await CategoryManager.GetFullNameAsync(item.cat_id);
                     list2.Add(g);
                     list2.Add(item);
                 }

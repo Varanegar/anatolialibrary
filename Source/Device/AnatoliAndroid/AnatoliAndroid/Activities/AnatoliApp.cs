@@ -511,8 +511,8 @@ namespace AnatoliAndroid.Activities
                     await ProductsListF.RefreshAsync();
                     var categories = new List<DrawerItemType>();
                     categories.Add(new DrawerMainItem(DrawerMainItem.DrawerMainItems.MainMenu, AnatoliApp.GetResources().GetText(Resource.String.MainMenu)));
-                    var parent = await CategoryManager.GetParentCategory(selectedItem.ItemId);
-                    var current = await CategoryManager.GetCategoryInfo(selectedItem.ItemId);
+                    var parent = await CategoryManager.GetParentCategoryAsync(selectedItem.ItemId);
+                    var current = await CategoryManager.GetCategoryInfoAsync(selectedItem.ItemId);
                     if (current != null)
                     {
                         if (parent != null)
@@ -628,14 +628,14 @@ namespace AnatoliAndroid.Activities
             pDialog.Show();
             try
             {
-                await BaseTypeManager.SyncDataBase(tokenSource);
-                await CityRegionManager.SyncDataBase(tokenSource);
+                await BaseTypeManager.SyncDataBaseAsync(tokenSource);
+                await CityRegionManager.SyncDataBaseAsync(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 2 از 6");
                 pDialog.SetMessage("بروز رسانی لیست فروشگاه ها");
                 await StoreManager.SyncDataBase(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 3 از 6");
                 pDialog.SetMessage("بروز رسانی گروه کالاها");
-                await CategoryManager.SyncDataBase(tokenSource);
+                await CategoryManager.SyncDataBaseAsync(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 4 از 6");
                 pDialog.SetMessage("بروز رسانی لیست کالاها");
                 await ProductManager.SyncProductsAsync(tokenSource);

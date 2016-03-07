@@ -393,7 +393,7 @@ namespace AnatoliAndroid.Fragments
             }
             _deliveryTypeListBox.ItemSelected += async (item) =>
             {
-                _timeOptions = await ShippingInfoManager.GetAvailableDeliveryTimes(AnatoliApp.GetInstance().DefaultStoreId, DateTime.Now.ToLocalTime(), _deliveryTypeListBox.SelectedItem.id);
+                _timeOptions = await DeliveryTimeManager.GetAvailableDeliveryTimes(AnatoliApp.GetInstance().DefaultStoreId, DateTime.Now.ToLocalTime(), _deliveryTypeListBox.SelectedItem.id);
                 _deliveryTimeListBox.SetList(_timeOptions);
                 _deliveryTimeListBox.Deselect();
             };

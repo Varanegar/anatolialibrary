@@ -11,7 +11,7 @@ namespace Anatoli.App.Manager
 {
     public class CategoryManager : BaseManager<CategoryInfoModel>
     {
-        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncDataBaseAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Anatoli.App.Manager
                 return null;
             }
         }
-        public static async Task<CategoryInfoModel> GetParentCategory(string catId)
+        public static async Task<CategoryInfoModel> GetParentCategoryAsync(string catId)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<CategoryInfoModel> GetCategoryInfo(string catId)
+        public static async Task<CategoryInfoModel> GetCategoryInfoAsync(string catId)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<string> GetFullName(string catId)
+        public static async Task<string> GetFullNameAsync(string catId)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace Anatoli.App.Manager
         }
 
 
-        public static async Task<List<CategoryInfoModel>> Search(string value)
+        public static async Task<List<CategoryInfoModel>> SearchAsync(string value)
         {
             var q2 = new StringQuery(string.Format("SELECT * FROM categories WHERE cat_name LIKE '%{0}%' AND is_removed = 0", value));
             var groups = await BaseDataAdapter<CategoryInfoModel>.GetListAsync(q2);

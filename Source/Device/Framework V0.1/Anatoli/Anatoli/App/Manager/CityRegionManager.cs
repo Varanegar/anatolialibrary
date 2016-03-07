@@ -13,7 +13,7 @@ namespace Anatoli.App.Manager
 {
     public class CityRegionManager : BaseManager<CityRegionModel>
     {
-        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncDataBaseAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<CityRegionModel> GetParentGroup(string p)
+        public static async Task<CityRegionModel> GetParentGroupAsync(string p)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<CityRegionModel> GetGroupInfo(string p)
+        public static async Task<CityRegionModel> GetGroupInfoAsync(string p)
         {
             try
             {
