@@ -63,10 +63,7 @@ namespace Anatoli.App.Manager
             }
         }
 
-        public static async Task<List<DeliveryTypeModel>> GetDeliveryTypesAsync()
-        {
-            return await BaseDataAdapter<DeliveryTypeModel>.GetListAsync(new StringQuery("SELECT * FROM delivery_types"));
-        }
+        
 
     }
 }

@@ -14,14 +14,15 @@ namespace Anatoli.App.Manager
 {
     public class ProductManager : BaseManager<ProductModel>
     {
-        public static async Task SyncProductTags()
+        public static async Task SyncProductTagsAsync()
         {
             RemoteQuery q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsTags);
             var list = await BaseDataAdapter<ProductTagViewModel>.GetListAsync(q);
         }
         public static async Task<ProductModel> GetItemAsync(string id)
         {
-            return await Anatoli.Framework.DataAdapter.BaseDataAdapter<ProductModel>.GetItemAsync(new StringQuery(string.Format("SELECT * FROM products_price_view WHERE product_id='{0}'", id)));
+            var query = new StringQuery(string.Format("SELECT * FROM products_price_view WHERE product_id='{0}'", id));
+            return await GetItemAsync(query);
         }
         public static async Task SyncProductsAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {

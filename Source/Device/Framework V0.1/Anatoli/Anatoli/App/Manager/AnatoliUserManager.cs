@@ -27,7 +27,7 @@ namespace Anatoli.App.Manager
                     if (customer.IsValid)
                     {
                         await CustomerManager.SaveCustomerAsync(customer);
-                        await OrderManager.SyncOrders(customer.UniqueId);
+                        await OrderManager.SyncOrdersAsync(customer.UniqueId);
                     }
                 }
                 catch (Exception e)

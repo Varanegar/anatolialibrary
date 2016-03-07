@@ -325,7 +325,7 @@ namespace AnatoliAndroid.Fragments
         {
             try
             {
-                await OrderManager.SaveOrder(order);
+                await OrderManager.SaveOrderAsync(order);
                 OrderSavedDialogFragment dialog = new OrderSavedDialogFragment();
                 var transaction = FragmentManager.BeginTransaction();
                 dialog.Show(transaction, "order_saved_dialog");
@@ -385,7 +385,7 @@ namespace AnatoliAndroid.Fragments
 
             }
 
-            _typeOptions = await BaseTypeManager.GetDeliveryTypesAsync();
+            _typeOptions = await DeliveryTypeManager.GetDeliveryTypesAsync();
             foreach (var item in _typeOptions)
             {
                 item.UniqueId = item.id;

@@ -641,7 +641,7 @@ namespace AnatoliAndroid.Activities
                 await ProductManager.SyncProductsAsync(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 5 از 6");
                 pDialog.SetMessage("بروز رسانی تصاویر");
-                await ItemImageManager.SyncDataBase(tokenSource);
+                await ItemImageManager.SyncDataBaseAsync(tokenSource);
                 pDialog.SetTitle(AnatoliApp.GetResources().GetText(Resource.String.Updating) + " 6 از 6");
                 pDialog.SetMessage("بروز رسانی قیمت ها");
                 await SyncManager.RemoveLogAsync(SyncManager.UpdateCompleted);

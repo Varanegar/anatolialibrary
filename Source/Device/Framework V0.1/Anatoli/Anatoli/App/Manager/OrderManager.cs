@@ -12,7 +12,7 @@ namespace Anatoli.App.Manager
 {
     public class OrderManager : BaseManager<OrderModel>
     {
-        public static async Task<bool> SaveOrder(PurchaseOrderViewModel order)
+        public static async Task<bool> SaveOrderAsync(PurchaseOrderViewModel order)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Anatoli.App.Manager
             var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderStatusHistoryViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrderHistory + "&poId=" + orderId);
             return list;
         }
-        public static async Task SyncOrders(string customerId)
+        public static async Task SyncOrdersAsync(string customerId)
         {
             try
             {
