@@ -36,6 +36,14 @@ namespace Anatoli.Framework.Manager
             _localP = dbQuery;
             _remoteP = remoteQuery;
         }
+        public static async Task<DataModel> GetItemAsync(DBQuery query)
+        {
+            return await Anatoli.Framework.DataAdapter.BaseDataAdapter<DataModel>.GetItemAsync(query);
+        }
+        public static async Task<DataModel> GetItemAsync(RemoteQuery query)
+        {
+            return await Anatoli.Framework.DataAdapter.BaseDataAdapter<DataModel>.GetItemAsync(query);
+        }
 
         public virtual async Task<List<DataModel>> GetNextAsync()
         {

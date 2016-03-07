@@ -10,6 +10,8 @@ using System.Globalization;
 using PersianDate;
 using System.Web;
 using Microsoft.AspNet.Identity;
+using Anatoli.Rastak.ViewModels;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -321,9 +323,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var currentUserId = Guid.Parse(HttpContext.Current.User.Identity.GetUserId());
 
-                await new StockProductRequestDomain(OwnerKey).UpdateStockProductRequestProductDetails(data.stockProductRequestProductList, Guid.Parse(data.stockId), currentUserId);
+                await new StockProductRequestDomain(OwnerKey).UpdateStockProductRequestProductDetails(data.StockProductRequestProductList, Guid.Parse(data.stockId), currentUserId);
 
-                return Ok(data.stockProductRequestProductList);
+                return Ok(data.StockProductRequestProductList);
             }
             catch (Exception ex)
             {

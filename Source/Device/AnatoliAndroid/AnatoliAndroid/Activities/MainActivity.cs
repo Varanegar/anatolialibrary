@@ -102,7 +102,7 @@ namespace AnatoliAndroid.Activities
             _locationManager = (LocationManager)GetSystemService(LocationService);
             AnatoliApp.GetInstance().DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             AnatoliApp.GetInstance().LocationManager = _locationManager;
-            await ProductManager.SyncProductTags();
+            await ProductManager.SyncProductTagsAsync();
             try
             {
                 var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);
@@ -129,9 +129,9 @@ namespace AnatoliAndroid.Activities
 #pragma warning disable
                         try
                         {
-                            await OrderManager.SyncOrders(AnatoliApp.GetInstance().CustomerId);
+                            await OrderManager.SyncOrdersAsync(AnatoliApp.GetInstance().CustomerId);
                             AnatoliApp.GetInstance().RefreshCutomerProfile();
-                            ProductManager.SyncFavorits();
+                            ProductManager.SyncFavoritsAsync();
                             Configuration.ReadConfigFromFile();
                         }
                         catch (Exception e)
@@ -291,7 +291,7 @@ namespace AnatoliAndroid.Activities
             {
                 try
                 {
-                    await ProductManager.SyncOnHand(null);
+                    await ProductManager.SyncOnHandAsync(null);
                 }
                 catch (Exception e)
                 {

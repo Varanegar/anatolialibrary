@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.StoreModels;
 using Anatoli.ViewModels.StockModels;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -69,20 +70,20 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp"), HttpPost]
         [Route("stockOnhand/save")]
-        public async Task<IHttpActionResult> SaveStockOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
+        public async Task<IHttpActionResult> SaveStockOnhands([FromBody] RequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StoreActiveOnhandDomain(owner);
-                var result = await stockDomain.PublishAsync(data);
+                var owner = Guid.Parse(data.privateOwnerId);
+                var stockDomain = new StockActiveOnHandDomain(owner);
+                var result = await stockDomain.PublishAsync(data.StockActiveOnHand);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                log.Error("Web API Call Error", ex);
+                log.Error("Web API Call Error info", ex);
                 return GetErrorResult(ex);
             }
         }

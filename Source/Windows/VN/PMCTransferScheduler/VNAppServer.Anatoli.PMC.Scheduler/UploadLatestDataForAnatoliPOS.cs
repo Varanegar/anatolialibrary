@@ -48,7 +48,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     log.Info("Transfer store");
                     StoreTransferHandler.UploadStoreToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Transfer product");
-                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
                     log.Info("Transfer store price list");
                     StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Transfer store onhand");

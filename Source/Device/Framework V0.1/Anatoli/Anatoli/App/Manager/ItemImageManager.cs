@@ -12,7 +12,7 @@ namespace Anatoli.App.Manager
 {
     public class ItemImageManager : BaseManager<ItemImageViewModel>
     {
-        public static async Task SyncDataBase(System.Threading.CancellationTokenSource cancellationTokenSource)
+        public static async Task SyncDataBaseAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
             try
             {

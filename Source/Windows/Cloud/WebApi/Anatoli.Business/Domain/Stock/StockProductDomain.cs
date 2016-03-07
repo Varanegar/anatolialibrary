@@ -94,7 +94,8 @@ namespace Anatoli.Business.Domain
                     else
                     {
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-
+                        if (item.ReorderCalcTypeId == null)
+                            item.ReorderCalcType = null;
                         item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
 
                         Repository.Add(item);

@@ -24,6 +24,7 @@ using Anatoli.ViewModels.User;
 using Anatoli.Cloud.WebApi.Services;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
+using Anatoli.Rastak.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
