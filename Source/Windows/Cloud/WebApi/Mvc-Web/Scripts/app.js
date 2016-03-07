@@ -495,9 +495,9 @@ function reviewProductRequestViewModel() {
 
                     if (operation == "read")
                         return kendo.stringify(options);
-
+                    
                     if (operation !== "read" && options.models)
-                        return kendo.stringify(options.models);
+                        return kendo.stringify({ stockProductRequestProductList: options.models, stockId: options.stockId });
                 }
             },
             batch: true,

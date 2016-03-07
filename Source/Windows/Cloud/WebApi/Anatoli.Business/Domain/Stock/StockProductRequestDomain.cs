@@ -165,14 +165,17 @@ namespace Anatoli.Business.Domain
             foreach (var item in model)
             {
                 var stock = await StockRepository.GetByIdAsync(stockId);
+                var stockProductRequestProduct = await StockProductRequestProductRepository.GetByIdAsync(item.UniqueId);
 
                 if (stock.Accept1ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted1Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted1Qty = item.MyAcceptedQty;
                 if (stock.Accept2ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted2Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted2Qty = item.MyAcceptedQty;
                 if (stock.Accept3ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted3Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted3Qty = item.MyAcceptedQty;
             }
+
+            await StockProductRequestProductRepository.SaveChangesAsync();
 
             return model;
         }
