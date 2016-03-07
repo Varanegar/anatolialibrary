@@ -208,6 +208,7 @@
     <Content Include="Content\KendoUI\examples.css" />
     <Content Include="Content\KendoUI\images\back.png" />
     <Content Include="Content\KendoUI\images\kendoui.svg" />
+    <Content Include="Content\KendoUI\images\loading-blue-bak.gif" />
     <Content Include="Content\KendoUI\images\wp8_icons.png" />
     <Content Include="Content\KendoUI\images\wp8_inverseicons.png" />
     <Content Include="Content\KendoUI\kendo.bootstrap.min.css" />
@@ -267,6 +268,7 @@
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery-2.2.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
