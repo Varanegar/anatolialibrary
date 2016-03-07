@@ -16,6 +16,23 @@ namespace VNAppServer.Anatoli.Common
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public static string CallServerServicePost(string data, string URI, HttpClient client, string OwnerKey)
+        {
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", OwnerKey);
+            var result = client.PostAsync(URI, content).Result;
+            var str = result.Content.ReadAsStringAsync().Result;
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return str;
+            }
+            else
+            {
+                log.Error("Fail CallServerService URI :" + URI + "\n" + str);
+                throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
+            }
+        }
+
         public static string CallServerServicePost(string data, string URI, HttpClient client)
         {
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");

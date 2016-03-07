@@ -32,7 +32,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                PrivateLabelOwner_Id = data.PrivateOwnerId,
 
                 ProductId = data.ProductGuid,
                 Qty = data.Qty,

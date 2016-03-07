@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

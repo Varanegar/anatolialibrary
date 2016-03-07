@@ -30,6 +30,8 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
 
+                    log.Info("Transfer fiscal year");
+                    FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, GetPrivateOwnerQueryString()); 
                     log.Info("Transfer supplier");
                     SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Transfer manufacture");
@@ -41,7 +43,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     log.Info("Transfer stock");
                     StockTransferHandler.UploadStockToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Transfer product");
-                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
                     log.Info("Transfer stock product");
                     StockProductTransferHandler.UploadStockProductToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Completed Transfer Data Job");

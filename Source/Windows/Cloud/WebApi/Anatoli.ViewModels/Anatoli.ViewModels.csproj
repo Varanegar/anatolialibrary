@@ -70,6 +70,7 @@
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel.cs" />
     <Compile Include="StockModels\StockHistoryOnHandViewModel.cs" />
     <Compile Include="StockModels\StockOnHandSyncViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestProductDetailViewModel.cs" />

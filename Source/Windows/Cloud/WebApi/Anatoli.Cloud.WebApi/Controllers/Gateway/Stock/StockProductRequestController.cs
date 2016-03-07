@@ -10,6 +10,8 @@ using System.Globalization;
 using PersianDate;
 using System.Web;
 using Microsoft.AspNet.Identity;
+using Anatoli.Rastak.ViewModels;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
