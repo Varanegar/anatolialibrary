@@ -55,10 +55,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 .list-group-box {
-    height: 450px;
+    /*height: 450px;
     overflow-y: scroll;
     border: 1px solid #cccccc;
-    border-radius: 4px;
+    border-radius: 4px;*/
 }
 
 .stock-request-row {
@@ -89,3 +89,7 @@ input[type="checkbox"].input-validation-error {
         left: -1px;
         top: -2px;
     }
+
+.k-animation-container {
+    direction: rtl !important;
+}

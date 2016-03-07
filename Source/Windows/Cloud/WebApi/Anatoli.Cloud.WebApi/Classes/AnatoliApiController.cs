@@ -27,7 +27,7 @@ namespace Anatoli.Cloud.WebApi.Classes
             public Guid stockProductRequestId { get; set; }
             public Guid stockProductRequestProductId { get; set; }
 
-            public List<StockProductRequestProductViewModel> StockProductRequestProductList { get; set; }
+            public List<StockProductRequestProductViewModel> stockProductRequestProductList { get; set; }
             public List<ProductViewModel> Products  { get; set; }
 
     }

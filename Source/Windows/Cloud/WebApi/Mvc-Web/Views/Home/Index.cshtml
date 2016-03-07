@@ -1,4 +1,4 @@
-﻿@{
+﻿@*@{
     ViewBag.Title = "Index";
 }
 <link href="~/Content/KendoUI/examples.css" rel="stylesheet" />
@@ -28,23 +28,23 @@
     <hr />
     @*<img src="http://localhost:59822/api/v0/imageManager/image?filename=test.jpg&token=25aa3216-3025-441a-b328-0b30fe3c5268&width=1024&height=768" alt="image" />*@
 
-</div>
+@*</div>
 
-@section scripts
-{
-    <script>
-        $(document).ready(function () {
-            $("#files").kendoUpload({
-                async: {
-                    saveUrl: "http://localhost:59822/api/v0/imageManager/save",
-                    removeUrl: "http://localhost:59822/api/v0/imageManager/remove",
-                    autoUpload: true
-                },
-                multiple: true,
-                upload: function (e) {
-                    e.data = { token: $("#token").val() };
-                }
+    section scripts
+    {
+        <script>
+            $(document).ready(function () {
+                $("#files").kendoUpload({
+                    async: {
+                        saveUrl: "http://localhost:59822/api/v0/imageManager/save",
+                        removeUrl: "http://localhost:59822/api/v0/imageManager/remove",
+                        autoUpload: true
+                    },
+                    multiple: true,
+                    upload: function (e) {
+                        e.data = { token: $("#token").val() };
+                    }
+                });
             });
-        });
-    </script>
-}
+        </script>
+    }*@

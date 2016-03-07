@@ -321,9 +321,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var currentUserId = Guid.Parse(HttpContext.Current.User.Identity.GetUserId());
 
-                await new StockProductRequestDomain(OwnerKey).UpdateStockProductRequestProductDetails(data.StockProductRequestProductList, Guid.Parse(data.stockId), currentUserId);
+                await new StockProductRequestDomain(OwnerKey).UpdateStockProductRequestProductDetails(data.stockProductRequestProductList, Guid.Parse(data.stockId), currentUserId);
 
-                return Ok(data.StockProductRequestProductList);
+                return Ok(data.stockProductRequestProductList);
             }
             catch (Exception ex)
             {

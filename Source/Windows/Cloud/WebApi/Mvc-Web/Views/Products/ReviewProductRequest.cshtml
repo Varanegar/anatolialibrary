@@ -13,10 +13,10 @@
                     <div class="list-group" data-bind="foreach: stockRequests">
                         <div class="stock-request-row">
                             <a href="#" class="list-group-item" data-bind="text: stockName + '، ' + sourceStockRequestNo + '، ' + requestDate,
-                                   css: { active:  $data == $root.chosenStoreRequest() },
+                                   css: { active:  $data == $root.chosenStockProductRequest() },
                                    click: $root.refreshStoreRequestInfo">
                             </a>
-                            <button data-bind="attr: { 'data-id': StoreId }" type="button" class="btn btn-success btn-lnk-stock" aria-label="Left Align">
+                            <button data-bind="attr: { 'data-id': uniqueId }" type="button" class="btn btn-success btn-lnk-stock" aria-label="Left Align">
                                 <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -44,7 +44,7 @@
 
     <script>
         $(function () {
-            ko.applyBindings(new ReviewProductRequestViewModel(), $('.request-review-page')[0]);
+            ko.applyBindings(new reviewProductRequestViewModel(), $('.request-review-page')[0]);
         });
     </script>
 }
