@@ -18,11 +18,15 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
 
                 FromDate = data.FromDate,
                 FromPDate = data.FromPDate,
+
                 MainProductGroupId = data.MainProductGroupId,
+                MainProductGroupName = data.MainProductGroup != null ? data.MainProductGroup.GroupName : string.Empty,
+
                 ProductId = data.ProductId,
                 ProductName = data.Product != null ? data.Product.ProductName : "",
                 ProductTypeId = data.ProductTypeId,
                 SupplierId = data.SupplierId,
+                SupplierName = data.Supplier != null ? data.Supplier.SupplierName : string.Empty,
                 ReorderCalcTypeId = data.ReorderCalcTypeId,
                 RuleTypeId = data.StockProductRequestRuleTypeId,
                 ToDate = data.ToDate,

@@ -46,7 +46,10 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 SendToSourceStockDate = data.SendToSourceStockDate,
                 SendToSourceStockDatePDate = data.SendToSourceStockDatePDate,
                 SourceStockRequestId = data.SourceStockRequestId,
+
+                RequestNo = data.RequestNo,
                 SourceStockRequestNo = data.SourceStockRequestNo,
+
                 TargetStockIssueDate = data.TargetStockIssueDate,
                 TargetStockIssueDatePDate = data.TargetStockIssueDatePDate,
                 TargetStockPaperId = data.TargetStockPaperId,
@@ -66,10 +69,14 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
                 AcceptName1 = string.Format("{0}  |  {1}", data.Accept1By.Title, data.Accept1PDate),
                 AcceptName2 = string.Format("{0}  |  {1}", data.Accept2By.Title, data.Accept2PDate),
                 AcceptName3 = string.Format("{0}  |  {1}", data.Accept3By.Title, data.Accept3PDate),
+
                 StockProductRequestStatus = data.StockProductRequestStatus.StockProductRequestStatusName,
 
-                StockName = data.Stock.StockName,
-
+                StockName = data.Stock != null ? data.Stock.StockName : string.Empty,
+                SupplyType = data.StockProductRequestSupplyType != null ? data.StockProductRequestSupplyType.StockProductRequestSupplyTypeName : string.Empty,
+                RequestType = data.StockProductRequestType != null ? data.StockProductRequestType.StockProductRequestTypeName : string.Empty,
+                SupplyByStock = data.SupplyByStock != null ? data.SupplyByStock.StockName : string.Empty,
+                SupplierName = data.Supplier != null ? data.Supplier.SupplierName : string.Empty,
             };
         }
 
@@ -79,7 +86,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner_Id = data.PrivateOwnerId ,
+                PrivateLabelOwner_Id = data.PrivateOwnerId,
 
                 RequestDate = data.RequestDate,
                 RequestPDate = data.RequestPDate,

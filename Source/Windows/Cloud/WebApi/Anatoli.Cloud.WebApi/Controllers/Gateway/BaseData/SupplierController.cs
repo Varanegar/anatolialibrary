@@ -1,16 +1,16 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.ProductModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/base/supplier")]
-    public class SupplierController : BaseApiController
+    public class SupplierController : AnatoliApiController
     {
         #region Supplier
         [Authorize(Roles = "AuthorizedApp, User")]
@@ -24,6 +24,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var result = await supplierDomain.GetAll();
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("filterSuppliers"), HttpPost]
+        public async Task<IHttpActionResult> FilterSuppliers([FromBody]RequestModel data)
+        {
+            try
+            {
+                var model = await new SupplierDomain(OwnerKey).FilterSuppliersAsync(data.searchTerm);
+
+                return Ok(model);
             }
             catch (Exception ex)
             {
@@ -87,7 +105,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
-        }       
+        }
         #endregion
     }
 }

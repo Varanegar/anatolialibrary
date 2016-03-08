@@ -50,7 +50,7 @@ namespace Anatoli.Business.Domain
         {
             var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
 
-            return Proxy.Convert(dataList.ToList()); ;
+            return Proxy.Convert(dataList.ToList());
         }
 
         public async Task<List<MainProductGroupViewModel>> PublishAsync(List<MainProductGroupViewModel> dataViewModels)
@@ -95,7 +95,7 @@ namespace Anatoli.Business.Domain
                 }
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
@@ -167,6 +167,13 @@ namespace Anatoli.Business.Domain
             }
 
             return dataViewModels;
+        }
+
+        public async Task<List<MainProductGroupViewModel>> FilterMainProductGroupList(string searchTerm)
+        {
+            var dataList = await Repository.GetFromCachedAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.GroupName.Contains(searchTerm));
+
+            return Proxy.Convert(dataList.ToList());
         }
         #endregion
     }

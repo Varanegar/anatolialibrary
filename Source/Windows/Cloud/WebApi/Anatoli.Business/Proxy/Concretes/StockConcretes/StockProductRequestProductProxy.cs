@@ -1,11 +1,8 @@
 using System;
 using System.Linq;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
-using Anatoli.Business.Proxy.Interfaces;
-using Anatoli.DataAccess.Models.Identity;
-using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StockModels;
+using Anatoli.Business.Proxy.Interfaces;
 
 namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
 {
@@ -43,7 +40,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
                 StockProductRequestProductDetails = (data.StockProductRequestProductDetails == null) ? null : StockProductRequestProductDetailProxy.Convert(data.StockProductRequestProductDetails.ToList()),
 
                 ProductCode = data.Product.ProductCode,
-                ProductName = data.Product.ProductName
+                ProductName = data.Product.ProductName,
+
+                StockLevelQty = data.StockLevelQty,
             };
         }
 
@@ -66,6 +65,8 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductConcretes
                 StockProductRequestId = data.StockProductRequestId,
 
                 StockProductRequestProductDetails = (data.StockProductRequestProductDetails == null) ? null : StockProductRequestProductDetailProxy.ReverseConvert(data.StockProductRequestProductDetails),
+
+                StockLevelQty = data.StockLevelQty,
             };
         }
     }

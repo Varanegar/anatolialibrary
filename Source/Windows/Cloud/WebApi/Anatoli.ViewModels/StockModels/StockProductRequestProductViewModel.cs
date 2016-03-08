@@ -56,6 +56,6 @@ namespace Anatoli.ViewModels.StockModels
         public string ProductName { get; set; }
 
         public decimal MyAcceptedQty { get; set; }
-
+        public decimal StockLevelQty { get; set; }
     }
 }
