@@ -75,6 +75,7 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                if (dataViewModels.Count == 0) return dataViewModels;
                 var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
                 var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, PrivateLabelOwnerId, Repository.DbContext);

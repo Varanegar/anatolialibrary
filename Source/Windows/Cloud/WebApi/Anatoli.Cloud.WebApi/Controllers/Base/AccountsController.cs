@@ -31,7 +31,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : AnatoliApiController
     {
-        [AnatoliAuthorize(Roles = "Admin,AuthorizedApp", Resource = "Pages", Action = "List")]
+        [AnatoliAuthorize(Roles = "Admin,AuthorizedApp")] //Resource = "Pages", Action = "List"
         [Route("myWebpages"), HttpPost]
         public async Task<IHttpActionResult> GetPages()
         {
