@@ -322,7 +322,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Products
-        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User")] //, Resource = "Product", Action = "List"
         [Route("products"), HttpPost]
         public async Task<IHttpActionResult> GetProducts()
         {

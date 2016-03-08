@@ -55,19 +55,20 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 PackVolume = data.PackVolume,
                 PackWeight = data.PackWeight,
                 ProductCode = data.ProductCode,
-                ProductName = data.ProductName,
+                Barcode = data.Barcode,
+                //ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
                 ProductTypeId = data.ProductTypeId,
                 IsRemoved = data.IsRemoved,
 
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                PrivateOwnerId = data.PrivateLabelOwner_Id,
 
                 ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
                 ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
                 MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
                 MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
-                Suppliers = SupplierProxy.Convert(data.Suppliers.ToList()),
-                CharValues = CharValueProxy.Convert(data.CharValues.ToList()),
+                //Suppliers = SupplierProxy.Convert(data.Suppliers.ToList()),
+                //CharValues = CharValueProxy.Convert(data.CharValues.ToList()),
             };
         }
 

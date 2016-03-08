@@ -42,8 +42,6 @@ namespace Anatoli.DataAccess.Models
         public Guid StockTypeId { get; set; }
         [ForeignKey("Supplier")]
         public Nullable<Guid> SupplierId { get; set; }
-        [ForeignKey("ReorderCalcType")]
-        public Nullable<Guid> ReorderCalcTypeId { get; set; }
         [ForeignKey("StockProductRequestType")]
         public Guid StockProductRequestTypeId { get; set; }
         [ForeignKey("ProductType")]
@@ -60,7 +58,6 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("StockProductRequestSupplyType")]
         public Guid StockProductRequestSupplyTypeId { get; set; }
         public virtual Supplier Supplier { get; set; }
-        public virtual ReorderCalcType ReorderCalcType { get; set; }
         public virtual Stock Stock { get; set; }
         public virtual Stock SupplyByStock { get; set; }
         public virtual StockType StockType { get; set; }

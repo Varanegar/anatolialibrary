@@ -119,6 +119,7 @@ namespace Anatoli.Business.Domain
                         currentProduct.PackVolume = item.PackVolume;
                         currentProduct.PackWeight = item.PackWeight;
                         currentProduct.ProductCode = item.ProductCode;
+                        currentProduct.Barcode = item.Barcode;
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.StoreProductName = item.StoreProductName;
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;

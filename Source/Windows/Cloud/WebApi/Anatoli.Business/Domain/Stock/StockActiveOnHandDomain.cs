@@ -139,21 +139,21 @@ namespace Anatoli.Business.Domain
 
         public void SaveActiveInfoIntoHistory(AnatoliDbContext context)
         {
-            context.Database.ExecuteSqlCommand(@"insert into StockHistoryOnHands
-                SELECT NewID()
-                      ,[Qty]
-                      ,[StockId]
-                      ,[ProductId]
-                      ,[StockOnHandSyncId]
-                      ,[Number_ID]
-                      ,[CreatedDate]
-                      ,[LastUpdate]
-                      ,[IsRemoved]
-                      ,[AddedBy_Id]
-                      ,[LastModifiedBy_Id]
-                      ,[PrivateLabelOwner_Id]
-                  FROM [dbo].[StockActiveOnHands]
-                ");
+//            context.Database.ExecuteSqlCommand(@"insert into StockHistoryOnHands
+//                SELECT NewID()
+//                      ,[Qty]
+//                      ,[StockId]
+//                      ,[ProductId]
+//                      ,[StockOnHandSyncId]
+//                      ,[Number_ID]
+//                      ,[CreatedDate]
+//                      ,[LastUpdate]
+//                      ,[IsRemoved]
+//                      ,[AddedBy_Id]
+//                      ,[LastModifiedBy_Id]
+//                      ,[PrivateLabelOwner_Id]
+//                  FROM [dbo].[StockActiveOnHands]
+//                ");
         }
         #endregion
     }

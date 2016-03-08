@@ -43,7 +43,7 @@ namespace VNAppServer.Anatoli.Common
         public static readonly string SaveFiscalYearURI = "/api/gateway/fiscalyear/save";
         public static readonly string SaveStockOnHandURI = "/api/gateway/stock/stockOnhand/save";
         public static readonly string SaveStockProductURI = "/api/gateway/stock/stockproduct/save";
-        public static readonly string SaveStockProductRequestURI = "/api/gateway/stock/stockproduct/save";
+        public static readonly string SaveStockProductRequestURI = "/api/gateway/stockproductrequest/save";
         public static readonly string SaveMainProductGroupURI = "/api/gateway/product/mainproductgroups/save";
         public static readonly string SaveUserURI = "/api/accounts/createbybackoffice";
         public static readonly string GetUserURI = "/api/accounts/user";

@@ -86,7 +86,7 @@ namespace Anatoli.Business.Domain
 
                 dataList.ForEach(item =>
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
@@ -94,8 +94,6 @@ namespace Anatoli.Business.Domain
                     }
                     else
                     {
-                        throw new NotImplementedException();
-
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         Repository.AddAsync(item);
                     }

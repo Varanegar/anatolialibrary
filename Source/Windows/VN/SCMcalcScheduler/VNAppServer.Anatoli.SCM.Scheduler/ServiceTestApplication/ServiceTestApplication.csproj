@@ -56,6 +56,10 @@
     <Reference Include="Thinktecture.IdentityModel.Client.Net45">
       <HintPath>..\packages\Thinktecture.IdentityModel.Client.4.0.1\lib\net45\Thinktecture.IdentityModel.Client.Net45.dll</HintPath>
     </Reference>
+    <Reference Include="VNAppServer.Anatoli.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Build\VNAppServer\VNAppServer.Anatoli.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

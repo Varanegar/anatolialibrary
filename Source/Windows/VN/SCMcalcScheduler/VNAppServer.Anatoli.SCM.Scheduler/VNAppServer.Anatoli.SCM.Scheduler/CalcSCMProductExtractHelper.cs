@@ -104,13 +104,13 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
                         StockProductRequestSupplyTypeId = stockSupplyTypeId,
                         StockProductRequestTypeId = RequestTypeId,
                         StockTypeId = StockData.StockTypeId??StockTypeViewModel.StoreStock,
-                        SupplierId = requestedProduct.SupplierGuid,
-                        SupplyByStockId = (Guid)StockData.RelatedSCMStockId,
+                        SupplierId = (requestedProduct.SupplierGuid == null) ? Guid.Empty : requestedProduct.SupplierGuid,
+                        SupplyByStockId = (StockData.RelatedSCMStockId==null)?Guid.Empty:(Guid)StockData.RelatedSCMStockId,
                         UniqueId = Guid.NewGuid(),
                     };
-
+                    currentRequest.StockProductRequestProducts = new List<StockProductRequestProductViewModel>();
                 }
-
+                requestedProduct.StockProductRequestId = currentRequest.UniqueId;
                 currentRequest.StockProductRequestProducts.Add(requestedProduct);
                 if (isNew) StockRequests.Add(currentRequest);
             });
@@ -156,7 +156,10 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
                 {
                     var defaultRule = StockProductRequestRuleViewModel.ReorderRule;
                     //برای کلیه کالاهای تعریف شده در انیار بر اساس اینکه کالا نقطه سفارش داشته باشد به لیست افزوده می شود
-                    StockData.StockProduct.ForEach(item =>{ AddProductByReorderLevel(item.ProductGuid,defaultRule.UniqueId, defaultRule.StockProductRequestRuleName, true ); });
+                    StockData.StockProduct.ForEach(item =>{ 
+                        if(item.MaxQty > 0 )
+                            AddProductByReorderLevel(item.ProductGuid,defaultRule.UniqueId, defaultRule.StockProductRequestRuleName, true ); 
+                    });
 
                     //قوانینی که بر اساس افزودن به درخواست نیستند و قانون پیش فرض سیستم نیز نمی باشد و نوع ان افزودن بر اساس کالاهای مرتبط باشد
                     Rules.ForEach(rule =>
@@ -216,11 +219,15 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
         //در صورت وجود کالا در لیست کالاهی انبار به لیست اضافه می شود
         private void AddProductByReorderLevel(ProductViewModel product, Guid ruleId, string ruleDesc, bool isMainRule = false, decimal forceQty = 0)
         {
+            if (StockData.StockActiveOnHand == null) return;
             var stockProduct = StockData.StockProduct.Find(p => p.ProductGuid == product.UniqueId);
             if (stockProduct != null)
             {
-                AddStockProductByReorderLevel(stockProduct, product.ProductTypeId??ProductTypeViewModel.NormalRequestProducts , Guid.Parse(product.MainSupplierId), Guid.Parse(product.MainProductGroupIdString),
-                    Guid.Parse(product.ManufactureIdString), ruleId, ruleDesc, isMainRule, forceQty);
+                AddStockProductByReorderLevel(stockProduct, product.ProductTypeId??ProductTypeViewModel.NormalRequestProducts ,
+                    (product.MainSupplierId == null)?Guid.Empty:Guid.Parse(product.MainSupplierId), 
+                    (product.MainProductGroupIdString == null)?Guid.Empty: Guid.Parse(product.MainProductGroupIdString),
+                    (product.ManufactureIdString == null)?Guid.Empty:Guid.Parse(product.ManufactureIdString), 
+                    ruleId, ruleDesc, isMainRule, forceQty);
             }
         }
 
@@ -239,7 +246,7 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
         private void AddStockProductByReorderLevelNotForced(StockProductViewModel stockProduct, Guid productTypeGuid, Guid supplierGuid, Guid productGroupGuid,
             Guid manufactureGuid, Guid ruleId, string ruleDesc, bool isMainRule = true)
         {
-            if (RequestedProducts.FindAll(s => s.ProductId == stockProduct.UniqueId).Count > 0) return;
+            if (RequestedProducts.FindAll(s => s.ProductId == stockProduct.ProductGuid).Count > 0) return;
 
             Guid reorderCalcTypeId = stockProduct.ReorderCalcTypeId ?? ReorderCalcTypeViewModel.CalcProductOnly;
 
@@ -248,16 +255,16 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
             if (onHand != null)
             {
                 if (stockProduct.MaxQty != 0 && stockProduct.ReorderLevel >= onHand.Qty && stockProduct.ReorderLevel < stockProduct.MaxQty)
-                    RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.UniqueId, stockProduct.MaxQty - onHand.Qty, reorderCalcTypeId,
-                            ruleId, ruleDesc, stockProduct.MaxQty - onHand.Qty, isMainRule, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid));
+                    RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.ProductGuid, stockProduct.MaxQty - onHand.Qty, reorderCalcTypeId,
+                            ruleId, ruleDesc, stockProduct.MaxQty - onHand.Qty, isMainRule, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid, supplierGuid));
             }
             //در صورتی که کالا در انبار موجودی داشته باشد بر اساس سقف مورد نیاز سفارش گذاشته می شود
             else
             {
                 if (stockProduct.MaxQty != 0 && stockProduct.ReorderLevel < stockProduct.MaxQty)
                 {
-                    RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.UniqueId, stockProduct.MaxQty, reorderCalcTypeId,
-                            ruleId, ruleDesc, stockProduct.MaxQty, isMainRule, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid));
+                    RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.ProductGuid, stockProduct.MaxQty, reorderCalcTypeId,
+                            ruleId, ruleDesc, stockProduct.MaxQty, isMainRule, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid, supplierGuid));
                 }
 
             }
@@ -267,16 +274,16 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
         private void AddStockProductByReorderLevelForced(StockProductViewModel stockProduct, Guid productTypeGuid, Guid supplierGuid, Guid productGroupGuid,
             Guid manufactureGuid, Guid ruleId, string ruleDesc, decimal forceQty)
         {
-            if (RequestedProducts.FindAll(s => s.ProductId == stockProduct.UniqueId).Count > 0)
+            if (RequestedProducts.FindAll(s => s.ProductId == stockProduct.ProductGuid).Count > 0)
             {
-                var currentRequest = RequestedProducts.Find(s => s.ProductId == stockProduct.UniqueId);
+                var currentRequest = RequestedProducts.Find(s => s.ProductId == stockProduct.ProductGuid);
                 currentRequest.RequestQty += forceQty;
                 currentRequest.StockProductRequestProductDetails.Add(new StockProductRequestProductDetailViewModel(currentRequest.UniqueId, ruleId, ruleDesc, forceQty, false));
             }
             else
             {
-                RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.UniqueId, forceQty, ReorderCalcTypeViewModel.CalcProductOnly,
-                    ruleId, ruleDesc, forceQty, true, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid));
+                RequestedProducts.Add(new StockProductRequestProductViewModel(stockProduct.ProductGuid, forceQty, ReorderCalcTypeViewModel.CalcProductOnly,
+                    ruleId, ruleDesc, forceQty, true, stockProduct.StockProductRequestSupplyTypeId, productTypeGuid, supplierGuid));
 
             }
         }

@@ -219,7 +219,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         #region Stock Product Request
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("stockproductrequest/save")]
+        [Route("save")]
         [HttpPost]
         public async Task<IHttpActionResult> SaveStockProductRequests(string privateOwnerId, List<StockProductRequestViewModel> data)
         {

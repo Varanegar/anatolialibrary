@@ -56,6 +56,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 PackVolume = data.PackVolume,
                 PackWeight = data.PackWeight,
                 ProductCode = data.ProductCode,
+                Barcode = data.Barcode,
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
                 ProductTypeId = data.ProductTypeId,
@@ -93,20 +94,21 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 Desctription = data.Desctription,
                 PackVolume = data.PackVolume,
                 PackWeight = data.PackWeight,
+                Barcode = data.Barcode,
                 ProductCode = data.ProductCode,
                 ProductName = data.ProductName,
                 StoreProductName = data.StoreProductName,
                 QtyPerPack = (data.QtyPerPack == 0) ? 1 : data.QtyPerPack,
                 IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                PrivateLabelOwner_Id = data.PrivateOwnerId,
                 Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
                 ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateOwnerId),
                 MainProductGroup = (data.MainProductGroupIdString == null) ? null : MainProductGroupProxy.ReverseConvert(data.MainProductGroupIdString, data.PrivateOwnerId),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
                 CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
 
-                ProductType = data.ProductTypeInfo == null ? new ProductType() : new ProductType { Id = data.ProductTypeInfo.UniqueId }
+                ProductTypeId = data.ProductTypeId
             };
         }
         #endregion

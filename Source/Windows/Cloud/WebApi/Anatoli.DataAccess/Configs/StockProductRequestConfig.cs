@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Configs
     {
         public StockProductRequestConfig()
         {
-            this.HasRequired<Principal>(p => p.Accept1By);
+            this.HasOptional<Principal>(p => p.Accept1By);
             this.HasOptional<Principal>(p => p.Accept2By);
             this.HasOptional<Principal>(p => p.Accept3By);
             
