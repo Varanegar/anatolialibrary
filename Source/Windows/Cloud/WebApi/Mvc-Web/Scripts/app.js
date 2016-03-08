@@ -1,6 +1,8 @@
-﻿'use strict'
-var baseBackendUrl = 'http://localhost:59822',
-    sslBackendUrl = 'https://localhost:44300',
+﻿//'use strict'
+var baseBackendUrl = 'http://localhost:8090',
+    sslBackendUrl = 'https://localhost:443',
+//var baseBackendUrl = 'http://localhost:59822',
+//    sslBackendUrl = 'https://localhost:44300',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
@@ -180,7 +182,7 @@ function accountManagerViewModel() {
         freezUI();
         if (url == undefined || url == '')
             return;
-
+        
         self.result('');
 
         var token = $.cookie("token"),
@@ -210,7 +212,7 @@ function accountManagerViewModel() {
 
         }).fail(function (jqXHR) {
             showAjaxError(jqXHR);
-
+            
             if (jqXHR.status == 401) {
                 self.requestAppObject({ url: url, callType: callType, callBackFunc: callBackFunc });
                 self.openLogin();
@@ -235,13 +237,14 @@ function accountManagerViewModel() {
             password: self.loginPassword()
         };
 
+        freezUI();
         $.ajax({
             type: 'POST',
             url: urls.loginUrl,
             data: loginData,
         }).done(function (data) {
             self.user(data.userName);
-
+            
             $.cookie("token", data.access_token, { expires: 7 });
             $loginForm.data("kendoWindow").close();
 
@@ -250,18 +253,23 @@ function accountManagerViewModel() {
                 self.callApi(retUrlObject.url, retUrlObject.callType, {}, retUrlObject.callBackFunc);
 
             headerMenu.shouldShowLogout(true);
+            unfreezUI();
 
         }).fail(showAjaxError);
     }
 
     self.logout = function () {
+        
         self.user('');
         headerMenu.shouldShowLogout(false);
         $.removeCookie('token');
-        window.location = '/';
+        //window.location = '/';
+        self.openLogin();
+        self.result('لطفا اطلاعات کاربری خود را وارد نمایید');
     }
 
     self.openLogin = function () {
+        unfreezUI();
         $loginForm.data("kendoWindow").center();
         $loginForm.data("kendoWindow").open();
     }
