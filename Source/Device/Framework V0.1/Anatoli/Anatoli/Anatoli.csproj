@@ -34,6 +34,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FinalRelease|AnyCPU'">
+    <OutputPath>bin\FinalRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="App\Manager\AnatoliUserManager.cs" />
     <Compile Include="App\Manager\BaseTypeManager.cs" />
@@ -53,7 +62,7 @@
     <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
     <Compile Include="App\Model\BaseTypeViewModel.cs" />
     <Compile Include="App\Model\BaseValueViewModel.cs" />
-    <Compile Include="App\Model\DeliveryTypeModel.cs" />
+    <Compile Include="App\Model\Store\DeliveryTypeModel.cs" />
     <Compile Include="App\Model\Product\ProductTagValueViewModel.cs" />
     <Compile Include="App\Model\Product\ProductTagViewModel.cs" />
     <Compile Include="App\Model\Store\BasketItemViewModel.cs" />

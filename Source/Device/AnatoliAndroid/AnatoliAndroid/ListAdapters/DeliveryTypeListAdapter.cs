@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Anatoli.App.Manager;
 using Anatoli.App.Model;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliAndroid.ListAdapters
 {

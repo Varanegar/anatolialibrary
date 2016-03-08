@@ -65,6 +65,16 @@
     <EnableProguard>False</EnableProguard>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FinalRelease|AnyCPU'">
+    <OutputPath>bin\FinalRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cheesebaron.SlidingUpPanel">
       <HintPath>..\Packages\Cheesebaron.SlidingUpPanel.dll</HintPath>

@@ -1,4 +1,5 @@
 ﻿using Anatoli.App.Model;
+using Anatoli.App.Model.Store;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Manager;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.App.Model
+namespace Anatoli.App.Model.Store
 {
     public class DeliveryTypeModel : BaseViewModel
     {
