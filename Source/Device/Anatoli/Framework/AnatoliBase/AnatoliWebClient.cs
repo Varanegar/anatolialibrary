@@ -305,7 +305,7 @@ namespace Anatoli.Framework.AnatoliBase
             }
             catch (Exception e)
             {
-                throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
+                throw new AnatoliWebClientException(respone.ResponseUri.ToString(), "Deserializer got inproper jason model at " + respone.ResponseUri.ToString() + ": " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
             }
         }
         async Task<Result> ExecRequestAsync<Result>(RestClient client, RestRequest request)
@@ -325,7 +325,7 @@ namespace Anatoli.Framework.AnatoliBase
             }
             catch (Exception e)
             {
-                throw new AnatoliWebClientException("Deserializer got inproper jason model: " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
+                throw new AnatoliWebClientException(respone.ResponseUri.ToString(), "Deserializer got inproper jason model at " + respone.ResponseUri.ToString() + ": " + Encoding.UTF8.GetString(respone.RawBytes, 0, respone.RawBytes.Length), e);
             }
         }
         async Task ExecRequestAsync(RestClient client, RestRequest request)
@@ -385,15 +385,20 @@ namespace Anatoli.Framework.AnatoliBase
     }
     public class AnatoliWebClientException : Exception
     {
-        public AnatoliWebClientException(string message = "Web Exception", Exception ex = null) : base(message, ex) { }
+        public string RequestUri { get; private set; }
+        public AnatoliWebClientException(string uri, string message = "Web Exception", Exception ex = null)
+            : base(message, ex)
+        {
+            RequestUri = uri;
+        }
     }
     public class ConnectionFailed : AnatoliWebClientException
     {
-        public ConnectionFailed(string message = "Connection Failed", Exception ex = null) : base(message, ex) { }
+        public ConnectionFailed(string uri, string message = "Connection Failed", Exception ex = null) : base(uri, message, ex) { }
     }
     public class NoInternetAccess : AnatoliWebClientException
     {
-        public NoInternetAccess(string message = "No Internet Access", Exception ex = null) : base(message, ex) { }
+        public NoInternetAccess(string uri, string message = "No Internet Access", Exception ex = null) : base(uri, message, ex) { }
     }
 
     public class BaseWebClientResult : BaseViewModel
