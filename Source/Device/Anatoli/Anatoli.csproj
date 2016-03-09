@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7652423F-F5E3-4A1A-958F-7331C42AE409}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Anatoli</RootNamespace>
+    <AssemblyName>Anatoli</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>37413300</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FinalRelease|AnyCPU'">
+    <OutputPath>bin\FinalRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App\Manager\AnatoliUserManager.cs" />
+    <Compile Include="App\Manager\BaseTypeManager.cs" />
+    <Compile Include="App\Manager\CategoryManager.cs" />
+    <Compile Include="App\Manager\CityRegionManager.cs" />
+    <Compile Include="App\Manager\CustomerManager.cs" />
+    <Compile Include="App\Manager\DeliveryTimeManager.cs" />
+    <Compile Include="App\Manager\DeliveryTypeManager.cs" />
+    <Compile Include="App\Manager\MessageManager.cs" />
+    <Compile Include="App\Manager\OrderItemsManager.cs" />
+    <Compile Include="App\Manager\OrderManager.cs" />
+    <Compile Include="App\Manager\ShippingInfoManager.cs" />
+    <Compile Include="App\Manager\ShoppingCardManager.cs" />
+    <Compile Include="App\Manager\ProductManager.cs" />
+    <Compile Include="App\Manager\StoreManager.cs" />
+    <Compile Include="App\Model\AnatoliUser\AnatoliUserModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\ChangePasswordBindingModel.cs" />
+    <Compile Include="App\Model\BaseTypeViewModel.cs" />
+    <Compile Include="App\Model\BaseValueViewModel.cs" />
+    <Compile Include="App\Model\Store\DeliveryTypeModel.cs" />
+    <Compile Include="App\Model\Product\ProductTagValueViewModel.cs" />
+    <Compile Include="App\Model\Product\ProductTagViewModel.cs" />
+    <Compile Include="App\Model\Store\BasketItemViewModel.cs" />
+    <Compile Include="App\Model\Store\BasketViewModel.cs" />
+    <Compile Include="App\Model\Store\DeliveryTimeModel.cs" />
+    <Compile Include="App\Model\Store\IncompletePurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="App\Model\Store\IncompletePurchaseOrderViewModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\ShippingInfoModel.cs" />
+    <Compile Include="App\Model\AnatoliUser\CustomerViewModel.cs" />
+    <Compile Include="App\Manager\ItemImageManager.cs" />
+    <Compile Include="App\Model\ItemImageViewModel.cs" />
+    <Compile Include="App\Model\Product\CategoryInfoModel.cs" />
+    <Compile Include="App\Model\Product\GroupLeftRightModel.cs" />
+    <Compile Include="App\Model\Product\ProductGroupModel.cs" />
+    <Compile Include="App\Model\Product\ProductModel.cs" />
+    <Compile Include="App\Model\Product\ProductUpdateModel.cs" />
+    <Compile Include="App\Model\Store\CityRegionModel.cs" />
+    <Compile Include="App\Model\Store\CityRegionUpdateModel.cs" />
+    <Compile Include="App\Model\Store\MessageModel.cs" />
+    <Compile Include="App\Model\Store\OrderItemModel.cs" />
+    <Compile Include="App\Model\Store\OrderModel.cs" />
+    <Compile Include="App\Model\Store\ProductPriceModel.cs" />
+    <Compile Include="App\Model\Store\ProductPriceUpdateModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderStatusHistoryViewModel.cs" />
+    <Compile Include="App\Model\Store\PurchaseOrderViewModel.cs" />
+    <Compile Include="App\Model\Store\StoreActiveOnhandViewModel.cs" />
+    <Compile Include="App\Model\Store\StoreCalendarViewModel.cs" />
+    <Compile Include="App\Model\Store\StoreDataModel.cs" />
+    <Compile Include="App\Model\Store\StoreUpdateModel.cs" />
+    <Compile Include="App\Model\UpdateTimeModel.cs" />
+    <Compile Include="App\Manager\SyncManager.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliClient.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliSQLite.cs" />
+    <Compile Include="Framework\AnatoliBase\AnatoliWebClient.cs" />
+    <Compile Include="Framework\AnatoliBase\Configuration.cs" />
+    <Compile Include="Framework\AnatoliBase\Crypto.cs" />
+    <Compile Include="Framework\AnatoliBase\Extentions.cs" />
+    <Compile Include="Framework\AnatoliBase\IFileIO.cs" />
+    <Compile Include="Framework\AnatoliBase\QueryParams.cs" />
+    <Compile Include="Framework\AnatoliHandledException.cs" />
+    <Compile Include="Framework\DataAdapter\BaseDataAdapter.cs" />
+    <Compile Include="Framework\Helper\SyncPolicyHelper.cs" />
+    <Compile Include="Framework\Manager\BaseManager.cs" />
+    <Compile Include="Framework\Model\BaseDataModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>packages\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>packages\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto">
+      <HintPath>packages\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.Portable">
+      <HintPath>packages\RestSharp.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite-net">
+      <HintPath>..\AnatoliAndroid\Packages\SQLite-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCL.raw">
+      <HintPath>..\AnatoliAndroid\Packages\SQLitePCL.raw.dll</HintPath>
+    </Reference>
+    <Reference Include="Thinktecture.IdentityModel.Client">
+      <HintPath>packages\Thinktecture.IdentityModel.Client.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

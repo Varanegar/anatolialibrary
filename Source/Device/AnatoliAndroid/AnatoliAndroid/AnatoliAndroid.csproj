@@ -350,7 +350,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework V0.1\Anatoli\Anatoli\Anatoli.csproj">
+    <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
       <Project>{7652423f-f5e3-4a1a-958f-7331c42ae409}</Project>
       <Name>Anatoli</Name>
     </ProjectReference>
