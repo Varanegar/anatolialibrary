@@ -393,6 +393,7 @@ function stockProductManagerViewModel() {
             pageable: true,
             resizable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -412,10 +413,10 @@ function stockProductManagerViewModel() {
             columns: [
                 { field: "productCode", title: "کد کالا", width: 100 },
                 { field: "productName", title: "نام کالا", width: 200 },
-                { field: "minQty", title: "حداقل موجودی", width: 100, filterable: false },
-                { field: "maxQty", title: "حداکثر موجودی", width: 100, filterable: false },
-                { field: "reorderLevel", title: "نقطه سفارش", width: 100, filterable: false },
-                { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: 180, filterable: false, editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
+                { field: "minQty", title: "حداقل موجودی", width: 100 },
+                { field: "maxQty", title: "حداکثر موجودی", width: 100 },
+                { field: "reorderLevel", title: "نقطه سفارش", width: 100 },
+                { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: 180 , editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
             ],
             editable: true
         });
@@ -497,6 +498,7 @@ function reviewProductRequestViewModel() {
             resizable: true,
             selectable: 'row',
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -597,6 +599,7 @@ function reviewProductRequestViewModel() {
             sortable: true,
             resizable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -659,6 +662,7 @@ function reviewProductRequestViewModel() {
             resizable: true,
             pageable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -767,6 +771,7 @@ function ProductHistoryManagerViewModel() {
             pageable: true,
             resizable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -820,6 +825,7 @@ function ProductHistoryManagerViewModel() {
             resizable: true,
             pageable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -1067,6 +1073,7 @@ function stocksManagerViewModel() {
             pageable: true,
             resizable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -1179,7 +1186,6 @@ function stocksManagerViewModel() {
 //******************************************************************//
 
 function productRequestRulesManagerViewModel() {
-    // Data
     var self = this;
 
     self.initProductRulesGrid = function (id) {
@@ -1212,12 +1218,14 @@ function productRequestRulesManagerViewModel() {
                 }
             }
         });
+        debugger;
 
         $(".product-rules-grid").kendoGrid({
             dataSource: dataSource,
             navigatable: true,
             resizable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -1284,7 +1292,7 @@ function productRequestRulesManagerViewModel() {
 };
 
 function productRequestRuleEditManagerViewModel() {
-    // Data
+    //debugger
     var self = this;
 
     function dropdownParameterMap(options, operation) {
@@ -1645,7 +1653,7 @@ function productManagerViewModel() {
                         productTypeInfo: { defaultValue: { uniqueId: "", productTypeName: "" } },
                         mainSupplierName: { editable: false },
                         manufactureName: { editable: false },
-                        isActiveInOrder: { editable: false }
+                        isActiveInOrder: { editable: true }
                     }
                 }
             }
@@ -1657,6 +1665,7 @@ function productManagerViewModel() {
             resizable: true,
             pageable: true,
             filterable: {
+                mode: "row",
                 extra: false,
                 operators: {
                     string: {
@@ -1676,10 +1685,13 @@ function productManagerViewModel() {
             columns: [
                 { field: "productCode", title: "کد کالا", width: 100 },
                 { field: "productName", title: "نام کالا", width: 200 },
-                { field: "productTypeInfo", title: "نوع کالا", width: "180px", editor: categoryDropDownEditor, template: "#=productTypeInfo.productTypeName#", filterable: false },
-                { field: "mainSupplierName", title: "تامین کننده", width: 200, filterable: false },
-                { field: "manufactureName", title: "تولید کننده", width: 200, filterable: false },
-                { field: "isActiveInOrder", title: "فعال", width: 100, filterable: false },
+                {
+                    field: "isActiveInOrder", title: "فعال", width: 100, filterable: false,
+                    template: "<input name='isActiveInOrder' class='ob-paid' type='checkbox' data-bind='checked: isActiveInOrder' #= isActiveInOrder ? checked='checked' : '' #/>"
+                },
+                { field: "productTypeInfo", title: "نوع کالا", width: "180px", editor: categoryDropDownEditor, template: "#=productTypeInfo.productTypeName#" },
+                { field: "mainSupplierName", title: "تامین کننده", width: 200 },
+                { field: "manufactureName", title: "تولید کننده", width: 200 },
             ],
             editable: true
         });

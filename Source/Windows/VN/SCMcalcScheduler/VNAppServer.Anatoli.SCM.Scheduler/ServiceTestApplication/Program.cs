@@ -20,7 +20,7 @@ namespace ServiceTestApplication
             try
             {
                 var restul = log4net.Config.XmlConfigurator.Configure();
-                string ServerURI = "http://46.209.104.2:7000";
+                string ServerURI = "http://localhost:7000";
                 string privateOwnerQueryString = "?privateOwnerId=" + "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 string privateOwnerId = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 log.Info("Start Transfer Data Job");
