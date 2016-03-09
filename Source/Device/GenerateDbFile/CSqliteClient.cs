@@ -12,7 +12,12 @@ namespace GenerateDbFile
     {
         public override SQLiteConnection GetConnection()
         {
+#if (DEBUG)
+            string path = "D:\\Varanegar\\PAA\\AnatoliGit\\Source\\Device\\db\\paa.db";
+#endif
+#if(!DEBUG)
             string path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).ToString() , "db\\paa.db");
+#endif
             var conn = new SQLiteConnection(path);
             return conn;
         }

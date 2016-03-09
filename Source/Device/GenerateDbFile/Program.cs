@@ -25,6 +25,10 @@ namespace GenerateDbFile
             {
                 Console.WriteLine("Syncdronization Anatoli database failed.  error: " + ex.Message);
             }
+            finally
+            {
+                Console.Read();
+            }
         }
     }
 }
