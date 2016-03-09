@@ -1,8 +1,8 @@
 namespace Anatoli.DataAccess.Models
 {
-    using Anatoli.DataAccess.Models.Identity;
     using System;
     using System.Collections.Generic;
+    using Anatoli.DataAccess.Models.Identity;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -70,5 +70,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ProductType ProductType { get; set; }
         public virtual StockProductRequestStatus StockProductRequestStatus { get; set; }
         public virtual ICollection<StockProductRequestProduct> StockProductRequestProducts { get; set; }
+
+        public virtual string RequestNo { get; set; }
     }
 }

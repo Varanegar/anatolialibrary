@@ -388,6 +388,18 @@
     <Compile Include="Migrations\201603072320245_ReorderCalcInfo.Designer.cs">
       <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.cs" />
+    <Compile Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.Designer.cs">
+      <DependentUpon>201603081650418_AddingRequestNoInStockProductRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs" />
+    <Compile Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.Designer.cs">
+      <DependentUpon>201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.cs" />
+    <Compile Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.Designer.cs">
+      <DependentUpon>201603082235353_AddingIsActiveInOrderInProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\DistCompanyRegionPolygon.cs" />
@@ -694,6 +706,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603072320245_ReorderCalcInfo.resx">
       <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.resx">
+      <DependentUpon>201603081650418_AddingRequestNoInStockProductRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.resx">
+      <DependentUpon>201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.resx">
+      <DependentUpon>201603082235353_AddingIsActiveInOrderInProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

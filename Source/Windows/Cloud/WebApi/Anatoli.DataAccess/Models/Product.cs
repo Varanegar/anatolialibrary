@@ -54,5 +54,6 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<Supplier> Suppliers { get; set; }
         public virtual ICollection<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
         public virtual Manufacture Manufacture { get; set; }
+        public virtual bool IsActiveInOrder { get; set; }
     }
 }

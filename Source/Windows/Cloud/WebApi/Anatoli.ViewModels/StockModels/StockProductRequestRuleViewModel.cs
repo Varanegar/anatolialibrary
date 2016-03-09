@@ -1,7 +1,4 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.ViewModels.StockModels
 {
@@ -30,5 +27,7 @@ namespace Anatoli.ViewModels.StockModels
         public decimal Qty { get; set; }
         public dynamic RuleCalcTypeId { get; set; }
         public string ProductName { get; set; }
+        public string SupplierName { get; set; }
+        public string MainProductGroupName { get; set; }
     }
 }

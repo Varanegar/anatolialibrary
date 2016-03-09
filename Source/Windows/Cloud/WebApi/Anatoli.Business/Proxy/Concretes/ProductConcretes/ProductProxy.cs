@@ -1,9 +1,6 @@
-using System;
 using System.Linq;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
 using Anatoli.Business.Proxy.Interfaces;
-using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 
@@ -73,6 +70,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
 
                 MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
                 MainSupplierName = (data.MainSupplierId == null) ? string.Empty : data.MainSupplier.SupplierName,
+
+                IsActiveInOrder = data.IsActiveInOrder,
             };
 
             result.ProductTypeInfo = (data.ProductType == null) ? new ProductTypeViewModel() : new ProductTypeViewModel

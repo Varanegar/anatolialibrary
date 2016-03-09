@@ -560,6 +560,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "MainProductGroupList")]
+        [Route("filterMainProductGroupList"), HttpPost]
+        public async Task<IHttpActionResult> FilterMainProductGroupList([FromBody] RequestModel data)
+        {
+            try
+            {
+                var model = await new MainProductGroupDomain(OwnerKey).FilterMainProductGroupList(data.searchTerm);
+
+                return Ok(model.ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("mainproductgroups/after")]
