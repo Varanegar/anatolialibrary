@@ -2,29 +2,19 @@
     ViewBag.Title = "بازنگری درخواست ها";
 }
 
-<div class="container request-review-page">
+<div class="container request-review-page k-rtl">
     <h1>@ViewBag.Title</h1>
     <hr />
     <div class="row">
-        <div class="col-lg-3 k-rtl">
+        <div class="col-md-12">
             <div class="row">
-                <input type="text" class="form-control stock-term" name="term" placeholder="فروشگاه، شماره درخواست" /><br />
-                <div class="list-group-box stock-requests">
-                    <div class="list-group" data-bind="foreach: stockRequests">
-                        <div class="stock-request-row">
-                            <a href="#" class="list-group-item" data-bind="text: stockName + '، ' + sourceStockRequestNo + '، ' + requestDate,
-                                   css: { active:  $data == $root.chosenStoreRequest() },
-                                   click: $root.refreshStoreRequestInfo">
-                            </a>
-                            <button data-bind="attr: { 'data-id': StoreId }" type="button" class="btn btn-success btn-lnk-stock" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <div class="stock-requests-grid"></div>
             </div>
         </div>
-        <div class="col-lg-9" data-bind="visible: shouldShowRequestInfo">
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" data-bind="visible: shouldShowRequestInfo">
             <div class="row">
                 <div class="col-md-12">
                     <div class="request-review-grid"></div>
@@ -44,7 +34,7 @@
 
     <script>
         $(function () {
-            ko.applyBindings(new ReviewProductRequestViewModel(), $('.request-review-page')[0]);
+            ko.applyBindings(new reviewProductRequestViewModel(), $('.request-review-page')[0]);
         });
     </script>
 }

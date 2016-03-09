@@ -7,6 +7,7 @@ namespace Anatoli.ViewModels.ProductModels
 {
     public class ProductViewModel : BaseViewModel
     {
+        public string Barcode { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string StoreProductName { get; set; }
@@ -34,6 +35,7 @@ namespace Anatoli.ViewModels.ProductModels
         public ProductTypeViewModel ProductTypeInfo { get; set; }
         public string MainSupplierName { get; set; }
         public string ManufactureName { get; set; }
+        public bool IsActiveInOrder { get; set; }
     }
     
 }

@@ -119,13 +119,14 @@ namespace Anatoli.Business.Domain
                         currentProduct.PackVolume = item.PackVolume;
                         currentProduct.PackWeight = item.PackWeight;
                         currentProduct.ProductCode = item.ProductCode;
+                        currentProduct.Barcode = item.Barcode;
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.StoreProductName = item.StoreProductName;
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
                         currentProduct.LastUpdate = DateTime.Now;
 
                         if (item.ProductType != null)
-                            currentProduct.ProductTypeId = item.ProductType.Id;
+                            currentProduct.ProductTypeId = item.ProductTypeId;
 
                         if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
                         if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
@@ -147,7 +148,8 @@ namespace Anatoli.Business.Domain
                         if (item.ProductPictures != null) item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
                         item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-
+                        if (item.ProductTypeId == null)
+                            item.ProductType = null;
                         Repository.Add(item);
                     }
 

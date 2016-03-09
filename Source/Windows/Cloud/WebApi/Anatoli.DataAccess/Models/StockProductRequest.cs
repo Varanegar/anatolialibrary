@@ -1,8 +1,8 @@
 namespace Anatoli.DataAccess.Models
 {
-    using Anatoli.DataAccess.Models.Identity;
     using System;
     using System.Collections.Generic;
+    using Anatoli.DataAccess.Models.Identity;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -42,8 +42,6 @@ namespace Anatoli.DataAccess.Models
         public Guid StockTypeId { get; set; }
         [ForeignKey("Supplier")]
         public Nullable<Guid> SupplierId { get; set; }
-        [ForeignKey("ReorderCalcType")]
-        public Nullable<Guid> ReorderCalcTypeId { get; set; }
         [ForeignKey("StockProductRequestType")]
         public Guid StockProductRequestTypeId { get; set; }
         [ForeignKey("ProductType")]
@@ -60,7 +58,6 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("StockProductRequestSupplyType")]
         public Guid StockProductRequestSupplyTypeId { get; set; }
         public virtual Supplier Supplier { get; set; }
-        public virtual ReorderCalcType ReorderCalcType { get; set; }
         public virtual Stock Stock { get; set; }
         public virtual Stock SupplyByStock { get; set; }
         public virtual StockType StockType { get; set; }
@@ -73,5 +70,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ProductType ProductType { get; set; }
         public virtual StockProductRequestStatus StockProductRequestStatus { get; set; }
         public virtual ICollection<StockProductRequestProduct> StockProductRequestProducts { get; set; }
+
+        public virtual string RequestNo { get; set; }
     }
 }

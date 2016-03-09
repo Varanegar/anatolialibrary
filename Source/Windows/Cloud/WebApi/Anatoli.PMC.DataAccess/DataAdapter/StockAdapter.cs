@@ -109,9 +109,9 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         }
         public List<StockProductViewModel> GetAllStockProducts(DateTime lastUpload)
         {
-            string centerId = "center";
+            //string centerId = "center";
             PMCStoreConfigEntity config = StoreConfigHeler.Instance.GetStoreConfig(1);
-            string connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
+            //string connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
             try
             {
                 string where = "";

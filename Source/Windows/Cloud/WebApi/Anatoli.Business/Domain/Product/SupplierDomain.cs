@@ -30,6 +30,7 @@ namespace Anatoli.Business.Domain
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
+
         public SupplierDomain(ISupplierRepository supplierRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Supplier, SupplierViewModel> proxy)
         {
             Proxy = proxy;
@@ -39,6 +40,13 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
+        public async Task<List<SupplierViewModel>> FilterSuppliersAsync(string searchTerm)
+        {
+            var suppliers = await Repository.GetFromCachedAsync(p => p.SupplierName.Contains(searchTerm));
+
+            return Proxy.Convert(suppliers.ToList()); ;
+        }
+
         public async Task<List<SupplierViewModel>> GetAll()
         {
             var suppliers = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
@@ -82,7 +90,7 @@ namespace Anatoli.Business.Domain
 
                 await Repository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("PublishAsync", ex);
                 throw ex;
@@ -100,7 +108,7 @@ namespace Anatoli.Business.Domain
 
                 currentDataList.ForEach(item =>
                 {
-                    if(dataViewModels.Find(p => p.UniqueId == item.Id) == null)
+                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
                     {
                         item.IsRemoved = true;
                         Repository.UpdateAsync(item);
@@ -127,7 +135,7 @@ namespace Anatoli.Business.Domain
                 suppliers.ForEach(item =>
                 {
                     var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
+
                     Repository.DeleteAsync(product);
                 });
 

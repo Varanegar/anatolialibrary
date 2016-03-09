@@ -8,7 +8,10 @@ namespace Anatoli.DataAccess.Models
 
     public class Product : BaseModel
     {
+        [StringLength(20)]
         public string ProductCode { get; set; }
+        [StringLength(20)]
+        public string Barcode { get; set; }
         [StringLength(200)]
         public string ProductName { get; set; }
         [StringLength(200)]
@@ -51,5 +54,6 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<Supplier> Suppliers { get; set; }
         public virtual ICollection<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
         public virtual Manufacture Manufacture { get; set; }
+        public virtual bool IsActiveInOrder { get; set; }
     }
 }

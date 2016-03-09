@@ -11,12 +11,13 @@ namespace Anatoli.ViewModels.StockModels
         }
 
         public StockProductRequestProductViewModel(Guid productGuid, Guid reorderCalcTypeId, Guid ruleId)
-            : this(productGuid, 0, reorderCalcTypeId, ruleId, "", 0, false, null, null)
+            : this(productGuid, 0, reorderCalcTypeId, ruleId, "", 0, false, null, null, null)
         {
         }
 
         public StockProductRequestProductViewModel(Guid productGuid, decimal requestedQty, Guid reorderCalcTypeId, Guid ruleId, 
-                                                    string ruleDesc, decimal ruleQty, bool isMainRule, Guid? SupplyTypeId, Guid? productTypeId)
+                                                    string ruleDesc, decimal ruleQty, bool isMainRule, Guid? SupplyTypeId, Guid? productTypeId,
+                                                    Guid? supplierGuid)
         {
             this.ProductId = productGuid;
             this.IsRelatedExtracted = false;
@@ -27,6 +28,7 @@ namespace Anatoli.ViewModels.StockModels
             this.ProductTypeId = productTypeId;
             this.StockProductRequestProductDetails = new List<StockProductRequestProductDetailViewModel>();
             this.StockProductRequestProductDetails.Add(new StockProductRequestProductDetailViewModel(this.UniqueId, ruleId, ruleDesc, ruleQty, isMainRule));
+            this.SupplierGuid = supplierGuid;
 
 
         }
@@ -54,6 +56,6 @@ namespace Anatoli.ViewModels.StockModels
         public string ProductName { get; set; }
 
         public decimal MyAcceptedQty { get; set; }
-
+        public decimal StockLevelQty { get; set; }
     }
 }

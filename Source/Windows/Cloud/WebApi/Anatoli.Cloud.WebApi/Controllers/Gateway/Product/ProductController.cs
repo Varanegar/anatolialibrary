@@ -1,5 +1,6 @@
 ﻿using Anatoli.Business.Domain;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -321,7 +322,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Products
-        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User")] //, Resource = "Product", Action = "List"
         [Route("products"), HttpPost]
         public async Task<IHttpActionResult> GetProducts()
         {
@@ -376,16 +377,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp"), HttpPost]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveProducts(string privateOwnerId, List<ProductViewModel> data)
+        public async Task<IHttpActionResult> SaveProducts([FromBody] RequestModel data)
         {
             try
             {
-                if (data != null) log.Info("save product count : " + data.Count);
-                var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ProductDomain(owner);
-                var result = await productDomain.PublishAsync(data);
+                if (data != null) log.Info("save product count : " + data.Products.Count);
+                var productDomain = new ProductDomain(OwnerKey);
+                var result = await productDomain.PublishAsync(data.Products);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -413,15 +413,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
 
         [Authorize(Roles = "AuthorizedApp")]
-        [Route("checkdeleted")]
-        public async Task<IHttpActionResult> CheckeDeletedProducts(string privateOwnerId, List<ProductViewModel> data)
+        [Route("checkdeleted"), HttpPost]
+        public async Task<IHttpActionResult> CheckeDeletedProducts([FromBody] RequestModel data)
         {
             try
             {
-                if (data != null) log.Info("save product count : " + data.Count);
-                var owner = Guid.Parse(privateOwnerId);
+                if (data != null) log.Info("save product count : " + data.Products.Count);
+                var owner = Guid.Parse(data.privateOwnerId);
                 var productDomain = new ProductDomain(owner);
-                var result = await productDomain.CheckDeletedAsync(data);
+                var result = await productDomain.CheckDeletedAsync(data.Products);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -553,6 +553,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var model = await new MainProductGroupDomain(OwnerKey).GetAll();
 
                 return Ok(model.Select(s => new { id = s.UniqueId, groupName = s.GroupName, parent = s.ParentUniqueIdString }).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "MainProductGroupList")]
+        [Route("filterMainProductGroupList"), HttpPost]
+        public async Task<IHttpActionResult> FilterMainProductGroupList([FromBody] RequestModel data)
+        {
+            try
+            {
+                var model = await new MainProductGroupDomain(OwnerKey).FilterMainProductGroupList(data.searchTerm);
+
+                return Ok(model.ToList());
             }
             catch (Exception ex)
             {

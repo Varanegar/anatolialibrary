@@ -86,7 +86,7 @@ namespace Anatoli.Business.Domain
 
                 dataList.ForEach(item =>
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
                     var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                     if (currentData != null)
                     {
@@ -94,8 +94,6 @@ namespace Anatoli.Business.Domain
                     }
                     else
                     {
-                        throw new NotImplementedException();
-
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         Repository.AddAsync(item);
                     }
@@ -165,14 +163,17 @@ namespace Anatoli.Business.Domain
             foreach (var item in model)
             {
                 var stock = await StockRepository.GetByIdAsync(stockId);
+                var stockProductRequestProduct = await StockProductRequestProductRepository.GetByIdAsync(item.UniqueId);
 
                 if (stock.Accept1ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted1Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted1Qty = item.MyAcceptedQty;
                 if (stock.Accept2ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted2Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted2Qty = item.MyAcceptedQty;
                 if (stock.Accept3ById == currentUserId)
-                    await StockProductRequestProductRepository.UpdateBatchAsync(p => p.Id == item.UniqueId, new StockProductRequestProduct { Accepted3Qty = item.MyAcceptedQty });
+                    stockProductRequestProduct.Accepted3Qty = item.MyAcceptedQty;
             }
+
+            await StockProductRequestProductRepository.SaveChangesAsync();
 
             return model;
         }

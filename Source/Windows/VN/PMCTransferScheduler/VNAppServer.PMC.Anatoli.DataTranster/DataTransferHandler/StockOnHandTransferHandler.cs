@@ -10,6 +10,8 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels.StockModels;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,23 +19,30 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string StockOnHandDataType = "StockOnHand";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadStockOnHandToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadStockOnHandToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
         {
             try
             {
                 log.Info("Start CallServerService URI ");
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(StockOnHandDataType);
-                var dbData = StockAdapter.Instance.GetAllStockOnHands(lastUpload);
-                if (dbData != null)
+                var stockList = StockAdapter.Instance.GetAllStocks(DateTime.MinValue);
+                foreach(StockViewModel stock in stockList)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveStockOnHandURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
-                    Utility.SetLastUploadTime(StockOnHandDataType, currentTime);
+                    var dbData = StockAdapter.Instance.GetAllStockOnHandsByStockId(lastUpload, stock.ID.ToString(), stock.StoreId.ToString());
+                    if (dbData != null)
+                    {
+                        RequestModel request = new RequestModel() { StockActiveOnHand = dbData, privateOwnerId = privateOwnerId };
+
+                        string data = JsonConvert.SerializeObject(request);
+                        string URI = serverURI + UriInfo.SaveStockOnHandURI;
+                        var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId);
+                    }
+                    else
+                        log.Info("Null data to transfer " + serverURI);
+    
                 }
-                else
-                    log.Info("Null data to transfer " + serverURI);
+                Utility.SetLastUploadTime(StockOnHandDataType, currentTime);
 
 
                 log.Info("Completed CallServerService ");

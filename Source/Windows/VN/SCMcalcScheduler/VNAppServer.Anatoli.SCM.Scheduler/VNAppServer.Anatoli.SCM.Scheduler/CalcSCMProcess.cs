@@ -38,16 +38,28 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
                 var result = new List<StockProductRequestViewModel>();
 
                 var rules = ConnectionHelper.CallServerServicePost<List<StockProductRequestRuleViewModel>>(requestData, serverUri + UriInfo.GetProductRequestRulesURI, client);
-                var products = ConnectionHelper.CallServerServiceGet<List<ProductViewModel>>(null, serverUri + UriInfo.GetProductsURI + queryString, client);
-                var mainProductGroups = ConnectionHelper.CallServerServiceGet<List<MainProductGroupViewModel>>(null, serverUri + UriInfo.GetMainProductGroupsURI + queryString, client);
+                var products = ConnectionHelper.CallServerServicePost<List<ProductViewModel>>(null, serverUri + UriInfo.GetProductsURI, client,privateOwnerId);
+                var mainProductGroups = ConnectionHelper.CallServerServiceGet<List<MainProductGroupViewModel>>(serverUri + UriInfo.GetMainProductGroupsURI + queryString, client);
 
-                List<StockViewModel> stockList = ConnectionHelper.CallServerServiceGet<List<StockViewModel>>(null, serverUri + UriInfo.GetStocksURI + queryString, client);
+                List<StockViewModel> stockList = ConnectionHelper.CallServerServicePost<List<StockViewModel>>(null, serverUri + UriInfo.GetStocksURI + queryString, client, privateOwnerId);
                 foreach (StockViewModel item in stockList)
                 {
-                    var stockComplete = ConnectionHelper.CallServerServiceGet<List<StockViewModel>>(null, serverUri + UriInfo.GetStocksCompleteURI + queryString + "&stockId=" + item.UniqueId, client).FirstOrDefault();
+                    var stockComplete = ConnectionHelper.CallServerServiceGet<List<StockViewModel>>(serverUri + UriInfo.GetStocksCompleteURI + queryString + "&stockId=" + item.UniqueId, client).FirstOrDefault();
                     result.AddRange(CalcStockProductRequest(stockComplete, rules, products, mainProductGroups, stockRequestTypeId).Result);
                 }
 
+                Guid OwnerKey = Guid.Parse(privateOwnerId);
+                result.ForEach(item =>
+                {
+                    item.PrivateOwnerId = OwnerKey;
+                    item.StockProductRequestProducts.ForEach(itemDetail =>{
+                        itemDetail.PrivateOwnerId = OwnerKey;
+                        itemDetail.StockProductRequestProductDetails.ForEach(itemDetailRules =>
+                        {
+                            itemDetailRules.PrivateOwnerId = OwnerKey;
+                        });
+                    });
+                });
                 return result;
             }
             catch(Exception ex)

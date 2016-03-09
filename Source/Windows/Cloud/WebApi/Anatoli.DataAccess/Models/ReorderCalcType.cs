@@ -12,6 +12,6 @@ namespace Anatoli.DataAccess.Models
         [StringLength(100)]
         public string ReorderTypeName { get; set; }
         public virtual ICollection<StockProduct> StockProducts { get; set; }
-        public virtual ICollection<StockProductRequest> StockProductRequests { get; set; }
+        public virtual ICollection<StockProductRequestRule> StockProductRequestRules { get; set; }
     }
 }

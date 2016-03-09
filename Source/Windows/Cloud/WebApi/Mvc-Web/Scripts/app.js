@@ -1,6 +1,8 @@
-﻿'use strict'
+﻿//'use strict'
+//var baseBackendUrl = 'http://46.209.104.2:7000',
+//    sslBackendUrl = 'https://localhost:443',
 var baseBackendUrl = 'http://localhost:59822',
-    sslBackendUrl = 'https://localhost:44300',
+    //sslBackendUrl = 'https://localhost:44300',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
@@ -31,27 +33,29 @@ var baseBackendUrl = 'http://localhost:59822',
         StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
 
         SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers?privateOwnerId=' + privateOwnerId,
+        filterSuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/filterSuppliers',
 
         mainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/mainProductGroupList',
+        filterMainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/filterMainProductGroupList',
         saveStockRequestProductUrl: baseBackendUrl + '/api/gateway/stockproductrequest/saveStockRequestProduct',
 
-        stockProductRequestUrl: sslBackendUrl + '/api/gateway/stockproductrequest/requests',
-        productRequestsHistory: sslBackendUrl + '/api/gateway/stockproductrequest/history',
-        stockRequestReviewDetailsUrl: sslBackendUrl + '/api/gateway/stockproductrequest/detailshistory',
-        stockProductRequestProductDetailsUrl: sslBackendUrl + '/api/gateway/stockproductrequest/requestProductDetails',
-        updateStockRequestReviewDetailsUrl: sslBackendUrl + '/api/gateway/stockproductrequest/updateRequestProductDetails',
+        stockProductRequestUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requests',
+        productRequestsHistory: baseBackendUrl + '/api/gateway/stockproductrequest/history',
+        stockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/detailshistory',
+        stockProductRequestProductDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requestProductDetails',
+        updateStockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/updateRequestProductDetails',
 
         myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
 
         pages: {
-            products: { url: '/products', title: 'محصولات' },
-            stockproducts: { url: '/stocks/products', title: 'محصولات در انبار' },
+            products: { url: '/products', title: 'کالا' },
+            stockproducts: { url: '/stocks/products', title: 'کالای انبار' },
             reviewproductrequest: { url: '/products/reviewProductRequest', title: 'بازنگری درخواست ها' },
             storerequestshistory: { url: '/products/storeRequestsHistory', title: 'سوابق درخواست ها' },
             stocks: { url: '/stocks', title: 'انبارها' },
-            productrequestrules: { url: '/stocks/productRequestRules', title: 'قوانین کالاها' },
-            usermanager: { url: '/userManager', title: 'تخصیص فروشگاه' },
-            permissions: { url: '/userManager/permissions', title: 'تخصیص مجوز' },
+            productrequestrules: { url: '/stocks/productRequestRules', title: 'قوانین' },
+            usermanager: { url: '/userManager', title: 'تخصیص انبار' },
+            permissions: { url: '/userManager/permissions', title: 'مجوز دسترسی' },
         }
     },
 errorMessage = {
@@ -87,6 +91,20 @@ var showError = function (title, message) {
 var showSuccess = function (title, message) {
     toastr["success"](title, message);
 };
+
+//******************************************************************//
+var freezUI = function () {
+    $.blockUI.defaults.css.border = '2px solid black';
+    $.blockUI.defaults.css.padding = '5px 5px';
+    $.blockUI.defaults.css.height = '40px';
+    $.blockUI({ message: '<img src="/Content/KendoUI/images/loading-blue-bak.gif" height="28" width="28" />     لطفا کمی صبر نمایید...' });
+    //$('#myDiv').block({ message: 'Processing...' });
+};
+
+var unfreezUI = function () {
+    $.unblockUI({ fadeOut: 200 });
+};
+//******************************************************************//
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -153,12 +171,17 @@ function accountManagerViewModel() {
             title = '401';
             message = errorMessage.unAuthorized;
         }
+        if (jqXHR.status == 403) {
+            title = '403';
+            message = errorMessage.unAuthorized;
+        }
         showError(title, message);
 
         console.log(title + ': ' + message);
     }
 
     self.callApi = function (url, callType, dataParams, callBackFunc) {
+        freezUI();
         if (url == undefined || url == '')
             return;
 
@@ -186,6 +209,9 @@ function accountManagerViewModel() {
         }).done(function (data) {
             self.result(data);
             callBackFunc(data);
+
+            unfreezUI();
+
         }).fail(function (jqXHR) {
             showAjaxError(jqXHR);
 
@@ -193,6 +219,8 @@ function accountManagerViewModel() {
                 self.requestAppObject({ url: url, callType: callType, callBackFunc: callBackFunc });
                 self.openLogin();
             }
+
+            unfreezUI();
         });
     }
 
@@ -211,6 +239,7 @@ function accountManagerViewModel() {
             password: self.loginPassword()
         };
 
+        freezUI();
         $.ajax({
             type: 'POST',
             url: urls.loginUrl,
@@ -221,23 +250,28 @@ function accountManagerViewModel() {
             $.cookie("token", data.access_token, { expires: 7 });
             $loginForm.data("kendoWindow").close();
 
-            retUrlObject = self.requestAppObject();
+            var retUrlObject = self.requestAppObject();
             if (retUrlObject)
                 self.callApi(retUrlObject.url, retUrlObject.callType, {}, retUrlObject.callBackFunc);
 
             headerMenu.shouldShowLogout(true);
+            unfreezUI();
 
         }).fail(showAjaxError);
     }
 
     self.logout = function () {
+
         self.user('');
         headerMenu.shouldShowLogout(false);
         $.removeCookie('token');
-        window.location = '/';
+        //window.location = '/';
+        self.openLogin();
+        self.result('لطفا اطلاعات کاربری خود را وارد نمایید');
     }
 
     self.openLogin = function () {
+        unfreezUI();
         $loginForm.data("kendoWindow").center();
         $loginForm.data("kendoWindow").open();
     }
@@ -357,15 +391,31 @@ function stockProductManagerViewModel() {
             dataSource: dataSource,
             navigatable: true,
             pageable: true,
-            height: 550,
-            toolbar: ["save", "cancel"],//"create",
+            resizable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
+            height: 650,
+            toolbar: ["save", "cancel", "excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - کالاهای انبار.xlsx",
+                filterable: true
+            },
             columns: [
                 { field: "productCode", title: "کد کالا", width: 100 },
                 { field: "productName", title: "نام کالا", width: 200 },
-                { field: "minQty", title: "حداقل موجودی", width: 50 },
-                { field: "maxQty", title: "حداکثر موجودی", width: 50 },
-                { field: "reorderLevel", title: "نقطه سفارش", width: 50 },
-                { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: "180px", editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
+                { field: "minQty", title: "حداقل موجودی", width: 100, filterable: false },
+                { field: "maxQty", title: "حداکثر موجودی", width: 100, filterable: false },
+                { field: "reorderLevel", title: "نقطه سفارش", width: 100, filterable: false },
+                { field: "reorderCalcTypeInfo", title: "شیوه سفارش", width: 180, filterable: false, editor: categoryDropDownEditor, template: "#=reorderCalcTypeInfo.reorderTypeName#" },
             ],
             editable: true
         });
@@ -395,17 +445,10 @@ function stockProductManagerViewModel() {
         }
     };
     self.refreshStores();
-
-    self.testAuth = function () {
-        accountManagerApp.callApi(sslBackendUrl + '/api/TestAuth/getsample', 'POST', {}, function (data) {
-
-        });
-    }
-    self.testAuth();
 };
 //******************************************************************//
 
-function ReviewProductRequestViewModel() {
+function reviewProductRequestViewModel() {
     var self = this;
 
     self.stockRequests = ko.observableArray([]);
@@ -413,14 +456,81 @@ function ReviewProductRequestViewModel() {
     self.storeRequestInfo = ko.observable();
     self.shouldShowRequestInfo = ko.observable(false);
 
-    self.refreshStockRequest = function (term) {
-        accountManagerApp.callApi(urls.stockProductRequestUrl, 'POST', { searchTerm: term }, function (data) {
-            self.stockRequests(data);
+    self.initStockRequestGrid = function () {
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: urls.stockProductRequestUrl,
+                    dataType: "json",
+                    contentType: "application/json",
+                    type: "POST",
+                    beforeSend: gridAuthHeader
+                },
+                parameterMap: function (options, operation) {
+                    if (operation == "read")
+                        return kendo.stringify(options);
+                }
+            },
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "uniqueId",
+                    fields: {
+                        uniqueId: { editable: false, nullable: true },
+                        stockName: { type: "string" },
+                        requestNo: { type: "string" },
+                        requestPDate: { type: "string" },
+                        supplyType: { type: "string" },
+                        requestType: { type: "string" },
+                        supplyByStock: { type: "string" },
+                        supplierName: { type: "string" }
+                    }
+                }
+            }
+        });
 
-            if (self.stockRequests().length > 0)
-                self.refreshStoreRequestInfo(self.stockRequests()[0]);
+        $(".stock-requests-grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: true,
+            sortable: true,
+            resizable: true,
+            selectable: 'row',
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
+            height: 350,
+            change: onChange,
+            toolbar: ["excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - بازنگری.xlsx",
+                filterable: true
+            },
+            columns: [
+                { field: "stockName", title: "نام انبار", width: 120 },
+                { field: "requestNo", title: "شماره درخواست", width: 150 },
+                { field: "requestPDate", title: "تاریخ درخواست", width: 140 },
+                { field: "supplyType", title: "شیوه تامین", width: 120 },
+                { field: "requestType", title: "شیوه محاسبه", width: 120 },
+                { field: "supplyByStock", title: "انبار تامین", width: 120 },
+                { field: "supplierName", title: "تامین کننده", width: 120 },
+            ],
         });
     };
+
+    function onChange(arg) {
+        var selectedItem = $(".stock-requests-grid").data("kendoGrid").dataItem(this.select());
+
+        self.refreshStoreRequestInfo(selectedItem);
+    }
 
     self.refreshStoreRequestInfo = function (data) {
         self.chosenStockProductRequest(data);
@@ -429,7 +539,7 @@ function ReviewProductRequestViewModel() {
     };
 
     self.initRequestReviewGrid = function () {
-        debugger
+
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
@@ -457,7 +567,7 @@ function ReviewProductRequestViewModel() {
                         return kendo.stringify(options);
 
                     if (operation !== "read" && options.models)
-                        return kendo.stringify(options.models);
+                        return kendo.stringify({ stockProductRequestProductList: options.models, stockId: options.stockId });
                 }
             },
             batch: true,
@@ -470,6 +580,7 @@ function ReviewProductRequestViewModel() {
                         productCode: { type: "string", editable: false },
                         productName: { type: "string", editable: false },
                         requestQty: { type: "number", editable: false },
+                        stockLevelQty: { type: "number", editable: false },
                         accepted1Qty: { type: "number", editable: false },
                         accepted2Qty: { type: "number", editable: false },
                         accepted3Qty: { type: "number", editable: false },
@@ -484,20 +595,37 @@ function ReviewProductRequestViewModel() {
             navigatable: true,
             pageable: true,
             sortable: true,
-            height: 550,
+            resizable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
+            height: 650,
             detailTemplate: kendo.template($("#template").html()),
             detailInit: detailInit,
             dataBound: function () {
                 // this.expandRow(this.tbody.find("tr.k-master-row").first());
             },
-            toolbar: ["save"],
+            toolbar: ["save", "cancel", "excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - بازنگری.xlsx",
+                filterable: true
+            },
             columns: [
-                { field: "productCode", title: "کد محصول" },
-                { field: "productName", title: "نام محصول", width: 80 },
-                { field: "requestQty", title: "تعداد سفارش", width: 80 },
-                { field: "accepted1Qty", title: "نظر تاییدکننده اول", width: 80 },
-                { field: "accepted2Qty", title: "نظر تاییدکننده دوم", width: 80 },
-                { field: "accepted3Qty", title: "نظر تاییدکننده سوم", width: 80 },
+                { field: "productCode", title: "کد محصول", width: 90 },
+                { field: "productName", title: "نام محصول", width: 180 },
+                { field: "requestQty", title: "تعداد سفارش", width: 60 },
+                { field: "stockLevelQty", title: "موجودی انبار", width: 100 },
+                { field: "accepted1Qty", title: "نظر تاییدکننده اول", width: 100 },
+                { field: "accepted2Qty", title: "نظر تاییدکننده دوم", width: 100 },
+                { field: "accepted3Qty", title: "نظر تاییدکننده سوم", width: 100 },
                 { field: "myAcceptedQty", title: "نظر من", width: 80 },
             ],
             editable: true
@@ -506,7 +634,7 @@ function ReviewProductRequestViewModel() {
 
     function detailInit(e) {
         var detailRow = e.detailRow;
-        debugger
+
         detailRow.find(".request-details-grid").kendoGrid({
             dataSource: {
                 transport: {
@@ -528,15 +656,27 @@ function ReviewProductRequestViewModel() {
             },
             scrollable: false,
             sortable: true,
+            resizable: true,
             pageable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
             columns: [
                 { field: "stockProductRequestRuleName", title: "شماره قانون", width: "150px" },
-                { field: "requestQty", title: "تعداد", width: "150px" },
+                { field: "requestQty", title: "تعداد", width: "150px", filterable: false },
             ]
         });
     }
 
-    self.refreshStockRequest();
+    self.initStockRequestGrid();
 
     $(document).on("keypress", ".stock-term", function (e) {
         var term = $(this).val();
@@ -618,20 +758,37 @@ function ProductHistoryManagerViewModel() {
 
         $(".history-grid").kendoGrid({
             dataSource: dataSource,
+            toolbar: ["excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - سوابق.xlsx",
+                filterable: true
+            },
             navigatable: true,
             pageable: true,
-            height: 550,
+            resizable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
+            height: 650,
             detailTemplate: kendo.template($("#template").html()),
             detailInit: detailInit,
             columns: [
                 { field: "sourceStockRequestNo", title: "شماره درخواست" },
-                { field: "requestPDate", title: "تاریخ درخواست" },
-                { field: "acceptName1", title: "تایید کننده اول" },
-                { field: "acceptName2", title: "تایید کننده دوم" },
-                { field: "acceptName3", title: "تایید کننده سوم" },
-                { field: "stockProductRequestStatus", title: "وضعیت" },
-                { field: "sendToSourceStockDatePDate", title: "تاریخ ارسال" },
-                { field: "targetStockIssueDatePDate", title: "تاریخ تحویل" },
+                { field: "requestPDate", title: "تاریخ درخواست", filterable: false },
+                { field: "acceptName1", title: "تایید کننده اول", filterable: false },
+                { field: "acceptName2", title: "تایید کننده دوم", filterable: false },
+                { field: "acceptName3", title: "تایید کننده سوم", filterable: false },
+                { field: "stockProductRequestStatus", title: "وضعیت", filterable: false },
+                { field: "sendToSourceStockDatePDate", title: "تاریخ ارسال", filterable: false },
+                { field: "targetStockIssueDatePDate", title: "تاریخ تحویل", filterable: false },
             ],
             editable: false
         });
@@ -660,15 +817,27 @@ function ProductHistoryManagerViewModel() {
             },
             scrollable: false,
             sortable: true,
+            resizable: true,
             pageable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
             columns: [
                 { field: "productCode", title: "کد کالا", width: "70px" },
                 { field: "productName", title: "نام کالا", width: "150px" },
-                { field: "accepted1Qty", title: "تعداد تایید شده اول", width: "150px" },
-                { field: "accepted2Qty", title: "تعداد تایید شده دوم", width: "150px" },
-                { field: "accepted3Qty", title: "تعداد تایید شده سوم", width: "150px" },
-                { field: "requestQty", title: "تعداد ارسال شده", width: "150px" },
-                { field: "deliveredQty", title: "تعداد تحویل شده", width: "150px" },
+                { field: "accepted1Qty", title: "تعداد تایید شده اول", width: "150px", filterable: false },
+                { field: "accepted2Qty", title: "تعداد تایید شده دوم", width: "150px", filterable: false },
+                { field: "accepted3Qty", title: "تعداد تایید شده سوم", width: "150px", filterable: false },
+                { field: "requestQty", title: "تعداد ارسال شده", width: "150px", filterable: false },
+                { field: "deliveredQty", title: "تعداد تحویل شده", width: "150px", filterable: false },
             ]
         });
     }
@@ -896,17 +1065,33 @@ function stocksManagerViewModel() {
             dataSource: dataSource,
             navigatable: true,
             pageable: true,
+            resizable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
             height: 650,
-            toolbar: ["save", "cancel"],
+            toolbar: ["save", "cancel", "excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - انبارها.xlsx",
+                filterable: true
+            },
             columns: [
                 { field: "stockCode", title: "کد انبار", width: 100 },
                 { field: "stockName", title: "نام انبار", width: 150 },
-                { field: "approver1", title: "تایید کننده اول", width: "150px", editor: approverDropDownEditor, template: "#=approver1.userName#" },
-                { field: "approver2", title: "تایید کننده دوم", width: "150px", editor: approverDropDownEditor, template: "#=approver2.userName#" },
-                { field: "approver3", title: "تایید کننده سوم", width: "150px", editor: approverDropDownEditor, template: "#=approver3.userName#" },
-                { field: "stockType", title: "نوع انبار", width: "150px", editor: stockTypeDropDownEditor, template: "#=stockType.stockTypeName#" },
-                { field: "mainStock", title: "انباراصلی", width: "150px", editor: nestedStockDropDownEditor, template: "#=mainStock.stockName#" },
-                { field: "relatedStock", title: "تامین کننده", width: "150px", editor: nestedStockDropDownEditor, template: "#=relatedStock.stockName#" },
+                { field: "approver1", title: "تایید کننده اول", width: "150px", editor: approverDropDownEditor, template: "#=approver1.userName#", filterable: false },
+                { field: "approver2", title: "تایید کننده دوم", width: "150px", editor: approverDropDownEditor, template: "#=approver2.userName#", filterable: false },
+                { field: "approver3", title: "تایید کننده سوم", width: "150px", editor: approverDropDownEditor, template: "#=approver3.userName#", filterable: false },
+                { field: "stockType", title: "نوع انبار", width: "150px", editor: stockTypeDropDownEditor, template: "#=stockType.stockTypeName#", filterable: false },
+                { field: "mainStock", title: "انباراصلی", width: "150px", editor: nestedStockDropDownEditor, template: "#=mainStock.stockName#", filterable: false },
+                { field: "relatedStock", title: "تامین کننده", width: "150px", editor: nestedStockDropDownEditor, template: "#=relatedStock.stockName#", filterable: false },
             ],
             editable: true
         });
@@ -1031,13 +1216,25 @@ function productRequestRulesManagerViewModel() {
         $(".product-rules-grid").kendoGrid({
             dataSource: dataSource,
             navigatable: true,
+            resizable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
             pageable: true,
             toolbar: kendo.template($("#toolbar-template").html()),
             height: 500,
             columns: [
                 { field: "stockProductRequestRuleName", title: "نام", width: 100 },
-                { field: "fromPDate", title: "از تاریخ", width: 150 },
-                { field: "topDate", title: "تا تاریخ", width: 150 },
+                { field: "fromPDate", title: "از تاریخ", width: 150, filterable: false },
+                { field: "topDate", title: "تا تاریخ", width: 150, filterable: false },
                 { command: { text: "ویرایش", click: self.showEdit }, title: " ", width: "180px" }
             ],
             editable: false
@@ -1189,21 +1386,33 @@ function productRequestRuleEditManagerViewModel() {
         });
     }
 
+    self.selectedSupplierId = ko.observable('');
     self.refreshSuppliers = function () {
-        $("#suppliers").kendoDropDownList({
+        $("#suppliers").kendoAutoComplete({
             dataTextField: "supplierName",
-            dataValueField: "uniqueId",
+            minLength: 3,
+            delay: 500,
             dataSource: {
                 transport: {
                     read: {
-                        url: urls.SuppliersUrl,
+                        url: urls.filterSuppliersUrl,
                         dataType: "json",
                         contentType: "application/json",
-                        type: "Get",
-                        beforeSend: gridAuthHeader
+                        type: "Post",
+                        beforeSend: gridAuthHeader,
                     },
-                    parameterMap: dropdownParameterMap
+                    parameterMap: function (options, operation) {
+                        options.searchTerm = $("#suppliers").val();
+
+                        if (operation == "read")
+                            return kendo.stringify(options);
+                    }
                 }
+            },
+            select: function (e) {
+                var dataItem = this.dataItem(e.item.index());
+
+                self.selectedSupplierId(dataItem.uniqueId);
             }
         });
     }
@@ -1233,60 +1442,40 @@ function productRequestRuleEditManagerViewModel() {
             },
             select: function (e) {
                 var dataItem = this.dataItem(e.item.index());
-
+                
                 self.selectedProductId(dataItem.id);
             }
         });
     }
 
-    self.mainProductGroups = ko.observableArray([]);
     self.selectedMainProductGroupId = ko.observable('');
-    self.initMainProductGroup = function (data) {
-        data.forEach(function (itm) {
-            itm["expanded"] = true;
-        });
-
-        $(".main-product-group-tree-view").kendoTreeView({
+    self.refreshMainProductGroup = function () {
+        $("#main-product-group").kendoAutoComplete({
             dataTextField: "groupName",
-            loadOnDemand: false,
+            minLength: 3,
+            delay: 500,
             dataSource: {
                 transport: {
-                    read: function (options) {
-                        var id = options.data.id || "00000000-0000-0000-0000-000000000000";
+                    read: {
+                        url: urls.filterMainProductGroupsUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "POST",
+                        beforeSend: gridAuthHeader,
+                    },
+                    parameterMap: function (options, operation) {
+                        options.searchTerm = $("#main-product-group").val();
 
-                        options.success($.grep(data, function (x) {
-                            return x.parent == id;
-                        }));
-                    }
-                },
-                schema: {
-                    model: {
-                        id: "id",
-                        hasChildren: function (x) {
-                            var id = x.id;
-
-                            for (var i = 0; i < data.length; i++) {
-                                if (data[i].parent == id) {
-                                    return true;
-                                }
-                            }
-
-                            return false;
-                        }
+                        if (operation == "read")
+                            return kendo.stringify(options);
                     }
                 }
             },
             select: function (e) {
-                var dataItem = this.dataItem(e.node);
+                var dataItem = this.dataItem(e.item.index());
 
-                self.selectedMainProductGroupId(dataItem.id);
+                self.selectedMainProductGroupId(dataItem.uniqueId);
             }
-        });
-    }
-    self.refreshMainProductGroup = function () {
-        accountManagerApp.callApi(urls.mainProductGroupsUrl, 'POST', {}, function (data) {
-            self.mainProductGroups(data);
-            self.initMainProductGroup(data);
         });
     }
 
@@ -1308,9 +1497,12 @@ function productRequestRuleEditManagerViewModel() {
 
                 $('#stockProductRequestRuleCalcType').data("kendoDropDownList").value(data.ruleCalcTypeId);
                 $('#stockProductRequestRuleType').data("kendoDropDownList").value(data.ruleTypeId);
-
+                                
                 if (data.supplierId && data.supplierId !== '') {
-                    $('#suppliers').data("kendoDropDownList").value(data.supplierId);
+
+                    self.selectedSupplierId(data.supplierId);
+                    $('#suppliers').val(data.supplierName);
+
                     if ($('#via-filter').val() !== 1)
                         $('#via-filter').val(1).trigger("change");
                 }
@@ -1325,19 +1517,16 @@ function productRequestRuleEditManagerViewModel() {
                 }
 
                 if (data.mainProductGroupId && data.mainProductGroupId !== '') {
+                                                            
+                    self.selectedMainProductGroupId(data.mainProductGroupId);
+                    $('#main-product-group').val(data.mainProductGroupName);
 
-                    var treeview = $(".main-product-group-tree-view").data("kendoTreeView");
-                    var getitem = treeview.dataSource.get(data.mainProductGroupId);
-                    treeview.findByUid(getitem.uid);
-                    var selectitem = treeview.findByUid(getitem.uid);
-                    treeview.select(selectitem);
 
                     if ($('#via-filter').val() !== 3)
                         $('#via-filter').val(3).trigger("change");
                 }
 
             });
-
     };
 
     self.refreshReorderCalcType();
@@ -1378,7 +1567,7 @@ function productRequestRuleEditManagerViewModel() {
 
         var viaFilter = $('#via-filter').val();
         if (viaFilter === "1")
-            data["supplierId"] = $('#suppliers').val();
+            data["supplierId"] = self.selectedSupplierId();
         if (viaFilter === "2")
             data["productId"] = self.selectedProductId();
         if (viaFilter === "3")
@@ -1389,6 +1578,10 @@ function productRequestRuleEditManagerViewModel() {
             errors.push('نام را وارد نمایید');
         if (data.fromDate === '' || data.toDate === '')
             errors.push('تاریخ را انتخاب نمایید');
+        if (viaFilter === "0")
+            errors.push('لطفا یکی از موارد فیلد براساس را انتخاب نمایید')
+        if (viaFilter === "1" && data["supplierId"] === '')
+            errors.push('تامین کننده را انتخاب نمایید');
         if (viaFilter === "2" && data["productId"] === '')
             errors.push('نام محصول را وارد نمایید');
         if (viaFilter === "3" && data["mainProductGroupId"] === '')
@@ -1400,7 +1593,8 @@ function productRequestRuleEditManagerViewModel() {
             });
             return;
         }
-        console.log(JSON.stringify(data));
+
+        //console.log(JSON.stringify(data));
 
         accountManagerApp.callApi(urls.saveStockRequestProductUrl, 'POST', { stockRequestProduct: JSON.stringify(data) }, function (data) {
             $(".edit-window").data("kendoWindow").close();
@@ -1450,7 +1644,8 @@ function productManagerViewModel() {
                         productName: { editable: false },
                         productTypeInfo: { defaultValue: { uniqueId: "", productTypeName: "" } },
                         mainSupplierName: { editable: false },
-                        manufactureName: { editable: false }
+                        manufactureName: { editable: false },
+                        isActiveInOrder: { editable: false }
                     }
                 }
             }
@@ -1459,15 +1654,32 @@ function productManagerViewModel() {
         $(".products-grid").kendoGrid({
             dataSource: dataSource,
             navigatable: true,
+            resizable: true,
             pageable: true,
-            height: 550,
-            toolbar: ["save", "cancel"],
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "شروع با",
+                        eq: "مساوی با",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    }
+                }
+            },
+            height: 650,
+            toolbar: ["save", "cancel", "excel"],
+            excel: {
+                fileName: "مدیریت تامین کالا - کالاها.xlsx",
+                filterable: true
+            },
             columns: [
                 { field: "productCode", title: "کد کالا", width: 100 },
                 { field: "productName", title: "نام کالا", width: 200 },
-                { field: "productTypeInfo", title: "نوع کالا", width: "180px", editor: categoryDropDownEditor, template: "#=productTypeInfo.productTypeName#" },
-                { field: "mainSupplierName", title: "تامین کننده", width: 200 },
-                { field: "manufactureName", title: "تولید کننده", width: 200 },
+                { field: "productTypeInfo", title: "نوع کالا", width: "180px", editor: categoryDropDownEditor, template: "#=productTypeInfo.productTypeName#", filterable: false },
+                { field: "mainSupplierName", title: "تامین کننده", width: 200, filterable: false },
+                { field: "manufactureName", title: "تولید کننده", width: 200, filterable: false },
+                { field: "isActiveInOrder", title: "فعال", width: 100, filterable: false },
             ],
             editable: true
         });

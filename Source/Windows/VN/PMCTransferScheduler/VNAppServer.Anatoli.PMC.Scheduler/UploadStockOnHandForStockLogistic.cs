@@ -33,7 +33,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
 
                     log.Info("Start CallServerService URI ");
                     log.Info("Transfer stock hand");
-                    StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

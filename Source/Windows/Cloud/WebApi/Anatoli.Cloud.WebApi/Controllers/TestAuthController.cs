@@ -7,7 +7,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/TestAuth")]
     public class TestAuthController : AnatoliApiController
     {
-        [AnatoliAuthorize(Resource = "TestAuth", Action = "GetSample"), RequireHttps]
+        [AnatoliAuthorize(Resource = "TestAuth", Action = "GetSample")]
         [Route("getsample"), HttpPost]
         public IHttpActionResult GetSample()
         {

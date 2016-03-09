@@ -75,13 +75,15 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                if (dataViewModels.Count == 0) return dataViewModels;
                 var dataList = Proxy.ReverseConvert(dataViewModels);
                 var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, privateLabelOwner, Repository.DbContext);
+                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, PrivateLabelOwnerId, Repository.DbContext);
                 
                 dataList.ForEach(item =>
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                    item.Id = Guid.NewGuid();
+                    item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
                     item.StockOnHandSyncId = syncId;
                     item.CreatedDate = item.LastUpdate = DateTime.Now;
                     Repository.AddAsync(item);
@@ -115,13 +117,14 @@ namespace Anatoli.Business.Domain
             return dataViewModels;
         }
 
-        public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, Principal privateOwnerId, AnatoliDbContext context)
+        public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, Guid privateOwnerId, AnatoliDbContext context)
         {
+
             var data = new StockOnHandSync
             {
                 CreatedDate = DateTime.Now,
                 LastUpdate = DateTime.Now,
-                PrivateLabelOwner = privateOwnerId,
+                PrivateLabelOwner_Id = privateOwnerId,
                 Id = Guid.NewGuid(),
                 StockId = stockId,
                 SyncDate = DateTime.Now,
@@ -129,6 +132,7 @@ namespace Anatoli.Business.Domain
             };
 
             await StockSynRepository.AddAsync(data);
+            await Repository.SaveChangesAsync();
 
             return data.Id;
 
@@ -136,21 +140,21 @@ namespace Anatoli.Business.Domain
 
         public void SaveActiveInfoIntoHistory(AnatoliDbContext context)
         {
-            context.Database.ExecuteSqlCommand(@"insert into StockHistoryOnHands
-                SELECT NewID()
-                      ,[Qty]
-                      ,[StockId]
-                      ,[ProductId]
-                      ,[StockOnHandSyncId]
-                      ,[Number_ID]
-                      ,[CreatedDate]
-                      ,[LastUpdate]
-                      ,[IsRemoved]
-                      ,[AddedBy_Id]
-                      ,[LastModifiedBy_Id]
-                      ,[PrivateLabelOwner_Id]
-                  FROM [dbo].[StockActiveOnHands]
-                ");
+//            context.Database.ExecuteSqlCommand(@"insert into StockHistoryOnHands
+//                SELECT NewID()
+//                      ,[Qty]
+//                      ,[StockId]
+//                      ,[ProductId]
+//                      ,[StockOnHandSyncId]
+//                      ,[Number_ID]
+//                      ,[CreatedDate]
+//                      ,[LastUpdate]
+//                      ,[IsRemoved]
+//                      ,[AddedBy_Id]
+//                      ,[LastModifiedBy_Id]
+//                      ,[PrivateLabelOwner_Id]
+//                  FROM [dbo].[StockActiveOnHands]
+//                ");
         }
         #endregion
     }

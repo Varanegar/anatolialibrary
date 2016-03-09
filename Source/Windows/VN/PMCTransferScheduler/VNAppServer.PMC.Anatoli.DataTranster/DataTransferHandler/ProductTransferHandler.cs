@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string ProductDataType = "Product";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadProductToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadProductToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
         {
             try
             {
@@ -25,24 +26,24 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var currentTime = DateTime.Now;
                 var lastUpload = Utility.GetLastUploadTime(ProductDataType);
                 var dbData = ProductAdapter.Instance.GetAllProducts(lastUpload);
-                if (dbData != null)
                 {
+                    RequestModel request = new RequestModel() { Products = dbData, privateOwnerId = privateOwnerId };
                     JavaScriptSerializer js = new JavaScriptSerializer();
                     js.MaxJsonLength = Int32.MaxValue;
-                    string data = js.Serialize(dbData);
-                    string URI = serverURI + UriInfo.SaveProductURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    string data = js.Serialize(request);
+                    string URI = serverURI + UriInfo.SaveProductURI;// +privateOwnerQueryString;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId);
                 }
 
-                dbData = ProductAdapter.Instance.GetAllProducts(DateTime.MinValue);
-                if (dbData != null)
-                {
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    js.MaxJsonLength = Int32.MaxValue;
-                    string data = js.Serialize(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedProductURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
-                }
+                //dbData = ProductAdapter.Instance.GetAllProducts(DateTime.MinValue);
+                //if (dbData != null)
+                //{
+                //    JavaScriptSerializer js = new JavaScriptSerializer();
+                //    js.MaxJsonLength = Int32.MaxValue;
+                //    string data = js.Serialize(dbData);
+                //    string URI = serverURI + UriInfo.CheckDeletedProductURI + privateOwnerQueryString;
+                //    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                //}
 
                 Utility.SetLastUploadTime(ProductDataType, currentTime);
 

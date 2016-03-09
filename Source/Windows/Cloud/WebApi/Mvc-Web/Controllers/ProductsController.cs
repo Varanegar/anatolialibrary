@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using System.Collections.Generic;
+﻿using System.Web.Mvc;
 
 namespace Mvc_Web.Controllers
 {

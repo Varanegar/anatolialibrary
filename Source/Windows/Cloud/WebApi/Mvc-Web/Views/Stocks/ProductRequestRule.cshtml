@@ -78,13 +78,14 @@
                     <div class="col-md-2"><h4>بر اساس:</h4></div>
                     <div class="col-md-9">
                         <select id="via-filter" class="form-control" style="width:100%">
+                            <option value="0">انتخاب نمایید</option>
                             <option value="1">توزیع کننده</option>
                             <option value="2">نام محصول</option>
                             <option value="3">گروه اصلی محصول</option>
                         </select>
                     </div>
                 </div>
-                <div class="row" data-via-filter="1">
+                <div class="row hide" data-via-filter="1">
                     <div class="col-md-2 "><h4>توزیع کننده:</h4></div>
                     <div class="col-md-9">
                         <input id="suppliers" class="form-control" style="width:100%" />
@@ -99,7 +100,7 @@
                 <div class="row hide" data-via-filter="3">
                     <div class="col-md-2 "><h4>گروه اصلی محصول:</h4></div>
                     <div class="col-md-9">
-                        <div class="list-group-box main-product-group-tree-view"></div>
+                        <input id="main-product-group" class="form-control" required />
                     </div>
                 </div>
                 <div class="row">

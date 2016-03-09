@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Mvc_Web.Controllers
 {
@@ -10,9 +6,7 @@ namespace Mvc_Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
-            return View();
+            return RedirectToAction("ReviewProductRequest", "Products");
         }
     }
 }

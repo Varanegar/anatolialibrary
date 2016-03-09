@@ -32,7 +32,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestProductDetailConcr
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                PrivateLabelOwner_Id = data.PrivateOwnerId,
+                CreatedDate = DateTime.Now,
+                LastUpdate = DateTime.Now,
 
                 StockProductRequestProductId = data.StockProductRequestProductId,
                 RequestQty = data.RequestQty,
