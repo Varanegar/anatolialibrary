@@ -282,8 +282,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var term = data != null ? data.searchTerm : string.Empty;
+                var currentUserId = Guid.Parse(HttpContext.Current.User.Identity.GetUserId());
 
-                var model = await new StockProductRequestDomain(OwnerKey).GetStockProductRequests(term);
+                var model = await new StockProductRequestDomain(OwnerKey).GetStockProductRequests(term, currentUserId);
 
                 return Ok(model);
             }

@@ -141,11 +141,15 @@ namespace Anatoli.Business.Domain
             return StockProductRequestProductProxy.Convert(model.ToList());
         }
 
-        public async Task<List<StockProductRequestViewModel>> GetStockProductRequests(string searchTerm)
+        public async Task<List<StockProductRequestViewModel>> GetStockProductRequests(string searchTerm,Guid userId)
         {
-            var model = await Repository.GetFromCachedAsync(p => string.IsNullOrEmpty(searchTerm) ||
+            var model = await Repository.GetFromCachedAsync(p =>( string.IsNullOrEmpty(searchTerm) ||
                                                             p.Stock.StockName.Contains(searchTerm) ||
-                                                            p.SourceStockRequestNo.Contains(searchTerm));
+                                                            p.SourceStockRequestNo.Contains(searchTerm))&&(
+                                                            p.Stock.Accept1ById==userId ||
+                                                            p.Stock.Accept2ById == userId ||
+                                                            p.Stock.Accept3ById == userId 
+                                                            ));
 
             return Proxy.Convert(model.ToList());
         }
