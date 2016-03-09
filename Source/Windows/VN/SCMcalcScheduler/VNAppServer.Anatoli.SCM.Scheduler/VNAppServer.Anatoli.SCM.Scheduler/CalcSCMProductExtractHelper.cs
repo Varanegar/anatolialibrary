@@ -141,6 +141,7 @@ namespace VNAppServer.Anatoli.SCM.Scheduler
                             SupplyByStockId = (stockSupplyTypeId == StockProductRequestSupplyTypeViewModel.SupplyFromRelatedStock) ? (Guid)StockData.RelatedSCMStockId : (Guid)StockData.MainSCMStockId,
                             UniqueId = Guid.NewGuid(),
                         };
+                        currentRequest.StockProductRequestProducts = new List<StockProductRequestProductViewModel>();
 
                     }
 

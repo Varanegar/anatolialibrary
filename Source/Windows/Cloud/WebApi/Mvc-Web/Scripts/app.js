@@ -1,5 +1,5 @@
 ﻿//'use strict'
-var baseBackendUrl = 'http://46.209.104.2:7000',
+var baseBackendUrl = 'http://localhost',
     sslBackendUrl = 'https://localhost:443',
 //var baseBackendUrl = 'http://localhost:59822',
 //    sslBackendUrl = 'https://localhost:44300',
