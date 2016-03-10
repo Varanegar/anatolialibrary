@@ -27,14 +27,15 @@ namespace Anatoli.App.Manager
         }
         public static async Task SyncProductsAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
+            string queryString = "";
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.ProductTbl);
                 RemoteQuery q;
                 if (lastUpdateTime == DateTime.MinValue)
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsList, HttpMethod.Post);
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsList, HttpMethod.Get);
                 else
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsListAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Post, new BasicParam("after", lastUpdateTime.ToString()));
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsListAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Get, new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductUpdateModel>.GetListAsync(q);
                 Dictionary<string, ProductModel> items = new Dictionary<string, ProductModel>();
@@ -68,6 +69,7 @@ namespace Anatoli.App.Manager
                             new BasicParam("is_removed", (item.IsRemoved == true) ? "1" : "0"),
                             new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
                             var query = connection.CreateCommand(command.GetCommand());
+                            queryString = query.ToString();
                             int t = query.ExecuteNonQuery();
                         }
                     }
