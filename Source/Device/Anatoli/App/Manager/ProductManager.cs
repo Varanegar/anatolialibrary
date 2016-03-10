@@ -32,9 +32,9 @@ namespace Anatoli.App.Manager
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.ProductTbl);
                 RemoteQuery q;
                 if (lastUpdateTime == DateTime.MinValue)
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsList, HttpMethod.Get);
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsList, HttpMethod.Post);
                 else
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsListAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Get, new BasicParam("after", lastUpdateTime.ToString()));
+                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductsListAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Post, new BasicParam("after", lastUpdateTime.ToString()));
                 q.cancellationTokenSource = cancellationTokenSource;
                 var list = await BaseDataAdapter<ProductUpdateModel>.GetListAsync(q);
                 Dictionary<string, ProductModel> items = new Dictionary<string, ProductModel>();

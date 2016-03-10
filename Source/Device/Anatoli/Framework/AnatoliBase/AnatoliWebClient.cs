@@ -5,6 +5,7 @@ using RestSharp.Portable.Deserializers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -292,11 +293,7 @@ namespace Anatoli.Framework.AnatoliBase
                 respone = await client.Execute(request, cancelToken.Token);
             else
                 respone = await client.Execute(request);
-            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                OnTokenExpire();
-                throw new TokenException();
-            }
+            CheckResponseStatus(respone);
             JsonDeserializer deserializer = new JsonDeserializer();
             try
             {
@@ -312,11 +309,7 @@ namespace Anatoli.Framework.AnatoliBase
         {
             client.IgnoreResponseStatusCode = true;
             RestSharp.Portable.IRestResponse respone = await client.Execute(request);
-            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                OnTokenExpire();
-                throw new TokenException();
-            }
+            CheckResponseStatus(respone);
             JsonDeserializer deserializer = new JsonDeserializer();
             try
             {
@@ -332,10 +325,103 @@ namespace Anatoli.Framework.AnatoliBase
         {
             client.IgnoreResponseStatusCode = true;
             RestSharp.Portable.IRestResponse respone = await client.Execute(request);
-            if (respone.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            CheckResponseStatus(respone);
+        }
+        void CheckResponseStatus(IRestResponse response)
+        {
+            switch (response.StatusCode)
             {
-                OnTokenExpire();
-                throw new TokenException();
+                case HttpStatusCode.BadGateway:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.BadRequest:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Conflict:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Continue:
+                    break;
+                case HttpStatusCode.Created:
+                    break;
+                case HttpStatusCode.ExpectationFailed:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Forbidden:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Found:
+                    break;
+                case HttpStatusCode.GatewayTimeout:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Gone:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.HttpVersionNotSupported:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.InternalServerError:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.LengthRequired:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.MethodNotAllowed:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Moved:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.MultipleChoices:
+                    break;
+                case HttpStatusCode.NoContent:
+                    break;
+                case HttpStatusCode.NonAuthoritativeInformation:
+                    break;
+                case HttpStatusCode.NotAcceptable:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.NotFound:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.NotImplemented:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.NotModified:
+                    break;
+                case HttpStatusCode.OK:
+                    break;
+                case HttpStatusCode.PartialContent:
+                    break;
+                case HttpStatusCode.PaymentRequired:
+                    break;
+                case HttpStatusCode.PreconditionFailed:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.ProxyAuthenticationRequired:
+                    throw new AnatoliWebClientException(response);
+                //case HttpStatusCode.Redirect:
+                //    break;
+                case HttpStatusCode.RedirectKeepVerb:
+                    break;
+                case HttpStatusCode.RedirectMethod:
+                    break;
+                case HttpStatusCode.RequestEntityTooLarge:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.RequestTimeout:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.RequestUriTooLong:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.RequestedRangeNotSatisfiable:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.ResetContent:
+                    throw new AnatoliWebClientException(response);
+                //case HttpStatusCode.SeeOther:
+                //    break;
+                case HttpStatusCode.ServiceUnavailable:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.SwitchingProtocols:
+                    throw new AnatoliWebClientException(response);
+                //case HttpStatusCode.TemporaryRedirect:
+                //    break;
+                case HttpStatusCode.Unauthorized:
+                    OnTokenExpire();
+                    throw new TokenException();
+                case HttpStatusCode.UnsupportedMediaType:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.Unused:
+                    throw new AnatoliWebClientException(response);
+                case HttpStatusCode.UpgradeRequired:
+                    break;
+                case HttpStatusCode.UseProxy:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -386,10 +472,18 @@ namespace Anatoli.Framework.AnatoliBase
     public class AnatoliWebClientException : Exception
     {
         public string RequestUri { get; private set; }
+        public HttpStatusCode StatusCode { get; private set; }
         public AnatoliWebClientException(string uri, string message = "Web Exception", Exception ex = null)
             : base(message, ex)
         {
             RequestUri = uri;
+            StatusCode = 0;
+        }
+        public AnatoliWebClientException(IRestResponse response)
+            : base("Web Exception, Http status: " + response.StatusCode.ToString() + " at :" + response.ResponseUri.ToString())
+        {
+            RequestUri = response.ResponseUri.ToString();
+            StatusCode = response.StatusCode;
         }
     }
     public class ConnectionFailed : AnatoliWebClientException
