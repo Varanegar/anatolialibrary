@@ -225,6 +225,7 @@
     <Content Include="Content\persianDatepicker-default.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\vn-review.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -324,6 +325,8 @@
     <Content Include="Views\Stocks\ProductRequestRule.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Views\Stocks\Products.cshtml" />
+    <Content Include="Views\UserManager\Stocks.cshtml" />
+    <Content Include="Views\UserManager\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

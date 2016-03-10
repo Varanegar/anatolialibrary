@@ -9,7 +9,17 @@ namespace Mvc_Web.Controllers
         {
             return View();
         }
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
         public ActionResult Permissions()
+        {
+            return View();
+        }
+
+        public ActionResult Stocks()
         {
             return View();
         }

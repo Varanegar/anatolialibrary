@@ -66,9 +66,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes
 
                 StockProductRequestProducts = (data.StockProductRequestProducts == null) ? null : StockProductRequestProductProxy.Convert(data.StockProductRequestProducts.ToList()),
 
-                AcceptName1 = string.Format("{0}  |  {1}", data.Accept1By.Title, data.Accept1PDate),
-                AcceptName2 = string.Format("{0}  |  {1}", data.Accept2By.Title, data.Accept2PDate),
-                AcceptName3 = string.Format("{0}  |  {1}", data.Accept3By.Title, data.Accept3PDate),
+                AcceptName1 = (data.Accept1By == null)?"":string.Format("{0}  |  {1}", data.Accept1By.Title, data.Accept1PDate),
+                AcceptName2 = (data.Accept2By == null) ? "" : string.Format("{0}  |  {1}", data.Accept2By.Title, data.Accept2PDate),
+                AcceptName3 = (data.Accept3By == null) ? "" : string.Format("{0}  |  {1}", data.Accept3By.Title, data.Accept3PDate),
 
                 StockProductRequestStatus = data.StockProductRequestStatus.StockProductRequestStatusName,
 
