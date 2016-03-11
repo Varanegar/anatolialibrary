@@ -27,6 +27,7 @@ namespace Anatoli.App.Manager
         }
         public static async Task SyncProductsAsync(System.Threading.CancellationTokenSource cancellationTokenSource)
         {
+            string queryString = "";
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.ProductTbl);
@@ -68,6 +69,7 @@ namespace Anatoli.App.Manager
                             new BasicParam("is_removed", (item.IsRemoved == true) ? "1" : "0"),
                             new BasicParam("cat_id", (item.ProductGroupIdString != null) ? item.ProductGroupIdString.ToUpper() : item.ProductGroupIdString));
                             var query = connection.CreateCommand(command.GetCommand());
+                            queryString = query.ToString();
                             int t = query.ExecuteNonQuery();
                         }
                     }
