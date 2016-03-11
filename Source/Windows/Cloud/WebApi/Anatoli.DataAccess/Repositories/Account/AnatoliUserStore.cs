@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 

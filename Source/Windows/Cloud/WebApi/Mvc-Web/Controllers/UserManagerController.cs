@@ -9,8 +9,10 @@ namespace Mvc_Web.Controllers
         {
             return View();
         }
-        public ActionResult Edit()
+        public ActionResult Edit(string id)
         {
+            ViewBag.userId = id;
+
             return View();
         }
 

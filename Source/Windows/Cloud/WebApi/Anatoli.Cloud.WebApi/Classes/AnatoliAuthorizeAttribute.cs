@@ -59,15 +59,24 @@ namespace Anatoli.Cloud.WebApi.Classes
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (IsApiPageRequested(actionContext))
-                if (!HasOwnerKey)
-                {
-                    this.HandleUnauthorizedRequest(actionContext);
+            try
+            {
+                if (IsApiPageRequested(actionContext))
+                    if (!HasOwnerKey)
+                    {
+                        this.HandleUnauthorizedRequest(actionContext);
 
-                    _responseReason = "Application key required.";
-                }
-                else
-                    base.OnAuthorization(actionContext);
+                        _responseReason = "Application key required.";
+                    }
+                    else
+                        base.OnAuthorization(actionContext);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+           
         }
 
         private bool HasWebApiAccess()
