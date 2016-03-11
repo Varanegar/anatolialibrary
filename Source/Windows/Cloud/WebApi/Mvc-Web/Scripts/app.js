@@ -146,7 +146,19 @@ function headerMenuViewModel() {
 
     self.refreshHeaderMenu = function () {
 
-        if ($(".header-menu .navbar-nav li").length < 2)
+        if ($(".header-menu .navbar-nav li").length < 2) self.shouldShowLogout(true);
+        //debugger
+        //$(".header-menu .navbar-nav").html("<li class='exit-menu-item'' data-bind='visible: shouldShowLogout'><a href='#'' class='glyphicon glyphicon-log-out'> خروج </a></li>");
+
+        var $wrapper = $('.header-menu ul.navbar-nav');
+
+        $wrapper.find('li').sort(function (a, b) {
+            return +a.dataset.order - +b.dataset.order;
+        }).appendTo($wrapper);
+    };
+
+    self.shouldShowLogout.subscribe(function (newValue) {
+        if (newValue === true) {
             accountManagerApp.callApi(urls.myWebpages, "POST", {}, function (data) {
 
                 data.forEach(function (itm) {
@@ -161,17 +173,13 @@ function headerMenuViewModel() {
                         $(".header-menu .navbar-nav .exit-menu-item").before('<li data-order=' + order + '><a href="' + url + '">' + title + '</a></li>');
                     }
                 });
-                var $wrapper = $('.header-menu ul.navbar-nav');
 
-                $wrapper.find('li').sort(function (a, b) {
-                    return +a.dataset.order - +b.dataset.order;
-                }).appendTo($wrapper);
             });
-    };
-
-    self.shouldShowLogout.subscribe(function (newValue) {
-        if (newValue === true) {
-            //self.refreshHeaderMenu();
+            self.refreshHeaderMenu();
+        }
+        else
+        {
+            $(".header-menu").html("<div class='container'><div class='navbar-header'><button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></button><a class='navbar-brand' href='/Products/ReviewProductRequest'>مدیریت تامین کالا</a></div><div class='navbar-collapse collapse'><ul class='nav navbar-nav'><li class='exit-menu-item' '='' data-bind='visible: shouldShowLogout'><a href='#' '='' class='glyphicon glyphicon-log-out'> خروج </a></li></ul></div></div>");
         }
     });
 
@@ -206,6 +214,19 @@ function accountManagerViewModel() {
         if (jqXHR.status == 403) {
             title = '403';
             message = errorMessage.unAuthorized;
+        }
+        if (jqXHR.status == 400 && jqXHR.responseJSON.modelState != undefined) {
+            title = 'خطا';
+            var modelState = jqXHR.responseJSON.modelState;
+            var errorsString = "";
+            var errors = [];
+            for (var key in modelState) {
+                if (modelState.hasOwnProperty(key)) {
+                    errorsString = (errorsString == "" ? "" : errorsString + "<br/>") + modelState[key];
+                    errors.push(modelState[key]);//list of error messages in an array
+                }
+            }
+            message = errorsString;
         }
         showError(title, message);
 
@@ -278,7 +299,7 @@ function accountManagerViewModel() {
             data: loginData,
         }).done(function (data) {
             self.user(data.userName);
-
+            //debugger
             $.cookie("token", data.access_token, { expires: 7 });
             $loginForm.data("kendoWindow").close();
 
@@ -1956,7 +1977,7 @@ function userEditManagerViewModel() {
 
     $(".user-edit-page").on("click", '.btn-save', function (e) {
         e.preventDefault;
-
+        //debugger
         var data = {
             uniqueId: $('#userId').val(),
             userId: $('#userId').val(),
@@ -1975,13 +1996,15 @@ function userEditManagerViewModel() {
         else
             valid = self.validateCreateModel(data);
 
-        debugger
+        //debugger
         if (valid)
-            self.validateEmail(data.email, function (isValidEmail) {
-                if (isValidEmail)
+            self.validateEmail(data.email, data.userId, function (isValidEmail) {
+                if (isValidEmail) {
+                    //debugger
                     accountManagerApp.callApi(urls.saveUserUrl, 'POST', { user: JSON.stringify(data) }, function (data) {
                         $(".edit-window").data("kendoWindow").close();
                     });
+                }
                 else
                     showError('', 'ایمیل وارد شده تکراری است');
             })
@@ -2045,7 +2068,7 @@ function userEditManagerViewModel() {
         return true;
     }
 
-    self.validateEmail = function (email, callback) {
-        accountManagerApp.callApi(urls.checkUserEmail, 'POST', { email: email }, callback);
+    self.validateEmail = function (email, userid, callback) {
+        accountManagerApp.callApi(urls.checkUserEmail, 'POST', { email: email, userid: userid}, callback);
     }
 };

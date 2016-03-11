@@ -245,7 +245,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var emailUser = await AppUserManager.FindByEmailAsync(model.email);
 
-            if (emailUser != null)
+            if (emailUser != null && emailUser.Id != model.userId)
                 return Ok(false);
 
             return Ok(true);
@@ -274,7 +274,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
 
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
-
+            user.PhoneNumberConfirmed = true;
+            user.EmailConfirmed = true;
             await userStore.UpdateAsync(user);
 
             return Ok(model);
