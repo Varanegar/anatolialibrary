@@ -1,4 +1,5 @@
 ﻿using System;
+using Anatoli.ViewModels.User;
 using System.Collections.Generic;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.ProductModels;
@@ -26,5 +27,8 @@ namespace Anatoli.ViewModels
         public List<StockProductRequestProductViewModel> StockProductRequestProductList { get; set; }
         public List<ProductViewModel> Products { get; set; }
         public List<StockActiveOnHandViewModel> StockActiveOnHand { get; set; }
+
+        public string user { get; set; }
+        public string email { get; set; }
     }
 }

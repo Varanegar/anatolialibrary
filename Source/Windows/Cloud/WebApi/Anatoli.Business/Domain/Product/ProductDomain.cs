@@ -316,7 +316,10 @@ namespace Anatoli.Business.Domain
             {
                 var product = await Repository.GetByIdAsync(item.UniqueId);
 
-                product.ProductTypeId = item.ProductTypeInfo.UniqueId;
+                if (item.ProductTypeInfo != null && item.ProductTypeInfo.UniqueId != Guid.Empty)
+                    product.ProductTypeId = item.ProductTypeInfo.UniqueId;
+
+                product.IsActiveInOrder = item.IsActiveInOrder;
 
                 await Repository.SaveChangesAsync();
             }
