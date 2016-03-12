@@ -39,6 +39,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
+                data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
                 var model = await new SupplierDomain(OwnerKey).FilterSuppliersAsync(data.searchTerm);
 
                 return Ok(model);

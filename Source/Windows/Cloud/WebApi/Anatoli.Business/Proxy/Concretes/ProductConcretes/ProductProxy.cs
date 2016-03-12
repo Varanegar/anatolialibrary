@@ -63,22 +63,15 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 PrivateOwnerId = data.PrivateLabelOwner_Id,
 
                 ManufactureIdString = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
-                ManufactureName = (data.ManufactureId == null) ? string.Empty : data.Manufacture.ManufactureName,
 
                 ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
                 MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
 
                 MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
-                MainSupplierName = (data.MainSupplierId == null) ? string.Empty : data.MainSupplier.SupplierName,
 
                 IsActiveInOrder = data.IsActiveInOrder,
             };
 
-            result.ProductTypeInfo = (data.ProductType == null) ? new ProductTypeViewModel() : new ProductTypeViewModel
-            {
-                ProductTypeName = data.ProductType.ProductTypeName,
-                UniqueId = data.ProductType.Id
-            };
 
             return result;
 

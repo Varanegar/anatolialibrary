@@ -16,6 +16,7 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         public IAnatoliProxy<Product, ProductViewModel> Proxy { get; set; }
+        public IAnatoliProxy<Product, ProductViewModel> ProxySimpleInfo { get; set; }
         public IAnatoliProxy<Product, ProductViewModel> ProxyCompleteInfo { get; set; }
         public IRepository<Product> Repository { get; set; }
         public IRepository<Supplier> SupplierRepository { get; set; }
@@ -33,16 +34,17 @@ namespace Anatoli.Business.Domain
         public ProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public ProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
             : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc),
-                   new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductCompleteInfoProxy())
+                   new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductSimpleProxy(), new ProductCompleteInfoProxy())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
         }
         public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IMainProductGroupRepository mainProductGroupRepository,
                              IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository,
-                             IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
+                             IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> simpleProxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
         {
             Proxy = proxy;
             ProxyCompleteInfo = completeProxy;
+            ProxySimpleInfo = simpleProxy;
             Repository = productRepository;
             ProductGroupRepository = productGroupRepository;
             MainProductGroupRepository = mainProductGroupRepository;
@@ -54,6 +56,21 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
+        public async Task<List<ProductViewModel>> GetAllSimple()
+        {
+            try
+            {
+                var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+
+                return ProxySimpleInfo.Convert(products.ToList()); ;
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll ", ex);
+                throw ex;
+            }
+        }
+        
         public async Task<List<ProductViewModel>> GetAll()
         {
             try
@@ -73,7 +90,7 @@ namespace Anatoli.Business.Domain
             try
             {
                 var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId &&
-                                                                  p.ProductName.Contains(term) ||
+                                                                  p.StoreProductName.Contains(term) ||
                                                                   p.ProductCode.Contains(term));
 
                 return Proxy.Convert(products.ToList());

@@ -138,6 +138,7 @@
     <Compile Include="Proxy\Concretes\CustomerConcretes\CustomerProxy.cs" />
     <Compile Include="Proxy\Concretes\CustomerConcretes\BasketProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharGroupProxy.cs" />
+    <Compile Include="Proxy\Concretes\ProductConcretes\ProductSimpleProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductTagProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\ProductTagValueProxy.cs" />
     <Compile Include="Proxy\Concretes\ProductConcretes\CharValueProxy.cs" />

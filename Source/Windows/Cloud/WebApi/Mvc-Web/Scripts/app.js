@@ -1,7 +1,8 @@
 ﻿//'use strict'
 //var baseBackendUrl = 'http://46.209.104.2:7000',
 //    sslBackendUrl = 'https://localhost:443',
-var baseBackendUrl = 'http://localhost:59822/',
+var baseBackendUrl = 'http://217.218.53.71:8090/',
+//var baseBackendUrl = 'http://localhost:59822/',
     //sslBackendUrl = 'https://localhost:44300',
     privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
@@ -27,7 +28,7 @@ var baseBackendUrl = 'http://localhost:59822/',
         stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes?privateOwnerId=' + privateOwnerId,
         saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
 
-        productsUrl: baseBackendUrl + '/api/gateway/product/products',
+        productsUrl: baseBackendUrl + '/api/gateway/product/products/v2',
         saveProductsUrl: baseBackendUrl + '/api/gateway/product/saveProducts',
 
         productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
@@ -54,15 +55,15 @@ var baseBackendUrl = 'http://localhost:59822/',
 
 
         pages: {
-            products: { url: '/products', title: 'کالا', order: 7 },
-            stockproducts: { url: '/stocks/products', title: 'کالای انبار', order: 9 },
-            reviewproductrequest: { url: '/products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
-            storerequestshistory: { url: '/products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
-            stocks: { url: '/stocks', title: 'انبارها', order: 8 },
-            productrequestrules: { url: '/stocks/productRequestRules', title: 'قوانین', order: 6 },
-            usermanager: { url: '/userManager', title: 'مدیریت کاربران', order: 1 },
-            userstocks: { url: '/userManager/stocks', title: 'تخصیص انبار', order: 3 },
-            permissions: { url: '/userManager/permissions', title: 'مجوز دسترسی', order: 2 },
+            products: { url: '/Products', title: 'کالا', order: 7 },
+            stockproducts: { url: '/Stocks/products', title: 'کالای انبار', order: 9 },
+            reviewproductrequest: { url: '/Products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
+            storerequestshistory: { url: '/Products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
+            stocks: { url: '/Stocks', title: 'انبارها', order: 8 },
+            productrequestrules: { url: '/Stocks/productRequestRules', title: 'قوانین', order: 6 },
+            usermanager: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
+            userstocks: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
+            permissions: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
         }
     },
 errorMessage = {
@@ -300,7 +301,7 @@ function accountManagerViewModel() {
         }).done(function (data) {
             self.user(data.userName);
             //debugger
-            $.cookie("token", data.access_token, { expires: 7 });
+            $.cookie("token", data.access_token, { path: '/' });
             $loginForm.data("kendoWindow").close();
 
             var retUrlObject = self.requestAppObject();
@@ -1482,6 +1483,9 @@ function productRequestRuleEditManagerViewModel() {
 
     self.selectedSupplierId = ko.observable('');
     self.refreshSuppliers = function () {
+        var supValue = $("#suppliers").val().replace("ی", "ي").replace("ک", "ك")
+        $("#suppliers").val(supValue);
+        if (supValue.length < 3) return;
         $("#suppliers").kendoAutoComplete({
             dataTextField: "supplierName",
             minLength: 3,
@@ -1513,6 +1517,10 @@ function productRequestRuleEditManagerViewModel() {
 
     self.selectedProductId = ko.observable('');
     self.refreshProduct = function () {
+        var proValue = $("#product").val().replace("ی", "ي").replace("ک", "ك")
+        $("#product").val(proValue);
+        if (proValue.length < 3) return;
+
         $("#product").kendoAutoComplete({
             dataTextField: "name",
             minLength: 3,
@@ -1544,6 +1552,9 @@ function productRequestRuleEditManagerViewModel() {
 
     self.selectedMainProductGroupId = ko.observable('');
     self.refreshMainProductGroup = function () {
+        var proGroupValue = $("#main-product-group").val().replace("ی", "ي").replace("ک", "ك")
+        $("#main-product-group").val(proGroupValue);
+        if (proGroupValue.length < 3) return;
         $("#main-product-group").kendoAutoComplete({
             dataTextField: "groupName",
             minLength: 3,
@@ -1631,6 +1642,18 @@ function productRequestRuleEditManagerViewModel() {
     self.refreshProduct();
     self.refreshMainProductGroup();
     self.checkEditMode();
+
+    $(".product-rule-edit-page").on("keyup", "#main-product-group", function () {
+        self.refreshMainProductGroup();
+    });
+
+    $(".product-rule-edit-page").on("keyup", "#product", function () {
+        self.refreshProduct();
+    });
+
+    $(".product-rule-edit-page").on("keyup", "#suppliers", function () {
+        self.refreshSuppliers();
+    });
 
     $(".product-rule-edit-page").on("change", "#via-filter", function () {
         var id = $(this).val();
@@ -1735,7 +1758,7 @@ function productManagerViewModel() {
                     fields: {
                         uniqueId: { editable: false, nullable: true },
                         productCode: { editable: false },
-                        productName: { editable: false },
+                        storeProductName: { editable: false },
                         productTypeInfo: { defaultValue: { uniqueId: "", productTypeName: "" } },
                         mainSupplierName: { editable: false },
                         manufactureName: { editable: false },
@@ -1774,7 +1797,7 @@ function productManagerViewModel() {
             columns: [
                 { field: "rowNo", title: "#", width: 70, template: "#= renderNumber(data) #", filterable: false, },
                 { field: "productCode", title: "کد کالا", width: 100 },
-                { field: "productName", title: "نام کالا", width: 200 },
+                { field: "storeProductName", title: "نام کالا", width: 200 },
                 {
                     field: "isActiveInOrder", title: "فعال", width: 100, filterable: false,
                     template: "<div class='chk-grid'><input name='isActiveInOrder' class='chk-isActiveInOrder' type='checkbox' data-bind='checked: isActiveInOrder' #= isActiveInOrder ? checked='checked' : '' #/></div>"
