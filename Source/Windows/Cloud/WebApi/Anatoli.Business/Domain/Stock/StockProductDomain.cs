@@ -9,6 +9,8 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StockModels;
+using System.Data.Entity;
+using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
@@ -17,8 +19,10 @@ namespace Anatoli.Business.Domain
         #region Properties
         public IAnatoliProxy<StockProduct, StockProductViewModel> Proxy { get; set; }
         public IRepository<StockProduct> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
+        private AnatoliDbContext DBC { get; set; }
+
+        //public IPrincipalRepository PrincipalRepository { get; set; }
+        //public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
@@ -29,6 +33,7 @@ namespace Anatoli.Business.Domain
             : this(new StockProductRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProduct, StockProductViewModel>.Create())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
+            DBC = dbc;
         }
         public StockProductDomain(IStockProductRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProduct, StockProductViewModel> proxy)
         {
@@ -48,10 +53,53 @@ namespace Anatoli.Business.Domain
 
         public async Task<List<StockProductViewModel>> GetAllByStockId(string stockId)
         {
-            Guid stockGuid = Guid.Parse(stockId);
-            var dataList = await Repository.FindAllAsync(p => p.StockId == stockGuid);
+            try
+            {
+                var stockGuid = Guid.Parse(stockId);
+                DBC.Configuration.AutoDetectChangesEnabled = false;
 
-            return Proxy.Convert(dataList.ToList()); ;
+                var model = await Task<List<StockProductViewModel>>.Factory.StartNew(() =>
+                {
+                    return Repository.GetQuery()
+                    .Where(p => p.StockId == stockGuid)
+                    .Select(data => new StockProductViewModel
+                    {
+                        ID = data.Number_ID,
+                        UniqueId = data.Id,
+                        //PrivateOwnerId = data.PrivateLabelOwner.Id,
+                        MinQty = data.MinQty,
+                        ReorderLevel = data.ReorderLevel,
+                        MaxQty = data.MaxQty,
+                        IsEnable = data.IsEnable,
+                        StockGuid = data.StockId,
+                        FiscalYearId = data.FiscalYearId,
+                        ProductGuid = data.ProductId,
+                        ProductCode = data.Product.ProductCode,
+                        ProductName = data.Product.ProductName,
+                        QtyPerPack = data.Product.QtyPerPack,
+                        StockProductRequestSupplyTypeId = data.StockProductRequestSupplyTypeId,
+                        ReorderCalcTypeId = data.ReorderCalcTypeId,
+                        ReorderCalcTypeInfo = data.ReorderCalcType != null ? new ReorderCalcTypeViewModel
+                        {
+                            ReorderTypeName = data.ReorderCalcType.ReorderTypeName,
+                            UniqueId = data.ReorderCalcType.Id
+                        } : null
+                    })
+                    .AsNoTracking()
+                    .ToList();
+                });
+
+                model.Where(p => p.ReorderCalcTypeInfo == null).ToList().ForEach(itm => itm.ReorderCalcTypeInfo = new ReorderCalcTypeViewModel());
+
+                return model;
+                //var dataList = await Repository.FindAllAsync(p => p.StockId == stockGuid);
+                //return Proxy.Convert(dataList.ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAllByStockId ", ex);
+                throw ex;
+            }
         }
 
         public async Task<List<StockProductViewModel>> GetAllChangedAfter(DateTime selectedDate)

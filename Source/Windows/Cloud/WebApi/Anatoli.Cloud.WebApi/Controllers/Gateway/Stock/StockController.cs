@@ -237,14 +237,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockproduct/stockid")]
+        [GzipCompression]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductsByStockId([FromBody] RequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(data.privateOwnerId);
-                var stockDomain = new StockProductDomain(owner);
-                var result = await stockDomain.GetAllByStockId(data.stockId);
+                var result = await new StockProductDomain(OwnerKey).GetAllByStockId(data.stockId);
+
                 return Ok(result);
             }
             catch (Exception ex)
