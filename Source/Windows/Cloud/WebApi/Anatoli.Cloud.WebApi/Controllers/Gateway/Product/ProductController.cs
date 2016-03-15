@@ -322,13 +322,33 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Products
-        [AnatoliAuthorize(Roles = "AuthorizedApp, User")] //, Resource = "Product", Action = "List"
-        [Route("products"), HttpPost]
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("products")]
+        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        {
+            try
+            {
+                var owner = Guid.Parse(privateOwnerId);
+                var productDomain = new ProductDomain(owner);
+                var result = await productDomain.GetAll();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
+        [Route("products/v2"), HttpPost]
+        [GzipCompression]
         public async Task<IHttpActionResult> GetProducts()
         {
             try
             {
-                var result = await new ProductDomain(OwnerKey).GetAll();
+                var result = await new ProductDomain(OwnerKey).GetAllSimple();
 
                 return Ok(result);
             }
@@ -346,9 +366,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
+                data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
+
                 var model = await new ProductDomain(OwnerKey).Search(data.searchTerm);
 
-                return Ok(model.Select(s => new { id = s.UniqueId, name = s.ProductName }).ToList());
+                return Ok(model.Select(s => new { id = s.UniqueId, name = s.StoreProductName }).ToList());
             }
             catch (Exception ex)
             {
@@ -566,6 +588,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
+                data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
+
                 var model = await new MainProductGroupDomain(OwnerKey).FilterMainProductGroupList(data.searchTerm);
 
                 return Ok(model.ToList());

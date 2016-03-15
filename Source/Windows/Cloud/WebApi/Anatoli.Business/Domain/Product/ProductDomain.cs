@@ -9,6 +9,8 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.Business.Proxy.ProductConcretes;
+using System.Data.Entity;
+using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
@@ -16,6 +18,7 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         public IAnatoliProxy<Product, ProductViewModel> Proxy { get; set; }
+        public IAnatoliProxy<Product, ProductViewModel> ProxySimpleInfo { get; set; }
         public IAnatoliProxy<Product, ProductViewModel> ProxyCompleteInfo { get; set; }
         public IRepository<Product> Repository { get; set; }
         public IRepository<Supplier> SupplierRepository { get; set; }
@@ -23,8 +26,10 @@ namespace Anatoli.Business.Domain
         public IRepository<ProductGroup> ProductGroupRepository { get; set; }
         public IRepository<MainProductGroup> MainProductGroupRepository { get; set; }
         public IRepository<Manufacture> ManufactureRepository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
+        private AnatoliDbContext DBC { get; set; }
+
+        //public IPrincipalRepository PrincipalRepository { get; set; }
+        //public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
@@ -33,16 +38,18 @@ namespace Anatoli.Business.Domain
         public ProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
         public ProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
             : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc),
-                   new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductCompleteInfoProxy())
+                   new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductSimpleProxy(), new ProductCompleteInfoProxy())
         {
             PrivateLabelOwnerId = privateLabelOwnerId;
+            DBC = dbc;
         }
         public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IMainProductGroupRepository mainProductGroupRepository,
                              IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository,
-                             IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
+                             IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> simpleProxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
         {
             Proxy = proxy;
             ProxyCompleteInfo = completeProxy;
+            ProxySimpleInfo = simpleProxy;
             Repository = productRepository;
             ProductGroupRepository = productGroupRepository;
             MainProductGroupRepository = mainProductGroupRepository;
@@ -54,6 +61,55 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
+        public async Task<List<ProductViewModel>> GetAllSimple()
+        {
+            try
+            {
+                DBC.Configuration.AutoDetectChangesEnabled = false;
+                var model = await Task<List<ProductViewModel>>.Factory.StartNew(() =>
+                {
+                    return Repository.GetQuery()
+                    .Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId)
+                    .Select(data => new ProductViewModel
+                    {
+                        ID = data.Number_ID,
+                        UniqueId = data.Id,
+                        ProductCode = data.ProductCode,
+                        Barcode = data.Barcode,
+                        StoreProductName = data.StoreProductName,
+                        ProductTypeId = data.ProductTypeId,
+                        QtyPerPack = data.QtyPerPack,
+                        IsRemoved = data.IsRemoved,
+                        ManufactureIdString = data.ManufactureId.ToString(),
+                        ManufactureName = data.Manufacture.ManufactureName,
+                        ProductGroupIdString = data.ProductGroupId.ToString(),
+                        MainProductGroupIdString = data.MainProductGroupId.ToString(),
+                        MainSupplierId = data.MainSupplierId.ToString(),
+                        MainSupplierName = data.MainSupplier.SupplierName,
+                        IsActiveInOrder = data.IsActiveInOrder,
+                        ProductTypeInfo = data.ProductType != null ? new ProductTypeViewModel
+                        {
+                            ProductTypeName = data.ProductType.ProductTypeName,
+                            UniqueId = data.ProductType.Id
+                        } : null
+                    })
+                    .AsNoTracking()
+                    .ToList();
+                });
+
+                model.Where(p => p.ProductTypeInfo == null).ToList().ForEach(itm => itm.ProductTypeInfo = new ProductTypeViewModel());
+
+                return model;
+                //var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+                // return ProxySimpleInfo.Convert(products.ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("GetAll ", ex);
+                throw ex;
+            }
+        }
+
         public async Task<List<ProductViewModel>> GetAll()
         {
             try
@@ -73,7 +129,7 @@ namespace Anatoli.Business.Domain
             try
             {
                 var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId &&
-                                                                  p.ProductName.Contains(term) ||
+                                                                  p.StoreProductName.Contains(term) ||
                                                                   p.ProductCode.Contains(term));
 
                 return Proxy.Convert(products.ToList());
@@ -316,7 +372,10 @@ namespace Anatoli.Business.Domain
             {
                 var product = await Repository.GetByIdAsync(item.UniqueId);
 
-                product.ProductTypeId = item.ProductTypeInfo.UniqueId;
+                if (item.ProductTypeInfo != null && item.ProductTypeInfo.UniqueId != Guid.Empty)
+                    product.ProductTypeId = item.ProductTypeInfo.UniqueId;
+
+                product.IsActiveInOrder = item.IsActiveInOrder;
 
                 await Repository.SaveChangesAsync();
             }

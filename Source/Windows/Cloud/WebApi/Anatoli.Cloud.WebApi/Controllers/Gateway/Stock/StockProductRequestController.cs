@@ -17,7 +17,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class StockProductRequestController : AnatoliApiController
     {
         #region Stock Product Request Rules List
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("rules")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestRules([FromBody] RequestModel data)
@@ -36,7 +36,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("rules/valid")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestValidRules([FromBody] RequestModel data)
@@ -59,7 +59,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("rules/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestRulesAfter([FromBody] RequestModel data)
@@ -82,7 +82,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("rules/save")]
         [HttpPost]
         public async Task<IHttpActionResult> SaveStockProductRequestRules(string privateOwnerId, List<StockProductRequestRuleViewModel> data)
@@ -101,7 +101,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "SaveStockProductRequestRule")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "SaveStockProductRequestRule")]
         [Route("saveStockRequestProduct"), HttpPost]
         public async Task<IHttpActionResult> SaveStockProductRequestRule([FromBody] RequestModel data)
         {
@@ -141,7 +141,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestRuleType")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "StockProductRequestRuleType")]
         [Route("stockProductRequestRuleTypes"), HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestRuleTypes([FromBody] RequestModel data)
         {
@@ -157,7 +157,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestRuleCalcType")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "StockProductRequestRuleCalcType")]
         [Route("stockProductRequestRuleCalcTypes"), HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestRuleCalcTypes([FromBody] RequestModel data)
         {
@@ -176,7 +176,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock Product Request Rules List
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("requesttypes")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestTypes([FromBody] RequestModel data)
@@ -195,7 +195,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("requesttypes/save")]
         [HttpPost]
         public async Task<IHttpActionResult> SaveStockProductRequestTypes(string privateOwnerId, List<StockProductRequestTypeViewModel> data)
@@ -216,7 +216,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock Product Request
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp,User")]
         [Route("save")]
         [HttpPost]
         public async Task<IHttpActionResult> SaveStockProductRequests(string privateOwnerId, List<StockProductRequestViewModel> data)
@@ -236,7 +236,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
         #endregion
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestHistory")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "StockProductRequestHistory")]
         [Route("history"), HttpPost]
         public async Task<IHttpActionResult> StockProductRequestHistory([FromBody] RequestModel data)
         {
@@ -257,7 +257,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequestDetailsHistory")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "StockProductRequestDetailsHistory")]
         [Route("detailshistory"), HttpPost]
         public async Task<IHttpActionResult> StockProductRequestDetailsHistory([FromBody] RequestModel data)
         {
@@ -275,7 +275,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "StockProductRequests")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "StockProductRequests")]
         [Route("requests"), HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequests([FromBody] RequestModel data)
         {
@@ -296,7 +296,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "requestProductDetails")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "requestProductDetails")]
         [Route("requestProductDetails"), HttpPost]
         public async Task<IHttpActionResult> GetStockProductRequestProductDetails([FromBody] RequestModel data)
         {
@@ -314,7 +314,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Stock", Action = "updateRequestProductDetails")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "updateRequestProductDetails")]
         [Route("updateRequestProductDetails"), HttpPost]
         public async Task<IHttpActionResult> UpdateStockProductRequestProductDetails([FromBody] RequestModel data)
         {

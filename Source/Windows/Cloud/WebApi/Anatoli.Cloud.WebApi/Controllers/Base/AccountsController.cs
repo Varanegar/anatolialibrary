@@ -21,10 +21,8 @@ using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
 using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 using Anatoli.ViewModels.User;
-using Anatoli.Cloud.WebApi.Services;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
-using Anatoli.Rastak.ViewModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -39,7 +37,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             var data = await new AuthorizationDomain(OwnerKey).GetPermissionsForPrincipal(Guid.Parse(userId));
 
-            var model = data.Where(p => p.Permission.Resource == "Pages").Select(s=>s.Permission).ToList();
+            var model = data.Where(p => p.Permission.Resource == "Pages").Select(s => s.Permission).ToList();
 
             return Ok(new PermissionProxy().Convert(model.ToList()));
         }
@@ -165,29 +163,27 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 {
                     try
                     {
-                        var addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
+                        var addUserResult = await AppUserManager.CreateAsync(user, createUserModel.Password);
 
                         if (!addUserResult.Succeeded)
                             return GetErrorResult(addUserResult);
 
-                        if (this.AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
+                        if (AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
                         {
-                            this.AppRoleManager.Create(new IdentityRole
+                            AppRoleManager.Create(new IdentityRole
                             {
                                 Id = Guid.NewGuid().ToString(),
                                 Name = "User"
                             });
 
-                            this.AppRoleManager.Create(new IdentityRole
+                            AppRoleManager.Create(new IdentityRole
                             {
                                 Id = Guid.NewGuid().ToString(),
                                 Name = createUserModel.RoleName
                             });
                         }
 
-                        this.AppUserManager.AddToRoles(user.Id, new string[] { "User" });
-
-
+                        AppUserManager.AddToRoles(user.Id, new string[] { "User" });
 
                         var customerDomain = new CustomerDomain(createUserModel.PrivateOwnerId, Request.GetOwinContext().Get<AnatoliDbContext>());
                         var customer = new CustomerViewModel()
@@ -196,7 +192,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
                             UniqueId = Guid.Parse(user.Id),
                             Email = createUserModel.Email,
                         };
-
 
                         List<CustomerViewModel> customerList = new List<CustomerViewModel>();
                         customerList.Add(customer);
@@ -211,9 +206,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
-                        if(createUserModel.SendPassSMS)
+                        if (createUserModel.SendPassSMS)
                         {
-                            String hashedNewPassword = this.AppUserManager.PasswordHasher.HashPassword(createUserModel.Password);
+                            var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(createUserModel.Password);
+
                             await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword);
                         }
 
@@ -230,7 +226,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
             catch (Exception ex)
             {
-
                 return GetErrorResult(ex);
             }
         }
@@ -242,7 +237,126 @@ namespace Anatoli.Cloud.WebApi.Controllers
             createUserModel.SendPassSMS = true;
             var result = await CreateUserByBackoffice(createUserModel);
             return result;
-            
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("checkEmailExist"), HttpPost]
+        public async Task<IHttpActionResult> CheckEmailExist([FromBody] RequestModel model)
+        {
+            var emailUser = await AppUserManager.FindByEmailAsync(model.email);
+
+            if (emailUser != null && emailUser.Id != model.userId)
+                return Ok(false);
+
+            return Ok(true);
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("saveUser"), HttpPost]
+        public async Task<IHttpActionResult> SaveUser([FromBody] RequestModel model)
+        {
+            var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
+
+            if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
+                return await UpdateUser(userModel);
+            else
+                return await AddUser(userModel);
+        }
+
+        private async Task<IHttpActionResult> UpdateUser(CreateUserBindingModel model)
+        {
+            var user = AppUserManager.Users.Where(p => p.Id == model.UniqueId.ToString()).First();
+
+            user.FullName = model.FullName;
+            user.PhoneNumber = model.Mobile;
+
+            if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
+
+            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
+            user.PhoneNumberConfirmed = true;
+            user.EmailConfirmed = true;
+            await userStore.UpdateAsync(user);
+
+            return Ok(model);
+        }
+
+        private async Task<IHttpActionResult> AddUser(CreateUserBindingModel model)
+        {
+            try
+            {
+                Uri locationHeader = null;
+                if (!ModelState.IsValid)
+                    return GetErrorResult(ModelState);
+
+                var id = Guid.NewGuid();
+                var user = new User()
+                {
+                    Id = id.ToString(),
+                    FullName = model.FullName,
+                    UserName = model.Username,
+                    Email = model.Email,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedDate = DateTime.Now,
+                    PhoneNumber = model.Mobile,
+                    PrivateLabelOwner = new Principal { Id = OwnerKey },
+                    Principal = new Principal { Id = id, Title = model.FullName }
+                };
+
+                if (model.Email != null)
+                {
+                    var emailUser = await AppUserManager.FindByEmailAsync(model.Email);
+                    if (emailUser != null)
+                        return GetErrorResult("ایمیل شما قبلا استفاده شده است");
+                }
+
+                using (var transaction = Request.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    try
+                    {
+                        var addUserResult = await AppUserManager.CreateAsync(user, model.Password);
+
+                        if (!addUserResult.Succeeded)
+                            return GetErrorResult(addUserResult);
+
+                        AppUserManager.AddToRoles(user.Id, new string[] { "User" });
+
+                        locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+
+                        return GetErrorResult(ex);
+                    }
+                }
+                return Created(locationHeader, TheModelFactory.Create(user));
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("getUser"), HttpPost]
+        public IHttpActionResult GetUser([FromBody] RequestModel model)
+        {
+            var user = AppUserManager.Users.Where(p => p.Id == model.userId)
+                                     .Select(s => new
+                                     {
+                                         userId = s.Id,
+                                         fullName = s.FullName,
+                                         userName = s.UserName,
+                                         email = s.Email,
+                                         mobile = s.PhoneNumber,
+                                     })
+                                    .FirstOrDefault();
+
+            return Ok(user);
         }
 
         [AllowAnonymous]
@@ -277,7 +391,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var user = await userStore.FindByNameAsync(username);
             bool result = await userStore.VerifySMSCodeAsync(user, code);
 
-            if(result)
+            if (result)
                 return Ok(new BaseViewModel());
             else
                 return BadRequest("کد نامعتبر است یا زمان مجاز آن به پایان رسیده است");
@@ -323,14 +437,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("ResetPasswordByCode", Name = "ResetPasswordByCodeRoute")]
-        public async Task<IHttpActionResult> ResetPassword(string username = "", string password = "", string code="")
+        public async Task<IHttpActionResult> ResetPassword(string username = "", string password = "", string code = "")
         {
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
             var user = await userStore.FindByNameAsync(username);
             if (user == null)
                 return GetErrorResult("کاربر یافت نشد");
 
-            String hashedNewPassword = this.AppUserManager.PasswordHasher.HashPassword(password);
+            var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(password);
             bool result = await userStore.ResetPasswordByCodeAsync(user, hashedNewPassword, code);
 
             if (result)
@@ -348,7 +462,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await this.AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            IdentityResult result = await AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
 
             if (!result.Succeeded)
             {
@@ -502,11 +616,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 phoneNumber = phoneNumber.Substring(phoneNumber.Length - 10);
                 phoneNumber = "98" + phoneNumber;
-                
+
                 Random rnd = new Random();
                 int rndValue = rnd.Next(111111, 999999);
                 message = "شماره کد رمز" + rndValue;
-                
+
                 var smsManager = new SMSManager();
                 var userStore = new AnatoliUserStore(dbContext);
                 await userStore.SetResetSMSCodeAsync(user, rndValue.ToString(), pass);
