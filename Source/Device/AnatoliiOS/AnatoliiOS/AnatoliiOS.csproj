@@ -3,13 +3,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{5E65934D-1E55-4174-80BF-3B57A2D3B86E}</ProjectGuid>
+    <ProjectGuid>{E49A4BFC-4AA1-43D4-9A48-01C051657B71}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>AnatoliIOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>AnatoliIOS</AssemblyName>
-    <NuGetPackageImportStamp>4611c849</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>ae66259b</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -96,8 +96,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
     <None Include="app.config" />
+    <None Include="GettingStarted.Xamarin" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -126,8 +129,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Validation">
       <HintPath>..\..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
@@ -142,16 +144,7 @@
     <BundleResource Include="Resources\Icon-Small-40%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
-      <Project>{7652423f-f5e3-4a1a-958f-7331c42ae409}</Project>
-      <Name>Anatoli</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Contents.json">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-40.png">
       <InProject>false</InProject>
     </ImageAsset>
     <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-40@2x.png">
@@ -166,15 +159,6 @@
     <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-60@3x.png">
       <InProject>false</InProject>
     </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-76.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-76@2x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-Small.png">
-      <InProject>false</InProject>
-    </ImageAsset>
     <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-Small@2x.png">
       <InProject>false</InProject>
     </ImageAsset>
@@ -184,6 +168,12 @@
     <ImageAsset Include="Resources/Images.xcassets/LaunchImages.launchimage/Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
+      <Project>{7652423f-f5e3-4a1a-958f-7331c42ae409}</Project>
+      <Name>Anatoli</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets" Condition="Exists('..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets')" />

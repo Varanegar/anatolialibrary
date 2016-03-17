@@ -16,10 +16,9 @@ namespace AnatoliIOS
         public override async void ViewDidLoad()
         {
             base.ViewDidLoad();
-        
             // Perform any additional setup after loading the view, typically from a nib.
-            //AnatoliClient.GetInstance(new IosWebClient(), new IosSqliteClient(), new IosFileIO());
-            //var result = await AnatoliUserManager.LoginAsync("09192403525", "123456");
+            AnatoliClient.GetInstance(new IosWebClient(), new IosSqliteClient(), new IosFileIO());
+            var result = await AnatoliUserManager.LoginAsync("09192403525", "123456");
         }
 
         public override void DidReceiveMemoryWarning()
