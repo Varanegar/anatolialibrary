@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace AnatoliiOS
+namespace AnatoliIOS
 {
     public class Application
     {

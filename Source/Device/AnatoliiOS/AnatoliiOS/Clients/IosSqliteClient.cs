@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace AnatoliiOS.Clients
+namespace AnatoliIOS.Clients
 {
     class IosSqliteClient : AnatoliSQLite
     {

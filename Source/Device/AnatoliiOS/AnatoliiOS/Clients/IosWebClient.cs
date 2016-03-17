@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnatoliiOS.Clients
+namespace AnatoliIOS.Clients
 {
     class IosWebClient : AnatoliWebClient
     {

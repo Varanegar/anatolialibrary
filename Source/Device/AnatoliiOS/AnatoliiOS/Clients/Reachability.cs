@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using SystemConfiguration;
 
-namespace AnatoliiOS.Clients
+namespace AnatoliIOS.Clients
 {
 
     public enum NetworkStatus
