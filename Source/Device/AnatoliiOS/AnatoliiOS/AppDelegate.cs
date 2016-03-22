@@ -10,7 +10,7 @@ namespace AnatoliIOS
     public class AppDelegate : UIApplicationDelegate
     {
         // class-level declarations
-
+        public RootViewController RootViewController { get { return Window.RootViewController as RootViewController; } }
         public override UIWindow Window
         {
             get;

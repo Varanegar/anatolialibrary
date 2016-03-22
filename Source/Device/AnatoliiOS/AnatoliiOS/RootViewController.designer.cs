@@ -11,8 +11,8 @@ using UIKit;
 
 namespace AnatoliIOS
 {
-	[Register ("ViewController")]
-	partial class ViewController
+	[Register ("RootViewController")]
+	partial class RootViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{
