@@ -20,9 +20,9 @@ namespace AnatoliIOS
         {
             base.ViewDidLoad();
             NavController = new NavController();
-            NavController.PushViewController(new IntroController(), false);
+            NavController.PushViewController(new FirstPage(), true);
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());
-            SidebarController.MenuWidth = 220;
+            SidebarController.MenuWidth = 180;
             SidebarController.ReopenOnRotate = false;
         }
         public override void DidReceiveMemoryWarning()
