@@ -1,4 +1,7 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.Concretes.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -10,20 +13,18 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/base/manufacture")]
-    public class ManufactureController : BaseApiController
+    public class ManufactureController : AnatoliApiController
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region Products
+        #region Manufacture
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("manufactures")]
-        public async Task<IHttpActionResult> GetManufactures(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetManufactures()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var manufactureDomain = new ManufactureDomain(owner);
-                var result = await manufactureDomain.GetAll();
+                var manufactureDomain = new ManufactureDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await manufactureDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -37,14 +38,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("manufactures/after")]
-        public async Task<IHttpActionResult> GetManufactures(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetManufactures([FromBody]BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var manufactureDomain = new ManufactureDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await manufactureDomain.GetAllChangedAfter(validDate);
+                var manufactureDomain = new ManufactureDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await manufactureDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -55,26 +56,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveManufactures(string privateOwnerId, List<ManufactureViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveManufactures([FromBody]GeneralRequestModel data)
         {
-            if (data != null) log.Info("save manufacture count : " + data.Count);
-            var owner = Guid.Parse(privateOwnerId);
-            var manufactureDomain = new ManufactureDomain(owner);
-            var result = await manufactureDomain.PublishAsync(data);
-            return Ok(result);
+            var manufactureDomain = new ManufactureDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            await manufactureDomain.PublishAsync(new ManufactureProxy().ReverseConvert(data.manufactureData));
+            return Ok(data.manufactureData);
         }
-        
-        [Authorize(Roles = "AuthorizedApp")]
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedManufactures(string privateOwnerId, List<ManufactureViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedManufactures([FromBody]GeneralRequestModel data)
         {
-            if (data != null) log.Info("save manufacture count : " + data.Count);
-            var owner = Guid.Parse(privateOwnerId);
-            var manufactureDomain = new ManufactureDomain(owner);
-            var result = await manufactureDomain.CheckDeletedAsync(data);
-            return Ok(result);
+            var manufactureDomain = new ManufactureDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            await manufactureDomain.CheckDeletedAsync(data.manufactureData);
+            return Ok(data.manufactureData);
         }
         #endregion
     }

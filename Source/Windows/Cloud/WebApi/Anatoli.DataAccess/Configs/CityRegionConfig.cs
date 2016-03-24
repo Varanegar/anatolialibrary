@@ -35,31 +35,6 @@ namespace Anatoli.DataAccess.Configs
                 .HasForeignKey(P => P.RegionLevel4Id)
                 .WillCascadeOnDelete(false);
 
-            this.HasMany<CustomerNotVerified>(pp => pp.CustomerNotVerifiedInfos)
-                .WithOptional(p => p.RegionInfo)
-                .HasForeignKey(p => p.RegionInfoId)
-                .WillCascadeOnDelete(false);
-
-            this.HasMany<CustomerNotVerified>(pp => pp.CustomerNotVerifiedInfos)
-                .WithOptional(p => p.RegionLevel1)
-                .HasForeignKey(P => P.RegionLevel1Id)
-                .WillCascadeOnDelete(false);
-
-            this.HasMany<CustomerNotVerified>(pp => pp.CustomerNotVerifiedInfos)
-                .WithOptional(p => p.RegionLevel2)
-                .HasForeignKey(P => P.RegionLevel2Id)
-                .WillCascadeOnDelete(false);
-
-            this.HasMany<CustomerNotVerified>(pp => pp.CustomerNotVerifiedInfos)
-                .WithOptional(p => p.RegionLevel3)
-                .HasForeignKey(P => P.RegionLevel3Id)
-                .WillCascadeOnDelete(false);
-
-            this.HasMany<CustomerNotVerified>(pp => pp.CustomerNotVerifiedInfos)
-                .WithOptional(p => p.RegionLevel4)
-                .HasForeignKey(P => P.RegionLevel4Id)
-                .WillCascadeOnDelete(false);
-
             this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
                .WithRequired(svr => svr.CityRegion)
                 .WillCascadeOnDelete(false);

@@ -38,7 +38,7 @@ namespace Anatoli.Rastak.Business.Proxy
 
             return result;
         }
-        public virtual TSource ReverseConvert(string id, Guid PrivateOwnerId)
+        public virtual TSource ReverseConvert(string id, Guid ApplicationOwnerId)
         {
             return new TSource
             {

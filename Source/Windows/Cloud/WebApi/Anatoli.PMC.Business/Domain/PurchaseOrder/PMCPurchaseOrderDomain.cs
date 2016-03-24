@@ -40,10 +40,10 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
         {
             throw new NotImplementedException();
         }
-        public List<PurchaseOrderViewModel> GetAllByCustomerId(string customerId, string statusId, string centerId)
+        public List<PurchaseOrderViewModel> GetAllByCustomerId(Guid customerId, string statusId, string centerId)
         {
             if (centerId.ToLower() == "all")
-                return SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId, statusId);
+                return SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId.ToString(), statusId.ToString());
             else
                 return null;
         }

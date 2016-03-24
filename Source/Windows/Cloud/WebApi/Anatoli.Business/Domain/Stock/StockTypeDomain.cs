@@ -13,101 +13,42 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockTypeDomain : BusinessDomain<StockTypeViewModel>, IBusinessDomain<StockType, StockTypeViewModel>
+    public class StockTypeDomain : BusinessDomainV2<StockType, StockTypeViewModel, StockTypeRepository, IStockTypeRepository>, IBusinessDomainV2<StockType, StockTypeViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockType, StockTypeViewModel> Proxy { get; set; }
-        public IRepository<StockType> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StockTypeDomain() { }
-        public StockTypeDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockTypeDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockTypeRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockType, StockTypeViewModel>.Create())
+        public StockTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockTypeDomain(IStockTypeRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockType, StockTypeViewModel> proxy)
+        public StockTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<StockTypeViewModel>> GetAll()
+        protected override void AddDataToRepository(StockType currentData, StockType item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockTypeViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockTypeViewModel>> PublishAsync(List<StockTypeViewModel> dataViewModels)
-        {
-            try
+            if (currentData != null)
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                dataList.ForEach(item =>
+                if (currentData.StockTypeName != item.StockTypeName)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        if (currentData.StockTypeName != item.StockTypeName)
-                        {
-                            currentData.StockTypeName = item.StockTypeName;
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                    currentData.StockTypeName = item.StockTypeName;
+                    currentData.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentData);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
         }
 
-        public async Task<List<StockTypeViewModel>> Delete(List<StockTypeViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StockTypes.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
         #endregion
     }
 }

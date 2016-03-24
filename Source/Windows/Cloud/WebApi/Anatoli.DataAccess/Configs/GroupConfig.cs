@@ -10,7 +10,7 @@ namespace Anatoli.DataAccess.Configs
     {
         public GroupConfig()
         {
-            this.HasRequired<Principal>(p => p.Principal);
+            this.HasRequired<ApplicationOwner>(p => p.Principal);
         }
     }
 }

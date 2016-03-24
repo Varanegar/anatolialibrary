@@ -17,7 +17,7 @@ namespace Anatoli.Business.Proxy.BaseConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 BaseValueName = data.BaseValueName,
             };
         }
@@ -30,7 +30,7 @@ namespace Anatoli.Business.Proxy.BaseConcretes
                 Id = data.UniqueId,
                 BaseValueName = data.BaseValueName,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                ApplicationOwnerId = data.ApplicationOwnerId,
             };
         }
     }

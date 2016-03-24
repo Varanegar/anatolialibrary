@@ -61,7 +61,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 IsRemoved = data.IsRemoved,
 
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
                 ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
@@ -87,10 +87,10 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
-                Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
-                ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateOwnerId),
-                MainProductGroup = (data.MainProductGroupIdString == null) ? null : MainProductGroupProxy.ReverseConvert(data.MainProductGroupIdString, data.PrivateOwnerId),
+                ApplicationOwnerId = data.ApplicationOwnerId,
+                Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.ApplicationOwnerId),
+                ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.ApplicationOwnerId),
+                MainProductGroup = (data.MainProductGroupIdString == null) ? null : MainProductGroupProxy.ReverseConvert(data.MainProductGroupIdString, data.ApplicationOwnerId),
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
                 CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
 

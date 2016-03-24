@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CustomerDataType = "Customer";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCustomerToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
+        public static void UploadCustomerToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter, string privateOwnerId)
         {
             try
             {
@@ -33,7 +33,6 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                             try
                             {
                                 item.SendPassSMS = false;
-                                item.PrivateOwnerId = Guid.Parse(privateOwnerId);
                                 string data = JsonConvert.SerializeObject(item);
                                 string getUserURI = serverURI + UriInfo.GetUserURI + "/" + item.Mobile;
                                 var user = ConnectionHelper.CallServerServiceGet<UserReturnModel>(getUserURI, client);
@@ -41,7 +40,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                                     CustomerAdapter.Instance.SetCustomerSiteUserId(user.Id, user.Mobile);
                                 else
                                 {
-                                    string URI = serverURI + UriInfo.SaveUserURI + privateOwnerQueryString;
+                                    string URI = serverURI + UriInfo.SaveUserURI;
                                     UserReturnModel result = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, URI, client);
                                     CustomerAdapter.Instance.SetCustomerSiteUserId(result.Id, result.Mobile);
                                 }

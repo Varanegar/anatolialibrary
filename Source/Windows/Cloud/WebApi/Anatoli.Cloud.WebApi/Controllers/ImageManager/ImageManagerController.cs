@@ -14,13 +14,15 @@ using System.Collections.Generic;
 using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.ProductConcretes;
+using Anatoli.ViewModels;
+using Anatoli.DataAccess.Models;
 
 namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 {
     [RoutePrefix("api/imageManager")]
-    public class ImageManagerController : BaseApiController
+    public class ImageManagerController : AnatoliApiController
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
         public IFileManager FileManager { get; set; }
         #endregion
@@ -38,15 +40,13 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         #region Actions
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images")]
-        public async Task<IHttpActionResult> GetImages(string privateOwnerId)
+        public async Task<IHttpActionResult> GetImages()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var imageDomain = new ItemImageDomain(owner);
-                var result = await imageDomain.GetAll();
+                var items = await new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
-                return Ok(result);
+                return Ok(items) ;
             }
             catch (Exception ex)
             {
@@ -57,14 +57,13 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images/after")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId, string dateAfter)
+        public async Task<IHttpActionResult> GetProducts([FromBody]ItemImageRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ItemImageDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await productDomain.GetAllChangedAfter(validDate);
+                var productDomain = new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -76,37 +75,36 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [HttpPost, Route("Save")]
-        public async Task<IHttpActionResult> SaveImage(string token, string imagetype, string privateOwnerId, string imageId, bool isDefault)
+        public async Task<IHttpActionResult> SaveImage([FromBody]ItemImageRequestModel data)
         {
             try
             {
 
-                var owner = Guid.Parse(privateOwnerId);
-                var itemImageDomain = new ItemImageDomain(owner);
+                var itemImageDomain = new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
                 var httpRequest = HttpContext.Current.Request;
                 Guid _token = Guid.Empty;
                 if (httpRequest.Form["token"] != null )
                     Guid.TryParse(httpRequest.Form["token"], out _token);
 
-                if(token != "")
-                    Guid.TryParse(token, out _token);
+                if(data.token != "")
+                    Guid.TryParse(data.token, out _token);
 
-                List<ItemImageViewModel> dataList = new List<ItemImageViewModel>();
+                List<ItemImage> dataList = new List<ItemImage>();
                 if (httpRequest.Files.Count > 0){
                     foreach (string file in httpRequest.Files)
                     {
                         HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
 
-                        await FileManager.Save(postedFile, imagetype, _token.ToString(), file);
+                        await FileManager.Save(postedFile, data.imagetype, _token.ToString(), file);
 
-                        ItemImageViewModel imageViewModel = new ItemImageViewModel()
+                        ItemImage imageViewModel = new ItemImage()
                             {
-                                BaseDataId = token,
-                                UniqueId = Guid.Parse(imageId),
-                                ImageType = imagetype,
+                                TokenId = data.token,
+                                Id = Guid.Parse(data.imageId),
+                                ImageType = data.imagetype,
                                 ImageName = file,
-                                IsDefault = isDefault,
+                                IsDefault = data.isDefault,
                             };
                         dataList.Add(imageViewModel);
                     }
@@ -121,55 +119,8 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             {
                 log.Error(ex.Message, ex);
                 return GetErrorResult(ex);
-                //todo: log error!
             }
         }
-
-        //[HttpPost, Route("Remove")]
-        //public async Task<string> RemoveImages(string[] fileNames, string imageType)
-        //{
-        //    try
-        //    {
-        //        if (fileNames != null)
-        //            foreach (var fullName in fileNames)
-        //                await FileManager.Remove("", imageType, fullName);
-
-        //        // Return an empty string to signify success
-        //        return "";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return "Invalid Operation!";
-
-        //        //todo: log error!
-        //    }
-        //}
-        //[HttpGet, Route("Names")]
-        //public List<string> GetImageNames(string token, string imageType)
-        //{
-        //    return FileManager.GetFileNames(token, imageType);
-        //}
-
-        //[HttpGet, Route("Image")]
-        //public HttpResponseMessage GetImage(string filename, string imageType, string token = "", int width = 0, int height = 0)
-        //{
-        //    string filepath = new FileManager().GetPath(token, imageType, filename);
-
-        //    var imgActual = new FileManager().Scale(Image.FromFile(filepath), width, height);
-
-        //    var ms = new MemoryStream();
-
-        //    imgActual.Save(ms, ImageFormat.Png);
-
-        //    var result = new HttpResponseMessage(HttpStatusCode.OK)
-        //    {
-        //        Content = new ByteArrayContent(ms.ToArray())
-        //    };
-
-        //    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
-
-        //    return result;
-        //}
 
         #endregion
     }

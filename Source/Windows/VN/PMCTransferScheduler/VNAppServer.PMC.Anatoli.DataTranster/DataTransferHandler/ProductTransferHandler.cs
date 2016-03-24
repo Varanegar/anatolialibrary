@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string ProductDataType = "Product";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadProductToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
+        public static void UploadProductToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter, string privateOwnerId)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var lastUpload = Utility.GetLastUploadTime(ProductDataType);
                 var dbData = ProductAdapter.Instance.GetAllProducts(lastUpload);
                 {
-                    RequestModel request = new RequestModel() { Products = dbData, privateOwnerId = privateOwnerId };
+                    ProductRequestModel request = new ProductRequestModel() { productData = dbData };
                     JavaScriptSerializer js = new JavaScriptSerializer();
                     js.MaxJsonLength = Int32.MaxValue;
                     string data = js.Serialize(request);
@@ -41,7 +41,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 //    JavaScriptSerializer js = new JavaScriptSerializer();
                 //    js.MaxJsonLength = Int32.MaxValue;
                 //    string data = js.Serialize(dbData);
-                //    string URI = serverURI + UriInfo.CheckDeletedProductURI + privateOwnerQueryString;
+                //    string URI = serverURI + UriInfo.CheckDeletedProductURI;
                 //    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 //}
 

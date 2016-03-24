@@ -17,7 +17,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CharTypeDataType = "CharType";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCharTypeToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadCharTypeToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveCharTypeURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.SaveCharTypeURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
 
@@ -36,7 +36,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedCharTypeURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.CheckDeletedCharTypeURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
                 

@@ -13,59 +13,35 @@ using System.Data.Entity;
 
 namespace Anatoli.Business.Domain
 {
-    public class CharGroupDomain : BusinessDomain<CharGroupViewModel>, IBusinessDomain<CharGroup, CharGroupViewModel>
+    public class CharGroupDomain : BusinessDomainV2<CharGroup, CharGroupViewModel, CharGroupRepository, ICharGroupRepository>, IBusinessDomainV2<CharGroup, CharGroupViewModel>
     {
         #region Properties
-        public IAnatoliProxy<CharGroup, CharGroupViewModel> Proxy { get; set; }
-        public IRepository<CharGroup> Repository { get; set; }
         public IRepository<CharType> CharTypeRepository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        CharGroupDomain() { }
-        public CharGroupDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public CharGroupDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new CharGroupRepository(dbc), new CharTypeRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<CharGroup, CharGroupViewModel>.Create())
+        public CharGroupDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public CharGroupDomain(ICharGroupRepository CharGroupRepository, ICharTypeRepository charTypeRepository, IPrincipalRepository principalRepository, IAnatoliProxy<CharGroup, CharGroupViewModel> proxy)
+        public CharGroupDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = CharGroupRepository;
-            CharTypeRepository = charTypeRepository;
-            PrincipalRepository = principalRepository;
-        }
+            CharTypeRepository = new CharTypeRepository(dbc);
+        } 
         #endregion
 
         #region Methods
-        public async Task<List<CharGroupViewModel>> GetAll()
-        {
-            var charGroups = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(charGroups.ToList()); ;
-        }
-
-        public async Task<List<CharGroupViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var charGroups = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(charGroups.ToList()); ;
-        }
-
-        public async Task<List<CharGroupViewModel>> PublishAsync(List<CharGroupViewModel> dataViewModels)
+        public override async Task PublishAsync(List<CharGroup> charGroups)
         {
             try
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                var charGroups = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentGroups = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-                var currentTypes = CharTypeRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+                
+                var currentGroups = MainRepository.GetQuery().Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey).ToList();
+                var currentTypes = CharTypeRepository.GetQuery().Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey).ToList();
 
                 foreach(CharGroup item in charGroups)
                 {
@@ -75,88 +51,32 @@ namespace Anatoli.Business.Domain
                         currentGroup.CharGroupCode = item.CharGroupCode;
                         currentGroup.CharGroupName = item.CharGroupName;
                         currentGroup.LastUpdate = DateTime.Now;
-                        currentGroup = await SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
+                        currentGroup = SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
                     }
                     else
                     {
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        var currentCharGroup = await SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
-                        await Repository.AddAsync(currentCharGroup);
+                        var currentCharGroup = SetCharTypeData(item, item.CharTypes.ToList(), currentTypes);
+                        await MainRepository.AddAsync(currentCharGroup);
                     }
                 };
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
             finally
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + charGroups.Count);
             }
-            return dataViewModels;
-
-        }
-        public async Task<List<CharGroupViewModel>> CheckDeletedAsync(List<CharGroupViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
         }
 
-        public async Task<List<CharGroupViewModel>> Delete(List<CharGroupViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var charGroups = Proxy.ReverseConvert(dataViewModels);
 
-                charGroups.ForEach(item =>
-                {
-                    var charGroup = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.CharGroups.Remove(charGroup);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
-
-        private async Task<List<CharGroupViewModel>> DeleteAllGroups()
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroupTypes");
-                Repository.DbContext.Database.ExecuteSqlCommand("delete from CharGroups");
-            });
-            return new List<CharGroupViewModel>();
-        }
-
-        public async Task<CharGroup> SetCharTypeData(CharGroup data, List<CharType> charTypes, List<CharType> currentCharTypes)
+        public CharGroup SetCharTypeData(CharGroup data, List<CharType> charTypes, List<CharType> currentCharTypes)
         {
             data.CharTypes.Clear();
             foreach(CharType item in charTypes)

@@ -12,126 +12,40 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ManufactureDomain : BusinessDomain<ManufactureViewModel>, IBusinessDomain<Manufacture, ManufactureViewModel>
+    public class ManufactureDomain : BusinessDomainV2<Manufacture, ManufactureViewModel, ManufactureRepository, IManufactureRepository>, IBusinessDomainV2<Manufacture, ManufactureViewModel>
     {
         #region Properties
-        public IAnatoliProxy<Manufacture, ManufactureViewModel> Proxy { get; set; }
-        public IRepository<Manufacture> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        ManufactureDomain() { }
-        public ManufactureDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public ManufactureDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ManufactureRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Manufacture, ManufactureViewModel>.Create())
+        public ManufactureDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public ManufactureDomain(IManufactureRepository manufactureRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Manufacture, ManufactureViewModel> proxy)
+        public ManufactureDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = manufactureRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<ManufactureViewModel>> GetAll()
+        protected override void AddDataToRepository(Manufacture currentManufacture, Manufacture item)
         {
-            var dataLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataLists.ToList()); ;
-        }
-
-        public async Task<List<ManufactureViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataLists.ToList()); ;
-        }
-
-        public async Task<List<ManufactureViewModel>> PublishAsync(List<ManufactureViewModel> dataViewModels)
-        {
-            try
+            if (currentManufacture != null)
             {
-                var dataLists = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                dataLists.ForEach(item =>
+                if (currentManufacture.ManufactureName != item.ManufactureName)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentManufacture = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentManufacture != null)
-                    {
-                        if (currentManufacture.ManufactureName != item.ManufactureName)
-                        {
-                            currentManufacture.ManufactureName = item.ManufactureName;
-                            currentManufacture.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentManufacture);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                    currentManufacture.ManufactureName = item.ManufactureName;
+                    currentManufacture.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentManufacture);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-        }
-        public async Task<List<ManufactureViewModel>> CheckDeletedAsync(List<ManufactureViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-        public async Task<List<ManufactureViewModel>> Delete(List<ManufactureViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataLists = Proxy.ReverseConvert(dataViewModels);
-
-                dataLists.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DbContext.Manufactures.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

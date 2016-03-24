@@ -13,48 +13,27 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockProductRequestProductDetailDomain : BusinessDomain<StockProductRequestProductDetailViewModel>, IBusinessDomain<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel>
+    public class StockProductRequestProductDetailDomain : BusinessDomainV2<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel, StockProductRequestProductDetailRepository, IStockProductRequestProductDetailRepository>, IBusinessDomainV2<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> Proxy { get; set; }
-        public IRepository<StockProductRequestProductDetail> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StockProductRequestProductDetailDomain() { }
-        public StockProductRequestProductDetailDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockProductRequestProductDetailDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestProductDetailRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel>.Create())
+        public StockProductRequestProductDetailDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockProductRequestProductDetailDomain(IStockProductRequestProductDetailRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProductRequestProductDetail, StockProductRequestProductDetailViewModel> proxy)
+        public StockProductRequestProductDetailDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
         }
+
         #endregion
 
         #region Methods
-        public async Task<List<StockProductRequestProductDetailViewModel>> GetAll()
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
 
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestProductDetailViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestProductDetailViewModel>> PublishAsync(List<StockProductRequestProductDetailViewModel> dataViewModels)
+        public override async Task PublishAsync(List<StockProductRequestProductDetail> dataViewModels)
         {
             try
             {
@@ -62,15 +41,16 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
         }
 
-        public async Task<List<StockProductRequestProductDetailViewModel>> Delete(List<StockProductRequestProductDetailViewModel> dataViewModels)
+        public async Task<ICollection<StockProductRequestProductDetail>> GetStockProductRequestProductDetails(Guid stockProductRequestProductId)
         {
-            throw new NotImplementedException();
+            return await MainRepository.FindAllAsync(p => p.StockProductRequestProductId == stockProductRequestProductId && p.DataOwnerId == DataOwnerKey);
         }
+
         #endregion
     }
 }

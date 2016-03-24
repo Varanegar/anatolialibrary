@@ -1,5 +1,8 @@
 ﻿using Anatoli.Business;
 using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.Concretes.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -11,19 +14,18 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/productrate")]
-    public class ProductRateController : BaseApiController
+    public class ProductRateController : AnatoliApiController
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region ProductRates
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productrates")]
-        public async Task<IHttpActionResult> GetProductRates(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductRates()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productRateDomain = new ProductRateDomain(owner);
-                var result = await productRateDomain.GetAll();
+                var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productRateDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -36,12 +38,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productrateavgs")]
-        public async Task<IHttpActionResult> GetProductRateAvgs(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductRateAvgs()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productRateDomain = new ProductRateDomain(owner);
+                var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var result = await productRateDomain.GetAllAvg();
 
                 return Ok(result);
@@ -55,13 +57,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productrateavgs/after")]
-        public async Task<IHttpActionResult> GetProductRates(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductRates([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productRateDomain = new ProductRateDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
+                var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
                 var result = await productRateDomain.GetAllAvgChangeAfter(validDate);
 
                 return Ok(result);
@@ -75,15 +77,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveProductRates(string privateOwnerId, List<ProductRateViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveProductRates([FromBody] ProductRequestModel data)
         {
             try
             {
-                if (data != null) log.Info("save product count : " + data.Count);
-                var owner = Guid.Parse(privateOwnerId);
-                var productRateDomain = new ProductRateDomain(owner);
-                var result = await productRateDomain.PublishAsyncWithReturn(data);
-                return Ok(result);
+                if (data != null) log.Info("save product count : " + data.productRateData.Count);
+                var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productRateDomain.PublishAsync(new ProductRateProxy().ReverseConvert(data.productRateData));
+                return Ok(data.productRateData);
             }
             catch (Exception ex)
             {

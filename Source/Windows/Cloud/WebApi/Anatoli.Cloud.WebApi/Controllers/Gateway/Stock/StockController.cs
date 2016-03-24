@@ -8,6 +8,10 @@ using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.StoreModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes;
+using Anatoli.Business.Proxy.Concretes.StockConcretes;
+using Anatoli.Business.Proxy.Concretes.StockProductConcretes;
+using Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -17,13 +21,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region stock On Hand List
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockOnhand")]
-        public async Task<IHttpActionResult> GetStockOnhands(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockOnhands()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockActiveOnHandDomain(owner);
-                var result = await stockDomain.GetAll();
+                var stockDomain = new StockActiveOnHandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await stockDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -35,15 +39,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockOnhand/after")]
-        public async Task<IHttpActionResult> GetStockOnhands(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockOnhands([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockActiveOnHandDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await stockDomain.GetAllChangedAfter(validDate);
-                return Ok(result);
+                var stockDomain = new StockActiveOnHandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await stockDomain.GetAllChangedAfterAsync(validDate);
+                return Ok(validDate);
             }
             catch (Exception ex)
             {
@@ -54,13 +58,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockOnhandbyid/")]
-        public async Task<IHttpActionResult> GetStockOnhandsByStockId(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockOnhandsByStockId([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockActiveOnHandDomain(owner);
-                var result = await stockDomain.GetAllByStockId(id);
+                var stockDomain = new StockActiveOnHandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await stockDomain.GetAllByStockId(data.stockId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -72,14 +76,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User"), HttpPost]
         [Route("stockOnhand/save")]
-        public async Task<IHttpActionResult> SaveStockOnhands([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> SaveStockOnhands([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(data.privateOwnerId);
-                var stockDomain = new StockActiveOnHandDomain(owner);
-                var result = await stockDomain.PublishAsync(data.StockActiveOnHand);
-                return Ok(result);
+                var stockDomain = new StockActiveOnHandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await stockDomain.PublishAsync(new StockActiveOnHandProxy().ReverseConvert(data.stockActiveOnHandData));
+                return Ok(data.stockActiveOnHandData);
             }
             catch (Exception ex)
             {
@@ -96,9 +99,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var stockDomain = new StockDomain(OwnerKey);
+                var stockDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                var result = await stockDomain.GetAll();
+                var result = await stockDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -109,15 +112,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "SaveStocks"),
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User, DataSync, BaseDataAdmin", Resource = "Stock", Action = "SaveStocks"),
          Route("saveStocks"), HttpPost]
-        public async Task<IHttpActionResult> SaveStocks([FromBody] List<StockViewModel> data)
+        public async Task<IHttpActionResult> SaveStocks([FromBody] StockRequestModel data)
         {
             try
             {
-                await new StockDomain(OwnerKey).SaveStocks(data);
+                await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new StockProxy().ReverseConvert(data.stockData));
 
-                return Ok(new { });
+                return Ok(data.stockData);
             }
             catch (Exception ex)
             {
@@ -129,11 +132,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "UserStocks"),
          Route("userStocks"), HttpPost]
-        public async Task<IHttpActionResult> GetUserStocks([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> GetUserStocks([FromBody] BaseRequestModel data)
         {
             try
             {
-                var result = await new StockDomain(OwnerKey).GetAllByUserId(data.userId);
+                var result = await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByUserId(data.userId);
 
                 return Ok(result);
             }
@@ -146,11 +149,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "SaveUserStocks"),
          Route("saveUserStocks"), HttpPost]
-        public async Task<IHttpActionResult> SaveUserStocks([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> SaveUserStocks([FromBody] StockRequestModel data)
         {
             try
             {
-                await new StockDomain(OwnerKey).SaveStocksUser(data.userId, data.stockIds == null ? null : data.stockIds.Select(s => Guid.Parse(s)).ToList());
+                await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SaveStocksUser(data.userId, data.stockIds == null ? null : data.stockIds.Select(s => Guid.Parse(s)).ToList());
 
                 return Ok(new { });
             }
@@ -161,14 +164,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [AnatoliAuthorize(Roles = "AuthorizedApp")]
         [Route("stocks/complete")]
-        public async Task<IHttpActionResult> GetStockCompletes(string privateOwnerId, string stockId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockCompletes([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockDomain(owner);
-                var result = await stockDomain.GetStockCompleteInfo(stockId);
+                var stockDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await stockDomain.GetByIdAsync(data.stockId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -180,14 +184,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stocks/after")]
-        public async Task<IHttpActionResult> GetStocks(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStocks([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await stockDomain.GetAllChangedAfter(validDate);
+                var stockDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -197,35 +201,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp,User")]
-        [Route("save")]
-        public async Task<IHttpActionResult> SaveStocks(string privateOwnerId, List<StockViewModel> data)
-        {
-            try
-            {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockDomain(owner);
-                var result = await stockDomain.PublishAsync(data);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-                return GetErrorResult(ex);
-            }
-        }
         #endregion
 
         #region Stock Product List
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockproduct")]
-        public async Task<IHttpActionResult> GetStockProducts(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockProducts()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockProductDomain(owner);
-                var result = await stockDomain.GetAll();
+                var stockDomain = new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await stockDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -239,11 +226,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("stockproduct/stockid")]
         [GzipCompression]
         [HttpPost]
-        public async Task<IHttpActionResult> GetStockProductsByStockId([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> GetStockProductsByStockId([FromBody] StockRequestModel data)
         {
             try
             {
-                var result = await new StockProductDomain(OwnerKey).GetAllByStockId(data.stockId);
+                var result = await new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByStockId(data.stockId);
 
                 return Ok(result);
             }
@@ -257,14 +244,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp,User")]
         [Route("stockproduct/after")]
-        public async Task<IHttpActionResult> GetStockProducts([FromBody] RequestModel data)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockProducts([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(data.privateOwnerId);
-                var stockDomain = new StockProductDomain(owner);
+                var stockDomain = new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var validDate = DateTime.Parse(data.dateAfter);
-                var result = await stockDomain.GetAllChangedAfter(validDate);
+                var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -274,17 +261,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp,User")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("stockproduct/save")]
         [HttpPost]
-        public async Task<IHttpActionResult> SaveStockProducts(string privateOwnerId, List<StockProductViewModel> data)
+        public async Task<IHttpActionResult> SaveStockProducts([FromBody] StockRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var stockDomain = new StockProductDomain(owner);
+                var stockDomain = new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                await stockDomain.PublishAsync(data);
+                await stockDomain.PublishAsync(new StockProductProxy().ReverseConvert(data.stockProductData));
 
                 return Ok(new { });
             }
@@ -299,13 +285,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Product Rules
         [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "ProductRequestRules")]
         [Route("productRequestRules"), HttpPost]
-        public async Task<IHttpActionResult> ProductRequestRules()
+        public async Task<IHttpActionResult> GetProductRequestRules()
         {
             try
             {
-                var stockDomain = new StockDomain(OwnerKey);
+                var stockDomain = new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                var result = await stockDomain.ProductRequestRules();
+                var result = await stockDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -317,11 +303,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
         [AnatoliAuthorize(Roles = "AuthorizedApp,User", Resource = "Stock", Action = "ProductRequestRules")]
         [Route("productRequestRule"), HttpPost]
-        public async Task<IHttpActionResult> ProductRequestRule([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> GetProductRequestRule([FromBody] StockProductRequestRequestModel data)
         {
             try
             {
-                var result = await new StockDomain(OwnerKey).GetAllById(data.ruleId);
+                var result = await new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetByIdAsync(data.ruleId);
 
                 return Ok(result);
             }

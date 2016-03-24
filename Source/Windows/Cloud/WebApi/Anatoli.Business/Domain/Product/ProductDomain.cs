@@ -14,67 +14,121 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductDomain : BusinessDomain<ProductViewModel>, IBusinessDomain<Product, ProductViewModel>
+    public class ProductDomain : BusinessDomainV2<Product, ProductViewModel, ProductRepository, IProductRepository>, IBusinessDomainV2<Product, ProductViewModel>
     {
         #region Properties
-        public IAnatoliProxy<Product, ProductViewModel> Proxy { get; set; }
-        public IAnatoliProxy<Product, ProductViewModel> ProxySimpleInfo { get; set; }
-        public IAnatoliProxy<Product, ProductViewModel> ProxyCompleteInfo { get; set; }
-        public IRepository<Product> Repository { get; set; }
         public IRepository<Supplier> SupplierRepository { get; set; }
         public IRepository<CharValue> CharValueRepository { get; set; }
-        public IRepository<ProductGroup> ProductGroupRepository { get; set; }
-        public IRepository<MainProductGroup> MainProductGroupRepository { get; set; }
-        public IRepository<Manufacture> ManufactureRepository { get; set; }
-        private AnatoliDbContext DBC { get; set; }
-
-        //public IPrincipalRepository PrincipalRepository { get; set; }
-        //public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
         #region Ctors
-        ProductDomain() { }
-        public ProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public ProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ProductRepository(dbc), new ProductGroupRepository(dbc), new MainProductGroupRepository(dbc), new ManufactureRepository(dbc),
-                   new SupplierRepository(dbc), new CharValueRepository(dbc), new PrincipalRepository(dbc), new ProductProxy(), new ProductSimpleProxy(), new ProductCompleteInfoProxy())
+        public ProductDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, true)
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
-            DBC = dbc;
+
         }
-        public ProductDomain(IProductRepository productRepository, IProductGroupRepository productGroupRepository, IMainProductGroupRepository mainProductGroupRepository,
-                             IManufactureRepository manufactureRepository, ISupplierRepository supplierRepository, ICharValueRepository charValueRepository,
-                             IPrincipalRepository principalRepository, IAnatoliProxy<Product, ProductViewModel> proxy, IAnatoliProxy<Product, ProductViewModel> simpleProxy, IAnatoliProxy<Product, ProductViewModel> completeProxy)
+        public ProductDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, bool fetchRemovedData)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            Proxy = proxy;
-            ProxyCompleteInfo = completeProxy;
-            ProxySimpleInfo = simpleProxy;
-            Repository = productRepository;
-            ProductGroupRepository = productGroupRepository;
-            MainProductGroupRepository = mainProductGroupRepository;
-            ManufactureRepository = manufactureRepository;
-            CharValueRepository = charValueRepository;
-            SupplierRepository = supplierRepository;
-            PrincipalRepository = principalRepository;
+
+        }
+        public ProductDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
+        {
+            SupplierRepository = new SupplierRepository(dbc);
+            CharValueRepository = new CharValueRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<ProductViewModel>> GetAllSimple()
+        public async Task<List<ProductViewModel>> GetAllForLookup()
         {
             try
             {
-                DBC.Configuration.AutoDetectChangesEnabled = false;
+                DBContext.Configuration.AutoDetectChangesEnabled = false;
                 var model = await Task<List<ProductViewModel>>.Factory.StartNew(() =>
                 {
-                    return Repository.GetQuery()
-                    .Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId)
+                    return MainRepository.GetQuery()
+                        .Where(
+                                p => p.DataOwnerId == DataOwnerKey && p.IsRemoved == GetRemovedData
+                            )
                     .Select(data => new ProductViewModel
                     {
                         ID = data.Number_ID,
                         UniqueId = data.Id,
                         ProductCode = data.ProductCode,
+                        Barcode = data.Barcode,
+                        StoreProductName = data.StoreProductName,
+                        IsRemoved = data.IsRemoved
+                    })
+                    .AsNoTracking()
+                    .ToList();
+                });
+
+                DBContext.Configuration.AutoDetectChangesEnabled = true;
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetAll ", ex);
+                throw ex;
+            }
+        }
+
+        public async Task<List<ProductViewModel>> Search(string term)
+        {
+            try
+            {
+                DBContext.Configuration.AutoDetectChangesEnabled = false;
+                var model = await Task<List<ProductViewModel>>.Factory.StartNew(() =>
+                {
+                    return MainRepository.GetQuery()
+                        .Where(
+                                    p => p.DataOwnerId == DataOwnerKey && (p.StoreProductName.Contains(term) || p.ProductCode.Contains(term)) && p.IsRemoved == GetRemovedData
+                            )
+                    .Select(data => new ProductViewModel
+                    {
+                        ID = data.Number_ID,
+                        UniqueId = data.Id,
+                        ProductCode = data.ProductCode,
+                        Barcode = data.Barcode,
+                        StoreProductName = data.StoreProductName,
+                        IsRemoved = data.IsRemoved
+                    })
+                    .AsNoTracking()
+                    .ToList();
+                });
+
+                DBContext.Configuration.AutoDetectChangesEnabled = true;
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Search ", ex);
+                throw ex;
+            }
+        }
+
+        public async Task<List<ProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
+        {
+            try
+            {
+                DBContext.Configuration.AutoDetectChangesEnabled = false;
+                var model = await Task<List<ProductViewModel>>.Factory.StartNew(() =>
+                {
+                    return MainRepository.GetQuery()
+                    .Where(p => p.DataOwnerId == DataOwnerKey && p.LastUpdate >= selectedDate && p.IsRemoved == GetRemovedData)
+                    .Select(data => new ProductViewModel
+                    {
+                        ID = data.Number_ID,
+                        UniqueId = data.Id,
+                        ProductCode = data.ProductCode,
+                        Desctription = data.Desctription,
+                        PackVolume = data.PackVolume,
+                        PackWeight = data.PackWeight,
                         Barcode = data.Barcode,
                         StoreProductName = data.StoreProductName,
                         ProductTypeId = data.ProductTypeId,
@@ -98,70 +152,28 @@ namespace Anatoli.Business.Domain
                 });
 
                 model.Where(p => p.ProductTypeInfo == null).ToList().ForEach(itm => itm.ProductTypeInfo = new ProductTypeViewModel());
+                DBContext.Configuration.AutoDetectChangesEnabled = true;
 
                 return model;
-                //var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-                // return ProxySimpleInfo.Convert(products.ToList());
             }
             catch (Exception ex)
             {
-                log.Error("GetAll ", ex);
+                Logger.Error("GetAll ", ex);
                 throw ex;
             }
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<ICollection<Product>> PublishAsync(List<Product> products)
         {
             try
             {
-                var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-                return Proxy.Convert(products.ToList()); ;
-            }
-            catch (Exception ex)
-            {
-                log.Error("GetAll ", ex);
-                throw ex;
-            }
-        }
-        public async Task<List<ProductViewModel>> Search(string term)
-        {
-            try
-            {
-                var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId &&
-                                                                  p.StoreProductName.Contains(term) ||
-                                                                  p.ProductCode.Contains(term));
 
-                return Proxy.Convert(products.ToList());
-            }
-            catch (Exception ex)
-            {
-                log.Error("GetAll ", ex);
-                throw ex;
-            }
-        }
-
-        public async Task<List<ProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var products = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(products.ToList()); ;
-        }
-
-        public async Task<List<ProductViewModel>> PublishAsync(List<ProductViewModel> dataViewModels)
-        {
-            log.Info("PublishAsync " + dataViewModels.Count);
-            try
-            {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
-
-                var products = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentProductList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+                var currentProductList = GetDataListToCheckForExistsData();
 
                 products.ForEach(item =>
                 {
-                    log.Debug("Save item info " + item.Id);
                     var currentProduct = currentProductList.Find(p => p.Id == item.Id);
 
                     if (currentProduct != null)
@@ -169,7 +181,6 @@ namespace Anatoli.Business.Domain
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.ProductGroupId = item.ProductGroupId;
                         currentProduct.ManufactureId = item.ManufactureId;
-                        //currentProduct.MainSupplierId = item.MainSupplierId;
                         currentProduct.Desctription = item.Desctription;
                         currentProduct.QtyPerPack = item.QtyPerPack;
                         currentProduct.PackVolume = item.PackVolume;
@@ -179,205 +190,72 @@ namespace Anatoli.Business.Domain
                         currentProduct.ProductName = item.ProductName;
                         currentProduct.StoreProductName = item.StoreProductName;
                         currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
+                        currentProduct.MainProductGroupId = item.MainProductGroupId;
+                        currentProduct.ManufactureId = item.ManufactureId;
+                        currentProduct.MainSupplierId = item.MainSupplierId;
                         currentProduct.LastUpdate = DateTime.Now;
 
                         if (item.ProductType != null)
                             currentProduct.ProductTypeId = item.ProductTypeId;
 
-                        if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), Repository.DbContext);
-                        if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), Repository.DbContext);
-                        //if (item.ProductPictures != null) currentProduct = SetProductPictureData(currentProduct, item.ProductPictures.ToList(), Repository.DbContext);
-                        currentProduct = SetMainSupplierData(currentProduct, item.Suppliers.FirstOrDefault(), Repository.DbContext);
-                        //currentProduct = SetManucfatureData(currentProduct, item.Manufacture, Repository.DbContext);
-                        //currentProduct = SetProductGroupData(currentProduct, item.ProductGroup, Repository.DbContext);
-                        //currentProduct = SetMainProductGroupData(currentProduct, item.MainProductGroup, Repository.DbContext);
-                        Repository.Update(currentProduct);
+                        if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), DBContext);
+                        if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), DBContext);
+                        MainRepository.Update(currentProduct);
                     }
                     else
                     {
-                        if (item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), Repository.DbContext);
-                        if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), Repository.DbContext);
-                        item = SetMainSupplierData(item, item.Suppliers.FirstOrDefault(), Repository.DbContext);
-                        item = SetManucfatureData(item, item.Manufacture, Repository.DbContext);
-                        item = SetProductGroupData(item, item.ProductGroup, Repository.DbContext);
-                        item = SetMainProductGroupData(item, item.MainProductGroup, Repository.DbContext);
-                        if (item.ProductPictures != null) item = SetProductPictureData(item, item.ProductPictures.ToList(), Repository.DbContext);
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
+                        item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+
+                        if (item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), DBContext);
+                        if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), DBContext);
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         if (item.ProductTypeId == null)
                             item.ProductType = null;
-                        Repository.Add(item);
+                        MainRepository.Add(item);
                     }
 
                 });
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                log.Error("PublishAsync ", ex);
+                Logger.Error("PublishAsync ", ex);
                 throw ex;
             }
             finally
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Error("PublishAsync Finish" + dataViewModels.Count);
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Error("PublishAsync Finish" + products.Count);
             }
-            return dataViewModels;
+            return products;
 
-        }
-        public async Task<List<ProductViewModel>> CheckDeletedAsync(List<ProductViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-        public async Task<List<ProductViewModel>> Delete(List<ProductViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var products = Proxy.ReverseConvert(dataViewModels);
-
-                products.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.Products.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
-
-        public Product SetProductGroupData(Product data, ProductGroup productGroup, AnatoliDbContext context)
-        {
-            if (productGroup == null) return data;
-            var result = ProductGroupRepository.GetQuery().Where(p => p.Id == productGroup.Id).FirstOrDefault();
-            if (result != null)
-            {
-                data.ProductGroup = result;
-                data.ProductGroupId = result.Id;
-            }
-            else
-            {
-                data.ProductGroupId = null;
-                data.ProductGroup = null;
-            }
-            return data;
-        }
-
-        public Product SetMainProductGroupData(Product data, MainProductGroup productGroup, AnatoliDbContext context)
-        {
-            if (productGroup == null) return data;
-            var result = MainProductGroupRepository.GetQuery().Where(p => p.Id == productGroup.Id).FirstOrDefault();
-            if (result != null)
-            {
-                data.MainProductGroup = result;
-                data.MainProductGroupId = result.Id;
-            }
-            else
-            {
-                data.MainProductGroupId = null;
-                data.MainProductGroup = null;
-            }
-            return data;
-        }
-        public Product SetProductPictureData(Product data, List<ProductPicture> productPictures, AnatoliDbContext context)
-        {
-            if (productPictures == null) return data;
-            Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductPictures where ProductId='" + data.Id + "'");
-            data.ProductPictures.Clear();
-            productPictures.ForEach(item =>
-            {
-                item.PrivateLabelOwner = data.PrivateLabelOwner;
-                item.CreatedDate = item.LastUpdate = data.CreatedDate;
-                data.ProductPictures.Add(item);
-            });
-            return data;
-        }
-
-        public Product SetManucfatureData(Product data, Manufacture manufacture, AnatoliDbContext context)
-        {
-            if (manufacture == null) return data;
-            var result = ManufactureRepository.GetQuery().Where(p => p.Id == manufacture.Id).FirstOrDefault();
-            if (result != null)
-            {
-                data.Manufacture = result;
-                data.ManufactureId = result.Id;
-            }
-            else
-            {
-                data.ManufactureId = null;
-                data.Manufacture = null;
-            }
-            return data;
-        }
-
-        public Product SetMainSupplierData(Product data, Supplier suppliers, AnatoliDbContext context)
-        {
-            if (suppliers == null) return data;
-            var supplier = SupplierRepository.GetQuery().Where(p => p.Id == suppliers.Id).FirstOrDefault();
-            if (supplier != null)
-            {
-                data.MainSupplier = supplier;
-                data.MainSupplierId = supplier.Id;
-            }
-            else
-            {
-                data.MainSupplier = null;
-                data.MainSupplierId = null;
-            }
-            return data;
         }
 
         public Product SetSupplierData(Product data, List<Supplier> suppliers, AnatoliDbContext context)
         {
             if (suppliers == null) return data;
-            //Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductSupliers where ProductId='" + data.Id + "'");
             data.Suppliers.Clear();
             suppliers.ForEach(item =>
             {
-                var supplier = SupplierRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                var supplier = SupplierRepository.GetQuery().Where(p => p.DataOwnerId == DataOwnerKey && p.Id == item.Id).FirstOrDefault();
                 if (supplier != null)
                     data.Suppliers.Add(supplier);
             });
             return data;
         }
 
-        public async Task SaveProducts(List<ProductViewModel> data)
+        public async Task ChangeProductTypes(List<ProductViewModel> data)
         {
             foreach (var item in data)
             {
-                var product = await Repository.GetByIdAsync(item.UniqueId);
+                var product = await MainRepository.GetByIdAsync(item.UniqueId);
 
                 if (item.ProductTypeInfo != null && item.ProductTypeInfo.UniqueId != Guid.Empty)
                     product.ProductTypeId = item.ProductTypeInfo.UniqueId;
 
                 product.IsActiveInOrder = item.IsActiveInOrder;
 
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
 
         }
@@ -385,11 +263,10 @@ namespace Anatoli.Business.Domain
         public Product SetCharValueData(Product data, List<CharValue> charValues, AnatoliDbContext context)
         {
             if (charValues == null) return data;
-            //Repository.DbContext.Database.ExecuteSqlCommand("delete from ProductChars where ProductId='" + data.Id + "'");
             data.CharValues.Clear();
             charValues.ForEach(item =>
             {
-                var charType = CharValueRepository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Id == item.Id).FirstOrDefault();
+                var charType = CharValueRepository.GetQuery().Where(p => p.DataOwnerId == DataOwnerKey && p.Id == item.Id).FirstOrDefault();
                 if (charType != null)
                     data.CharValues.Add(charType);
             });

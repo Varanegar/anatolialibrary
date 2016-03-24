@@ -1,4 +1,7 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.Concretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.Order;
@@ -12,17 +15,17 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/incompletepurchaseorder")]
-    public class IncomplatePurchaseOrderController : BaseApiController
+    public class IncomplatePurchaseOrderController : AnatoliApiController
     {
         [Authorize(Roles = "User")]
         [Route("")]
-        public async Task<IHttpActionResult> GetByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetByCustomerId([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderDomain(owner);
-                var result = await basketDomain.GetAllByCustomerId(customerId);
+                var businessDomain = new IncompletePurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await businessDomain.GetAllByCustomerId(data.customerId);
 
                 return Ok(result);
             }
@@ -35,15 +38,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveIncompletePurchaseOrder(string privateOwnerId, List<IncompletePurchaseOrderViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveIncompletePurchaseOrder([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderDomain(owner);
-                //data[0].StoreId = Guid.NewGuid();
-                var result = await basketDomain.PublishAsync(data);
-                return Ok(result);
+                var businessDomain = new IncompletePurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await businessDomain.PublishAsync(new IncompletePurchaseOrderProxy().ReverseConvert(data.incompletePurchaseOrderData));
+                return Ok(data.incompletePurchaseOrderData);
             }
             catch (Exception ex)
             {
@@ -54,13 +56,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("clear")]
-        public async Task<IHttpActionResult> ClearIncompletePurchaseOrder(string privateOwnerId, List<IncompletePurchaseOrderViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> ClearIncompletePurchaseOrder([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderDomain(owner);
-                var result = await basketDomain.Clear(data);
+                var businessDomain = new IncompletePurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await businessDomain.Clear(new IncompletePurchaseOrderProxy().ReverseConvert(data.incompletePurchaseOrderData));
                 return Ok(result);
             }
             catch (Exception ex)
@@ -73,13 +75,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("lineitem/save")]
-        public async Task<IHttpActionResult> SaveIncompletePurchaseOrderItem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveIncompletePurchaseOrderItem([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-                var result = await basketDomain.PublishAsync(data);
+                var businessDomain = new IncompletePurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await businessDomain.PublishAsync(new IncompletePurchaseOrderLineItemProxy().ReverseConvert(data.incompletePurchaseOrderLineItemData));
                 return Ok(result);
             }
             catch (Exception ex)
@@ -91,13 +93,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("lineitem/change")]
-        public async Task<IHttpActionResult> ChangeIncompletePurchaseOrderItem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> ChangeIncompletePurchaseOrderItem([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-                var result = await basketDomain.ChangeAsync(data);
+                var businessDomain = new IncompletePurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await businessDomain.ChangeAsync(new IncompletePurchaseOrderLineItemProxy().ReverseConvert(data.incompletePurchaseOrderLineItemData));
                 return Ok(result);
             }
             catch (Exception ex)
@@ -110,14 +112,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Authorize(Roles = "User")]
         [Route("lineitem/delete")]
         [HttpPost]
-        public async Task<IHttpActionResult> DeleteIncompletePurchaseOrderitem(string privateOwnerId, List<IncompletePurchaseOrderLineItemViewModel> data)
+        public async Task<IHttpActionResult> DeleteIncompletePurchaseOrderitem([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new IncompletePurchaseOrderLineItemDomain(owner);
-                var result = await basketDomain.Delete(data);
-                return Ok(result);
+                var businessDomain = new IncompletePurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await businessDomain.DeleteAsync(data.incompletePurchaseOrderLineItemData);
+                return Ok(data.incompletePurchaseOrderLineItemData);
             }
             catch (Exception ex)
             {

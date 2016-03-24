@@ -30,7 +30,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 QtyPerPack = data.QtyPerPack,
                 IsRemoved = data.IsRemoved,
 
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 ManufactureIdString = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
                 ManufactureName = (data.ManufactureId == null) ? string.Empty : data.Manufacture.ManufactureName,

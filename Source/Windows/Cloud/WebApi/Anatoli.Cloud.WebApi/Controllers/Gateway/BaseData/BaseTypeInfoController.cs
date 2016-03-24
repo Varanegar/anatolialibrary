@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Http;
 using System.Threading.Tasks;
 using Anatoli.Business.Domain;
@@ -7,21 +8,23 @@ using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.BaseConcretes;
+using Anatoli.Business.Proxy.Concretes.StockProductRequestTypeConcretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/basedata")]
     public class BaseTypeInfoController : AnatoliApiController
     {
+        #region Base Type
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("basedatas")]
-        public async Task<IHttpActionResult> GetBaseTypes(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetBaseTypes()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var baseTypeDomain = new BaseTypeDomain(owner);
-                var result = await baseTypeDomain.GetAll();
+                var result = await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 return Ok(result);
             }
@@ -34,14 +37,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("basedatas/after")]
-        public async Task<IHttpActionResult> GetBaseTypes(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetBaseTypes([FromBody]BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var baseTypeDomain = new BaseTypeDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await baseTypeDomain.GetAllChangedAfter(validDate);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -52,16 +54,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("basedatas/save")]
-        public async Task<IHttpActionResult> SaveBaseTypes(string privateOwnerId, List<BaseTypeViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveBaseTypes([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var baseTypeDomain = new BaseTypeDomain(owner);
-                var result = await baseTypeDomain.PublishAsync(data);
-                return Ok(result);
+                await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new BaseTypeProxy().ReverseConvert(data.baseTypeData));
+                return Ok(data.baseTypeData);
             }
             catch (Exception ex)
             {
@@ -71,16 +72,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("basedatas/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedBaseTypes(string privateOwnerId, List<BaseTypeViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedBaseTypes([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var baseTypeDomain = new BaseTypeDomain(owner);
-                var result = await baseTypeDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).CheckDeletedAsync(data.baseTypeData);
+                return Ok(data.baseTypeData);
             }
             catch (Exception ex)
             {
@@ -89,18 +89,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
 
         }
+        #endregion
 
         #region Stock Reorder Calc Type List
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("reordercalctypes")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetReorderCalcTypes([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> GetReorderCalcTypes([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(data.privateOwnerId);
-                var baseTypeDomain = new ReorderCalcTypeDomain(owner);
-                var result = await baseTypeDomain.GetAll();
+                var baseTypeDomain = new ReorderCalcTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await baseTypeDomain.GetAllAsync();
 
                 result.Add(new ReorderCalcTypeViewModel { UniqueId = Guid.Empty, ReorderTypeName = string.Empty });
 
@@ -115,15 +115,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock Stock Type List
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("stocktypes")]
-        public async Task<IHttpActionResult> GetStockTypes(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockTypes()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var baseTypeDomain = new StockTypeDomain(owner);
-                var result = await baseTypeDomain.GetAll();
+                var baseTypeDomain = new StockTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await baseTypeDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -136,15 +136,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Stock Requests Type List
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("stockrequesttypes")]
-        public async Task<IHttpActionResult> GetStockRequestTypes(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockRequestTypes()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new StockProductRequestTypeDomain(owner);
-                var result = await domain.GetAll();
+                var domain = new StockProductRequestTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await domain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -154,17 +154,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("stockrequesttype/save")]
         [HttpPost]
-        public async Task<IHttpActionResult> SaveStockRequestTypes(string privateOwnerId, List<StockProductRequestTypeViewModel> data)
+        public async Task<IHttpActionResult> SaveStockRequestTypes([FromBody] GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var businessDomain = new StockProductRequestTypeDomain(owner);
-                var result = await businessDomain.PublishAsync(data);
-                return Ok(result);
+                var businessDomain = new StockProductRequestTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await businessDomain.PublishAsync(new StockProductRequestTypeProxy().ReverseConvert(data.baseStockProductRequestType));
+                return Ok(data.baseStockProductRequestType);
             }
             catch (Exception ex)
             {

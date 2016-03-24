@@ -32,7 +32,7 @@ namespace Anatoli.DataAccess.Configs
                 .WillCascadeOnDelete(false);
 
             this.HasMany<Stock>(cr => cr.StoreStocks)
-                .WithRequired(svr => svr.Store)
+                .WithOptional(svr => svr.Store)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<StoreActiveOnhand>(cr => cr.StoreActiveOnhands)

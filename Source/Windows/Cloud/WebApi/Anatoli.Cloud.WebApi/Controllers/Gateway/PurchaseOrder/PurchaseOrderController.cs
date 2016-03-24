@@ -1,5 +1,8 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.Concretes;
+using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.PMC.Business.Domain.PurchaseOrder;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.Order;
 using System;
 using System.Collections.Generic;
@@ -11,17 +14,17 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/purchaseorder")]
-    public class PurchaseOrderController : BaseApiController
+    public class PurchaseOrderController : AnatoliApiController
     {
         [Authorize(Roles = "User")]
         [Route("create")]
-        public async Task<IHttpActionResult> CreateOrder(string privateOwnerId, PurchaseOrderViewModel orderEntity)
+        [HttpPost]
+        public async Task<IHttpActionResult> CreateOrder([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderDomain(owner);
-                var result = await orderDomain.PublishOrderOnline(orderEntity);
+                var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await orderDomain.PublishOrderOnline(new PurchaseOrderProxy().ReverseConvert(data.orderEntity));
                 return Ok(result);
             }
             catch (Exception ex)
@@ -31,9 +34,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("local/create")]
-        public async Task<IHttpActionResult> CreateOrderLocal(string privateOwnerId, PurchaseOrderViewModel orderEntity)
+        [HttpPost]
+        public async Task<IHttpActionResult> CreateOrderLocal([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
@@ -41,7 +45,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderDomain();
-                    result = orderDomain.Publish(orderEntity);
+                    result = orderDomain.Publish(data.orderEntity);
                 });
                 return Ok(result);
             }
@@ -54,13 +58,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("calcpromo")]
-        public async Task<IHttpActionResult> ClacPromo(string privateOwnerId, PurchaseOrderViewModel orderEntity)
+        [HttpPost]
+        public async Task<IHttpActionResult> ClacPromo([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderDomain(owner);
-                var result = await orderDomain.CalcPromoOnline(orderEntity);
+                var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await orderDomain.CalcPromoOnline(data.orderEntity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -70,10 +74,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("local/calcpromo")]
         [HttpPost]
-        public async Task<IHttpActionResult> ClacPromoLocal(string privateOwnerId, PurchaseOrderViewModel orderEntity)
+        public async Task<IHttpActionResult> ClacPromoLocal([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
@@ -81,7 +85,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderDomain();
-                    result = orderDomain.GetPerformaInvoicePreview(orderEntity);
+                    result = orderDomain.GetPerformaInvoicePreview(data.orderEntity);
                 });
                 return Ok(result);
             }
@@ -94,16 +98,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("bycustomerid")]
-        public async Task<IHttpActionResult> GetPurchaseOrderOnlineByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderOnlineByCustomerId([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderDomain(owner);
-                var result = await orderDomain.GetAllByCustomerIdOnLine(customerId);
+                var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await orderDomain.GetAllByCustomerIdOnLine(data.customerId);
                 result.ForEach(item =>
                 {
-                    item.PrivateOwnerId = owner;
+                    item.ApplicationOwnerId = OwnerKey;
                 });
                 return Ok(result);
             }
@@ -114,9 +118,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("bycustomerid/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId(string privateOwnerId, string customerId, string centerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderLocalByCustomerId([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
@@ -124,7 +129,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderDomain();
-                    result = orderDomain.GetAllByCustomerId(customerId, null, centerId);
+                    result = orderDomain.GetAllByCustomerId(data.customerId, null, data.centerId.ToString());
                 });
                 return Ok(result);
             }
@@ -135,18 +140,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("lineitem")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLineItemOnline(string privateOwnerId, string poId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderLineItemOnline([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderLineItemDomain(owner);
-                var result = await orderDomain.GetAllByPOIdOnLine(poId);
+                var orderDomain = new PurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await orderDomain.GetAllByPOIdOnLine(data.poId);
                 result.ForEach(item =>
                 {
-                    item.PrivateOwnerId = owner;
+                    item.ApplicationOwnerId = OwnerKey;
                 });
                 return Ok(result);
             }
@@ -157,9 +162,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("lineitem/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderLineItemLocal(string privateOwnerId, string poId, string centerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderLineItemLocal([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
@@ -167,7 +173,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderLineItemDomain();
-                    result = orderDomain.GetAllByOrderId(poId, centerId);
+                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId);
                 });
                 return Ok(result);
             }
@@ -178,19 +184,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("statushistory")]
-        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryOnline(string privateOwnerId, string poId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryOnline([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var orderDomain = new PurchaseOrderStatusHistoryDomain(owner);
-                var result = await orderDomain.GetAllByPOIdOnLine(poId);
-                result.ForEach(item =>
-                {
-                    item.PrivateOwnerId = owner;
-                });
+                var orderDomain = new PurchaseOrderStatusHistoryDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await orderDomain.GetAllByPOIdOnLine(data.poId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -200,9 +202,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("statushistory/local")]
-        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryLocal(string privateOwnerId, string poId, string centerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchaseOrderStatusHistoryLocal([FromBody] PurchaseOrderRequestModel data)
         {
             try
             {
@@ -210,7 +213,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderStatusHistoryDomain();
-                    result = orderDomain.GetAllByOrderId(poId, centerId);
+                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId);
                 });
                 return Ok(result);
             }

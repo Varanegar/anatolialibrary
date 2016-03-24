@@ -16,7 +16,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 ParentId = data.ProductGroup2 != null ? data.ProductGroup2.Number_ID : -1,
                 ParentUniqueIdString = data.ProductGroup2 != null ? data.ProductGroup2.Id.ToString() : Guid.Empty.ToString(),
                 NRight = data.NRight,
@@ -42,7 +42,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 GroupName = data.GroupName,
                 IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                ApplicationOwnerId = data.ApplicationOwnerId,
             };
 
             if (data.ParentUniqueIdString != null && data.ParentUniqueIdString != "")

@@ -17,7 +17,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string StoreDataType = "Store";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadStoreToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadStoreToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data =JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveStoreURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.SaveStoreURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
                 else
@@ -38,7 +38,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedStoreURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.CheckDeletedStoreURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
 

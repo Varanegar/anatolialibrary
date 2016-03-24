@@ -12,6 +12,8 @@ using System.Web.Http;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using Anatoli.DataAccess.Repositories;
+using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.CustomerConcretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -21,14 +23,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Customer
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("customers")]
-        public async Task<IHttpActionResult> GetCustomerById(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCustomerById([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerDomain(owner);
-                var result = await customerDomain.GetCustomerById(id);
-
+                var result = await new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetByIdAsync(data.customerId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -39,36 +39,64 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("save")]
-        public async Task<IHttpActionResult> SaveCustomer(string privateOwnerId, CustomerViewModel data)
+        [Route("savesingle")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveSingleCustomer([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerDomain(owner);
-                if (data.Email != null)
+                var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var userDomain = new UserDomain(OwnerKey);
+                if (data.customerData.Email != null)
                 {
-                    var emailUser = await this.AppUserManager.FindByEmailAsync(data.Email);
-                    if (emailUser != null)
-                    {
-                        var phoneUser = await this.AppUserManager.FindByIdAsync(data.UniqueId.ToString());
-                        if (phoneUser.Id != emailUser.Id)
-                            return GetErrorResult("ایمیل شما قبلا استفاده شده است");
-                        else
-                        {
-                            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
-                            await userStore.ChangeEmailAddress(emailUser, data.Email);
-                        }
-                    }
+                    var emailUser = await userDomain.GetByEmailAsync(data.customerData.Email);
+                    if (emailUser != null && data.customerData.UniqueId.ToString() != emailUser.Id)
+                        return GetErrorResult("ايميل شما قبلا استفاده شده است");
+                }
 
+                if (data.customerData.Phone != null)
+                {
+                    var pheonUser = await userDomain.GetByEmailAsync(data.customerData.Phone);
+                    if (pheonUser != null && data.customerData.UniqueId.ToString() != pheonUser.Id)
+                        return GetErrorResult("موبايل شما قبلا استفاده شده است");
+                }
+                var user = await userDomain.GetByIdAsync(data.customerData.UniqueId);
+                if (user != null)
+                {
+                    var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
+                    if (user.Email != data.customerData.Email)
+                        await userStore.ChangeEmailAddress(user, data.customerData.Email);
                 }
 
 
-                List<CustomerViewModel> dataList = new List<CustomerViewModel>();
-                dataList.Add(data);
-                var result = await customerDomain.PublishAsync(dataList);
 
-                return Ok(result);
+                var saveData = new CustomerProxy().ReverseConvert(data.customerData);
+                await customerDomain.PublishAsync(saveData);
+
+                return Ok(data.customerData);
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+        
+        [Authorize(Roles = "DataSync")]
+        [Route("save")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveBatchCustomer([FromBody]CustomerRequestModel data)
+        {
+            try
+            {
+                var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+
+                var saveData = new CustomerProxy().ReverseConvert(data.customerListData);
+                await customerDomain.PublishAsync(saveData);
+
+                return Ok(data.customerListData);
+
             }
             catch (Exception ex)
             {
@@ -79,16 +107,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Customer Ship Address
-        [Authorize(Roles = "AuthorizedApp, User")]
+        [Authorize(Roles = "User")]
         [Route("customershipaddresses/active")]
-        public async Task<IHttpActionResult> GetActiveCustomerShipAddressByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetActiveCustomerShipAddressByCustomerId([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerShipAddressDomain(owner);
-                var result = await customerDomain.GetCustomerShipAddressById(customerId, null, true);
-
+                var result = await new CustomerShipAddressDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetCustomerShipAddressById(data.customerId, null, true);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -98,16 +124,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp, User")]
+        [Authorize(Roles = "User")]
         [Route("customershipaddresses/default")]
-        public async Task<IHttpActionResult> GetDefaultCustomerShipAddressByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetDefaultCustomerShipAddressByCustomerId([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerShipAddressDomain(owner);
-                var result = await customerDomain.GetCustomerShipAddressById(customerId, true, null);
-
+                var result = await new CustomerShipAddressDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetCustomerShipAddressById(data.customerId, true, null);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -117,16 +141,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp, User")]
+        [Authorize(Roles = "User")]
         [Route("customershipaddresses")]
-        public async Task<IHttpActionResult> GetCustomerShipAddressByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCustomerShipAddressByCustomerId([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerShipAddressDomain(owner);
-                var result = await customerDomain.GetCustomerShipAddressById(customerId, null, null);
-
+                var result = await new CustomerShipAddressDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetCustomerShipAddressById(data.customerId, null, null);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -138,14 +160,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("customershipaddresses/region")]
-        public async Task<IHttpActionResult> GetCustomerShipAddressByCustomerIdByLevel4(string privateOwnerId, string customerId, string regionId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCustomerShipAddressByCustomerIdByLevel4([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerShipAddressDomain(owner);
-                var result = await customerDomain.GetCustomerShipAddressById(customerId, null, null);
-
+                var result = await new CustomerShipAddressDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetCustomerShipAddressByLevel4(data.customerId, data.regionId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -155,18 +175,18 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("customershipaddress/save")]
-        public async Task<IHttpActionResult> SaveCustomer(string privateOwnerId, CustomerShipAddressViewModel data)
+        [Authorize(Roles = "DataSync, User")]
+        [Route("customershipaddress/savesingle")]
+        [HttpPost]
+        async Task<IHttpActionResult> SaveSingleCustomerShipAddress([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var customerDomain = new CustomerShipAddressDomain(owner);
                 List<CustomerShipAddressViewModel> dataList = new List<CustomerShipAddressViewModel>();
-                dataList.Add(data);
-                var result = await customerDomain.PublishAsync(dataList);
-                return Ok(result);
+                dataList.Add(data.customerShipAddressData);
+                var saveData = new CustomerShipAddressProxy().ReverseConvert(dataList);
+                await new CustomerShipAddressDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(saveData);
+                return Ok(dataList);
             }
             catch (Exception ex)
             {

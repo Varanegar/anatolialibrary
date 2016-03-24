@@ -8,23 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.Concretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/store")]
-    public class StoreController : BaseApiController
+    public class StoreController : AnatoliApiController
     {
 
         #region Store On Hand List
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storeOnhand")]
-        public async Task<IHttpActionResult> GetStoreOnhands(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreOnhands()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var result = await storeDomain.GetAll();
+                var result = await new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -34,16 +36,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storeOnhand/after")]
-        public async Task<IHttpActionResult> GetStoreOnhands(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreOnhands([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await storeDomain.GetAllChangedAfter(validDate);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -53,15 +54,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storeOnhandbyid/")]
-        public async Task<IHttpActionResult> GetStoreOnhandsByStoreId(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreOnhandsByStoreId([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var result = await storeDomain.GetAllByStoreId(id);
+                var result = await new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByStoreId(data.storeId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -71,19 +71,21 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storeOnhandbyid/online")]
-        public async Task<IHttpActionResult> GetStoreOnlineOnhandsByStoreId(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreOnlineOnhandsByStoreId([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var result = await storeDomain.GetAllByStoreIdOnLine(id);
-                result.ForEach(item =>
-                    {
-                        item.PrivateOwnerId = owner;
-                    });
+                var result = new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByStoreIdOnLine(data.storeId);
+                await Task.Factory.StartNew(() =>
+                {
+                    result.ForEach(item =>
+                        {
+                            item.ApplicationOwnerId = OwnerKey;
+                        });
+                });
                 return Ok(result);
             }
             catch (Exception ex)
@@ -93,9 +95,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "InternalCommunication")]
         [Route("storeOnhandbyid/local")]
-        public async Task<IHttpActionResult> GetStoreLocalOnhandsByStoreId(string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreLocalOnhandsByStoreId([FromBody] StoreRequestModel data)
         {
             try
             {
@@ -103,7 +106,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var storeDomain = new PMCStoreOnHandDomain();
-                    result = storeDomain.GetAllByStoreId(id);
+                    result = storeDomain.GetAllByStoreId(data.storeId.ToString());
                 });
                 return Ok(result);
             }
@@ -116,15 +119,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storeOnhandbyid/after/")]
-        public async Task<IHttpActionResult> GetStoreOnhandsAfter(string privateOwnerId, string id, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreOnhandsAfter([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await storeDomain.GetAllByStoreIdChangedAfter(id, validDate);
-                return Ok(result);
+                var storeDomain = new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await storeDomain.GetAllByStoreIdChangedAfter(data.storeId, validDate);
+                return Ok(data.storeId);
             }
             catch (Exception ex)
             {
@@ -133,16 +136,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storeOnhand/save")]
-        public async Task<IHttpActionResult> SaveStoreOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveStoreOnhands([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var result = await storeDomain.PublishAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.PublishAsync(new StoreActiveOnhandProxy().ReverseConvert(data.storeActiveOnhandData));
+                return Ok(data.storeActiveOnhandData);
             }
             catch (Exception ex)
             {
@@ -151,16 +154,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storeOnhand/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedStoreOnhands(string privateOwnerId, List<StoreActiveOnhandViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedStoreOnhands([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActiveOnhandDomain(owner);
-                var result = await storeDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.CheckDeletedAsync(data.storeActiveOnhandData);
+                return Ok(data.storeActiveOnhandData);
             }
             catch (Exception ex)
             {
@@ -173,13 +176,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Store Price List
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storepricelist")]
-        public async Task<IHttpActionResult> GetStorePriceLists(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStorePriceLists()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var result = await storeDomain.GetAll();
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await storeDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -189,15 +192,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storepricelistbyid/")]
-        public async Task<IHttpActionResult> GetStorePriceLists(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStorePriceLists([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var result = await storeDomain.GetAllByStoreId(id);
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await storeDomain.GetAllByStoreId(data.storeId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -207,17 +210,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storepricelist/after")]
-        public async Task<IHttpActionResult> GetStorePriceListsAfter(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStorePriceListsAfter([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await storeDomain.GetAllChangedAfter(validDate);
-                return Ok(result);
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await storeDomain.GetAllChangedAfterAsync(validDate);
+                return Ok(data.dateAfter);
             }
             catch (Exception ex)
             {
@@ -228,14 +231,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storepricelistbyid/after/")]
-        public async Task<IHttpActionResult> GetStorePriceListsAfter(string privateOwnerId, string id, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStorePriceListsByIdAfter([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await storeDomain.GetAllByStoreIdChangedAfter(id, validDate);
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await storeDomain.GetAllByStoreIdChangedAfterAsync(data.storeId, validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -245,16 +248,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storepricelist/save")]
-        public async Task<IHttpActionResult> SavePriceLists(string privateOwnerId, List<StoreActivePriceListViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SavePriceLists([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var result = await storeDomain.PublishAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.PublishAsync(new StoreActivePriceListProxy().ReverseConvert(data.storeActivePriceListData));
+                return Ok(data.storeActivePriceListData);
             }
             catch (Exception ex)
             {
@@ -263,16 +266,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storepricelist/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedPriceLists(string privateOwnerId, List<StoreActivePriceListViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedPriceLists([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreActivePriceListDomain(owner);
-                var result = await storeDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.CheckDeletedAsync(data.storeActivePriceListData);
+                return Ok(data.storeActivePriceListData);
             }
             catch (Exception ex)
             {
@@ -283,15 +286,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Store List
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("stores")]
-        public async Task<IHttpActionResult> GetStores(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStores()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreDomain(owner);
-                var result = await storeDomain.GetAll();
+                var storeDomain = new StoreDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await storeDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -301,16 +304,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("stores/after")]
-        public async Task<IHttpActionResult> GetStores(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStores([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await storeDomain.GetAllChangedAfter(validDate);
+                var storeDomain = new StoreDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await storeDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -320,16 +323,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveStores(string privateOwnerId, List<StoreViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveStores([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreDomain(owner);
-                var result = await storeDomain.PublishAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.PublishAsync(new StoreProxy().ReverseConvert(data.storeData));
+                return Ok(data.storeData);
             }
             catch (Exception ex)
             {
@@ -338,16 +341,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedStores(string privateOwnerId, List<StoreViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedStores([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeDomain = new StoreDomain(owner);
-                var result = await storeDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var storeDomain = new StoreDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeDomain.CheckDeletedAsync(data.storeData);
+                return Ok(data.storeData);
             }
             catch (Exception ex)
             {
@@ -358,15 +361,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Store Calendar
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storecalendarbyid")]
-        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId, string id)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreCalendars([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeCalendarDomain = new StoreCalendarDomain(owner);
-                var result = await storeCalendarDomain.GetCalendarByStoreId(id);
+                var storeCalendarDomain = new StoreCalendarDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await storeCalendarDomain.GetCalendarByStoreId(data.storeId.ToString());
                 return Ok(result);
             }
             catch (Exception ex)
@@ -376,15 +379,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storecalendar")]
-        public async Task<IHttpActionResult> GetStoreCalendars(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoreCalendars()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeCalendarDomain = new StoreCalendarDomain(owner);
-                var result = await storeCalendarDomain.GetAll();
+                var storeCalendarDomain = new StoreCalendarDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await storeCalendarDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -394,16 +397,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storecalendar/save")]
-        public async Task<IHttpActionResult> SaveStoreCalendars(string privateOwnerId, List<StoreCalendarViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveStoreCalendars([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeCalendarDomain = new StoreCalendarDomain(owner);
-                var result = await storeCalendarDomain.PublishAsync(data);
-                return Ok(result);
+                var storeCalendarDomain = new StoreCalendarDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeCalendarDomain.PublishAsync(new StoreCalendarProxy().ReverseConvert(data.storeCalendarData));
+                return Ok(data.storeCalendarData);
             }
             catch (Exception ex)
             {
@@ -412,16 +415,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("storecalendar/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedStoreCalendars(string privateOwnerId, List<StoreCalendarViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedStoreCalendars([FromBody] StoreRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var storeCalendarDomain = new StoreCalendarDomain(owner);
-                var result = await storeCalendarDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var storeCalendarDomain = new StoreCalendarDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await storeCalendarDomain.CheckDeletedAsync(data.storeCalendarData);
+                return Ok(data.storeCalendarData);
             }
             catch (Exception ex)
             {

@@ -17,7 +17,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 MinQty = data.MinQty,
                 ReorderLevel = data.ReorderLevel,
@@ -53,7 +53,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductConcretes
 
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner_Id = data.PrivateOwnerId,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 ReorderCalcType = data.ReorderCalcTypeInfo == null ? new ReorderCalcType() : new ReorderCalcType { Id = data.ReorderCalcTypeInfo.UniqueId }
             };

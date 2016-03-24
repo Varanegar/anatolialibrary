@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -190,7 +192,10 @@ namespace ClientApp
 
         internal static List<ProductGroupViewModel> DownloadProductGroupFromServer(HttpClient client, string servserURI)
         {
-            var result8 = client.GetAsync(servserURI + "/api/gateway/product/productgroups?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/productgroups",content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<ProductGroupViewModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);
@@ -203,6 +208,30 @@ namespace ClientApp
             var obj = new List<ProductViewModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);
             return x;
+        }
+        internal static List<ProductViewModel> DownloadSimpleProductFromServer(HttpClient client, string servserURI)
+        {
+            HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/products/v2", content).Result;
+            if (result8.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var json8 = result8.Content.ReadAsStreamAsync().Result;
+                var responseStream = new GZipStream(json8, CompressionMode.Decompress);
+                StreamReader Reader = new StreamReader(responseStream, Encoding.UTF8);
+                var tempResult = Reader.ReadToEnd();
+                var obj = new List<ProductViewModel>();
+                var x = JsonConvert.DeserializeAnonymousType(tempResult, obj);
+                return x;
+            }
+            else
+            {
+                var json8 = result8.Content.ReadAsStringAsync().Result;
+                var obj = new List<ProductViewModel>();
+                var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+                return x;
+
+            }
         }
         internal static List<ProductViewModel> DownloadSupplierFromServer(HttpClient client, string servserURI)
         {

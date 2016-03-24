@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.Business.Proxy.Interfaces;
+using Anatoli.DataAccess.Models;
+using Anatoli.ViewModels;
+using System.Linq.Expressions;
 
 namespace Anatoli.Business
 {
@@ -13,7 +16,7 @@ namespace Anatoli.Business
     {
         IAnatoliProxy<TSource, TOut> Proxy { get; set; }
         IRepository<TSource> Repository { get; set; }
-        Guid PrivateLabelOwnerId { get; }
+        Guid ApplicationOwnerId { get; }
 
         Task<List<TOut>> GetAll();
         Task<List<TOut>> GetAllChangedAfter(DateTime selectedDate);
@@ -22,15 +25,22 @@ namespace Anatoli.Business
         Task<List<TOut>> Delete(List<TOut> ProductViewModels);
     }
 
-    public interface IBusinessDomain1<TMainSource>
-        where TMainSource : class, new()
+    public interface IBusinessDomainV2<TMainSource, TMainSourceView>
+        where TMainSource : BaseModel, new()
+        where TMainSourceView : BaseViewModel, new()
     {
-        IRepository<TMainSource> MainRepository { get; set; }
-        Guid ApplicationKey { get; }
+        Guid ApplicationOwnerKey { get; }
+        Guid DataOwnerKey { get; }
+        Guid DataOwnerCenterKey { get; }
 
-        Task<ICollection<TMainSource>> GetAllAsync();
-        Task<ICollection<TMainSource>> GetAllChangedAfterAsync(DateTime selectedDate);
-        Task<ICollection<TMainSource>> PublishAsync(List<TMainSource> data);
+        Task<List<TMainSourceView>> GetAllAsync(Func<TMainSource, bool> predicate);
+        Task<List<TMainSourceView>> GetAllAsync();
+        Task<TMainSourceView> GetByIdAsync(Guid id);
+        Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate);
+        Task PublishAsync(List<TMainSource> data);
+        Task PublishAsync(TMainSource data);
         Task DeleteAsync(List<TMainSource> data);
+        Task DeleteAsync(List<TMainSourceView> data);
+        Task CheckDeletedAsync(List<TMainSourceView> data);
     }
 }

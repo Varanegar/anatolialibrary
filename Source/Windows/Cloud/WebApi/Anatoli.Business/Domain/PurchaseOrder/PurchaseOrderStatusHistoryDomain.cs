@@ -18,56 +18,30 @@ using Anatoli.ViewModels.CustomerModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class PurchaseOrderStatusHistoryDomain : BusinessDomain<PurchaseOrderStatusHistoryViewModel>, IBusinessDomain<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel>
+    public class PurchaseOrderStatusHistoryDomain : BusinessDomainV2<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel, PurchaseOrderStatusHistoryRepository, IPurchaseOrderStatusHistoryRepository>, IBusinessDomainV2<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel>
     {
         #region Properties
-        public IAnatoliProxy<Customer, CustomerViewModel> CustomerProxy { get; set; }
-        public IAnatoliProxy<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel> Proxy { get; set; }
-        public IRepository<Customer> CustomerRepository { get; set; }
-        public IRepository<PurchaseOrderStatusHistory> Repository { get; set; }
-
         #endregion
 
         #region Ctors
-        PurchaseOrderStatusHistoryDomain() { }
-        public PurchaseOrderStatusHistoryDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public PurchaseOrderStatusHistoryDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new PurchaseOrderStatusHistoryRepository(dbc), new CustomerRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel>.Create(), AnatoliProxy<Customer, CustomerViewModel>.Create())
+        public PurchaseOrderStatusHistoryDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public PurchaseOrderStatusHistoryDomain(IPurchaseOrderStatusHistoryRepository PurchaseOrderStatusHistoryRepository, ICustomerRepository customerRepository, IPrincipalRepository principalRepository, IAnatoliProxy<PurchaseOrderStatusHistory, PurchaseOrderStatusHistoryViewModel> proxy, IAnatoliProxy<Customer, CustomerViewModel> customerProxy)
+        public PurchaseOrderStatusHistoryDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            CustomerProxy = customerProxy;
-            Repository = PurchaseOrderStatusHistoryRepository;
-            CustomerRepository = customerRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<PurchaseOrderStatusHistoryViewModel>> GetAll()
+        public async Task<ICollection<PurchaseOrderStatusHistoryViewModel>> GetAllByPOIdOnLine(Guid orderId)
         {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(itemImages.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderStatusHistoryViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var data = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(data.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderStatusHistoryViewModel>> GetAllByPOIdOnLine(string orderId)
-        {
-            Guid orderGuid = Guid.Parse(orderId);
             List<PurchaseOrderStatusHistoryViewModel> returnData = new List<PurchaseOrderStatusHistoryViewModel>();
             await Task.Factory.StartNew(() =>
             {
-                var result = Repository.DbContext.PurchaseOrders.Where(f => f.Id == orderGuid).Select(m => m.StoreId).First();
+                var result = MainRepository.DbContext.PurchaseOrders.Where(f => f.Id == orderId && f.DataOwnerId == DataOwnerKey ).Select(m => m.StoreId).First();
         
                 if(result != null)
                     returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoStatusHistoryByPoIdLocalURI, "poId=" + orderId + "&centerId=" + result));
@@ -75,24 +49,19 @@ namespace Anatoli.Business.Domain
             return returnData;
         }
 
-        public async Task<List<PurchaseOrderStatusHistoryViewModel>> PublishAsync(List<PurchaseOrderStatusHistoryViewModel> dataViewModels)
+        public override async Task PublishAsync(List<PurchaseOrderStatusHistory> dataViewModels)
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                log.Error("PublishAsync", ex);
-                throw ex;
-            }
-            return dataViewModels;
+            Exception ex = new NotImplementedException();
+            Logger.Error("PublishAsync", ex);
+            throw ex;
 
         }
 
-        public async Task<List<PurchaseOrderStatusHistoryViewModel>> Delete(List<PurchaseOrderStatusHistoryViewModel> dataViewModels)
+        public override async Task DeleteAsync(List<PurchaseOrderStatusHistory> dataViewModels)
         {
-            throw new NotImplementedException();
+            Exception ex = new NotImplementedException();
+            Logger.Error("DeleteAsync", ex);
+            throw ex;
 
         }
 

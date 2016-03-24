@@ -18,56 +18,32 @@ using Anatoli.ViewModels.CustomerModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class PurchaseOrderLineItemDomain : BusinessDomain<PurchaseOrderLineItemViewModel>, IBusinessDomain<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel>
+    public class PurchaseOrderLineItemDomain : BusinessDomainV2<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel, PurchaseOrderLineItemRepository, IPurchaseOrderLineItemRepository>, IBusinessDomainV2<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel>
     {
         #region Properties
-        public IAnatoliProxy<Customer, CustomerViewModel> CustomerProxy { get; set; }
-        public IAnatoliProxy<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel> Proxy { get; set; }
         public IRepository<Customer> CustomerRepository { get; set; }
-        public IRepository<PurchaseOrderLineItem> Repository { get; set; }
-
         #endregion
 
         #region Ctors
-        PurchaseOrderLineItemDomain() { }
-        public PurchaseOrderLineItemDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public PurchaseOrderLineItemDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new PurchaseOrderLineItemRepository(dbc), new CustomerRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel>.Create(), AnatoliProxy<Customer, CustomerViewModel>.Create())
+        public PurchaseOrderLineItemDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public PurchaseOrderLineItemDomain(IPurchaseOrderLineItemRepository PurchaseOrderLineItemRepository, ICustomerRepository customerRepository, IPrincipalRepository principalRepository, IAnatoliProxy<PurchaseOrderLineItem, PurchaseOrderLineItemViewModel> proxy, IAnatoliProxy<Customer, CustomerViewModel> customerProxy)
+        public PurchaseOrderLineItemDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            CustomerProxy = customerProxy;
-            Repository = PurchaseOrderLineItemRepository;
-            CustomerRepository = customerRepository;
-            PrincipalRepository = principalRepository;
+            CustomerRepository = new CustomerRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<PurchaseOrderLineItemViewModel>> GetAll()
+        public async Task<List<PurchaseOrderLineItemViewModel>> GetAllByPOIdOnLine(Guid orderId)
         {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(itemImages.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderLineItemViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var data = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(data.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderLineItemViewModel>> GetAllByPOIdOnLine(string orderId)
-        {
-            Guid orderGuid = Guid.Parse(orderId);
             List<PurchaseOrderLineItemViewModel> returnData = new List<PurchaseOrderLineItemViewModel>();
             await Task.Factory.StartNew(() =>
             {
-                var result = Repository.DbContext.PurchaseOrders.Where(f => f.Id == orderGuid).Select(m => m.StoreId).First();
+                var result = MainRepository.DbContext.PurchaseOrders.Where(f => f.Id == orderId && f.DataOwnerId == DataOwnerKey).Select(m => m.StoreId).First();
 
                 if (result != null)
                     returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoLineItemsByPoIdLocalURI, "poId=" + orderId + "&centerId=" + result));
@@ -76,24 +52,19 @@ namespace Anatoli.Business.Domain
         }
 
 
-        public async Task<List<PurchaseOrderLineItemViewModel>> PublishAsync(List<PurchaseOrderLineItemViewModel> dataViewModels)
+        public override async Task PublishAsync(List<PurchaseOrderLineItem> dataViewModels)
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                log.Error("PublishAsync", ex);
-                throw ex;
-            }
-            return dataViewModels;
+            Exception ex = new NotImplementedException();
+            Logger.Error("PublishAsync", ex);
+            throw ex;
 
         }
 
-        public async Task<List<PurchaseOrderLineItemViewModel>> Delete(List<PurchaseOrderLineItemViewModel> dataViewModels)
+        public override async Task DeleteAsync(List<PurchaseOrderLineItem> dataViewModels)
         {
-            throw new NotImplementedException();
+            Exception ex = new NotImplementedException();
+            Logger.Error("DeleteAsync", ex);
+            throw ex;
         }
 
         #endregion

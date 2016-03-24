@@ -12,168 +12,56 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class MainProductGroupDomain : BusinessDomain<MainProductGroupViewModel>, IBusinessDomain<MainProductGroup, MainProductGroupViewModel>
+    public class MainProductGroupDomain : BusinessDomainV2<MainProductGroup, MainProductGroupViewModel, MainProductGroupRepository, IMainProductGroupRepository>, IBusinessDomainV2<MainProductGroup, MainProductGroupViewModel>
     {
         #region Properties
-        public IAnatoliProxy<MainProductGroup, MainProductGroupViewModel> Proxy { get; set; }
-        public IRepository<MainProductGroup> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        MainProductGroupDomain() { }
-        public MainProductGroupDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public MainProductGroupDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new MainProductGroupRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<MainProductGroup, MainProductGroupViewModel>.Create())
+        public MainProductGroupDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public MainProductGroupDomain(IMainProductGroupRepository MainProductGroupRepository, IPrincipalRepository principalRepository, IAnatoliProxy<MainProductGroup, MainProductGroupViewModel> proxy)
+        public MainProductGroupDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = MainProductGroupRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<MainProductGroupViewModel>> GetAll()
+        protected override void AddDataToRepository(MainProductGroup currentGroup, MainProductGroup item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<MainProductGroupViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList());
-        }
-
-        public async Task<List<MainProductGroupViewModel>> PublishAsync(List<MainProductGroupViewModel> dataViewModels)
-        {
-            try
+            if (currentGroup != null)
             {
-                if (dataViewModels.Count == 0) return dataViewModels;
-
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentGroupList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                foreach (MainProductGroup item in dataList)
+                if (currentGroup.GroupName != item.GroupName ||
+                        currentGroup.NLeft != item.NLeft ||
+                        currentGroup.NRight != item.NRight ||
+                        currentGroup.NLevel != item.NLevel ||
+                        currentGroup.ProductGroup2Id != item.ProductGroup2Id)
                 {
-                    var currentGroup = currentGroupList.Find(t => t.Id == item.Id);
-                    if (currentGroup != null)
-                    {
-                        if (currentGroup.GroupName != item.GroupName ||
-                                currentGroup.NLeft != item.NLeft ||
-                                currentGroup.NRight != item.NRight ||
-                                currentGroup.NLevel != item.NLevel ||
-                                currentGroup.ProductGroup2Id != item.ProductGroup2Id)
-                        {
 
-                            currentGroup.LastUpdate = DateTime.Now;
-                            currentGroup.GroupName = item.GroupName;
-                            currentGroup.NLeft = item.NLeft;
-                            currentGroup.NRight = item.NRight;
-                            currentGroup.NLevel = item.NLevel;
-                            currentGroup.ProductGroup2Id = item.ProductGroup2Id;
-                            Repository.Update(currentGroup);
-                        }
-                    }
-                    else
-                    {
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.Add(item);
-                    }
-
+                    currentGroup.LastUpdate = DateTime.Now;
+                    currentGroup.GroupName = item.GroupName;
+                    currentGroup.NLeft = item.NLeft;
+                    currentGroup.NRight = item.NRight;
+                    currentGroup.NLevel = item.NLevel;
+                    currentGroup.ProductGroup2Id = item.ProductGroup2Id;
+                    MainRepository.Update(currentGroup);
                 }
-                await Repository.SaveChangesAsync();
             }
-            catch (Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            finally
-            {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
-            }
-            return dataViewModels;
-
         }
 
-        public async Task<List<MainProductGroupViewModel>> Delete(List<MainProductGroupViewModel> dataViewModels)
+        public async Task<List<MainProductGroup>> FilterMainProductGroupList(string searchTerm)
         {
-            try
-            {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                await Task.Factory.StartNew(() =>
-                {
-                    var dataList = Proxy.ReverseConvert(dataViewModels);
+            var dataList = await MainRepository.GetFromCachedAsync(p => p.DataOwnerId == DataOwnerKey&& p.GroupName.Contains(searchTerm));
 
-                    dataList.ForEach(item =>
-                    {
-                        var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                        Repository.DbContext.MainProductGroups.Remove(data);
-                    });
-
-                    Repository.SaveChangesAsync();
-                });
-            }
-            catch (Exception ex)
-            {
-                log.Error("PublishAsync", ex);
-                throw ex;
-            }
-            finally
-            {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
-            }
-            return dataViewModels;
-
-        }
-        public async Task<List<MainProductGroupViewModel>> CheckDeletedAsync(List<MainProductGroupViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-        public async Task<List<MainProductGroupViewModel>> FilterMainProductGroupList(string searchTerm)
-        {
-            var dataList = await Repository.GetFromCachedAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.GroupName.Contains(searchTerm));
-
-            return Proxy.Convert(dataList.ToList());
+            return dataList.ToList();
         }
         #endregion
     }

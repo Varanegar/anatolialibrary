@@ -12,107 +12,45 @@ using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CharValueDomain : BusinessDomain<CharValueViewModel>, IBusinessDomain<CharValue, CharValueViewModel>
+    public class CharValueDomain : BusinessDomainV2<CharValue, CharValueViewModel, CharValueRepository, ICharValueRepository>, IBusinessDomainV2<CharValue, CharValueViewModel>
     {
         #region Properties
-        public IAnatoliProxy<CharValue, CharValueViewModel> Proxy { get; set; }
-        public IRepository<CharValue> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        CharValueDomain() { }
-        public CharValueDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public CharValueDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new CharValueRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<CharValue, CharValueViewModel>.Create())
+        public CharValueDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public CharValueDomain(ICharValueRepository charValueRepository, IPrincipalRepository principalRepository, IAnatoliProxy<CharValue, CharValueViewModel> proxy)
+        public CharValueDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = charValueRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<CharValueViewModel>> GetAll()
+        protected override void AddDataToRepository(CharValue currentCharValue, CharValue item)
         {
-            var charValues = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(charValues.ToList()); ;
-        }
-
-        public async Task<List<CharValueViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var charValues = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(charValues.ToList()); ;
-        }
-
-        public async Task<List<CharValueViewModel>> PublishAsync(List<CharValueViewModel> dataViewModels)
-        {
-            try
+            if (currentCharValue != null)
             {
-                var charValues = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                charValues.ForEach(item =>
+                if (currentCharValue.CharValueText != item.CharValueText ||
+                        currentCharValue.CharValueFromAmount != item.CharValueFromAmount ||
+                        currentCharValue.CharValueToAmount != item.CharValueToAmount
+                    )
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentCharValue = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentCharValue != null)
-                    {
-                        if (currentCharValue.CharValueText != item.CharValueText ||
-                                currentCharValue.CharValueFromAmount != item.CharValueFromAmount ||
-                                currentCharValue.CharValueToAmount != item.CharValueToAmount
-                            )
-                        {
-                            currentCharValue.CharValueText = item.CharValueText;
-                            currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
-                            currentCharValue.CharValueToAmount = item.CharValueToAmount;
-                            currentCharValue.LastUpdate = DateTime.Now;
-                            Repository.Update(currentCharValue);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                        Repository.Add(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                    currentCharValue.CharValueText = item.CharValueText;
+                    currentCharValue.CharValueFromAmount = item.CharValueFromAmount;
+                    currentCharValue.CharValueToAmount = item.CharValueToAmount;
+                    currentCharValue.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentCharValue);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-
-        }
-
-        public async Task<List<CharValueViewModel>> Delete(List<CharValueViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var charValues = Proxy.ReverseConvert(dataViewModels);
-
-                charValues.ForEach(item =>
-                {
-                    var charValue = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(charValue);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

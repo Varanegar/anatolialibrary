@@ -13,48 +13,26 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockOnHandSyncDomain : BusinessDomain<StockOnHandSyncViewModel>, IBusinessDomain<StockOnHandSync, StockOnHandSyncViewModel>
+    public class StockOnHandSyncDomain : BusinessDomainV2<StockOnHandSync, StockOnHandSyncViewModel, StockOnHandSyncRepository, IStockOnHandSyncRepository>, IBusinessDomainV2<StockOnHandSync, StockOnHandSyncViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockOnHandSync, StockOnHandSyncViewModel> Proxy { get; set; }
-        public IRepository<StockOnHandSync> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StockOnHandSyncDomain() { }
-        public StockOnHandSyncDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockOnHandSyncDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockOnHandSyncRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockOnHandSync, StockOnHandSyncViewModel>.Create())
+        public StockOnHandSyncDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockOnHandSyncDomain(IStockOnHandSyncRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockOnHandSync, StockOnHandSyncViewModel> proxy)
+        public StockOnHandSyncDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
         }
+
         #endregion
 
         #region Methods
-        public async Task<List<StockOnHandSyncViewModel>> GetAll()
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockOnHandSyncViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockOnHandSyncViewModel>> PublishAsync(List<StockOnHandSyncViewModel> dataViewModels)
+        public override async Task PublishAsync(List<StockOnHandSync> dataViewModels)
         {
             try
             {
@@ -62,27 +40,9 @@ namespace Anatoli.Business.Domain
             }
             catch(Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
-        }
-
-        public async Task<List<StockOnHandSyncViewModel>> Delete(List<StockOnHandSyncViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DbContext.StockOnHandSyncs.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

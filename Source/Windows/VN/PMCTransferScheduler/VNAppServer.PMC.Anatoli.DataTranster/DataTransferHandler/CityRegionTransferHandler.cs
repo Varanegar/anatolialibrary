@@ -17,7 +17,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CityRegionDataType = "CityRegion";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCityRegionToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadCityRegionToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveCityRegionURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.SaveCityRegionURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
 
@@ -37,7 +37,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedCityRegionURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.CheckDeletedCityRegionURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
 
                 }

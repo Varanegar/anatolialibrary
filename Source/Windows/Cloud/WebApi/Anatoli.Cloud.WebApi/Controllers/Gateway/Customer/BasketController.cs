@@ -1,4 +1,7 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.Concretes.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.CustomerModels;
 using System;
@@ -11,17 +14,16 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/basket")]
-    public class BasketController : BaseApiController
+    public class BasketController : AnatoliApiController
     {
         [Authorize(Roles = "User")]
         [Route("customerbaskets/bycustomer")]
-        public async Task<IHttpActionResult> GetCustomerBasketByCustomerId(string privateOwnerId, string customerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCustomerBasketByCustomerId([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketDomain(owner);
-                var result = await basketDomain.GetBasketByCustomerId(customerId);
+                var result = await new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetBasketByCustomerId(data.customerId);
 
                 return Ok(result);
             }
@@ -34,13 +36,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("customerbaskets/bybasket")]
-        public async Task<IHttpActionResult> GetCustomerBasketByBasketId(string privateOwnerId, string basketId)
+        public async Task<IHttpActionResult> GetCustomerBasketByBasketId([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketDomain(owner);
-                var result = await basketDomain.GetBasketByBasketId(basketId);
+                var result = await new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetByIdAsync(data.basketId);
 
                 return Ok(result);
             }
@@ -54,14 +54,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveBasket(string privateOwnerId, List<BasketViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveBasket([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketDomain(owner);
-                var result = await basketDomain.PublishAsync(data);
-                return Ok(result);
+                var basketData = new BasketProxy().ReverseConvert(data.basketData);
+                await new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(basketData);
+                return Ok(data.basketData);
             }
             catch (Exception ex)
             {
@@ -73,14 +73,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Authorize(Roles = "User")]
         [Route("delete")]
         [HttpPost]
-        public async Task<IHttpActionResult> DeleteBasket(string privateOwnerId, List<BasketViewModel> data)
+        public async Task<IHttpActionResult> DeleteBasket([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketDomain(owner);
-                var result = await basketDomain.Delete(data);
-                return Ok(result);
+                var basketData = new BasketProxy().ReverseConvert(data.basketData);
+                await new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).DeleteAsync(basketData);
+                return Ok(basketData);
             }
             catch (Exception ex)
             {
@@ -92,14 +91,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("basketitem/save")]
-        public async Task<IHttpActionResult> SaveBasketItem(string privateOwnerId, List<BasketItemViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveBasketItem([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketItemDomain(owner);
-                var result = await basketDomain.PublishAsync(data);
-                return Ok(result);
+                var saveData = new BasketItemProxy().ReverseConvert(data.basketItemData);
+                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(saveData);
+                return Ok(data.basketItemData);
             }
             catch (Exception ex)
             {
@@ -110,14 +109,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("basketitem/change")]
-        public async Task<IHttpActionResult> ChangeBasketItem(string privateOwnerId, List<BasketItemViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> ChangeBasketItem([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketItemDomain(owner);
-                var result = await basketDomain.ChangeAsync(data);
-                return Ok(result);
+                var saveData = new BasketItemProxy().ReverseConvert(data.basketItemData);
+                var result = await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).ChangeAsync(saveData);
+                return Ok(saveData);
             }
             catch (Exception ex)
             {
@@ -129,14 +128,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Authorize(Roles = "User")]
         [Route("basketitem/delete")]
         [HttpPost]
-        public async Task<IHttpActionResult> DeleteBasketitem(string privateOwnerId, List<BasketItemViewModel> data)
+        public async Task<IHttpActionResult> DeleteBasketitem([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketItemDomain(owner);
-                var result = await basketDomain.Delete(data);
-                return Ok(result);
+                var saveData = new BasketItemProxy().ReverseConvert(data.basketItemData);
+                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).DeleteAsync(saveData);
+                return Ok(saveData);
             }
             catch (Exception ex)
             {
@@ -148,13 +146,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Authorize(Roles = "User")]
         [Route("basketitems")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetBasketitemByIds(string privateOwnerId, List<BasketItemViewModel> data)
+        public async Task<IHttpActionResult> GetBasketitemByIds([FromBody]CustomerRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var basketDomain = new BasketItemDomain(owner);
-                var result = await basketDomain.GetByIds(data);
+                var result = await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetByIds(data.basketItemData);
                 return Ok(result);
             }
             catch (Exception ex)

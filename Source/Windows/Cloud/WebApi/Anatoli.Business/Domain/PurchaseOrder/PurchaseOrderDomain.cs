@@ -18,50 +18,28 @@ using Anatoli.ViewModels.CustomerModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class PurchaseOrderDomain : BusinessDomain<PurchaseOrderViewModel>, IBusinessDomain<PurchaseOrder, PurchaseOrderViewModel>
+    public class PurchaseOrderDomain : BusinessDomainV2<PurchaseOrder, PurchaseOrderViewModel, PurchaseOrderRepository, IPurchaseOrderRepository>, IBusinessDomainV2<PurchaseOrder, PurchaseOrderViewModel>
     {
         #region Properties
-        public IAnatoliProxy<Customer, CustomerViewModel> CustomerProxy { get; set; }
-        public IAnatoliProxy<PurchaseOrder, PurchaseOrderViewModel> Proxy { get; set; }
         public IRepository<Customer> CustomerRepository { get; set; }
-        public IRepository<PurchaseOrder> Repository { get; set; }
 
         #endregion
 
         #region Ctors
-        PurchaseOrderDomain() { }
-        public PurchaseOrderDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public PurchaseOrderDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new PurchaseOrderRepository(dbc), new CustomerRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<PurchaseOrder, PurchaseOrderViewModel>.Create(), AnatoliProxy<Customer, CustomerViewModel>.Create())
+        public PurchaseOrderDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public PurchaseOrderDomain(IPurchaseOrderRepository PurchaseOrderRepository, ICustomerRepository customerRepository, IPrincipalRepository principalRepository, IAnatoliProxy<PurchaseOrder, PurchaseOrderViewModel> proxy, IAnatoliProxy<Customer, CustomerViewModel> customerProxy)
+        public PurchaseOrderDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            CustomerProxy = customerProxy;
-            Repository = PurchaseOrderRepository;
-            CustomerRepository = customerRepository;
-            PrincipalRepository = principalRepository;
+            CustomerRepository = new CustomerRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<PurchaseOrderViewModel>> GetAll()
-        {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(itemImages.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var data = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(data.ToList()); ;
-        }
-
-        public async Task<List<PurchaseOrderViewModel>> GetAllByCustomerIdOnLine(string custoemrId)
+        public async Task<List<PurchaseOrderViewModel>> GetAllByCustomerIdOnLine(Guid custoemrId)
         {
             var returnData = new List<PurchaseOrderViewModel>();
 
@@ -72,18 +50,15 @@ namespace Anatoli.Business.Domain
             return returnData;
         }
 
-        public async Task<List<PurchaseOrderViewModel>> PublishAsync(List<PurchaseOrderViewModel> dataViewModels)
+        public override async Task PublishAsync(List<PurchaseOrder> dataList)
         {
             try
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
                 foreach (PurchaseOrder item in dataList)
                 {
 
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    var currentData = MainRepository.GetQuery().Where(p => p.Id == item.Id && p.DataOwnerId == DataOwnerKey).FirstOrDefault();
                     if (currentData != null)
                     {
                         currentData.ActionSourceId = item.ActionSourceId;
@@ -129,8 +104,8 @@ namespace Anatoli.Business.Domain
                         currentData.TotalAmount = item.TotalAmount;
                         currentData.TotalFinalAmount = item.TotalFinalAmount;
                         currentData.LastUpdate = DateTime.Now;
-                        currentData = await SetLineItemData(currentData, item.PurchaseOrderLineItems.ToList(), Repository.DbContext);
-                        await Repository.UpdateAsync(currentData);
+                        currentData = await SetLineItemData(currentData, item.PurchaseOrderLineItems.ToList(), DBContext);
+                        await MainRepository.UpdateAsync(currentData);
                     }
                     else
                     {
@@ -140,75 +115,53 @@ namespace Anatoli.Business.Domain
                             item.PurchaseOrderLineItems.ToList().ForEach(itemDetail =>
                             {
                                 itemDetail.Id = Guid.NewGuid();
-                                itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
+                                itemDetail.ApplicationOwnerId = item.ApplicationOwnerId;
                                 itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                             });
                         }
-                        await Repository.AddAsync(item);
+                        await MainRepository.AddAsync(item);
                     }
                 }
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
-            return dataViewModels;
-
         }
 
         public async Task<PurchaseOrder> SetLineItemData(PurchaseOrder data, List<PurchaseOrderLineItem> dataList, AnatoliDbContext context)
         {
             await Task.Factory.StartNew(() =>
             {
-                //data.PurchaseOrderLineItems.Clear();
+                data.PurchaseOrderLineItems.Clear();
                 foreach (PurchaseOrderLineItem item in dataList)
                 {
-                    item.PrivateLabelOwner = data.PrivateLabelOwner;
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                     item.CreatedDate = item.LastUpdate = data.CreatedDate;
                     item.Id = Guid.NewGuid();
-                    //LineItemRepository.Add(item);
                     data.PurchaseOrderLineItems.Add(item);
                 }
             });
             return data;
         }
 
-        public async Task<List<PurchaseOrderViewModel>> Delete(List<PurchaseOrderViewModel> dataViewModels)
+        public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrder order)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var itemImages = Proxy.ReverseConvert(dataViewModels);
-
-                itemImages.ForEach(item =>
-                {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(product);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-
-            return dataViewModels;
-        }
-
-        public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderViewModel order)
-        {
-            if (order.UniqueId == Guid.Empty)
-                order.UniqueId = Guid.NewGuid();
+            if (order.Id == Guid.Empty)
+                order.Id = Guid.NewGuid();
 
             var returnData = new PurchaseOrderViewModel();
 
-            order.Customer = CustomerProxy.Convert(CustomerRepository.GetById(order.UserId));
+            order.Customer = CustomerRepository.GetById(order.CustomerId);
             string data = JsonConvert.SerializeObject(order);
             await Task.Factory.StartNew(() =>
             {
                 returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
             });
             
-            var dataList = new List<PurchaseOrderViewModel>();
+            var dataList = new List<PurchaseOrder>();
             order.AppOrderNo = returnData.AppOrderNo;
             dataList.Add(order);
             await PublishAsync(dataList);

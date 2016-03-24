@@ -31,7 +31,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     client.SetBearerToken(oauthresult.AccessToken);
 
                     log.Info("Transfer fiscal year");
-                    FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, GetPrivateOwnerQueryString()); 
+                    FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId); 
                     log.Info("Transfer supplier");
                     SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, GetPrivateOwnerQueryString());
                     log.Info("Transfer manufacture");

@@ -31,7 +31,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 {
                     ID = data.Number_ID,
                     UniqueId = data.Id,
-                    PrivateOwnerId = data.PrivateLabelOwner_Id,
+                    ApplicationOwnerId = data.ApplicationOwnerId,
 
                     ActionSourceValueId = data.ActionSourceId,
                     Amount = data.TotalAmount,
@@ -79,7 +79,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 {
                     Number_ID = data.ID,
                     Id = data.UniqueId,
-                    PrivateLabelOwner_Id = data.PrivateOwnerId,
+                    ApplicationOwnerId = data.ApplicationOwnerId,
 
                     ActionSourceId = data.ActionSourceValueId,
                     TotalAmount = data.Amount,

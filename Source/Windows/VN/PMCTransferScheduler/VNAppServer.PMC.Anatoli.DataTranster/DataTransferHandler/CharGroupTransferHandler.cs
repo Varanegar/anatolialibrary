@@ -17,7 +17,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CharGroupDataType = "CharGroup";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCharGroupToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadCharGroupToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveCharGroupURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.SaveCharGroupURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }
 
@@ -37,7 +37,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedCharGroupURI + privateOwnerQueryString;
+                    string URI = serverURI + UriInfo.CheckDeletedCharGroupURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 }                
                 Utility.SetLastUploadTime(CharGroupDataType, currentTime);

@@ -12,151 +12,57 @@ using Anatoli.ViewModels.StoreModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StoreCalendarDomain : BusinessDomain<StoreCalendarViewModel>, IBusinessDomain<StoreCalendar, StoreCalendarViewModel>
+    public class StoreCalendarDomain : BusinessDomainV2<StoreCalendar, StoreCalendarViewModel, StoreCalendarRepository, IStoreCalendarRepository>, IBusinessDomainV2<StoreCalendar, StoreCalendarViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StoreCalendar, StoreCalendarViewModel> Proxy { get; set; }
-        public IRepository<StoreCalendar> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StoreCalendarDomain() { }
-        public StoreCalendarDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StoreCalendarDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StoreCalendarRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StoreCalendar, StoreCalendarViewModel>.Create())
+        public StoreCalendarDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StoreCalendarDomain(IRepository<StoreCalendar> repository, IPrincipalRepository principalRepository, IAnatoliProxy<StoreCalendar, StoreCalendarViewModel> proxy)
+        public StoreCalendarDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = repository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<StoreCalendarViewModel>> GetCalendarByStoreId(string storeId)
+        public async Task<ICollection<StoreCalendarViewModel>> GetCalendarByStoreId(string storeId)
         {
-            Guid storeGuid = Guid.Parse(storeId); 
-            var storeCalendars = await Repository.FindAllAsync(p => p.Id == storeGuid);
-
-            return Proxy.Convert(storeCalendars.ToList());
+            Guid storeGuid = Guid.Parse(storeId);
+            return await GetAllAsync(p => p.Id == storeGuid);
         }
 
-        public async Task<List<StoreCalendarViewModel>> GetAll()
+        protected override void AddDataToRepository(StoreCalendar currentStoreCalendars, StoreCalendar item)
         {
-            var storeCalendars = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(storeCalendars.ToList()); 
-        }
-
-        public async Task<List<StoreCalendarViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var storeCalendars = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(storeCalendars.ToList()); ;
-        }
-
-        public async Task<List<StoreCalendarViewModel>> PublishAsync(List<StoreCalendarViewModel> dataViewModels)
-        {
-            try
+            if (currentStoreCalendars != null)
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
-
-                var storeCalendars = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                storeCalendars.ForEach(item =>
+                if (currentStoreCalendars.Date != item.Date ||
+                    currentStoreCalendars.PDate != item.PDate ||
+                    currentStoreCalendars.ToTime != item.ToTime ||
+                    currentStoreCalendars.FromTime != item.FromTime ||
+                    currentStoreCalendars.CalendarTypeValueId != item.CalendarTypeValueId ||
+                    currentStoreCalendars.Description != item.Description)
                 {
-                    var currentStoreCalendars = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentStoreCalendars != null)
-                    {
-                        if (currentStoreCalendars.Date != item.Date ||
-                            currentStoreCalendars.PDate != item.PDate ||
-                            currentStoreCalendars.ToTime != item.ToTime ||
-                            currentStoreCalendars.FromTime != item.FromTime ||
-                            currentStoreCalendars.CalendarTypeValueId != item.CalendarTypeValueId ||
-                            currentStoreCalendars.Description != item.Description)
-                        {
-                            currentStoreCalendars.Date = item.Date;
-                            currentStoreCalendars.PDate = item.PDate;
-                            currentStoreCalendars.ToTime = item.ToTime;
-                            currentStoreCalendars.FromTime = item.FromTime;
-                            currentStoreCalendars.CalendarTypeValueId = item.CalendarTypeValueId;
-                            currentStoreCalendars.Description = item.Description;
-                            currentStoreCalendars.LastUpdate = DateTime.Now;
-                            Repository.Update(item);
-                        }
-                    }
-                    else
-                    {
-                        item.Id = Guid.NewGuid();
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.Add(item);
-                    }
-                });
-                await Repository.SaveChangesAsync();
-            }catch(Exception ex)
-            {
-                log.Error("PublishAsync", ex);
+                    currentStoreCalendars.Date = item.Date;
+                    currentStoreCalendars.PDate = item.PDate;
+                    currentStoreCalendars.ToTime = item.ToTime;
+                    currentStoreCalendars.FromTime = item.FromTime;
+                    currentStoreCalendars.CalendarTypeValueId = item.CalendarTypeValueId;
+                    currentStoreCalendars.Description = item.Description;
+                    currentStoreCalendars.LastUpdate = DateTime.Now;
+                    MainRepository.Update(item);
+                }
             }
-            finally
+            else
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
+                item.Id = Guid.NewGuid();
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-        }
-
-        public async Task<List<StoreCalendarViewModel>> CheckDeletedAsync(List<StoreCalendarViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-
-        public async Task<List<StoreCalendarViewModel>> Delete(List<StoreCalendarViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var storeCalendars = Proxy.ReverseConvert(dataViewModels);
-
-                storeCalendars.ForEach(item =>
-                {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StoreCalendars.Remove(product);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

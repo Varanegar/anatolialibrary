@@ -18,7 +18,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
     public class RolesController : BaseApiController
     {
         //[Route("sendmessagetouser")]
-        //public async Task<IHttpActionResult> PushMessage(string privateOwnerId, string appName, string username, string message)
+        //public async Task<IHttpActionResult> PushMessage(string ApplicationOwnerId, string appName, string username, string message)
         //{
 
         //    var pushProvider = new ParseNotificationProvider();

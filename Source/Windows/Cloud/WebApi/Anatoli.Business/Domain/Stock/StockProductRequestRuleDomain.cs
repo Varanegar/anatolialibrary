@@ -13,147 +13,67 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockProductRequestRuleDomain : BusinessDomain<StockProductRequestRuleViewModel>, IBusinessDomain<StockProductRequestRule, StockProductRequestRuleViewModel>
+    public class StockProductRequestRuleDomain : BusinessDomainV2<StockProductRequestRule, StockProductRequestRuleViewModel, StockProductRequestRuleRepository, IStockProductRequestRuleRepository>, IBusinessDomainV2<StockProductRequestRule, StockProductRequestRuleViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel> RuleTypeProxy { get; set; }
-        public IAnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel> RuleCalcTypeProxy { get; set; }
-        public IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> Proxy { get; set; }
-
-        public IRepository<StockProductRequestRule> Repository { get; set; }
         public IRepository<StockProductRequestRuleType> RuleTypeRepository { get; set; }
         public IRepository<StockProductRequestRuleCalcType> RuleCalcTypeRepository { get; set; }
         #endregion
 
         #region Ctors
-        StockProductRequestRuleDomain() { }
-        public StockProductRequestRuleDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockProductRequestRuleDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestRuleRepository(dbc),
-                   new PrincipalRepository(dbc),
-                   new StockProductRequestRuleTypeRepository(dbc),
-                   new StockProductRequestRuleCalcTypeRepository(dbc),
-                   AnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel>.Create(),
-                   AnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel>.Create(),
-                   AnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel>.Create())
+        public StockProductRequestRuleDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockProductRequestRuleDomain(IStockProductRequestRuleRepository dataRepository,
-                                             IPrincipalRepository principalRepository,
-                                             IStockProductRequestRuleTypeRepository ruleTypeRepository,
-                                             IStockProductRequestRuleCalcTypeRepository ruleCalcTypeRepository,
-                                             IAnatoliProxy<StockProductRequestRuleType, StockProductRequestRuleTypeViewModel> ruleTypeProxy,
-                                             IAnatoliProxy<StockProductRequestRuleCalcType, StockProductRequestRuleCalcTypeViewModel> ruleCalcTypeProxy,
-                                             IAnatoliProxy<StockProductRequestRule, StockProductRequestRuleViewModel> proxy)
+        public StockProductRequestRuleDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
-            RuleTypeRepository = ruleTypeRepository;
-            RuleCalcTypeRepository = ruleCalcTypeRepository;
-            RuleTypeProxy = ruleTypeProxy;
-            RuleCalcTypeProxy = ruleCalcTypeProxy;
+            RuleTypeRepository = new StockProductRequestRuleTypeRepository(dbc);
+            RuleCalcTypeRepository = new StockProductRequestRuleCalcTypeRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<StockProductRequestRuleViewModel>> GetAll()
+        protected override void AddDataToRepository(StockProductRequestRule currentData, StockProductRequestRule item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestRuleViewModel>> GetAll(DateTime validDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.FromDate.CompareTo(validDate) <= 0 && p.ToDate.CompareTo(validDate) >= 0);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestRuleViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestRuleViewModel>> PublishAsync(List<StockProductRequestRuleViewModel> dataViewModels)
-        {
-            try
+            if (currentData != null)
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
+                currentData.StockProductRequestRuleName = item.StockProductRequestRuleName;
+                currentData.FromDate = item.FromDate;
+                currentData.FromPDate = item.FromPDate;
+                currentData.ToDate = item.ToDate;
+                currentData.ToPDate = item.ToPDate;
+                currentData.ProductId = item.ProductId;
+                currentData.ProductTypeId = item.ProductTypeId;
+                currentData.MainProductGroupId = item.MainProductGroupId;
+                currentData.StockProductRequestRuleTypeId = item.StockProductRequestRuleTypeId;
+                currentData.StockProductRequestRuleCalcTypeId = item.StockProductRequestRuleCalcTypeId;
+                currentData.Qty = item.Qty;
+                currentData.SupplierId = item.SupplierId;
+                currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
+                currentData.LastUpdate = DateTime.Now;
 
-                dataList.ForEach(item =>
-                {
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        currentData.StockProductRequestRuleName = item.StockProductRequestRuleName;
-                        currentData.FromDate = item.FromDate;
-                        currentData.FromPDate = item.FromPDate;
-                        currentData.ToDate = item.ToDate;
-                        currentData.ToPDate = item.ToPDate;
-                        currentData.ProductId = item.ProductId;
-                        currentData.ProductTypeId = item.ProductTypeId;
-                        currentData.MainProductGroupId = item.MainProductGroupId;
-                        currentData.StockProductRequestRuleTypeId = item.StockProductRequestRuleTypeId;
-                        currentData.StockProductRequestRuleCalcTypeId = item.StockProductRequestRuleCalcTypeId;
-                        currentData.Qty = item.Qty;
-                        currentData.SupplierId = item.SupplierId;
-                        currentData.ReorderCalcTypeId = item.ReorderCalcTypeId;
-                        currentData.LastUpdate = DateTime.Now;
-
-                        Repository.UpdateAsync(currentData);
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                MainRepository.Update(currentData);
             }
-            catch (Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
+        }
+        public async Task<ICollection<StockProductRequestRule>> GetAllValidAsync(DateTime validDate)
+        {
+            return await MainRepository.FindAllAsync(p => p.DataOwnerId == DataOwnerKey && p.FromDate.CompareTo(validDate) <= 0 && p.ToDate.CompareTo(validDate) >= 0);
         }
 
-        public async Task<List<StockProductRequestRuleViewModel>> Delete(List<StockProductRequestRuleViewModel> dataViewModels)
+        public async Task<ICollection<StockProductRequestRuleType>> GetAllStockProductRequestRuleTypes()
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StockProductRequestRules.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-
-            return dataViewModels;
+            return await RuleTypeRepository.FindAllAsync(p => p.DataOwnerId == DataOwnerKey);
         }
-
-        public async Task<List<StockProductRequestRuleTypeViewModel>> GetAllStockProductRequestRuleTypes()
+        public async Task<ICollection<StockProductRequestRuleCalcType>> GetAllStockProductRequestRuleCalcTypes()
         {
-            var model = await RuleTypeRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return RuleTypeProxy.Convert(model.ToList());
-        }
-        public async Task<List<StockProductRequestRuleCalcTypeViewModel>> GetAllStockProductRequestRuleCalcTypes()
-        {
-            var model = await RuleCalcTypeRepository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return RuleCalcTypeProxy.Convert(model.ToList());
+            return await RuleCalcTypeRepository.FindAllAsync(p => p.DataOwnerId == DataOwnerKey);
         }
         #endregion
     }

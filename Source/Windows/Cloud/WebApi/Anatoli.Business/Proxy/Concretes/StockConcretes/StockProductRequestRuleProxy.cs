@@ -14,7 +14,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 FromDate = data.FromDate,
                 FromPDate = data.FromPDate,
@@ -45,7 +45,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
-                PrivateLabelOwner_Id = data.PrivateOwnerId,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 FromDate = data.FromDate,
                 FromPDate = data.FromPDate,

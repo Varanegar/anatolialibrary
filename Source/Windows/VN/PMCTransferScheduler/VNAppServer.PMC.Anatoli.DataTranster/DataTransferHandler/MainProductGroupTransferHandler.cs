@@ -17,7 +17,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string MainProductGroupDataType = "MainProductGroup";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadMainProductGroupToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadMainProductGroupToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var dbData = ProductAdapter.Instance.GetAllMainProductGroups(lastUpload);
 
                 string data =JsonConvert.SerializeObject(dbData);
-                string URI = serverURI + UriInfo.SaveMainProductGroupURI + privateOwnerQueryString;
+                string URI = serverURI + UriInfo.SaveMainProductGroupURI;
                 var result = ConnectionHelper.CallServerServicePost(data, URI, client);
                 Utility.SetLastUploadTime(MainProductGroupDataType, currentTime);
 

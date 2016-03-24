@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Anatoli.DataAccess
 {
-    public class AnatoliDbContext : IdentityDbContext<User>
+    public class AnatoliDbContext : IdentityDbContext<User, Role, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {
         #region Properties
         public DbSet<BaseType> BaseTypes { get; set; }
@@ -24,10 +24,8 @@ namespace Anatoli.DataAccess
         public DbSet<CharType> CharTypes { get; set; }
         public DbSet<CharValue> CharValues { get; set; }
         public DbSet<CityRegion> CityRegions { get; set; }
-        public DbSet<Company> Companys { get; set; }
         public DbSet<Clearance> Clearances { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerNotVerified> CustomerNoneVerifieds { get; set; }
         public DbSet<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
@@ -82,7 +80,16 @@ namespace Anatoli.DataAccess
 
 
         #region Identity
-        public DbSet<Principal> Principals { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<ApplicationOwner> ApplicationOwners { get; set; }
+        public DbSet<DataOwner> DataOwners { get; set; }
+        public DbSet<DataOwnerCenter> DataOwnerCenters { get; set; }
+        public DbSet<AnatoliAccount> AnatoliAccounts { get; set; }
+        public DbSet<AnatoliContact> AnatoliContacts { get; set; }
+        public DbSet<AnatoliContactType> AnatoliContactTypes { get; set; }
+        public DbSet<AnatoliPlace> AnatoliPlaces { get; set; }
+        public DbSet<AnatoliRegion> AnatoliRegions { get; set; }
+        public DbSet<Application> Applications { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<IdentityUserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
@@ -94,7 +101,7 @@ namespace Anatoli.DataAccess
         #region ctors
 
         public AnatoliDbContext()
-            : base("Name=AnatoliConnectionString", throwIfV1Schema: false)
+            : base("Name=AnatoliConnectionString")
         {
         }
         #endregion
@@ -109,7 +116,6 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CityRegionConfig());
             modelBuilder.Configurations.Add(new CompanyConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
-            modelBuilder.Configurations.Add(new CustomerNotVerifiedConfig());
             modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new DistCompanyCenterConfig());

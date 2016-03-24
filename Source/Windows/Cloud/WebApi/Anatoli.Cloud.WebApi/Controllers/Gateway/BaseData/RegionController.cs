@@ -1,4 +1,7 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
 using System;
 using System.Collections.Generic;
@@ -10,17 +13,16 @@ using System.Web.Http;
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/base/region")]
-    public class RegionController : BaseApiController
+    public class RegionController : AnatoliApiController
     {
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("cityregions")]
-        public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegion()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var cityRegionDomain = new CityRegionDomain(owner);
-                var result = await cityRegionDomain.GetAll();
+                var result = await new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 return Ok(result);
             }
@@ -31,16 +33,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("cityregions/after")]
-        public async Task<IHttpActionResult> GetCityRegion(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegion([FromBody]BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var cityRegionDomain = new CityRegionDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await cityRegionDomain.GetAllChangedAfter(validDate);
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await cityRegionDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -51,16 +53,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveCityRegionInfo([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var cityRegionDomain = new CityRegionDomain(owner);
-                var result = await cityRegionDomain.PublishAsync(data);
-                return Ok(result);
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var saveData = new CityRegionProxy().ReverseConvert(data.cityRegionData);
+                await cityRegionDomain.PublishAsync(saveData);
+                return Ok(data.cityRegionData);
             }
             catch (Exception ex)
             {
@@ -69,16 +72,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedCityRegionInfo(string privateOwnerId, List<CityRegionViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedCityRegionInfo([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var cityRegionDomain = new CityRegionDomain(owner);
-                var result = await cityRegionDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await cityRegionDomain.CheckDeletedAsync(data.cityRegionData);
+                return Ok(data.cityRegionData);
             }
             catch (Exception ex)
             {

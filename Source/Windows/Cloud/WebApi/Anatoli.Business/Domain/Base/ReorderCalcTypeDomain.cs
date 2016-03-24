@@ -14,100 +14,40 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ReorderCalcTypeDomain : BusinessDomain<ReorderCalcTypeViewModel>, IBusinessDomain<ReorderCalcType, ReorderCalcTypeViewModel>
+    public class ReorderCalcTypeDomain : BusinessDomainV2<ReorderCalcType, ReorderCalcTypeViewModel, ReorderCalcTypeRepository, IReorderCalcTypeRepository>, IBusinessDomainV2<ReorderCalcType, ReorderCalcTypeViewModel>
     {
         #region Properties
-        public IAnatoliProxy<ReorderCalcType, ReorderCalcTypeViewModel> Proxy { get; set; }
-        public IRepository<ReorderCalcType> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        ReorderCalcTypeDomain() { }
-        public ReorderCalcTypeDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public ReorderCalcTypeDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ReorderCalcTypeRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<ReorderCalcType, ReorderCalcTypeViewModel>.Create())
+        public ReorderCalcTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public ReorderCalcTypeDomain(IReorderCalcTypeRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<ReorderCalcType, ReorderCalcTypeViewModel> proxy)
+        public ReorderCalcTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<ReorderCalcTypeViewModel>> GetAll()
+        protected override void AddDataToRepository(ReorderCalcType currentData, ReorderCalcType item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<ReorderCalcTypeViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<ReorderCalcTypeViewModel>> PublishAsync(List<ReorderCalcTypeViewModel> dataViewModels)
-        {
-            try
+            if (currentData != null)
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                dataList.ForEach(item =>
+                if (currentData.ReorderTypeName != item.ReorderTypeName)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        if (currentData.ReorderTypeName != item.ReorderTypeName )
-                        {
-                            currentData.ReorderTypeName = item.ReorderTypeName;
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                    currentData.ReorderTypeName = item.ReorderTypeName;
+                    currentData.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentData);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-        }
-
-        public async Task<List<ReorderCalcTypeViewModel>> Delete(List<ReorderCalcTypeViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.ReorderCalcTypes.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }
