@@ -57,6 +57,8 @@
     <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
     <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
+    <Compile Include="ProductModels\ProductSupplierViewModel.cs" />
+    <Compile Include="ProductModels\ProductCharValueViewModel.cs" />
     <Compile Include="ProductModels\ProductPictureViewModel.cs" />
     <Compile Include="ProductModels\ProductTagValueViewModel.cs" />
     <Compile Include="ProductModels\MainProductGroupViewModel.cs" />

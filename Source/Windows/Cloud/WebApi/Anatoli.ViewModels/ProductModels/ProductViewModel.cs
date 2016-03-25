@@ -22,11 +22,11 @@ namespace Anatoli.ViewModels.ProductModels
         public Guid TaxCategoryId { get; set; }
 
         public List<SupplierViewModel> Suppliers { get; set; }
-        public string MainProductGroupIdString { get; set; }
-        public string MainSupplierId { get; set; }
+        public Guid? MainProductGroupId { get; set; }
+        public Guid? MainSupplierId { get; set; }
 
-        public string ProductGroupIdString { get; set; }
-        public string ManufactureIdString { get; set; }
+        public Guid? ProductGroupId { get; set; }
+        public Guid? ManufactureId { get; set; }
 
         //public bool IsRemoved { get; set; }
         public List<CharValueViewModel> CharValues { get; set; }

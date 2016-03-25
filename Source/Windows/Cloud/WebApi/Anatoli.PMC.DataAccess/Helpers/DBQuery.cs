@@ -298,21 +298,19 @@ namespace Anatoli.PMC.DataAccess.Helpers
 //                    ) as onhand, Product, Center where onhand.ProductId = Product.ProductId and Center.centerid = onhand.CenterId and centertypeid = 3";
 
         }
-        public  string GetProduct()
+        public string GetProduct()
         {
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetProduct".ToLower()).QueryTSql;
-//            return @"SELECT p.QtyPerPack, p.ProductId AS id, CONVERT(uniqueidentifier, p.UniqueId) AS uniqueid, p.ProductCode, p.ProductName, p.StoreProductName, p.PackVolume, 
-//                         p.PackWeight, p.Description, NULL AS PackUnitId, CASE ProductTypeId WHEN 1 THEN CONVERT(uniqueidentifier, '21B7F88F-42B2-40F6-83C9-EF20943440B9') 
-//                         WHEN 2 THEN CONVERT(uniqueidentifier, '594120A7-1312-45B2-883B-605000D33D0F') WHEN 3 THEN CONVERT(uniqueidentifier, 
-//                         '9DA7C343-CE14-4CBB-81AE-709E075D4E10') END AS ProductTypeId, pg.UniqueId AS ProductGroupIdString, m.UniqueId AS ManufactureIdString, 
-//                          mpg.UniqueId AS MainProductGroupIdString
-//                    FROM            ProductGroupTreeSite AS pg RIGHT OUTER JOIN
-//                         Product AS p LEFT OUTER JOIN
-//                         ProductGroupTree AS mpg ON p.ProductGroupTreeId = mpg.ProductGroupTreeId LEFT OUTER JOIN
-//                         Manufacturer AS m ON p.ManufacturerId = m.ManufacturerId ON pg.ProductGroupTreeSiteId = p.ProductGroupTreeSiteId
-//                    ";
         }
-        public  string GetProductSupplier(int productId)
+        public string GetProductSupplier()
+        {
+            return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetProductSupplier".ToLower()).QueryTSql;
+        }
+        public string GetProductCharValue()
+        {
+            return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetProductCharValue".ToLower()).QueryTSql;
+        }
+        public string GetProductSupplier(int productId)
         {
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetProductSupplier".ToLower()).QueryTSql.Replace("@productId@", productId.ToString());
 //            return @"select CONVERT(uniqueidentifier, s.uniqueId) as uniqueId from SupplierProduct as sp, supplier as s, product as p 

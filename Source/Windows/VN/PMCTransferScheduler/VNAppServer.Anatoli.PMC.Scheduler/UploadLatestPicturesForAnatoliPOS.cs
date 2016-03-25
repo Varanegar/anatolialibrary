@@ -30,11 +30,11 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     client.SetBearerToken(oauthresult.AccessToken);
 
                     log.Info("Transfer Product Group Picture");
-                    ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer Product Picture");
-                    ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer Store Picture");
-                    StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

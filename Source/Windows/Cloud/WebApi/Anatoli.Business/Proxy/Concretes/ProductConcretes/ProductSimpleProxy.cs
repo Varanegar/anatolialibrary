@@ -32,14 +32,14 @@ namespace Anatoli.Business.Proxy.ProductConcretes
 
                 ApplicationOwnerId = data.ApplicationOwnerId,
 
-                ManufactureIdString = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
-                ManufactureName = (data.ManufactureId == null) ? string.Empty : data.Manufacture.ManufactureName,
+                ManufactureId  = data.ManufactureId,
+                ManufactureName = (data.ManufactureId == Guid.Empty) ? string.Empty : data.Manufacture.ManufactureName,
 
-                ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
-                MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
+                ProductGroupId = data.ProductGroupId,
+                MainProductGroupId = data.MainProductGroupId,
 
-                MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
-                MainSupplierName = (data.MainSupplierId == null) ? string.Empty : data.MainSupplier.SupplierName,
+                MainSupplierId = data.MainSupplierId,
+                MainSupplierName = (data.MainSupplierId == Guid.Empty) ? string.Empty : data.MainSupplier.SupplierName,
 
                 IsActiveInOrder = data.IsActiveInOrder,
             };

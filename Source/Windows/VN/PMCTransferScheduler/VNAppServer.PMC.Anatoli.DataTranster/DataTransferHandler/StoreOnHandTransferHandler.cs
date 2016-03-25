@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string StoreOnHandDataType = "StoreOnHand";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadStoreOnHandToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
+        public static void UploadStoreOnHandToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -27,19 +28,22 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var dbData = StoreAdapter.Instance.GetAllStoreOnHands(lastUpload);
                 if (dbData != null)
                 {
+                    StoreRequestModel request = new StoreRequestModel() { storeActiveOnhandData = dbData };
 
-                    string data = JsonConvert.SerializeObject(dbData);
+                    string data = JsonConvert.SerializeObject(request);
                     string URI = serverURI + UriInfo.SaveStoreOnHandURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
                 dbData = StoreAdapter.Instance.GetAllStoreOnHands(DateTime.MinValue);
                 if (dbData != null)
                 {
 
-                    string data = JsonConvert.SerializeObject(dbData);
+                    StoreRequestModel request = new StoreRequestModel() { storeActiveOnhandData = dbData };
+
+                    string data = JsonConvert.SerializeObject(request);
                     string URI = serverURI + UriInfo.SaveStoreOnHandURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
                 Utility.SetLastUploadTime(StoreOnHandDataType, currentTime);

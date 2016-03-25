@@ -9,6 +9,10 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
+using AutoMapper.QueryableExtensions;
+using EntityFramework.Extensions;
+using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace Anatoli.Business.Domain
 {
@@ -38,6 +42,62 @@ namespace Anatoli.Business.Domain
         {
             return await GetAllAsync(p => p.StoreId == storeGuid && p.LastUpdate >= selectedDate);
 
+        }
+        public override async Task PublishAsync(List<StoreActivePriceList> data)
+        {
+            try
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                var dataList = GetDataListToCheckForExistsData();
+
+                foreach (var item in data)
+                {
+                    var model = dataList.Find(p => p.StoreId == item.StoreId && p.ProductId == item.StoreId);
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    AddDataToRepository(model, item);
+                }
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("PublishAsync", ex);
+                throw ex;
+            }
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + data.Count);
+            }
+        }
+
+        public override async Task CheckDeletedAsync(List<StoreActivePriceListViewModel> dataViewModels)
+        {
+            try
+            {
+                var currentDataList = MainRepository.GetQuery()
+                            .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
+                            .Select(data => new StoreActivePriceListViewModel
+                            {
+                                UniqueId = data.Id,
+                                StoreGuid = data.StoreId,
+                                ProductGuid = data.ProductId
+                            })
+                            .AsNoTracking()
+                            .ToList();
+
+                currentDataList.ForEach(item =>
+                {
+                    if (dataViewModels.Find(p => p.StoreGuid == item.StoreGuid && p.ProductGuid == item.ProductGuid) == null)
+                        MainRepository.GetQuery().Where(p => p.StoreId == item.StoreGuid && p.ProductId == item.ProductGuid).Update(t => new StoreActivePriceList { LastUpdate = DateTime.Now, IsRemoved = true });
+                });
+
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("CheckForDeletedAsync", ex);
+                throw ex;
+            }
         }
 
         protected override void AddDataToRepository(StoreActivePriceList currentStoreActivePriceList, StoreActivePriceList item)

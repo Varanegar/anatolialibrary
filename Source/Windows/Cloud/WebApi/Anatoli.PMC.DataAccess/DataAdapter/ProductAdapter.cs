@@ -52,17 +52,38 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 var data = context.All<ProductViewModel>(DBQuery.Instance.GetProduct() + where);
-                data.ToList().ForEach(item =>
-                {
-                    var productSuppllier = context.All<SupplierViewModel>(DBQuery.Instance.GetProductSupplier(item.ID));
-                    item.Suppliers = productSuppllier.ToList();
-                    var productValue = context.All<CharValueViewModel>(DBQuery.Instance.GetProductCharValue(item.ID));
-                    item.CharValues = productValue.ToList();
-                });
                 products = data.ToList();
 
             }
             return products;       
+        }
+        public List<ProductSupplierViewModel> GetAllProductSuppliers(DateTime lastUpload)
+        {
+            List<ProductSupplierViewModel> products = new List<ProductSupplierViewModel>();
+            using (var context = new DataContext())
+            {
+                string where = "";
+                if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+                var data = context.All<ProductSupplierViewModel>(DBQuery.Instance.GetProductSupplier() + where);
+                products = data.ToList();
+
+            }
+            return products;
+        }
+        public List<ProductCharValueViewModel> GetAllProductCharValues(DateTime lastUpload)
+        {
+            List<ProductCharValueViewModel> products = new List<ProductCharValueViewModel>();
+            using (var context = new DataContext())
+            {
+                string where = "";
+                if (lastUpload != DateTime.MinValue) where = " where p.ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+                var data = context.All<ProductCharValueViewModel>(DBQuery.Instance.GetProductCharValue() + where);
+                products = data.ToList();
+
+            }
+            return products;
         }
         public List<ProductGroupViewModel> GetAllProductGroups(DateTime lastUpload)
         {

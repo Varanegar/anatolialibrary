@@ -32,27 +32,31 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     client.Timeout = TimeSpan.FromMilliseconds(120 * 60 * 1000);
 
                     log.Info("Transfer new customers");
-                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
+                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer supplier");
-                    SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer manufacture");
-                    ManufactureTransferHandler.UploadManufactureToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ManufactureTransferHandler.UploadManufactureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product group");
-                    ProductGroupTransferHandler.UploadProductGroupToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ProductGroupTransferHandler.UploadProductGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char type");
-                    CharTypeTransferHandler.UploadCharTypeToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    CharTypeTransferHandler.UploadCharTypeToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char group");
-                    CharGroupTransferHandler.UploadCharGroupToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    CharGroupTransferHandler.UploadCharGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer ciry region");
-                    CityRegionTransferHandler.UploadCityRegionToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    CityRegionTransferHandler.UploadCityRegionToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer store");
-                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product");
-                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
+                    ProductTransferHandler.UploadProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer product supplier");
+                    ProductTransferHandler.UploadProductSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer product char value");
+                    ProductTransferHandler.UploadProductCharValueToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer store price list");
-                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer store onhand");
-                    StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

@@ -305,23 +305,23 @@ namespace Anatoli.Business
             return null;
         }
 
-        public async Task CheckDeletedAsync(List<TMainSourceView> dataViewModels)
+        public virtual async Task CheckDeletedAsync(List<TMainSourceView> dataViewModels)
         {
             try
             {
                 var currentDataList = MainRepository.GetQuery()
                             .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
-                            .Select(data => new TMainSource
+                            .Select(data => new TMainSourceView
                             {
-                                Id = data.Id
+                                UniqueId = data.Id
                             })
                             .AsNoTracking()
                             .ToList();
 
                 currentDataList.ForEach(item =>
                 {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                        MainRepository.GetQuery().Where(p => p.Id == item.Id).Update(t => new TMainSource { LastUpdate= DateTime.Now, IsRemoved = true});
+                    if (dataViewModels.Find(p => p.UniqueId == item.UniqueId) == null)
+                        MainRepository.GetQuery().Where(p => p.Id == item.UniqueId).Update(t => new TMainSource { LastUpdate= DateTime.Now, IsRemoved = true});
                 });
 
                 await MainRepository.SaveChangesAsync();
@@ -337,14 +337,10 @@ namespace Anatoli.Business
         {
             throw new NotImplementedException();
         }
-        protected virtual List<TMainSource> GetDataListToCheckForExistsData()
+        public virtual List<TMainSource> GetDataListToCheckForExistsData()
         {
             return MainRepository.GetQuery()
                             .Where(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey)
-                            //.Select(data => new TMainSourceView
-                            //{
-                            //    UniqueId = data.Id
-                            //})
                             .AsNoTracking()
                             .ToList();
         }

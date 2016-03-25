@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string ProductGroupDataType = "ProductGroup";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadProductGroupToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
+        public static void UploadProductGroupToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -27,18 +28,24 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var dbData = ProductAdapter.Instance.GetAllProductGroups(lastUpload);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
+                    ProductRequestModel model = new ProductRequestModel();
+                    model.productGroupData = dbData;
+
+                    string data = JsonConvert.SerializeObject(model);
                     string URI = serverURI + UriInfo.SaveProductGroupURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
 
                 dbData = ProductAdapter.Instance.GetAllProductGroups(DateTime.MinValue);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
+                    ProductRequestModel model = new ProductRequestModel();
+                    model.productGroupData = dbData;
+
+                    string data = JsonConvert.SerializeObject(model);
                     string URI = serverURI + UriInfo.CheckDeletedProductGroupURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }                
                 Utility.SetLastUploadTime(ProductGroupDataType, currentTime);
 

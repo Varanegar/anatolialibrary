@@ -14,6 +14,8 @@ namespace Anatoli.ViewModels
         public List<ProductTagViewModel> productTagData { get; set; }
         public List<ProductTagValueViewModel> productTagValueData { get; set; }
         public List<ProductGroupViewModel> productGroupData { get; set; }
+        public List<ProductSupplierViewModel> productSupplierData { get; set; }
+        public List<ProductCharValueViewModel> productCharData { get; set; }
         public List<MainProductGroupViewModel> mainProductGroupData { get; set; }
         public List<ProductRateViewModel> productRateData { get; set; }
         

@@ -29,6 +29,8 @@ namespace VNAppServer.Anatoli.Common
         public static readonly string SaveCharTypeURI = "/api/gateway/product/chartypes/save";
         public static readonly string CheckDeletedCharTypeURI = "/api/gateway/product/chartypes/checkdeleted";
         public static readonly string SaveProductURI = "/api/gateway/product/save";
+        public static readonly string SaveProductSupplierURI = "/api/gateway/product/savesuppliers";
+        public static readonly string SaveProductCharValueURI = "/api/gateway/product/savecharvalues";
         public static readonly string CheckDeletedProductURI = "/api/gateway/product/checkdeleted";
         public static readonly string SaveProductGroupURI = "/api/gateway/product/productgroups/save";
         public static readonly string CheckDeletedProductGroupURI = "/api/gateway/product/productgroups/checkdeleted";
@@ -40,11 +42,13 @@ namespace VNAppServer.Anatoli.Common
         public static readonly string CheckDeletedStoreOnHandURI = "/api/gateway/store/storeOnhand/checkdeleted";
         public static readonly string SaveImageURI = "/api/imageManager/Save";
         public static readonly string SaveStockURI = "/api/gateway/stock/save";
+        public static readonly string CheckDeletedStockURI = "/api/gateway/stock/checkdeleted";
         public static readonly string SaveFiscalYearURI = "/api/gateway/fiscalyear/save";
         public static readonly string SaveStockOnHandURI = "/api/gateway/stock/stockOnhand/save";
         public static readonly string SaveStockProductURI = "/api/gateway/stock/stockproduct/save";
         public static readonly string SaveStockProductRequestURI = "/api/gateway/stockproductrequest/save";
         public static readonly string SaveMainProductGroupURI = "/api/gateway/product/mainproductgroups/save";
+        public static readonly string CheckDeletedMainProductGroupURI = "/api/gateway/product/mainproductgroups/checkdeleted";
         public static readonly string SaveUserURI = "/api/accounts/createbybackoffice";
         public static readonly string GetUserURI = "/api/accounts/user";
 

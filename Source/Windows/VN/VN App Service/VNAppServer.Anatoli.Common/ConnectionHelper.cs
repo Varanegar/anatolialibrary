@@ -16,10 +16,12 @@ namespace VNAppServer.Anatoli.Common
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static string CallServerServicePost(string data, string URI, HttpClient client, string OwnerKey)
+        public static string CallServerServicePost(string data, string URI, HttpClient client, string OwnerKey, string DataOwner, string DataOwnerCenter)
         {
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
             content.Headers.Add("OwnerKey", OwnerKey);
+            content.Headers.Add("DataOwnerKey", DataOwner);
+            content.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -33,24 +35,27 @@ namespace VNAppServer.Anatoli.Common
             }
         }
 
-        public static string CallServerServicePost(string data, string URI, HttpClient client)
+        //public static string CallServerServicePost(string data, string URI, HttpClient client)
+        //{
+        //    HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+        //    var result = client.PostAsync(URI, content).Result;
+        //    var str = result.Content.ReadAsStringAsync().Result;
+        //    if (result.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        return str;
+        //    }
+        //    else
+        //    {
+        //        log.Error("Fail CallServerService URI :" + URI + "\n" + str);
+        //        throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
+        //    }
+        //}
+        public static T CallServerServicePost<T>(string data, string URI, HttpClient client, string OwnerKey, string DataOwner, string DataOwnerCenter)
         {
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result = client.PostAsync(URI, content).Result;
-            var str = result.Content.ReadAsStringAsync().Result;
-            if (result.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return str;
-            }
-            else
-            {
-                log.Error("Fail CallServerService URI :" + URI + "\n" + str);
-                throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
-            }
-        }
-        public static T CallServerServicePost<T>(string data, string URI, HttpClient client)
-        {
-            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", OwnerKey);
+            content.Headers.Add("DataOwnerKey", DataOwner);
+            content.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Created)
@@ -64,10 +69,12 @@ namespace VNAppServer.Anatoli.Common
             }
         }
 
-        public static T CallServerServicePost<T>(ConnectionHelperRequestModel data, string URI, HttpClient client, string OwnerKey)
+        public static T CallServerServicePost<T>(ConnectionHelperRequestModel data, string URI, HttpClient client, string OwnerKey, string DataOwner, string DataOwnerCenter)
         {
             HttpContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
             content.Headers.Add("OwnerKey", OwnerKey);
+            content.Headers.Add("DataOwnerKey", DataOwner);
+            content.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
             var result = client.PostAsync(URI, content).Result;
             var str = result.Content.ReadAsStringAsync().Result;
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -80,38 +87,22 @@ namespace VNAppServer.Anatoli.Common
                 throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
             }
         }
-
-        public static T CallServerServicePost<T>(ConnectionHelperRequestModel data, string URI, HttpClient client)
-        {
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-            var result = client.PostAsync(URI, content).Result;
-            var str = result.Content.ReadAsStringAsync().Result;
-            if (result.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<T>(str);
-            }
-            else
-            {
-                log.Error("Fail CallServerService URI :" + URI + "\n" + str);
-                throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
-            }
-        }
-        public static T CallServerServiceGet<T>(string URI, HttpClient client)
-            where T : class, new()
-        {
-            var result = client.GetAsync(URI).Result;
-            var str = result.Content.ReadAsStringAsync().Result;
-            if (result.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<T>(str);
-            }
-            else
-            {
-                log.Error("Fail CallServerService URI :" + URI + "\n" + str);
-                throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
-            }
-        }
-        public static void CallServerService(List<ItemImageViewModel> dataList, HttpClient client, string URI)
+        //public static T CallServerServiceGet<T>(string URI, HttpClient client, string OwnerKey, string DataOwner, string DataOwnerCenter)
+        //    where T : class, new()
+        //{
+        //    var result = client.GetAsync(URI).Result;
+        //    var str = result.Content.ReadAsStringAsync().Result;
+        //    if (result.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        return JsonConvert.DeserializeObject<T>(str);
+        //    }
+        //    else
+        //    {
+        //        log.Error("Fail CallServerService URI :" + URI + "\n" + str);
+        //        throw new Exception("Fail CallServerService URI :" + URI + "\n" + str);
+        //    }
+        //}
+        public static void CallServerService(List<ItemImageViewModel> dataList, HttpClient client, string URI, string OwnerKey, string DataOwner, string DataOwnerCenter)
         {
             dataList.ForEach(item =>
             {
@@ -121,6 +112,9 @@ namespace VNAppServer.Anatoli.Common
                     MediaTypeHeaderValue.Parse("image/jpeg");
 
                 requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
+                imageContent.Headers.Add("OwnerKey", OwnerKey);
+                imageContent.Headers.Add("DataOwnerKey", DataOwner);
+                imageContent.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
                 var response = client.PostAsync(URI + "&isDefault=" + item.IsDefault + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
                 if(response.IsSuccessStatusCode)
                 {

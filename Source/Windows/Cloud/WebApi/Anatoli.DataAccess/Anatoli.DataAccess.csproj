@@ -176,6 +176,10 @@
     <Compile Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.Designer.cs">
       <DependentUpon>201603231608382_Change-BusinessModel-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603242146369_Product-Supplier-Migration-1.cs" />
+    <Compile Include="Migrations\201603242146369_Product-Supplier-Migration-1.Designer.cs">
+      <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Anatoli\AnatoliAccount.cs" />
     <Compile Include="Models\Anatoli\AnatoliRegion.cs" />
@@ -327,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.resx">
       <DependentUpon>201603231608382_Change-BusinessModel-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603242146369_Product-Supplier-Migration-1.resx">
+      <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

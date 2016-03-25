@@ -134,11 +134,11 @@ namespace Anatoli.Business.Domain
                         ProductTypeId = data.ProductTypeId,
                         QtyPerPack = data.QtyPerPack,
                         IsRemoved = data.IsRemoved,
-                        ManufactureIdString = data.ManufactureId.ToString(),
+                        ManufactureId = data.ManufactureId,
                         ManufactureName = data.Manufacture.ManufactureName,
-                        ProductGroupIdString = data.ProductGroupId.ToString(),
-                        MainProductGroupIdString = data.MainProductGroupId.ToString(),
-                        MainSupplierId = data.MainSupplierId.ToString(),
+                        ProductGroupId = data.ProductGroupId,
+                        MainProductGroupId = data.MainProductGroupId,
+                        MainSupplierId = data.MainSupplierId,
                         MainSupplierName = data.MainSupplier.SupplierName,
                         IsActiveInOrder = data.IsActiveInOrder,
                         ProductTypeInfo = data.ProductType != null ? new ProductTypeViewModel
@@ -163,56 +163,101 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        public async Task<ICollection<Product>> PublishAsync(List<Product> products)
+        protected override void AddDataToRepository(Product currentProduct, Product item)
+        {
+            if (currentProduct != null)
+            {
+                currentProduct.ProductName = item.ProductName;
+                currentProduct.ProductGroupId = item.ProductGroupId;
+                currentProduct.ManufactureId = item.ManufactureId;
+                currentProduct.Desctription = item.Desctription;
+                currentProduct.QtyPerPack = item.QtyPerPack;
+                currentProduct.PackVolume = item.PackVolume;
+                currentProduct.PackWeight = item.PackWeight;
+                currentProduct.ProductCode = item.ProductCode;
+                currentProduct.Barcode = item.Barcode;
+                currentProduct.ProductName = item.ProductName;
+                currentProduct.StoreProductName = item.StoreProductName;
+                currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
+                currentProduct.MainProductGroupId = item.MainProductGroupId;
+                currentProduct.ManufactureId = item.ManufactureId;
+                currentProduct.MainSupplierId = item.MainSupplierId;
+                currentProduct.LastUpdate = DateTime.Now;
+
+                if (item.ProductType != null)
+                    currentProduct.ProductTypeId = item.ProductTypeId;
+
+                //if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), DBContext);
+                //if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), DBContext);
+                MainRepository.Update(currentProduct);
+            }
+            else
+            {
+                item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+
+                //if (item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), DBContext);
+                //if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), DBContext);
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                if (item.ProductTypeId == null)
+                    item.ProductType = null;
+                MainRepository.Add(item);
+            }
+        }
+
+        public async Task SetProductSupplierData(List<ProductSupplierViewModel> data)
         {
             try
             {
                 MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
 
-                var currentProductList = GetDataListToCheckForExistsData();
+                var products = GetDataListToCheckForExistsData();
+                var suppliers = new SupplierDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, DBContext).GetDataListToCheckForExistsData();
 
                 products.ForEach(item =>
                 {
-                    var currentProduct = currentProductList.Find(p => p.Id == item.Id);
+                    if (data.Count(p => p.ProductId == item.Id) > 0)
+                        MainRepository.DbContext.Database.ExecuteSqlCommand("delete ProductSuppliers where productid='" + item.Id + "'");
 
-                    if (currentProduct != null)
+                    data.FindAll(p => p.ProductId == item.Id).ForEach(pItem =>
                     {
-                        currentProduct.ProductName = item.ProductName;
-                        currentProduct.ProductGroupId = item.ProductGroupId;
-                        currentProduct.ManufactureId = item.ManufactureId;
-                        currentProduct.Desctription = item.Desctription;
-                        currentProduct.QtyPerPack = item.QtyPerPack;
-                        currentProduct.PackVolume = item.PackVolume;
-                        currentProduct.PackWeight = item.PackWeight;
-                        currentProduct.ProductCode = item.ProductCode;
-                        currentProduct.Barcode = item.Barcode;
-                        currentProduct.ProductName = item.ProductName;
-                        currentProduct.StoreProductName = item.StoreProductName;
-                        currentProduct.TaxCategoryValueId = item.TaxCategoryValueId;
-                        currentProduct.MainProductGroupId = item.MainProductGroupId;
-                        currentProduct.ManufactureId = item.ManufactureId;
-                        currentProduct.MainSupplierId = item.MainSupplierId;
-                        currentProduct.LastUpdate = DateTime.Now;
+                        MainRepository.DbContext.Database.ExecuteSqlCommand("insert into ProductSuppliers (productId, SupplierId) values ('" + item.Id + "', '" + pItem.SupplierId + "')");
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("PublishAsync ", ex);
+                throw ex;
+            }
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Error("PublishAsync Finish" + data.Count);
+            }
 
-                        if (item.ProductType != null)
-                            currentProduct.ProductTypeId = item.ProductTypeId;
+            await MainRepository.SaveChangesAsync();
+        }
 
-                        if (item.CharValues != null) currentProduct = SetCharValueData(currentProduct, item.CharValues.ToList(), DBContext);
-                        if (item.Suppliers != null) currentProduct = SetSupplierData(currentProduct, item.Suppliers.ToList(), DBContext);
-                        MainRepository.Update(currentProduct);
-                    }
-                    else
+        public async Task SetProductCharValueData(List<ProductCharValueViewModel> data)
+        {
+            try
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
+
+                var products = GetDataListToCheckForExistsData();
+                var charValues = new CharValueDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, DBContext).GetDataListToCheckForExistsData();
+
+                products.ForEach(item =>
+                {
+                    if (data.Count(p => p.ProductId == item.Id) > 0)
+                        MainRepository.DbContext.Database.ExecuteSqlCommand("delete ProductChars where productid='" + item.Id + "'");
+
+                    data.FindAll(p => p.ProductId == item.Id).ForEach(pItem =>
                     {
-                        item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
-
-                        if (item.CharValues != null) item = SetCharValueData(item, item.CharValues.ToList(), DBContext);
-                        if (item.Suppliers != null) item = SetSupplierData(item, item.Suppliers.ToList(), DBContext);
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        if (item.ProductTypeId == null)
-                            item.ProductType = null;
-                        MainRepository.Add(item);
-                    }
+                        MainRepository.DbContext.Database.ExecuteSqlCommand("insert into ProductChars (productId, CharValueId) values ('" + item.Id + "', '" + pItem.CharValueId + "')");
+                    });
 
                 });
                 await MainRepository.SaveChangesAsync();
@@ -225,23 +270,10 @@ namespace Anatoli.Business.Domain
             finally
             {
                 MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                Logger.Error("PublishAsync Finish" + products.Count);
+                Logger.Error("PublishAsync Finish" + data.Count);
             }
-            return products;
 
-        }
-
-        public Product SetSupplierData(Product data, List<Supplier> suppliers, AnatoliDbContext context)
-        {
-            if (suppliers == null) return data;
-            data.Suppliers.Clear();
-            suppliers.ForEach(item =>
-            {
-                var supplier = SupplierRepository.GetQuery().Where(p => p.DataOwnerId == DataOwnerKey && p.Id == item.Id).FirstOrDefault();
-                if (supplier != null)
-                    data.Suppliers.Add(supplier);
-            });
-            return data;
+            await MainRepository.SaveChangesAsync();
         }
 
         public async Task ChangeProductTypes(List<ProductViewModel> data)
@@ -259,20 +291,6 @@ namespace Anatoli.Business.Domain
             }
 
         }
-
-        public Product SetCharValueData(Product data, List<CharValue> charValues, AnatoliDbContext context)
-        {
-            if (charValues == null) return data;
-            data.CharValues.Clear();
-            charValues.ForEach(item =>
-            {
-                var charType = CharValueRepository.GetQuery().Where(p => p.DataOwnerId == DataOwnerKey && p.Id == item.Id).FirstOrDefault();
-                if (charType != null)
-                    data.CharValues.Add(charType);
-            });
-            return data;
-        }
-
         #endregion
     }
 }

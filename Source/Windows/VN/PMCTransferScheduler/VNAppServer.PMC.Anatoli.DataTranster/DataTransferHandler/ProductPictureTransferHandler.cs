@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string PictureDataType = "ProductPicture";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadProductPictureToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
+        public static void UploadProductPictureToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 List<ItemImageViewModel> dataList = ImageAdapter.Instance.ProductPictures(lastUpload);
 
                 string URI = serverURI + UriInfo.SaveImageURI;
-                ConnectionHelper.CallServerService(dataList, client, URI);
+                ConnectionHelper.CallServerService(dataList, client, URI, privateOwnerId, dataOwner, dataOwnerCenter);
                 Utility.SetLastUploadTime(PictureDataType, currentTime);
 
                 log.Info("Completed CallServerService ");

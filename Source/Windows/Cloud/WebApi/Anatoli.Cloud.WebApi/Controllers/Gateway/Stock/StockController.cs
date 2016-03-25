@@ -112,8 +112,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp, User, DataSync, BaseDataAdmin", Resource = "Stock", Action = "SaveStocks"),
-         Route("saveStocks"), HttpPost]
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User, DataSync, BaseDataAdmin"),
+         Route("save"), HttpPost] //, Resource = "Stock", Action = "SaveStocks"
         public async Task<IHttpActionResult> SaveStocks([FromBody] StockRequestModel data)
         {
             try
@@ -127,6 +127,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
+        }
+        
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
+        [Route("checkdeleted")]
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedStocks([FromBody]StockRequestModel data)
+        {
+            var businessDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            await businessDomain.CheckDeletedAsync(data.stockData);
+            return Ok(data.stockData);
         }
 
 

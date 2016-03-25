@@ -205,7 +205,10 @@ namespace VNAppServer
                 foreach (ITimerConfig config in timerLibrary.TimerConfigs)
                 {
                     CreateTimerJob(scheduler, config, ConfigurationManager.AppSettings["ServerURI"].ToString()
-                        , ConfigurationManager.AppSettings["PrivateOwnerId"].ToString());
+                        , ConfigurationManager.AppSettings["OwnerKey"].ToString()
+                        , ConfigurationManager.AppSettings["DataOwner"].ToString()
+                        , ConfigurationManager.AppSettings["DataOwnerCenter"].ToString()
+                        );
                 }
             }
         }
@@ -304,7 +307,7 @@ namespace VNAppServer
             return appDomainHost;
         }
 
-        private static void CreateTimerJob(IScheduler scheduler, ITimerConfig config, string serverURI, string privateOwnerId)
+        private static void CreateTimerJob(IScheduler scheduler, ITimerConfig config, string serverURI, string ownerKey, string dataOwnerKey, string dataOwnerCenterKey)
         {
             ITimerJob service = config.TimerJob;
 
@@ -321,7 +324,9 @@ namespace VNAppServer
                                                     config.CronExpression,
                                                     timerType,
                                                     serverURI,
-                                                    privateOwnerId);
+                                                    ownerKey,
+                                                    dataOwnerKey,
+                                                    dataOwnerCenterKey);
         }
 
         private static Type GetTypeFromAssembly(string assemblyName, string typeName, Assembly assembly)

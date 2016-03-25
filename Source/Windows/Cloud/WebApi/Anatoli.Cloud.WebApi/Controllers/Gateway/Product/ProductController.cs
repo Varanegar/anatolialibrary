@@ -409,8 +409,42 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 if (data != null) log.Info("save product count : " + data.productData.Count);
                 var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await productDomain.PublishAsync(new ProductProxy().ReverseConvert(data.productData));
-                return Ok(result);
+                await productDomain.PublishAsync(new ProductProxy().ReverseConvert(data.productData));
+                return Ok(data.productData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin"), HttpPost]
+        [Route("savesuppliers")]
+        public async Task<IHttpActionResult> SaveProductSuppliers([FromBody] ProductRequestModel data)
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productDomain.SetProductSupplierData(data.productSupplierData);
+                return Ok(data.productSupplierData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin"), HttpPost]
+        [Route("savecharvalues")]
+        public async Task<IHttpActionResult> SaveProductCharValues([FromBody] ProductRequestModel data)
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productDomain.SetProductCharValueData(data.productCharData);
+                return Ok(data.productCharData);
             }
             catch (Exception ex)
             {

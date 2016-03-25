@@ -48,7 +48,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 SupportWebOrder = (data.SupportWebOrder == 0) ? false : true,
                 Lat = data.Lat,
                 Lng = data.Lng,
-                StoreCalendar = StoreCalendarProxy.Convert(data.StoreCalendars.ToList()),
+                //StoreCalendar = StoreCalendarProxy.Convert(data.StoreCalendars.ToList()),
                 StoreValidRegionInfo = CityRegionProxy.Convert(data.StoreValidRegionInfoes.ToList()),
 
             };
@@ -74,7 +74,7 @@ namespace Anatoli.Business.Proxy.Concretes
                 SupportWebOrder = (byte)(data.SupportWebOrder ? 1 : 0),
                 Lat = data.Lat,
                 Lng = data.Lng,
-                StoreCalendars = StoreCalendarProxy.ReverseConvert(data.StoreCalendar.ToList()),
+                //StoreCalendars = StoreCalendarProxy.ReverseConvert(data.StoreCalendar.ToList()),
             };
             temp.StoreValidRegionInfoes = CityRegionProxy.ReverseConvert(data.StoreValidRegionInfo.ToList());
 

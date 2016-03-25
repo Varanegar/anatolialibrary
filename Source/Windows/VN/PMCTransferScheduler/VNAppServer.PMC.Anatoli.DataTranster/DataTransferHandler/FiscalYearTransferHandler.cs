@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string FiscalYearDataType = "FiscalYear";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadFiscalYearToServer(HttpClient client, string serverURI, string pirvateOwnerId, string dataOwner, string dataOwnerCenter)
+        public static void UploadFiscalYearToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     model.fiscalYearData = dbData;
                     string data = JsonConvert.SerializeObject(model);
                     string URI = serverURI + UriInfo.SaveFiscalYearURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, pirvateOwnerId);
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                     Utility.SetLastUploadTime(FiscalYearDataType, currentTime);
                 }
                 else
