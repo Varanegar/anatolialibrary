@@ -22,20 +22,29 @@ namespace AnatoliIOS
         {
             _views = new LinkedList<Type>();
         }
-        public void SetView(UIViewController viewController)
+        public void PushViewController(UIViewController viewController)
         {
             if (viewController == null)
             {
                 throw new ArgumentNullException();
             }
-            else if (_views.Count > 0 && _views.Last.GetType() != viewController.GetType())
+			else if (_views.Count > 0 && _views.Last.Value != viewController.GetType())
             {
                 (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController(viewController, true);
+				_views.AddLast (viewController.GetType ());
             }
             else if (_views.Count == 0)
             {
                 (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController(viewController, true);
+				_views.AddLast (viewController.GetType ());
             }
         }
+		public bool PopViewController(){
+			if (_views.Count > 0) {
+				_views.RemoveLast ();
+				return true;
+			} else
+				return false;
+		}
     }
 }

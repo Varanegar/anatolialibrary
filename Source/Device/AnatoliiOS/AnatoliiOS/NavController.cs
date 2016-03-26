@@ -10,11 +10,19 @@ namespace AnatoliIOS
         public NavController()
             : base((string)null, null)
         {
-
+			
         }
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
         }
+		public override UIViewController PopViewController (bool animated)
+		{
+			if (AnatoliApp.GetInstance().PopViewController()) {
+				return base.PopViewController (animated);	
+			}
+			return null;
+		}
     }
 }

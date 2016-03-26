@@ -26,7 +26,7 @@ namespace AnatoliIOS.Components
         }
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            AnatoliApp.GetInstance().SetView(new ProductsViewControler());
+            AnatoliApp.GetInstance().PushViewController(new ProductsViewControler());
             tableView.DeselectRow(indexPath, true);
             (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.CloseMenu();
         }
