@@ -42,7 +42,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     StoreRequestModel request = new StoreRequestModel() { storeActiveOnhandData = dbData };
 
                     string data = JsonConvert.SerializeObject(request);
-                    string URI = serverURI + UriInfo.SaveStoreOnHandURI;
+                    string URI = serverURI + UriInfo.CheckDeletedStoreOnHandURI;
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 

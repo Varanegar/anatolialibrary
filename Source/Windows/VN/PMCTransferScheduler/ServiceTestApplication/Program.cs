@@ -61,31 +61,23 @@ namespace ServiceTestApplication
                     //ProductTransferHandler.UploadProductSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     //log.Info("Transfer product char value");
                     //ProductTransferHandler.UploadProductCharValueToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer stock product");
-                    StockProductTransferHandler.UploadStockProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                    log.Info("Transfer store price list");
-                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //log.Info("Transfer stock product");
+                    //StockProductTransferHandler.UploadStockProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                    //log.Info("Transfer store price list");
+                    //StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer store onhand");
-                    StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Completed Transfer Data Job");
-
-
-                    log.Info("Transfer new customers");
-                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                    log.Info("Transfer stock hand");
-                    StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                    log.Info("Completed Transfer Data Job");
-                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-
+                    //StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //log.Info("Transfer stock hand");
+                    //StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     log.Info("Transfer Product Group Picture");
                     ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     log.Info("Transfer Product Picture");
                     ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     log.Info("Transfer Store Picture");
                     StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                    log.Info("Transfer new customers");
+                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     log.Info("Completed Transfer Data Job");
-
-
                 }
                 else
                     log.Error("Login Failed user : AnatoliMobileApp");

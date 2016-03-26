@@ -11,6 +11,8 @@ using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
 using EntityFramework.Extensions;
 using Anatoli.Business.Helpers;
+using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace Anatoli.Business.Domain
 {
@@ -63,6 +65,41 @@ namespace Anatoli.Business.Domain
                 MainRepository.Add(item);
             }
         }
+        public override async Task CheckDeletedAsync(List<StoreActiveOnhandViewModel> dataViewModels)
+        {
+            try
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                var currentDataList = MainRepository.GetQuery()
+                            .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
+                            .Select(data => new StoreActiveOnhandViewModel
+                            {
+                                UniqueId = data.Id,
+                                StoreGuid = data.StoreId,
+                                ProductGuid = data.ProductId
+                            })
+                            .AsNoTracking()
+                            .ToList();
+
+                currentDataList.ForEach(item =>
+                {
+                    if (dataViewModels.Find(p => p.StoreGuid == item.StoreGuid && p.ProductGuid == item.ProductGuid) == null)
+                        MainRepository.GetQuery().Where(p => p.StoreId == item.StoreGuid && p.ProductId == item.ProductGuid).Update(t => new StoreActiveOnhand { LastUpdate = DateTime.Now, IsRemoved = true });
+                });
+
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("CheckForDeletedAsync", ex);
+                throw ex;
+            }
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + dataViewModels.Count);
+            }
+        }        
         #endregion
 
     }

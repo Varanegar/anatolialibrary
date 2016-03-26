@@ -49,8 +49,11 @@ namespace Anatoli.Business.Domain
         {
             try
             {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
                 if (dataList.Count == 0) return;
-                
+                Guid stockId = dataList[0].StockId;
+                await MainRepository.DeleteBatchAsync(p => p.StockId == stockId && p.DataOwnerId == DataOwnerKey);
+
                 var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, DBContext);
                 
                 dataList.ForEach(item =>
@@ -68,28 +71,44 @@ namespace Anatoli.Business.Domain
                 Logger.Error("PublishAsync", ex);
                 throw ex;
             }
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + dataList.Count);
+            }
         }
 
         public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, AnatoliDbContext context)
         {
 
-            var data = new StockOnHandSync
+            try
             {
-                CreatedDate = DateTime.Now,
-                LastUpdate = DateTime.Now,
-                ApplicationOwnerId = ApplicationOwnerKey,
-                DataOwnerId = DataOwnerKey,
-                DataOwnerCenterId = DataOwnerCenterKey,
-                Id = Guid.NewGuid(),
-                StockId = stockId,
-                SyncDate = DateTime.Now,
-                SyncPDate = PersianDate.Today.ToShortDateString(),
-            };
+                var data = new StockOnHandSync
+                {
+                    CreatedDate = DateTime.Now,
+                    LastUpdate = DateTime.Now,
+                    ApplicationOwnerId = ApplicationOwnerKey,
+                    DataOwnerId = DataOwnerKey,
+                    DataOwnerCenterId = DataOwnerCenterKey,
+                    Id = Guid.NewGuid(),
+                    StockId = stockId,
+                    SyncDate = DateTime.Now,
+                    SyncPDate = PersianDate.Today.ToShortDateString(),
+                };
 
-            await StockSynRepository.AddAsync(data);
-            await MainRepository.SaveChangesAsync();
+                await StockSynRepository.AddAsync(data);
+                await MainRepository.SaveChangesAsync();
 
-            return data.Id;
+                return data.Id;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("PublishAsyncOnHandSyncInfo", ex);
+                throw ex;
+            }
+            finally
+            {
+            }
 
         }
 
