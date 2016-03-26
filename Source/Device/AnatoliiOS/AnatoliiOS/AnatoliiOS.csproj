@@ -106,7 +106,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
     <Compile Include="Components\MenuItem.cs" />
-    <Compile Include="Components\MenuItemTableViewCell.cs" />
     <Compile Include="Components\MenuTableViewSource.cs" />
     <Compile Include="ViewControllers\ProductsViewControler.cs" />
     <Compile Include="ViewControllers\ProductsViewControler.designer.cs">
@@ -128,6 +127,11 @@
     <None Include="packages.config" />
     <InterfaceDefinition Include="ViewControllers\SideMenuController.xib" />
     <InterfaceDefinition Include="ViewControllers\ProductsViewControler.xib" />
+    <InterfaceDefinition Include="Components\MenuItemTableViewCell.xib" />
+    <Compile Include="Components\MenuItemTableViewCell.cs" />
+    <Compile Include="Components\MenuItemTableViewCell.designer.cs">
+      <DependentUpon>MenuItemTableViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
@@ -138,14 +142,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\PCLCrypto.1.0.86\lib\Xamarin.iOS\PCLCrypto.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLite-net, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\sqlite-net-pcl.1.1.1\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLite-net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\..\packages\System.Net.Http.Extensions.dll</HintPath>
@@ -162,6 +158,12 @@
       <HintPath>..\packages\Xamarin-Sidebar-Unified.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="PCLCrypto">
+      <HintPath>..\..\packages\PCLCrypto.1.0.86\lib\Xamarin.iOS\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite-net">
+      <HintPath>..\..\packages\sqlite-net-pcl.1.1.1\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLite-net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Entitlements.plist" />
@@ -175,34 +177,18 @@
     <BundleResource Include="Resources\splash.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Contents.json">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-40@2x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-40@3x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-60@2x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-60@3x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-Small@2x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/AppIcons.appiconset/Icon-Small@3x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources/Images.xcassets/LaunchImages.launchimage/Contents.json">
-      <InProject>false</InProject>
-    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
-      <Project>{7652423f-f5e3-4a1a-958f-7331c42ae409}</Project>
+      <Project>{7652423F-F5E3-4A1A-958F-7331C42AE409}</Project>
       <Name>Anatoli</Name>
     </ProjectReference>
   </ItemGroup>

@@ -28,6 +28,7 @@ namespace AnatoliIOS.ViewControllers
             source.Items = new System.Collections.Generic.List<MenuItem>();
             source.Items.Add(new MenuItem() { Title = "Menu 1" });
             menuTableView.Source = source;
+			menuTableView.RegisterNibForCellReuse (UINib.FromName ("MenuItemTableViewCell", null), MenuItemTableViewCell.Key);
         }
     }
 }

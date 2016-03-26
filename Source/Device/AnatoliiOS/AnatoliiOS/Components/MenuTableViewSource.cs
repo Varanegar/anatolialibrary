@@ -16,11 +16,8 @@ namespace AnatoliIOS.Components
         }
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell(MenuItemTableViewCell.Identifier) as MenuItemTableViewCell;
-            if (cell == null)
-            {
-                cell = new MenuItemTableViewCell();
-            }
+			var cell = tableView.DequeueReusableCell(MenuItemTableViewCell.Key) as MenuItemTableViewCell;
+           
             cell.UpdateCell(Items[indexPath.Row].Title);
             return cell;
         }
