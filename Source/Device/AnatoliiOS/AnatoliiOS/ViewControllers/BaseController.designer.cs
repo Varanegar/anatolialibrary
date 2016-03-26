@@ -6,10 +6,10 @@
 //
 using Foundation;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
-    [Register("SideMenuController")]
-    partial class SideMenuController
+    [Register("BaseController")]
+    partial class BaseController
     {
         void ReleaseDesignerOutlets()
         {

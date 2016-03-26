@@ -2,12 +2,12 @@ using System;
 
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
-    public partial class SideMenuController : BaseController
+    public partial class FirstPage : BaseController
     {
-        public SideMenuController()
-            : base(null, null)
+        public FirstPage()
+            : base("FirstPage", null)
         {
         }
 

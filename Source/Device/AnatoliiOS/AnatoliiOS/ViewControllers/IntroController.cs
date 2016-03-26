@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Text;
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
     class IntroController : BaseController
     {

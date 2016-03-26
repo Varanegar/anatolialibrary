@@ -2,11 +2,10 @@ using Foundation;
 using System;
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
     public partial class BaseController : UIViewController
     {
-        // provide access to the sidebar controller to all inheriting controllers
         protected SidebarNavigation.SidebarController SidebarController
         {
             get
@@ -15,7 +14,6 @@ namespace AnatoliIOS
             }
         }
 
-        // provide access to the sidebar controller to all inheriting controllers
         protected NavController NavController
         {
             get

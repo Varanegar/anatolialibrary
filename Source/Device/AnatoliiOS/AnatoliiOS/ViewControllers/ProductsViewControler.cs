@@ -2,12 +2,12 @@ using System;
 
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
-    public partial class FirstPage : BaseController
+    public partial class ProductsViewControler : BaseController
     {
-        public FirstPage()
-            : base("FirstPage", null)
+        public ProductsViewControler()
+            : base("ProductsViewControler", null)
         {
         }
 

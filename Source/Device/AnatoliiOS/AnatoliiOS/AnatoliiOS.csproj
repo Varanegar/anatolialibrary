@@ -85,40 +85,49 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BaseController.cs" />
-    <Compile Include="BaseController.designer.cs">
+    <Compile Include="AnatoliApp\AnatoliApp.cs" />
+    <Compile Include="ViewControllers\BaseController.cs" />
+    <Compile Include="ViewControllers\BaseController.designer.cs">
       <DependentUpon>BaseController.cs</DependentUpon>
     </Compile>
     <Compile Include="Clients\IosFileIO.cs" />
     <Compile Include="Clients\IosSqliteClient.cs" />
     <Compile Include="Clients\IosWebClient.cs" />
     <Compile Include="Clients\Reachability.cs" />
-    <Compile Include="FirstPage.cs" />
-    <Compile Include="FirstPage.designer.cs">
+    <Compile Include="ViewControllers\FirstPage.cs" />
+    <Compile Include="ViewControllers\FirstPage.designer.cs">
       <DependentUpon>FirstPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="IntroController.cs" />
+    <Compile Include="ViewControllers\IntroController.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="..\..\db\paa.db">
       <Link>Resources\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
-    <Compile Include="SideMenuController.cs" />
-    <Compile Include="SideMenuController.designer.cs">
+    <Compile Include="Components\MenuItem.cs" />
+    <Compile Include="Components\MenuItemTableViewCell.cs" />
+    <Compile Include="Components\MenuTableViewSource.cs" />
+    <Compile Include="ViewControllers\ProductsViewControler.cs" />
+    <Compile Include="ViewControllers\ProductsViewControler.designer.cs">
+      <DependentUpon>ProductsViewControler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\SideMenuController.cs" />
+    <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
     </Compile>
     <None Include="app.config" />
-    <InterfaceDefinition Include="BaseController.xib" />
-    <InterfaceDefinition Include="FirstPage.xib" />
+    <InterfaceDefinition Include="ViewControllers\BaseController.xib" />
+    <InterfaceDefinition Include="ViewControllers\FirstPage.xib" />
     <None Include="Info.plist" />
     <Compile Include="NavController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
-    <InterfaceDefinition Include="IntroController.xib" />
+    <InterfaceDefinition Include="ViewControllers\IntroController.xib" />
     <None Include="packages.config" />
-    <InterfaceDefinition Include="SideMenuController.xib" />
+    <InterfaceDefinition Include="ViewControllers\SideMenuController.xib" />
+    <InterfaceDefinition Include="ViewControllers\ProductsViewControler.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

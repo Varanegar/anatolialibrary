@@ -6,10 +6,10 @@
 //
 using Foundation;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
-    [Register("BaseController")]
-    partial class BaseController
+    [Register("FirstPage")]
+    partial class FirstPage
     {
         void ReleaseDesignerOutlets()
         {
