@@ -11,6 +11,7 @@ using Anatoli.ViewModels.ProductModels;
 using Anatoli.Business.Proxy.ProductConcretes;
 using System.Data.Entity;
 using Anatoli.ViewModels.StockModels;
+using System.Linq.Expressions;
 
 namespace Anatoli.Business.Domain
 {
@@ -117,11 +118,22 @@ namespace Anatoli.Business.Domain
             try
             {
                 DBContext.Configuration.AutoDetectChangesEnabled = false;
-                var model = await Task<List<ProductViewModel>>.Factory.StartNew(() =>
-                {
-                    return MainRepository.GetQuery()
-                    .Where(p => p.DataOwnerId == DataOwnerKey && p.LastUpdate >= selectedDate && p.IsRemoved == GetRemovedData)
-                    .Select(data => new ProductViewModel
+                var model = await base.GetAllChangedAfterAsync(selectedDate);
+
+                model.Where(p => p.ProductTypeInfo == null).ToList().ForEach(itm => itm.ProductTypeInfo = new ProductTypeViewModel());
+                DBContext.Configuration.AutoDetectChangesEnabled = true;
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetAll ", ex);
+                throw ex;
+            }
+        }
+        protected override Expression<Func<Product, ProductViewModel>> GetAllSelector()
+        {
+            return data => new ProductViewModel
                     {
                         ID = data.Number_ID,
                         UniqueId = data.Id,
@@ -146,23 +158,8 @@ namespace Anatoli.Business.Domain
                             ProductTypeName = data.ProductType.ProductTypeName,
                             UniqueId = data.ProductType.Id
                         } : null
-                    })
-                    .AsNoTracking()
-                    .ToList();
-                });
-
-                model.Where(p => p.ProductTypeInfo == null).ToList().ForEach(itm => itm.ProductTypeInfo = new ProductTypeViewModel());
-                DBContext.Configuration.AutoDetectChangesEnabled = true;
-
-                return model;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("GetAll ", ex);
-                throw ex;
-            }
+                    };
         }
-
         protected override void AddDataToRepository(Product currentProduct, Product item)
         {
             if (currentProduct != null)

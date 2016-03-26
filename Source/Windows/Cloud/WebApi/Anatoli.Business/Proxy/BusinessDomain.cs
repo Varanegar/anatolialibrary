@@ -16,6 +16,7 @@ using Anatoli.DataAccess;
 using Anatoli.DataAccess.Repositories;
 using AutoMapper.QueryableExtensions;
 using EntityFramework.Extensions;
+using LinqKit;
 
 namespace Anatoli.Business
 {
@@ -212,46 +213,43 @@ namespace Anatoli.Business
         }
         public async Task<List<TMainSourceView>> GetAllAsync()
         {
-            if (GetRemovedData)
-                return await MainRepository.GetQuery()
-                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
-                    .AsNoTracking()
-                    .ProjectTo<TMainSourceView>().ToListAsync();
-            else
-                return await MainRepository.GetQuery()
-                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && !p.IsRemoved)
-                    .AsNoTracking()
-                    .ProjectTo<TMainSourceView>().ToListAsync();
+            return await GetAllAsync(null);
+        
         }
-        public async Task<List<TMainSourceView>> GetAllAsync(Func<TMainSource,bool> predicate)
+        private async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
         {
-            Func<TMainSource,bool> predicate2 = null;
-            if (GetRemovedData)
-                predicate2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey;
+
+            if (GetAllSelector() != null)
+            {
+                return MainRepository.GetQuery()
+                    .Where(predicate.Expand())
+                    .Select(selector)
+                    .AsNoTracking()
+                    .ToList();
+            }
             else
-                predicate2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && !p.IsRemoved;
+            {
+                return await MainRepository.GetQuery()
+                    .Where(predicate.Expand())
+                    .AsNoTracking()
+                    .ProjectTo<TMainSourceView>().ToListAsync();
+            }
+        }
+        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate)
+        {
+            Expression<Func<TMainSource, bool>> criteria2 = null;
 
-            Expression<Func<TMainSource, bool>> combinedAnd = s => (predicate(s) && predicate2(s));
+            if (predicate != null)
+                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData?p.IsRemoved: false);
+            else
+                criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
 
-            return await MainRepository.GetQuery()
-                .Where(combinedAnd)
-                .AsNoTracking()
-                .ProjectTo<TMainSourceView>().ToListAsync();
+            return await GetAllAsync(criteria2, GetAllSelector());
         }
 
         public async Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate)
         {
-            Expression<Func<TMainSource, bool>> predicate = null;
-
-            if (GetRemovedData)
-                predicate = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.LastUpdate >= selectedDate;
-            else
-                predicate = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && !p.IsRemoved && p.LastUpdate >= selectedDate;
-
-            return await MainRepository.GetQuery()
-                .Where(predicate)
-                .AsNoTracking()
-                .ProjectTo<TMainSourceView>().ToListAsync();
+            return await GetAllAsync(p => p.LastUpdate >= selectedDate);
         }
 
         public virtual async Task PublishAsync(List<TMainSource> data)
@@ -336,6 +334,10 @@ namespace Anatoli.Business
         protected virtual void AddDataToRepository(TMainSource currentData, TMainSource newItem)
         {
             throw new NotImplementedException();
+        }
+        protected virtual Expression<Func<TMainSource, TMainSourceView>> GetAllSelector()
+        {
+            return null;
         }
         public virtual List<TMainSource> GetDataListToCheckForExistsData()
         {

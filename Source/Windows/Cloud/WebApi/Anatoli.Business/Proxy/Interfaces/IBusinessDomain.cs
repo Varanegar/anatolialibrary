@@ -33,7 +33,7 @@ namespace Anatoli.Business
         Guid DataOwnerKey { get; }
         Guid DataOwnerCenterKey { get; }
 
-        Task<List<TMainSourceView>> GetAllAsync(Func<TMainSource, bool> predicate);
+        Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate);
         Task<List<TMainSourceView>> GetAllAsync();
         Task<TMainSourceView> GetByIdAsync(Guid id);
         Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate);
