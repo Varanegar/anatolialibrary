@@ -39,12 +39,6 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                     var data = context.All<StockViewModel>(DBQuery.Instance.GetStockQuery());
                     stockList = data.ToList();
-                    stockList.ForEach(item =>
-                    {
-                        var ts = TimeSpan.ParseExact("0:0", @"h\:m",
-                             CultureInfo.InvariantCulture);
-
-                    });
                 }
 
                 return stockList;

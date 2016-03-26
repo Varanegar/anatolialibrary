@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string StorePriceListDataType = "StorePriceList";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadStorePriceListToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadStorePriceListToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -27,17 +28,19 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var dbData = StoreAdapter.Instance.GetAllStorePriceLists(lastUpload);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveStorePriceListURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    StoreRequestModel request = new StoreRequestModel() { storeActivePriceListData = dbData };
+                    string data = JsonConvert.SerializeObject(request);
+                    string URI = serverURI + UriInfo.SaveStorePriceListURI;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
                 dbData = StoreAdapter.Instance.GetAllStorePriceLists(DateTime.MinValue);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedStorePriceListURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    StoreRequestModel request = new StoreRequestModel() { storeActivePriceListData = dbData };
+                    string data = JsonConvert.SerializeObject(request);
+                    string URI = serverURI + UriInfo.CheckDeletedStorePriceListURI;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
                 Utility.SetLastUploadTime(StorePriceListDataType, currentTime);

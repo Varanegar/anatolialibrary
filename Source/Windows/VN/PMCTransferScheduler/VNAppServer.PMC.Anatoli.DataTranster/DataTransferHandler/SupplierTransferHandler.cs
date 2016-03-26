@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using Anatoli.PMC.DataAccess.DataAdapter;
 using VNAppServer.Anatoli.PMC.Helpers;
 using VNAppServer.Anatoli.Common;
+using Anatoli.ViewModels;
 
 namespace VNAppServer.PMC.Anatoli.DataTranster
 {
@@ -17,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string SupplierDataType = "Supplier";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadSupplierToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadSupplierToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -27,17 +28,23 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 var dbData = SupplierAdapter.Instance.GetAllSuppliers(lastUpload);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.SaveSupplierURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    GeneralRequestModel model = new GeneralRequestModel();
+                    model.supplierData = dbData;
+
+                    string data = JsonConvert.SerializeObject(model);
+                    string URI = serverURI + UriInfo.SaveSupplierURI;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
                 
                 dbData = SupplierAdapter.Instance.GetAllSuppliers(DateTime.MinValue);
                 if (dbData != null)
                 {
-                    string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.CheckDeletedSupplierURI + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    GeneralRequestModel model = new GeneralRequestModel();
+                    model.supplierData = dbData;
+
+                    string data = JsonConvert.SerializeObject(model);
+                    string URI = serverURI + UriInfo.CheckDeletedSupplierURI;
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
                 Utility.SetLastUploadTime(SupplierDataType, currentTime);
 

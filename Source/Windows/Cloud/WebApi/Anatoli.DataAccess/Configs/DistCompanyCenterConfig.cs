@@ -14,6 +14,10 @@ namespace Anatoli.DataAccess.Configs
                 .WithOptional(pg => pg.Parent)
                 .WillCascadeOnDelete(false);
 
+            this.HasMany<Stock>(cr => cr.DistCenterStocks)
+                .WithOptional(svr => svr.DistCompanyCenter)
+                .WillCascadeOnDelete(false);
+
         }
     }
 }

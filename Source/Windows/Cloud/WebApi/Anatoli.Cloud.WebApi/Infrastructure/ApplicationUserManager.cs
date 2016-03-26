@@ -33,7 +33,7 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
             }
             return await FindAsync(username, password);
         }
-    
+
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             

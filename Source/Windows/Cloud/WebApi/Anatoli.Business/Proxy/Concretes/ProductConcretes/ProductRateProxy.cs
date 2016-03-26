@@ -16,7 +16,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 ProductGuid = data.ProductId,
                 RateBy = data.RateBy,
                 ProductRateValue = data.Value,
@@ -39,7 +39,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 RateDate = data.RateDate,
                 RateTime = data.RateTime,
                 Value = data.ProductRateValue,
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                ApplicationOwnerId = data.ApplicationOwnerId,
             };
         }
     }

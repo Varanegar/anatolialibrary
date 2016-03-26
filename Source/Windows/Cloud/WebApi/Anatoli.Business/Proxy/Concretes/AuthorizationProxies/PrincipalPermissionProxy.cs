@@ -13,7 +13,7 @@ namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
             {
                 UniqueId = data.Id,
                 ID = data.Number_ID,
-                PrincipalId = data.Principal_Id,
+                PrincipalId = data.UserId,
                 PermissionId = data.Permission_Id,
                 Resource = data.Permission.Resource,
                 Action = data.Permission.Action,
@@ -27,7 +27,7 @@ namespace Anatoli.Business.Proxy.Concretes.AuthorizationProxies
             {
                 Id = data.UniqueId,
                 Number_ID = data.ID,
-                Principal_Id = data.PrincipalId,
+                UserId = data.PrincipalId,
                 Permission_Id = data.PermissionId,
                 Grant = data.Grant
             };

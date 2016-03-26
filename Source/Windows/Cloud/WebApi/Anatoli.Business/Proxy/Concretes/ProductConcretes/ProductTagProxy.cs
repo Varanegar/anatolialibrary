@@ -17,7 +17,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 IsRemoved = data.IsRemoved,
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 ProductTagName = data.ProductTagName,
             };
         }
@@ -31,7 +31,7 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 IsRemoved = data.IsRemoved,
                 ProductTagName = data.ProductTagName,
 
-                PrivateLabelOwner_Id = data.PrivateOwnerId ,
+                ApplicationOwnerId = data.ApplicationOwnerId ,
             };
         }
     }

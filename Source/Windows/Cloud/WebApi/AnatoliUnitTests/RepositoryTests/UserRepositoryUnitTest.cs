@@ -23,20 +23,19 @@ namespace AnatoliUnitTests
             var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
             var dbc = new AnatoliDbContext();
             var principalRepository = new PrincipalRepository(dbc);
-            var privateLabelOwner = principalRepository.GetQuery().Where(p => p.Id == owner).FirstOrDefault();
+            var ApplicationOwner = principalRepository.GetQuery().Where(p => p.Id == owner).FirstOrDefault();
 
             var userReposirtory = new UserRepository(dbc);
             var _id = Guid.NewGuid();
             var model = await userReposirtory.AddAsync(new User
             {
                 Id = _id.ToString(),
-                PrivateLabelOwner = privateLabelOwner,
-                AddedBy = privateLabelOwner,
-                Number_ID = 123,
+                //ApplicationOwnerId = ApplicationOwner,
+                //AddedBy = ApplicationOwner.Id,
                 CreatedDate = DateTime.Now,
                 LastEntry = DateTime.Now,
                 LastUpdate = DateTime.Now,
-                Principal = new Principal { Id = _id, Title = "mrg" },
+                //ApplicationOwner = new ApplicationOwner { Id = _id, Title = "mrg" },
                 FullName = "Mohammadreza Gorouhian",
                 UserName = "mrg",
                 Password = "Sound123",
@@ -60,7 +59,7 @@ namespace AnatoliUnitTests
             var owner = Guid.Parse("CB11335F-6D14-49C9-9798-AD61D02EDBE1");
             var dbc = new AnatoliDbContext();
             var principalRepository = new PrincipalRepository(dbc);
-            var privateLabelOwner = principalRepository.GetQuery().Where(p => p.Id == owner).FirstOrDefault();
+            //var ApplicationOwner = PrincipalRepository.GetQuery().Where(p => p.Id == owner).FirstOrDefault();
 
             var userReposirtory = new UserRepository(dbc);
 
@@ -68,13 +67,12 @@ namespace AnatoliUnitTests
             var model = new User
             {
                 Id = _id.ToString(),
-                PrivateLabelOwner = privateLabelOwner,
-                AddedBy = privateLabelOwner,
-                Number_ID = 123,
+                //base.ApplicationOwnerId = ApplicationOwnerId,
+                //AddedBy = ApplicationOwnerId,
                 CreatedDate = DateTime.Now,
                 LastEntry = DateTime.Now,
                 LastUpdate = DateTime.Now,
-                Principal = new Principal { Id = _id, Title = "mrg" },
+                //ApplicationOwner = new ApplicationOwner { Id = _id, Title = "mrg" },
                 FullName = "Mohammadreza Gorouhian",
                 UserName = "mrg3",
                 Password = "Sound123",

@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -77,13 +81,13 @@
     <Compile Include="Configs\CharTypeConfig.cs" />
     <Compile Include="Configs\CharValueConfig.cs" />
     <Compile Include="Configs\CompanyConfig.cs" />
-    <Compile Include="Configs\CustomerNotVerifiedConfig.cs" />
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
     <Compile Include="Configs\DistCompanyRegionConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
+    <Compile Include="Configs\AnatoliAccountConfig.cs" />
     <Compile Include="Configs\PermissionConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionConfig.cs" />
     <Compile Include="Configs\CityRegionConfig.cs" />
@@ -164,322 +168,101 @@
     <Compile Include="Interfaces\Store\IStoreActivePriceListRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreRepository.cs" />
     <Compile Include="Interfaces\Account\IUserRepository.cs" />
-    <Compile Include="Migrations\201512291130170_InitialDB.cs" />
-    <Compile Include="Migrations\201512291130170_InitialDB.Designer.cs">
-      <DependentUpon>201512291130170_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201603211306245_Initial-DB-Migration.cs" />
+    <Compile Include="Migrations\201603211306245_Initial-DB-Migration.Designer.cs">
+      <DependentUpon>201603211306245_Initial-DB-Migration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512300031377_Image.cs" />
-    <Compile Include="Migrations\201512300031377_Image.Designer.cs">
-      <DependentUpon>201512300031377_Image.cs</DependentUpon>
+    <Compile Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.cs" />
+    <Compile Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.Designer.cs">
+      <DependentUpon>201603231608382_Change-BusinessModel-Migration-1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512300033373_Image-2.cs" />
-    <Compile Include="Migrations\201512300033373_Image-2.Designer.cs">
-      <DependentUpon>201512300033373_Image-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512301109002_Image-3.cs" />
-    <Compile Include="Migrations\201512301109002_Image-3.Designer.cs">
-      <DependentUpon>201512301109002_Image-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512301310232_ProductRate.cs" />
-    <Compile Include="Migrations\201512301310232_ProductRate.Designer.cs">
-      <DependentUpon>201512301310232_ProductRate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601020744416_BaseType.cs" />
-    <Compile Include="Migrations\201601020744416_BaseType.Designer.cs">
-      <DependentUpon>201601020744416_BaseType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601020745175_BaseType-2.cs" />
-    <Compile Include="Migrations\201601020745175_BaseType-2.Designer.cs">
-      <DependentUpon>201601020745175_BaseType-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601021224565_business.cs" />
-    <Compile Include="Migrations\201601021224565_business.Designer.cs">
-      <DependentUpon>201601021224565_business.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601040844197_Stock-Request-1.cs" />
-    <Compile Include="Migrations\201601040844197_Stock-Request-1.Designer.cs">
-      <DependentUpon>201601040844197_Stock-Request-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601040859515_Stock-Request-2.cs" />
-    <Compile Include="Migrations\201601040859515_Stock-Request-2.Designer.cs">
-      <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601040946568_Stock-Request-3.cs" />
-    <Compile Include="Migrations\201601040946568_Stock-Request-3.Designer.cs">
-      <DependentUpon>201601040946568_Stock-Request-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041024001_Stock-Request-4.cs" />
-    <Compile Include="Migrations\201601041024001_Stock-Request-4.Designer.cs">
-      <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041204501_Stock-Request-5.cs" />
-    <Compile Include="Migrations\201601041204501_Stock-Request-5.Designer.cs">
-      <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041424205_Stock-Request-6.cs" />
-    <Compile Include="Migrations\201601041424205_Stock-Request-6.Designer.cs">
-      <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041600316_Stock-Request-7.cs" />
-    <Compile Include="Migrations\201601041600316_Stock-Request-7.Designer.cs">
-      <DependentUpon>201601041600316_Stock-Request-7.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041907257_Stock-Request-8.cs" />
-    <Compile Include="Migrations\201601041907257_Stock-Request-8.Designer.cs">
-      <DependentUpon>201601041907257_Stock-Request-8.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601041957561_Stock-Request-9.cs" />
-    <Compile Include="Migrations\201601041957561_Stock-Request-9.Designer.cs">
-      <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601042126391_stock-request-10.cs" />
-    <Compile Include="Migrations\201601042126391_stock-request-10.Designer.cs">
-      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601042144304_stock-request-11.cs" />
-    <Compile Include="Migrations\201601042144304_stock-request-11.Designer.cs">
-      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601042145239_stock-request-12.cs" />
-    <Compile Include="Migrations\201601042145239_stock-request-12.Designer.cs">
-      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601042208389_stock-request-13.cs" />
-    <Compile Include="Migrations\201601042208389_stock-request-13.Designer.cs">
-      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601042221041_stock-request-14.cs" />
-    <Compile Include="Migrations\201601042221041_stock-request-14.Designer.cs">
-      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601070851564_Spell-Check-1.cs" />
-    <Compile Include="Migrations\201601070851564_Spell-Check-1.Designer.cs">
-      <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081249007_Set-String-Length.cs" />
-    <Compile Include="Migrations\201601081249007_Set-String-Length.Designer.cs">
-      <DependentUpon>201601081249007_Set-String-Length.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081803461_Stock-Product-Rule-2.cs" />
-    <Compile Include="Migrations\201601081803461_Stock-Product-Rule-2.Designer.cs">
-      <DependentUpon>201601081803461_Stock-Product-Rule-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081820523_Stock-Product-Rule-3.cs" />
-    <Compile Include="Migrations\201601081820523_Stock-Product-Rule-3.Designer.cs">
-      <DependentUpon>201601081820523_Stock-Product-Rule-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081821204_Stock-Product-Rule-4.cs" />
-    <Compile Include="Migrations\201601081821204_Stock-Product-Rule-4.Designer.cs">
-      <DependentUpon>201601081821204_Stock-Product-Rule-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081833465_Cascasde-Delete-1.cs" />
-    <Compile Include="Migrations\201601081833465_Cascasde-Delete-1.Designer.cs">
-      <DependentUpon>201601081833465_Cascasde-Delete-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081929071_Cascasde-Delete-2.cs" />
-    <Compile Include="Migrations\201601081929071_Cascasde-Delete-2.Designer.cs">
-      <DependentUpon>201601081929071_Cascasde-Delete-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.cs" />
-    <Compile Include="Migrations\201601081932083_Cascasde-Delete-3.Designer.cs">
-      <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601082317567_Stock-Request-16.cs" />
-    <Compile Include="Migrations\201601082317567_Stock-Request-16.Designer.cs">
-      <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601082322473_Stock-Request-17.cs" />
-    <Compile Include="Migrations\201601082322473_Stock-Request-17.Designer.cs">
-      <DependentUpon>201601082322473_Stock-Request-17.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601082328562_Stock-Request-18.cs" />
-    <Compile Include="Migrations\201601082328562_Stock-Request-18.Designer.cs">
-      <DependentUpon>201601082328562_Stock-Request-18.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601091937297_Stock-Request-19.cs" />
-    <Compile Include="Migrations\201601091937297_Stock-Request-19.Designer.cs">
-      <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601100914419_Incomplete-4.cs" />
-    <Compile Include="Migrations\201601100914419_Incomplete-4.Designer.cs">
-      <DependentUpon>201601100914419_Incomplete-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601100937569_Incomplete-5.cs" />
-    <Compile Include="Migrations\201601100937569_Incomplete-5.Designer.cs">
-      <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601301550582_AutomaticData.cs" />
-    <Compile Include="Migrations\201601301550582_AutomaticData.Designer.cs">
-      <DependentUpon>201601301550582_AutomaticData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601301707470_AutomaticData-3.cs" />
-    <Compile Include="Migrations\201601301707470_AutomaticData-3.Designer.cs">
-      <DependentUpon>201601301707470_AutomaticData-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601301710052_InitialDataInsert.cs" />
-    <Compile Include="Migrations\201601301710052_InitialDataInsert.Designer.cs">
-      <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602010453357_InitialDataInsert-2.cs" />
-    <Compile Include="Migrations\201602010453357_InitialDataInsert-2.Designer.cs">
-      <DependentUpon>201602010453357_InitialDataInsert-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602020902152_StockProductRequest-20.cs" />
-    <Compile Include="Migrations\201602020902152_StockProductRequest-20.Designer.cs">
-      <DependentUpon>201602020902152_StockProductRequest-20.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602020925536_InitialDataInsert-3.cs" />
-    <Compile Include="Migrations\201602020925536_InitialDataInsert-3.Designer.cs">
-      <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602181301249_ChangeStockRequest-1.cs" />
-    <Compile Include="Migrations\201602181301249_ChangeStockRequest-1.Designer.cs">
-      <DependentUpon>201602181301249_ChangeStockRequest-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602181524209_UserResetPass-2.cs" />
-    <Compile Include="Migrations\201602181524209_UserResetPass-2.Designer.cs">
-      <DependentUpon>201602181524209_UserResetPass-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602181544103_InitialDataInsert-4.cs" />
-    <Compile Include="Migrations\201602181544103_InitialDataInsert-4.Designer.cs">
-      <DependentUpon>201602181544103_InitialDataInsert-4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602181623458_InitialDataInsert-5.cs" />
-    <Compile Include="Migrations\201602181623458_InitialDataInsert-5.Designer.cs">
-      <DependentUpon>201602181623458_InitialDataInsert-5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602211002044_ItemImage-IsDefault.cs" />
-    <Compile Include="Migrations\201602211002044_ItemImage-IsDefault.Designer.cs">
-      <DependentUpon>201602211002044_ItemImage-IsDefault.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602221922004_Store-Phone.cs" />
-    <Compile Include="Migrations\201602221922004_Store-Phone.Designer.cs">
-      <DependentUpon>201602221922004_Store-Phone.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602250816198_InitialDataInsert-6.cs" />
-    <Compile Include="Migrations\201602250816198_InitialDataInsert-6.Designer.cs">
-      <DependentUpon>201602250816198_InitialDataInsert-6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602251144503_ProductTag-1.cs" />
-    <Compile Include="Migrations\201602251144503_ProductTag-1.Designer.cs">
-      <DependentUpon>201602251144503_ProductTag-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602251208529_ProductTag-2.cs" />
-    <Compile Include="Migrations\201602251208529_ProductTag-2.Designer.cs">
-      <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602261915533_PurchaseOrder-Address.cs" />
-    <Compile Include="Migrations\201602261915533_PurchaseOrder-Address.Designer.cs">
-      <DependentUpon>201602261915533_PurchaseOrder-Address.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.cs" />
-    <Compile Include="Migrations\201602261953126_PurchaseOrder-LineItem.Designer.cs">
-      <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603051523493_Tracking-1.cs" />
-    <Compile Include="Migrations\201603051523493_Tracking-1.Designer.cs">
-      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603072044273_Barcode.cs" />
-    <Compile Include="Migrations\201603072044273_Barcode.Designer.cs">
-      <DependentUpon>201603072044273_Barcode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603072320245_ReorderCalcInfo.cs" />
-    <Compile Include="Migrations\201603072320245_ReorderCalcInfo.Designer.cs">
-      <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.cs" />
-    <Compile Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.Designer.cs">
-      <DependentUpon>201603081650418_AddingRequestNoInStockProductRequest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs" />
-    <Compile Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.Designer.cs">
-      <DependentUpon>201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.cs" />
-    <Compile Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.Designer.cs">
-      <DependentUpon>201603082235353_AddingIsActiveInOrderInProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603090859010_SCM.cs" />
-    <Compile Include="Migrations\201603090859010_SCM.Designer.cs">
-      <DependentUpon>201603090859010_SCM.cs</DependentUpon>
+    <Compile Include="Migrations\201603242146369_Product-Supplier-Migration-1.cs" />
+    <Compile Include="Migrations\201603242146369_Product-Supplier-Migration-1.Designer.cs">
+      <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\DistCompanyRegionPolygon.cs" />
-    <Compile Include="Models\DistCompanyRegion.cs" />
-    <Compile Include="Models\CustomerNotVerified.cs" />
-    <Compile Include="Models\DistCompanyCenter.cs" />
-    <Compile Include="Models\IncompletePurchaseOrder.cs" />
-    <Compile Include="Models\IncompletePurchaseOrderLineItem.cs" />
-    <Compile Include="Models\ItemImage.cs" />
-    <Compile Include="Models\BankAccount.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\BaseType.cs" />
-    <Compile Include="Models\BaseValue.cs" />
-    <Compile Include="Models\Basket.cs" />
-    <Compile Include="Models\BasketItem.cs" />
-    <Compile Include="Models\BasketNote.cs" />
-    <Compile Include="Models\CalendarTemplate.cs" />
-    <Compile Include="Models\CalendarTemplateHoliday.cs" />
-    <Compile Include="Models\CalendarTemplateOpenTime.cs" />
-    <Compile Include="Models\CharGroup.cs" />
-    <Compile Include="Models\CharType.cs" />
-    <Compile Include="Models\CharValue.cs" />
-    <Compile Include="Models\CityRegion.cs" />
-    <Compile Include="Models\Clearance.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\CustomerShipAddress.cs" />
-    <Compile Include="Models\DeliveryPerson.cs" />
-    <Compile Include="Models\DiscountCode.cs" />
+    <Compile Include="Models\Anatoli\AnatoliAccount.cs" />
+    <Compile Include="Models\Anatoli\AnatoliRegion.cs" />
+    <Compile Include="Models\Account\Company.cs" />
+    <Compile Include="Models\Anatoli\AnatoliContact.cs" />
+    <Compile Include="Models\Anatoli\AnatoliPlace.cs" />
+    <Compile Include="Models\Account\DistCompanyRegionPolygon.cs" />
+    <Compile Include="Models\Account\DistCompanyRegion.cs" />
+    <Compile Include="Models\Account\DistCompanyCenter.cs" />
+    <Compile Include="Models\Anatoli\AnatoliContactType.cs" />
+    <Compile Include="Models\Anatoli\Application.cs" />
+    <Compile Include="Models\Anatoli\DataOwnerCenter.cs" />
+    <Compile Include="Models\Anatoli\DataOwner.cs" />
+    <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrder.cs" />
+    <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrderLineItem.cs" />
+    <Compile Include="Models\Product\ItemImage.cs" />
+    <Compile Include="Models\BaseData\BankAccount.cs" />
+    <Compile Include="Models\BaseData\BaseModel.cs" />
+    <Compile Include="Models\BaseData\BaseType.cs" />
+    <Compile Include="Models\BaseData\BaseValue.cs" />
+    <Compile Include="Models\PerchaseOrder\Basket.cs" />
+    <Compile Include="Models\PerchaseOrder\BasketItem.cs" />
+    <Compile Include="Models\PerchaseOrder\BasketNote.cs" />
+    <Compile Include="Models\Store\CalendarTemplate.cs" />
+    <Compile Include="Models\Store\CalendarTemplateHoliday.cs" />
+    <Compile Include="Models\Store\CalendarTemplateOpenTime.cs" />
+    <Compile Include="Models\BaseData\CharGroup.cs" />
+    <Compile Include="Models\BaseData\CharType.cs" />
+    <Compile Include="Models\BaseData\CharValue.cs" />
+    <Compile Include="Models\BaseData\CityRegion.cs" />
+    <Compile Include="Models\PerchaseOrder\Clearance.cs" />
+    <Compile Include="Models\Account\Customer.cs" />
+    <Compile Include="Models\Account\CustomerShipAddress.cs" />
+    <Compile Include="Models\Account\DeliveryPerson.cs" />
+    <Compile Include="Models\PerchaseOrder\DiscountCode.cs" />
     <Compile Include="Models\Identity\Group.cs" />
     <Compile Include="Models\Identity\Permission.cs" />
-    <Compile Include="Models\Identity\Principal.cs" />
+    <Compile Include="Models\Anatoli\ApplicationOwner.cs" />
     <Compile Include="Models\Identity\PrincipalPermission.cs" />
     <Compile Include="Models\Identity\Role.cs" />
     <Compile Include="Models\Identity\User.cs" />
-    <Compile Include="Models\ProductTagValue.cs" />
-    <Compile Include="Models\ProductTag.cs" />
-    <Compile Include="Models\Manufacture.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductComment.cs" />
-    <Compile Include="Models\MainProductGroup.cs" />
-    <Compile Include="Models\ProductGroup.cs" />
-    <Compile Include="Models\ProductPicture.cs" />
-    <Compile Include="Models\ProductRate.cs" />
-    <Compile Include="Models\ProductSupplierGuarantee.cs" />
-    <Compile Include="Models\PurchaseOrderStatusHistory.cs" />
-    <Compile Include="Models\DistCompanyRegionLevelType.cs" />
-    <Compile Include="Models\StockProductRequestProductDetail.cs" />
-    <Compile Include="Models\StockProductRequestRule.cs" />
-    <Compile Include="Models\FiscalYear.cs" />
-    <Compile Include="Models\StockProductRequestRuleCalcType.cs" />
-    <Compile Include="Models\StockProductRequestRuleType.cs" />
-    <Compile Include="Models\StockProductRequestSupplyType.cs" />
-    <Compile Include="Models\StockType.cs" />
-    <Compile Include="Models\ProductType.cs" />
-    <Compile Include="Models\PurchaseOrder.cs" />
-    <Compile Include="Models\PurchaseOrderClearance.cs" />
-    <Compile Include="Models\PurchaseOrderLineItem.cs" />
-    <Compile Include="Models\PurchaseOrderPayment.cs" />
-    <Compile Include="Models\StockProductRequestProduct.cs" />
-    <Compile Include="Models\StockProductRequestStatus.cs" />
-    <Compile Include="Models\StockProductRequestType.cs" />
-    <Compile Include="Models\ReorderCalcType.cs" />
-    <Compile Include="Models\StockHistoryOnHand.cs" />
-    <Compile Include="Models\StockOnHandSync.cs" />
-    <Compile Include="Models\StockProductRequest.cs" />
-    <Compile Include="Models\StockProduct.cs" />
-    <Compile Include="Models\Stock.cs" />
-    <Compile Include="Models\Store.cs" />
-    <Compile Include="Models\StoreAction.cs" />
-    <Compile Include="Models\StockActiveOnHand.cs" />
-    <Compile Include="Models\StoreActiveOnHand.cs" />
-    <Compile Include="Models\StoreActivePriceList.cs" />
-    <Compile Include="Models\StoreCalendar.cs" />
-    <Compile Include="Models\StoreCalendarHistory.cs" />
-    <Compile Include="Models\StoreDeliveryPerson.cs" />
-    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="Models\Product\ProductTagValue.cs" />
+    <Compile Include="Models\Product\ProductTag.cs" />
+    <Compile Include="Models\Account\Manufacture.cs" />
+    <Compile Include="Models\Product\Product.cs" />
+    <Compile Include="Models\Product\ProductComment.cs" />
+    <Compile Include="Models\Product\MainProductGroup.cs" />
+    <Compile Include="Models\Product\ProductGroup.cs" />
+    <Compile Include="Models\Product\ProductPicture.cs" />
+    <Compile Include="Models\Product\ProductRate.cs" />
+    <Compile Include="Models\Product\ProductSupplierGuarantee.cs" />
+    <Compile Include="Models\PerchaseOrder\PurchaseOrderStatusHistory.cs" />
+    <Compile Include="Models\Account\DistCompanyRegionLevelType.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestProductDetail.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestRule.cs" />
+    <Compile Include="Models\BaseData\FiscalYear.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestRuleCalcType.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestRuleType.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestSupplyType.cs" />
+    <Compile Include="Models\Stock\BaseData\StockType.cs" />
+    <Compile Include="Models\Product\ProductType.cs" />
+    <Compile Include="Models\PerchaseOrder\PurchaseOrder.cs" />
+    <Compile Include="Models\PerchaseOrder\PurchaseOrderClearance.cs" />
+    <Compile Include="Models\PerchaseOrder\PurchaseOrderLineItem.cs" />
+    <Compile Include="Models\PerchaseOrder\PurchaseOrderPayment.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestProduct.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestStatus.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequestType.cs" />
+    <Compile Include="Models\Stock\BaseData\ReorderCalcType.cs" />
+    <Compile Include="Models\Stock\BaseData\StockHistoryOnHand.cs" />
+    <Compile Include="Models\Stock\BaseData\StockOnHandSync.cs" />
+    <Compile Include="Models\Stock\ProductRequest\StockProductRequest.cs" />
+    <Compile Include="Models\Stock\BaseData\StockProduct.cs" />
+    <Compile Include="Models\Stock\BaseData\Stock.cs" />
+    <Compile Include="Models\Store\Store.cs" />
+    <Compile Include="Models\Store\StoreAction.cs" />
+    <Compile Include="Models\Stock\BaseData\StockActiveOnHand.cs" />
+    <Compile Include="Models\Store\StoreActiveOnHand.cs" />
+    <Compile Include="Models\Store\StoreActivePriceList.cs" />
+    <Compile Include="Models\Store\StoreCalendar.cs" />
+    <Compile Include="Models\Store\StoreCalendarHistory.cs" />
+    <Compile Include="Models\Store\StoreDeliveryPerson.cs" />
+    <Compile Include="Models\Account\Supplier.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Account\PermissionRepository.cs" />
@@ -543,185 +326,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512291130170_InitialDB.resx">
-      <DependentUpon>201512291130170_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603211306245_Initial-DB-Migration.resx">
+      <DependentUpon>201603211306245_Initial-DB-Migration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512300031377_Image.resx">
-      <DependentUpon>201512300031377_Image.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.resx">
+      <DependentUpon>201603231608382_Change-BusinessModel-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512300033373_Image-2.resx">
-      <DependentUpon>201512300033373_Image-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512301109002_Image-3.resx">
-      <DependentUpon>201512301109002_Image-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512301310232_ProductRate.resx">
-      <DependentUpon>201512301310232_ProductRate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601020744416_BaseType.resx">
-      <DependentUpon>201601020744416_BaseType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601020745175_BaseType-2.resx">
-      <DependentUpon>201601020745175_BaseType-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601021224565_business.resx">
-      <DependentUpon>201601021224565_business.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601040844197_Stock-Request-1.resx">
-      <DependentUpon>201601040844197_Stock-Request-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601040859515_Stock-Request-2.resx">
-      <DependentUpon>201601040859515_Stock-Request-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601040946568_Stock-Request-3.resx">
-      <DependentUpon>201601040946568_Stock-Request-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041024001_Stock-Request-4.resx">
-      <DependentUpon>201601041024001_Stock-Request-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041204501_Stock-Request-5.resx">
-      <DependentUpon>201601041204501_Stock-Request-5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041424205_Stock-Request-6.resx">
-      <DependentUpon>201601041424205_Stock-Request-6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041600316_Stock-Request-7.resx">
-      <DependentUpon>201601041600316_Stock-Request-7.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041907257_Stock-Request-8.resx">
-      <DependentUpon>201601041907257_Stock-Request-8.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601041957561_Stock-Request-9.resx">
-      <DependentUpon>201601041957561_Stock-Request-9.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601042126391_stock-request-10.resx">
-      <DependentUpon>201601042126391_stock-request-10.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601042144304_stock-request-11.resx">
-      <DependentUpon>201601042144304_stock-request-11.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601042145239_stock-request-12.resx">
-      <DependentUpon>201601042145239_stock-request-12.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601042208389_stock-request-13.resx">
-      <DependentUpon>201601042208389_stock-request-13.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601042221041_stock-request-14.resx">
-      <DependentUpon>201601042221041_stock-request-14.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601070851564_Spell-Check-1.resx">
-      <DependentUpon>201601070851564_Spell-Check-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081249007_Set-String-Length.resx">
-      <DependentUpon>201601081249007_Set-String-Length.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081803461_Stock-Product-Rule-2.resx">
-      <DependentUpon>201601081803461_Stock-Product-Rule-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081820523_Stock-Product-Rule-3.resx">
-      <DependentUpon>201601081820523_Stock-Product-Rule-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081821204_Stock-Product-Rule-4.resx">
-      <DependentUpon>201601081821204_Stock-Product-Rule-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081833465_Cascasde-Delete-1.resx">
-      <DependentUpon>201601081833465_Cascasde-Delete-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081929071_Cascasde-Delete-2.resx">
-      <DependentUpon>201601081929071_Cascasde-Delete-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601081932083_Cascasde-Delete-3.resx">
-      <DependentUpon>201601081932083_Cascasde-Delete-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601082317567_Stock-Request-16.resx">
-      <DependentUpon>201601082317567_Stock-Request-16.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601082322473_Stock-Request-17.resx">
-      <DependentUpon>201601082322473_Stock-Request-17.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601082328562_Stock-Request-18.resx">
-      <DependentUpon>201601082328562_Stock-Request-18.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601091937297_Stock-Request-19.resx">
-      <DependentUpon>201601091937297_Stock-Request-19.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601100914419_Incomplete-4.resx">
-      <DependentUpon>201601100914419_Incomplete-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601100937569_Incomplete-5.resx">
-      <DependentUpon>201601100937569_Incomplete-5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601301550582_AutomaticData.resx">
-      <DependentUpon>201601301550582_AutomaticData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601301707470_AutomaticData-3.resx">
-      <DependentUpon>201601301707470_AutomaticData-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601301710052_InitialDataInsert.resx">
-      <DependentUpon>201601301710052_InitialDataInsert.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602010453357_InitialDataInsert-2.resx">
-      <DependentUpon>201602010453357_InitialDataInsert-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602020902152_StockProductRequest-20.resx">
-      <DependentUpon>201602020902152_StockProductRequest-20.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602020925536_InitialDataInsert-3.resx">
-      <DependentUpon>201602020925536_InitialDataInsert-3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181301249_ChangeStockRequest-1.resx">
-      <DependentUpon>201602181301249_ChangeStockRequest-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181524209_UserResetPass-2.resx">
-      <DependentUpon>201602181524209_UserResetPass-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181544103_InitialDataInsert-4.resx">
-      <DependentUpon>201602181544103_InitialDataInsert-4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181623458_InitialDataInsert-5.resx">
-      <DependentUpon>201602181623458_InitialDataInsert-5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602211002044_ItemImage-IsDefault.resx">
-      <DependentUpon>201602211002044_ItemImage-IsDefault.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221922004_Store-Phone.resx">
-      <DependentUpon>201602221922004_Store-Phone.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602250816198_InitialDataInsert-6.resx">
-      <DependentUpon>201602250816198_InitialDataInsert-6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602251144503_ProductTag-1.resx">
-      <DependentUpon>201602251144503_ProductTag-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602251208529_ProductTag-2.resx">
-      <DependentUpon>201602251208529_ProductTag-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261915533_PurchaseOrder-Address.resx">
-      <DependentUpon>201602261915533_PurchaseOrder-Address.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261953126_PurchaseOrder-LineItem.resx">
-      <DependentUpon>201602261953126_PurchaseOrder-LineItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603051523493_Tracking-1.resx">
-      <DependentUpon>201603051523493_Tracking-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603072044273_Barcode.resx">
-      <DependentUpon>201603072044273_Barcode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603072320245_ReorderCalcInfo.resx">
-      <DependentUpon>201603072320245_ReorderCalcInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603081650418_AddingRequestNoInStockProductRequest.resx">
-      <DependentUpon>201603081650418_AddingRequestNoInStockProductRequest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603081850309_AddingStockLevelQtyInStockProductRequestProduct.resx">
-      <DependentUpon>201603081850309_AddingStockLevelQtyInStockProductRequestProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603082235353_AddingIsActiveInOrderInProduct.resx">
-      <DependentUpon>201603082235353_AddingIsActiveInOrderInProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603090859010_SCM.resx">
-      <DependentUpon>201603090859010_SCM.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603242146369_Product-Supplier-Migration-1.resx">
+      <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.ProductConcretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -15,13 +16,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Supplier
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("suppliers")]
-        public async Task<IHttpActionResult> GetSuppliers(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetSuppliers()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var supplierDomain = new SupplierDomain(owner);
-                var result = await supplierDomain.GetAll();
+                var supplierDomain = new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await supplierDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -34,13 +35,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("filterSuppliers"), HttpPost]
-        public async Task<IHttpActionResult> FilterSuppliers([FromBody]RequestModel data)
+        [Route("filterSuppliers")]
+        [HttpPost]
+        public async Task<IHttpActionResult> FilterSuppliers([FromBody]BaseRequestModel data)
         {
             try
             {
                 data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
-                var model = await new SupplierDomain(OwnerKey).FilterSuppliersAsync(data.searchTerm);
+                var model = await new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync(p => p.SupplierName.Contains(data.searchTerm));
 
                 return Ok(model);
             }
@@ -54,14 +56,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("suppliers/after")]
-        public async Task<IHttpActionResult> GetSuppliers(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetSuppliers([FromBody]BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var supplierDomain = new SupplierDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await supplierDomain.GetAllChangedAfter(validDate);
+                var supplierDomain = new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await supplierDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -72,16 +74,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveSuppliers(string privateOwnerId, List<SupplierViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveSuppliers([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var supplierDomain = new SupplierDomain(owner);
-                var result = await supplierDomain.PublishAsync(data);
-                return Ok(result);
+                var supplierDomain = new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await supplierDomain.PublishAsync(new SupplierProxy().ReverseConvert(data.supplierData));
+                return Ok(data.supplierData);
             }
             catch (Exception ex)
             {
@@ -90,16 +92,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeleteSuppliers(string privateOwnerId, List<SupplierViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeleteSuppliers([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var supplierDomain = new SupplierDomain(owner);
-                var result = await supplierDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var supplierDomain = new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await supplierDomain.CheckDeletedAsync(data.supplierData);
+                return Ok(data.supplierData);
             }
             catch (Exception ex)
             {

@@ -9,157 +9,116 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
+using AutoMapper.QueryableExtensions;
+using EntityFramework.Extensions;
+using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace Anatoli.Business.Domain
 {
-    public class StoreActivePriceListDomain : BusinessDomain<StoreActivePriceListViewModel>, IBusinessDomain<StoreActivePriceList, StoreActivePriceListViewModel>
+    public class StoreActivePriceListDomain : BusinessDomainV2<StoreActivePriceList, StoreActivePriceListViewModel, StoreActivePriceListRepository, IStoreActivePriceListRepository>, IBusinessDomainV2<StoreActivePriceList, StoreActivePriceListViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StoreActivePriceList, StoreActivePriceListViewModel> Proxy { get; set; }
-        public IRepository<StoreActivePriceList> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StoreActivePriceListDomain() { }
-        public StoreActivePriceListDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StoreActivePriceListDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StoreActivePriceListRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StoreActivePriceList, StoreActivePriceListViewModel>.Create())
+        public StoreActivePriceListDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StoreActivePriceListDomain(IRepository<StoreActivePriceList> repository, IPrincipalRepository principalRepository, IAnatoliProxy<StoreActivePriceList, StoreActivePriceListViewModel> proxy)
+        public StoreActivePriceListDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = repository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<StoreActivePriceListViewModel>> GetAllByStoreId(string id)
+        public async Task<ICollection<StoreActivePriceListViewModel>> GetAllByStoreId(Guid storeGuid)
         {
-            Guid storeGuid = Guid.Parse(id);
-            var storePriceLists = await Repository.FindAllAsync(p => p.StoreId == storeGuid);
-
-            return Proxy.Convert(storePriceLists.ToList());
+            return await GetAllAsync(p => p.StoreId == storeGuid);
         }
-        public async Task<List<StoreActivePriceListViewModel>> GetAllByStoreIdChangedAfter(string id, DateTime selectedDate)
+        public async Task<ICollection<StoreActivePriceListViewModel>> GetAllByStoreIdChangedAfterAsync(Guid storeGuid, DateTime selectedDate)
         {
-            Guid storeGuid = Guid.Parse(id);
-            var storePriceLists = await Repository.FindAllAsync(p => p.StoreId == storeGuid && p.LastUpdate >= selectedDate);
+            return await GetAllAsync(p => p.StoreId == storeGuid && p.LastUpdate >= selectedDate);
 
-            return Proxy.Convert(storePriceLists.ToList());
         }
-
-        public async Task<List<StoreActivePriceListViewModel>> GetAll()
-        {
-            var storePriceLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(storePriceLists.ToList()); 
-        }
-
-        public async Task<List<StoreActivePriceListViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var storePriceLists = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(storePriceLists.ToList()); ;
-        }
-
-        public async Task<List<StoreActivePriceListViewModel>> PublishAsync(List<StoreActivePriceListViewModel> dataViewModels)
+        public override async Task PublishAsync(List<StoreActivePriceList> data)
         {
             try
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                var dataList = GetDataListToCheckForExistsData();
 
-                var storePriceLists = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                var currentStoreActivePriceLists = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                storePriceLists.ForEach(item =>
+                foreach (var item in data)
                 {
-                    var currentStoreActivePriceList = currentStoreActivePriceLists.Find(p => p.StoreId == item.StoreId && p.ProductId == item.ProductId);
-                    if (currentStoreActivePriceList != null)
-                    {
-                        if (currentStoreActivePriceList.Price != item.Price)
-                        {
-                            currentStoreActivePriceList.Price = item.Price;
-                            currentStoreActivePriceList.LastUpdate = DateTime.Now;
-                            Repository.Update(currentStoreActivePriceList);
-                        }
-                    }
-                    else
-                    {
-                        item.Id = Guid.NewGuid();
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                        Repository.Add(item);
-                    }
-                });
-                await Repository.SaveChangesAsync();
+                    var model = dataList.Find(p => p.StoreId == item.StoreId && p.ProductId == item.StoreId);
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    AddDataToRepository(model, item);
+                }
+                await MainRepository.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
             finally
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + data.Count);
             }
-
-            return dataViewModels;
         }
-        public async Task<List<StoreActivePriceListViewModel>> CheckDeletedAsync(List<StoreActivePriceListViewModel> dataViewModels)
+
+        public override async Task CheckDeletedAsync(List<StoreActivePriceListViewModel> dataViewModels)
         {
             try
             {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+                var currentDataList = MainRepository.GetQuery()
+                            .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
+                            .Select(data => new StoreActivePriceListViewModel
+                            {
+                                UniqueId = data.Id,
+                                StoreGuid = data.StoreId,
+                                ProductGuid = data.ProductId
+                            })
+                            .AsNoTracking()
+                            .ToList();
 
                 currentDataList.ForEach(item =>
                 {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
+                    if (dataViewModels.Find(p => p.StoreGuid == item.StoreGuid && p.ProductGuid == item.ProductGuid) == null)
+                        MainRepository.GetQuery().Where(p => p.StoreId == item.StoreGuid && p.ProductId == item.ProductGuid).Update(t => new StoreActivePriceList { LastUpdate = DateTime.Now, IsRemoved = true });
                 });
 
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                log.Error("CheckForDeletedAsync", ex);
+                Logger.Error("CheckForDeletedAsync", ex);
                 throw ex;
             }
-
-            return dataViewModels;
         }
 
-        public async Task<List<StoreActivePriceListViewModel>> Delete(List<StoreActivePriceListViewModel> dataViewModels)
+        protected override void AddDataToRepository(StoreActivePriceList currentStoreActivePriceList, StoreActivePriceList item)
         {
-            await Task.Factory.StartNew(() =>
+            if (currentStoreActivePriceList != null)
             {
-                var storePriceLists = Proxy.ReverseConvert(dataViewModels);
-
-                storePriceLists.ForEach(item =>
+                if (currentStoreActivePriceList.Price != item.Price)
                 {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StoreActivePriceLists.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-
-            return dataViewModels;
+                    currentStoreActivePriceList.Price = item.Price;
+                    currentStoreActivePriceList.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentStoreActivePriceList);
+                }
+            }
+            else
+            {
+                item.Id = Guid.NewGuid();
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
+            }
         }
+
         #endregion
     }
 }

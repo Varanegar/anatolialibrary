@@ -37,8 +37,6 @@ namespace Anatoli.DataAccess.Repositories
         {
             user.CreatedDate = user.LastUpdate = user.LastEntry = DateTime.Now;
 
-            user.PrivateLabelOwner = new PrincipalRepository(context).FindAsync(p => p.Id == user.PrivateLabelOwner.Id).Result;
-
             await UserRepository.AddAsync(user);
 
             await UserRepository.SaveChangesAsync();

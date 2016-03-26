@@ -13,174 +13,67 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StoreDomain : BusinessDomain<StoreViewModel>, IBusinessDomain<Store, StoreViewModel>
+    public class StoreDomain : BusinessDomainV2<Store, StoreViewModel, StoreRepository, IStoreRepository>, IBusinessDomainV2<Store, StoreViewModel>
     {
 
         #region Properties
-            public IAnatoliProxy<Store, StoreViewModel> Proxy { get; set; }
-            public IRepository<Store> Repository { get; set; }
-            public IRepository<CityRegion> CityRegionRepository { get; set; }
-            public IRepository<StoreCalendar> StoreCalendarRepository { get; set; }
-            public IPrincipalRepository PrincipalRepository { get; set; }
-            public Guid PrivateLabelOwnerId { get; private set; }
-
-            #endregion
+        public IRepository<CityRegion> CityRegionRepository { get; set; }
+        public IRepository<StoreCalendar> StoreCalendarRepository { get; set; }
+        #endregion
 
         #region Ctors
-        StoreDomain() { }
-        public StoreDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StoreDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StoreRepository(dbc), new CityRegionRepository(dbc), new StoreCalendarRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<Store, StoreViewModel>.Create())
+        public StoreDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StoreDomain(IRepository<Store> repository, IRepository<CityRegion> cityRegionRepository, IRepository<StoreCalendar> storeCalendarRepository, IPrincipalRepository principalRepository, IAnatoliProxy<Store, StoreViewModel> proxy)
+        public StoreDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = repository;
-            CityRegionRepository = cityRegionRepository;
-            StoreCalendarRepository = storeCalendarRepository;
-            Repository = repository;
-            PrincipalRepository = principalRepository;
+            CityRegionRepository = new CityRegionRepository(dbc);
+            StoreCalendarRepository = new StoreCalendarRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<StoreViewModel>> GetAll()
+        protected override void AddDataToRepository(Store currentStore, Store item)
         {
-            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.Number_ID != 1);
-
-            return Proxy.Convert(stores.ToList()); ;
-        }
-
-        public async Task<List<StoreViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var stores = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate && p.Number_ID != 1);
-
-            return Proxy.Convert(stores.ToList()); ;
-        }
-
-        public async Task<List<StoreViewModel>> PublishAsync(List<StoreViewModel> dataViewModels)
-        {
-            try
+            if (currentStore != null)
             {
-                var stores = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                currentStore.StoreCode = item.StoreCode;
+                currentStore.StoreName = item.StoreName;
+                currentStore.Address = item.Address;
+                currentStore.HasDelivery = item.HasDelivery;
+                currentStore.HasCourier = item.HasCourier;
+                currentStore.SupportAppOrder = item.SupportAppOrder;
+                currentStore.SupportCallCenterOrder = item.SupportCallCenterOrder;
+                currentStore.SupportWebOrder = item.SupportWebOrder;
+                currentStore.Lat = item.Lat;
+                currentStore.Lng = item.Lng;
+                currentStore.LastUpdate = DateTime.Now;
+                currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), DBContext);
+                MainRepository.Update(currentStore);
+            }
+            else
+            {
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                item = SetStoreRegionData(item, item.StoreValidRegionInfoes.ToList(), DBContext);
+                MainRepository.Add(item);
+            }
 
-                foreach (Store item in stores)
+        }
+
+        public Store SetStoreRegionData(Store data, List<CityRegion> storeRegions, AnatoliDbContext context)
+        {
+            DBContext.Database.ExecuteSqlCommand("delete from StoreValidRegionInfoes where StoreId='" + data.Id + "'");
+            data.StoreValidRegionInfoes.Clear();
+            storeRegions.ForEach(item =>
+            {
+                var region = CityRegionRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                if (region != null)
                 {
-                    var currentStore = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentStore != null)
-                    {
-                        currentStore.StoreCode = item.StoreCode;
-                        currentStore.StoreName = item.StoreName;
-                        currentStore.Address = item.Address;
-                        currentStore.HasDelivery = item.HasDelivery;
-                        currentStore.HasCourier = item.HasCourier;
-                        currentStore.SupportAppOrder = item.SupportAppOrder;
-                        currentStore.SupportCallCenterOrder = item.SupportCallCenterOrder;
-                        currentStore.SupportWebOrder = item.SupportWebOrder;
-                        currentStore.Lat = item.Lat;
-                        currentStore.Lng = item.Lng;
-                        currentStore.LastUpdate = DateTime.Now;
-                        currentStore = await SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), Repository.DbContext);
-                        currentStore = await SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), Repository.DbContext);
-                        await Repository.UpdateAsync(currentStore);
-                    }
-                    else
-                    {
-                        item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        var currentNewStore = await SetStoreCalendarData(item, item.StoreCalendars.ToList(), Repository.DbContext);
-                        currentNewStore = await SetStoreRegionData(currentNewStore, item.StoreValidRegionInfoes.ToList(), Repository.DbContext);
-                        await Repository.AddAsync(currentNewStore);
-                    }
+                    data.StoreValidRegionInfoes.Add(region);
                 }
-                await Repository.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-                log.Error("PublishAsync", ex);
-            }
-            return dataViewModels;
-        }
-        public async Task<List<StoreViewModel>> CheckDeletedAsync(List<StoreViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-        public async Task<List<StoreViewModel>> Delete(List<StoreViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var stores = Proxy.ReverseConvert(dataViewModels);
-
-                stores.ForEach(item =>
-                {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                       
-                    Repository.DeleteAsync(product);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
-
-        public async Task<Store> SetStoreCalendarData(Store data, List<StoreCalendar> storeCalendars, AnatoliDbContext context)
-        {
-            Repository.DbContext.Database.ExecuteSqlCommand("delete from StoreCalendars where StoreId='" + data.Id + "'");
-
-            foreach (StoreCalendar item in storeCalendars)
-            {
-                item.StoreId = data.Id;
-                item.PrivateLabelOwner = data.PrivateLabelOwner;
-                item.CreatedDate = item.LastUpdate = data.CreatedDate;
-                //item.Id = Guid.NewGuid();
-                await StoreCalendarRepository.AddAsync(item);
-            };
-            return data;
-        }
-
-        public async Task<Store> SetStoreRegionData(Store data, List<CityRegion> storeRegions, AnatoliDbContext context)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-
-                Repository.DbContext.Database.ExecuteSqlCommand("delete from StoreValidRegionInfoes where StoreId='" + data.Id + "'");
-                data.StoreValidRegionInfoes.Clear();
-                storeRegions.ForEach(item =>
-                {
-                    var region = CityRegionRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (region != null)
-                    {
-                        data.StoreValidRegionInfoes.Add(region);
-                    }
-                });
             });
             return data;
         }

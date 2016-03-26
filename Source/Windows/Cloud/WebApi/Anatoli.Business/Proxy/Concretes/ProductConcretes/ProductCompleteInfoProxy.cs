@@ -61,12 +61,12 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 IsRemoved = data.IsRemoved,
 
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
-                ManufactureIdString  = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
-                ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
-                MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
-                MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
+                ManufactureId  = data.ManufactureId,
+                ProductGroupId = data.ProductGroupId,
+                MainProductGroupId = data.MainProductGroupId,
+                MainSupplierId = data.MainSupplierId,
                 //Suppliers = SupplierProxy.Convert(data.Suppliers.ToList()),
                 //CharValues = CharValueProxy.Convert(data.CharValues.ToList()),
             };
@@ -87,10 +87,10 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
-                Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
-                ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateOwnerId),
-                MainProductGroup = (data.MainProductGroupIdString == null) ? null : MainProductGroupProxy.ReverseConvert(data.MainProductGroupIdString, data.PrivateOwnerId),
+                ApplicationOwnerId = data.ApplicationOwnerId,
+                ManufactureId = data.ManufactureId,
+                ProductGroupId = data.ProductGroupId,
+                MainProductGroupId = data.MainProductGroupId,
                 Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
                 CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
 

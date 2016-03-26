@@ -31,21 +31,23 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     client.SetBearerToken(oauthresult.AccessToken);
 
                     log.Info("Transfer fiscal year");
-                    FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, GetPrivateOwnerQueryString()); 
+                    FiscalYearTransferHandler.UploadFiscalYearToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey); 
                     log.Info("Transfer supplier");
-                    SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer manufacture");
-                    ManufactureTransferHandler.UploadManufactureToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    ManufactureTransferHandler.UploadManufactureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer main product group");
-                    MainProductGroupTransferHandler.UploadMainProductGroupToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    MainProductGroupTransferHandler.UploadMainProductGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer store");
-                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer stock");
-                    StockTransferHandler.UploadStockToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StockTransferHandler.UploadStockToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product");
-                    ProductTransferHandler.UploadProductToServer(client, ServerURI, GetPrivateOwnerQueryString(), PrivateOwnerId);
+                    ProductTransferHandler.UploadProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer product supplier");
+                    ProductTransferHandler.UploadProductSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer stock product");
-                    StockProductTransferHandler.UploadStockProductToServer(client, ServerURI, GetPrivateOwnerQueryString());
+                    StockProductTransferHandler.UploadStockProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

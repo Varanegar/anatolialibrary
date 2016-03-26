@@ -13,18 +13,20 @@ namespace VNAppServer.Anatoli.PMC.Scheduler.Interface
         protected static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string ServerURIKey = "ServerURI";
-        private readonly string PrivateOwnerIdKey = "PrivateOwnerId";
+        private readonly string OwnerKeyId = "OwnerKey";
+        private readonly string DataOwnerKeyId = "DataOwnerKey";
+        private readonly string DataOwnerCenterKeyId = "DataOwnerCenterKey";
         public string ServerURI { get; set; }
-        public string PrivateOwnerId { get; set; }
-        public string GetPrivateOwnerQueryString()
-        {
-            return "?privateOwnerId=" + PrivateOwnerId;
-        }
+        public string OwnerKey { get; set; }
+        public string DataOwnerKey { get; set; }
+        public string DataOwnerCenterKey { get; set; }
 
         public void GetServerInfo(JobDataMap dataMap)
         {
             ServerURI = dataMap.GetString(ServerURIKey);
-            PrivateOwnerId = dataMap.GetString(PrivateOwnerIdKey);
+            OwnerKey = dataMap.GetString(OwnerKeyId);
+            DataOwnerKey = dataMap.GetString(DataOwnerKeyId);
+            DataOwnerCenterKey = dataMap.GetString(DataOwnerCenterKeyId);
         }
     }
 }

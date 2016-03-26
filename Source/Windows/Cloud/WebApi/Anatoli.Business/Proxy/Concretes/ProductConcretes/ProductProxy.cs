@@ -3,6 +3,7 @@ using Anatoli.DataAccess.Models;
 using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
+using System;
 
 namespace Anatoli.Business.Proxy.ProductConcretes
 {
@@ -59,15 +60,12 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 ProductTypeId = data.ProductTypeId,
                 QtyPerPack = data.QtyPerPack,
                 IsRemoved = data.IsRemoved,
+                ManufactureId = data.ManufactureId,
 
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ProductGroupId = data.ProductGroupId,
+                MainProductGroupId = data.MainProductGroupId,
 
-                ManufactureIdString = (data.ManufactureId == null) ? null : data.ManufactureId.ToString(),
-
-                ProductGroupIdString = (data.ProductGroupId == null) ? null : data.ProductGroupId.ToString(),
-                MainProductGroupIdString = (data.MainProductGroupId == null) ? null : data.MainProductGroupId.ToString(),
-
-                MainSupplierId = (data.MainSupplierId == null) ? null : data.MainSupplierId.ToString(),
+                MainSupplierId = data.MainSupplierId,
 
                 IsActiveInOrder = data.IsActiveInOrder,
             };
@@ -79,7 +77,8 @@ namespace Anatoli.Business.Proxy.ProductConcretes
 
         public override Product ReverseConvert(ProductViewModel data)
         {
-            return new Product
+            
+            Product result =  new Product
             {
                 Number_ID = data.ID,
                 Id = data.UniqueId,
@@ -93,15 +92,19 @@ namespace Anatoli.Business.Proxy.ProductConcretes
                 QtyPerPack = (data.QtyPerPack == 0) ? 1 : data.QtyPerPack,
                 IsRemoved = data.IsRemoved,
 
-                PrivateLabelOwner_Id = data.PrivateOwnerId,
-                Manufacture = (data.ManufactureIdString == null) ? null : ManufactureProxy.ReverseConvert(data.ManufactureIdString, data.PrivateOwnerId),
-                ProductGroup = (data.ProductGroupIdString == null) ? null : ProductGroupProxy.ReverseConvert(data.ProductGroupIdString, data.PrivateOwnerId),
-                MainProductGroup = (data.MainProductGroupIdString == null) ? null : MainProductGroupProxy.ReverseConvert(data.MainProductGroupIdString, data.PrivateOwnerId),
-                Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
-                CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
+                ApplicationOwnerId = data.ApplicationOwnerId,
+                //Suppliers = (data.Suppliers == null) ? null : SupplierProxy.ReverseConvert(data.Suppliers.ToList()),
+                //CharValues = (data.CharValues == null) ? null : CharValueProxy.ReverseConvert(data.CharValues.ToList()),
 
                 ProductTypeId = data.ProductTypeId
             };
+
+            if (data.ManufactureId == Guid.Empty) result.ManufactureId = null; else result.ManufactureId = data.ManufactureId;
+            if (data.ProductGroupId == Guid.Empty) result.ProductGroupId = null; else result.ProductGroupId = data.ProductGroupId;
+            if (data.MainProductGroupId == Guid.Empty) result.MainProductGroupId = null; else result.MainProductGroupId = data.MainProductGroupId;
+            if (data.MainSupplierId == Guid.Empty) result.MainSupplierId = null; else result.MainSupplierId = data.MainSupplierId;
+
+            return result;
         }
         #endregion
     }

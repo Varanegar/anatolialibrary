@@ -16,7 +16,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 //PictureTypeValueGuid = data.PictureTypeValueGuid
                 IsDefault = data.IsDefault,
                 ProductPictureName = data.ProductPictureName
@@ -34,7 +34,7 @@ namespace Anatoli.Business.Proxy.Concretes.ProductConcretes
                 IsDefault = data.IsDefault,
                 ProductPictureName = data.ProductPictureName,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                ApplicationOwnerId = data.ApplicationOwnerId,
             };
         }
     }

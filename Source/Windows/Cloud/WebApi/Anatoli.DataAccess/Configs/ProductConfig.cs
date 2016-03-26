@@ -77,8 +77,8 @@ namespace Anatoli.DataAccess.Configs
                 .Map(cs =>
                 {
                     cs.MapLeftKey("ProductId");
-                    cs.MapRightKey("SuplierID");
-                    cs.ToTable("ProductSupliers");
+                    cs.MapRightKey("SupplierID");
+                    cs.ToTable("ProductSuppliers");
                 });
 
             this.HasMany<StoreActivePriceList>(sap => sap.StoreActivePriceLists)

@@ -8,8 +8,8 @@ namespace Anatoli.DataAccess.Models.Identity
     {
         public string Name { get; set; }
 
-        public virtual Principal Manager { get; set; }
-        public virtual Principal Principal { get; set; }
+        public virtual ApplicationOwner Manager { get; set; }
+        public virtual ApplicationOwner Principal { get; set; }
         public virtual ICollection<User> Users { get; set; }
 
     }

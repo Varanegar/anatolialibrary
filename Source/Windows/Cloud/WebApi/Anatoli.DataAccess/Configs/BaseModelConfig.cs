@@ -11,9 +11,11 @@ namespace Anatoli.DataAccess.Configs
     {
         public BaseModelConfig()
         {
-            this.HasRequired<Principal>(p => p.PrivateLabelOwner).WithRequiredDependent().WillCascadeOnDelete(false);
-            this.HasOptional<Principal>(p => p.AddedBy);
-            this.HasOptional<Principal>(p => p.LastModifiedBy);
+            this.HasRequired<ApplicationOwner>(p => p.ApplicationOwner).WithRequiredDependent().WillCascadeOnDelete(false);
+            this.HasRequired<DataOwner>(p => p.DataOwner).WithRequiredDependent().WillCascadeOnDelete(false);
+            this.HasRequired<DataOwnerCenter>(p => p.DataOwnerCenter).WithRequiredDependent().WillCascadeOnDelete(false);
+            this.HasRequired<User>(p => p.AddedBy).WithRequiredDependent().WillCascadeOnDelete(false);
+            this.HasRequired<User>(p => p.LastModifiedBy).WithRequiredDependent().WillCascadeOnDelete(false);
         }
     }
 }

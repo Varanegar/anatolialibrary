@@ -17,12 +17,12 @@ namespace Anatoli.Business.Helpers
         private string InternalPassword = "Anatoli@App@Vn";
 
         private TimeSpan TokenExpireTimeSpan = new TimeSpan();
-        private string PrivateOwnerId { get; set; }
+        private string ApplicationOwnerId { get; set; }
 
         private static InterServerCommunication instance = null;
         private TokenResponse OAuthResult;
         private InterServerCommunication(){
-            PrivateOwnerId = "";
+            ApplicationOwnerId = "";
         }
         public static InterServerCommunication Instance
         {
@@ -34,18 +34,18 @@ namespace Anatoli.Business.Helpers
             }
         }
 
-        public string GetInternalServerToken(string privateOwnerId)
+        public string GetInternalServerToken(string applicationOwnerId)
         {
             try
             {
-                if ((PrivateOwnerId == null || PrivateOwnerId == "") && (privateOwnerId == null || privateOwnerId == ""))
+                if ((ApplicationOwnerId == null || ApplicationOwnerId == "") && (applicationOwnerId == null || applicationOwnerId == ""))
                 {
                     log.Fatal("Invalid owner in internal communication");
                     throw new Exception("Invalid App Owner");
                 }
-                else if (privateOwnerId != null && privateOwnerId != "" && privateOwnerId != PrivateOwnerId)
+                else if (applicationOwnerId != null && applicationOwnerId != "" && applicationOwnerId != ApplicationOwnerId)
                 {
-                    PrivateOwnerId = privateOwnerId;
+                    ApplicationOwnerId = applicationOwnerId;
                     OAuthResult = null;
                 }
 
@@ -55,7 +55,7 @@ namespace Anatoli.Business.Helpers
                     var oauthClient = new OAuth2Client(new Uri(ConfigurationManager.AppSettings["InternalServer"] + "/oauth/token"));
 
                     client.Timeout = TimeSpan.FromMinutes(2);
-                    OAuthResult = oauthClient.RequestResourceOwnerPasswordAsync(InternalUsername, InternalPassword, PrivateOwnerId).Result;
+                    OAuthResult = oauthClient.RequestResourceOwnerPasswordAsync(InternalUsername, InternalPassword, ApplicationOwnerId).Result;
                     {
                         if (OAuthResult.AccessToken == null || OAuthResult.AccessToken == "")
                         {

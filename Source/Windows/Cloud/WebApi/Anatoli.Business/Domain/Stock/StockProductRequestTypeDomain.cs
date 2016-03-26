@@ -13,100 +13,40 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockProductRequestTypeDomain : BusinessDomain<StockProductRequestTypeViewModel>, IBusinessDomain<StockProductRequestType, StockProductRequestTypeViewModel>
+    public class StockProductRequestTypeDomain : BusinessDomainV2<StockProductRequestType, StockProductRequestTypeViewModel, StockProductRequestTypeRepository, IStockProductRequestTypeRepository>, IBusinessDomainV2<StockProductRequestType, StockProductRequestTypeViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockProductRequestType, StockProductRequestTypeViewModel> Proxy { get; set; }
-        public IRepository<StockProductRequestType> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        StockProductRequestTypeDomain() { }
-        public StockProductRequestTypeDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockProductRequestTypeDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestTypeRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProductRequestType, StockProductRequestTypeViewModel>.Create())
+        public StockProductRequestTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockProductRequestTypeDomain(IStockProductRequestTypeRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProductRequestType, StockProductRequestTypeViewModel> proxy)
+        public StockProductRequestTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<StockProductRequestTypeViewModel>> GetAll()
+        protected override void AddDataToRepository(StockProductRequestType currentData, StockProductRequestType item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestTypeViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestTypeViewModel>> PublishAsync(List<StockProductRequestTypeViewModel> dataViewModels)
-        {
-            try
+            if (currentData != null)
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                dataList.ForEach(item =>
+                if (currentData.StockProductRequestTypeName != item.StockProductRequestTypeName)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        if (currentData.StockProductRequestTypeName != item.StockProductRequestTypeName)
-                        {
-                            currentData.StockProductRequestTypeName = item.StockProductRequestTypeName;
-                            currentData.LastUpdate = DateTime.Now;
-                            Repository.UpdateAsync(currentData);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                    currentData.StockProductRequestTypeName = item.StockProductRequestTypeName;
+                    currentData.LastUpdate = DateTime.Now;
+                    MainRepository.Update(currentData);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-        }
-
-        public async Task<List<StockProductRequestTypeViewModel>> Delete(List<StockProductRequestTypeViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StockProductRequestTypes.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

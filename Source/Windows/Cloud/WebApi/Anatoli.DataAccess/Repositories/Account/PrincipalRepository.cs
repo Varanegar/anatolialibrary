@@ -7,7 +7,7 @@ using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class PrincipalRepository : AnatoliRepository<Principal>, IPrincipalRepository
+    public class PrincipalRepository : AnatoliRepository<ApplicationOwner>, IPrincipalRepository
     {
         public PrincipalRepository() : this(new AnatoliDbContext()) { }
         public PrincipalRepository(AnatoliDbContext context)

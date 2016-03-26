@@ -13,105 +13,74 @@ using Anatoli.ViewModels.StockModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockProductRequestProductDomain : BusinessDomain<StockProductRequestProductViewModel>, IBusinessDomain<StockProductRequestProduct, StockProductRequestProductViewModel>
+    public class StockProductRequestProductDomain : BusinessDomainV2<StockProductRequestProduct, StockProductRequestProductViewModel, StockProductRequestProductRepository, IStockProductRequestProductRepository>, IBusinessDomainV2<StockProductRequestProduct, StockProductRequestProductViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> Proxy { get; set; }
-        public IRepository<StockProductRequestProduct> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
+        public IRepository<Stock> StockRepository { get; set; }
         #endregion
 
         #region Ctors
-        StockProductRequestProductDomain() { }
-        public StockProductRequestProductDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockProductRequestProductDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockProductRequestProductRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel>.Create())
+        public StockProductRequestProductDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockProductRequestProductDomain(IStockProductRequestProductRepository dataRepository, IPrincipalRepository principalRepository, IAnatoliProxy<StockProductRequestProduct, StockProductRequestProductViewModel> proxy)
+        public StockProductRequestProductDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            PrincipalRepository = principalRepository;
+            StockRepository = new StockRepository(dbc);
         }
+
         #endregion
 
         #region Methods
-        public async Task<List<StockProductRequestProductViewModel>> GetAll()
+        protected override void AddDataToRepository(StockProductRequestProduct currentData, StockProductRequestProduct item)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestProductViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockProductRequestProductViewModel>> PublishAsync(List<StockProductRequestProductViewModel> dataViewModels)
-        {
-            try
+            if (currentData != null)
             {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
+                currentData.Accepted1Qty = item.Accepted1Qty;
+                currentData.Accepted2Qty = item.Accepted2Qty;
+                currentData.Accepted3Qty = item.Accepted3Qty;
+                currentData.DeliveredQty = item.DeliveredQty;
+                currentData.ProductId = item.ProductId;
+                currentData.RequestQty = item.RequestQty;
+                currentData.StockProductRequestId = item.StockProductRequestId;
 
-                dataList.ForEach(item =>
-                {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentData = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.StockProductRequestId == item.StockProductRequestId).FirstOrDefault();
-                    if (currentData != null)
-                    {
-                        currentData.Accepted1Qty = item.Accepted1Qty;
-                        currentData.Accepted2Qty = item.Accepted2Qty;
-                        currentData.Accepted3Qty = item.Accepted3Qty;
-                        currentData.DeliveredQty = item.DeliveredQty;
-                        currentData.ProductId = item.ProductId;
-                        currentData.RequestQty = item.RequestQty;
-                        currentData.StockProductRequestId = item.StockProductRequestId;
-                        
-                        currentData.LastUpdate = DateTime.Now;
-                        Repository.UpdateAsync(item);
-                    }
-                    else
-                    {
-                        item.Id = Guid.NewGuid();
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        Repository.AddAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
+                currentData.LastUpdate = DateTime.Now;
+                MainRepository.Update(item);
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.Id = Guid.NewGuid();
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
+        }
+        public async Task<List<StockProductRequestProductViewModel>> UpdateStockProductRequestProductDetails(List<StockProductRequestProductViewModel> model,
+                                                                                                             Guid stockId, string currentUserId)
+        {
+            foreach (var item in model)
+            {
+                var stock = await StockRepository.GetByIdAsync(stockId);
+                var stockProductRequestProduct = await MainRepository.GetByIdAsync(item.UniqueId);
+
+                if (stock.Accept1ById == currentUserId)
+                    stockProductRequestProduct.Accepted1Qty = item.MyAcceptedQty;
+                if (stock.Accept2ById == currentUserId)
+                    stockProductRequestProduct.Accepted2Qty = item.MyAcceptedQty;
+                if (stock.Accept3ById == currentUserId)
+                    stockProductRequestProduct.Accepted3Qty = item.MyAcceptedQty;
+            }
+
+            await MainRepository.SaveChangesAsync();
+
+            return model;
         }
 
-        public async Task<List<StockProductRequestProductViewModel>> Delete(List<StockProductRequestProductViewModel> dataViewModels)
+        public async Task<ICollection<StockProductRequestProduct>> GetDetailsHistory(Guid stockProductRequestId)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
+            return await MainRepository.FindAllAsync(p => p.StockProductRequestId == stockProductRequestId && p.DataOwnerId == DataOwnerKey);
 
-                dataList.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DbContext.StockProductRequestProducts.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
         #endregion
     }

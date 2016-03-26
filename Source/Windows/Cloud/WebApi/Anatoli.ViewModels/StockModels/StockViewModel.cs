@@ -9,10 +9,10 @@ namespace Anatoli.ViewModels.StockModels
         public int StockCode { get; set; }
         public string StockName { get; set; }
         public string Address { get; set; }
-        public Guid StoreId { get; set; }
-        public Guid? Accept1ById { get; set; }
-        public Guid? Accept2ById { get; set; }
-        public Guid? Accept3ById { get; set; }
+        public Guid? StoreId { get; set; }
+        public string Accept1ById { get; set; }
+        public string Accept2ById { get; set; }
+        public string Accept3ById { get; set; }
         public Guid? StockTypeId { get; set; }
         public Guid? MainSCMStockId { get; set; }
         public Guid? RelatedSCMStockId { get; set; }

@@ -1,8 +1,11 @@
-﻿using Anatoli.Cloud.WebApi.Infrastructure;
+﻿using Anatoli.Business.Helpers;
+using Anatoli.Cloud.WebApi.Handler;
+using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.Cloud.WebApi.Providers;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.DataAccess.Repositories;
+using AutoMapper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -25,6 +28,7 @@ namespace Anatoli.Cloud.WebApi
 {
     public class Startup
     {
+
         public void Configuration(IAppBuilder app)
         {
             Database.SetInitializer<AnatoliDbContext>(new MigrateDatabaseToLatestVersion<AnatoliDbContext, Anatoli.DataAccess.Migrations.Configuration>());
@@ -42,6 +46,7 @@ namespace Anatoli.Cloud.WebApi
 
             ConfigureWebApi(httpConfig);
 
+            ConfigureAutoMapper();
             //ConfigureUserinfo();
 
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
@@ -74,7 +79,7 @@ namespace Anatoli.Cloud.WebApi
                 PhoneNumberConfirmed = true,
                 CreatedDate = DateTime.Now,
                 PhoneNumber = "87135000",
-                PrivateLabelOwner = new Principal { Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16") },
+                ApplicationOwnerId = new Principal { Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16") },
                 Principal_Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16")
             };
 
@@ -103,7 +108,7 @@ namespace Anatoli.Cloud.WebApi
                 PhoneNumberConfirmed = true,
                 PhoneNumber = "02100000000",
                 CreatedDate = DateTime.Now,
-                PrivateLabelOwner = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
+                ApplicationOwnerId = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
                 Principal_Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
             };
 
@@ -123,7 +128,7 @@ namespace Anatoli.Cloud.WebApi
                 PhoneNumberConfirmed = true,
                 PhoneNumber = "09125793221",
                 CreatedDate = DateTime.Now,
-                PrivateLabelOwner = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
+                ApplicationOwnerId = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
                 Principal_Id = Guid.Parse("0DAB1636-AE22-4ABE-A18D-6EC7B8E9C544")
             };
 
@@ -141,7 +146,7 @@ namespace Anatoli.Cloud.WebApi
                 PhoneNumberConfirmed = true,
                 PhoneNumber = "09125793221",
                 CreatedDate = DateTime.Now,
-                PrivateLabelOwner = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
+                ApplicationOwnerId = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
                 Principal_Id = Guid.Parse("33FA710A-B1E6-4765-8719-0DD1589E8F8B")
             };
 
@@ -159,7 +164,7 @@ namespace Anatoli.Cloud.WebApi
                 PhoneNumberConfirmed = true,
                 PhoneNumber = "09125793221",
                 CreatedDate = DateTime.Now,
-                PrivateLabelOwner = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
+                ApplicationOwnerId = new Principal { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C") },
                 Principal_Id = Guid.Parse("95FCB850-2E63-4B26-8DBF-BBC86B7F5046")
             };
 
@@ -212,9 +217,14 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureWebApi(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-
+            config.MessageHandlers.Add(new WrappingHandler());
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+
+        private void ConfigureAutoMapper()
+        {
+            ConfigAutoMapperHelper.Config();
         }
     }
 }

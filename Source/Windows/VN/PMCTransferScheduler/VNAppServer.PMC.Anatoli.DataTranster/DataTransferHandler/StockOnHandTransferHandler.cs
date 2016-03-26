@@ -19,7 +19,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string StockOnHandDataType = "StockOnHand";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadStockOnHandToServer(HttpClient client, string serverURI, string privateOwnerQueryString, string privateOwnerId)
+        public static void UploadStockOnHandToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -32,11 +32,11 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     var dbData = StockAdapter.Instance.GetAllStockOnHandsByStockId(lastUpload, stock.ID.ToString(), stock.StoreId.ToString());
                     if (dbData != null)
                     {
-                        RequestModel request = new RequestModel() { StockActiveOnHand = dbData, privateOwnerId = privateOwnerId };
+                        StockRequestModel request = new StockRequestModel() { stockActiveOnHandData = dbData };
 
                         string data = JsonConvert.SerializeObject(request);
                         string URI = serverURI + UriInfo.SaveStockOnHandURI;
-                        var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId);
+                        var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                     }
                     else
                         log.Info("Null data to transfer " + serverURI);

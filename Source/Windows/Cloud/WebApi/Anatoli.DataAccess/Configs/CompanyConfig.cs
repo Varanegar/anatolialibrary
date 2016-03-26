@@ -22,7 +22,7 @@ namespace Anatoli.DataAccess.Configs
                 .WithRequired(c => c.Company)
                 .WillCascadeOnDelete(false);
 
-            this.HasMany<CustomerNotVerified>(csa => csa.CustomerNotVerifieds)
+            this.HasMany<Customer>(csa => csa.Customers)
                 .WithRequired(c => c.Company)
                 .WillCascadeOnDelete(false);
 

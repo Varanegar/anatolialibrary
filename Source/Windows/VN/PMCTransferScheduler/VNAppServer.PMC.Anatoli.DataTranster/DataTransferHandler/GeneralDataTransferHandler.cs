@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
         where T : BaseViewModel, new()
     {
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadDataToServer(HttpClient client, string serverURI, string privateOwnerQueryString)
+        public static void UploadDataToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -29,8 +29,8 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.GetSaveURI(typeof(T)) + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    string URI = serverURI + UriInfo.GetSaveURI(typeof(T));
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
 
@@ -38,8 +38,8 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 if (dbData != null)
                 {
                     string data = JsonConvert.SerializeObject(dbData);
-                    string URI = serverURI + UriInfo.GetCheckDeletedURI(typeof(T)) + privateOwnerQueryString;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client);
+                    string URI = serverURI + UriInfo.GetCheckDeletedURI(typeof(T));
+                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
 
                 }
 

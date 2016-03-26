@@ -8,7 +8,7 @@ namespace Anatoli.ViewModels.ProductModels
     {
         public string UniqueIdString { get; set; }
         public int ParentId { get; set; }
-        //public Guid ParentUniqueId { get; set; }
+        public Guid ParentUniqueId { get; set; }
         public string ParentUniqueIdString { get; set; }
         public string GroupName { get; set; }
         public int NLeft { get; set; }

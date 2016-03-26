@@ -13,146 +13,49 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class CityRegionDomain : BusinessDomain<CityRegionViewModel>, IBusinessDomain<CityRegion, CityRegionViewModel>
+    public class CityRegionDomain : BusinessDomainV2<CityRegion, CityRegionViewModel, CityRegionRepository, ICityRegionRepository>, IBusinessDomainV2<CityRegion, CityRegionViewModel>
     {
         #region Properties
-        public IAnatoliProxy<CityRegion, CityRegionViewModel> Proxy { get; set; }
-        public IRepository<CityRegion> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        CityRegionDomain() { }
-        public CityRegionDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public CityRegionDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new CityRegionRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<CityRegion, CityRegionViewModel>.Create())
+        public CityRegionDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public CityRegionDomain(ICityRegionRepository cityRegionRepository, IPrincipalRepository principalRepository, IAnatoliProxy<CityRegion, CityRegionViewModel> proxy)
+        public CityRegionDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = cityRegionRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<CityRegionViewModel>> GetAll()
+        protected override void AddDataToRepository(CityRegion currentCityRegion, CityRegion item)
         {
-            var cityRegions = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(cityRegions.ToList()); ;
-        }
-
-        public async Task<List<CityRegionViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var cityRegions = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(cityRegions.ToList()); ;
-        }
-
-        public async Task<List<CityRegionViewModel>> PublishAsync(List<CityRegionViewModel> dataViewModels)
-        {
-            try
+            if (currentCityRegion != null)
             {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = false;
-
-                var cityRegions = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                foreach (CityRegion item in cityRegions)
+                if (currentCityRegion.GroupName != item.GroupName ||
+                    currentCityRegion.NLeft != item.NLeft ||
+                    currentCityRegion.NRight != item.NRight ||
+                    currentCityRegion.NLevel != item.NLevel ||
+                    currentCityRegion.CityRegion2Id != item.CityRegion2Id)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentCityRegion = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentCityRegion != null)
-                    {
-                        if (currentCityRegion.GroupName != item.GroupName ||
-                            currentCityRegion.NLeft != item.NLeft ||
-                            currentCityRegion.NRight != item.NRight ||
-                            currentCityRegion.NLevel != item.NLevel ||
-                            currentCityRegion.CityRegion2Id != item.CityRegion2Id)
-                        {
-                            currentCityRegion.LastUpdate = DateTime.Now;
-                            currentCityRegion.GroupName = item.GroupName;
-                            currentCityRegion.NLeft = item.NLeft;
-                            currentCityRegion.NRight = item.NRight;
-                            currentCityRegion.NLevel = item.NLevel;
-                            currentCityRegion.CityRegion2Id = item.CityRegion2Id;
-                            await Repository.UpdateAsync(currentCityRegion);
-                        }
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        await Repository.AddAsync(item);
-                    }
-                };
-                await Repository.SaveChangesAsync();
-                
+                    currentCityRegion.LastUpdate = DateTime.Now;
+                    currentCityRegion.GroupName = item.GroupName;
+                    currentCityRegion.NLeft = item.NLeft;
+                    currentCityRegion.NRight = item.NRight;
+                    currentCityRegion.NLevel = item.NLevel;
+                    currentCityRegion.CityRegion2Id = item.CityRegion2Id;
+                    MainRepository.Update(currentCityRegion);
+                }
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            finally
-            {
-                Repository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                log.Info("PublishAsync Finish" + dataViewModels.Count);
-            }
-            return dataViewModels;
-
         }
-        public async Task<List<CityRegionViewModel>> CheckDeletedAsync(List<CityRegionViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-        public async Task<List<CityRegionViewModel>> Delete(List<CityRegionViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var cityRegions = Proxy.ReverseConvert(dataViewModels);
-
-                cityRegions.ForEach(item =>
-                {
-                    var product = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(product);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
-
-
         #endregion
     }
 }

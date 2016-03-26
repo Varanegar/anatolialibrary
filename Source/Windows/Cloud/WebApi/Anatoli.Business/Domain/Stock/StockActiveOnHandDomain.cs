@@ -15,147 +15,103 @@ using Anatoli.PMC.DataAccess.Helpers;
 
 namespace Anatoli.Business.Domain
 {
-    public class StockActiveOnHandDomain : BusinessDomain<StockActiveOnHandViewModel>, IBusinessDomain<StockActiveOnHand, StockActiveOnHandViewModel>
+    public class StockActiveOnHandDomain : BusinessDomainV2<StockActiveOnHand, StockActiveOnHandViewModel, StockActiveOnHandRepository, IStockActiveOnHandRepository>, IBusinessDomainV2<StockActiveOnHand, StockActiveOnHandViewModel>
     {
         #region Properties
-        public IAnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel> Proxy { get; set; }
-        public IRepository<StockActiveOnHand> Repository { get; set; }
         public IRepository<StockOnHandSync> StockSynRepository { get; set; }
         public IRepository<StockHistoryOnHand> StockHistoryOnHandRepository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
 
         #endregion
 
         #region Ctors
-        StockActiveOnHandDomain() { }
-        public StockActiveOnHandDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public StockActiveOnHandDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new StockActiveOnHandRepository(dbc), new StockHistoryOnHandRepository(dbc), new StockOnHandSyncRepository(dbc), new PrincipalRepository(dbc), 
-                    AnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel>.Create()
-            )
+        public StockActiveOnHandDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public StockActiveOnHandDomain(IStockActiveOnHandRepository dataRepository, IStockHistoryOnHandRepository dataHistoryRepository, IStockOnHandSyncRepository dataSyncRepository, 
-                    IPrincipalRepository principalRepository, IAnatoliProxy<StockActiveOnHand, StockActiveOnHandViewModel> proxy)
+        public StockActiveOnHandDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = dataRepository;
-            StockSynRepository = dataSyncRepository;
-            StockHistoryOnHandRepository = dataHistoryRepository;
-            PrincipalRepository = principalRepository;
+            StockSynRepository = new StockOnHandSyncRepository(dbc);
+            StockHistoryOnHandRepository = new StockHistoryOnHandRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<StockActiveOnHandViewModel>> GetAll()
+        public async Task<ICollection<StockActiveOnHandViewModel>> GetAllByStockId(Guid stockId)
         {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
+            return await GetAllAsync(p => p.DataOwnerId == DataOwnerKey && p.StockId == stockId);
 
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-
-        public async Task<List<StockActiveOnHandViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataList = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataList.ToList()); ;
-        }
-        public async Task<List<StockActiveOnHandViewModel>> GetAllByStockId(string stockId)
-        {
-            Guid stockGuid = Guid.Parse(stockId);
-            var stockActiveOnhands = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.StockId == stockGuid);
-
-            return Proxy.Convert(stockActiveOnhands.ToList());
         }
 
 
-        public async Task<List<StockActiveOnHandViewModel>> PublishAsync(List<StockActiveOnHandViewModel> dataViewModels)
+        public override async Task PublishAsync(List<StockActiveOnHand> dataList)
         {
             try
             {
-                if (dataViewModels.Count == 0) return dataViewModels;
-                var dataList = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, PrivateLabelOwnerId, Repository.DbContext);
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                if (dataList.Count == 0) return;
+                Guid stockId = dataList[0].StockId;
+                await MainRepository.DeleteBatchAsync(p => p.StockId == stockId && p.DataOwnerId == DataOwnerKey);
+
+                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, DBContext);
                 
                 dataList.ForEach(item =>
                 {
                     item.Id = Guid.NewGuid();
-                    item.PrivateLabelOwner_Id = PrivateLabelOwnerId;
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                     item.StockOnHandSyncId = syncId;
                     item.CreatedDate = item.LastUpdate = DateTime.Now;
-                    Repository.AddAsync(item);
+                    MainRepository.Add(item);
                 });
-                await Repository.SaveChangesAsync();
-                SaveActiveInfoIntoHistory(Repository.DbContext);
+                await MainRepository.SaveChangesAsync();
             }
             catch(Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
-            return dataViewModels;
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + dataList.Count);
+            }
         }
 
-        public async Task<List<StockActiveOnHandViewModel>> Delete(List<StockActiveOnHandViewModel> dataViewModels)
+        public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, AnatoliDbContext context)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataList = Proxy.ReverseConvert(dataViewModels);
 
-                dataList.ForEach(item =>
+            try
+            {
+                var data = new StockOnHandSync
                 {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DeleteAsync(data);
-                });
+                    CreatedDate = DateTime.Now,
+                    LastUpdate = DateTime.Now,
+                    ApplicationOwnerId = ApplicationOwnerKey,
+                    DataOwnerId = DataOwnerKey,
+                    DataOwnerCenterId = DataOwnerCenterKey,
+                    Id = Guid.NewGuid(),
+                    StockId = stockId,
+                    SyncDate = DateTime.Now,
+                    SyncPDate = PersianDate.Today.ToShortDateString(),
+                };
 
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
+                await StockSynRepository.AddAsync(data);
+                await MainRepository.SaveChangesAsync();
 
-        public async Task<Guid> PublishAsyncOnHandSyncInfo(Guid stockId, Guid privateOwnerId, AnatoliDbContext context)
-        {
-
-            var data = new StockOnHandSync
+                return data.Id;
+            }
+            catch (Exception ex)
             {
-                CreatedDate = DateTime.Now,
-                LastUpdate = DateTime.Now,
-                PrivateLabelOwner_Id = privateOwnerId,
-                Id = Guid.NewGuid(),
-                StockId = stockId,
-                SyncDate = DateTime.Now,
-                SyncPDate = PersianDate.Today.ToShortDateString(),
-            };
-
-            await StockSynRepository.AddAsync(data);
-            await Repository.SaveChangesAsync();
-
-            return data.Id;
+                Logger.Error("PublishAsyncOnHandSyncInfo", ex);
+                throw ex;
+            }
+            finally
+            {
+            }
 
         }
 
-        public void SaveActiveInfoIntoHistory(AnatoliDbContext context)
-        {
-//            context.Database.ExecuteSqlCommand(@"insert into StockHistoryOnHands
-//                SELECT NewID()
-//                      ,[Qty]
-//                      ,[StockId]
-//                      ,[ProductId]
-//                      ,[StockOnHandSyncId]
-//                      ,[Number_ID]
-//                      ,[CreatedDate]
-//                      ,[LastUpdate]
-//                      ,[IsRemoved]
-//                      ,[AddedBy_Id]
-//                      ,[LastModifiedBy_Id]
-//                      ,[PrivateLabelOwner_Id]
-//                  FROM [dbo].[StockActiveOnHands]
-//                ");
-        }
         #endregion
     }
 }

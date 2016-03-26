@@ -32,7 +32,7 @@ namespace Anatoli.Business.Proxy.BaseConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner_Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
                 BaseTypeDesc = data.BaseTypeDesc,
 
                 BaseValues = BaseValueProxy.Convert(data.BaseValues.ToList()),
@@ -48,7 +48,7 @@ namespace Anatoli.Business.Proxy.BaseConcretes
 
                 BaseTypeDesc = data.BaseTypeDesc,
 
-                PrivateLabelOwner = new Principal { Id = data.PrivateOwnerId },
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 BaseValues = data.BaseValues != null? BaseValueProxy.ReverseConvert(data.BaseValues.ToList()) : null,
             };

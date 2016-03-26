@@ -13,140 +13,82 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class BasketItemDomain : BusinessDomain<BasketItemViewModel>, IBusinessDomain<BasketItem, BasketItemViewModel>
+    public class BasketItemDomain : BusinessDomainV2<BasketItem, BasketItemViewModel, BasketItemRepository, IBasketItemRepository>, IBusinessDomainV2<BasketItem, BasketItemViewModel>
     {
         #region Properties
-        public IAnatoliProxy<BasketItem, BasketItemViewModel> Proxy { get; set; }
-        public IRepository<BasketItem> Repository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        BasketItemDomain() { }
-        public BasketItemDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public BasketItemDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new BasketItemRepository(dbc),new PrincipalRepository(dbc), AnatoliProxy<BasketItem, BasketItemViewModel>.Create())
+        public BasketItemDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public BasketItemDomain(IBasketItemRepository basketItemRepository, IPrincipalRepository principalRepository, IAnatoliProxy<BasketItem, BasketItemViewModel> proxy)
+        public BasketItemDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = basketItemRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<BasketItemViewModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
         public async Task<List<BasketItemViewModel>> GetByIds(List<BasketItemViewModel> data)
         {
             foreach(var item in data)
             {
-                var value = await Repository.FindAsync(p => p.BasketId == item.BasketId && p.ProductId == item.ProductId);
+                var value = await MainRepository.FindAsync(p => p.BasketId == item.BasketId && p.ProductId == item.ProductId);
                 if(value !=  null) item.Qty = value.Qty;
             };
             return data;
         }
-        public async Task<List<BasketItemViewModel>> GetAllChangedAfter(DateTime selectedDate)
+        protected override void AddDataToRepository(BasketItem currentBasket, BasketItem item)
         {
-            throw new NotImplementedException();
+            if (currentBasket != null)
+            {
+                currentBasket.ProductId = item.ProductId;
+                currentBasket.Qty = item.Qty;
+                currentBasket.LastUpdate = DateTime.Now;
+                MainRepository.Update(currentBasket);
+            }
+            else
+            {
+                item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
+            }
         }
-
-        public async Task<List<BasketItemViewModel>> PublishAsync(List<BasketItemViewModel> dataViewModels)
+        public async Task<ICollection<BasketItem>> ChangeAsync(List<BasketItem> dataListInfo)
         {
             try
             {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
                 foreach (BasketItem item in dataListInfo)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
-                    if (currentBasket != null)
-                    {
-                        currentBasket.ProductId = item.ProductId;
-                        currentBasket.Qty = item.Qty;
-                        currentBasket.LastUpdate = DateTime.Now;
-                        await Repository.UpdateAsync(currentBasket);
-                    }
-                    else
-                    {
-                        item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        await Repository.AddAsync(item);
-                    }
-                };
-                await Repository.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                log.Error("PublishAsync", ex);
-                throw ex;
-            }
-            return dataViewModels;
-
-        }
-
-        public async Task<List<BasketItemViewModel>> ChangeAsync(List<BasketItemViewModel> dataViewModels)
-        {
-            try
-            {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                foreach (BasketItem item in dataListInfo)
-                {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentBasket = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    var currentBasket = MainRepository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
                     if (currentBasket != null)
                     {
                         currentBasket.ProductId = item.ProductId;
                         currentBasket.Qty += item.Qty;
                         currentBasket.LastUpdate = DateTime.Now;
-                        await Repository.UpdateAsync(currentBasket);
+                        await MainRepository.UpdateAsync(currentBasket);
                     }
                     else
                     {
                         item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        await Repository.AddAsync(item);
+                        await MainRepository.AddAsync(item);
                     }
                 };
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                log.Error("ChangeAsync", ex);
+                Logger.Error("ChangeAsync", ex);
                 throw ex;
             }
-            return dataViewModels;
+            return dataListInfo;
 
         }
 
-        public async Task<List<BasketItemViewModel>> Delete(List<BasketItemViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
-
-                dataListInfo.ForEach(item =>
-                {
-                    var basketItem = Repository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
-
-                    Repository.DeleteAsync(basketItem);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
         #endregion
     }
 }

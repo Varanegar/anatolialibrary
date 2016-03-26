@@ -30,7 +30,7 @@ namespace Anatoli.ViewModels.User
         public string RoleName { get; set; }
 
         [Required]
-        public Guid PrivateOwnerId { get; set; }
+        public Guid ApplicationId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "کلمه عبور {0} می بایست خداقل {2} کاراکتر باشد.", MinimumLength = 2)]

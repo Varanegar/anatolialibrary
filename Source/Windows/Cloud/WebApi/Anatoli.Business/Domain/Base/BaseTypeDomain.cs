@@ -13,133 +13,66 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class BaseTypeDomain : BusinessDomain<BaseTypeViewModel>, IBusinessDomain<BaseType, BaseTypeViewModel>
+    public class BaseTypeDomain : BusinessDomainV2<BaseType, BaseTypeViewModel, BaseTypeRepository, IBaseTypeRepository>, IBusinessDomainV2<BaseType, BaseTypeViewModel>
     {
         #region Properties
-        public IAnatoliProxy<BaseType, BaseTypeViewModel> Proxy { get; set; }
-        public IRepository<BaseType> Repository { get; set; }
         public IRepository<BaseValue> BaseValueRepository { get; set; }
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid PrivateLabelOwnerId { get; private set; }
-
         #endregion
 
         #region Ctors
-        BaseTypeDomain() { }
-        public BaseTypeDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public BaseTypeDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new BaseTypeRepository(dbc), new BaseValueRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<BaseType, BaseTypeViewModel>.Create())
+        public BaseTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public BaseTypeDomain(IBaseTypeRepository baseTypeRepository, IBaseValueRepository baseValueRepository, IPrincipalRepository principalRepository, IAnatoliProxy<BaseType, BaseTypeViewModel> proxy)
+        public BaseTypeDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = baseTypeRepository;
-            BaseValueRepository = baseValueRepository;
-            PrincipalRepository = principalRepository;
+            BaseValueRepository = new BaseValueRepository(dbc);
+            PrincipalRepository = new PrincipalRepository(dbc);
         }
         #endregion
 
         #region Methods
-        public async Task<List<BaseTypeViewModel>> GetAll()
-        {
-            var dataListInfo = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId);
-
-            return Proxy.Convert(dataListInfo.ToList()); ;
-        }
-
-        public async Task<List<BaseTypeViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var dataListInfo = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(dataListInfo.ToList()); ;
-        }
-
-        public async Task<List<BaseTypeViewModel>> PublishAsync(List<BaseTypeViewModel> dataViewModels)
+        public override async Task PublishAsync(List<BaseType> dataListInfo)
         {
             try
             {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentTypes = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
+                
+                var currentTypes = MainRepository.GetQuery().Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.DataOwnerCenterId == DataOwnerCenterKey).ToList();
 
                 foreach (BaseType item in dataListInfo)
                 {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
                     var currentType = currentTypes.Find(p => p.Id == item.Id);
                     if (currentType != null)
                     {
                         currentType.BaseTypeDesc = item.BaseTypeDesc;
                         currentType.LastUpdate = DateTime.Now;
-                        currentType = await SetBaseValueData(currentType, item.BaseValues.ToList(), Repository.DbContext);
-                        await Repository.UpdateAsync(currentType);
+                        currentType = await SetBaseValueData(currentType, item.BaseValues.ToList(), MainRepository.DbContext);
+                        await MainRepository.UpdateAsync(currentType);
                     }
                     else
                     {
+                        item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
+
                         item.BaseValues.ToList().ForEach(itemDetail =>
                         {
-                            itemDetail.PrivateLabelOwner = item.PrivateLabelOwner;
+                            itemDetail.ApplicationOwnerId = item.ApplicationOwnerId;
+                            itemDetail.DataOwnerId = DataOwnerKey;
+                            itemDetail.DataOwnerCenterId = DataOwnerCenterKey;
                             itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                         });
-                        await Repository.AddAsync(item);
+                        await MainRepository.AddAsync(item);
                     }
                 }
-                await Repository.SaveChangesAsync();
+                await MainRepository.SaveChangesAsync();
             }
             catch(Exception ex)
             {
-                log.Error("PublishAsync", ex);
+                Logger.Error("PublishAsync", ex);
                 throw ex;
             }
-            return dataViewModels;
-
-        }
-        public async Task<List<BaseTypeViewModel>> CheckDeletedAsync(List<BaseTypeViewModel> dataViewModels)
-        {
-            try
-            {
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-                var currentDataList = Repository.GetQuery().Where(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId).ToList();
-
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.Id) == null)
-                    {
-                        item.LastUpdate = DateTime.Now;
-                        item.IsRemoved = true;
-                        Repository.UpdateAsync(item);
-                    }
-                });
-
-                await Repository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                log.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-
-            return dataViewModels;
-        }
-
-        public async Task<List<BaseTypeViewModel>> Delete(List<BaseTypeViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var dataListInfo = Proxy.ReverseConvert(dataViewModels);
-
-                dataListInfo.ForEach(item =>
-                {
-                    var baseType = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-
-                    Repository.DeleteAsync(baseType);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
         }
 
         public async Task<BaseType> SetBaseValueData(BaseType data, List<BaseValue> baseValues, AnatoliDbContext context)
@@ -152,12 +85,13 @@ namespace Anatoli.Business.Domain
                     if (count == 0)
                     {
                         item.BaseTypeId = data.Id;
-                        item.PrivateLabelOwner = data.PrivateLabelOwner;
+                        item.ApplicationOwnerId = data.ApplicationOwnerId;
                         item.CreatedDate = item.LastUpdate = data.CreatedDate;
                         BaseValueRepository.Add(item);
                     }
                     else
                     {
+                        BaseValueRepository.DeleteBatch(p => p.BaseTypeId == data.Id);
                         var currentBaseValue = BaseValueRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
                         if (currentBaseValue.BaseValueName != item.BaseValueName)
                         {
@@ -167,6 +101,7 @@ namespace Anatoli.Business.Domain
                         }
                     }
                 }
+                BaseValueRepository.SaveChanges();
             });
             return data;
         }

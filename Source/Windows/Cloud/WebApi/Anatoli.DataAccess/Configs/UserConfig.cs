@@ -11,12 +11,10 @@ namespace Anatoli.DataAccess.Configs
     {
         public UserConfig()
         {
-            this.HasRequired<Principal>(p => p.Principal);
-
-            this.HasOptional<Role>(r => r.Role)
+            this.HasRequired<ApplicationOwner>(p => p.ApplicationOwner)
                 .WithMany(u => u.Users);
 
-            this.HasOptional<Group>(r => r.Group)
+            this.HasRequired<AnatoliContact>(r => r.AnatoliContact)
                 .WithMany(u => u.Users);
 
             this.HasMany<Stock>(p => p.Stocks)

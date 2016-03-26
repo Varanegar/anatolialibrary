@@ -13,102 +13,41 @@ using Anatoli.ViewModels.BaseModels;
 
 namespace Anatoli.Business.Domain
 {
-    public class ItemImageDomain : BusinessDomain<ItemImageViewModel>, IBusinessDomain<ItemImage, ItemImageViewModel>
+    public class ItemImageDomain : BusinessDomainV2<ItemImage, ItemImageViewModel, ItemImageRepository, IItemImageRepository>, IBusinessDomainV2<ItemImage, ItemImageViewModel>
     {
         #region Properties
-        public IAnatoliProxy<ItemImage, ItemImageViewModel> Proxy { get; set; }
-        public IRepository<ItemImage> Repository { get; set; }
-
         #endregion
 
         #region Ctors
-        ItemImageDomain() { }
-        public ItemImageDomain(Guid privateLabelOwnerId) : this(privateLabelOwnerId, new AnatoliDbContext()) { }
-        public ItemImageDomain(Guid privateLabelOwnerId, AnatoliDbContext dbc)
-            : this(new ItemImageRepository(dbc), new PrincipalRepository(dbc), AnatoliProxy<ItemImage, ItemImageViewModel>.Create())
+        public ItemImageDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
         {
-            PrivateLabelOwnerId = privateLabelOwnerId;
+
         }
-        public ItemImageDomain(IItemImageRepository itemImageRepository, IPrincipalRepository principalRepository, IAnatoliProxy<ItemImage, ItemImageViewModel> proxy)
+        public ItemImageDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            Proxy = proxy;
-            Repository = itemImageRepository;
-            PrincipalRepository = principalRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<List<ItemImageViewModel>> GetAll()
+        protected override void AddDataToRepository(ItemImage currentItemImage, ItemImage item)
         {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.ImageType != ItemImageViewModel.UserImageType);
-
-            return Proxy.Convert(itemImages.ToList()); ;
-        }
-
-        public async Task<List<ItemImageViewModel>> GetAllChangedAfter(DateTime selectedDate)
-        {
-            var itemImages = await Repository.FindAllAsync(p => p.PrivateLabelOwner.Id == PrivateLabelOwnerId && p.LastUpdate >= selectedDate);
-
-            return Proxy.Convert(itemImages.ToList()); ;
-        }
-
-        public async Task<List<ItemImageViewModel>> PublishAsync(List<ItemImageViewModel> dataViewModels)
-        {
-            try
+            if (currentItemImage != null)
             {
-                var itemImages = Proxy.ReverseConvert(dataViewModels);
-                var privateLabelOwner = PrincipalRepository.GetQuery().Where(p => p.Id == PrivateLabelOwnerId).FirstOrDefault();
-
-                foreach (ItemImage item in itemImages)
-                {
-                    item.PrivateLabelOwner = privateLabelOwner ?? item.PrivateLabelOwner;
-                    var currentItemImage = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                    if (currentItemImage != null)
-                    {
-                        currentItemImage.LastUpdate = DateTime.Now;
-                        currentItemImage.TokenId = item.TokenId;
-                        currentItemImage.ImageName = item.ImageName;
-                        currentItemImage.IsDefault = item.IsDefault;
-                        currentItemImage.ImageType = item.ImageType;
-                        await Repository.UpdateAsync(currentItemImage);
-                    }
-                    else
-                    {
-                        item.CreatedDate = item.LastUpdate = DateTime.Now;
-                        await Repository.AddAsync(item);
-                    }
-                };
-                await Repository.SaveChangesAsync();
-                
+                currentItemImage.LastUpdate = DateTime.Now;
+                currentItemImage.TokenId = item.TokenId;
+                currentItemImage.ImageName = item.ImageName;
+                currentItemImage.IsDefault = item.IsDefault;
+                currentItemImage.ImageType = item.ImageType;
+                MainRepository.Update(currentItemImage);
             }
-            catch(Exception ex)
+            else
             {
-                log.Error("PublishAsync", ex);
-                throw ex;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                MainRepository.Add(item);
             }
-            return dataViewModels;
-
         }
-
-        public async Task<List<ItemImageViewModel>> Delete(List<ItemImageViewModel> dataViewModels)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                var itemImages = Proxy.ReverseConvert(dataViewModels);
-
-                itemImages.ForEach(item =>
-                {
-                    var data = Repository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                   
-                    Repository.DbContext.Images.Remove(data);
-                });
-
-                Repository.SaveChangesAsync();
-            });
-            return dataViewModels;
-        }
-
-
         #endregion
     }
 }

@@ -1,14 +1,16 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
-    public class Role : BaseModel
+    public class Role : IdentityRole
     {
-        public string Name { get; set; }
 
-        public virtual Principal Principal { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        [ForeignKey("Application")]
+        public Guid ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
     }
 }

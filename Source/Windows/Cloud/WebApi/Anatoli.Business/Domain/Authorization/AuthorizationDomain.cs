@@ -15,30 +15,22 @@ using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Business.Domain.Authorization
 {
-    public class AuthorizationDomain : BusinessDomain1<PrincipalPermission>, IBusinessDomain1<PrincipalPermission>
+    public class AuthorizationDomain : BusinessDomainV2<PrincipalPermission, PrincipalPermissionViewModel, PrincipalPermissionRepository, IPrincipalPermissionRepository>
     {
         #region Properties
-        public override IRepository<PrincipalPermission> MainRepository { get; set; }
         public IRepository<User> UserRepository { get; set; }
         public IRepository<Permission> PermissionRepository { get; set; }
-        public AnatoliDbContext DBContext { get; set; }
         #endregion
 
         #region Ctors
-        AuthorizationDomain() { }
-        public AuthorizationDomain(Guid applicationKey) : this(applicationKey, new AnatoliDbContext()) { }
-        AuthorizationDomain(Guid applicationKey, AnatoliDbContext dbc)
-            : this(new PrincipalPermissionRepository(dbc), new UserRepository(dbc), new PermissionRepository(dbc))
+        public AuthorizationDomain(Guid applicationKey)
+            : this(applicationKey, applicationKey, applicationKey) { }
+        public AuthorizationDomain(Guid applicationKey, Guid dataOwnerKey, Guid dataOwnerCenterKey) 
+            : this(applicationKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext()) { }
+        public AuthorizationDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
+            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-            ApplicationKey = applicationKey;
-            DBContext = dbc;
-        }
-        public AuthorizationDomain(IPrincipalPermissionRepository principalPermissionRepository,
-                                   IUserRepository usersRepository, IPermissionRepository permissionRepository)
-        {
-            MainRepository = principalPermissionRepository;
-            UserRepository = usersRepository;
-            PermissionRepository = permissionRepository;
+            PermissionRepository = new PermissionRepository(dbc);
         }
         #endregion
 
@@ -46,9 +38,8 @@ namespace Anatoli.Business.Domain.Authorization
         public List<PrincipalPermission> GetPermissionsForPrincipal(string userId, string resource, string action)
         {
             //Todo: get all other related principal such as roles and groups
-            var _userId = Guid.Parse(userId);
 
-            var model = MainRepository.GetQuery().Where(p => p.Principal.Id == _userId &&
+            var model = MainRepository.GetQuery().Where(p => p.UserId == userId &&
                                                         p.Permission.Resource == resource &&
                                                         p.Permission.Action == action)
                                                  .ToList();
@@ -56,19 +47,19 @@ namespace Anatoli.Business.Domain.Authorization
             return model;
         }
 
-        public async Task<ICollection<PrincipalPermission>> GetPermissionsForPrincipal(Guid principalId)
+        public async Task<ICollection<PrincipalPermission>> GetPermissionsForPrincipal(string principalId)
         {
             //Todo: get all other related principal such as roles and groups
-            var model = await MainRepository.FindAllAsync(p => p.Principal.Id == principalId);
+            var model = await MainRepository.FindAllAsync(p => p.UserId == principalId);
 
             return model;
         }
 
-        public async Task SavePermissions(List<PrincipalPermission> pp, Guid principalId)
+        public async Task SavePermissions(List<PrincipalPermission> pp, string principalId)
         {
             try
             {
-                await MainRepository.DeleteBatchAsync(p => p.Principal.Id == principalId);
+                await MainRepository.DeleteBatchAsync(p => p.UserId == principalId);
 
                 foreach (var item in pp)
                     await MainRepository.AddAsync(item);

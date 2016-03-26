@@ -12,22 +12,22 @@ using Anatoli.Cloud.WebApi.Models;
 using System.Security.Claims;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.Concretes.BaseConcretes;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     [RoutePrefix("api/gateway/fiscalyear")]
-    public class FiscalYearController : BaseApiController
+    public class FiscalYearController : AnatoliApiController
     {
         //[Authorize(Roles = "AuthorizedApp, User")]
         [Route("fiscalyears")]
-        public async Task<IHttpActionResult> GetFiscalYears(string privateOwnerId)
+        public async Task<IHttpActionResult> GetFiscalYears()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var fiscalYearDomain = new FiscalYearDomain(owner);
-                var result = await fiscalYearDomain.GetAll();
-
+                var result = await new FiscalYearDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -38,36 +38,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
 
-        [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("fiscalyears/after")]
-        public async Task<IHttpActionResult> GetFiscalYears(string privateOwnerId, string dateAfter)
-        {
-            try
-            {
-                var owner = Guid.Parse(privateOwnerId);
-                var fiscalYearDomain = new FiscalYearDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await fiscalYearDomain.GetAllChangedAfter(validDate);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-                return GetErrorResult(ex);
-            }
-        }
-
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveFiscalYears(string privateOwnerId, List<FiscalYearViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveFiscalYears([FromBody]GeneralRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var fiscalYearDomain = new FiscalYearDomain(owner);
-                var result = await fiscalYearDomain.PublishAsync(data);
-                return Ok(result);
+                await new FiscalYearDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new FiscalYearProxy().ReverseConvert(data.fiscalYearData));
+
+                return Ok(data.fiscalYearData);
             }
             catch (Exception ex)
             {

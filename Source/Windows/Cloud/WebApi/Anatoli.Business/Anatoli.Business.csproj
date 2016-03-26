@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -79,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Account\UserDomain.cs" />
     <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
@@ -93,7 +98,6 @@
     <Compile Include="Domain\Product\CharGroupDomain.cs" />
     <Compile Include="Domain\Product\CharValueDomain.cs" />
     <Compile Include="Domain\Product\MainProductGroupDomain.cs" />
-    <Compile Include="Domain\Product\ProductPictureDomain.cs" />
     <Compile Include="Domain\Product\ProductRateDomain.cs" />
     <Compile Include="Domain\Product\ProductTagValueDomain.cs" />
     <Compile Include="Domain\Product\ProductTagDomain.cs" />

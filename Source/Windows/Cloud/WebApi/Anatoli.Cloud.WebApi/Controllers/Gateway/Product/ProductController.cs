@@ -1,4 +1,5 @@
 ﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.ProductConcretes;
 using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels;
 using Anatoli.ViewModels.ProductModels;
@@ -16,13 +17,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Char Group
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chargroups")]
-        public async Task<IHttpActionResult> GetCharGroups(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCharGroups()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charGroupDomain = new CharGroupDomain(owner);
-                var result = await charGroupDomain.GetAll();
+                var charGroupDomain = new CharGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await charGroupDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -35,14 +36,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chargroups/after")]
-        public async Task<IHttpActionResult> GetCharGroups(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCharGroups([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charGroupDomain = new CharGroupDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await charGroupDomain.GetAllChangedAfter(validDate);
+                var charGroupDomain = new CharGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await charGroupDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -53,16 +54,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("chargroups/save")]
-        public async Task<IHttpActionResult> SaveCharGroups(string privateOwnerId, List<CharGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveCharGroups([FromBody] ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charGroupDomain = new CharGroupDomain(owner);
-                var result = await charGroupDomain.PublishAsync(data);
-                return Ok(result);
+                var charGroupDomain = new CharGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await charGroupDomain.PublishAsync(new CharGroupProxy().ReverseConvert(data.charGroupData));
+                return Ok(data.charGroupData);
             }
             catch (Exception ex)
             {
@@ -71,16 +72,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("chargroups/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedCharGroups(string privateOwnerId, List<CharGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedCharGroups([FromBody] ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charGroupDomain = new CharGroupDomain(owner);
-                var result = await charGroupDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var charGroupDomain = new CharGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await charGroupDomain.CheckDeletedAsync(data.charGroupData);
+                return Ok(data.charGroupData);
             }
             catch (Exception ex)
             {
@@ -93,13 +94,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Char Type
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chartypes")]
-        public async Task<IHttpActionResult> GetCharTypes(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCharTypes()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charTypeDomain = new CharTypeDomain(owner);
-                var result = await charTypeDomain.GetAll();
+                var charTypeDomain = new CharTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await charTypeDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -112,14 +113,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("chartypes/after")]
-        public async Task<IHttpActionResult> GetCharTypes(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCharTypes([FromBody] BaseRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charTypeDomain = new CharTypeDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await charTypeDomain.GetAllChangedAfter(validDate);
+                var charTypeDomain = new CharTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(model.dateAfter);
+                var result = await charTypeDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -130,16 +131,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("chartypes/save")]
-        public async Task<IHttpActionResult> SaveCharTypes(string privateOwnerId, List<CharTypeViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveCharTypes([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charTypeDomain = new CharTypeDomain(owner);
-                var result = await charTypeDomain.PublishAsync(data);
-                return Ok(result);
+                var charTypeDomain = new CharTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await charTypeDomain.PublishAsync(new CharTypeProxy().ReverseConvert(model.charTypeData));
+                return Ok(model.charTypeData);
             }
             catch (Exception ex)
             {
@@ -148,16 +149,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("chartypes/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedCharTypes(string privateOwnerId, List<CharTypeViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedCharTypes([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var charTypeDomain = new CharTypeDomain(owner);
-                var result = await charTypeDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var charTypeDomain = new CharTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await charTypeDomain.CheckDeletedAsync(model.charTypeData);
+                return Ok(model.charTypeData);
             }
             catch (Exception ex)
             {
@@ -170,13 +171,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Product Tag
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("producttags")]
-        public async Task<IHttpActionResult> GetProductTags(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductTags()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagDomain(owner);
-                var result = await domain.GetAll();
+                var domain = new ProductTagDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await domain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -189,14 +190,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("producttags/after")]
-        public async Task<IHttpActionResult> GetProductTags(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductTags([FromBody] BaseRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await domain.GetAllChangedAfter(validDate);
+                var domain = new ProductTagDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(model.dateAfter);
+                var result = await domain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -207,16 +208,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("producttags/save")]
-        public async Task<IHttpActionResult> SaveProductTags(string privateOwnerId, List<ProductTagViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveProductTags([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagDomain(owner);
-                var result = await domain.PublishAsync(data);
-                return Ok(result);
+                var domain = new ProductTagDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await domain.PublishAsync(new ProductTagProxy().ReverseConvert(model.productTagData));
+                return Ok(model.productTagData);
             }
             catch (Exception ex)
             {
@@ -225,16 +226,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("producttags/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedProductTags(string privateOwnerId, List<ProductTagViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedProductTags([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagDomain(owner);
-                var result = await domain.CheckDeletedAsync(data);
-                return Ok(result);
+                var domain = new ProductTagDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await domain.CheckDeletedAsync(model.productTagData);
+                return Ok(model.productTagData);
             }
             catch (Exception ex)
             {
@@ -247,13 +248,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Product Tag Value
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("producttagvalues")]
-        public async Task<IHttpActionResult> GetProductTagValues(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductTagValues()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagValueDomain(owner);
-                var result = await domain.GetAll();
+                var domain = new ProductTagValueDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await domain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -266,14 +267,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("producttagvalues/after")]
-        public async Task<IHttpActionResult> GetProductTagValues(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductTagValues([FromBody] BaseRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagValueDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await domain.GetAllChangedAfter(validDate);
+                var domain = new ProductTagValueDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(model.dateAfter);
+                var result = await domain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -284,16 +285,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("producttagvalues/save")]
-        public async Task<IHttpActionResult> SaveProductTagValues(string privateOwnerId, List<ProductTagValueViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveProductTagValues([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagValueDomain(owner);
-                var result = await domain.PublishAsync(data);
-                return Ok(result);
+                var domain = new ProductTagValueDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await domain.PublishAsync(new ProductTagValueProxy().ReverseConvert(model.productTagValueData));
+                return Ok(model.productTagValueData);
             }
             catch (Exception ex)
             {
@@ -302,16 +303,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("producttagvalues/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedProductTagValues(string privateOwnerId, List<ProductTagValueViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedProductTagValues([FromBody] ProductRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var domain = new ProductTagValueDomain(owner);
-                var result = await domain.CheckDeletedAsync(data);
-                return Ok(result);
+                var domain = new ProductTagValueDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await domain.CheckDeletedAsync(model.productTagValueData);
+                return Ok(model.productTagValueData);
             }
             catch (Exception ex)
             {
@@ -324,13 +325,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Products
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("products")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProducts()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ProductDomain(owner);
-                var result = await productDomain.GetAll();
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productDomain.GetAllAsync();
 
                 return Ok(result);
             }
@@ -342,13 +343,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
-        [Route("products/v2"), HttpPost]
+        [Route("products/v2")]
+        [HttpPost]
         [GzipCompression]
-        public async Task<IHttpActionResult> GetProducts()
+        public async Task<IHttpActionResult> GetProductsV2()
         {
             try
             {
-                var result = await new ProductDomain(OwnerKey).GetAllSimple();
+                var result = await new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 return Ok(result);
             }
@@ -362,13 +364,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]
         [Route("searchProducts"), HttpPost]
-        public async Task<IHttpActionResult> SearchProductList([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> SearchProductList([FromBody] BaseRequestModel data)
         {
             try
             {
                 data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
 
-                var model = await new ProductDomain(OwnerKey).Search(data.searchTerm);
+                var model = await new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).Search(data.searchTerm);
 
                 return Ok(model.Select(s => new { id = s.UniqueId, name = s.StoreProductName }).ToList());
             }
@@ -381,14 +383,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("products/after")]
-        public async Task<IHttpActionResult> GetProducts(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProducts([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productDomain = new ProductDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await productDomain.GetAllChangedAfter(validDate);
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -399,16 +401,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp"), HttpPost]
+        [Authorize(Roles = "DataSync, BaseDataAdmin"), HttpPost]
         [Route("save")]
-        public async Task<IHttpActionResult> SaveProducts([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> SaveProducts([FromBody] ProductRequestModel data)
         {
             try
             {
-                if (data != null) log.Info("save product count : " + data.Products.Count);
-                var productDomain = new ProductDomain(OwnerKey);
-                var result = await productDomain.PublishAsync(data.Products);
-                return Ok(result);
+                if (data != null) log.Info("save product count : " + data.productData.Count);
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productDomain.PublishAsync(new ProductProxy().ReverseConvert(data.productData));
+                return Ok(data.productData);
             }
             catch (Exception ex)
             {
@@ -417,12 +419,46 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Product", Action = "SaveProducts"), Route("saveProducts"), HttpPost]
-        public async Task<IHttpActionResult> UpdateProducts([FromBody] List<ProductViewModel> data)
+        [Authorize(Roles = "DataSync, BaseDataAdmin"), HttpPost]
+        [Route("savesuppliers")]
+        public async Task<IHttpActionResult> SaveProductSuppliers([FromBody] ProductRequestModel data)
         {
             try
             {
-                await new ProductDomain(OwnerKey).SaveProducts(data);
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productDomain.SetProductSupplierData(data.productSupplierData);
+                return Ok(data.productSupplierData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin"), HttpPost]
+        [Route("savecharvalues")]
+        public async Task<IHttpActionResult> SaveProductCharValues([FromBody] ProductRequestModel data)
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productDomain.SetProductCharValueData(data.productCharData);
+                return Ok(data.productCharData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [AnatoliAuthorize(Roles = "DataSync, BaseDataAdmin", Resource = "Product", Action = "SaveProducts"), Route("saveProducts"), HttpPost]
+        public async Task<IHttpActionResult> ChangeProductTypes([FromBody] ProductRequestModel data)
+        {
+            try
+            {
+                await new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).ChangeProductTypes(data.productData);
 
                 return Ok(new { });
             }
@@ -434,17 +470,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("checkdeleted"), HttpPost]
-        public async Task<IHttpActionResult> CheckeDeletedProducts([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> CheckeDeletedProducts([FromBody] ProductRequestModel data)
         {
             try
             {
-                if (data != null) log.Info("save product count : " + data.Products.Count);
-                var owner = Guid.Parse(data.privateOwnerId);
-                var productDomain = new ProductDomain(owner);
-                var result = await productDomain.CheckDeletedAsync(data.Products);
-                return Ok(result);
+                if (data != null) log.Info("save product count : " + data.productData.Count);
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, true);
+                await productDomain.CheckDeletedAsync(data.productData);
+                return Ok(data.productData);
             }
             catch (Exception ex)
             {
@@ -453,13 +488,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp", Resource = "Product", Action = "ProductTypes")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "ProductTypes")]
         [Route("productTypes"), HttpPost]
         public async Task<IHttpActionResult> GetProductTypes()
         {
             try
             {
-                var model = await new ProductTypeDomain(OwnerKey).GetAll();
+                var model = await new ProductTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 model.Add(new ViewModels.StockModels.ProductTypeViewModel { UniqueId = Guid.Empty, ProductTypeName = string.Empty });
 
@@ -476,13 +511,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Product Groups
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productgroups")]
-        public async Task<IHttpActionResult> GetProductGroups(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductGroups()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new ProductGroupDomain(owner);
-                var result = await productGroupDomain.GetAll();
+                var productGroupDomain = new ProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productGroupDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -494,14 +529,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productgroups/after")]
-        public async Task<IHttpActionResult> GetProductGroups(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductGroups([FromBody]BaseRequestModel model)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new ProductGroupDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await productGroupDomain.GetAllChangedAfter(validDate);
+                var productGroupDomain = new ProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(model.dateAfter);
+                var result = await productGroupDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -511,16 +546,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("productgroups/save")]
-        public async Task<IHttpActionResult> SaveProductGroups(string privateOwnerId, List<ProductGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveProductGroups([FromBody]ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new ProductGroupDomain(owner);
-                var result = await productGroupDomain.PublishAsync(data);
-                return Ok(result);
+                var productGroupDomain = new ProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productGroupDomain.PublishAsync(new ProductGroupProxy().ReverseConvert(data.productGroupData));
+                return Ok(data.productGroupData);
             }
             catch (Exception ex)
             {
@@ -529,16 +564,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("productgroups/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedProductGroups(string privateOwnerId, List<ProductGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedProductGroups([FromBody]ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new ProductGroupDomain(owner);
-                var result = await productGroupDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var productGroupDomain = new ProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productGroupDomain.CheckDeletedAsync(data.productGroupData);
+                return Ok(data.productGroupData);
             }
             catch (Exception ex)
             {
@@ -551,13 +586,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #region Product Main Groups
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("mainproductgroups")]
-        public async Task<IHttpActionResult> GetMainProductGroups(string privateOwnerId)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetMainProductGroups()
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new MainProductGroupDomain(owner);
-                var result = await productGroupDomain.GetAll();
+                var productGroupDomain = new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productGroupDomain.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -572,7 +607,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var model = await new MainProductGroupDomain(OwnerKey).GetAll();
+                var model = await new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 return Ok(model.Select(s => new { id = s.UniqueId, groupName = s.GroupName, parent = s.ParentUniqueIdString }).ToList());
             }
@@ -584,13 +619,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "MainProductGroupList")]
         [Route("filterMainProductGroupList"), HttpPost]
-        public async Task<IHttpActionResult> FilterMainProductGroupList([FromBody] RequestModel data)
+        public async Task<IHttpActionResult> FilterMainProductGroupList([FromBody] BaseRequestModel data)
         {
             try
             {
                 data.searchTerm = data.searchTerm.Replace("ی", "ي").Replace("ک", "ك");
 
-                var model = await new MainProductGroupDomain(OwnerKey).FilterMainProductGroupList(data.searchTerm);
+                var model = await new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).FilterMainProductGroupList(data.searchTerm);
 
                 return Ok(model.ToList());
             }
@@ -603,14 +638,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("mainproductgroups/after")]
-        public async Task<IHttpActionResult> GetMainProductGroups(string privateOwnerId, string dateAfter)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetMainProductGroups([FromBody] BaseRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new MainProductGroupDomain(owner);
-                var validDate = DateTime.Parse(dateAfter);
-                var result = await productGroupDomain.GetAllChangedAfter(validDate);
+                var productGroupDomain = new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await productGroupDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -620,16 +655,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("mainproductgroups/save")]
-        public async Task<IHttpActionResult> SaveMainProductGroups(string privateOwnerId, List<MainProductGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveMainProductGroups([FromBody] ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new MainProductGroupDomain(owner);
-                var result = await productGroupDomain.PublishAsync(data);
-                return Ok(result);
+                var productGroupDomain = new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productGroupDomain.PublishAsync(new MainProductGroupProxy().ReverseConvert(data.mainProductGroupData));
+                return Ok(data.mainProductGroupData);
             }
             catch (Exception ex)
             {
@@ -638,16 +673,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "AuthorizedApp")]
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("mainproductgroups/checkdeleted")]
-        public async Task<IHttpActionResult> CheckDeletedMainProductGroups(string privateOwnerId, List<MainProductGroupViewModel> data)
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedMainProductGroups([FromBody] ProductRequestModel data)
         {
             try
             {
-                var owner = Guid.Parse(privateOwnerId);
-                var productGroupDomain = new MainProductGroupDomain(owner);
-                var result = await productGroupDomain.CheckDeletedAsync(data);
-                return Ok(result);
+                var productGroupDomain = new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await productGroupDomain.CheckDeletedAsync(data.mainProductGroupData);
+                return Ok(data.mainProductGroupData);
             }
             catch (Exception ex)
             {

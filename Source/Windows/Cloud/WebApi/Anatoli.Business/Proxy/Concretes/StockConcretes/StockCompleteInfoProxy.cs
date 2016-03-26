@@ -32,7 +32,7 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
             {
                 ID = data.Number_ID,
                 UniqueId = data.Id,
-                PrivateOwnerId = data.PrivateLabelOwner.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
 
                 Accept1ById = data.Accept1ById,
                 Accept2ById = data.Accept2ById,

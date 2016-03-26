@@ -10,7 +10,7 @@ namespace Anatoli.DataAccess.Configs
     {
         public RoleConfig()
         {
-            this.HasRequired<Principal>(p => p.Principal);
+            this.HasRequired<Application>(p => p.Application);
         }
     }
 }

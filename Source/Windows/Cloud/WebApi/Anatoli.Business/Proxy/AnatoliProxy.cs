@@ -38,14 +38,14 @@ namespace Anatoli.Business.Proxy
 
             return result;
         }
-        public virtual TSource ReverseConvert(string id, Guid PrivateOwnerId)
+        public virtual TSource ReverseConvert(string id, Guid applicationOwnerId)
         {
             return new TSource
             {
                 Number_ID = 0,
                 Id = Guid.Parse(id),
 
-                PrivateLabelOwner = new Principal { Id = PrivateOwnerId },
+                ApplicationOwnerId = applicationOwnerId,
             };
         }
 
