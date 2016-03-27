@@ -18,7 +18,7 @@ namespace AnatoliIOS.Components
         {
 			var cell = tableView.DequeueReusableCell(MenuItemTableViewCell.Key) as MenuItemTableViewCell;
            
-            cell.UpdateCell(Items[indexPath.Row].Title);
+			cell.UpdateCell(Items[indexPath.Row].Title,Items[indexPath.Row].Icon);
             return cell;
         }
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)

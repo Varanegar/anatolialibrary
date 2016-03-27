@@ -26,7 +26,7 @@ namespace AnatoliIOS.ViewControllers
             // Perform any additional setup after loading the view, typically from a nib.
             var source = new MenuTableViewSource();
             source.Items = new System.Collections.Generic.List<MenuItem>();
-            source.Items.Add(new MenuItem() { Title = "Menu 1" });
+			source.Items.Add(new MenuItem() { Title = "Menu 1" , Icon = UIImage.FromBundle("igicon")});
             menuTableView.Source = source;
 			menuTableView.RegisterNibForCellReuse (UINib.FromName ("MenuItemTableViewCell", null), MenuItemTableViewCell.Key);
         }

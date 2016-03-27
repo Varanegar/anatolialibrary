@@ -2,6 +2,8 @@
 
 using Foundation;
 using UIKit;
+using CoreGraphics;
+using System.Drawing;
 
 namespace AnatoliIOS
 {
@@ -20,9 +22,9 @@ namespace AnatoliIOS
 			
 		}
 
-		public void UpdateCell(string title){
+		public void UpdateCell(string title, UIImage uiImage){
 			titleLabel.Text = title;
-
+			iconImageView.Image = uiImage;
 		}
 	}
 }

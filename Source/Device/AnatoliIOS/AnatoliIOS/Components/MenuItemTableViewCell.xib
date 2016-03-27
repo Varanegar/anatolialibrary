@@ -13,29 +13,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="2" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                        <rect key="frame" x="172" y="11.5" width="42" height="20.5"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="2" translatesAutoresizingMaskIntoConstraints="NO">
+                        <rect key="frame" x="208" y="11.5" width="42" height="20.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="19" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                        <rect key="frame" x="260" y="2" width="40" height="40"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="19" translatesAutoresizingMaskIntoConstraints="NO" clipsSubviews="YES">
+                        <rect key="frame" x="270" y="2" width="40" height="40"/>
+                        <constraints>
+                            <constraint id="117" firstItem="19" firstAttribute="width" constant="40"/>
+                            <constraint id="118" firstItem="19" firstAttribute="height" constant="40"/>
+                        </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
                     <constraint id="63" firstItem="2" firstAttribute="centerY" secondItem="YTl-1W-gDM" secondAttribute="centerY"/>
-                    <constraint id="64" firstItem="19" firstAttribute="leading" secondItem="2" secondAttribute="trailing" constant="20"/>
-                    <constraint id="65" firstItem="19" firstAttribute="centerY" secondItem="YTl-1W-gDM" secondAttribute="centerY"/>
-                    <constraint id="66" firstItem="19" firstAttribute="trailing" secondItem="YTl-1W-gDM" secondAttribute="trailing"/>
+                    <constraint id="119" firstItem="YTl-1W-gDM" firstAttribute="centerY" secondItem="19" secondAttribute="centerY"/>
+                    <constraint id="120" firstItem="YTl-1W-gDM" firstAttribute="trailing" secondItem="19" secondAttribute="trailing" constant="10"/>
+                    <constraint id="121" firstItem="19" firstAttribute="leading" secondItem="2" secondAttribute="trailing" constant="20"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="titleLabel" destination="2" id="name-outlet-2"/>
                 <outlet property="iconImageView" destination="19" id="name-outlet-19"/>
             </connections>
-            <color key="backgroundColor" colorSpace="calibratedWhite" white="0.666666666666667" alpha="1"/>
         </tableViewCell>
     </objects>
     <resources>
