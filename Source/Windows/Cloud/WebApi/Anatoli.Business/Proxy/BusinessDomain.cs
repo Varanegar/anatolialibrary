@@ -219,7 +219,7 @@ namespace Anatoli.Business
         private async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
         {
 
-            if (GetAllSelector() != null)
+            if (selector != null)
             {
                 return MainRepository.GetQuery()
                     .Where(predicate.Expand())
