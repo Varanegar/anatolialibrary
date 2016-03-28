@@ -14,11 +14,12 @@ namespace Anatoli.DataAccess.Models
         public int NLevel { get; set; }
         public Nullable<int> Priority { get; set; }
         
-        public Guid? ProductGroup2Id { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<ProductGroup> ProductGroup1 { get; set; }
         [ForeignKey("ProductGroup2Id")]
         public virtual ProductGroup ProductGroup2 { get; set; }
+
+        public Guid? ProductGroup2Id { get; set; }
     }
 }

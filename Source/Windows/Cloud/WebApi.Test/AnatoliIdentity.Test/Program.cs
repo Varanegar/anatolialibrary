@@ -49,7 +49,7 @@ namespace ClientApp
                     client.SetBearerToken(oauthresult.AccessToken);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
-                    //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
+                    ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);

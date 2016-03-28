@@ -6,6 +6,8 @@ using Anatoli.DataAccess.Configs;
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Anatoli.DataAccess.Models.PersonnelAcitvity;
+using Anatoli.DataAccess.Models.Route;
 
 namespace Anatoli.DataAccess
 {
@@ -25,6 +27,7 @@ namespace Anatoli.DataAccess
         public DbSet<CharValue> CharValues { get; set; }
         public DbSet<CityRegion> CityRegions { get; set; }
         public DbSet<Clearance> Clearances { get; set; }
+        public DbSet<CustomerArea> CustomerAreas { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
@@ -32,12 +35,26 @@ namespace Anatoli.DataAccess
         public DbSet<DistCompanyCenter> DistCompanyCenters { get; set; }
         public DbSet<DistCompanyRegion> DistCompanyRegions { get; set; }
         public DbSet<DistCompanyRegionLevelType> DistCompanyRegionLevelTypes { get; set; }
+        public DbSet<FiscalYear> FiscalYears { get; set; }
+        public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
+        public DbSet<MainProductGroup> MainProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<PersonnelDailyActivityCommentType> PersonnelDailyActivityCommentTypes { get; set; }
+        public DbSet<PersonnelDailyActivityDayArea> PersonnelDailyActivityDayAreas { get; set; }
+        public DbSet<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }
+        public DbSet<PersonnelDailyActivityEventComment> PersonnelDailyActivityEventComments { get; set; }
+        public DbSet<PersonnelDailyActivityEventType> PersonnelDailyActivityEventTypes { get; set; }
+        public DbSet<PersonnelDailyActivityPoint> PersonnelDailyActivityPoints { get; set; }
+        public DbSet<PersonnelDailyActivityVisitType> PersonnelDailyActivityVisitTypes { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
         public DbSet<ProductRate> ProductRates { get; set; }
         public DbSet<ProductSupplierGuarantee> ProductSupplierGuarantees { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
+        public DbSet<ProductTag> ProductTag { get; set; }
+        public DbSet<ProductTagValue> ProductTagValue { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<PurchaseOrderStatusHistory> PurchaseOrderHistories { get; set; }
         public DbSet<PurchaseOrderLineItem> PurchaseOrderLineItems { get; set; }
@@ -54,6 +71,9 @@ namespace Anatoli.DataAccess
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<ItemImage> Images { get; set; }
+        public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
+        public DbSet<RegionAreaPoint> RegionAreaPoints { get; set; }
+        public DbSet<RegionArea> RegionAreas { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<StockActiveOnHand> StockActiveOnHands { get; set; }
         public DbSet<StockHistoryOnHand> StockHistoryOnHands { get; set; }
@@ -68,15 +88,9 @@ namespace Anatoli.DataAccess
         public DbSet<StockProductRequestStatus> StockProductRequestStatuses { get; set; }
         public DbSet<StockProductRequestType> StockProductRequestTypes { get; set; }
         public DbSet<StockProductRequestSupplyType> StockProductRequestSupplyTypes { get; set; }
-        public DbSet<MainProductGroup> MainProductGroups { get; set; }
         public DbSet<StockType> StockTypes { get; set; }
-        public DbSet<ProductType> ProductType { get; set; }
-        public DbSet<ProductTag> ProductTag { get; set; }
-        public DbSet<ProductTagValue> ProductTagValue { get; set; }
-        public DbSet<FiscalYear> FiscalYears { get; set; }
-        public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
-        public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
-        public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
+        public DbSet<CompanyPersonnel> CompanyPersonnels { get; set; }
+        public DbSet<CompanyPersonnelRoute> CompanyPersonnelRoutes { get; set; }
 
 
         #region Identity

@@ -180,7 +180,16 @@
     <Compile Include="Migrations\201603242146369_Product-Supplier-Migration-1.Designer.cs">
       <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603261349363_Daily-Activity-Migration.cs" />
+    <Compile Include="Migrations\201603261349363_Daily-Activity-Migration.Designer.cs">
+      <DependentUpon>201603261349363_Daily-Activity-Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603261401512_Daily-Activity-Migration-2.cs" />
+    <Compile Include="Migrations\201603261401512_Daily-Activity-Migration-2.Designer.cs">
+      <DependentUpon>201603261401512_Daily-Activity-Migration-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\CompanyPersonnel.cs" />
     <Compile Include="Models\Anatoli\AnatoliAccount.cs" />
     <Compile Include="Models\Anatoli\AnatoliRegion.cs" />
     <Compile Include="Models\Account\Company.cs" />
@@ -195,6 +204,13 @@
     <Compile Include="Models\Anatoli\DataOwner.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrderLineItem.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityDayArea.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityPoint.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityEventComment.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityCommentType.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityVisitType.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityEventType.cs" />
+    <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityEvent.cs" />
     <Compile Include="Models\Product\ItemImage.cs" />
     <Compile Include="Models\BaseData\BankAccount.cs" />
     <Compile Include="Models\BaseData\BaseModel.cs" />
@@ -203,6 +219,10 @@
     <Compile Include="Models\PerchaseOrder\Basket.cs" />
     <Compile Include="Models\PerchaseOrder\BasketItem.cs" />
     <Compile Include="Models\PerchaseOrder\BasketNote.cs" />
+    <Compile Include="Models\Route\CustomerArea.cs" />
+    <Compile Include="Models\Route\RegionArea.cs" />
+    <Compile Include="Models\Route\RegionAreaPoint.cs" />
+    <Compile Include="Models\Route\CompanyPersonnelRoute.cs" />
     <Compile Include="Models\Store\CalendarTemplate.cs" />
     <Compile Include="Models\Store\CalendarTemplateHoliday.cs" />
     <Compile Include="Models\Store\CalendarTemplateOpenTime.cs" />
@@ -335,7 +355,14 @@
     <EmbeddedResource Include="Migrations\201603242146369_Product-Supplier-Migration-1.resx">
       <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261349363_Daily-Activity-Migration.resx">
+      <DependentUpon>201603261349363_Daily-Activity-Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261401512_Daily-Activity-Migration-2.resx">
+      <DependentUpon>201603261401512_Daily-Activity-Migration-2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -18,6 +18,8 @@ namespace Anatoli.ViewModels.CustomerModels
             }
             set { }
         }
+        public double Longitude { set; get; }
+        public double Latitude { set; get; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? BirthDay { get; set; }

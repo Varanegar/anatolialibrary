@@ -342,7 +342,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "List")]
+        [AnatoliAuthorize(Roles = "AuthorizedApp, User")] //, Resource = "Product", Action = "List"
         [Route("products/v2")]
         [HttpPost]
         [GzipCompression]

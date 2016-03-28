@@ -1,5 +1,7 @@
 namespace Anatoli.DataAccess.Models
 {
+    using Anatoli.DataAccess.Models.PersonnelAcitvity;
+    using Anatoli.DataAccess.Models.Route;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -29,6 +31,8 @@ namespace Anatoli.DataAccess.Models
         public string PostalCode { get; set; }
         [StringLength(20)]
         public string NationalCode { get; set; }
+        public double Longitude { set; get; }
+        public double Latitude { set; get; }
         [ForeignKey("RegionInfo"), Column(Order = 0)]
         public Nullable<Guid> RegionInfoId { get; set; }
         [ForeignKey("RegionLevel1"), Column(Order = 1)]
@@ -52,6 +56,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public virtual ICollection<Basket> CustomerBaskets { get; set; }
         public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public virtual ICollection<CustomerArea> CustomerAreas { get; set; }
         public virtual Store DefauleStore { get; set; }
         public virtual CityRegion RegionInfo { get; set; }
         public virtual CityRegion RegionLevel1 { get; set; }
@@ -59,6 +64,7 @@ namespace Anatoli.DataAccess.Models
         public virtual CityRegion RegionLevel3 { get; set; }
         public virtual CityRegion RegionLevel4 { get; set; }
 
+        public virtual ICollection<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }
 
     }
 }

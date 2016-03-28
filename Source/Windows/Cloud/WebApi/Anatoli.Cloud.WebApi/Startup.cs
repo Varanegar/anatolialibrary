@@ -217,7 +217,7 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureWebApi(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-            config.MessageHandlers.Add(new WrappingHandler());
+            //config.MessageHandlers.Add(new WrappingHandler());
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
