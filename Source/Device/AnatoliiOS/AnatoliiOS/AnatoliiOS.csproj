@@ -95,9 +95,9 @@
     <Compile Include="Clients\IosSqliteClient.cs" />
     <Compile Include="Clients\IosWebClient.cs" />
     <Compile Include="Clients\Reachability.cs" />
-    <Compile Include="ViewControllers\FirstPage.cs" />
-    <Compile Include="ViewControllers\FirstPage.designer.cs">
-      <DependentUpon>FirstPage.cs</DependentUpon>
+    <Compile Include="ViewControllers\FirstPageViewController.cs" />
+    <Compile Include="ViewControllers\FirstPageViewController.designer.cs">
+      <DependentUpon>FirstPageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\IntroController.cs" />
     <Compile Include="Main.cs" />
@@ -112,7 +112,7 @@
     </Compile>
     <None Include="app.config" />
     <InterfaceDefinition Include="ViewControllers\BaseController.xib" />
-    <InterfaceDefinition Include="ViewControllers\FirstPage.xib" />
+    <InterfaceDefinition Include="ViewControllers\FirstPageViewController.xib" />
     <None Include="Info.plist" />
     <Compile Include="NavController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,14 +198,30 @@
     <BundleResource Include="Resources\splash.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
@@ -221,8 +237,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets'))" />
   </Target>
-  <ItemGroup>
-    <Folder Include="TableViewSources\" />
-    <Folder Include="TableViewCells\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

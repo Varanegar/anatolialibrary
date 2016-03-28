@@ -22,7 +22,7 @@ namespace AnatoliIOS
         {
             base.ViewDidLoad();
             NavController = new NavController();
-            NavController.PushViewController(new FirstPage(), true);
+            NavController.PushViewController(new FirstPageViewController(), true);
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());
             SidebarController.MenuWidth = 180;
             SidebarController.ReopenOnRotate = false;

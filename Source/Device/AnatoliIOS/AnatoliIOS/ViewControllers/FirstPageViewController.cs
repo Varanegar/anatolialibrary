@@ -4,10 +4,10 @@ using UIKit;
 
 namespace AnatoliIOS.ViewControllers
 {
-    public partial class FirstPage : BaseController
+    public partial class FirstPageViewController : BaseController
     {
-        public FirstPage()
-            : base("FirstPage", null)
+        public FirstPageViewController()
+            : base("FirstPageViewController", null)
         {
         }
 
