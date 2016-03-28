@@ -21,17 +21,18 @@ namespace AnatoliIOS
         public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            await AnatoliApp.GetInstance().Initialize();
+
             NavController = new NavController();
             NavController.PushViewController(new FirstPageViewController(), true);
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());
             SidebarController.MenuWidth = 180;
             SidebarController.ReopenOnRotate = false;
-			await AnatoliApp.GetInstance ().SyncDataBase ();
-			var defaultStore = await StoreManager.GetDefaultAsync ();
-			if (defaultStore == null) {
-				AnatoliApp.GetInstance ().PushViewController (new StoresViewController ());
-			} else
-				AnatoliApp.GetInstance ().DefaultStore = defaultStore;	
+            await AnatoliApp.GetInstance().SyncDataBase();
+            if (AnatoliApp.GetInstance().DefaultStore == null)
+            {
+                AnatoliApp.GetInstance().PushViewController(new StoresViewController());
+            }
         }
         public override void DidReceiveMemoryWarning()
         {
