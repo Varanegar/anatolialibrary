@@ -6,7 +6,7 @@ using UIKit;
 using AnatoliIOS.ViewControllers;
 using AnatoliIOS.TableViewCells;
 
-namespace AnatoliIOS.Components
+namespace AnatoliIOS
 {
     public class MenuTableViewSource : UITableViewSource
     {

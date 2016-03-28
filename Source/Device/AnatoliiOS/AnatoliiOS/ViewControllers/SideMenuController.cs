@@ -1,4 +1,3 @@
-using AnatoliIOS.Components;
 using System;
 using UIKit;
 using AnatoliIOS.TableViewCells;

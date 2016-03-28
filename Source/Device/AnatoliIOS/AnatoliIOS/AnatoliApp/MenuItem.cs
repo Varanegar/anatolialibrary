@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UIKit;
 
-namespace AnatoliIOS.Components
+namespace AnatoliIOS
 {
     public class MenuItem
     {

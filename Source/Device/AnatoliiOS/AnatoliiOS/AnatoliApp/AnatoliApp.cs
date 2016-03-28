@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using UIKit;
-using AnatoliIOS.Components;
 using AnatoliIOS.ViewControllers;
 
 namespace AnatoliIOS

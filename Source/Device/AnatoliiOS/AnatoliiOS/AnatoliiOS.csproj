@@ -106,8 +106,6 @@
       <Link>Resources\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
-    <Compile Include="Components\MenuItem.cs" />
-    <Compile Include="Components\MenuTableViewSource.cs" />
     <Compile Include="ViewControllers\SideMenuController.cs" />
     <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
@@ -137,11 +135,13 @@
     <Compile Include="TableViewCells\ProductSummaryViewCell.designer.cs">
       <DependentUpon>ProductSummaryViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="TableViewCells\MenuItemTableViewCell.cs" />
-    <Compile Include="TableViewCells\MenuItemTableViewCell.designer.cs">
+    <Compile Include="AnatoliApp\MenuTableViewSource.cs" />
+    <Compile Include="AnatoliApp\MenuItem.cs" />
+    <Compile Include="AnatoliApp\MenuItemTableViewCell.cs" />
+    <Compile Include="AnatoliApp\MenuItemTableViewCell.designer.cs">
       <DependentUpon>MenuItemTableViewCell.cs</DependentUpon>
     </Compile>
-    <InterfaceDefinition Include="TableViewCells\MenuItemTableViewCell.xib" />
+    <InterfaceDefinition Include="AnatoliApp\MenuItemTableViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
