@@ -1,0 +1,37 @@
+﻿using System;
+
+using UIKit;
+using Anatoli.App.Manager;
+using AnatoliIOS.TableViewSources;
+using AnatoliIOS.TableViewCells;
+
+namespace AnatoliIOS.ViewControllers
+{
+    public partial class StoresViewController : BaseController
+    {
+        public StoresViewController()
+            : base("StoresViewController", null)
+        {
+        }
+
+        public async override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            // Perform any additional setup after loading the view, typically from a nib.
+            storesTableView.RegisterNibForCellReuse(UINib.FromName("StoreSummaryTableViewCell", null), StoreSummaryTableViewCell.Key);
+            StoresTableViewSource storesTableViewSource = new StoresTableViewSource();
+            storesTableViewSource.SetDataQuery(StoreManager.GetAll());
+            await storesTableViewSource.Refresh();
+            storesTableView.Source = storesTableViewSource;
+            storesTableView.ReloadData();
+        }
+
+        public override void DidReceiveMemoryWarning()
+        {
+            base.DidReceiveMemoryWarning();
+            // Release any cached data, images, etc that aren't in use.
+        }
+    }
+}
+
+

@@ -9,7 +9,7 @@ using Foundation;
 namespace AnatoliIOS.ViewControllers
 {
     [Register("FirstPage")]
-    partial class FirstPage
+    partial class FirstPageViewController
     {
         void ReleaseDesignerOutlets()
         {

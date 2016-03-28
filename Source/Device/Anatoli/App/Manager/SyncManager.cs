@@ -102,49 +102,49 @@ namespace Anatoli.App.Manager
         {
             try
             {
-                OnProgressChanged("downloading base types...");
+                OnProgressChanged("downloading base types...",1);
                 await BaseTypeManager.SyncDataBaseAsync(null);
-                OnProgressChanged("base types saved.");
-                OnProgressChanged("downloading city and regions ...");
+                OnProgressChanged("base types saved.",1);
+                OnProgressChanged("downloading city and regions ...",2);
                 await CityRegionManager.SyncDataBaseAsync(null);
-                OnProgressChanged("city and regions saved.");
-                OnProgressChanged("downloading stores ...");
+                OnProgressChanged("city and regions saved.",2);
+                OnProgressChanged("downloading stores ...",3);
                 await StoreManager.SyncDataBase(null);
-                OnProgressChanged("stores saved.");
-                OnProgressChanged("downloading categrories ...");
+                OnProgressChanged("stores saved.",3);
+                OnProgressChanged("downloading categrories ...",4);
                 await CategoryManager.SyncDataBaseAsync(null);
-                OnProgressChanged("categories saved.");
-                OnProgressChanged("downloading products ...");
+                OnProgressChanged("categories saved.",4);
+                OnProgressChanged("downloading products ...",5);
                 await ProductManager.SyncProductsAsync(null);
-                OnProgressChanged("products saved.");
-                OnProgressChanged("downloading images ...");
+                OnProgressChanged("products saved.",5);
+                OnProgressChanged("downloading images ...",6);
                 await ItemImageManager.SyncDataBaseAsync(null);
-                OnProgressChanged("images saved .");
-                OnProgressChanged("downloading prices ...");
+                OnProgressChanged("images saved .",6);
+                OnProgressChanged("downloading prices ...",7);
                 await ProductManager.SyncPricesAsync(null);
-                OnProgressChanged("prices saved.");
-                OnProgressChanged("downloading store on hand ...");
+                OnProgressChanged("prices saved.",7);
+                OnProgressChanged("downloading store on hand ...",8);
                 await ProductManager.SyncOnHandAsync(null);
-                OnProgressChanged("store onhand saved.");
+                OnProgressChanged("store onhand saved.",8);
                 await SyncManager.AddLogAsync(SyncManager.UpdateCompleted);
-                OnProgressChanged("Sync process finished.");
+                OnProgressChanged("Sync process finished.",8);
             }
             catch (Exception ex)
             {
-                OnProgressChanged("Sync process finished. Error: " + ex.Message);
+                OnProgressChanged("Sync process finished. Error: " + ex.Message,0);
                 throw ex;
             }
         }
 
-        static void OnProgressChanged(string s)
+		static void OnProgressChanged(string s,int step)
         {
             if (ProgressChanged != null)
             {
-                ProgressChanged.Invoke(s);
+				ProgressChanged.Invoke(s,step);
             }
         }
         public static event ProgressChangedEventHandler ProgressChanged;
-        public delegate void ProgressChangedEventHandler(string status);
+		public delegate void ProgressChangedEventHandler(string status,int step);
         public static async Task ClearDatabase()
         {
             try

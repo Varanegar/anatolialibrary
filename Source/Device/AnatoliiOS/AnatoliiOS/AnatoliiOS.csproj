@@ -23,6 +23,7 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n>mideast</MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -94,9 +95,9 @@
     <Compile Include="Clients\IosSqliteClient.cs" />
     <Compile Include="Clients\IosWebClient.cs" />
     <Compile Include="Clients\Reachability.cs" />
-    <Compile Include="ViewControllers\FirstPage.cs" />
-    <Compile Include="ViewControllers\FirstPage.designer.cs">
-      <DependentUpon>FirstPage.cs</DependentUpon>
+    <Compile Include="ViewControllers\FirstPageViewController.cs" />
+    <Compile Include="ViewControllers\FirstPageViewController.designer.cs">
+      <DependentUpon>FirstPageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\IntroController.cs" />
     <Compile Include="Main.cs" />
@@ -105,19 +106,13 @@
       <Link>Resources\paa.db</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
-    <Compile Include="Components\MenuItem.cs" />
-    <Compile Include="Components\MenuTableViewSource.cs" />
-    <Compile Include="ViewControllers\ProductsViewControler.cs" />
-    <Compile Include="ViewControllers\ProductsViewControler.designer.cs">
-      <DependentUpon>ProductsViewControler.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewControllers\SideMenuController.cs" />
     <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
     </Compile>
     <None Include="app.config" />
     <InterfaceDefinition Include="ViewControllers\BaseController.xib" />
-    <InterfaceDefinition Include="ViewControllers\FirstPage.xib" />
+    <InterfaceDefinition Include="ViewControllers\FirstPageViewController.xib" />
     <None Include="Info.plist" />
     <Compile Include="NavController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,12 +121,38 @@
     <InterfaceDefinition Include="ViewControllers\IntroController.xib" />
     <None Include="packages.config" />
     <InterfaceDefinition Include="ViewControllers\SideMenuController.xib" />
-    <InterfaceDefinition Include="ViewControllers\ProductsViewControler.xib" />
-    <InterfaceDefinition Include="Components\MenuItemTableViewCell.xib" />
-    <Compile Include="Components\MenuItemTableViewCell.cs" />
-    <Compile Include="Components\MenuItemTableViewCell.designer.cs">
+    <BundleResource Include="Resources\ic_list_orange_24dp.png" />
+    <BundleResource Include="Resources\ic_person_gray_24dp.png" />
+    <InterfaceDefinition Include="ViewControllers\ProductsViewController.xib" />
+    <Compile Include="ViewControllers\ProductsViewController.cs" />
+    <Compile Include="ViewControllers\ProductsViewController.designer.cs">
+      <DependentUpon>ProductsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableViewSources\BaseTableViewSource.cs" />
+    <Compile Include="TableViewSources\ProductsTableViewSource.cs" />
+    <InterfaceDefinition Include="TableViewCells\ProductSummaryViewCell.xib" />
+    <Compile Include="TableViewCells\ProductSummaryViewCell.cs" />
+    <Compile Include="TableViewCells\ProductSummaryViewCell.designer.cs">
+      <DependentUpon>ProductSummaryViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnatoliApp\MenuTableViewSource.cs" />
+    <Compile Include="AnatoliApp\MenuItem.cs" />
+    <Compile Include="AnatoliApp\MenuItemTableViewCell.cs" />
+    <Compile Include="AnatoliApp\MenuItemTableViewCell.designer.cs">
       <DependentUpon>MenuItemTableViewCell.cs</DependentUpon>
     </Compile>
+    <InterfaceDefinition Include="AnatoliApp\MenuItemTableViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\StoresViewController.xib" />
+    <Compile Include="ViewControllers\StoresViewController.cs" />
+    <Compile Include="ViewControllers\StoresViewController.designer.cs">
+      <DependentUpon>StoresViewController.cs</DependentUpon>
+    </Compile>
+    <InterfaceDefinition Include="TableViewCells\StoreSummaryTableViewCell.xib" />
+    <Compile Include="TableViewCells\StoreSummaryTableViewCell.cs" />
+    <Compile Include="TableViewCells\StoreSummaryTableViewCell.designer.cs">
+      <DependentUpon>StoreSummaryTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableViewSources\StoresTableViewSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
@@ -177,14 +198,30 @@
     <BundleResource Include="Resources\splash.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Anatoli\Anatoli.csproj">
@@ -200,4 +237,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets'))" />
   </Target>
+  <ItemGroup />
 </Project>

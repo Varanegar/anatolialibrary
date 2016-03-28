@@ -4,8 +4,9 @@ using System.Text;
 using Foundation;
 using UIKit;
 using AnatoliIOS.ViewControllers;
+using AnatoliIOS.TableViewCells;
 
-namespace AnatoliIOS.Components
+namespace AnatoliIOS
 {
     public class MenuTableViewSource : UITableViewSource
     {
@@ -18,12 +19,13 @@ namespace AnatoliIOS.Components
         {
 			var cell = tableView.DequeueReusableCell(MenuItemTableViewCell.Key) as MenuItemTableViewCell;
            
-            cell.UpdateCell(Items[indexPath.Row].Title);
+			cell.UpdateCell(Items[indexPath.Row].Title,Items[indexPath.Row].Icon);
             return cell;
         }
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            AnatoliApp.GetInstance().PushViewController(new ProductsViewControler());
+			AnatoliApp.GetInstance ().SelectMenuItem (indexPath.Row);
+			AnatoliApp.GetInstance ().RefreshMenu ();
             tableView.DeselectRow(indexPath, true);
             (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.CloseMenu();
         }
