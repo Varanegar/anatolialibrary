@@ -134,6 +134,10 @@ namespace Anatoli.App.Manager
             StringQuery query = new StringQuery(string.Format("SELECT * FROM stores WHERE store_name LIKE '%{0}%'", value));
             return query;
         }
+		public static StringQuery GetAll(){
+			StringQuery query = new StringQuery(string.Format("SELECT * FROM stores"));
+			return query;
+		}
         public static async Task<bool> SelectAsync(StoreDataModel store)
         {
             UpdateCommand command1 = new UpdateCommand("stores", new BasicParam("selected", "0"));

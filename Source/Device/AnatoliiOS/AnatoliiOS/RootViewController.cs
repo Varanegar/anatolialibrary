@@ -4,6 +4,7 @@ using SidebarNavigation;
 using System;
 using System.CodeDom.Compiler;
 using UIKit;
+using Anatoli.App.Manager;
 
 namespace AnatoliIOS
 {
@@ -17,7 +18,7 @@ namespace AnatoliIOS
             : base(handle)
         {
         }
-        public override void ViewDidLoad()
+        public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
             NavController = new NavController();
@@ -25,6 +26,12 @@ namespace AnatoliIOS
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());
             SidebarController.MenuWidth = 180;
             SidebarController.ReopenOnRotate = false;
+			await AnatoliApp.GetInstance ().SyncDataBase ();
+			var defaultStore = await StoreManager.GetDefaultAsync ();
+			if (defaultStore == null) {
+				AnatoliApp.GetInstance ().PushViewController (new StoresViewController ());
+			} else
+				AnatoliApp.GetInstance ().DefaultStore = defaultStore;	
         }
         public override void DidReceiveMemoryWarning()
         {

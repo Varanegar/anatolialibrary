@@ -142,6 +142,17 @@
       <DependentUpon>MenuItemTableViewCell.cs</DependentUpon>
     </Compile>
     <InterfaceDefinition Include="AnatoliApp\MenuItemTableViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\StoresViewController.xib" />
+    <Compile Include="ViewControllers\StoresViewController.cs" />
+    <Compile Include="ViewControllers\StoresViewController.designer.cs">
+      <DependentUpon>StoresViewController.cs</DependentUpon>
+    </Compile>
+    <InterfaceDefinition Include="TableViewCells\StoreSummaryTableViewCell.xib" />
+    <Compile Include="TableViewCells\StoreSummaryTableViewCell.cs" />
+    <Compile Include="TableViewCells\StoreSummaryTableViewCell.designer.cs">
+      <DependentUpon>StoreSummaryTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableViewSources\StoresTableViewSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

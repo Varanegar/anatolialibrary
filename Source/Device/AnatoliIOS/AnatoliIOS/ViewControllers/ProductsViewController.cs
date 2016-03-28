@@ -2,6 +2,7 @@
 
 using UIKit;
 using AnatoliIOS.TableViewSources;
+using Anatoli.App.Manager;
 
 namespace AnatoliIOS.ViewControllers
 {
@@ -11,11 +12,23 @@ namespace AnatoliIOS.ViewControllers
 		{
 		}
 
-		public override void ViewDidLoad ()
+		public async override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
-			productsTableView.Source = new ProductsTableViewSource();
+			var tableViewSource = new ProductsTableViewSource();
+			if (AnatoliApp.GetInstance().DefaultStore == null) {
+				var store = await StoreManager.GetDefaultAsync();
+				if (store != null) {
+					AnatoliApp.GetInstance().DefaultStore = store;
+				}else{
+					AnatoliApp.GetInstance().PushViewController(new StoresViewController());
+					return;
+				}
+			}
+			tableViewSource.SetDataQuery (ProductManager.GetAll (AnatoliApp.GetInstance().DefaultStore.store_id));
+			tableViewSource.Refresh ();
+			productsTableView.Source = tableViewSource;
 		}
 
 		public override void DidReceiveMemoryWarning ()

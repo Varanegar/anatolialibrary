@@ -5,6 +5,7 @@ using Anatoli.Framework.Manager;
 using System.Collections.Generic;
 using Anatoli.App.Manager;
 using System.Threading.Tasks;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliIOS.TableViewSources
 {
@@ -18,7 +19,9 @@ namespace AnatoliIOS.TableViewSources
 		{
 			Items = new List<DataModel> ();
 			DataManager = new BaseDataManager ();
-			DataManager.SetQueries (ProductManager.GetAll ("111"),null);
+		}
+		public void SetDataQuery(DBQuery query){
+			DataManager.SetQueries (query, null);
 		}
 		public async Task Refresh(){
 			Items = await DataManager.GetNextAsync ();
