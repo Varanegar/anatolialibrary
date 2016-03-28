@@ -9,7 +9,7 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.TableViewCells
 {
 	[Register ("MenuItemTableViewCell")]
 	partial class MenuItemTableViewCell

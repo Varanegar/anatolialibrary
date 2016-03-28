@@ -5,7 +5,7 @@ using UIKit;
 using CoreGraphics;
 using System.Drawing;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.TableViewCells
 {
 	public partial class MenuItemTableViewCell : UITableViewCell
 	{

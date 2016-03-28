@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using UIKit;
+using AnatoliIOS.Components;
+using AnatoliIOS.ViewControllers;
 
 namespace AnatoliIOS
 {
@@ -10,6 +12,7 @@ namespace AnatoliIOS
 
         private LinkedList<Type> _views;
         private static AnatoliApp _instance;
+		public UITableView MenuTableViewReference;
         public static AnatoliApp GetInstance()
         {
             if (_instance == null)
@@ -45,6 +48,28 @@ namespace AnatoliIOS
 				return true;
 			} else
 				return false;
+		}
+			
+		public void RefreshMenu(){
+			var source = new MenuTableViewSource();
+			source.Items = new System.Collections.Generic.List<MenuItem>();
+
+			source.Items.Add(new MenuItem() { Title = "ورود " , Icon = UIImage.FromBundle("ic_person_gray_24dp") , Type = MenuItem.MenuType.Login});
+			source.Items.Add(new MenuItem() { Title = "دسته بندی کالا " , Icon = UIImage.FromBundle("ic_list_orange_24dp") , Type = MenuItem.MenuType.Products});
+			MenuTableViewReference.Source = source;
+			MenuTableViewReference.ReloadData ();
+		}
+		public void SelectMenuItem(int index){
+			var items = (MenuTableViewReference.Source as MenuTableViewSource).Items;
+			switch (items[index].Type) {
+			case MenuItem.MenuType.Login:
+				break;
+			case MenuItem.MenuType.Products:
+				PushViewController (new ProductsViewController ());
+				break;
+			default:
+				break;
+			}
 		}
     }
 }

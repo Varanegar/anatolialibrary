@@ -10,5 +10,12 @@ namespace AnatoliIOS.Components
     {
         public string Title { get; set; }
         public UIImage Icon { get; set; }
+		public MenuType Type{ get; set; }
+		public enum MenuType{
+			Login,
+			Profile,
+			Products,
+			Favorits
+		}
     }
 }

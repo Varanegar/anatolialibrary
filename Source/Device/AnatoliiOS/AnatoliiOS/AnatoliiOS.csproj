@@ -23,6 +23,7 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n>mideast</MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -107,10 +108,6 @@
     </BundleResource>
     <Compile Include="Components\MenuItem.cs" />
     <Compile Include="Components\MenuTableViewSource.cs" />
-    <Compile Include="ViewControllers\ProductsViewControler.cs" />
-    <Compile Include="ViewControllers\ProductsViewControler.designer.cs">
-      <DependentUpon>ProductsViewControler.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewControllers\SideMenuController.cs" />
     <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
@@ -126,12 +123,25 @@
     <InterfaceDefinition Include="ViewControllers\IntroController.xib" />
     <None Include="packages.config" />
     <InterfaceDefinition Include="ViewControllers\SideMenuController.xib" />
-    <InterfaceDefinition Include="ViewControllers\ProductsViewControler.xib" />
-    <InterfaceDefinition Include="Components\MenuItemTableViewCell.xib" />
-    <Compile Include="Components\MenuItemTableViewCell.cs" />
-    <Compile Include="Components\MenuItemTableViewCell.designer.cs">
+    <BundleResource Include="Resources\ic_list_orange_24dp.png" />
+    <BundleResource Include="Resources\ic_person_gray_24dp.png" />
+    <InterfaceDefinition Include="ViewControllers\ProductsViewController.xib" />
+    <Compile Include="ViewControllers\ProductsViewController.cs" />
+    <Compile Include="ViewControllers\ProductsViewController.designer.cs">
+      <DependentUpon>ProductsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableViewSources\BaseTableViewSource.cs" />
+    <Compile Include="TableViewSources\ProductsTableViewSource.cs" />
+    <InterfaceDefinition Include="TableViewCells\ProductSummaryViewCell.xib" />
+    <Compile Include="TableViewCells\ProductSummaryViewCell.cs" />
+    <Compile Include="TableViewCells\ProductSummaryViewCell.designer.cs">
+      <DependentUpon>ProductSummaryViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableViewCells\MenuItemTableViewCell.cs" />
+    <Compile Include="TableViewCells\MenuItemTableViewCell.designer.cs">
       <DependentUpon>MenuItemTableViewCell.cs</DependentUpon>
     </Compile>
+    <InterfaceDefinition Include="TableViewCells\MenuItemTableViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
@@ -200,4 +210,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets'))" />
   </Target>
+  <ItemGroup>
+    <Folder Include="TableViewSources\" />
+    <Folder Include="TableViewCells\" />
+  </ItemGroup>
 </Project>

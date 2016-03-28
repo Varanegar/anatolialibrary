@@ -4,6 +4,7 @@ using System.Text;
 using Foundation;
 using UIKit;
 using AnatoliIOS.ViewControllers;
+using AnatoliIOS.TableViewCells;
 
 namespace AnatoliIOS.Components
 {
@@ -23,7 +24,8 @@ namespace AnatoliIOS.Components
         }
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            AnatoliApp.GetInstance().PushViewController(new ProductsViewControler());
+			AnatoliApp.GetInstance ().SelectMenuItem (indexPath.Row);
+			AnatoliApp.GetInstance ().RefreshMenu ();
             tableView.DeselectRow(indexPath, true);
             (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.CloseMenu();
         }
