@@ -11,101 +11,150 @@ using Anatoli.App.Model.Store;
 
 namespace AnatoliIOS
 {
-	public class AnatoliApp
-	{
+    public class AnatoliApp
+    {
 
-		private LinkedList<Type> _views;
-		private static AnatoliApp _instance;
-		public UITableView MenuTableViewReference;
-		public StoreDataModel DefaultStore;
-		public static AnatoliApp GetInstance ()
-		{
-			if (_instance == null) {
-				_instance = new AnatoliApp ();
-			}
-			return _instance;
-		}
+        private LinkedList<Type> _views;
+        private static AnatoliApp _instance;
+        public UITableView MenuTableViewReference;
+        public StoreDataModel DefaultStore;
+        public Anatoli.App.Model.CustomerViewModel Customer { get; set; }
+        public async Task Initialize()
+        {
+            try
+            {
+                Customer = await CustomerManager.ReadCustomerAsync();
+                DefaultStore = await StoreManager.GetDefaultAsync();
+            }
+            catch (Exception)
+            {
 
-		private AnatoliApp ()
-		{
-			AnatoliClient.GetInstance (new IosWebClient (), new IosSqliteClient (), new IosFileIO ());
-			_views = new LinkedList<Type> ();
-		}
+            }
+        }
+        public static AnatoliApp GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new AnatoliApp();
+            }
+            return _instance;
+        }
 
-		public async Task SyncDataBase ()
-		{
-			var updateTime = await SyncManager.GetLogAsync (SyncManager.UpdateCompleted);
-			if (updateTime < (DateTime.Now - TimeSpan.FromDays (1000))) {
-				try {
-					SyncManager.ProgressChanged += (status, step) => {
-						Console.WriteLine (status);
-					};
-					await SyncManager.SyncDatabase ();
+        private AnatoliApp()
+        {
+            AnatoliClient.GetInstance(new IosWebClient(), new IosSqliteClient(), new IosFileIO());
+            AnatoliClient.GetInstance().WebClient.TokenExpire += delegate { };
+            _views = new LinkedList<Type>();
+        }
 
-				} catch (Exception ex) {
-					Console.WriteLine (ex.Message);
-				}
-			}
-		}
+        public async Task SyncDataBase()
+        {
+            var updateTime = await SyncManager.GetLogAsync(SyncManager.UpdateCompleted);
+            if (updateTime < (DateTime.Now - TimeSpan.FromDays(1000)))
+            {
+                try
+                {
+                    SyncManager.ProgressChanged += (status, step) =>
+                    {
+                        Console.WriteLine(status);
+                    };
+                    await SyncManager.SyncDatabase();
 
-		public void PushViewController (UIViewController viewController)
-		{
-			if (viewController == null) {
-				throw new ArgumentNullException ();
-			} else if (_views.Count > 0 && _views.Last.Value != viewController.GetType ()) {
-				(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController (viewController, true);
-				_views.AddLast (viewController.GetType ());
-			} else if (_views.Count == 0) {
-				(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController (viewController, true);
-				_views.AddLast (viewController.GetType ());
-			}
-		}
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
 
-		public bool PopViewController ()
-		{
-			if (_views.Count > 0) {
-				_views.RemoveLast ();
-				return true;
-			} else
-				return false;
-		}
+        public void PushViewController(UIViewController viewController)
+        {
+            if (viewController == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (_views.Count > 0 && _views.Last.Value != viewController.GetType())
+            {
+                (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController(viewController, true);
+                _views.AddLast(viewController.GetType());
+            }
+            else if (_views.Count == 0)
+            {
+                (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController(viewController, true);
+                _views.AddLast(viewController.GetType());
+            }
+        }
 
-		public void RefreshMenu ()
-		{
-			var source = new MenuTableViewSource ();
-			source.Items = new System.Collections.Generic.List<MenuItem> ();
+        public bool PopViewController()
+        {
+            if (_views.Count > 0)
+            {
+                _views.RemoveLast();
+                return true;
+            }
+            else
+                return false;
+        }
 
-			source.Items.Add (new MenuItem () {
-				Title = "ورود " ,
-				Icon = UIImage.FromBundle ("ic_person_gray_24dp") ,
-				Type = MenuItem.MenuType.Login
-			});
-			source.Items.Add (new MenuItem () {
-				Title = "دسته بندی کالا " ,
-				Icon = UIImage.FromBundle ("ic_list_orange_24dp") ,
-				Type = MenuItem.MenuType.Products
-			});
-			MenuTableViewReference.Source = source;
-			MenuTableViewReference.ReloadData ();
-		}
+        public void RefreshMenu()
+        {
+            var source = new MenuTableViewSource();
+            source.Items = new System.Collections.Generic.List<MenuItem>();
 
-		public void SelectMenuItem (int index)
-		{
-			var items = (MenuTableViewReference.Source as MenuTableViewSource).Items;
-			switch (items [index].Type) {
-			case MenuItem.MenuType.Login:
-				break;
-			case MenuItem.MenuType.Products:
-				if (DefaultStore != null) {
-					PushViewController (new ProductsViewController ());	
-				} else {
-					PushViewController(new StoresViewController());
-				}
+            if (Customer == null)
+            {
+                source.Items.Add(new MenuItem()
+            {
+                Title = "ورود ",
+                Icon = UIImage.FromBundle("ic_log_in_green_24dp.png"),
+                Type = MenuItem.MenuType.Login
+            });
+            }
+            else
+            {
+                source.Items.Add(new MenuItem()
+                {
+                    Title = "پروفایل ",
+                    Icon = UIImage.FromBundle("ic_person_gray_24dp"),
+                    Type = MenuItem.MenuType.Profile
+                });
+            }
+            source.Items.Add(new MenuItem()
+            {
+                Title = "دسته بندی کالا ",
+                Icon = UIImage.FromBundle("ic_list_orange_24dp"),
+                Type = MenuItem.MenuType.Products
+            });
+            MenuTableViewReference.Source = source;
+            MenuTableViewReference.ReloadData();
+        }
 
-				break;
-			default:
-				break;
-			}
-		}
-	}
+        public void SelectMenuItem(int index)
+        {
+            var items = (MenuTableViewReference.Source as MenuTableViewSource).Items;
+            switch (items[index].Type)
+            {
+                case MenuItem.MenuType.Login:
+                    PushViewController(new LoginViewController());
+                    break;
+                case MenuItem.MenuType.Profile:
+                    PushViewController(new ProfileViewController());
+                    break;
+                case MenuItem.MenuType.Products:
+                    if (DefaultStore != null)
+                    {
+                        PushViewController(new ProductsViewController());
+                    }
+                    else
+                    {
+                        PushViewController(new StoresViewController());
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
