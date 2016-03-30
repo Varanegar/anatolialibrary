@@ -15,8 +15,8 @@ namespace Anatoli.DataAccess.Models
         public string Address { get; set; }
         [ForeignKey("Store")]
         public Nullable<Guid> StoreId { get; set; }
-        [ForeignKey("DistCompanyCenter")]
-        public Nullable<Guid> DistCompanyCenterId { get; set; }
+        [ForeignKey("CompanyCenter")]
+        public Nullable<Guid> CompanyCenterId { get; set; }
         [ForeignKey("Accept1By")]
         public string Accept1ById { get; set; }
         [ForeignKey("Accept2By")]
@@ -30,7 +30,7 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("RelatedSCMStock2")]
         public Nullable<Guid> RelatedSCMStock2Id { get; set; }
         public virtual Store Store { get; set; }
-        public virtual DistCompanyCenter DistCompanyCenter { get; set; }
+        public virtual CompanyCenter CompanyCenter { get; set; }
         public virtual Stock MainSCMStock2 { get; set; }
         public virtual Stock RelatedSCMStock2 { get; set; }
         public virtual ICollection<Stock> MainSCMStock1 { get; set; }

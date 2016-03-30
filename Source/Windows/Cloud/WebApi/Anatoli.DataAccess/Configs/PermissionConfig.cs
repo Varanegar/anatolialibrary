@@ -7,7 +7,6 @@ namespace Anatoli.DataAccess.Configs
     {
         public PermissionConfig()
         {
-            this.HasOptional<Permission>(p => p.Parent);
         }
     }
 }

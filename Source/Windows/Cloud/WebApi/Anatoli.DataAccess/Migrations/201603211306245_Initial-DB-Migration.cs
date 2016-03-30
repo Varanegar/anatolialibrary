@@ -291,7 +291,7 @@ namespace Anatoli.DataAccess.Migrations
                         StockName = c.String(maxLength: 100),
                         Address = c.String(maxLength: 200),
                         StoreId = c.Guid(),
-                        DistCompanyCenterId = c.Guid(),
+                        CompanyCenterId = c.Guid(),
                         Accept1ById = c.String(maxLength: 128),
                         Accept2ById = c.String(maxLength: 128),
                         Accept3ById = c.String(maxLength: 128),
@@ -319,7 +319,7 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.Users", t => t.Accept3ById)
                 .ForeignKey("dbo.Users", t => t.AddedBy_Id)
                 .ForeignKey("dbo.ApplicationOwners", t => t.ApplicationOwnerId, cascadeDelete: false)
-                .ForeignKey("dbo.DistCompanyCenters", t => t.DistCompanyCenterId)
+                .ForeignKey("dbo.CompanyCenters", t => t.CompanyCenterId)
                 .ForeignKey("dbo.Stores", t => t.StoreId)
                 .ForeignKey("dbo.Companies", t => t.CompanyId)
                 .ForeignKey("dbo.DataOwners", t => t.DataOwnerId, cascadeDelete: false)
@@ -329,7 +329,7 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.Stocks", t => t.RelatedSCMStock2Id)
                 .ForeignKey("dbo.StockTypes", t => t.StockTypeId)
                 .Index(t => t.StoreId)
-                .Index(t => t.DistCompanyCenterId)
+                .Index(t => t.CompanyCenterId)
                 .Index(t => t.Accept1ById)
                 .Index(t => t.Accept2ById)
                 .Index(t => t.Accept3ById)
@@ -780,7 +780,7 @@ namespace Anatoli.DataAccess.Migrations
                         SupportAppOrder = c.Byte(nullable: false),
                         SupportWebOrder = c.Byte(nullable: false),
                         SupportCallCenterOrder = c.Byte(nullable: false),
-                        DistCompanyCenterId = c.Guid(),
+                        CompanyCenterId = c.Guid(),
                         CompanyId = c.Guid(),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
@@ -797,10 +797,10 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.ApplicationOwners", t => t.ApplicationOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwners", t => t.DataOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwnerCenters", t => t.DataOwnerCenterId, cascadeDelete: false)
-                .ForeignKey("dbo.DistCompanyCenters", t => t.DistCompanyCenterId)
+                .ForeignKey("dbo.CompanyCenters", t => t.CompanyCenterId)
                 .ForeignKey("dbo.Users", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Companies", t => t.CompanyId)
-                .Index(t => t.DistCompanyCenterId)
+                .Index(t => t.CompanyCenterId)
                 .Index(t => t.CompanyId)
                 .Index(t => t.ApplicationOwnerId)
                 .Index(t => t.DataOwnerId)
@@ -809,7 +809,7 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.LastModifiedBy_Id);
             
             CreateTable(
-                "dbo.DistCompanyCenters",
+                "dbo.CompanyCenters",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -840,7 +840,7 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.ApplicationOwners", t => t.ApplicationOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwners", t => t.DataOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwnerCenters", t => t.DataOwnerCenterId, cascadeDelete: false)
-                .ForeignKey("dbo.DistCompanyCenters", t => t.ParentId)
+                .ForeignKey("dbo.CompanyCenters", t => t.ParentId)
                 .ForeignKey("dbo.Users", t => t.LastModifiedBy_Id)
                 .ForeignKey("dbo.Companies", t => t.CompanyId)
                 .Index(t => t.ParentId)
@@ -2635,11 +2635,11 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.LastModifiedBy_Id);
             
             CreateTable(
-                "dbo.DistCompanyRegionLevelTypes",
+                "dbo.CompanyRegionLevelTypes",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        DistCompanyRegionLevelTypeName = c.String(maxLength: 100),
+                        CompanyRegionLevelTypeName = c.String(maxLength: 100),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -2663,7 +2663,7 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.LastModifiedBy_Id);
             
             CreateTable(
-                "dbo.DistCompanyRegions",
+                "dbo.CompanyRegions",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -2675,8 +2675,8 @@ namespace Anatoli.DataAccess.Migrations
                         isLeaf = c.Boolean(nullable: false),
                         Priority = c.Int(),
                         ParentId = c.Guid(),
-                        DistCompanyRegionLevelTypeId = c.Guid(nullable: false),
-                        DistCompanyCenterId = c.Guid(nullable: false),
+                        CompanyRegionLevelTypeId = c.Guid(nullable: false),
+                        CompanyCenterId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -2692,13 +2692,13 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.ApplicationOwners", t => t.ApplicationOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwners", t => t.DataOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwnerCenters", t => t.DataOwnerCenterId, cascadeDelete: false)
-                .ForeignKey("dbo.DistCompanyCenters", t => t.DistCompanyCenterId, cascadeDelete: true)
-                .ForeignKey("dbo.DistCompanyRegions", t => t.ParentId)
+                .ForeignKey("dbo.CompanyCenters", t => t.CompanyCenterId, cascadeDelete: true)
+                .ForeignKey("dbo.CompanyRegions", t => t.ParentId)
                 .ForeignKey("dbo.Users", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.DistCompanyRegionLevelTypes", t => t.DistCompanyRegionLevelTypeId)
+                .ForeignKey("dbo.CompanyRegionLevelTypes", t => t.CompanyRegionLevelTypeId)
                 .Index(t => t.ParentId)
-                .Index(t => t.DistCompanyRegionLevelTypeId)
-                .Index(t => t.DistCompanyCenterId)
+                .Index(t => t.CompanyRegionLevelTypeId)
+                .Index(t => t.CompanyCenterId)
                 .Index(t => t.ApplicationOwnerId)
                 .Index(t => t.DataOwnerId)
                 .Index(t => t.DataOwnerCenterId)
@@ -2706,13 +2706,13 @@ namespace Anatoli.DataAccess.Migrations
                 .Index(t => t.LastModifiedBy_Id);
             
             CreateTable(
-                "dbo.DistCompanyRegionPolygons",
+                "dbo.CompanyRegionPolygons",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
                         Latitude = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Longitude = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        DistCompanyRegionId = c.Guid(nullable: false),
+                        CompanyRegionId = c.Guid(nullable: false),
                         Number_ID = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         LastUpdate = c.DateTime(nullable: false),
@@ -2729,8 +2729,8 @@ namespace Anatoli.DataAccess.Migrations
                 .ForeignKey("dbo.DataOwners", t => t.DataOwnerId, cascadeDelete: false)
                 .ForeignKey("dbo.DataOwnerCenters", t => t.DataOwnerCenterId, cascadeDelete: false)
                 .ForeignKey("dbo.Users", t => t.LastModifiedBy_Id)
-                .ForeignKey("dbo.DistCompanyRegions", t => t.DistCompanyRegionId, cascadeDelete: true)
-                .Index(t => t.DistCompanyRegionId)
+                .ForeignKey("dbo.CompanyRegions", t => t.CompanyRegionId, cascadeDelete: true)
+                .Index(t => t.CompanyRegionId)
                 .Index(t => t.ApplicationOwnerId)
                 .Index(t => t.DataOwnerId)
                 .Index(t => t.DataOwnerCenterId)
@@ -2921,25 +2921,25 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.Groups", "DataOwnerId", "dbo.DataOwners");
             DropForeignKey("dbo.Groups", "ApplicationOwnerId", "dbo.ApplicationOwners");
             DropForeignKey("dbo.Groups", "AddedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegionLevelTypes", "LastModifiedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegions", "DistCompanyRegionLevelTypeId", "dbo.DistCompanyRegionLevelTypes");
-            DropForeignKey("dbo.DistCompanyRegions", "LastModifiedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegions", "ParentId", "dbo.DistCompanyRegions");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "DistCompanyRegionId", "dbo.DistCompanyRegions");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "LastModifiedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "DataOwnerCenterId", "dbo.DataOwnerCenters");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "DataOwnerId", "dbo.DataOwners");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "ApplicationOwnerId", "dbo.ApplicationOwners");
-            DropForeignKey("dbo.DistCompanyRegionPolygons", "AddedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegions", "DistCompanyCenterId", "dbo.DistCompanyCenters");
-            DropForeignKey("dbo.DistCompanyRegions", "DataOwnerCenterId", "dbo.DataOwnerCenters");
-            DropForeignKey("dbo.DistCompanyRegions", "DataOwnerId", "dbo.DataOwners");
-            DropForeignKey("dbo.DistCompanyRegions", "ApplicationOwnerId", "dbo.ApplicationOwners");
-            DropForeignKey("dbo.DistCompanyRegions", "AddedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyRegionLevelTypes", "DataOwnerCenterId", "dbo.DataOwnerCenters");
-            DropForeignKey("dbo.DistCompanyRegionLevelTypes", "DataOwnerId", "dbo.DataOwners");
-            DropForeignKey("dbo.DistCompanyRegionLevelTypes", "ApplicationOwnerId", "dbo.ApplicationOwners");
-            DropForeignKey("dbo.DistCompanyRegionLevelTypes", "AddedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegionLevelTypes", "LastModifiedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegions", "CompanyRegionLevelTypeId", "dbo.CompanyRegionLevelTypes");
+            DropForeignKey("dbo.CompanyRegions", "LastModifiedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegions", "ParentId", "dbo.CompanyRegions");
+            DropForeignKey("dbo.CompanyRegionPolygons", "CompanyRegionId", "dbo.CompanyRegions");
+            DropForeignKey("dbo.CompanyRegionPolygons", "LastModifiedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegionPolygons", "DataOwnerCenterId", "dbo.DataOwnerCenters");
+            DropForeignKey("dbo.CompanyRegionPolygons", "DataOwnerId", "dbo.DataOwners");
+            DropForeignKey("dbo.CompanyRegionPolygons", "ApplicationOwnerId", "dbo.ApplicationOwners");
+            DropForeignKey("dbo.CompanyRegionPolygons", "AddedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegions", "CompanyCenterId", "dbo.CompanyCenters");
+            DropForeignKey("dbo.CompanyRegions", "DataOwnerCenterId", "dbo.DataOwnerCenters");
+            DropForeignKey("dbo.CompanyRegions", "DataOwnerId", "dbo.DataOwners");
+            DropForeignKey("dbo.CompanyRegions", "ApplicationOwnerId", "dbo.ApplicationOwners");
+            DropForeignKey("dbo.CompanyRegions", "AddedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyRegionLevelTypes", "DataOwnerCenterId", "dbo.DataOwnerCenters");
+            DropForeignKey("dbo.CompanyRegionLevelTypes", "DataOwnerId", "dbo.DataOwners");
+            DropForeignKey("dbo.CompanyRegionLevelTypes", "ApplicationOwnerId", "dbo.ApplicationOwners");
+            DropForeignKey("dbo.CompanyRegionLevelTypes", "AddedBy_Id", "dbo.Users");
             DropForeignKey("dbo.DiscountCodes", "LastModifiedBy_Id", "dbo.Users");
             DropForeignKey("dbo.DiscountCodes", "DataOwnerCenterId", "dbo.DataOwnerCenters");
             DropForeignKey("dbo.DiscountCodes", "DataOwnerId", "dbo.DataOwners");
@@ -2989,7 +2989,7 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.Stores", "CompanyId", "dbo.Companies");
             DropForeignKey("dbo.Stocks", "CompanyId", "dbo.Companies");
             DropForeignKey("dbo.Companies", "LastModifiedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyCenters", "CompanyId", "dbo.Companies");
+            DropForeignKey("dbo.CompanyCenters", "CompanyId", "dbo.Companies");
             DropForeignKey("dbo.Companies", "DataOwnerCenterId", "dbo.DataOwnerCenters");
             DropForeignKey("dbo.Companies", "DataOwnerId", "dbo.DataOwners");
             DropForeignKey("dbo.Customers", "CompanyId", "dbo.Companies");
@@ -3310,14 +3310,14 @@ namespace Anatoli.DataAccess.Migrations
             DropForeignKey("dbo.StoreActions", "AddedBy_Id", "dbo.Users");
             DropForeignKey("dbo.Stores", "LastModifiedBy_Id", "dbo.Users");
             DropForeignKey("dbo.IncompletePurchaseOrders", "StoreId", "dbo.Stores");
-            DropForeignKey("dbo.Stores", "DistCompanyCenterId", "dbo.DistCompanyCenters");
-            DropForeignKey("dbo.DistCompanyCenters", "LastModifiedBy_Id", "dbo.Users");
-            DropForeignKey("dbo.DistCompanyCenters", "ParentId", "dbo.DistCompanyCenters");
-            DropForeignKey("dbo.Stocks", "DistCompanyCenterId", "dbo.DistCompanyCenters");
-            DropForeignKey("dbo.DistCompanyCenters", "DataOwnerCenterId", "dbo.DataOwnerCenters");
-            DropForeignKey("dbo.DistCompanyCenters", "DataOwnerId", "dbo.DataOwners");
-            DropForeignKey("dbo.DistCompanyCenters", "ApplicationOwnerId", "dbo.ApplicationOwners");
-            DropForeignKey("dbo.DistCompanyCenters", "AddedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.Stores", "CompanyCenterId", "dbo.CompanyCenters");
+            DropForeignKey("dbo.CompanyCenters", "LastModifiedBy_Id", "dbo.Users");
+            DropForeignKey("dbo.CompanyCenters", "ParentId", "dbo.CompanyCenters");
+            DropForeignKey("dbo.Stocks", "CompanyCenterId", "dbo.CompanyCenters");
+            DropForeignKey("dbo.CompanyCenters", "DataOwnerCenterId", "dbo.DataOwnerCenters");
+            DropForeignKey("dbo.CompanyCenters", "DataOwnerId", "dbo.DataOwners");
+            DropForeignKey("dbo.CompanyCenters", "ApplicationOwnerId", "dbo.ApplicationOwners");
+            DropForeignKey("dbo.CompanyCenters", "AddedBy_Id", "dbo.Users");
             DropForeignKey("dbo.Stores", "DataOwnerCenterId", "dbo.DataOwnerCenters");
             DropForeignKey("dbo.Stores", "DataOwnerId", "dbo.DataOwners");
             DropForeignKey("dbo.Stores", "ApplicationOwnerId", "dbo.ApplicationOwners");
@@ -3433,25 +3433,25 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.Groups", new[] { "DataOwnerCenterId" });
             DropIndex("dbo.Groups", new[] { "DataOwnerId" });
             DropIndex("dbo.Groups", new[] { "ApplicationOwnerId" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "AddedBy_Id" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "DataOwnerCenterId" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "DataOwnerId" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "ApplicationOwnerId" });
-            DropIndex("dbo.DistCompanyRegionPolygons", new[] { "DistCompanyRegionId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "AddedBy_Id" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "DataOwnerCenterId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "DataOwnerId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "ApplicationOwnerId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "DistCompanyCenterId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "DistCompanyRegionLevelTypeId" });
-            DropIndex("dbo.DistCompanyRegions", new[] { "ParentId" });
-            DropIndex("dbo.DistCompanyRegionLevelTypes", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.DistCompanyRegionLevelTypes", new[] { "AddedBy_Id" });
-            DropIndex("dbo.DistCompanyRegionLevelTypes", new[] { "DataOwnerCenterId" });
-            DropIndex("dbo.DistCompanyRegionLevelTypes", new[] { "DataOwnerId" });
-            DropIndex("dbo.DistCompanyRegionLevelTypes", new[] { "ApplicationOwnerId" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "AddedBy_Id" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "DataOwnerCenterId" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "DataOwnerId" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "ApplicationOwnerId" });
+            DropIndex("dbo.CompanyRegionPolygons", new[] { "CompanyRegionId" });
+            DropIndex("dbo.CompanyRegions", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.CompanyRegions", new[] { "AddedBy_Id" });
+            DropIndex("dbo.CompanyRegions", new[] { "DataOwnerCenterId" });
+            DropIndex("dbo.CompanyRegions", new[] { "DataOwnerId" });
+            DropIndex("dbo.CompanyRegions", new[] { "ApplicationOwnerId" });
+            DropIndex("dbo.CompanyRegions", new[] { "CompanyCenterId" });
+            DropIndex("dbo.CompanyRegions", new[] { "CompanyRegionLevelTypeId" });
+            DropIndex("dbo.CompanyRegions", new[] { "ParentId" });
+            DropIndex("dbo.CompanyRegionLevelTypes", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.CompanyRegionLevelTypes", new[] { "AddedBy_Id" });
+            DropIndex("dbo.CompanyRegionLevelTypes", new[] { "DataOwnerCenterId" });
+            DropIndex("dbo.CompanyRegionLevelTypes", new[] { "DataOwnerId" });
+            DropIndex("dbo.CompanyRegionLevelTypes", new[] { "ApplicationOwnerId" });
             DropIndex("dbo.DiscountCodes", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.DiscountCodes", new[] { "AddedBy_Id" });
             DropIndex("dbo.DiscountCodes", new[] { "DataOwnerCenterId" });
@@ -3771,20 +3771,20 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.StoreActions", new[] { "DataOwnerCenterId" });
             DropIndex("dbo.StoreActions", new[] { "DataOwnerId" });
             DropIndex("dbo.StoreActions", new[] { "ApplicationOwnerId" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "LastModifiedBy_Id" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "AddedBy_Id" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "DataOwnerCenterId" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "DataOwnerId" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "ApplicationOwnerId" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "CompanyId" });
-            DropIndex("dbo.DistCompanyCenters", new[] { "ParentId" });
+            DropIndex("dbo.CompanyCenters", new[] { "LastModifiedBy_Id" });
+            DropIndex("dbo.CompanyCenters", new[] { "AddedBy_Id" });
+            DropIndex("dbo.CompanyCenters", new[] { "DataOwnerCenterId" });
+            DropIndex("dbo.CompanyCenters", new[] { "DataOwnerId" });
+            DropIndex("dbo.CompanyCenters", new[] { "ApplicationOwnerId" });
+            DropIndex("dbo.CompanyCenters", new[] { "CompanyId" });
+            DropIndex("dbo.CompanyCenters", new[] { "ParentId" });
             DropIndex("dbo.Stores", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.Stores", new[] { "AddedBy_Id" });
             DropIndex("dbo.Stores", new[] { "DataOwnerCenterId" });
             DropIndex("dbo.Stores", new[] { "DataOwnerId" });
             DropIndex("dbo.Stores", new[] { "ApplicationOwnerId" });
             DropIndex("dbo.Stores", new[] { "CompanyId" });
-            DropIndex("dbo.Stores", new[] { "DistCompanyCenterId" });
+            DropIndex("dbo.Stores", new[] { "CompanyCenterId" });
             DropIndex("dbo.CityRegions", new[] { "LastModifiedBy_Id" });
             DropIndex("dbo.CityRegions", new[] { "AddedBy_Id" });
             DropIndex("dbo.CityRegions", new[] { "DataOwnerCenterId" });
@@ -3877,7 +3877,7 @@ namespace Anatoli.DataAccess.Migrations
             DropIndex("dbo.Stocks", new[] { "Accept3ById" });
             DropIndex("dbo.Stocks", new[] { "Accept2ById" });
             DropIndex("dbo.Stocks", new[] { "Accept1ById" });
-            DropIndex("dbo.Stocks", new[] { "DistCompanyCenterId" });
+            DropIndex("dbo.Stocks", new[] { "CompanyCenterId" });
             DropIndex("dbo.Stocks", new[] { "StoreId" });
             DropIndex("dbo.Permissions", new[] { "Parent_Id" });
             DropIndex("dbo.Permissions", new[] { "LastModifiedBy_Id" });
@@ -3918,9 +3918,9 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.ProductSupplierGuarantees");
             DropTable("dbo.ItemImages");
             DropTable("dbo.Groups");
-            DropTable("dbo.DistCompanyRegionPolygons");
-            DropTable("dbo.DistCompanyRegions");
-            DropTable("dbo.DistCompanyRegionLevelTypes");
+            DropTable("dbo.CompanyRegionPolygons");
+            DropTable("dbo.CompanyRegions");
+            DropTable("dbo.CompanyRegionLevelTypes");
             DropTable("dbo.DiscountCodes");
             DropTable("dbo.Clearances");
             DropTable("dbo.BaseValues");
@@ -3971,7 +3971,7 @@ namespace Anatoli.DataAccess.Migrations
             DropTable("dbo.StoreActivePriceLists");
             DropTable("dbo.StoreActiveOnhands");
             DropTable("dbo.StoreActions");
-            DropTable("dbo.DistCompanyCenters");
+            DropTable("dbo.CompanyCenters");
             DropTable("dbo.Stores");
             DropTable("dbo.CityRegions");
             DropTable("dbo.IncompletePurchaseOrders");

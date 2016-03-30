@@ -1,16 +1,27 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
-    public class Permission : BaseModel
+    public class Permission
     {
-        public string PersianTitle { get; set; }
-        public string Resource { get; set; }
-        public string Action { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        [ForeignKey("ApplicationModuleResource")]
+        public Guid ApplicationModuleResourceId { get; set; }
+        public virtual ApplicationModuleResource ApplicationModuleResource { get; set; }
+        [ForeignKey("PermissionAction")]
+        public Guid PermissionActionId { get; set; }
+        public virtual PermissionAction PermissionAction { get; set; }
 
-        public Permission Parent { get; set; }
         public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
+        public virtual User User { get; set; }
+        [ForeignKey("User")]
+        public Nullable<Guid> UserId { get; set; }
+
     }
 }

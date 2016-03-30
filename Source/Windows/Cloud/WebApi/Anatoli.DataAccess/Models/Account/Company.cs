@@ -15,7 +15,7 @@ namespace Anatoli.DataAccess.Models
         public string CompanyName { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Store> Stores { get; set; }
-        public virtual ICollection<DistCompanyCenter> DistCompanyCenters { get; set; }
+        public virtual ICollection<CompanyCenter> CompanyCenters { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
 
         [ForeignKey("AnatoliAccount")]

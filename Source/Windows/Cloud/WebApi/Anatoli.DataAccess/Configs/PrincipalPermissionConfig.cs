@@ -11,7 +11,7 @@ namespace Anatoli.DataAccess.Configs
     {
         public PrincipalPermissionConfig()
         {
-            this.HasRequired<User>(p => p.User)
+            this.HasRequired<Principal>(p => p.Principal)
                 .WithMany(pp => pp.PrincipalPermissions)
                 .WillCascadeOnDelete(false);
 

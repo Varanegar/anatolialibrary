@@ -84,7 +84,7 @@
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
-    <Compile Include="Configs\DistCompanyRegionConfig.cs" />
+    <Compile Include="Configs\RegionAreaConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
     <Compile Include="Configs\AnatoliAccountConfig.cs" />
@@ -93,10 +93,10 @@
     <Compile Include="Configs\CityRegionConfig.cs" />
     <Compile Include="Configs\ManufactureConfig.cs" />
     <Compile Include="Configs\MainProductGroupConfig.cs" />
-    <Compile Include="Configs\DistCompanyCenterConfig.cs" />
+    <Compile Include="Configs\CompanyCenterConfig.cs" />
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\FiscalYearConfig.cs" />
-    <Compile Include="Configs\DistCompanyRegionLevelTypeConfig.cs" />
+    <Compile Include="Configs\RegionAreaLevelTypeConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleCalcTypeConfig.cs" />
@@ -151,6 +151,7 @@
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderLineItemRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IPurchaseOrderStatusHistoryRepository.cs" />
+    <Compile Include="Interfaces\Route\IRegionAreaRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockOnHandSyncRepository.cs" />
@@ -188,20 +189,31 @@
     <Compile Include="Migrations\201603261401512_Daily-Activity-Migration-2.Designer.cs">
       <DependentUpon>201603261401512_Daily-Activity-Migration-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603280908489_Daily-Activity-Migration-3.cs" />
+    <Compile Include="Migrations\201603280908489_Daily-Activity-Migration-3.Designer.cs">
+      <DependentUpon>201603280908489_Daily-Activity-Migration-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603280915331_Daily-Activity-Migration-4.cs" />
+    <Compile Include="Migrations\201603280915331_Daily-Activity-Migration-4.Designer.cs">
+      <DependentUpon>201603280915331_Daily-Activity-Migration-4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
+    <Compile Include="Models\Account\CompanyCenter.cs" />
     <Compile Include="Models\Anatoli\AnatoliAccount.cs" />
     <Compile Include="Models\Anatoli\AnatoliRegion.cs" />
     <Compile Include="Models\Account\Company.cs" />
     <Compile Include="Models\Anatoli\AnatoliContact.cs" />
     <Compile Include="Models\Anatoli\AnatoliPlace.cs" />
-    <Compile Include="Models\Account\DistCompanyRegionPolygon.cs" />
-    <Compile Include="Models\Account\DistCompanyRegion.cs" />
-    <Compile Include="Models\Account\DistCompanyCenter.cs" />
     <Compile Include="Models\Anatoli\AnatoliContactType.cs" />
-    <Compile Include="Models\Anatoli\Application.cs" />
+    <Compile Include="Models\Identity\PermissionAction.cs" />
+    <Compile Include="Models\Identity\ApplicationModuleResource.cs" />
+    <Compile Include="Models\Identity\ApplicationModule.cs" />
+    <Compile Include="Models\Identity\Application.cs" />
     <Compile Include="Models\Anatoli\DataOwnerCenter.cs" />
     <Compile Include="Models\Anatoli\DataOwner.cs" />
+    <Compile Include="Models\Identity\Principal.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityDayArea.cs" />
@@ -252,7 +264,7 @@
     <Compile Include="Models\Product\ProductRate.cs" />
     <Compile Include="Models\Product\ProductSupplierGuarantee.cs" />
     <Compile Include="Models\PerchaseOrder\PurchaseOrderStatusHistory.cs" />
-    <Compile Include="Models\Account\DistCompanyRegionLevelType.cs" />
+    <Compile Include="Models\Route\RegionAreaLevelType.cs" />
     <Compile Include="Models\Stock\ProductRequest\StockProductRequestProductDetail.cs" />
     <Compile Include="Models\Stock\ProductRequest\StockProductRequestRule.cs" />
     <Compile Include="Models\BaseData\FiscalYear.cs" />
@@ -321,6 +333,7 @@
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderLineItemRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderStatusHistoryRepository.cs" />
     <Compile Include="Repositories\PurchaseOrder\PurchaseOrderRepository.cs" />
+    <Compile Include="Repositories\Route\RegionAreaRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockProductRequestProductDetailRepository.cs" />
@@ -360,6 +373,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603261401512_Daily-Activity-Migration-2.resx">
       <DependentUpon>201603261401512_Daily-Activity-Migration-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603280908489_Daily-Activity-Migration-3.resx">
+      <DependentUpon>201603280908489_Daily-Activity-Migration-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603280915331_Daily-Activity-Migration-4.resx">
+      <DependentUpon>201603280915331_Daily-Activity-Migration-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

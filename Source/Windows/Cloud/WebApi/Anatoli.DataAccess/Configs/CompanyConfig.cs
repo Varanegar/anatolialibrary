@@ -18,7 +18,7 @@ namespace Anatoli.DataAccess.Configs
                 .WithOptional(c => c.Company)
                 .WillCascadeOnDelete(false);
 
-            this.HasMany<DistCompanyCenter>(csa => csa.DistCompanyCenters)
+            this.HasMany<CompanyCenter>(csa => csa.CompanyCenters)
                 .WithRequired(c => c.Company)
                 .WillCascadeOnDelete(false);
 

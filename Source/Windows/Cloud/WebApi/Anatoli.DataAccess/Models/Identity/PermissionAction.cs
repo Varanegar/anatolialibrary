@@ -1,26 +1,28 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
-    public class Group 
+    public class PermissionAction
     {
+        [Key]
+        public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public virtual Principal Manager { get; set; }
-        public virtual ICollection<Principal> Users { get; set; }
-        public virtual ICollection<Group> Childs { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
+        public virtual ICollection<PermissionAction> Childs { get; set; }
         [ForeignKey("ParentId")]
-        public virtual Group Parent { get; set; }
+        public virtual PermissionAction Parent { get; set; }
 
         public Guid? ParentId { get; set; }
+
         public int NodeId { get; set; }
         public int NLeft { get; set; }
         public int NRight { get; set; }
         public int NLevel { get; set; }
         public Nullable<int> Priority { get; set; }
-
     }
 }

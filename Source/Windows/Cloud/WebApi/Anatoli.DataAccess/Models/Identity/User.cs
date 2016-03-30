@@ -46,5 +46,9 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
 
+        [ForeignKey("Principal")]
+        public Guid PrincipalId { get; set; }
+        public virtual Principal Principal { get; set; }
+
     }
 }

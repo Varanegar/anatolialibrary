@@ -19,7 +19,7 @@ using Anatoli.ViewModels.BaseModels;
 using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
-using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
+//using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 using Anatoli.ViewModels.User;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
@@ -39,9 +39,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
 
-            var model = data.Where(p => p.Permission.Resource == "Pages").Select(s => s.Permission).ToList();
+            //var model = data.Where(p => p.Permission.Resource == "Pages").Select(s => s.Permission).ToList();
 
-            return Ok(new PermissionProxy().Convert(model.ToList()));
+            //return Ok(new PermissionProxy().Convert(model.ToList()));
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -53,7 +54,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             var model = this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u));
 
-            return Ok(model);
+            //return Ok(model);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -62,7 +64,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
 
-            return Ok(new PermissionProxy().Convert(model.ToList()));
+            //return Ok(new PermissionProxy().Convert(model.ToList()));
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -71,7 +74,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
 
-            return Ok(new PrincipalPermissionProxy().Convert(model.ToList()));
+            //return Ok(new PrincipalPermissionProxy().Convert(model.ToList()));
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -89,7 +93,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     LastUpdate = DateTime.Now,
                     Grant = itm.grant.Value,
                     Permission_Id = Guid.Parse(itm.id.Value),
-                    UserId = Guid.Parse(model.userId.Value),
+                    PrincipalId = Guid.Parse(model.userId.Value),
                     ApplicationOwnerId = OwnerKey
                 });
 
