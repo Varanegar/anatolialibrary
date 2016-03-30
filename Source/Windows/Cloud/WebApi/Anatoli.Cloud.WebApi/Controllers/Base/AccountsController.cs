@@ -16,7 +16,7 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
-using Anatoli.Business.Domain.Authorization;
+//using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
 //using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
@@ -37,7 +37,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
 
-            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
+            //var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
 
             //var model = data.Where(p => p.Permission.Resource == "Pages").Select(s => s.Permission).ToList();
 
@@ -62,7 +62,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("permissions"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissions()
         {
-            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
+            //var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
 
             //return Ok(new PermissionProxy().Convert(model.ToList()));
             return Ok();
@@ -72,7 +72,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("getPersmissionsOfUser"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissionsOfUser([FromBody] BaseRequestModel data)
         {
-            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
+            //var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
 
             //return Ok(new PrincipalPermissionProxy().Convert(model.ToList()));
             return Ok();
@@ -89,15 +89,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 pp.Add(new PrincipalPermission
                 {
                     Id = Guid.NewGuid(),
-                    CreatedDate = DateTime.Now,
-                    LastUpdate = DateTime.Now,
                     Grant = itm.grant.Value,
                     Permission_Id = Guid.Parse(itm.id.Value),
                     PrincipalId = Guid.Parse(model.userId.Value),
-                    ApplicationOwnerId = OwnerKey
                 });
 
-            await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
+            //await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
 
             return Ok(new { });
         }

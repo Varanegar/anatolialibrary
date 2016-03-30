@@ -18,11 +18,11 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("CompanyCenter")]
         public Nullable<Guid> CompanyCenterId { get; set; }
         [ForeignKey("Accept1By")]
-        public string Accept1ById { get; set; }
+        public Nullable<Guid> Accept1ById { get; set; }
         [ForeignKey("Accept2By")]
-        public string Accept2ById { get; set; }
+        public Nullable<Guid> Accept2ById { get; set; }
         [ForeignKey("Accept3By")]
-        public string Accept3ById { get; set; }
+        public Nullable<Guid> Accept3ById { get; set; }
         [ForeignKey("StockType")]
         public Nullable<Guid> StockTypeId { get; set; }
         [ForeignKey("MainSCMStock2")]
@@ -40,15 +40,15 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<StockProductRequest> StockProductRequests { get; set; }
         public virtual ICollection<StockProductRequest> StockProductRequestSourceStocks { get; set; }
         public virtual StockType StockType { get; set; }
-        public virtual User Accept1By { get; set; }
-        public virtual User Accept2By { get; set; }
-        public virtual User Accept3By { get; set; }
+        public virtual Principal Accept1By { get; set; }
+        public virtual Principal Accept2By { get; set; }
+        public virtual Principal Accept3By { get; set; }
         public virtual bool OverRequest { get; set; }
         public virtual bool OverAfterFirstAcceptance { get; set; }
         public virtual bool OverAfterSecondAcceptance { get; set; }
         public virtual bool OverAfterThirdAcceptance { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        //public virtual ICollection<Principal> Principals { get; set; }
 
         [ForeignKey("Company")]
         public Guid? CompanyId { get; set; }

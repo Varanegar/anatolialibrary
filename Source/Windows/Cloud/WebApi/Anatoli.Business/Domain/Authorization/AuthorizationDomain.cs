@@ -15,6 +15,7 @@ using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Business.Domain.Authorization
 {
+    /*
     public class AuthorizationDomain : BusinessDomainV2<PrincipalPermission, PrincipalPermissionViewModel, PrincipalPermissionRepository, IPrincipalPermissionRepository>
     {
         #region Properties
@@ -82,4 +83,5 @@ namespace Anatoli.Business.Domain.Authorization
         }
         #endregion
     }
+     * */
 }

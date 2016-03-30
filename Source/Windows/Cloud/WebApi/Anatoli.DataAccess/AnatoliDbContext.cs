@@ -106,7 +106,11 @@ namespace Anatoli.DataAccess
         public DbSet<Application> Applications { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<IdentityUserRole> UserRoles { get; set; }
+        public DbSet<Principal> Principals { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionAction> PermissionActions { get; set; }
+        public DbSet<ApplicationModuleResource> ApplicationModuleResources { get; set; }
+        public DbSet<ApplicationModule> ApplicationModules { get; set; }
         public DbSet<PrincipalPermission> PrincipalPermissions { get; set; }
         #endregion
 
@@ -158,9 +162,10 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new StoreCalendarConfig());
             modelBuilder.Configurations.Add(new StoreConfig());
 
-           
+
 
             modelBuilder.Configurations.Add(new UserConfig());
+            modelBuilder.Configurations.Add(new PrincipalConfig());
             modelBuilder.Configurations.Add(new GroupConfig());
            // modelBuilder.Configurations.Add(new RoleConfig());
             modelBuilder.Configurations.Add(new PrincipalPermissionConfig());

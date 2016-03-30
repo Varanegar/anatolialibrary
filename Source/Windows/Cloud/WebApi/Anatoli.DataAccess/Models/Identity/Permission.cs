@@ -19,9 +19,6 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual PermissionAction PermissionAction { get; set; }
 
         public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
-        public virtual User User { get; set; }
-        [ForeignKey("User")]
-        public Nullable<Guid> UserId { get; set; }
 
     }
 }

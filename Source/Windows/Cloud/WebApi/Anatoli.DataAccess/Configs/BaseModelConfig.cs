@@ -14,8 +14,8 @@ namespace Anatoli.DataAccess.Configs
             this.HasRequired<ApplicationOwner>(p => p.ApplicationOwner).WithRequiredDependent().WillCascadeOnDelete(false);
             this.HasRequired<DataOwner>(p => p.DataOwner).WithRequiredDependent().WillCascadeOnDelete(false);
             this.HasRequired<DataOwnerCenter>(p => p.DataOwnerCenter).WithRequiredDependent().WillCascadeOnDelete(false);
-            this.HasRequired<User>(p => p.AddedBy).WithRequiredDependent().WillCascadeOnDelete(false);
-            this.HasRequired<User>(p => p.LastModifiedBy).WithRequiredDependent().WillCascadeOnDelete(false);
+            this.HasOptional<Principal>(p => p.AddedBy).WithOptionalDependent().WillCascadeOnDelete(false);
+            this.HasOptional<Principal>(p => p.LastModifiedBy).WithOptionalDependent().WillCascadeOnDelete(false);
         }
     }
 }

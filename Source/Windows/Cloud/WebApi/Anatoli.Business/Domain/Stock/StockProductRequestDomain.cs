@@ -50,7 +50,7 @@ namespace Anatoli.Business.Domain
 
 
 
-        public async Task<ICollection<StockProductRequest>> GetStockProductRequests(string searchTerm,string userId)
+        public async Task<ICollection<StockProductRequest>> GetStockProductRequests(string searchTerm,Guid userId)
         {
             return await MainRepository.FindAllAsync(p => (string.IsNullOrEmpty(searchTerm) ||
                                                             p.Stock.StockName.Contains(searchTerm) ||

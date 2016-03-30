@@ -117,6 +117,7 @@
     <Compile Include="Configs\ProductTagConfig.cs" />
     <Compile Include="Configs\SupplierConfig.cs" />
     <Compile Include="Configs\StoreConfig.cs" />
+    <Compile Include="Configs\PrecinpleConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Account\IPermissionRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalPermissionRepository.cs" />
@@ -197,6 +198,18 @@
     <Compile Include="Migrations\201603280915331_Daily-Activity-Migration-4.Designer.cs">
       <DependentUpon>201603280915331_Daily-Activity-Migration-4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603302142002_Permission-Migration-1.cs" />
+    <Compile Include="Migrations\201603302142002_Permission-Migration-1.Designer.cs">
+      <DependentUpon>201603302142002_Permission-Migration-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603302152029_Permission-Migration-2.cs" />
+    <Compile Include="Migrations\201603302152029_Permission-Migration-2.Designer.cs">
+      <DependentUpon>201603302152029_Permission-Migration-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603302226184_Permission-Migration-3.cs" />
+    <Compile Include="Migrations\201603302226184_Permission-Migration-3.Designer.cs">
+      <DependentUpon>201603302226184_Permission-Migration-3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -211,8 +224,8 @@
     <Compile Include="Models\Identity\ApplicationModuleResource.cs" />
     <Compile Include="Models\Identity\ApplicationModule.cs" />
     <Compile Include="Models\Identity\Application.cs" />
-    <Compile Include="Models\Anatoli\DataOwnerCenter.cs" />
-    <Compile Include="Models\Anatoli\DataOwner.cs" />
+    <Compile Include="Models\Identity\DataOwnerCenter.cs" />
+    <Compile Include="Models\BaseData\DataOwner.cs" />
     <Compile Include="Models\Identity\Principal.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrderLineItem.cs" />
@@ -364,9 +377,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603231608382_Change-BusinessModel-Migration-1.resx">
       <DependentUpon>201603231608382_Change-BusinessModel-Migration-1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603242146369_Product-Supplier-Migration-1.resx">
       <DependentUpon>201603242146369_Product-Supplier-Migration-1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603261349363_Daily-Activity-Migration.resx">
       <DependentUpon>201603261349363_Daily-Activity-Migration.cs</DependentUpon>
@@ -379,6 +394,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603280915331_Daily-Activity-Migration-4.resx">
       <DependentUpon>201603280915331_Daily-Activity-Migration-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603302142002_Permission-Migration-1.resx">
+      <DependentUpon>201603302142002_Permission-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603302152029_Permission-Migration-2.resx">
+      <DependentUpon>201603302152029_Permission-Migration-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603302226184_Permission-Migration-3.resx">
+      <DependentUpon>201603302226184_Permission-Migration-3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
