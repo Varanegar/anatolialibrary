@@ -10,6 +10,14 @@ namespace Anatoli.DataAccess.Configs
     {
         public GroupConfig()
         {
+            this.HasMany<Principal>(s => s.Principals)
+                .WithMany(c => c.Groups)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("GroupId");
+                    cs.MapRightKey("PrincipalID");
+                    cs.ToTable("PrincipalGroups");
+                });
         }
     }
 }

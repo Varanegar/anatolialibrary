@@ -1,10 +1,10 @@
 ﻿namespace Anatoli.ViewModels.StockModels
 {
-    public class UserViewModel : BaseViewModel
+    public class PricipalViewModel : BaseViewModel
     {
         public string UserName { get; set; }
 
-        public UserViewModel()
+        public PricipalViewModel()
         {
             UserName = string.Empty;
         }

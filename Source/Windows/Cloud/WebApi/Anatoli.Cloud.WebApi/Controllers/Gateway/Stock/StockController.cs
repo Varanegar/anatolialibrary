@@ -146,9 +146,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var result = await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByUserId(data.userId);
+                //var result = await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByUserId(Guid.Parse(data.userId));
 
-                return Ok(result);
+                //return Ok(result);
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -163,9 +164,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SaveStocksUser(data.userId, data.stockIds == null ? null : data.stockIds.Select(s => Guid.Parse(s)).ToList());
+                //await new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SaveStocksUser(Guid.Parse(data.userId), data.stockIds == null ? null : data.stockIds.Select(s => Guid.Parse(s)).ToList());
 
-                return Ok(new { });
+                //return Ok(new { });
+                return BadRequest();
             }
             catch (Exception ex)
             {
