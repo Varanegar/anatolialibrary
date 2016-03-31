@@ -43,8 +43,10 @@ namespace Anatoli.DataAccess.Models.Identity
         public Guid ApplicationOwnerId { get; set; }
         public virtual ApplicationOwner ApplicationOwner { get; set; }
         public virtual AnatoliContact AnatoliContact { get; set; }
-        public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
-        public virtual ICollection<Stock> Stocks { get; set; }
+
+        //[ForeignKey("Principal")]
+        //public Guid PrincipalId { get; set; }
+        public virtual Principal Principal { get; set; }
 
     }
 }

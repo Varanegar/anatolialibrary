@@ -34,9 +34,9 @@ namespace Anatoli.Business.Proxy.Concretes.StockConcretes
                 MainStock = data.MainSCMStock2 == null ? new StockViewModel() : new StockViewModel { UniqueId = data.MainSCMStock2.Id, StockName = data.MainSCMStock2.StockName },
                 RelatedStock = data.RelatedSCMStock2 == null ? new StockViewModel() : new StockViewModel { UniqueId = data.RelatedSCMStock2.Id, StockName = data.RelatedSCMStock2.StockName }
             };
-            result.Approver1 = data.Accept1By == null ? new UserViewModel() : new UserViewModel { UniqueId = Guid.Parse(data.Accept1By.Id), UserName = data.Accept1By.FullName };
-            result.Approver2 = data.Accept2By == null ? new UserViewModel() : new UserViewModel { UniqueId = Guid.Parse(data.Accept2By.Id), UserName = data.Accept2By.FullName };
-            result.Approver3 = data.Accept3By == null ? new UserViewModel() : new UserViewModel { UniqueId = Guid.Parse(data.Accept3By.Id), UserName = data.Accept3By.FullName };
+            result.Approver1 = data.Accept1By == null ? new PricipalViewModel() : new PricipalViewModel { UniqueId = (Guid)data.Accept1ById, UserName = data.Accept1By.Title };
+            result.Approver2 = data.Accept2By == null ? new PricipalViewModel() : new PricipalViewModel { UniqueId = (Guid)data.Accept2ById, UserName = data.Accept2By.Title };
+            result.Approver3 = data.Accept3By == null ? new PricipalViewModel() : new PricipalViewModel { UniqueId = (Guid)data.Accept3ById, UserName = data.Accept3By.Title };
 
             if (data.StockOnHandSyncs.Count > 0)
             {

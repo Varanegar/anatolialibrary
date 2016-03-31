@@ -57,7 +57,7 @@ namespace Anatoli.Business.Domain
             }
         }
         public async Task<List<StockProductRequestProductViewModel>> UpdateStockProductRequestProductDetails(List<StockProductRequestProductViewModel> model,
-                                                                                                             Guid stockId, string currentUserId)
+                                                                                                             Guid stockId, Guid currentUserId)
         {
             foreach (var item in model)
             {

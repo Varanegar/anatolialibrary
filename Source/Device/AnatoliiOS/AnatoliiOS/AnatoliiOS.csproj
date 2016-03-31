@@ -87,6 +87,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnatoliApp\AnatoliApp.cs" />
+    <Compile Include="Components\LoadingOverlay.cs" />
     <Compile Include="ViewControllers\BaseController.cs" />
     <Compile Include="ViewControllers\BaseController.designer.cs">
       <DependentUpon>BaseController.cs</DependentUpon>

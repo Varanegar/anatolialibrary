@@ -7,7 +7,7 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Web.Http.Controllers;
-using Anatoli.Business.Domain.Authorization;
+//using Anatoli.Business.Domain.Authorization;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -89,10 +89,10 @@ namespace Anatoli.Cloud.WebApi.Classes
             if (user == null || string.IsNullOrEmpty(user.Identity.GetUserId()))
                 return false;
 
-            var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.Identity.GetUserId(), Resource, Action);
+            //var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.Identity.GetUserId(), Resource, Action);
 
-            if (permissions == null || permissions.Count == 0 || permissions.Any(a => a.Grant == false))
-                return false;
+            //if (permissions == null || permissions.Count == 0 || permissions.Any(a => a.Grant == -1))
+            //    return false;
 
             //check resource action from db for this Principal.
             return true;

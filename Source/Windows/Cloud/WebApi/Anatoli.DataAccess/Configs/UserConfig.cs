@@ -17,17 +17,6 @@ namespace Anatoli.DataAccess.Configs
             this.HasRequired<AnatoliContact>(r => r.AnatoliContact)
                 .WithMany(u => u.Users);
 
-            this.HasMany<Stock>(p => p.Stocks)
-                .WithMany(s => s.Users);
-
-            this.HasMany<Stock>(s => s.Stocks)
-               .WithMany(c => c.Users)
-               .Map(cs =>
-               {
-                   cs.MapLeftKey("UserId");
-                   cs.MapRightKey("StockID");
-                   cs.ToTable("UsersStocks");
-               });
         }
     }
 }

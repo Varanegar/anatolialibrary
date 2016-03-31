@@ -5,7 +5,7 @@ using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Interfaces
 {
-    public interface IPrincipalRepository : IRepository<ApplicationOwner>
+    public interface IPrincipalRepository : IRepository<Principal>
     {
     }
 }

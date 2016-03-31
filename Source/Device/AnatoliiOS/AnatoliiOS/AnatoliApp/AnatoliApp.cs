@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliIOS.Clients;
 using Anatoli.App.Model.Store;
+using Anatoli.App.Model.AnatoliUser;
 
 namespace AnatoliIOS
 {
@@ -19,11 +20,13 @@ namespace AnatoliIOS
         public UITableView MenuTableViewReference;
         public StoreDataModel DefaultStore;
         public Anatoli.App.Model.CustomerViewModel Customer { get; set; }
+        public AnatoliUserModel User { get; set; }
         public async Task Initialize()
         {
             try
             {
                 Customer = await CustomerManager.ReadCustomerAsync();
+                User = await AnatoliUserManager.ReadUserInfoAsync();
                 DefaultStore = await StoreManager.GetDefaultAsync();
             }
             catch (Exception)
