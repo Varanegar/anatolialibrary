@@ -9,7 +9,15 @@
                 <outlet property="addressTextField" destination="V7U-y3-yWD" id="name-outlet-V7U-y3-yWD"/>
                 <outlet property="emailTextField" destination="UKR-4J-MJG" id="name-outlet-UKR-4J-MJG"/>
                 <outlet property="lastNameTextField" destination="Xwk-t9-ILP" id="name-outlet-Xwk-t9-ILP"/>
+                <outlet property="level1Picker" destination="Ek0-rI-Pxp" id="name-outlet-Ek0-rI-Pxp"/>
+                <outlet property="level2Picker" destination="0Q5-jy-9rK" id="name-outlet-0Q5-jy-9rK"/>
+                <outlet property="level3Picker" destination="jMt-WB-T4G" id="name-outlet-jMt-WB-T4G"/>
+                <outlet property="level4Picker" destination="gsI-ix-Ldm" id="name-outlet-gsI-ix-Ldm"/>
+                <outlet property="logoutButton" destination="dTW-6n-dHu" id="name-outlet-dTW-6n-dHu"/>
                 <outlet property="nameTextField" destination="9N3-d0-bBf" id="name-outlet-9N3-d0-bBf"/>
+                <outlet property="profileImageView" destination="AaV-ZL-E3O" id="name-outlet-AaV-ZL-E3O"/>
+                <outlet property="saveButton" destination="iao-da-V4w" id="name-outlet-iao-da-V4w"/>
+                <outlet property="titleImageView" destination="11P-5H-3ns" id="name-outlet-11P-5H-3ns"/>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
             </connections>
         </placeholder>
@@ -21,7 +29,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="beH-1X-c8C">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="976"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1113"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="نام" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9N3-d0-bBf">
                                     <rect key="frame" x="10" y="160" width="580" height="30"/>

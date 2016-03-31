@@ -44,11 +44,23 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIButton logoutButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UITextField nameTextField { get; set; }
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIImageView profileImageView { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UIButton saveButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel titleImageView { get; set; }
 
 		void ReleaseDesignerOutlets ()
 		{
@@ -80,13 +92,25 @@ namespace AnatoliIOS.ViewControllers
 				level4Picker.Dispose ();
 				level4Picker = null;
 			}
+			if (logoutButton != null) {
+				logoutButton.Dispose ();
+				logoutButton = null;
+			}
 			if (nameTextField != null) {
 				nameTextField.Dispose ();
 				nameTextField = null;
 			}
+			if (profileImageView != null) {
+				profileImageView.Dispose ();
+				profileImageView = null;
+			}
 			if (saveButton != null) {
 				saveButton.Dispose ();
 				saveButton = null;
+			}
+			if (titleImageView != null) {
+				titleImageView.Dispose ();
+				titleImageView = null;
 			}
 		}
 	}

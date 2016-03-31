@@ -86,6 +86,9 @@ namespace AnatoliIOS.ViewControllers
                 level4Picker.Select(0, 0, true);
             };
 
+			logoutButton.TouchUpInside += async (object sender, EventArgs e) => {
+				await AnatoliApp.GetInstance().LogOutAsync();
+			};
             saveButton.TouchUpInside += async (object sender, EventArgs e) =>
             {
                 CustomerViewModel customer = new CustomerViewModel();
