@@ -52,6 +52,10 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel numberLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UIImageView profileImageView { get; set; }
 
 		[Outlet]
@@ -60,7 +64,7 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
-		UILabel titleImageView { get; set; }
+		UILabel titleLabel { get; set; }
 
 		void ReleaseDesignerOutlets ()
 		{
@@ -100,6 +104,10 @@ namespace AnatoliIOS.ViewControllers
 				nameTextField.Dispose ();
 				nameTextField = null;
 			}
+			if (numberLabel != null) {
+				numberLabel.Dispose ();
+				numberLabel = null;
+			}
 			if (profileImageView != null) {
 				profileImageView.Dispose ();
 				profileImageView = null;
@@ -108,9 +116,9 @@ namespace AnatoliIOS.ViewControllers
 				saveButton.Dispose ();
 				saveButton = null;
 			}
-			if (titleImageView != null) {
-				titleImageView.Dispose ();
-				titleImageView = null;
+			if (titleLabel != null) {
+				titleLabel.Dispose ();
+				titleLabel = null;
 			}
 		}
 	}
