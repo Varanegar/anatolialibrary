@@ -5,6 +5,7 @@ using UIKit;
 using Anatoli.App.Model.Product;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Manager;
+using System.Drawing;
 
 namespace AnatoliIOS.TableViewCells
 {
@@ -17,7 +18,7 @@ namespace AnatoliIOS.TableViewCells
 		{
 			Nib = UINib.FromName ("ProductSummaryViewCell", NSBundle.MainBundle);
 		}
-
+		public ProductSummaryViewCell() : base(UITableViewCellStyle.Default,Key){}
 		public ProductSummaryViewCell (IntPtr handle) : base (handle)
 		{
 		}
@@ -25,6 +26,15 @@ namespace AnatoliIOS.TableViewCells
 		public void UpdateCell(ProductModel item){
 			productLabel.Text = item.product_name;
 			priceLabel.Text = item.price.ToCurrency () + " تومان";
+			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
+			if (imgUri != null) {
+				try {
+					//productImageView.SetImage(url : new NSUrl(imgUri),placeholder: UIImage.FromBundle ("igicon"));
+				} catch (Exception) {
+					
+				}
+			}
+
 			if (!item.IsAvailable) {
 				addProductButton.Enabled = false;
 				productLabel.TextColor = UIColor.Gray;
