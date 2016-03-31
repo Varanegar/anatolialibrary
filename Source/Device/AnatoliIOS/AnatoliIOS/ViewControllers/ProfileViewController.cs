@@ -107,7 +107,7 @@ namespace AnatoliIOS.ViewControllers
                         {
                             await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().User, null);
                             AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
-                            var alert = UIAlertController.Create("", "اطلاعات شما دخیره شد", UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("", "اطلاعات شما ذخیره شد", UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, delegate { AnatoliApp.GetInstance().PushViewController(new FirstPageViewController()); }));
                             PresentViewController(alert, true, null);
                         }
