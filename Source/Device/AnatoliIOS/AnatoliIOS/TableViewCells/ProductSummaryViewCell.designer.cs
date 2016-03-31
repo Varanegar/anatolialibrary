@@ -16,10 +16,34 @@ namespace AnatoliIOS.TableViewCells
 	{
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIButton addProductButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel priceLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UIImageView productImageView { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel productLabel { get; set; }
 
 		void ReleaseDesignerOutlets ()
 		{
+			if (addProductButton != null) {
+				addProductButton.Dispose ();
+				addProductButton = null;
+			}
+			if (priceLabel != null) {
+				priceLabel.Dispose ();
+				priceLabel = null;
+			}
+			if (productImageView != null) {
+				productImageView.Dispose ();
+				productImageView = null;
+			}
 			if (productLabel != null) {
 				productLabel.Dispose ();
 				productLabel = null;

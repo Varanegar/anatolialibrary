@@ -79,6 +79,9 @@ namespace AnatoliIOS
 			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.ViewControllers = newViewControllerStack;
 			PushViewController (viewController);
 		}
+		public void PresentViewController(UIViewController view){
+			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PresentViewController (view,true,null);
+		}
         public void PushViewController(UIViewController viewController)
         {
             if (viewController == null)

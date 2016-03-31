@@ -164,6 +164,7 @@
     <Compile Include="TableViewSources\StoresTableViewSource.cs" />
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\ProfileViewController.xib" />
+    <BundleResource Include="Resources\ic_shoppingcard_blue_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
