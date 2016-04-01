@@ -2,6 +2,7 @@
 using System;
 using UIKit;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliIOS.Components;
 namespace AnatoliIOS.ViewControllers
 {
     public partial class LoginViewController : BaseController
@@ -32,21 +33,29 @@ namespace AnatoliIOS.ViewControllers
                     alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
                 }
+                LoadingOverlay loadingOverlay;
+                var bounds = UIScreen.MainScreen.Bounds;
+                loadingOverlay = new LoadingOverlay(bounds);
+                View.Add(loadingOverlay);
                 try
                 {
+                    
                     var result = await AnatoliUserManager.LoginAsync(userNameTextField.Text, passwordTextField.Text);
                     if (result != null)
                     {
                         if (result.IsValid)
                         {
                             AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
+                            AnatoliApp.GetInstance().User = await AnatoliUserManager.ReadUserInfoAsync();
                             AnatoliApp.GetInstance().RefreshMenu();
                             AnatoliApp.GetInstance().PushViewController(new ProductsViewController());
                         }
                     }
+                    loadingOverlay.Hide();
                 }
                 catch (Exception ex)
                 {
+                    loadingOverlay.Hide();
                     if (ex.GetType() == typeof(TokenException))
                     {
                         var alert = UIAlertController.Create("خطا", "نام کاربری یا کلمه عبور اشتباه است", UIAlertControllerStyle.Alert);

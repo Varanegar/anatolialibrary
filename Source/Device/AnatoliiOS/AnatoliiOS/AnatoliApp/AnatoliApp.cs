@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
 using AnatoliIOS.Clients;
 using Anatoli.App.Model.Store;
+using Anatoli.App.Model.AnatoliUser;
 
 namespace AnatoliIOS
 {
@@ -19,11 +20,13 @@ namespace AnatoliIOS
         public UITableView MenuTableViewReference;
         public StoreDataModel DefaultStore;
         public Anatoli.App.Model.CustomerViewModel Customer { get; set; }
+        public AnatoliUserModel User { get; set; }
         public async Task Initialize()
         {
             try
             {
                 Customer = await CustomerManager.ReadCustomerAsync();
+                User = await AnatoliUserManager.ReadUserInfoAsync();
                 DefaultStore = await StoreManager.GetDefaultAsync();
             }
             catch (Exception)
@@ -67,7 +70,15 @@ namespace AnatoliIOS
                 }
             }
         }
-
+		public void ReplaceViewController(UIViewController viewController){
+			var allviewControllers = (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.ViewControllers;
+			UIViewController[] newViewControllerStack = new UIViewController[allviewControllers.Length -1];
+			for (int i = 0; i < allviewControllers.Length-1; i++) {
+				newViewControllerStack [i] = allviewControllers [i];
+			}
+			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.ViewControllers = newViewControllerStack;
+			PushViewController (viewController);
+		}
         public void PushViewController(UIViewController viewController)
         {
             if (viewController == null)
@@ -156,5 +167,12 @@ namespace AnatoliIOS
                     break;
             }
         }
+		public async Task LogOutAsync(){
+			await AnatoliUserManager.LogoutAsync ();
+			Customer = null;
+			User = null;
+			RefreshMenu ();
+			ReplaceViewController(new FirstPageViewController());
+		}
     }
 }
