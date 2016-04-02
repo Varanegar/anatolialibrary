@@ -25,7 +25,10 @@ namespace AnatoliIOS.TableViewCells
 				storeNameLabel.Text = item.store_name;
 				storeAddressLabel.Text = item.store_address;
 				storeStatusLabel.Text = "باز است";
+				storeStatusLabel.Layer.BorderColor = UIColor.Green.CGColor;
+				storeStatusLabel.Layer.BorderWidth = 2.0f;
 			}
 		}
+
 	}
 }
