@@ -13,10 +13,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="2" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="right">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="2" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="right" misplaced="YES">
                         <rect key="frame" x="70" y="12.5" width="191" height="20.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -27,10 +27,10 @@
                             <constraint id="16" firstItem="13" firstAttribute="height" constant="60"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="20" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="right">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="20" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="right" misplaced="YES">
                         <rect key="frame" x="70" y="38" width="191" height="18"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -80,5 +80,6 @@
         <image name="splash.png" width="365" height="648"/>
         <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
         <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
+        <image name="anatoli.ttf" width="0" height="0"/>
     </resources>
 </document>
