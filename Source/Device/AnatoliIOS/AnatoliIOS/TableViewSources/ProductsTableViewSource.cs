@@ -20,8 +20,9 @@ namespace AnatoliIOS.TableViewSources
 			if (cell == null) {
 				var views = NSBundle.MainBundle.LoadNib (ProductSummaryViewCell.Key, tableView, null);
 				cell = Runtime.GetNSObject (views.ValueAt (0)) as ProductSummaryViewCell;
+				cell.BindCell (Items[indexPath.Row]);
 			}
-			cell.Bind (Items[indexPath.Row]);
+
 			cell.UpdateCell (Items [indexPath.Row]);
 			return cell;
 		}

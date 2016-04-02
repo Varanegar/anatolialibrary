@@ -13,7 +13,6 @@ namespace AnatoliIOS.TableViewCells
 	{
 		public static readonly NSString Key = new NSString ("ProductSummaryViewCell");
 		public static readonly UINib Nib;
-		bool firstTime = true;
 
 		static ProductSummaryViewCell ()
 		{
@@ -24,10 +23,7 @@ namespace AnatoliIOS.TableViewCells
 
 		}
 
-		public void Bind(ProductModel item){
-			if (!firstTime) {
-				return;
-			}
+		public void BindCell(ProductModel item){
 			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
 				addProductButton.Enabled = false;
 				if (item.count +1 > item.qty) {
@@ -58,7 +54,6 @@ namespace AnatoliIOS.TableViewCells
 					}
 				}
 			};
-			firstTime = false;
 		}
 		public void UpdateCell(ProductModel item){
 			productLabel.Text = item.product_name;
