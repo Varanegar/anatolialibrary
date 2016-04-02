@@ -46,7 +46,7 @@ namespace AnatoliIOS.ViewControllers
 						if (data != null) {
 							try {
 								profileImageView.Image = UIImage.LoadFromData(data);
-							} catch (Exception ex) {
+							} catch (Exception ) {
 									
 							}
 						}
