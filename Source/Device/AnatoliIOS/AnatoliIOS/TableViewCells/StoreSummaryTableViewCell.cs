@@ -23,6 +23,8 @@ namespace AnatoliIOS.TableViewCells
 		public void UpdateCell(StoreDataModel item){
 			if (item != null) {
 				storeNameLabel.Text = item.store_name;
+				storeAddressLabel.Text = item.store_address;
+				storeStatusLabel.Text = "باز است";
 			}
 		}
 	}
