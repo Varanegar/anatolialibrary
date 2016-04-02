@@ -42,6 +42,10 @@ namespace AnatoliIOS.TableViewSources
 			}
 			return new UITableViewRowAction[]{ favoritAction };
 		}
+		public override nfloat GetHeightForRow (UITableView tableView, Foundation.NSIndexPath indexPath)
+		{
+			return 70f;
+		}
 	}
 }
 
