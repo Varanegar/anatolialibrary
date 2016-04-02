@@ -20,6 +20,10 @@ namespace AnatoliIOS.TableViewCells
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel countLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel priceLabel { get; set; }
 
 		[Outlet]
@@ -30,11 +34,23 @@ namespace AnatoliIOS.TableViewCells
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel productLabel { get; set; }
 
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UIButton removeProductButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UIView toolsView { get; set; }
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (addProductButton != null) {
 				addProductButton.Dispose ();
 				addProductButton = null;
+			}
+			if (countLabel != null) {
+				countLabel.Dispose ();
+				countLabel = null;
 			}
 			if (priceLabel != null) {
 				priceLabel.Dispose ();
@@ -47,6 +63,14 @@ namespace AnatoliIOS.TableViewCells
 			if (productLabel != null) {
 				productLabel.Dispose ();
 				productLabel = null;
+			}
+			if (removeProductButton != null) {
+				removeProductButton.Dispose ();
+				removeProductButton = null;
+			}
+			if (toolsView != null) {
+				toolsView.Dispose ();
+				toolsView = null;
 			}
 		}
 	}

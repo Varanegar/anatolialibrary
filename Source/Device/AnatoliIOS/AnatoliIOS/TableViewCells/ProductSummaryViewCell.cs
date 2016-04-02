@@ -26,6 +26,11 @@ namespace AnatoliIOS.TableViewCells
 		public void UpdateCell(ProductModel item){
 			productLabel.Text = item.product_name;
 			priceLabel.Text = item.price.ToCurrency () + " تومان";
+			if (item.count > 0) {
+				toolsView.Hidden = false;
+			} else {
+				toolsView.Hidden = true;
+			}
 			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
 			if (imgUri != null) {
 				try {
@@ -55,10 +60,25 @@ namespace AnatoliIOS.TableViewCells
 				var result = await ShoppingCardManager.AddProductAsync(item);
 				addProductButton.Enabled = true;
 				if (result) {
+					toolsView.Hidden = false;
 					item.count ++;
+					countLabel.Text = item.count.ToString() + " عدد";
 					Console.WriteLine(ShoppingCardManager.GetTotalPriceAsync());
 				}
 			};
+			removeProductButton.TouchUpInside += async (object sender, EventArgs e) => {
+				if (item.count > 0) {
+					var result = await ShoppingCardManager.RemoveProductAsync(item);
+					if (result) {
+						item.count --;
+						countLabel.Text = item.count.ToString() + " عدد";
+						if (item.count == 0) {
+							toolsView.Hidden = true;
+						}
+					}
+				}
+			};
+
 		}
 	}
 }
