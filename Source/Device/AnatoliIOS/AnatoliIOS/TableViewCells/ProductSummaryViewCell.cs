@@ -13,41 +13,20 @@ namespace AnatoliIOS.TableViewCells
 	{
 		public static readonly NSString Key = new NSString ("ProductSummaryViewCell");
 		public static readonly UINib Nib;
+		bool firstTime = true;
 
 		static ProductSummaryViewCell ()
 		{
 			Nib = UINib.FromName ("ProductSummaryViewCell", NSBundle.MainBundle);
 		}
-		public ProductSummaryViewCell() : base(UITableViewCellStyle.Default,Key){}
 		public ProductSummaryViewCell (IntPtr handle) : base (handle)
 		{
+
 		}
 
-		public void UpdateCell(ProductModel item){
-			productLabel.Text = item.product_name;
-			priceLabel.Text = item.price.ToCurrency () + " تومان";
-			if (item.count > 0) {
-				toolsView.Hidden = false;
-				countLabel.Text = item.count.ToString() + " عدد";
-			} else {
-				toolsView.Hidden = true;
-			}
-			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
-			if (imgUri != null) {
-				try {
-					//productImageView.SetImage(url : new NSUrl(imgUri),placeholder: UIImage.FromBundle ("igicon"));
-				} catch (Exception) {
-					
-				}
-			}
-
-			if (!item.IsAvailable) {
-				addProductButton.Enabled = false;
-				productLabel.TextColor = UIColor.Gray;
-				priceLabel.TextColor = UIColor.Gray;
-				priceLabel.Text = "موجود نیست";
-			} else {
-				addProductButton.Enabled = true;
+		public void Bind(ProductModel item){
+			if (!firstTime) {
+				return;
 			}
 			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
 				addProductButton.Enabled = false;
@@ -79,6 +58,38 @@ namespace AnatoliIOS.TableViewCells
 					}
 				}
 			};
+			firstTime = false;
+		}
+		public void UpdateCell(ProductModel item){
+			productLabel.Text = item.product_name;
+
+			if (item.count > 0) {
+				toolsView.Hidden = false;
+				countLabel.Text = item.count.ToString() + " عدد";
+			} else {
+				toolsView.Hidden = true;
+			}
+			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
+			if (imgUri != null) {
+				try {
+					//productImageView.SetImage(url : new NSUrl(imgUri),placeholder: UIImage.FromBundle ("igicon"));
+				} catch (Exception) {
+					
+				}
+			}
+
+			if (!item.IsAvailable) {
+				addProductButton.Enabled = false;
+				productLabel.TextColor = UIColor.Gray;
+				priceLabel.TextColor = UIColor.Gray;
+				priceLabel.Text = "موجود نیست";
+			} else {
+				addProductButton.Enabled = true;
+				productLabel.TextColor = UIColor.Black;
+				priceLabel.TextColor = UIColor.Black;
+				priceLabel.Text = item.price.ToCurrency () + " تومان";
+			}
+
 
 		}
 	}

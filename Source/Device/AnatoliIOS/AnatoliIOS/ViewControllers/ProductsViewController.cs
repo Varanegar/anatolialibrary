@@ -36,7 +36,7 @@ namespace AnatoliIOS.ViewControllers
             tableViewSource.SetDataQuery(ProductManager.GetAll(AnatoliApp.GetInstance().DefaultStore.store_id));
             await tableViewSource.Refresh();
 
-            productsTableView.RegisterNibForCellReuse(UINib.FromName(ProductSummaryViewCell.Key, null), ProductSummaryViewCell.Key);
+			//productsTableView.RegisterNibForCellReuse(UINib.FromName(ProductSummaryViewCell.Key, NSBundle.MainBundle), ProductSummaryViewCell.Key);
             productsTableView.Source = tableViewSource;
             productsTableView.ReloadData();
         }
