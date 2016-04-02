@@ -157,7 +157,6 @@
       <DependentUpon>StoresViewController.cs</DependentUpon>
     </Compile>
     <InterfaceDefinition Include="TableViewCells\StoreSummaryTableViewCell.xib" />
-    <Compile Include="TableViewCells\StoreSummaryTableViewCell.cs" />
     <Compile Include="TableViewCells\StoreSummaryTableViewCell.designer.cs">
       <DependentUpon>StoreSummaryTableViewCell.cs</DependentUpon>
     </Compile>
@@ -165,6 +164,10 @@
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\ProfileViewController.xib" />
     <BundleResource Include="Resources\ic_shoppingcard_blue_24dp.png" />
+    <Compile Include="TableViewCells\StoreSummaryTableViewCell.cs" />
+    <BundleResource Include="Resources\anatoli.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
