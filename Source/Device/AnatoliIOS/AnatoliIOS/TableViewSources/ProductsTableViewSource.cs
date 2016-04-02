@@ -24,7 +24,7 @@ namespace AnatoliIOS.TableViewSources
 		{
 			UITableViewRowAction favoritAction;
 			if (Items [indexPath.Row].IsFavorit) {
-				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Default, "حذف از فهرست من", async delegate {
+				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Destructive, "حذف از فهرست من", async delegate {
 					tableView.Editing = false;
 					var result = await ProductManager.RemoveFavoritAsync(Items[indexPath.Row].product_id);
 					if (result) {
@@ -32,7 +32,7 @@ namespace AnatoliIOS.TableViewSources
 					}
 				});
 			} else {
-				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Default, "افزودن به فهرست من", async delegate {
+				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Normal, "افزودن به فهرست من", async delegate {
 					tableView.Editing = false;
 					var result = await ProductManager.AddToFavoritsAsync (Items [indexPath.Row].product_id);
 					if (result) {
