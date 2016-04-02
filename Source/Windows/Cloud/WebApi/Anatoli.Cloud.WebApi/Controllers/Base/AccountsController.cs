@@ -25,6 +25,7 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.CustomerConcretes;
 using Anatoli.Business.Proxy.Concretes.ProductConcretes;
+using Anatoli.Business.Domain.Authorization;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -36,13 +37,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetPages()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
+            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
 
-            //var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
+            var result = data.Where(p => p.Resource == "Pages").ToList();
 
-            //var model = data.Where(p => p.Permission.Resource == "Pages").Select(s => s.Permission).ToList();
-
-            //return Ok(new PermissionProxy().Convert(model.ToList()));
-            return Ok();
+            return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -54,28 +53,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
             var model = this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u));
 
-            //return Ok(model);
-            return Ok();
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]
         [Route("permissions"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissions()
         {
-            //var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
-
-            //return Ok(new PermissionProxy().Convert(model.ToList()));
-            return Ok();
+            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]
         [Route("getPersmissionsOfUser"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissionsOfUser([FromBody] BaseRequestModel data)
         {
-            //var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
+            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
 
-            //return Ok(new PrincipalPermissionProxy().Convert(model.ToList()));
-            return Ok();
+            return Ok(model.ToList());
         }
 
         [Authorize(Roles = "Admin")]

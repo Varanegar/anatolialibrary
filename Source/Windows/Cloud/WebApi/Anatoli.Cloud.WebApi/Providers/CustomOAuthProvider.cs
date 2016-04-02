@@ -34,7 +34,8 @@ namespace Anatoli.Cloud.WebApi.Providers
                 context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
                 var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password);
+                var appOwner = Guid.Parse(context.Scope[0]);
+                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner);
                 //var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)

@@ -62,7 +62,12 @@ namespace Anatoli.Business.Domain
 
         public async Task<User> UserExists(string email, string phone, string username)
         {
-            return await UserRepository.FindAsync(p => (p.Email == email || p.PhoneNumber == phone || p.UserName == username ) && p.ApplicationOwnerId == ApplicationOwnerKey);
+            return await UserRepository.FindAsync(p => (p.Email == email || p.PhoneNumber == phone || p.UserName == username) && p.ApplicationOwnerId == ApplicationOwnerKey);
+        }
+
+        public async Task<User> UserExists(string usernameOrEmailOrPhone)
+        {
+            return await UserRepository.FindAsync(p => (p.Email == usernameOrEmailOrPhone || p.PhoneNumber == usernameOrEmailOrPhone || p.UserName == usernameOrEmailOrPhone) && p.ApplicationOwnerId == ApplicationOwnerKey);
         }
 
         #endregion
