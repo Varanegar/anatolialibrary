@@ -15,6 +15,7 @@ using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Business.Domain.Authorization
 {
+    /*
     public class AuthorizationDomain : BusinessDomainV2<PrincipalPermission, PrincipalPermissionViewModel, PrincipalPermissionRepository, IPrincipalPermissionRepository>
     {
         #region Properties
@@ -39,27 +40,29 @@ namespace Anatoli.Business.Domain.Authorization
         {
             //Todo: get all other related principal such as roles and groups
 
-            var model = MainRepository.GetQuery().Where(p => p.UserId == userId &&
-                                                        p.Permission.Resource == resource &&
-                                                        p.Permission.Action == action)
-                                                 .ToList();
+            //var model = MainRepository.GetQuery().Where(p => p.UserId == userId &&
+            //                                            p.Permission.Resource == resource &&
+            //                                            p.Permission.Action == action)
+            //                                     .ToList();
 
-            return model;
+            //return model;
+            return null;
         }
 
         public async Task<ICollection<PrincipalPermission>> GetPermissionsForPrincipal(string principalId)
         {
             //Todo: get all other related principal such as roles and groups
-            var model = await MainRepository.FindAllAsync(p => p.UserId == principalId);
+            //var model = await MainRepository.FindAllAsync(p => p.UserId == principalId);
 
-            return model;
+            //return model;
+            return null;
         }
 
         public async Task SavePermissions(List<PrincipalPermission> pp, string principalId)
         {
             try
             {
-                await MainRepository.DeleteBatchAsync(p => p.UserId == principalId);
+                //await MainRepository.DeleteBatchAsync(p => p.UserId == principalId);
 
                 foreach (var item in pp)
                     await MainRepository.AddAsync(item);
@@ -80,4 +83,5 @@ namespace Anatoli.Business.Domain.Authorization
         }
         #endregion
     }
+     * */
 }

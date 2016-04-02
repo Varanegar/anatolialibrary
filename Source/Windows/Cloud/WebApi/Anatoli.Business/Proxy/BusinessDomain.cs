@@ -216,7 +216,7 @@ namespace Anatoli.Business
             return await GetAllAsync(null);
         
         }
-        private async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
+        private async Task<List<TMainSourceView>> GetAllAsyncPrivate(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
         {
 
             if (selector != null)
@@ -235,16 +235,23 @@ namespace Anatoli.Business
                     .ProjectTo<TMainSourceView>().ToListAsync();
             }
         }
-        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate)
+        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
         {
+
             Expression<Func<TMainSource, bool>> criteria2 = null;
 
             if (predicate != null)
-                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData?p.IsRemoved: false);
+                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
             else
                 criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
 
-            return await GetAllAsync(criteria2, GetAllSelector());
+            return await GetAllAsyncPrivate(criteria2, selector);
+        }
+        
+        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate)
+        {
+            return await GetAllAsync(predicate, GetAllSelector());
+
         }
 
         public async Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate)

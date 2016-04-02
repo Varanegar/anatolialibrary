@@ -72,6 +72,7 @@
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel\RegionAreaRequestModel.cs" />
     <Compile Include="RequestModel\ItemImageRequestModel.cs" />
     <Compile Include="RequestModel\PurchaseOrderRequestModel.cs" />
     <Compile Include="RequestModel\CustomerRequestModel.cs" />
@@ -82,6 +83,9 @@
     <Compile Include="RequestModel\StockProductRequestRequestModel.cs" />
     <Compile Include="RequestModel\ProductRequestModel.cs" />
     <Compile Include="RequestModel\BaseRequestModel.cs" />
+    <Compile Include="Route\RegionAreaViewModel.cs" />
+    <Compile Include="Route\RegionAreaPointViewModel.cs" />
+    <Compile Include="Route\CustomerAreaViewModel.cs" />
     <Compile Include="StockModels\StockHistoryOnHandViewModel.cs" />
     <Compile Include="StockModels\StockOnHandSyncViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestProductDetailViewModel.cs" />

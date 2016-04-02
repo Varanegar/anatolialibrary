@@ -41,5 +41,9 @@
 		<string>Icon-Small.png</string>
 		<string>Icon-Small-40@2x.png</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>anatoli.ttf</string>
+	</array>
 </dict>
 </plist>

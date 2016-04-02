@@ -32,9 +32,10 @@ namespace Anatoli.DataAccess
         public DbSet<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
-        public DbSet<DistCompanyCenter> DistCompanyCenters { get; set; }
-        public DbSet<DistCompanyRegion> DistCompanyRegions { get; set; }
-        public DbSet<DistCompanyRegionLevelType> DistCompanyRegionLevelTypes { get; set; }
+        public DbSet<CompanyOrgChart> CompanyOrgCharts { get; set; }
+        public DbSet<CompanyCenter> CompanyCenters { get; set; }
+        public DbSet<RegionArea> RegionAreas { get; set; }
+        public DbSet<RegionAreaLevelType> RegionAreaLevelTypes { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
         public DbSet<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
         public DbSet<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
@@ -73,7 +74,6 @@ namespace Anatoli.DataAccess
         public DbSet<ItemImage> Images { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
         public DbSet<RegionAreaPoint> RegionAreaPoints { get; set; }
-        public DbSet<RegionArea> RegionAreas { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<StockActiveOnHand> StockActiveOnHands { get; set; }
         public DbSet<StockHistoryOnHand> StockHistoryOnHands { get; set; }
@@ -106,7 +106,11 @@ namespace Anatoli.DataAccess
         public DbSet<Application> Applications { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<IdentityUserRole> UserRoles { get; set; }
+        public DbSet<Principal> Principals { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionAction> PermissionActions { get; set; }
+        public DbSet<ApplicationModuleResource> ApplicationModuleResources { get; set; }
+        public DbSet<ApplicationModule> ApplicationModules { get; set; }
         public DbSet<PrincipalPermission> PrincipalPermissions { get; set; }
         #endregion
 
@@ -132,9 +136,9 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CustomerConfig());
             modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
-            modelBuilder.Configurations.Add(new DistCompanyCenterConfig());
-            modelBuilder.Configurations.Add(new DistCompanyRegionConfig());
-            modelBuilder.Configurations.Add(new DistCompanyRegionLevelTypeConfig());
+            modelBuilder.Configurations.Add(new CompanyCenterConfig());
+            modelBuilder.Configurations.Add(new RegionAreaConfig());
+            modelBuilder.Configurations.Add(new RegionAreaLevelTypeConfig());
             modelBuilder.Configurations.Add(new FiscalYearConfig());
             modelBuilder.Configurations.Add(new IncompletePurchaseOrderConfig());
             modelBuilder.Configurations.Add(new MainProductGroupConfig());
@@ -158,9 +162,10 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new StoreCalendarConfig());
             modelBuilder.Configurations.Add(new StoreConfig());
 
-           
+
 
             modelBuilder.Configurations.Add(new UserConfig());
+            modelBuilder.Configurations.Add(new PrincipalConfig());
             modelBuilder.Configurations.Add(new GroupConfig());
            // modelBuilder.Configurations.Add(new RoleConfig());
             modelBuilder.Configurations.Add(new PrincipalPermissionConfig());

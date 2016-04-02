@@ -20,6 +20,7 @@ namespace Anatoli.DataAccess.Models
         [ForeignKey("AnatoliAccount")]
         public Nullable<Guid> AnatoliAccountId { get; set; }
         public virtual AnatoliAccount AnatoliAccount { get; set; }
+        public virtual ICollection<CompanyOrgChart> CompanyOrgCharts { get; set; }
         public virtual ICollection<PersonnelDailyActivityDayArea> PersonnelDailyActivityDayAreas { get; set; }
         public virtual ICollection<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }
         public virtual ICollection<PersonnelDailyActivityPoint> PersonnelDailyActivityPoints { get; set; }

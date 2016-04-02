@@ -29,9 +29,9 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<StoreCalendar> StoreCalendars { get; set; }
         public virtual ICollection<StoreDeliveryPerson> StoreDeliveryPersons { get; set; }
         public virtual ICollection<CityRegion> StoreValidRegionInfoes { get; set; }
-        [ForeignKey("DistCompanyCenter")]
-        public Nullable<Guid> DistCompanyCenterId { get; set; }
-        public virtual DistCompanyCenter DistCompanyCenter { get; set; }
+        [ForeignKey("CompanyCenter")]
+        public Nullable<Guid> CompanyCenterId { get; set; }
+        public virtual CompanyCenter CompanyCenter { get; set; }
 
         [ForeignKey("Company")]
         public Guid? CompanyId { get; set; }

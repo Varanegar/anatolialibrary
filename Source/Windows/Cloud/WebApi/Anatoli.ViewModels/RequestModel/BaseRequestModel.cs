@@ -8,6 +8,7 @@ namespace Anatoli.ViewModels
 {
     public class BaseRequestModel
     {
+        public Guid uniqueId { get; set; }
         public string data { get; set; }
         public string dateAfter { get; set; }
         public string searchTerm { get; set; }

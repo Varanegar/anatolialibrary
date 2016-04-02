@@ -29,7 +29,12 @@ namespace AnatoliIOS.TableViewSources
                     AnatoliApp.GetInstance().PushViewController(new FirstPageViewController());
                 }
             }
+
         }
+		public override nfloat GetHeightForRow (UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
+		{
+			return 70f;
+		}
     }
 }
 

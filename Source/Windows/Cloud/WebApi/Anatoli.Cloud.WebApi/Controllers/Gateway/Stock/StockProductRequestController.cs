@@ -280,7 +280,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var term = data != null ? data.searchTerm : string.Empty;
                 var currentUserId = HttpContext.Current.User.Identity.GetUserId();
 
-                var model = await new StockProductRequestDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetStockProductRequests(term, currentUserId);
+                var model = await new StockProductRequestDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetStockProductRequests(term, Guid.Parse(currentUserId));
 
                 return Ok(model);
             }
@@ -318,7 +318,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var currentUserId = HttpContext.Current.User.Identity.GetUserId();
 
-                await new StockProductRequestProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).UpdateStockProductRequestProductDetails(data.stockProductRequestProductData, Guid.Parse(data.stockId), currentUserId);
+                await new StockProductRequestProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).UpdateStockProductRequestProductDetails(data.stockProductRequestProductData, Guid.Parse(data.stockId), Guid.Parse(currentUserId));
 
                 return Ok(data.stockProductRequestProductData);
             }

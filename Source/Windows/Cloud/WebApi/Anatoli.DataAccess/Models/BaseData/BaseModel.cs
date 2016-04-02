@@ -23,7 +23,11 @@ namespace Anatoli.DataAccess.Models
         public virtual DataOwnerCenter DataOwnerCenter { get; set; }
         public virtual DataOwner DataOwner { get; set; }
         public virtual ApplicationOwner ApplicationOwner { get; set; }
-        public virtual User AddedBy { get; set; }
-        public virtual User LastModifiedBy { get; set; }
+        public virtual Principal AddedBy { get; set; }
+        public virtual Principal LastModifiedBy { get; set; }
+        [ForeignKey("AddedBy")]
+        public virtual Nullable<Guid> AddedById { get; set; }
+        [ForeignKey("LastModifiedBy")]
+        public virtual Nullable<Guid> LastModifiedById { get; set; }
     }
 }

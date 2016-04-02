@@ -6,16 +6,16 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Anatoli.DataAccess.Configs
 {
-    public class DistCompanyCenterConfig : EntityTypeConfiguration<DistCompanyCenter>
+    public class CompanyCenterConfig : EntityTypeConfiguration<CompanyCenter>
     {
-        public DistCompanyCenterConfig()
+        public CompanyCenterConfig()
         {
-            this.HasMany<DistCompanyCenter>(pg => pg.DistCompanyCenters)
+            this.HasMany<CompanyCenter>(pg => pg.CompanyCenters)
                 .WithOptional(pg => pg.Parent)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<Stock>(cr => cr.DistCenterStocks)
-                .WithOptional(svr => svr.DistCompanyCenter)
+                .WithOptional(svr => svr.CompanyCenter)
                 .WillCascadeOnDelete(false);
 
         }
