@@ -28,6 +28,7 @@ namespace AnatoliIOS.TableViewCells
 			priceLabel.Text = item.price.ToCurrency () + " تومان";
 			if (item.count > 0) {
 				toolsView.Hidden = false;
+				countLabel.Text = item.count.ToString() + " عدد";
 			} else {
 				toolsView.Hidden = true;
 			}
