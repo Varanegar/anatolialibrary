@@ -6,6 +6,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
     
     public class Customer : BaseModel
     {
@@ -65,6 +66,7 @@ namespace Anatoli.DataAccess.Models
         public virtual CityRegion RegionLevel4 { get; set; }
 
         public virtual ICollection<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }
+        public DbGeometry CustomerPoint { get; set; }
 
     }
 }
