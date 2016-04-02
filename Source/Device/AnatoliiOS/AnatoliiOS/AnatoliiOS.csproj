@@ -168,6 +168,11 @@
     <BundleResource Include="Resources\anatoli.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+    <InterfaceDefinition Include="ViewControllers\FavoritsViewController.xib" />
+    <Compile Include="ViewControllers\FavoritsViewController.cs" />
+    <Compile Include="ViewControllers\FavoritsViewController.designer.cs">
+      <DependentUpon>FavoritsViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
