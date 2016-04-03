@@ -26,10 +26,30 @@ namespace AnatoliIOS.TableViewSources
 		public async Task RefreshAsync(){
 			Items = await DataManager.GetNextAsync ();
 		}
+		public async Task GetNextAsync(){
+			var list = await DataManager.GetNextAsync();
+			Items.AddRange (list);
+			OnUpdated ();
+		}
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			return Items.Count;
 		}
+		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
+		{
+			if (indexPath.Row + 1 == Items.Count) {
+				GetNextAsync();
+			}
+			var cell = GetCellView (tableView, indexPath);
+			return cell;
+		}
+		public abstract UITableViewCell GetCellView(UITableView tableView, Foundation.NSIndexPath indexPath);
+		void OnUpdated(){
+			if (Updated != null) {
+				Updated.Invoke (this, new EventArgs ());
+			}
+		}
+		public event EventHandler Updated;
 	}
 }
 

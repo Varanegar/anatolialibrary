@@ -11,12 +11,13 @@ namespace AnatoliIOS.TableViewSources
         public StoresTableViewSource()
         {
         }
-        public override UIKit.UITableViewCell GetCell(UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
-        {
-            var cell = tableView.DequeueReusableCell(StoreSummaryTableViewCell.Key) as StoreSummaryTableViewCell;
-            cell.UpdateCell(Items[indexPath.Row]);
-            return cell;
-        }
+		public override UIKit.UITableViewCell GetCellView (UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
+		{
+			var cell = tableView.DequeueReusableCell(StoreSummaryTableViewCell.Key) as StoreSummaryTableViewCell;
+			cell.UpdateCell(Items[indexPath.Row]);
+			return cell;
+		}
+        
         public async override void RowSelected(UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
         {
             var item = Items[indexPath.Row];
