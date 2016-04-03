@@ -39,6 +39,8 @@ namespace AnatoliIOS.ViewControllers
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
+
+
             NavigationItem.SetRightBarButtonItem(
                 new UIBarButtonItem(UIImage.FromBundle("threelines")
                     , UIBarButtonItemStyle.Plain
@@ -46,6 +48,8 @@ namespace AnatoliIOS.ViewControllers
                     {
                         SidebarController.ToggleMenu();
                     }), true);
+
+
         }
     }
 }

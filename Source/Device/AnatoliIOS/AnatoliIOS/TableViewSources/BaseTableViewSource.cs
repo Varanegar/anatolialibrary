@@ -23,7 +23,7 @@ namespace AnatoliIOS.TableViewSources
 		public void SetDataQuery(DBQuery query){
 			DataManager.SetQueries (query, null);
 		}
-		public async Task Refresh(){
+		public async Task RefreshAsync(){
 			Items = await DataManager.GetNextAsync ();
 		}
 		public override nint RowsInSection (UITableView tableview, nint section)

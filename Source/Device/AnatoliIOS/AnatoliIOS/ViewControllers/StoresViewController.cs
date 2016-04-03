@@ -21,7 +21,7 @@ namespace AnatoliIOS.ViewControllers
             storesTableView.RegisterNibForCellReuse(UINib.FromName("StoreSummaryTableViewCell", null), StoreSummaryTableViewCell.Key);
             StoresTableViewSource storesTableViewSource = new StoresTableViewSource();
             storesTableViewSource.SetDataQuery(StoreManager.GetAll());
-            await storesTableViewSource.Refresh();
+            await storesTableViewSource.RefreshAsync();
             storesTableView.Source = storesTableViewSource;
             storesTableView.ReloadData();
         }
