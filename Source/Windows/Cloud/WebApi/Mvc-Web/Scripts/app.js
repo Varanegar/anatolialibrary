@@ -5,15 +5,17 @@
 var baseBackendUrl = 'http://localhost:59822/',
     //sslBackendUrl = 'https://localhost:44300',
 
-    privateOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+    privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
+    dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+    dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
-        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/', //?privateOwnerId=' + privateOwnerId,
+        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/', 
         userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
         saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
         searchProductsUrl: baseBackendUrl + '/api/gateway/product/searchProducts',
         stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
-        saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/?privateOwnerId=' + privateOwnerId,
+        saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/',
         reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
 
         usersUrl: baseBackendUrl + "/api/accounts/users",
@@ -26,7 +28,7 @@ var baseBackendUrl = 'http://localhost:59822/',
         permissionsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionsOfUser",
 
         stocksUrl: baseBackendUrl + "/api/gateway/stock/stocks",
-        stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes?privateOwnerId=' + privateOwnerId,
+        stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes',
         saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
 
         productsUrl: baseBackendUrl + '/api/gateway/product/products/v2',
@@ -39,7 +41,7 @@ var baseBackendUrl = 'http://localhost:59822/',
         StockProductRequestRuleTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleTypes',
         StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
 
-        SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers?privateOwnerId=' + privateOwnerId,
+        SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers',
         filterSuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/filterSuppliers',
 
         mainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/mainProductGroupList',
@@ -162,19 +164,20 @@ function headerMenuViewModel() {
     self.shouldShowLogout.subscribe(function (newValue) {
         if (newValue === true) {
             accountManagerApp.callApi(urls.myWebpages, "POST", {}, function (data) {
+                if (data != "") {
+                    data.forEach(function (itm) {
+                        if (itm.action !== '' && itm.action !== 'List') {
 
-                data.forEach(function (itm) {
-                    if (itm.action !== '' && itm.action !== 'List') {
+                            var url = urls.pages[itm.action.toLowerCase()].url;
 
-                        var url = urls.pages[itm.action.toLowerCase()].url;
+                            var title = urls.pages[itm.action.toLowerCase()].title;
 
-                        var title = urls.pages[itm.action.toLowerCase()].title;
+                            var order = urls.pages[itm.action.toLowerCase()].order;
 
-                        var order = urls.pages[itm.action.toLowerCase()].order;
-
-                        $(".header-menu .navbar-nav .exit-menu-item").before('<li data-order=' + order + '><a href="' + url + '">' + title + '</a></li>');
-                    }
-                });
+                            $(".header-menu .navbar-nav .exit-menu-item").before('<li data-order=' + order + '><a href="' + url + '">' + title + '</a></li>');
+                        }
+                    });
+                }
 
             });
             self.refreshHeaderMenu();
@@ -291,12 +294,18 @@ function accountManagerViewModel() {
         var loginData = {
             grant_type: 'password',
             username: self.loginEmail(),
-            password: self.loginPassword()
+            password: self.loginPassword(),
+            scope: privateOwnerId
         };
 
         freezUI();
         $.ajax({
             type: 'POST',
+            crossOrigin: true,
+            //beforeSend: function (request) {
+            //    request.setRequestHeader("OwnerKey", privateOwnerId);
+            //    request.setRequestHeader("Access-Control-Allow-Origin", "*");
+            //},
             url: urls.loginUrl,
             data: loginData,
         }).done(function (data) {

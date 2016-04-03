@@ -215,6 +215,14 @@
     <Compile Include="Migrations\201603302226184_Permission-Migration-3.Designer.cs">
       <DependentUpon>201603302226184_Permission-Migration-3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604020320346_Tracking-Migration-1.cs" />
+    <Compile Include="Migrations\201604020320346_Tracking-Migration-1.Designer.cs">
+      <DependentUpon>201604020320346_Tracking-Migration-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604021441559_Permission-Migration-4.cs" />
+    <Compile Include="Migrations\201604021441559_Permission-Migration-4.Designer.cs">
+      <DependentUpon>201604021441559_Permission-Migration-4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -225,6 +233,7 @@
     <Compile Include="Models\Anatoli\AnatoliContact.cs" />
     <Compile Include="Models\Anatoli\AnatoliPlace.cs" />
     <Compile Include="Models\Anatoli\AnatoliContactType.cs" />
+    <Compile Include="Models\BaseData\BaseModelAnatoli.cs" />
     <Compile Include="Models\Identity\PermissionAction.cs" />
     <Compile Include="Models\Identity\ApplicationModuleResource.cs" />
     <Compile Include="Models\Identity\ApplicationModule.cs" />
@@ -410,6 +419,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603302226184_Permission-Migration-3.resx">
       <DependentUpon>201603302226184_Permission-Migration-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604020320346_Tracking-Migration-1.resx">
+      <DependentUpon>201604020320346_Tracking-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604021441559_Permission-Migration-4.resx">
+      <DependentUpon>201604021441559_Permission-Migration-4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
