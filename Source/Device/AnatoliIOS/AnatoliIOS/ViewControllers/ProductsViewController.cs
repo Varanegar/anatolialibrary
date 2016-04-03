@@ -28,10 +28,15 @@ namespace AnatoliIOS.ViewControllers
 			button.ContentMode = UIViewContentMode.ScaleAspectFill;
 			button.TouchUpInside += (object sender, EventArgs e) => {
 				_searchBar.Alpha = 0;
+
 				UIView.Animate(0.5,0,UIViewAnimationOptions.TransitionFlipFromLeft ,()=>{
 					productsTableView.TableHeaderView = _searchBar;
 					_searchBar.Alpha = 1;
-				},null);
+				},
+					()=>{
+						productsTableView.SetContentOffset(new CGPoint(0,-productsTableView.TableHeaderView.Bounds.Height-10),true);
+					});
+
 			};
 			var searchButton = new UIBarButtonItem (button);
 
