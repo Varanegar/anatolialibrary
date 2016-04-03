@@ -22,6 +22,7 @@ namespace AnatoliIOS.ViewControllers
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
+			Title = "گروه بندی کالاها";
 			var searchIcon = UIImage.FromFile("ic_search_white_24dp");
 			var button = new UIButton(new CGRect(10f,10f,30f,30f));
 			button.ContentMode = UIViewContentMode.ScaleAspectFill;

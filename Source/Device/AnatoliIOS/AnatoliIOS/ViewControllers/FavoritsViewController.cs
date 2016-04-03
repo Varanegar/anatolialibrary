@@ -14,6 +14,7 @@ namespace AnatoliIOS
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			Title = "لیست من";
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
