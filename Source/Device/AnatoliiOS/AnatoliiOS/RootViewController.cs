@@ -30,7 +30,6 @@ namespace AnatoliIOS
 			};
 			SyncManager.SyncDatabase ();
             NavController = new NavController();
-            NavController.PushViewController(new FirstPageViewController(), true);
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());
             SidebarController.MenuWidth = 180;
             SidebarController.ReopenOnRotate = false;
@@ -38,7 +37,8 @@ namespace AnatoliIOS
             if (AnatoliApp.GetInstance().DefaultStore == null)
             {
                 AnatoliApp.GetInstance().PushViewController(new StoresViewController());
-            }
+			}else
+				AnatoliApp.GetInstance().PushViewController(new FirstPageViewController());
         }
         public override void DidReceiveMemoryWarning()
         {
