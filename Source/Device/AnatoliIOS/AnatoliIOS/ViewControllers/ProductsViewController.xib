@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5" translatesAutoresizingMaskIntoConstraints="NO">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5" translatesAutoresizingMaskIntoConstraints="NO">
                     <rect key="frame" x="1" y="10" width="598" height="480"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -37,5 +37,9 @@
         <image name="splash.png" width="365" height="648"/>
         <image name="ic_list_orange_24dp.png" width="72" height="72"/>
         <image name="ic_person_gray_24dp.png" width="80" height="80"/>
+        <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
+        <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
+        <image name="anatoli.ttf" width="0" height="0"/>
+        <image name="ic_search_white_24dp.png" width="96" height="96"/>
     </resources>
 </document>

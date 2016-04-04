@@ -168,6 +168,12 @@
     <BundleResource Include="Resources\anatoli.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+    <InterfaceDefinition Include="ViewControllers\FavoritsViewController.xib" />
+    <Compile Include="ViewControllers\FavoritsViewController.cs" />
+    <Compile Include="ViewControllers\FavoritsViewController.designer.cs">
+      <DependentUpon>FavoritsViewController.cs</DependentUpon>
+    </Compile>
+    <BundleResource Include="Resources\ic_search_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

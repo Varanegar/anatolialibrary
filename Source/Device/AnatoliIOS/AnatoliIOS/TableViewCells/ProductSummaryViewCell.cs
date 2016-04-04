@@ -18,14 +18,52 @@ namespace AnatoliIOS.TableViewCells
 		{
 			Nib = UINib.FromName ("ProductSummaryViewCell", NSBundle.MainBundle);
 		}
-		public ProductSummaryViewCell() : base(UITableViewCellStyle.Default,Key){}
 		public ProductSummaryViewCell (IntPtr handle) : base (handle)
 		{
+
 		}
 
+		public void BindCell(ProductModel item){
+			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
+				addProductButton.Enabled = false;
+				if (item.count +1 > item.qty) {
+					var alert = UIAlertController.Create("خطا","موجودی کافی نیست",UIAlertControllerStyle.Alert);
+					alert.AddAction(UIAlertAction.Create("باشه",UIAlertActionStyle.Default,null));
+					AnatoliApp.GetInstance().PresentViewController(alert);
+					addProductButton.Enabled = true;
+					return;
+				}
+				var result = await ShoppingCardManager.AddProductAsync(item);
+				addProductButton.Enabled = true;
+				if (result) {
+					toolsView.Hidden = false;
+					item.count ++;
+					countLabel.Text = item.count.ToString() + " عدد";
+					Console.WriteLine(ShoppingCardManager.GetTotalPriceAsync());
+				}
+			};
+			removeProductButton.TouchUpInside += async (object sender, EventArgs e) => {
+				if (item.count > 0) {
+					var result = await ShoppingCardManager.RemoveProductAsync(item);
+					if (result) {
+						item.count --;
+						countLabel.Text = item.count.ToString() + " عدد";
+						if (item.count == 0) {
+							toolsView.Hidden = true;
+						}
+					}
+				}
+			};
+		}
 		public void UpdateCell(ProductModel item){
 			productLabel.Text = item.product_name;
-			priceLabel.Text = item.price.ToCurrency () + " تومان";
+
+			if (item.count > 0) {
+				toolsView.Hidden = false;
+				countLabel.Text = item.count.ToString() + " عدد";
+			} else {
+				toolsView.Hidden = true;
+			}
 			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
 			if (imgUri != null) {
 				try {
@@ -42,23 +80,12 @@ namespace AnatoliIOS.TableViewCells
 				priceLabel.Text = "موجود نیست";
 			} else {
 				addProductButton.Enabled = true;
+				productLabel.TextColor = UIColor.Black;
+				priceLabel.TextColor = UIColor.Black;
+				priceLabel.Text = item.price.ToCurrency () + " تومان";
 			}
-			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
-				addProductButton.Enabled = false;
-				if (item.count +1 > item.qty) {
-					var alert = UIAlertController.Create("خطا","موجودی کافی نیست",UIAlertControllerStyle.Alert);
-					alert.AddAction(UIAlertAction.Create("باشه",UIAlertActionStyle.Default,null));
-					AnatoliApp.GetInstance().PresentViewController(alert);
-					addProductButton.Enabled = true;
-					return;
-				}
-				var result = await ShoppingCardManager.AddProductAsync(item);
-				addProductButton.Enabled = true;
-				if (result) {
-					item.count ++;
-					Console.WriteLine(ShoppingCardManager.GetTotalPriceAsync());
-				}
-			};
+
+
 		}
 	}
 }

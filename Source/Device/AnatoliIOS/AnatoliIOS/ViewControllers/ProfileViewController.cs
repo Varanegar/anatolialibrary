@@ -31,6 +31,7 @@ namespace AnatoliIOS.ViewControllers
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
+			Title = "پروفایل";
             View.Bounds = UIScreen.MainScreen.Bounds;
             if (AnatoliApp.GetInstance().Customer != null)
             {

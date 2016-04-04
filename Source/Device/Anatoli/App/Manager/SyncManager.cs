@@ -128,6 +128,7 @@ namespace Anatoli.App.Manager
                 OnProgressChanged("store onhand saved.",8);
                 await SyncManager.AddLogAsync(SyncManager.UpdateCompleted);
                 OnProgressChanged("Sync process finished.",8);
+				OnSyncCompleted();
             }
             catch (Exception ex)
             {
@@ -145,7 +146,19 @@ namespace Anatoli.App.Manager
         }
         public static event ProgressChangedEventHandler ProgressChanged;
 		public delegate void ProgressChangedEventHandler(string status,int step);
-        public static async Task ClearDatabase()
+
+		static void OnSyncCompleted()
+		{
+			if (SyncCompleted != null)
+			{
+				SyncCompleted.Invoke();
+			}
+		}
+		public delegate void SyncCompletedEventHandler();
+		public static event SyncCompletedEventHandler SyncCompleted;
+        
+
+		public static async Task ClearDatabase()
         {
             try
             {

@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using AnatoliIOS;
 
 namespace AnatoliIOS
 {
@@ -21,7 +22,18 @@ namespace AnatoliIOS
         {
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
-
+			UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes() {
+				TextColor = UIColor.White,
+				TextShadowColor = UIColor.LightGray,
+				Font = UIFont.FromName("IRAN",16f)
+			}); 
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(new UITextAttributes() {
+				TextColor = UIColor.White,
+				TextShadowColor = UIColor.LightGray,
+				Font = UIFont.FromName("IRAN",16f)
+			},UIControlState.Normal); 
+			UINavigationBar.Appearance.BarTintColor = UIColor.Clear.FromHex(0x085e7d);
+			UINavigationBar.Appearance.TintColor = UIColor.White;
             return true;
         }
 
