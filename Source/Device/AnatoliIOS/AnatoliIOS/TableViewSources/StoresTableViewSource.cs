@@ -27,7 +27,7 @@ namespace AnatoliIOS.TableViewSources
                 if (result)
                 {
                     AnatoliApp.GetInstance().DefaultStore = item;
-					AnatoliApp.GetInstance().PushViewController(new FirstPageViewController());
+					AnatoliApp.GetInstance().ReplaceViewController(new FirstPageViewController());
                 }
             }
 
