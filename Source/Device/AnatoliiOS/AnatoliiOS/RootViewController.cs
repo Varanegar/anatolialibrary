@@ -22,7 +22,13 @@ namespace AnatoliIOS
         {
             base.ViewDidLoad();
             await AnatoliApp.GetInstance().Initialize();
-
+			SyncManager.ProgressChanged += (status, step) => {
+				Console.WriteLine(status);
+			};
+			SyncManager.SyncCompleted += () => {
+				Console.WriteLine("Sync completed...");
+			};
+			SyncManager.SyncDatabase ();
             NavController = new NavController();
             NavController.PushViewController(new FirstPageViewController(), true);
             SidebarController = new SidebarNavigation.SidebarController(this, NavController, new SideMenuController());

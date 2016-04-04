@@ -14,17 +14,17 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="2" translatesAutoresizingMaskIntoConstraints="NO">
-                        <rect key="frame" x="208" y="11.5" width="42" height="20.5"/>
+                        <rect key="frame" x="218" y="10.5" width="37" height="22.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="19" translatesAutoresizingMaskIntoConstraints="NO" clipsSubviews="YES">
-                        <rect key="frame" x="270" y="2" width="40" height="40"/>
+                        <rect key="frame" x="275" y="4.5" width="35" height="35"/>
                         <constraints>
-                            <constraint id="117" firstItem="19" firstAttribute="width" constant="40"/>
-                            <constraint id="118" firstItem="19" firstAttribute="height" constant="40"/>
+                            <constraint id="117" firstItem="19" firstAttribute="width" constant="35"/>
+                            <constraint id="118" firstItem="19" firstAttribute="height" constant="35"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -48,5 +48,10 @@
         <image name="Icon-Small-40.png" width="40" height="40"/>
         <image name="igicon.png" width="200" height="119"/>
         <image name="splash.png" width="365" height="648"/>
+        <image name="ic_list_orange_24dp.png" width="72" height="72"/>
+        <image name="ic_person_gray_24dp.png" width="80" height="80"/>
+        <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
+        <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
+        <image name="anatoli.ttf" width="0" height="0"/>
     </resources>
 </document>

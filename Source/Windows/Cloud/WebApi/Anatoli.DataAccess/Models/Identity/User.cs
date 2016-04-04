@@ -38,14 +38,14 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual string ResetSMSPass { get; set; }
         public virtual Nullable<DateTime> ResetSMSRequestTime { get; set; }
         [ForeignKey("AnatoliContact")]
-        public Nullable<Guid> AnatoliContactId { get; set; }
+        public Guid? AnatoliContactId { get; set; }
         [ForeignKey("ApplicationOwner")]
         public Guid ApplicationOwnerId { get; set; }
         public virtual ApplicationOwner ApplicationOwner { get; set; }
         public virtual AnatoliContact AnatoliContact { get; set; }
 
-        //[ForeignKey("Principal")]
-        //public Guid PrincipalId { get; set; }
+        [ForeignKey("Principal")]
+        public Guid PrincipalId { get; set; }
         public virtual Principal Principal { get; set; }
 
     }

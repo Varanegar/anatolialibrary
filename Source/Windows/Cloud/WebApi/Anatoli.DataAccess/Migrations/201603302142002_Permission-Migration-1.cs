@@ -9,10 +9,10 @@ namespace Anatoli.DataAccess.Migrations
         {
             Sql("alter table dbo.CompanyPersonnelRoutes drop constraint [FK_dbo.VisitorRoutes_dbo.Users_AddedBy_Id]");
             Sql("alter table dbo.CompanyPersonnelRoutes drop constraint [FK_dbo.VisitorRoutes_dbo.Users_LastModifiedBy_Id]");
-            Sql("alter table dbo.RegionAreaLevelTypes drop constraint [FK_dbo.DistCompanyRegionLevelTypes_dbo.Users_AddedBy_Id]");
-            Sql("alter table dbo.RegionAreaLevelTypes drop constraint [FK_dbo.DistCompanyRegionLevelTypes_dbo.Users_LastModifiedBy_Id]");
-            Sql("alter table dbo.CompanyCenters drop constraint [FK_dbo.DistCompanyCenters_dbo.Users_AddedBy_Id]");
-            Sql("alter table dbo.CompanyCenters drop constraint [FK_dbo.DistCompanyCenters_dbo.Users_LastModifiedBy_Id]");
+            Sql("alter table dbo.RegionAreaLevelTypes drop constraint [FK_dbo.CompanyRegionLevelTypes_dbo.Users_AddedBy_Id]");
+            Sql("alter table dbo.RegionAreaLevelTypes drop constraint [FK_dbo.CompanyRegionLevelTypes_dbo.Users_LastModifiedBy_Id]");
+            Sql("alter table dbo.CompanyCenters drop constraint [FK_dbo.CompanyCenters_dbo.Users_AddedBy_Id]");
+            Sql("alter table dbo.CompanyCenters drop constraint [FK_dbo.CompanyCenters_dbo.Users_LastModifiedBy_Id]");
             Sql("alter table dbo.CompanyPersonnels drop constraint [FK_dbo.Visitors_dbo.Users_AddedBy_Id]");
             Sql("alter table dbo.CompanyPersonnels drop constraint [FK_dbo.Visitors_dbo.Users_LastModifiedBy_Id]");
 

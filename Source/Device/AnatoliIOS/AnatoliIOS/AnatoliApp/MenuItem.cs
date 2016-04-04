@@ -13,6 +13,7 @@ namespace AnatoliIOS
 		public MenuType Type{ get; set; }
 		public enum MenuType{
 			Login,
+			FirstPage,
 			Profile,
 			Products,
 			Favorits

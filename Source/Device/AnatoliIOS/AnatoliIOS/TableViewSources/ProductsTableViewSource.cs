@@ -3,6 +3,8 @@ using Anatoli.App.Manager;
 using Anatoli.App.Model.Product;
 using AnatoliIOS.TableViewCells;
 using UIKit;
+using Foundation;
+using ObjCRuntime;
 
 namespace AnatoliIOS.TableViewSources
 {
@@ -11,24 +13,29 @@ namespace AnatoliIOS.TableViewSources
 		public ProductsTableViewSource ()
 		{
 		}
-		public override UIKit.UITableViewCell GetCell (UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
+
+		public override UIKit.UITableViewCell GetCellView (UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			var cell = tableView.DequeueReusableCell (ProductSummaryViewCell.Key) as ProductSummaryViewCell;
 			if (cell == null) {
-				cell = new ProductSummaryViewCell ();
+				var views = NSBundle.MainBundle.LoadNib (ProductSummaryViewCell.Key, tableView, null);
+				cell = Runtime.GetNSObject (views.ValueAt (0)) as ProductSummaryViewCell;
+				cell.BindCell (Items[indexPath.Row]);
 			}
+
 			cell.UpdateCell (Items [indexPath.Row]);
 			return cell;
 		}
+
 		public override UITableViewRowAction[] EditActionsForRow (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			UITableViewRowAction favoritAction;
 			if (Items [indexPath.Row].IsFavorit) {
 				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Destructive, "حذف از فهرست من", async delegate {
 					tableView.Editing = false;
-					var result = await ProductManager.RemoveFavoritAsync(Items[indexPath.Row].product_id);
+					var result = await ProductManager.RemoveFavoritAsync (Items [indexPath.Row].product_id);
 					if (result) {
-						Items[indexPath.Row].favorit = 0;
+						Items [indexPath.Row].favorit = 0;
 					}
 				});
 			} else {
@@ -42,6 +49,7 @@ namespace AnatoliIOS.TableViewSources
 			}
 			return new UITableViewRowAction[]{ favoritAction };
 		}
+
 		public override nfloat GetHeightForRow (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			return 70f;
