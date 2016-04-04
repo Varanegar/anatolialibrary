@@ -235,6 +235,10 @@
     <Compile Include="Migrations\201604031132560_Product-Tag-Migration-1.Designer.cs">
       <DependentUpon>201604031132560_Product-Tag-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604040345278_Permission-Migration-7.cs" />
+    <Compile Include="Migrations\201604040345278_Permission-Migration-7.Designer.cs">
+      <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -446,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604031132560_Product-Tag-Migration-1.resx">
       <DependentUpon>201604031132560_Product-Tag-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604040345278_Permission-Migration-7.resx">
+      <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
