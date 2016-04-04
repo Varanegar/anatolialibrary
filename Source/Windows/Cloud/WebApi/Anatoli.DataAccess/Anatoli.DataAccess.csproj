@@ -223,6 +223,18 @@
     <Compile Include="Migrations\201604021441559_Permission-Migration-4.Designer.cs">
       <DependentUpon>201604021441559_Permission-Migration-4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604030946277_Permission-Migration-5.cs" />
+    <Compile Include="Migrations\201604030946277_Permission-Migration-5.Designer.cs">
+      <DependentUpon>201604030946277_Permission-Migration-5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604031119007_Permission-Migration-6.cs" />
+    <Compile Include="Migrations\201604031119007_Permission-Migration-6.Designer.cs">
+      <DependentUpon>201604031119007_Permission-Migration-6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604031132560_Product-Tag-Migration-1.cs" />
+    <Compile Include="Migrations\201604031132560_Product-Tag-Migration-1.Designer.cs">
+      <DependentUpon>201604031132560_Product-Tag-Migration-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -425,6 +437,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604021441559_Permission-Migration-4.resx">
       <DependentUpon>201604021441559_Permission-Migration-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604030946277_Permission-Migration-5.resx">
+      <DependentUpon>201604030946277_Permission-Migration-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604031119007_Permission-Migration-6.resx">
+      <DependentUpon>201604031119007_Permission-Migration-6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604031132560_Product-Tag-Migration-1.resx">
+      <DependentUpon>201604031132560_Product-Tag-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

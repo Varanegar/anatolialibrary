@@ -14,7 +14,7 @@ namespace Anatoli.DataAccess.Configs
             this.HasRequired<ApplicationOwner>(p => p.ApplicationOwner)
                 .WithMany(u => u.Users);
 
-            this.HasRequired<AnatoliContact>(r => r.AnatoliContact)
+            this.HasOptional<AnatoliContact>(r => r.AnatoliContact)
                 .WithMany(u => u.Users);
 
         }
