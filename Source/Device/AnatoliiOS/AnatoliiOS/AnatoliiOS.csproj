@@ -179,6 +179,7 @@
     <Compile Include="ViewControllers\ProductGroupCollectionViewCell.designer.cs">
       <DependentUpon>ProductGroupCollectionViewCell.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="Resources\ic_reorder_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

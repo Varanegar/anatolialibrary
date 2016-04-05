@@ -41,15 +41,7 @@ namespace AnatoliIOS.ViewControllers
             // Perform any additional setup after loading the view, typically from a nib.
 
 
-            NavigationItem.SetRightBarButtonItem(
-                new UIBarButtonItem(UIImage.FromBundle("threelines")
-                    , UIBarButtonItemStyle.Plain
-                    , (sender, args) =>
-                    {
-                        SidebarController.ToggleMenu();
-                    }), true);
-
-
+			NavigationItem.RightBarButtonItem = AnatoliApp.GetInstance ().CreateMenuButton ();
         }
     }
 }

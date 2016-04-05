@@ -131,11 +131,10 @@ namespace AnatoliIOS
 					});
 				}
 			}
-			source.Items.Add(new MenuItem()
-				{
-					Title = "صفحه اول",
-					Type = MenuItem.MenuType.FirstPage
-				});
+			source.Items.Add (new MenuItem () {
+				Title = "صفحه اول",
+				Type = MenuItem.MenuType.FirstPage
+			});
 			source.Items.Add (new MenuItem () {
 				Title = "دسته بندی کالا ",
 				Icon = UIImage.FromBundle ("ic_list_orange_24dp"),
@@ -182,16 +181,29 @@ namespace AnatoliIOS
 			RefreshMenu ();
 			ReplaceViewController (new FirstPageViewController ());
 		}
+
+
+		public UIBarButtonItem CreateMenuButton(){
+			return new UIBarButtonItem (UIImage.FromBundle ("ic_reorder_white_24dp").Scale (new CoreGraphics.CGSize (26, 26))
+				, UIBarButtonItemStyle.Plain
+				, (sender, args) => {
+				(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.ToggleMenu ();
+			});
+		}
+
 	}
 
-	public static class Extensions{
-			public static UIColor FromHex(this UIColor color,int hexValue)
-			{
-				return UIColor.FromRGB(
-					(((float)((hexValue & 0xFF0000) >> 16))/255.0f),
-					(((float)((hexValue & 0xFF00) >> 8))/255.0f),
-					(((float)(hexValue & 0xFF))/255.0f)
-				);
-			}
+	public static class Extensions
+	{
+		public static UIColor FromHex (this UIColor color, int hexValue)
+		{
+			return UIColor.FromRGB (
+				(((float)((hexValue & 0xFF0000) >> 16)) / 255.0f),
+				(((float)((hexValue & 0xFF00) >> 8)) / 255.0f),
+				(((float)(hexValue & 0xFF)) / 255.0f)
+			);
+		}
 	}
+
+
 }

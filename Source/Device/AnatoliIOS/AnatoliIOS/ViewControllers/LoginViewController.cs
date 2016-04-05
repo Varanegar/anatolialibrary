@@ -25,6 +25,7 @@ namespace AnatoliIOS.ViewControllers
 
             // Perform any additional setup after loading the view, typically from a nib.
 			Title = "ورود";
+
             EdgesForExtendedLayout = UIRectEdge.None;
             loginButton.TouchUpInside += async delegate
             {

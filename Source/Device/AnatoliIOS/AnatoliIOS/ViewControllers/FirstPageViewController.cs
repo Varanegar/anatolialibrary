@@ -11,7 +11,7 @@ using Anatoli.App.Manager;
 
 namespace AnatoliIOS.ViewControllers
 {
-	public partial class FirstPageViewController : ParallaxViewController
+	public partial class FirstPageViewController : ParallaxViewController 
     {
         public FirstPageViewController()
 			: base("FirstPageViewController", NSBundle.MainBundle)
@@ -36,7 +36,7 @@ namespace AnatoliIOS.ViewControllers
 
             // Perform any additional setup after loading the view, typically from a nib.
 			Title = "صفحه خانگی";
-
+			NavigationItem.RightBarButtonItem = AnatoliApp.GetInstance ().CreateMenuButton ();
 
 
 
