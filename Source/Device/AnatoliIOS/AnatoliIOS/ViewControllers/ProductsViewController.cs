@@ -47,7 +47,8 @@ namespace AnatoliIOS.ViewControllers
 				
 			NavigationItem.SetRightBarButtonItems (new UIBarButtonItem[] {
 				AnatoliApp.GetInstance ().CreateMenuButton (),
-				searchButton
+				searchButton,
+				AnatoliApp.GetInstance().CreateBasketButton()
 			}, true);
 
 

@@ -180,6 +180,13 @@
       <DependentUpon>ProductGroupCollectionViewCell.cs</DependentUpon>
     </Compile>
     <BundleResource Include="Resources\ic_reorder_white_24dp.png" />
+    <BundleResource Include="Resources\ic_shopping_cart_white_24dp.png" />
+    <InterfaceDefinition Include="ViewControllers\ShoppingCardViewController.xib" />
+    <Compile Include="ViewControllers\ShoppingCardViewController.cs" />
+    <Compile Include="ViewControllers\ShoppingCardViewController.designer.cs">
+      <DependentUpon>ShoppingCardViewController.cs</DependentUpon>
+    </Compile>
+    <BundleResource Include="Resources\ic_shoppingcard_on_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

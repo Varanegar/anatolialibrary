@@ -11,8 +11,8 @@ using UIKit;
 
 namespace AnatoliIOS.ViewControllers
 {
-	[Register ("FavoritsViewController")]
-	partial class FavoritsViewController
+	[Register ("ShoppingCardViewController")]
+	partial class ShoppingCardViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{
