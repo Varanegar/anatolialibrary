@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using XpandItComponents;
 using CoreGraphics;
 using Foundation;
+using Anatoli.App.Model.Product;
+using Anatoli.App.Manager;
 
 namespace AnatoliIOS.ViewControllers
 {
@@ -28,7 +30,7 @@ namespace AnatoliIOS.ViewControllers
 			base.ViewDidAppear (animated);
 			StartAutomaticScroll ();
 		}
-        public override void ViewDidLoad()
+        public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
@@ -39,7 +41,7 @@ namespace AnatoliIOS.ViewControllers
 
 
 
-			SetImageHeight(UIScreen.MainScreen.Bounds.Height * 0.4f);
+			SetImageHeight(UIScreen.MainScreen.Bounds.Size.Height * 0.4f);
 
 			// Creting a list UIImages to present in the ParallaxViewController
 			var images = new List<UIImage>();
@@ -48,12 +50,10 @@ namespace AnatoliIOS.ViewControllers
 			images.Add(UIImage.FromBundle("image3"));
 
 			//View will be the ContentView of ParallaxViewController
-			var view = new UIView(new CGRect(0, 0, View.Frame.Size.Width, 1000));
-			view.BackgroundColor = UIColor.White;
-			view.AutoresizingMask = UIViewAutoresizing.FlexibleLeftMargin |
-				UIViewAutoresizing.FlexibleRightMargin |
-				UIViewAutoresizing.FlexibleWidth;
+			var view = new UIView(new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height));
 
+			view.BackgroundColor = UIColor.White;
+		
 			//You can check if the image is tapped by set the ImageTapped property
 			ImageTaped = (i) =>
 			{
@@ -64,7 +64,47 @@ namespace AnatoliIOS.ViewControllers
 			SetupFor(view);
 			SetImages(images);
 
-
+			//groupsCollectionViewHeight.Constant = UIScreen.MainScreen.Bounds.Height * 0.5f;
+			var groups = await CategoryManager.GetFirstLevelAsync ();
+			var layout = new UICollectionViewFlowLayout ();
+			layout.ItemSize = new CGSize (120f, 120f);
+			var groupsCollectionView = new UICollectionView(new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height * 0.6f),layout);
+			groupsCollectionView.BackgroundColor = UIColor.Clear;
+			groupsCollectionView.CollectionViewLayout = layout;
+			layout.SectionInset = new UIEdgeInsets (30,30,30,30);
+			groupsCollectionView.RegisterNibForCell(UINib.FromName(ProductGroupCollectionViewCell.Key, null), ProductGroupCollectionViewCell.Key);
+			groupsCollectionView.Source = new ProductGroupsCollectionViewSource (groups);
+			groupsCollectionView.ReloadData ();
+			view.AddSubview (groupsCollectionView);
         }
     }
+
+	class ProductGroupsCollectionViewSource : UICollectionViewSource{
+		List<CategoryInfoModel> _items;
+		public ProductGroupsCollectionViewSource(List<CategoryInfoModel> items){
+			_items = items;
+		}
+		public override nint GetItemsCount (UICollectionView collectionView, nint section)
+		{
+			return _items.Count;
+		}
+		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
+		{
+			var cell = collectionView.DequeueReusableCell (ProductGroupCollectionViewCell.Key, indexPath) as ProductGroupCollectionViewCell;
+			cell.UpdateCell (_items [indexPath.Row]);
+			return cell;
+		}
+		public override void ItemSelected (UICollectionView collectionView, NSIndexPath indexPath)
+		{
+			var productsViewController = new ProductsViewController ();
+			productsViewController.SetGroupId (_items [indexPath.Row].cat_id);
+			AnatoliApp.GetInstance ().PushViewController (productsViewController);
+		}
+		public override nint NumberOfSections (UICollectionView collectionView)
+		{
+			return 1;
+		}
+	}
+
+
 }
