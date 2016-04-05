@@ -1,18 +1,113 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
-	<dependencies>
-		<plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703" />
-	</dependencies>
-	<objects>
-		<placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShoppingCardViewController">
-			<connections>
-				<outlet property="view" destination="2" id="RRd-Eg-VrN" />
-			</connections>
-		</placeholder>
-		<placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder" />
-		<view contentMode="scaleToFill" id="2">
-			<rect key="frame" x="0.0" y="0.0" width="600" height="600" />
-			<color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite" />
-		</view>
-	</objects>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShoppingCardViewController">
+            <connections>
+                <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
+                <outlet property="addressLabel" destination="24" id="name-outlet-24"/>
+                <outlet property="storeNameLabel" destination="34" id="name-outlet-34"/>
+                <outlet property="checkoutButton" destination="37" id="name-outlet-37"/>
+                <outlet property="productsTableView" destination="11" id="name-outlet-11"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="11" translatesAutoresizingMaskIntoConstraints="NO">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="358"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints/>
+                </tableView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="آدرس تحویل :" lineBreakMode="tailTruncation" minimumFontSize="10" id="16" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="right" misplaced="YES">
+                    <rect key="frame" x="522.5" y="366" width="67.5" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <constraints>
+                        <constraint id="19" firstItem="16" firstAttribute="height" constant="40"/>
+                        <constraint id="29" firstItem="16" firstAttribute="width" constant="70"/>
+                    </constraints>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" minimumFontSize="10" id="24" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES" textAlignment="right">
+                    <rect key="frame" x="20" y="376" width="494" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <constraints>
+                        <constraint id="27" firstItem="24" firstAttribute="height" constant="40"/>
+                    </constraints>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" minimumFontSize="10" id="30" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES" textAlignment="right" text="نام فروشگاه : ">
+                    <rect key="frame" x="522" y="414" width="68" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <constraints>
+                        <constraint id="33" firstItem="30" firstAttribute="width" constant="70"/>
+                    </constraints>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" minimumFontSize="10" id="34" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES" textAlignment="right">
+                    <rect key="frame" x="11" y="414" width="503" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="37" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                    <rect key="frame" x="200" y="476" width="200" height="30"/>
+                    <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="15"/>
+                    <state key="normal" title="تکمیل خرید">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <constraints>
+                        <constraint id="39" firstItem="37" firstAttribute="height" constant="30"/>
+                        <constraint id="40" firstItem="37" firstAttribute="width" constant="200"/>
+                    </constraints>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint id="12" firstItem="11" firstAttribute="top" secondItem="2" secondAttribute="top"/>
+                <constraint id="14" firstItem="2" firstAttribute="trailing" secondItem="11" secondAttribute="trailing"/>
+                <constraint id="15" firstItem="11" firstAttribute="leading" secondItem="2" secondAttribute="leading"/>
+                <constraint id="17" firstItem="2" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" constant="10"/>
+                <constraint id="22" firstItem="2" firstAttribute="centerY" secondItem="11" secondAttribute="bottom" constant="249" multiplier="0.20001"/>
+                <constraint id="23" firstItem="16" firstAttribute="top" secondItem="11" secondAttribute="bottom" constant="5"/>
+                <constraint id="25" firstItem="16" firstAttribute="leading" secondItem="24" secondAttribute="trailing" constant="5"/>
+                <constraint id="26" firstItem="24" firstAttribute="centerY" secondItem="16" secondAttribute="centerY"/>
+                <constraint id="28" firstItem="24" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="10"/>
+                <constraint id="31" firstItem="2" firstAttribute="trailing" secondItem="30" secondAttribute="trailing" constant="10"/>
+                <constraint id="32" firstItem="30" firstAttribute="top" secondItem="16" secondAttribute="bottom" constant="10"/>
+                <constraint id="35" firstItem="30" firstAttribute="leading" secondItem="34" secondAttribute="trailing" constant="5"/>
+                <constraint id="36" firstItem="34" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="5"/>
+                <constraint id="38" firstItem="37" firstAttribute="centerX" secondItem="2" secondAttribute="centerX"/>
+                <constraint id="41" firstItem="37" firstAttribute="top" secondItem="34" secondAttribute="bottom" constant="20"/>
+                <constraint id="46" firstItem="34" firstAttribute="centerY" secondItem="30" secondAttribute="centerY"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_list_orange_24dp.png" width="72" height="72"/>
+        <image name="ic_person_gray_24dp.png" width="80" height="80"/>
+        <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
+        <image name="anatoli.ttf" width="0" height="0"/>
+        <image name="ic_search_white_24dp.png" width="96" height="96"/>
+        <image name="Icon.png" width="57" height="57"/>
+        <image name="Icon-60.png" width="60" height="60"/>
+        <image name="Icon-Small.png" width="29" height="29"/>
+        <image name="Icon-Small-40.png" width="40" height="40"/>
+        <image name="igicon.png" width="200" height="119"/>
+        <image name="splash.png" width="365" height="648"/>
+        <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
+        <image name="ic_reorder_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shopping_cart_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shoppingcard_on_white_24dp.png" width="96" height="97"/>
+    </resources>
 </document>
