@@ -111,7 +111,11 @@ namespace Anatoli.App.Manager
                 return null;
             }
         }
-
+		public static StringQuery GetAll(string storeId){
+			StringQuery query = new StringQuery(string.Format("SELECT * FROM shopping_card_view LEFT JOIN store_onhand ON shopping_card_view.product_id = store_onhand.product_id WHERE store_onhand.store_id = '{0}'", storeId));
+			query.Unlimited = true;
+			return query;
+		}
         public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
