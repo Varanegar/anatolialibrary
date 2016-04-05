@@ -19,6 +19,8 @@ namespace Anatoli.DataAccess.Models.Identity
         [StringLength(200)]
         public string FullName { get; set; }
         public override string UserName { get; set; }
+        [StringLength(50)]
+        public string UserNameStr { get; set; }
         public string Password { get; set; }
         public override string Email
         {
@@ -40,8 +42,11 @@ namespace Anatoli.DataAccess.Models.Identity
         [ForeignKey("AnatoliContact")]
         public Guid? AnatoliContactId { get; set; }
         [ForeignKey("ApplicationOwner")]
-        public Guid ApplicationOwnerId { get; set; }
+        public Guid? ApplicationOwnerId { get; set; }
         public virtual ApplicationOwner ApplicationOwner { get; set; }
+        [ForeignKey("DataOwner")]
+        public Guid DataOwnerId { get; set; }
+        public virtual DataOwner DataOwner { get; set; }
         public virtual AnatoliContact AnatoliContact { get; set; }
 
         [ForeignKey("Principal")]
