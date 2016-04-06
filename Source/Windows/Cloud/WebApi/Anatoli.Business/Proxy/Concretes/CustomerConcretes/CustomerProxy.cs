@@ -52,6 +52,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 RegionLevel3Id = data.RegionLevel3Id,
                 RegionLevel4Id = data.RegionLevel4Id,
                 DefauleStoreId = data.DefauleStoreId,
+                CompanyId = data.CompanyId,
                 IsRemoved = data.IsRemoved,
 
                 CustomerShipAddress  = (data.CustomerShipAddresses != null)?CustomerShipAddressProxy.Convert(data.CustomerShipAddresses.ToList()):null,
@@ -85,6 +86,7 @@ namespace Anatoli.Business.Proxy.CustomerConcretes
                 RegionLevel3Id = data.RegionLevel3Id,
                 RegionLevel4Id = data.RegionLevel4Id,
                 DefauleStoreId = data.DefauleStoreId,
+                CompanyId = data.CompanyId,
 
                 CustomerShipAddresses = (data.CustomerShipAddress != null) ? CustomerShipAddressProxy.ReverseConvert(data.CustomerShipAddress.ToList()) : null,
             };

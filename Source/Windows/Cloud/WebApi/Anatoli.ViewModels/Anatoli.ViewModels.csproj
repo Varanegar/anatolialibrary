@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel\UserRequestModel.cs" />
     <Compile Include="RequestModel\RegionAreaRequestModel.cs" />
     <Compile Include="RequestModel\ItemImageRequestModel.cs" />
     <Compile Include="RequestModel\PurchaseOrderRequestModel.cs" />

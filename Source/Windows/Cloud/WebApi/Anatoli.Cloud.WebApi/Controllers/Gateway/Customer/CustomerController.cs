@@ -69,7 +69,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 }
 
 
-
+                data.customerData.CompanyId = DataOwnerKey;
                 var saveData = new CustomerProxy().ReverseConvert(data.customerData);
                 await customerDomain.PublishAsync(saveData);
 
@@ -91,7 +91,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-
+                data.customerListData.ForEach(p =>
+                    {
+                        p.CompanyId = DataOwnerKey;
+                    });
                 var saveData = new CustomerProxy().ReverseConvert(data.customerListData);
                 await customerDomain.PublishAsync(saveData);
 

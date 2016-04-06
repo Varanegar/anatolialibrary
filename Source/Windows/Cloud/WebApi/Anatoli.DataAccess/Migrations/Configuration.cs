@@ -65,6 +65,9 @@
                 new Role { Id = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC"), Name = "InternalCommunication" }
             );
 
+            context.Companies.AddOrUpdate(item => item.Id,
+                new Company { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CompanyCode = 1, CompanyName = "نیک توشه زیست", AnatoliAccountId = null, IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+            );
             //context.ProductType.AddOrUpdate(item => item.Id,
             //    new ProductType { Id = Guid.Parse("72E59112-6054-4140-8E33-947228616393"), ProductTypeName = "کالای زیر صفر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
             //    new ProductType { Id = Guid.Parse("6FC2FD34-4CBC-4EB1-BD7E-1BD751E4F2A2"), ProductTypeName = "کالای یخچالی", IsRemoved = false, ApplicationOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
@@ -306,6 +309,60 @@
                         SecurityStamp = "4e3b2471-3700-405b-be71-53be82205fa5",
                     });
 
+            }
+
+            if (context.Users.Any(item => item.Id == userId))
+            {
+                context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
+                    new IdentityUserRole { RoleId = "507b6966-17f1-4116-a497-02242c052961", UserId = userId },
+                    new IdentityUserRole { RoleId = "5a61344b-b1b5-4157-8861-7bed15c0bdc2", UserId = userId },
+                    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = userId },
+                    new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = userId },
+                    new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = userId }
+                );
+            }
+
+            userId = "c7ed66ed-d02b-4dd8-9490-eaf5804ff8ef";
+
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Anatoli.DataAccess.Models.Identity.Principal
+                {
+                    Id = Guid.Parse(userId),
+                    ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                });
+
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId))
+            {
+                context.Users.AddOrUpdate(item => item.Id,
+                    new User
+                    {
+                        Id = userId,
+                        PrincipalId = Guid.Parse(userId),
+                        UserName = userId,
+                        PhoneNumber = "87135000",
+                        UserNameStr = "petropay",
+                        PasswordHash = "AOw6dMvdSydP0geii72BK6vtgL+omhMNHlMhNMUoGgH4eF7hlmVdCF7E9v1c+uahCA==",
+                        Email = "petropay@varanegar.com",
+                        EmailConfirmed = true,
+                        //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
+                        PhoneNumberConfirmed = true,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        LastEntry = DateTime.Now,
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
+                        SecurityStamp = "81434395-72c2-4def-8c09-853b08f233d9",
+                    });
+
+            }
+
+            if (context.Users.Any(item => item.Id == userId))
+            {
+                context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
+                    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = userId },
+                    new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = userId },
+                    new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = userId }
+                );
             }
             #endregion
         }
