@@ -41,7 +41,18 @@ namespace ClientApp
                         MediaTypeHeaderValue.Parse("image/jpeg");
 
                     requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
-                    var response = client.PostAsync(servserURI + "/api/imageManager/Save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                    requestContent.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+                    requestContent.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+                    requestContent.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+                    var response = client.PostAsync(servserURI + "/api/imageManager/Save" + "?isDefault=" + item.IsDefault + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        throw new Exception("Fail CallServerService URI :" );
+                    }
                 }
             );
         }

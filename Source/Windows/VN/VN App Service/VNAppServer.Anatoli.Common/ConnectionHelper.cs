@@ -112,10 +112,10 @@ namespace VNAppServer.Anatoli.Common
                     MediaTypeHeaderValue.Parse("image/jpeg");
 
                 requestContent.Add(imageContent, item.BaseDataId + "-" + item.ID, item.BaseDataId + "-" + item.ID + ".png");
-                imageContent.Headers.Add("OwnerKey", OwnerKey);
-                imageContent.Headers.Add("DataOwnerKey", DataOwner);
-                imageContent.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
-                var response = client.PostAsync(URI + "&isDefault=" + item.IsDefault + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
+                requestContent.Headers.Add("OwnerKey", OwnerKey);
+                requestContent.Headers.Add("DataOwnerKey", DataOwner);
+                requestContent.Headers.Add("DataOwnerCenterKey", DataOwnerCenter);
+                var response = client.PostAsync(URI + "?isDefault=" + item.IsDefault + "&imageId=" + item.UniqueId + "&imagetype=" + item.ImageType + "&token=" + item.BaseDataId, requestContent).Result;
                 if(response.IsSuccessStatusCode)
                 {
                     return;
