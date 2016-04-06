@@ -37,7 +37,10 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (count).ToString()), new BasicParam("product_id", productId));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result)
+					OnItemsChanged();
+				return result;
             }
             catch (Exception)
             {
@@ -53,7 +56,10 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result)
+					OnItemsChanged();
+				return result;
             }
             catch (Exception)
             {
@@ -69,7 +75,10 @@ namespace Anatoli.App.Manager
                     query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result)
+					OnItemsChanged();
+				return result;
             }
             catch (Exception)
             {
@@ -119,7 +128,10 @@ namespace Anatoli.App.Manager
         public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
-            return (await DataAdapter.UpdateItemAsync(command) > 0) ? true : false;
+			var result = (await DataAdapter.UpdateItemAsync(command) > 0) ? true : false;
+			if (result)
+				OnItemsChanged ();
+			return result;
         }
 
         public static async Task<int> GetItemsCountAsync()
@@ -145,7 +157,10 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+			var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+			if (result)
+				OnItemsChanged ();
+			return result;
         }
 
         public static async Task<PurchaseOrderViewModel> CalcPromo(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId)
@@ -210,14 +225,14 @@ namespace Anatoli.App.Manager
             }
         }
 
-        static void OnItemsChanged(Dictionary<ProductModel, int> items)
+        static void OnItemsChanged()
         {
             if (ItemsChanged != null)
             {
-                ItemsChanged.Invoke(items);
+                ItemsChanged.Invoke();
             }
         }
         public static event ItemsChangedEventHandler ItemsChanged;
-        public delegate void ItemsChangedEventHandler(Dictionary<ProductModel, int> items);
+        public delegate void ItemsChangedEventHandler();
     }
 }
