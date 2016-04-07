@@ -140,6 +140,23 @@ namespace AnatoliIOS
 				Icon = UIImage.FromBundle ("ic_list_orange_24dp"),
 				Type = MenuItem.MenuType.Products
 			});
+					
+			if(Customer != null)
+				source.Items.Add (new MenuItem () {
+					Title = " لیست من",
+					Type = MenuItem.MenuType.Favorits
+				});
+			
+			if (DefaultStore == null)
+				source.Items.Add (new MenuItem () {
+					Title = " فروشگاه من",
+					Type = MenuItem.MenuType.Stores
+				});
+			else
+				source.Items.Add (new MenuItem () {
+					Title = " فروشگاه من" + "(" + DefaultStore.store_name + ")",
+					Type = MenuItem.MenuType.Stores
+				});
 			MenuTableViewReference.Source = source;
 			MenuTableViewReference.ReloadData ();
 		}
@@ -166,7 +183,9 @@ namespace AnatoliIOS
 				} else {
 					PushViewController (new StoresViewController ());
 				}
-
+				break;
+			case MenuItem.MenuType.Stores:
+				PushViewController (new StoresViewController ());
 				break;
 			default:
 				break;
@@ -198,7 +217,7 @@ namespace AnatoliIOS
 				, UIBarButtonItemStyle.Plain
 				, (sender, args) => {
 				if (Customer == null) {
-						var loginAlert = UIAlertController.Create ("خطا", "لطفا ابتدا وارد حساب کاربری خود شوید", UIAlertControllerStyle.Alert);
+					var loginAlert = UIAlertController.Create ("خطا", "لطفا ابتدا وارد حساب کاربری خود شوید", UIAlertControllerStyle.Alert);
 					loginAlert.AddAction (UIAlertAction.Create ("باشه", UIAlertActionStyle.Default,
 						delegate {
 							PushViewController (new LoginViewController ());
@@ -207,14 +226,14 @@ namespace AnatoliIOS
 					loginAlert.AddAction (UIAlertAction.Create ("بی خیال", UIAlertActionStyle.Cancel, null));
 					PresentViewController (loginAlert);
 				} else if (DefaultStore == null) {
-						var storeAlert = UIAlertController.Create ("خطا", "لطفا ابتدا فروشگاه پیش فرض را انتخاب نمایید", UIAlertControllerStyle.Alert);
-						storeAlert.AddAction (UIAlertAction.Create ("باشه", UIAlertActionStyle.Default,
-							delegate {
-								PushViewController (new StoresViewController ());
-							}
-						));
-						storeAlert.AddAction (UIAlertAction.Create ("بی خیال", UIAlertActionStyle.Cancel, null));
-						PresentViewController (storeAlert);
+					var storeAlert = UIAlertController.Create ("خطا", "لطفا ابتدا فروشگاه پیش فرض را انتخاب نمایید", UIAlertControllerStyle.Alert);
+					storeAlert.AddAction (UIAlertAction.Create ("باشه", UIAlertActionStyle.Default,
+						delegate {
+							PushViewController (new StoresViewController ());
+						}
+					));
+					storeAlert.AddAction (UIAlertAction.Create ("بی خیال", UIAlertActionStyle.Cancel, null));
+					PresentViewController (storeAlert);
 				} else
 					AnatoliApp.GetInstance ().PushViewController (new ShoppingCardViewController ());
 			});

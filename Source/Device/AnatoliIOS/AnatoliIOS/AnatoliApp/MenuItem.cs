@@ -16,7 +16,8 @@ namespace AnatoliIOS
 			FirstPage,
 			Profile,
 			Products,
-			Favorits
+			Favorits,
+			Stores
 		}
     }
 }
