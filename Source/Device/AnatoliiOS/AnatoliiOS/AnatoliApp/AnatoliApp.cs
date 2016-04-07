@@ -83,11 +83,11 @@ namespace AnatoliIOS
 			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PresentViewController (view, animated, completedAction);
 		}
 
-		public void PushViewController (UIViewController viewController)
+		public void PushViewController (UIViewController viewController, bool force = false)
 		{
 			if (viewController == null) {
 				throw new ArgumentNullException ();
-			} else if (_views.Count > 0 && _views.Last.Value != viewController.GetType ()) {
+			} else if ((_views.Count > 0 && _views.Last.Value != viewController.GetType ()) || force) {
 				(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.PushViewController (viewController, true);
 				_views.AddLast (viewController.GetType ());
 			} else if (_views.Count == 0) {
@@ -104,9 +104,58 @@ namespace AnatoliIOS
 			} else
 				return false;
 		}
+		public async Task RefreshMenu(string catId){
+			var source = new MenuTableViewSource ();
+			source.Items = new System.Collections.Generic.List<MenuItem> ();
+			source.Items.Add (new MenuItem () {
+				Title = " منوی اصلی",
+				Type = MenuItem.MenuType.MainMenu
+			});
+			if (catId == "0") {
+				var cats = await CategoryManager.GetFirstLevelAsync ();
+				foreach (var item in cats) {
+					source.Items.Add (new MenuItem () {
+						Title = item.cat_name,
+						Type = MenuItem.MenuType.CatId,
+						Id = item.cat_id
+					});
+				}
+			} else {
+				var cats = await CategoryManager.GetCategoriesAsync (catId);
+				var parent = await CategoryManager.GetParentCategoryAsync (catId);
+				var current = await CategoryManager.GetCategoryInfoAsync (catId);
+				source.Items.Add (new MenuItem () {
+					Title = "همه محصولات",
+					Type = MenuItem.MenuType.CatId,
+					Id = "0"
+				});
+				if (parent != null) {
+					source.Items.Add (new MenuItem () {
+						Title = parent.cat_name,
+						Type = MenuItem.MenuType.CatId,
+						Id = parent.cat_id
+					});
+				}
+				source.Items.Add (new MenuItem () {
+					Title = current.cat_name,
+					Type = MenuItem.MenuType.CatId,
+					Id = catId
+				});
+				foreach (var item in cats) {
+					source.Items.Add (new MenuItem () {
+						Title = item.cat_name,
+						Type = MenuItem.MenuType.CatId,
+						Id = item.cat_id
+					});
+				}
+			}
+			MenuTableViewReference.Source = source;
+			MenuTableViewReference.ReloadData ();
+		}
 
 		public void RefreshMenu ()
 		{
+			
 			var source = new MenuTableViewSource ();
 			source.Items = new System.Collections.Generic.List<MenuItem> ();
 
@@ -161,31 +210,53 @@ namespace AnatoliIOS
 			MenuTableViewReference.ReloadData ();
 		}
 
-		public void SelectMenuItem (int index)
+		public void CloseMenu(){
+			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.CloseMenu();
+		}
+		public void OpenMenu(){
+			(UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.OpenMenu();
+		}
+		public async Task SelectMenuItemAsync (int index)
 		{
 			var items = (MenuTableViewReference.Source as MenuTableViewSource).Items;
 			switch (items [index].Type) {
 			case MenuItem.MenuType.FirstPage:
 				PushViewController (new FirstPageViewController ());
+				CloseMenu ();
 				break;
 			case MenuItem.MenuType.Favorits:
 				PushViewController (new FavoritsViewController ());
+				CloseMenu ();
 				break;
 			case MenuItem.MenuType.Login:
 				PushViewController (new LoginViewController ());
+				CloseMenu ();
 				break;
 			case MenuItem.MenuType.Profile:
 				PushViewController (new ProfileViewController ());
+				CloseMenu ();
 				break;
 			case MenuItem.MenuType.Products:
 				if (DefaultStore != null) {
-					PushViewController (new ProductsViewController ());
+					await RefreshMenu ("0");
+					PushViewController (new ProductsViewController (),true);
 				} else {
 					PushViewController (new StoresViewController ());
+					CloseMenu ();
 				}
 				break;
 			case MenuItem.MenuType.Stores:
 				PushViewController (new StoresViewController ());
+				CloseMenu ();
+				break;
+			case MenuItem.MenuType.CatId:
+				await RefreshMenu (items [index].Id);
+				var v = new ProductsViewController ();
+				v.SetGroupId (items [index].Id);
+				PushViewController (v,true);
+				break;
+			case MenuItem.MenuType.MainMenu:
+				RefreshMenu ();
 				break;
 			default:
 				break;
