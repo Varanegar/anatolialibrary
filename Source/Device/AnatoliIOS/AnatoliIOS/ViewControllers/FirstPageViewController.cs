@@ -14,7 +14,7 @@ namespace AnatoliIOS.ViewControllers
 	public partial class FirstPageViewController : ParallaxViewController 
     {
         public FirstPageViewController()
-			: base("FirstPageViewController", NSBundle.MainBundle)
+			: base("anatoli.vndev@gmail.com","huh@vsp5BuklBGnthps5jvt")
         {
         }
 
@@ -66,7 +66,7 @@ namespace AnatoliIOS.ViewControllers
 			var layout = new UICollectionViewFlowLayout ();
 			layout.ItemSize = new CGSize (120f, 120f);
 			var groupsCollectionView = new UICollectionView(new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height * 0.6f),layout);
-			groupsCollectionView.BackgroundColor = UIColor.Clear;
+			groupsCollectionView.BackgroundColor = UIColor.White;
 			groupsCollectionView.CollectionViewLayout = layout;
 			layout.SectionInset = new UIEdgeInsets (30,30,30,30);
 			groupsCollectionView.RegisterNibForCell(UINib.FromName(ProductGroupCollectionViewCell.Key, null), ProductGroupCollectionViewCell.Key);
