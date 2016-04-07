@@ -9,14 +9,20 @@ namespace AnatoliIOS.TableViewSources
 	{
 		public ShoppingCardTableViewSource ()
 		{
+			ItemRemoved += (tableView, indexPath) => { 
+				Items.RemoveAt (indexPath.Row);
+				tableView.DeleteRows (new NSIndexPath[]{ indexPath }, UITableViewRowAnimation.Bottom);
+				tableView.ReloadData ();
+			};
 		}
+
 		public override UIKit.UITableViewCell GetCellView (UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			var cell = base.GetCellView (tableView, indexPath);
 			(cell as BaseTableViewCell).ItemRemoved += (object sender, EventArgs e) => {
-				Items.RemoveAt(indexPath.Row);
-				tableView.DeleteRows(new NSIndexPath[]{indexPath},UITableViewRowAnimation.Left);
-				tableView.ReloadData();
+				Items.RemoveAt (indexPath.Row);
+				tableView.DeleteRows (new NSIndexPath[]{ indexPath }, UITableViewRowAnimation.Left);
+				tableView.ReloadData ();
 			};
 			return cell;
 		}
