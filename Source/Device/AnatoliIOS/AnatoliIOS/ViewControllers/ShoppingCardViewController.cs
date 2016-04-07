@@ -29,7 +29,7 @@ namespace AnatoliIOS.ViewControllers
 			if (AnatoliApp.GetInstance().DefaultStore != null) {
 				if (AnatoliApp.GetInstance().DefaultStore.store_name != null)
 					storeNameLabel.Text = AnatoliApp.GetInstance ().DefaultStore.store_name;
-				if (AnatoliApp.GetInstance().DefaultStore.store_tel != null)
+				if (!String.IsNullOrEmpty(AnatoliApp.GetInstance().DefaultStore.store_tel))
 					storeTelLabel.Text = AnatoliApp.GetInstance ().DefaultStore.store_tel;
 				else
 					storeTelLabel.Text = "نامشخص";
@@ -39,6 +39,9 @@ namespace AnatoliIOS.ViewControllers
 					addressLabel.Text = AnatoliApp.GetInstance ().Customer.MainStreet;
 				}
 			}
+			editAddressButton.TouchUpInside += (object sender, EventArgs e) => {
+				AnatoliApp.GetInstance().PushViewController(new ProfileViewController());
+			};
 			itemCountLabel.Text = await ShoppingCardManager.GetItemsCountAsync () + " عدد";
 			totalPriceLabel.Text = (await ShoppingCardManager.GetTotalPriceAsync ()).ToCurrency() + " تومان";
 			ShoppingCardManager.ItemChanged += UpdateLabels;

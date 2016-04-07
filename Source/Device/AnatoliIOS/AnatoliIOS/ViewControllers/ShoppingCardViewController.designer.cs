@@ -24,6 +24,10 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIButton editAddressButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel itemCountLabel { get; set; }
 
 		[Outlet]
@@ -55,6 +59,10 @@ namespace AnatoliIOS.ViewControllers
 			if (checkoutButton != null) {
 				checkoutButton.Dispose ();
 				checkoutButton = null;
+			}
+			if (editAddressButton != null) {
+				editAddressButton.Dispose ();
+				editAddressButton = null;
 			}
 			if (itemCountLabel != null) {
 				itemCountLabel.Dispose ();
