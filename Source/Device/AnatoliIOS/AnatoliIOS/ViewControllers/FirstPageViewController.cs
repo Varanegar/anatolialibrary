@@ -42,9 +42,9 @@ namespace AnatoliIOS.ViewControllers
 
 			// Creting a list UIImages to present in the ParallaxViewController
 			var images = new List<UIImage>();
-			images.Add(UIImage.FromBundle("igicon"));
 			images.Add(UIImage.FromBundle("splash"));
-			images.Add(UIImage.FromBundle("image3"));
+			images.Add(UIImage.FromBundle("splash"));
+			images.Add(UIImage.FromBundle("splash"));
 
 			//View will be the ContentView of ParallaxViewController
 			var view = new UIView(new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height));
