@@ -24,11 +24,27 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel itemCountLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UITableView productsTableView { get; set; }
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel storeNameLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel storeTelLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel tableEmptyLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel totalPriceLabel { get; set; }
 
 		void ReleaseDesignerOutlets ()
 		{
@@ -40,6 +56,10 @@ namespace AnatoliIOS.ViewControllers
 				checkoutButton.Dispose ();
 				checkoutButton = null;
 			}
+			if (itemCountLabel != null) {
+				itemCountLabel.Dispose ();
+				itemCountLabel = null;
+			}
 			if (productsTableView != null) {
 				productsTableView.Dispose ();
 				productsTableView = null;
@@ -47,6 +67,18 @@ namespace AnatoliIOS.ViewControllers
 			if (storeNameLabel != null) {
 				storeNameLabel.Dispose ();
 				storeNameLabel = null;
+			}
+			if (storeTelLabel != null) {
+				storeTelLabel.Dispose ();
+				storeTelLabel = null;
+			}
+			if (tableEmptyLabel != null) {
+				tableEmptyLabel.Dispose ();
+				tableEmptyLabel = null;
+			}
+			if (totalPriceLabel != null) {
+				totalPriceLabel.Dispose ();
+				totalPriceLabel = null;
 			}
 		}
 	}

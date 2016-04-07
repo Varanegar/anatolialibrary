@@ -25,7 +25,32 @@ namespace AnatoliIOS.ViewControllers
 			_catId = catId;
 		}
 
-		public async override void ViewDidLoad ()
+		public async override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			_productsTableViewSource = new ProductsTableViewSource ();
+			if (AnatoliApp.GetInstance ().DefaultStore == null) {
+				var store = await StoreManager.GetDefaultAsync ();
+				if (store != null) {
+					AnatoliApp.GetInstance ().DefaultStore = store;
+				} else {
+					AnatoliApp.GetInstance ().PushViewController (new StoresViewController ());
+					return;
+				}
+			}
+			if (!String.IsNullOrEmpty (_catId))
+				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (_catId, AnatoliApp.GetInstance ().DefaultStore.store_id));
+			else
+				_productsTableViewSource.SetDataQuery (ProductManager.GetAll (AnatoliApp.GetInstance ().DefaultStore.store_id));
+			await _productsTableViewSource.RefreshAsync ();
+			_productsTableViewSource.Updated += (object sender, EventArgs e) => {
+				productsTableView.ReloadData ();
+			};
+			//productsTableView.RegisterNibForCellReuse(UINib.FromName(ProductSummaryViewCell.Key, NSBundle.MainBundle), ProductSummaryViewCell.Key);
+			productsTableView.Source = _productsTableViewSource;
+			productsTableView.ReloadData ();
+		}
+		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
@@ -79,27 +104,7 @@ namespace AnatoliIOS.ViewControllers
 
 
 
-			_productsTableViewSource = new ProductsTableViewSource ();
-			if (AnatoliApp.GetInstance ().DefaultStore == null) {
-				var store = await StoreManager.GetDefaultAsync ();
-				if (store != null) {
-					AnatoliApp.GetInstance ().DefaultStore = store;
-				} else {
-					AnatoliApp.GetInstance ().PushViewController (new StoresViewController ());
-					return;
-				}
-			}
-			if (!String.IsNullOrEmpty (_catId))
-				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (_catId, AnatoliApp.GetInstance ().DefaultStore.store_id));
-			else
-				_productsTableViewSource.SetDataQuery (ProductManager.GetAll (AnatoliApp.GetInstance ().DefaultStore.store_id));
-			await _productsTableViewSource.RefreshAsync ();
-			_productsTableViewSource.Updated += (object sender, EventArgs e) => {
-				productsTableView.ReloadData ();
-			};
-			//productsTableView.RegisterNibForCellReuse(UINib.FromName(ProductSummaryViewCell.Key, NSBundle.MainBundle), ProductSummaryViewCell.Key);
-			productsTableView.Source = _productsTableViewSource;
-			productsTableView.ReloadData ();
+
 		}
 
 		[Export ("searchBarSearchButtonClicked:")]

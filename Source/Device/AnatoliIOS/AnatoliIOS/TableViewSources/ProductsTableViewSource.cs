@@ -22,7 +22,6 @@ namespace AnatoliIOS.TableViewSources
 				cell = Runtime.GetNSObject (views.ValueAt (0)) as ProductSummaryViewCell;
 				cell.BindCell (Items[indexPath.Row]);
 			}
-
 			cell.UpdateCell (Items [indexPath.Row]);
 			return cell;
 		}

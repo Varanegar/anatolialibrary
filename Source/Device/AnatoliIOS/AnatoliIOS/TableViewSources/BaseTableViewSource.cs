@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Anatoli.App.Manager;
 using System.Threading.Tasks;
 using Anatoli.Framework.AnatoliBase;
+using AnatoliIOS.TableViewCells;
+using Foundation;
 
 namespace AnatoliIOS.TableViewSources
 {
@@ -13,6 +15,7 @@ namespace AnatoliIOS.TableViewSources
 			where DataModel : BaseViewModel , new()
 			where BaseDataManager : BaseManager<DataModel>, new()
 	{
+		public int ItemsCount {get { return Items.Count;}}
 		protected List<DataModel> Items { get; set; }
 		protected BaseDataManager DataManager;
 		public BaseTableViewSource ()
@@ -50,6 +53,6 @@ namespace AnatoliIOS.TableViewSources
 			}
 		}
 		public event EventHandler Updated;
-	}
+		}
 }
 

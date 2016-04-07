@@ -187,6 +187,8 @@
       <DependentUpon>ShoppingCardViewController.cs</DependentUpon>
     </Compile>
     <BundleResource Include="Resources\ic_shoppingcard_on_white_24dp.png" />
+    <Compile Include="TableViewCells\BaseTableViewCell.cs" />
+    <Compile Include="TableViewSources\ShoppingCardTableViewSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

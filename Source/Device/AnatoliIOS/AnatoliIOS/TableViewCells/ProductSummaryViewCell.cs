@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace AnatoliIOS.TableViewCells
 {
-	public partial class ProductSummaryViewCell : UITableViewCell
+	public partial class ProductSummaryViewCell : BaseTableViewCell
 	{
 		public static readonly NSString Key = new NSString ("ProductSummaryViewCell");
 		public static readonly UINib Nib;
@@ -22,6 +22,7 @@ namespace AnatoliIOS.TableViewCells
 		{
 
 		}
+
 
 		public void BindCell(ProductModel item){
 			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
@@ -37,7 +38,6 @@ namespace AnatoliIOS.TableViewCells
 				addProductButton.Enabled = true;
 				if (result) {
 					toolsView.Hidden = false;
-					item.count ++;
 					countLabel.Text = item.count.ToString() + " عدد";
 					Console.WriteLine(ShoppingCardManager.GetTotalPriceAsync());
 				}
@@ -46,10 +46,10 @@ namespace AnatoliIOS.TableViewCells
 				if (item.count > 0) {
 					var result = await ShoppingCardManager.RemoveProductAsync(item);
 					if (result) {
-						item.count --;
 						countLabel.Text = item.count.ToString() + " عدد";
 						if (item.count == 0) {
 							toolsView.Hidden = true;
+							OnItemRemoved();
 						}
 					}
 				}
