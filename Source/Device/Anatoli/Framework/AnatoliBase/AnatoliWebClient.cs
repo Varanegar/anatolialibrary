@@ -130,7 +130,11 @@ namespace Anatoli.Framework.AnatoliBase
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
             request.AddHeader("Accept", "application/json");
-            request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            //request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            request.AddHeader("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
             if (parameters != null)
             {
                 foreach (var item in parameters)
@@ -148,7 +152,11 @@ namespace Anatoli.Framework.AnatoliBase
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
             request.AddHeader("Accept", "application/json");
-            request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            //request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            request.AddHeader("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
             if (parameters != null)
             {
                 foreach (var item in parameters)
@@ -168,7 +176,11 @@ namespace Anatoli.Framework.AnatoliBase
 
             var request = new RestRequest(requestUrl, method);
             request.AddParameter("Authorization", string.Format("Bearer {0}", tokenInfo.AccessToken), ParameterType.HttpHeader);
-            request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            //request.AddHeader("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            request.AddHeader("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            request.AddHeader("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
             request.AddJsonBody(obj);
             return request;
         }
