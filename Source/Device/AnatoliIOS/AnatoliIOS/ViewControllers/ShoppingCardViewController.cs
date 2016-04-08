@@ -5,6 +5,7 @@ using AnatoliIOS.TableViewSources;
 using Anatoli.App.Manager;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model.Product;
+using System.Threading.Tasks;
 
 namespace AnatoliIOS.ViewControllers
 {
@@ -45,6 +46,27 @@ namespace AnatoliIOS.ViewControllers
 			itemCountLabel.Text = await ShoppingCardManager.GetItemsCountAsync () + " عدد";
 			totalPriceLabel.Text = (await ShoppingCardManager.GetTotalPriceAsync ()).ToCurrency() + " تومان";
 			ShoppingCardManager.ItemChanged += UpdateLabels;
+			checkoutButton.TouchUpInside += async (object sender, EventArgs e) => {
+				try {
+					await ShoppingCardManager.ValidateRequest(AnatoliApp.GetInstance().Customer);
+					AnatoliApp.GetInstance().PushViewController(new ProformaViewController());
+				} catch (ValidationException ex) {
+					if (ex.Code == ValidationErrorCode.CustomerInfo) {
+						var alert = UIAlertController.Create("خطا","اطلاعات خود را کامل نمایید",UIAlertControllerStyle.Alert);
+						alert.AddAction(UIAlertAction.Create("بیخیال",UIAlertActionStyle.Cancel,null));
+						alert.AddAction(UIAlertAction.Create("باشه",UIAlertActionStyle.Default,delegate {
+							AnatoliApp.GetInstance().PushViewController(new ProfileViewController());
+						}));
+						PresentViewController(alert,true,null);
+					}else if(ex.Code == ValidationErrorCode.NoLogin){
+						var alert = UIAlertController.Create("خطا","لطفا وارد حساب کاربری خود شوید",UIAlertControllerStyle.Alert);
+						alert.AddAction(UIAlertAction.Create("بیخیال",UIAlertActionStyle.Cancel,null));
+						alert.AddAction(UIAlertAction.Create("باشه",UIAlertActionStyle.Default,delegate {
+							AnatoliApp.GetInstance().PushViewController(new LoginViewController());
+						}));
+					}
+				}
+			};
 		}
 		public override void ViewDidLoad ()
 		{
@@ -53,6 +75,7 @@ namespace AnatoliIOS.ViewControllers
 			Title = "سبد خرید";
 
 		}
+
 		public async void UpdateLabels(ProductModel item){
 			var count = await ShoppingCardManager.GetItemsCountAsync ();
 			itemCountLabel.Text = count + " عدد";

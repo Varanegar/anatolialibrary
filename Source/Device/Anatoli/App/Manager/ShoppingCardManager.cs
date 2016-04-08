@@ -237,6 +237,19 @@ namespace Anatoli.App.Manager
             }
         }
 
+		public static async Task<bool> ValidateRequest(CustomerViewModel customer){
+			if (customer == null) {
+				throw new ValidationException (ValidationErrorCode.NoLogin);
+			}
+			if (String.IsNullOrEmpty(customer.FirstName) || String.IsNullOrEmpty(customer.LastName) || String.IsNullOrEmpty(customer.MainStreet) || String.IsNullOrEmpty(customer.NationalCode)) {
+				throw new ValidationException (ValidationErrorCode.CustomerInfo);
+			}
+			if ((await ShoppingCardManager.GetItemsCountAsync()) == 0) {
+				throw new ValidationException (ValidationErrorCode.EmptyBasket);
+			}
+			return true;
+		}
+
 		static void OnItemsCleared()
 		{
 			if (ItemsCleared != null)
@@ -257,4 +270,16 @@ namespace Anatoli.App.Manager
         public static event ItemChangedEventHandler ItemChanged;
 		public delegate void ItemChangedEventHandler(ProductModel item);
     }
+	public class ValidationException : Exception{
+		public ValidationErrorCode Code { get; set;}
+		public ValidationException(ValidationErrorCode code){
+			Code = code;
+		}
+	}
+
+	public enum ValidationErrorCode{
+		NoLogin,
+		CustomerInfo,
+		EmptyBasket
+	}
 }

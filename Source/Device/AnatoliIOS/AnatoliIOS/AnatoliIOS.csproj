@@ -191,6 +191,11 @@
     <Compile Include="TableViewSources\ShoppingCardTableViewSource.cs" />
     <BundleResource Include="Resources\ic_call_green_24dp.png" />
     <BundleResource Include="Resources\ic_edit_text_green_24dp.png" />
+    <InterfaceDefinition Include="ViewControllers\ProformaViewController.xib" />
+    <Compile Include="ViewControllers\ProformaViewController.cs" />
+    <Compile Include="ViewControllers\ProformaViewController.designer.cs">
+      <DependentUpon>ProformaViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
