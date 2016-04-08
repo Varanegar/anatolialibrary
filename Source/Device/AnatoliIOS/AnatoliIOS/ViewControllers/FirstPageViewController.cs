@@ -94,7 +94,7 @@ namespace AnatoliIOS.ViewControllers
 		public override void ItemSelected (UICollectionView collectionView, NSIndexPath indexPath)
 		{
 			var productsViewController = new ProductsViewController ();
-			productsViewController.SetGroupId (_items [indexPath.Row].cat_id);
+			productsViewController.GroupId = _items [indexPath.Row].cat_id;
 			AnatoliApp.GetInstance ().PushViewController (productsViewController);
 		}
 		public override nint NumberOfSections (UICollectionView collectionView)

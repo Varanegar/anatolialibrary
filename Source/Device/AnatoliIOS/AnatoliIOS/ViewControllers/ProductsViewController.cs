@@ -13,18 +13,13 @@ namespace AnatoliIOS.ViewControllers
 	{
 		UISearchBar _searchBar;
 		ProductsTableViewSource _productsTableViewSource;
-		string _catId;
+		public string GroupId;
 
 		public ProductsViewController ()
 			: base ("ProductsViewController", null)
 		{
 		}
-
-		public void SetGroupId (string catId)
-		{
-			_catId = catId;
-		}
-
+			
 		public async override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
@@ -38,8 +33,8 @@ namespace AnatoliIOS.ViewControllers
 					return;
 				}
 			}
-			if (!String.IsNullOrEmpty (_catId))
-				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (_catId, AnatoliApp.GetInstance ().DefaultStore.store_id));
+			if (!String.IsNullOrEmpty (GroupId))
+				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (GroupId, AnatoliApp.GetInstance ().DefaultStore.store_id));
 			else
 				_productsTableViewSource.SetDataQuery (ProductManager.GetAll (AnatoliApp.GetInstance ().DefaultStore.store_id));
 			await _productsTableViewSource.RefreshAsync ();

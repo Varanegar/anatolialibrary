@@ -104,6 +104,9 @@ namespace AnatoliIOS
 			} else
 				return false;
 		}
+		public UIViewController GetVisibleViewController(){
+			return (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.NavController.TopViewController;
+		}
 		public async Task RefreshMenu(string catId){
 			var source = new MenuTableViewSource ();
 			source.Items = new System.Collections.Generic.List<MenuItem> ();
@@ -250,9 +253,14 @@ namespace AnatoliIOS
 				CloseMenu ();
 				break;
 			case MenuItem.MenuType.CatId:
+				var view = (GetVisibleViewController () as ProductsViewController);
+				if (items[index].Id == view.GroupId) {
+					CloseMenu ();
+					break;
+				}
 				await RefreshMenu (items [index].Id);
 				var v = new ProductsViewController ();
-				v.SetGroupId (items [index].Id);
+				v.GroupId = items [index].Id;
 				PushViewController (v,true);
 				break;
 			case MenuItem.MenuType.MainMenu:
