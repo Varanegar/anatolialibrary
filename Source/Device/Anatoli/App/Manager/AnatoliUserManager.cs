@@ -16,7 +16,15 @@ namespace Anatoli.App.Manager
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
-            await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"));
+            if (!String.IsNullOrEmpty(userName))
+            {
+                userName = userName.Trim();
+            }
+            if (!String.IsNullOrEmpty(passWord))
+            {
+                passWord = passWord.Trim();
+            }
+            await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, Configuration.AppMobileAppInfo.Scope));
             var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
             if (userModel.IsValid)
             {
@@ -38,13 +46,23 @@ namespace Anatoli.App.Manager
             }
             return userModel;
         }
-        public async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
+        public static async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
         {
             AnatoliUserModel user = new AnatoliUserModel();
             if (!String.IsNullOrEmpty(email))
             {
-                user.Email = email.Trim();
+                email = email.Trim();
             }
+            if (!String.IsNullOrEmpty(tel))
+            {
+                tel = tel.Trim();
+            }
+            if (!String.IsNullOrEmpty(passWord))
+            {
+                passWord = passWord.Trim();
+            }
+
+            user.Email = email;
             user.Username = tel;
             user.Password = passWord;
             user.ConfirmPassword = passWord;

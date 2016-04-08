@@ -111,6 +111,10 @@
     <Compile Include="ViewControllers\ProfileViewController.designer.cs">
       <DependentUpon>ProfileViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewControllers\RegisterViewController.cs" />
+    <Compile Include="ViewControllers\RegisterViewController.designer.cs">
+      <DependentUpon>RegisterViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewControllers\SideMenuController.cs" />
     <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
@@ -196,6 +200,7 @@
     <Compile Include="ViewControllers\ProformaViewController.designer.cs">
       <DependentUpon>ProformaViewController.cs</DependentUpon>
     </Compile>
+    <InterfaceDefinition Include="ViewControllers\RegisterViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
