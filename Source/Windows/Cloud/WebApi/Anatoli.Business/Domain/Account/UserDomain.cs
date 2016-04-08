@@ -20,20 +20,22 @@ namespace Anatoli.Business.Domain
         #region Properties
         protected static log4net.ILog Logger { get; set; }
         public Guid ApplicationOwnerKey { get; protected set; }
+        public Guid DataOwnerKey { get; protected set; }
         public virtual UserRepository UserRepository { get; set; }
         public AnatoliDbContext DBContext { get; set; }
         #endregion
 
         #region Ctors
-        public UserDomain(Guid applicationOwnerKey)
-            : this(applicationOwnerKey, new AnatoliDbContext())
+        public UserDomain(Guid applicationOwnerKey, Guid dataOwnerKey)
+            : this(applicationOwnerKey, dataOwnerKey, new AnatoliDbContext())
         {
 
         }
-        public UserDomain(Guid applicationOwnerKey, AnatoliDbContext dbc)
+        public UserDomain(Guid applicationOwnerKey, Guid dataOwnerKey, AnatoliDbContext dbc)
         {
             UserRepository = new UserRepository(dbc);
             ApplicationOwnerKey = applicationOwnerKey;
+            DataOwnerKey = dataOwnerKey;
             Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         }
@@ -62,7 +64,12 @@ namespace Anatoli.Business.Domain
 
         public async Task<User> UserExists(string email, string phone, string username)
         {
-            return await UserRepository.FindAsync(p => (p.Email == email || p.PhoneNumber == phone || p.UserName == username ) && p.ApplicationOwnerId == ApplicationOwnerKey);
+            return await UserRepository.FindAsync(p => (p.Email == email || p.PhoneNumber == phone || p.UserNameStr == username) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey);
+        }
+
+        public async Task<User> UserExists(string usernameOrEmailOrPhone)
+        {
+            return await UserRepository.FindAsync(p => (p.Email == usernameOrEmailOrPhone || p.PhoneNumber == usernameOrEmailOrPhone || p.UserNameStr == usernameOrEmailOrPhone) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey);
         }
 
         #endregion

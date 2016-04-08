@@ -34,7 +34,27 @@ namespace Anatoli.Cloud.WebApi.Providers
                 context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
                 var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password);
+                if (context.Scope.Count < 1)
+                {
+                    context.SetError("خطا در ورود به سیستم", "نرم افزار کاربر مشخص نشده است");
+                    return;
+                }
+
+                var additionalData = context.Scope[0].Split(',');
+                var appOwner = Guid.Empty; var dataOwner = Guid.Empty;
+
+                if (!Guid.TryParse(additionalData[0].Trim(), out appOwner))
+                {
+                    context.SetError("خطا در ورود به سیستم", "نرم افزار کاربر مشخص نشده است");
+                    return;
+                }
+
+                if (!Guid.TryParse(additionalData[1].Trim(), out dataOwner))
+                {
+                    context.SetError("خطا در ورود به سیستم", "شرکت کاربر مشخص نشده است");
+                    return;
+                }
+                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
                 //var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)

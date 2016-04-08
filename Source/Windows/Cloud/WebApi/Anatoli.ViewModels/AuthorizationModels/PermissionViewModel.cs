@@ -7,8 +7,6 @@ namespace Anatoli.ViewModels.AuthorizationModels
         public string Action { get; set; }
         public string Title { get; set; }
         public string Resource { get; set; }
-
-        public string Parent { get; set; }
         public Guid Id { get; set; }
     }
 }

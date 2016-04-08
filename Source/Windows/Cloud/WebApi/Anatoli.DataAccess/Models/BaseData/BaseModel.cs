@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models
 {
-    public abstract class BaseModel
+    public abstract class BaseModel : BaseModelAnatoli
     {
         [Key]
         public Guid Id { get; set; }

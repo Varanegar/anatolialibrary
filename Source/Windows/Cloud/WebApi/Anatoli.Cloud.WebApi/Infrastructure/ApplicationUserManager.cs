@@ -10,6 +10,7 @@ using Anatoli.DataAccess;
 using Anatoli.DataAccess.Repositories;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Anatoli.Business.Domain;
 
 namespace Anatoli.Cloud.WebApi.Infrastructure
 {
@@ -20,18 +21,16 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
         }
 
-         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password)
+         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner, Guid dataOwnerKey)
         {
-            var username = usernameOrEmailOrPhone;
-            if (usernameOrEmailOrPhone.Contains("@"))
-            {
-                var userForEmail = await FindByEmailAsync(usernameOrEmailOrPhone);
-                if (userForEmail != null)
-                {
-                    username = userForEmail.UserName;
-                }
-            }
-            return await FindAsync(username, password);
+            var userDomain = new UserDomain(applicationOwner, dataOwnerKey);
+
+            var user = await userDomain.UserExists(usernameOrEmailOrPhone);
+            if (user != null)
+                return await FindAsync(user.UserName, password);
+            else
+                return null;
+
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
@@ -44,7 +43,8 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
             appUserManager.UserValidator = new UserValidator<User>(appUserManager)
             {
                 AllowOnlyAlphanumericUserNames = true,
-                //RequireUniqueEmail = true
+                RequireUniqueEmail = false
+                
             };
 
             // Configure validation logic for passwords

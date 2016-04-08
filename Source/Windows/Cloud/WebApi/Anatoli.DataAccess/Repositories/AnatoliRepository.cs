@@ -98,7 +98,6 @@ namespace Anatoli.DataAccess.Repositories
         public virtual void Update(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
-
             if (dbEntityEntry.State == EntityState.Detached)
                 DbSet.Attach(entity);
 

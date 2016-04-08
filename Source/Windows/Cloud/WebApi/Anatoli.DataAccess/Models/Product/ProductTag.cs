@@ -10,5 +10,7 @@ namespace Anatoli.DataAccess.Models
         [StringLength(100)]
         public string ProductTagName { get; set; }
         public virtual ICollection<ProductTagValue> ProductTagValues { get; set; }
+
+        public bool IsDefault { get; set; }
     }
 }

@@ -37,7 +37,12 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (count).ToString()), new BasicParam("product_id", productId));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result)
+				{item.count+=count;
+					OnItemChanged(item);
+				}
+				return result;
             }
             catch (Exception)
             {
@@ -53,7 +58,12 @@ namespace Anatoli.App.Manager
                     query = new InsertCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new BasicParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count + 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result){
+					item.count++;
+					OnItemChanged(item);
+				}
+				return result;
             }
             catch (Exception)
             {
@@ -69,7 +79,17 @@ namespace Anatoli.App.Manager
                     query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
                 else
                     query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count - 1).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-                return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+				if(result)
+				if(all){
+					item.count = 0;
+					OnItemChanged(item);
+				}
+				else{
+					item.count--;
+					OnItemChanged(item);
+				}
+				return result;
             }
             catch (Exception)
             {
@@ -111,11 +131,18 @@ namespace Anatoli.App.Manager
                 return null;
             }
         }
-
+		public static StringQuery GetAll(string storeId){
+			StringQuery query = new StringQuery(string.Format("SELECT * FROM shopping_card_view LEFT JOIN store_onhand ON shopping_card_view.product_id = store_onhand.product_id WHERE store_onhand.store_id = '{0}'", storeId));
+			query.Unlimited = false;
+			return query;
+		}
         public static async Task<bool> ClearAsync()
         {
             DeleteCommand command = new DeleteCommand("shopping_card");
-            return (await DataAdapter.UpdateItemAsync(command) > 0) ? true : false;
+			var result = (await DataAdapter.UpdateItemAsync(command) > 0) ? true : false;
+			if (result)
+				OnItemsCleared ();
+			return result;
         }
 
         public static async Task<int> GetItemsCountAsync()
@@ -141,7 +168,11 @@ namespace Anatoli.App.Manager
                 query = new DeleteCommand("shopping_card", new SearchFilterParam("product_id", item.product_id.ToString()));
             else
                 query = new UpdateCommand("shopping_card", new BasicParam("count", (item.count).ToString()), new EqFilterParam("product_id", item.product_id.ToString()));
-            return await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+			var result = await DataAdapter.UpdateItemAsync(query) > 0 ? true : false;
+			if (result) {
+				OnItemChanged (item);
+			}
+			return result;
         }
 
         public static async Task<PurchaseOrderViewModel> CalcPromo(CustomerViewModel customerModel, string userId, string storeId, string deliveryTypeId)
@@ -206,14 +237,49 @@ namespace Anatoli.App.Manager
             }
         }
 
-        static void OnItemsChanged(Dictionary<ProductModel, int> items)
+		public static async Task<bool> ValidateRequest(CustomerViewModel customer){
+			if (customer == null) {
+				throw new ValidationException (ValidationErrorCode.NoLogin);
+			}
+			if (String.IsNullOrEmpty(customer.FirstName) || String.IsNullOrEmpty(customer.LastName) || String.IsNullOrEmpty(customer.MainStreet) || String.IsNullOrEmpty(customer.NationalCode)) {
+				throw new ValidationException (ValidationErrorCode.CustomerInfo);
+			}
+			if ((await ShoppingCardManager.GetItemsCountAsync()) == 0) {
+				throw new ValidationException (ValidationErrorCode.EmptyBasket);
+			}
+			return true;
+		}
+
+		static void OnItemsCleared()
+		{
+			if (ItemsCleared != null)
+			{
+				ItemsCleared.Invoke();
+			}
+		}
+
+		public static event ItemsClearedEventHandler ItemsCleared;
+		public delegate void ItemsClearedEventHandler();
+		static void OnItemChanged(ProductModel item)
         {
-            if (ItemsChanged != null)
+            if (ItemChanged != null)
             {
-                ItemsChanged.Invoke(items);
+                ItemChanged.Invoke(item);
             }
         }
-        public static event ItemsChangedEventHandler ItemsChanged;
-        public delegate void ItemsChangedEventHandler(Dictionary<ProductModel, int> items);
+        public static event ItemChangedEventHandler ItemChanged;
+		public delegate void ItemChangedEventHandler(ProductModel item);
     }
+	public class ValidationException : Exception{
+		public ValidationErrorCode Code { get; set;}
+		public ValidationException(ValidationErrorCode code){
+			Code = code;
+		}
+	}
+
+	public enum ValidationErrorCode{
+		NoLogin,
+		CustomerInfo,
+		EmptyBasket
+	}
 }

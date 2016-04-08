@@ -10,6 +10,8 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.CustomerModels;
+using System.Data.Entity.Spatial;
+using AutoMapper.QueryableExtensions;
 
 namespace Anatoli.Business.Domain
 {
@@ -85,6 +87,16 @@ namespace Anatoli.Business.Domain
             }
         }
 
+        public async Task<List<CustomerViewModel>> GetCustomersByLocation(DbGeometry areaPolygon, bool getSelected)
+        {
+            var q = from cust in DBContext.Customers
+                        join custArea in DBContext.CustomerAreas on cust.Id equals custArea.CustomerId
+                        where cust.CustomerPoint.Intersects(areaPolygon) 
+                            && (getSelected && custArea.RegionAreaId != null) || (!getSelected && custArea.RegionAreaId == null)
+                            && cust.ApplicationOwnerId == ApplicationOwnerKey && cust.DataOwnerId == DataOwnerKey
+                        select new {cust};
+            return q.ProjectTo<CustomerViewModel>().ToList();
+        }
         #endregion
     }
 }
