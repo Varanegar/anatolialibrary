@@ -103,10 +103,6 @@
     <Compile Include="ViewControllers\IntroController.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <BundleResource Include="..\..\db\paa.db">
-      <Link>Resources\paa.db</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </BundleResource>
     <Compile Include="ViewControllers\LoginViewController.cs" />
     <Compile Include="ViewControllers\LoginViewController.designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
@@ -119,6 +115,10 @@
     <Compile Include="ViewControllers\SideMenuController.designer.cs">
       <DependentUpon>SideMenuController.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="..\..\db\paa.db">
+      <Link>Resources\paa.db</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
     <None Include="app.config" />
     <InterfaceDefinition Include="ViewControllers\BaseController.xib" />
     <InterfaceDefinition Include="ViewControllers\FirstPageViewController.xib" />

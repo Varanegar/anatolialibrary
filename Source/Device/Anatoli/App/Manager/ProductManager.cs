@@ -476,7 +476,7 @@ namespace Anatoli.App.Manager
             if (leftRight != null)
                 query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id WHERE cat_left >= {0} AND cat_right <= {1} AND products_price_view.store_id = '{2}' AND store_onhand.store_id = '{2}' AND products_price_view.is_removed='0'  ORDER BY product_name", leftRight.left, leftRight.right, storeId).PersianToArabic());
             else
-                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id ORDER BY cat_id AND products_price_view.store_id='{0}' AND store_onhand.store_id='{0}' AND products_price_view.is_removed='0' ORDER BY product_name", storeId).PersianToArabic());
+                query = new StringQuery(string.Format("SELECT *,store_onhand.qty as qty FROM products_price_view JOIN store_onhand ON store_onhand.product_id = products_price_view.product_id AND products_price_view.store_id='{0}' AND store_onhand.store_id='{0}' AND products_price_view.is_removed='0' ORDER BY product_name", storeId).PersianToArabic());
             return query;
         }
 
