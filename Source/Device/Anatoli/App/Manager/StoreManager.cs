@@ -19,13 +19,15 @@ namespace Anatoli.App.Manager
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.StoresTbl);
-                RemoteQuery q;
+                List<StoreUpdateModel> list;
                 if (lastUpdateTime == DateTime.MinValue)
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresView, HttpMethod.Get);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<StoreUpdateModel>>(TokenType.AppToken, Configuration.WebService.Stores.StoresView);
                 else
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoresViewAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Get,new BasicParam("after", lastUpdateTime.ToString()));
-                q.cancellationTokenSource = cancellationTokenSource;
-                var list = await BaseDataAdapter<StoreUpdateModel>.GetListAsync(q);
+                {
+                    var data = new RequestModel.BaseRequestModel();
+                    data.dateAfter = lastUpdateTime.ToString();
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<StoreUpdateModel>>(TokenType.AppToken, Configuration.WebService.Stores.StoresViewAfter,data);
+                }
                 Dictionary<string, StoreDataModel> items = new Dictionary<string, StoreDataModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
@@ -72,10 +74,8 @@ namespace Anatoli.App.Manager
 
 
 
-                var q2 = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Stores.StoreCalendar, HttpMethod.Get);
-                q2.cancellationTokenSource = cancellationTokenSource;
-                var list2 = await BaseDataAdapter<StoreCalendarViewModel>.GetListAsync(q2);
-
+                List<StoreCalendarViewModel> list2;
+                list2 = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<StoreCalendarViewModel>>(TokenType.AppToken, Configuration.WebService.Stores.StoreCalendar);
 
                 Dictionary<string, StoreCalendarViewModel> timeItems = new Dictionary<string, StoreCalendarViewModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

@@ -68,15 +68,17 @@ namespace Anatoli.App.Manager
 
         public static async Task<List<PurchaseOrderViewModel>> DownloadOrdersAsync(string customerId)
         {
-            var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrdersList + "&customerId=" + customerId);
+            var data = new RequestModel.CustomerRequestModel();
+            data.customerId = customerId;
+            var list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<PurchaseOrderViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrdersList,data);
             return list;
         }
 
-        public static async Task<List<PurchaseOrderStatusHistoryViewModel>> GetOrderHistoryAsync(string orderId)
-        {
-            var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderStatusHistoryViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrderHistory + "&poId=" + orderId);
-            return list;
-        }
+        //public static async Task<List<PurchaseOrderStatusHistoryViewModel>> GetOrderHistoryAsync(string orderId)
+        //{
+        //    var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderStatusHistoryViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrderHistory + "&poId=" + orderId);
+        //    return list;
+        //}
         public static async Task SyncOrdersAsync(string customerId)
         {
             try

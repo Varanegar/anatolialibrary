@@ -17,13 +17,15 @@ namespace Anatoli.App.Manager
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.GroupsTbl);
-                RemoteQuery q;
+                List<ProductGroupModel> list;
                 if (lastUpdateTime == DateTime.MinValue)
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroups, HttpMethod.Get);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductGroupModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductGroups);
                 else
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.Products.ProductGroupsAfter + "&dateafter=" + lastUpdateTime.ToString(), HttpMethod.Get, new BasicParam("after", lastUpdateTime.ToString()));
-                q.cancellationTokenSource = cancellationTokenSource;
-                var list = await BaseDataAdapter<ProductGroupModel>.GetListAsync(q);
+                {
+                    var data = new RequestModel.BaseRequestModel();
+                    data.dateAfter = lastUpdateTime.ToString();
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductGroupModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductGroupsAfter);
+                }
                 Dictionary<string, CategoryInfoModel> items = new Dictionary<string, CategoryInfoModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {
