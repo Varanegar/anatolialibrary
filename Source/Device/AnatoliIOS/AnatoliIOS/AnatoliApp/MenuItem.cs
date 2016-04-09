@@ -11,12 +11,16 @@ namespace AnatoliIOS
         public string Title { get; set; }
         public UIImage Icon { get; set; }
 		public MenuType Type{ get; set; }
+		public string Id{ get; set;}
 		public enum MenuType{
 			Login,
 			FirstPage,
 			Profile,
 			Products,
-			Favorits
+			Favorits,
+			Stores,
+			MainMenu,
+			CatId
 		}
     }
 }

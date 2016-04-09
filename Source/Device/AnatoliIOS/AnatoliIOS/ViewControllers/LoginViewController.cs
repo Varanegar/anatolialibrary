@@ -24,8 +24,13 @@ namespace AnatoliIOS.ViewControllers
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
-			Title = "ورود";
+            Title = "ورود";
+
             EdgesForExtendedLayout = UIRectEdge.None;
+            registerButton.TouchUpInside += delegate
+            {
+                AnatoliApp.GetInstance().PushViewController(new RegisterViewController());
+            };
             loginButton.TouchUpInside += async delegate
             {
                 if (String.IsNullOrEmpty(userNameTextField.Text) || String.IsNullOrEmpty(passwordTextField.Text))

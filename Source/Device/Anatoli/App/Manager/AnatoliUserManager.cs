@@ -16,8 +16,16 @@ namespace Anatoli.App.Manager
     {
         public static async Task<AnatoliUserModel> LoginAsync(string userName, string passWord)
         {
-            await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, "foo bar"));
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
+            if (!String.IsNullOrEmpty(userName))
+            {
+                userName = userName.Trim();
+            }
+            if (!String.IsNullOrEmpty(passWord))
+            {
+                passWord = passWord.Trim();
+            }
+            await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, Configuration.AppMobileAppInfo.Scope));
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<AnatoliUserModel>(TokenType.AppToken, "/api/accounts/user/" + userName);
             if (userModel.IsValid)
             {
                 await AnatoliUserManager.SaveUserInfoAsync(userModel);
@@ -27,6 +35,7 @@ namespace Anatoli.App.Manager
                     if (customer.IsValid)
                     {
                         await CustomerManager.SaveCustomerAsync(customer);
+                        // todo: Sync orders does not work. fix it
                         await OrderManager.SyncOrdersAsync(customer.UniqueId);
                     }
                 }
@@ -38,13 +47,23 @@ namespace Anatoli.App.Manager
             }
             return userModel;
         }
-        public async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
+        public static async Task<BaseWebClientResult> RegisterAsync(string passWord, string confirmPassword, string tel, string email)
         {
             AnatoliUserModel user = new AnatoliUserModel();
             if (!String.IsNullOrEmpty(email))
             {
-                user.Email = email.Trim();
+                email = email.Trim();
             }
+            if (!String.IsNullOrEmpty(tel))
+            {
+                tel = tel.Trim();
+            }
+            if (!String.IsNullOrEmpty(passWord))
+            {
+                passWord = passWord.Trim();
+            }
+
+            user.Email = email;
             user.Username = tel;
             user.Password = passWord;
             user.ConfirmPassword = passWord;

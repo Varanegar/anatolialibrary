@@ -9,10 +9,10 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace AnatoliIOS.ViewControllers
+namespace AnatoliIOS
 {
-	[Register ("FavoritsViewController")]
-	partial class FavoritsViewController
+	[Register ("ProformaViewController")]
+	partial class ProformaViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{

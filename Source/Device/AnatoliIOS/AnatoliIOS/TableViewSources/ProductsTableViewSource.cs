@@ -20,16 +20,16 @@ namespace AnatoliIOS.TableViewSources
 			if (cell == null) {
 				var views = NSBundle.MainBundle.LoadNib (ProductSummaryViewCell.Key, tableView, null);
 				cell = Runtime.GetNSObject (views.ValueAt (0)) as ProductSummaryViewCell;
-				cell.BindCell (Items[indexPath.Row]);
+				cell.BindCell (Items [indexPath.Row]);
 			}
-
 			cell.UpdateCell (Items [indexPath.Row]);
 			return cell;
 		}
 
 		public override UITableViewRowAction[] EditActionsForRow (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			UITableViewRowAction favoritAction;
+			UITableViewRowAction favoritAction = null;
+			UITableViewRowAction basketAction = null;
 			if (Items [indexPath.Row].IsFavorit) {
 				favoritAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Destructive, "حذف از فهرست من", async delegate {
 					tableView.Editing = false;
@@ -47,7 +47,22 @@ namespace AnatoliIOS.TableViewSources
 					}
 				});
 			}
-			return new UITableViewRowAction[]{ favoritAction };
+			if (Items [indexPath.Row].count > 0) {
+				basketAction = UITableViewRowAction.Create (UITableViewRowActionStyle.Destructive, "حذف از سبد خرید", async delegate {
+					tableView.Editing = false;
+					var result = await ShoppingCardManager.RemoveProductAsync (Items [indexPath.Row], true);
+					if (result) {
+						tableView.ReloadData ();
+						OnItemRemoved (tableView, indexPath);
+					}
+				});
+			}
+			if (basketAction == null)
+				return new UITableViewRowAction[]{ favoritAction };
+			else if (favoritAction == null)
+				return new UITableViewRowAction[]{ basketAction };
+			else
+				return new UITableViewRowAction[]{ favoritAction, basketAction };
 		}
 
 		public override nfloat GetHeightForRow (UITableView tableView, Foundation.NSIndexPath indexPath)

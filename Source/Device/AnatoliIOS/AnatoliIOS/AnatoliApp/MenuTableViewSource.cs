@@ -19,15 +19,14 @@ namespace AnatoliIOS
         {
 			var cell = tableView.DequeueReusableCell(MenuItemTableViewCell.Key) as MenuItemTableViewCell;
            
-			cell.UpdateCell(Items[indexPath.Row].Title,Items[indexPath.Row].Icon);
+			cell.UpdateCellAsync(Items[indexPath.Row]);
             return cell;
         }
-        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        public async override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-			AnatoliApp.GetInstance ().SelectMenuItem (indexPath.Row);
-			AnatoliApp.GetInstance ().RefreshMenu ();
+			await AnatoliApp.GetInstance ().SelectMenuItemAsync (indexPath.Row);
+//			AnatoliApp.GetInstance ().RefreshMenu ();
             tableView.DeselectRow(indexPath, true);
-            (UIApplication.SharedApplication.Delegate as AppDelegate).RootViewController.SidebarController.CloseMenu();
         }
     }
 }
