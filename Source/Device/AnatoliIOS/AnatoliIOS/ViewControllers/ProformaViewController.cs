@@ -15,6 +15,7 @@ namespace AnatoliIOS.ViewControllers
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
 			Title = "پیش فاکتور";
+			EdgesForExtendedLayout = UIRectEdge.None;
 		}
 
 		public override void DidReceiveMemoryWarning ()
