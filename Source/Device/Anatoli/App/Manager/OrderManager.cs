@@ -74,11 +74,11 @@ namespace Anatoli.App.Manager
             return list;
         }
 
-        public static async Task<List<PurchaseOrderStatusHistoryViewModel>> GetOrderHistoryAsync(string orderId)
-        {
-            var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderStatusHistoryViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrderHistory + "&poId=" + orderId);
-            return list;
-        }
+        //public static async Task<List<PurchaseOrderStatusHistoryViewModel>> GetOrderHistoryAsync(string orderId)
+        //{
+        //    var list = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<List<PurchaseOrderStatusHistoryViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrderHistory + "&poId=" + orderId);
+        //    return list;
+        //}
         public static async Task SyncOrdersAsync(string customerId)
         {
             try

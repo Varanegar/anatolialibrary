@@ -19,14 +19,16 @@ namespace Anatoli.App.Manager
             try
             {
                 var lastUpdateTime = await SyncManager.GetLogAsync(SyncManager.CityRegionTbl);
-                RemoteQuery q;
+                List<CityRegionUpdateModel> list;
                 if (lastUpdateTime == DateTime.MinValue)
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.CityRegion, HttpMethod.Get);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CityRegionUpdateModel>>(TokenType.AppToken, Configuration.WebService.CityRegion);
                 else
-                    q = new RemoteQuery(TokenType.AppToken, Configuration.WebService.CityRegionAfter + "&dateafter=" + lastUpdateTime.ToString(),HttpMethod.Get, new BasicParam("after", lastUpdateTime.ToString()));
-
-                q.cancellationTokenSource = cancellationTokenSource;
-                var list = await BaseDataAdapter<CityRegionUpdateModel>.GetListAsync(q);
+                {
+                    var data = new RequestModel.BaseRequestModel();
+                    data.dateAfter = lastUpdateTime.ToString();
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CityRegionUpdateModel>>(TokenType.AppToken, Configuration.WebService.CityRegionAfter, data);
+                }
+                
                 Dictionary<string, CityRegionModel> items = new Dictionary<string, CityRegionModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

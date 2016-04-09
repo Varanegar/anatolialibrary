@@ -92,9 +92,13 @@ namespace Anatoli.App.Manager
 
         public static async Task<CustomerViewModel> UploadCustomerAsync(CustomerViewModel user)
         {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CustomerViewModel>>(TokenType.AppToken, Configuration.WebService.Users.SaveProfileUrl + "?PrivateOwnerId=" + user.PrivateOwnerId,
-                user
-                );
+            // todo : fix this. does not work 
+            var data = new CustomerRequestModel();
+            data.customerId = user.UniqueId;
+            data.customerData = user;
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<CustomerViewModel>>(TokenType.AppToken, 
+                Configuration.WebService.Users.SaveProfileUrl,
+                data);
             return userModel.First();
         }
 
