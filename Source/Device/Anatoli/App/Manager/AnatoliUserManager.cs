@@ -25,7 +25,7 @@ namespace Anatoli.App.Manager
                 passWord = passWord.Trim();
             }
             await AnatoliClient.GetInstance().WebClient.RefreshTokenAsync(new TokenRefreshParameters(userName, passWord, Configuration.AppMobileAppInfo.Scope));
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<AnatoliUserModel>(TokenType.UserToken, "/api/accounts/user/" + userName);
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<AnatoliUserModel>(TokenType.AppToken, "/api/accounts/user/" + userName);
             if (userModel.IsValid)
             {
                 await AnatoliUserManager.SaveUserInfoAsync(userModel);
@@ -35,6 +35,7 @@ namespace Anatoli.App.Manager
                     if (customer.IsValid)
                     {
                         await CustomerManager.SaveCustomerAsync(customer);
+                        // todo: Sync orders does not work. fix it
                         await OrderManager.SyncOrdersAsync(customer.UniqueId);
                     }
                 }

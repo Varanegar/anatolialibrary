@@ -1,5 +1,6 @@
 ﻿using Anatoli.App.Model;
 using Anatoli.App.Model.AnatoliUser;
+using Anatoli.App.RequestModel;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.Framework.DataAdapter;
 using Anatoli.Framework.Manager;
@@ -83,9 +84,9 @@ namespace Anatoli.App.Manager
 
         public static async Task<CustomerViewModel> DownloadCustomerAsync(AnatoliUserModel user, System.Threading.CancellationTokenSource CancellationTokenSource)
         {
-            var userModel = await AnatoliClient.GetInstance().WebClient.SendGetRequestAsync<CustomerViewModel>(TokenType.UserToken, Configuration.WebService.Users.ViewProfileUrl, CancellationTokenSource,
-                new Tuple<string, string>("Id", user.Id),
-                new Tuple<string, string>("PrivateOwnerId", user.PrivateOwnerId));
+            var data = new CustomerRequestModel();
+            data.customerId = user.Id;
+            var userModel = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<CustomerViewModel>(TokenType.AppToken, Configuration.WebService.Users.ViewProfileUrl, data, CancellationTokenSource);
             return userModel;
         }
 
