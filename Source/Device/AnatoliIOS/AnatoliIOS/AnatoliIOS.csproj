@@ -201,6 +201,11 @@
       <DependentUpon>ProformaViewController.cs</DependentUpon>
     </Compile>
     <InterfaceDefinition Include="ViewControllers\RegisterViewController.xib" />
+    <InterfaceDefinition Include="TableViewCells\OrderItemTableViewCell.xib" />
+    <Compile Include="TableViewCells\OrderItemTableViewCell.cs" />
+    <Compile Include="TableViewCells\OrderItemTableViewCell.designer.cs">
+      <DependentUpon>OrderItemTableViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />
