@@ -17,10 +17,10 @@ namespace ServiceTestApplication
             try
             {
                 var restul = log4net.Config.XmlConfigurator.Configure();
-                string ServerURI = "http://localhost:59822/";
+                //string ServerURI = "http://localhost:59822/";
                 //string ServerURI = "http://46.209.104.2:7000/";
                 //string ServerURI = "http://217.218.53.71:8090/";
-                //string ServerURI = "http://192.168.0.160:8081/";
+                string ServerURI = "http://192.168.0.160:8081/";
                 string OwnerKey = "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240";
                 string DataOwnerKey = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 string DataOwnerCenterKey = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";

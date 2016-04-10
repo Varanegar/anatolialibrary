@@ -21,9 +21,9 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
         }
 
-         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner)
+         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner, Guid dataOwnerKey)
         {
-            var userDomain = new UserDomain(applicationOwner);
+            var userDomain = new UserDomain(applicationOwner, dataOwnerKey);
 
             var user = await userDomain.UserExists(usernameOrEmailOrPhone);
             if (user != null)

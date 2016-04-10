@@ -9,7 +9,7 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
 	[Register ("FavoritsViewController")]
 	partial class FavoritsViewController

@@ -36,7 +36,7 @@
             context.AnatoliContacts.AddOrUpdate(
                 new AnatoliContact { Id = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "نیک توشه زیست", Phone = "+98-21-", Email = "info@eiggstores.com", Website = "http://www.eiggstores.com/" },
                 //new AnatoliContact { Id = Guid.Parse("A60F9E34-5A69-4B0A-A555-CA1F54343D74"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "شرکت چی توز", Phone = "+98-21-", Email = "info@", Website = "" }
-                    new AnatoliContact { Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "داده کاوان پیشرو ایده ورانگر", Phone = "+98-21-87134", Email = "info@varanegar.com", Website = "http://www.varanegar.com/" }
+                new AnatoliContact { Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "داده کاوان پیشرو ایده ورانگر", Phone = "+98-21-87134", Email = "info@varanegar.com", Website = "http://www.varanegar.com/" }
                 );
 
             context.ApplicationOwners.AddOrUpdate(item => item.Id,
@@ -181,14 +181,23 @@
 
             #region Add Users
             var userId = "02D3C1AA-6149-4810-9F83-DF3928BFDF16";
-            if (!context.Users.Any(item => item.Id == userId))
+            var applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            var dataOwnerId = applicationOwnerId;
+
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Anatoli.DataAccess.Models.Identity.Principal { Id =Guid.Parse(userId), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+            });
+
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId))
             {
                 context.Users.AddOrUpdate(item => item.Id,
                     new User
                     {
                         Id = userId,
+                        PrincipalId = Guid.Parse( userId),
                         PhoneNumber = "87135000",
                         UserName = "anatoli",
+                        UserNameStr = "anatoli",
                         PasswordHash = "AJ1iTXc0/EgQyLWeHZFh4xrX6vpu37VCmAfcTNm1bUBU+zcc2dqnTKuXyeZmhfC4+A==",
                         Email = "anatoli@varanegar.com",
                         EmailConfirmed = true,
@@ -197,10 +206,10 @@
                         CreatedDate = DateTime.Now,
                         LastUpdate = DateTime.Now,
                         LastEntry = DateTime.Now,
-                        ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
                         SecurityStamp = "28a22f1c-83d8-4aee-8f9e-02441f25092c",
                     });
-
 
             }
 
@@ -213,6 +222,90 @@
                     new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = "02d3c1aa-6149-4810-9f83-df3928bfdf16" },
                     new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = "02d3c1aa-6149-4810-9f83-df3928bfdf16" }
                 );
+            }
+
+            userId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2";
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Anatoli.DataAccess.Models.Identity.Principal
+                {
+                    Id = Guid.Parse(userId),
+                    ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                });
+
+
+            applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            dataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId))
+            {
+                context.Users.AddOrUpdate(item => item.Id,
+                    new User
+                    {
+                        Id = userId,
+                        UserName = "AnatoliMobileApp",
+                        PrincipalId = Guid.Parse(userId),
+                        PhoneNumber = "87135000",
+                        UserNameStr = "AnatoliMobileApp",
+                        PasswordHash = "AA7XiPMTyUfecJ0H6MYalhVvkX7JnNaNXt+OCy8bQYm5tkvzPfZFVFDIoLbwYWzQsA==",
+                        Email = "anatolimobileapp@varanegar.com",
+                        EmailConfirmed = true,
+                        //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
+                        PhoneNumberConfirmed = true,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        LastEntry = DateTime.Now,
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
+                        SecurityStamp = "4e3b2471-3700-405b-be71-53be82205fa5",
+                    });
+
+            }
+
+            if (context.Users.Any(item => item.Id == userId))
+            {
+                context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
+                    new IdentityUserRole { RoleId = "507b6966-17f1-4116-a497-02242c052961", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" },
+                    new IdentityUserRole { RoleId = "5a61344b-b1b5-4157-8861-7bed15c0bdc2", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" },
+                    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" },
+                    new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" },
+                    new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" }
+                );
+            }
+
+            applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            dataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            userId = "b65e8981-88c5-4391-84ad-36416345681d";
+
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Anatoli.DataAccess.Models.Identity.Principal
+                {
+                    Id = Guid.Parse(userId),
+                    ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                });
+
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId ))
+            {
+                context.Users.AddOrUpdate(item => item.Id,
+                    new User
+                    {
+                        Id = userId,
+                        PrincipalId = Guid.Parse(userId),
+                        UserName = userId,
+                        PhoneNumber = "87135000",
+                        UserNameStr = "AnatoliMobileApp",
+                        PasswordHash = "AA7XiPMTyUfecJ0H6MYalhVvkX7JnNaNXt+OCy8bQYm5tkvzPfZFVFDIoLbwYWzQsA==",
+                        Email = "anatolimobileapp@varanegar.com",
+                        EmailConfirmed = true,
+                        //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
+                        PhoneNumberConfirmed = true,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        LastEntry = DateTime.Now,
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
+                        SecurityStamp = "4e3b2471-3700-405b-be71-53be82205fa5",
+                    });
+
             }
             #endregion
         }

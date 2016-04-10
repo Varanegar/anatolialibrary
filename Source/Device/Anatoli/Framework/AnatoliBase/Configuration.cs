@@ -20,11 +20,11 @@ namespace Anatoli.Framework.AnatoliBase
             public static readonly string Password = "Anatoli@App@Vn";
             //public static readonly string UserName = "petropay";
             //public static readonly string Password = "petropay";
-            public static readonly string Scope = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+            public static readonly string Scope = "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
         }
         public struct WebService
         {
-            //public static string PortalAddress = "http://192.168.201.119";
+            //public static string PortalAddress = "http://192.168.201.205:8081";
             //public static string PortalAddress = "http://46.209.104.2:7000";
             public static string PortalAddress = "http://217.218.53.71:7000";
             //public static string PortalAddress = "http://46.32.2.234:8081";

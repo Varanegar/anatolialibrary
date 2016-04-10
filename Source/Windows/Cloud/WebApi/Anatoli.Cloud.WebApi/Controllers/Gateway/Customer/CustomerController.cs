@@ -46,7 +46,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var userDomain = new UserDomain(OwnerKey);
+                var userDomain = new UserDomain(OwnerKey, DataOwnerKey);
                 if (data.customerData.Email != null)
                 {
                     var emailUser = await userDomain.GetByEmailAsync(data.customerData.Email);

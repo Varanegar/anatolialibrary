@@ -3,7 +3,7 @@
 using UIKit;
 using AnatoliIOS.ViewControllers;
 
-namespace AnatoliIOS
+namespace AnatoliIOS.ViewControllers
 {
 	public partial class FavoritsViewController : BaseController
 	{

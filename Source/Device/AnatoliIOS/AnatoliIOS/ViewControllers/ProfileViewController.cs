@@ -31,7 +31,7 @@ namespace AnatoliIOS.ViewControllers
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
-			Title = "پروفایل";
+            Title = "پروفایل";
             View.Bounds = UIScreen.MainScreen.Bounds;
             if (AnatoliApp.GetInstance().Customer != null)
             {
@@ -39,23 +39,29 @@ namespace AnatoliIOS.ViewControllers
                 lastNameTextField.Text = AnatoliApp.GetInstance().Customer.LastName;
                 emailTextField.Text = AnatoliApp.GetInstance().Customer.Email;
                 addressTextField.Text = AnatoliApp.GetInstance().Customer.MainStreet;
-				titleLabel.Text = AnatoliApp.GetInstance ().Customer.FirstName + " " + AnatoliApp.GetInstance ().Customer.LastName;
-				numberLabel.Text = AnatoliApp.GetInstance ().Customer.Mobile;
+                titleLabel.Text = AnatoliApp.GetInstance().Customer.FirstName + " " + AnatoliApp.GetInstance().Customer.LastName;
+                numberLabel.Text = AnatoliApp.GetInstance().Customer.Mobile;
 
-				using(var url = new NSUrl (CustomerManager.GetImageAddress (AnatoliApp.GetInstance().Customer.UniqueId))){
-					using(var data = NSData.FromUrl(url)){
-						if (data != null) {
-							try {
-								profileImageView.Image = UIImage.LoadFromData(data);
-							} catch (Exception ) {
-									
-							}
-						}
-					}
-				}
-				CALayer profileImageViewLayer = profileImageView.Layer;
-				profileImageViewLayer.CornerRadius = 30;
-				profileImageViewLayer.MasksToBounds = true;
+                using (var url = new NSUrl(CustomerManager.GetImageAddress(AnatoliApp.GetInstance().Customer.UniqueId)))
+                {
+                    using (var data = NSData.FromUrl(url))
+                    {
+                        if (data != null)
+                        {
+                            try
+                            {
+                                profileImageView.Image = UIImage.LoadFromData(data);
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+                        }
+                    }
+                }
+                CALayer profileImageViewLayer = profileImageView.Layer;
+                profileImageViewLayer.CornerRadius = 30;
+                profileImageViewLayer.MasksToBounds = true;
             }
 
 
@@ -107,9 +113,10 @@ namespace AnatoliIOS.ViewControllers
                 level4Picker.Select(0, 0, true);
             };
 
-			logoutButton.TouchUpInside += async (object sender, EventArgs e) => {
-				await AnatoliApp.GetInstance().LogOutAsync();
-			};
+            logoutButton.TouchUpInside += async (object sender, EventArgs e) =>
+            {
+                await AnatoliApp.GetInstance().LogOutAsync();
+            };
             saveButton.TouchUpInside += async (object sender, EventArgs e) =>
             {
                 CustomerViewModel customer = new CustomerViewModel();
@@ -122,26 +129,35 @@ namespace AnatoliIOS.ViewControllers
                 var bounds = UIScreen.MainScreen.Bounds;
                 loadingOverlay = new LoadingOverlay(bounds);
                 View.Add(loadingOverlay);
-                var result = await CustomerManager.UploadCustomerAsync(customer);
-                if (result != null)
+                try
                 {
-                    if (result.IsValid)
+                    var result = await CustomerManager.UploadCustomerAsync(customer);
+                    if (result != null)
                     {
-                        try
+                        if (result.IsValid)
                         {
-                            await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().User, null);
-                            AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
-                            var alert = UIAlertController.Create("", "اطلاعات شما دخیره شد", UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, delegate { AnatoliApp.GetInstance().PushViewController(new FirstPageViewController()); }));
-                            PresentViewController(alert, true, null);
-                        }
-                        catch (Exception)
-                        {
-                            var alert = UIAlertController.Create("", "خطا در ذخیره اطلاعات", UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, null));
-                            PresentViewController(alert, true, null);
+                            try
+                            {
+                                await CustomerManager.DownloadCustomerAsync(AnatoliApp.GetInstance().User, null);
+                                AnatoliApp.GetInstance().Customer = await CustomerManager.ReadCustomerAsync();
+                                var alert = UIAlertController.Create("", "اطلاعات شما ذخیره شد", UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, delegate { AnatoliApp.GetInstance().PushViewController(new FirstPageViewController()); }));
+                                PresentViewController(alert, true, null);
+                            }
+                            catch (Exception)
+                            {
+                                var alert = UIAlertController.Create("", "خطا در ذخیره اطلاعات", UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, null));
+                                PresentViewController(alert, true, null);
+                            }
                         }
                     }
+                }
+                catch (Exception)
+                {
+                    var alert = UIAlertController.Create("", "درخواست شما با خطا مواجه شد", UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("خب", UIAlertActionStyle.Default, null));
+                    PresentViewController(alert, true, null);
                 }
                 loadingOverlay.Hide();
 

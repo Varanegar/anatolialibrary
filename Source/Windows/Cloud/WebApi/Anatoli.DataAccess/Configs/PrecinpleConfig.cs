@@ -11,9 +11,6 @@ namespace Anatoli.DataAccess.Configs
     {
         public PrincipalConfig()
         {
-            this.HasOptional<User>(p => p.User)
-                .WithRequired(s => s.Principal);
-
             this.HasOptional<Group>(p => p.Group)
                 .WithRequired(s => s.Principal);
 
