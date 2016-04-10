@@ -1,9 +1,5 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Models.Identity;
 using System.Data.Entity.ModelConfiguration;
-using Anatoli.DataAccess.Models;
 
 namespace Anatoli.DataAccess.Configs
 {
@@ -11,13 +7,13 @@ namespace Anatoli.DataAccess.Configs
     {
         public PrincipalPermissionConfig()
         {
-            this.HasRequired<Principal>(p => p.Principal)
+            HasRequired(p => p.Principal)
                 .WithMany(pp => pp.PrincipalPermissions)
                 .WillCascadeOnDelete(false);
 
-            this.HasRequired<Permission>(p => p.Permission)
+            HasRequired(p => p.Permission)
                 .WithMany(pp => pp.PrincipalPermissions)
                 .WillCascadeOnDelete(false);
         }
-    }    
+    }   
 }

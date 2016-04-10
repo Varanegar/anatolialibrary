@@ -135,6 +135,7 @@
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />
+    <Compile Include="Proxy\BusinessDomainV2.cs" />
     <Compile Include="Proxy\Concretes\AuthorizationProxies\PermissionProxy.cs" />
     <Compile Include="Proxy\Concretes\AuthorizationProxies\PrincipalPermissionProxy.cs" />
     <Compile Include="Proxy\Concretes\Base\BaseTypeProxy.cs" />

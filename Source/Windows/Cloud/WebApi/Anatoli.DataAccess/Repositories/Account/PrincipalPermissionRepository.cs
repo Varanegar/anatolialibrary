@@ -1,11 +1,5 @@
 ﻿using Anatoli.DataAccess.Models.Identity;
 using Anatoli.DataAccess.Interfaces.Account;
-using System.Linq;
-using System;
-using EntityFramework.Caching;
-using EntityFramework.Extensions;
-using System.Collections.Generic;
-
 
 namespace Anatoli.DataAccess.Repositories.Account
 {
@@ -21,5 +15,5 @@ namespace Anatoli.DataAccess.Repositories.Account
         #endregion
 
         //notice: new custom methods could be added in here
-    }
+    }   
 }

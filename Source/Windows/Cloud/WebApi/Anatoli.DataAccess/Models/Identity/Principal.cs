@@ -22,5 +22,6 @@ namespace Anatoli.DataAccess.Models.Identity
         [ForeignKey("ApplicationOwner")]
         public Guid ApplicationOwnerId { get; set; }
         public virtual ApplicationOwner ApplicationOwner { get; set; }
+        public ICollection<PrincipalPermissionCatalog> PrincipalPermissionCatalogs { get; set; }
     }
 }

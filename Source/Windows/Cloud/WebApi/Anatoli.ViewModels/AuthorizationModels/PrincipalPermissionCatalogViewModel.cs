@@ -2,21 +2,15 @@
 
 namespace Anatoli.ViewModels.AuthorizationModels
 {
-    public class PrincipalPermissionViewModel : BaseViewModel
+    public class PrincipalPermissionCatalogViewModel : BaseViewModel
     {
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
         public string PrincipalId
-        {
-            get;
-            set;
-        }
-
-        public string Resource
-        {
-            get;
-            set;
-        }
-
-        public string Action
         {
             get;
             set;
@@ -28,7 +22,7 @@ namespace Anatoli.ViewModels.AuthorizationModels
             set;
         }
 
-        public Guid PermissionId
+        public Guid PermissionCatalogId
         {
             get;
             set;

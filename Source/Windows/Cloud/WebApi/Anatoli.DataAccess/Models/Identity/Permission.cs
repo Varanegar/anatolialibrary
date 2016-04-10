@@ -1,8 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
@@ -19,6 +18,6 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual PermissionAction PermissionAction { get; set; }
 
         public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
-
+        public virtual ICollection<PermissionCatalog> PermissionCatalogs { get; set; }
     }
 }
