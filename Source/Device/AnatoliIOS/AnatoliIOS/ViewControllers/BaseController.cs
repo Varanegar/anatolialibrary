@@ -40,8 +40,11 @@ namespace AnatoliIOS.ViewControllers
 
             // Perform any additional setup after loading the view, typically from a nib.
 
-
-			NavigationItem.RightBarButtonItems = new UIBarButtonItem[2] {AnatoliApp.GetInstance ().CreateMenuButton (),AnatoliApp.GetInstance().CreateBasketButton()};
         }
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			NavigationItem.RightBarButtonItems = new UIBarButtonItem[2] {AnatoliApp.GetInstance ().CreateMenuButton (), AnatoliApp.GetInstance().CreateBasketButton()};
+		}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using UIKit;
+using CoreGraphics;
 
 namespace AnatoliIOS.ViewControllers
 {
@@ -15,12 +16,16 @@ namespace AnatoliIOS.ViewControllers
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
 			Title = "پیش فاکتور";
-			EdgesForExtendedLayout = UIRectEdge.None;
 			var headerView = ProformHeader.Create ();
-			headerView.SizeToFit ();
-			table.TableHeaderView = headerView;
-			table.TableHeaderView.Bounds = new CoreGraphics.CGRect (0, -10, View.Frame.Width, table.TableHeaderView.Bounds.Height);
-			headerView.BackgroundColor = UIColor.LightGray;
+			header.AddSubview( headerView);
+
+			var footerView = FooterView.Create ();
+			footer.AddSubview(footerView);
+			cancelButton.TouchUpInside += (object sender, EventArgs e) => {
+				DismissViewController(true,null);
+			};
+
+			//table.TableFooterView.Bounds = new CoreGraphics.CGRect (0, -10, View.Frame.Width, table.TableFooterView.Bounds.Height);
 		}
 
 		public override void DidReceiveMemoryWarning ()

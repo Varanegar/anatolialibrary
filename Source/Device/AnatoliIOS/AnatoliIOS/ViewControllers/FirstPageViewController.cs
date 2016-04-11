@@ -29,6 +29,8 @@ namespace AnatoliIOS.ViewControllers
 		{
 			base.ViewDidAppear (animated);
 			StartAutomaticScroll ();
+			NavigationItem.RightBarButtonItems = new UIBarButtonItem[2] {AnatoliApp.GetInstance ().CreateMenuButton (), AnatoliApp.GetInstance().CreateBasketButton()};
+
 		}
         public async override void ViewDidLoad()
         {
@@ -36,7 +38,6 @@ namespace AnatoliIOS.ViewControllers
 
             // Perform any additional setup after loading the view, typically from a nib.
 			Title = "صفحه خانگی";
-			NavigationItem.RightBarButtonItems = new UIBarButtonItem[2] {AnatoliApp.GetInstance ().CreateMenuButton (),AnatoliApp.GetInstance().CreateBasketButton()};
 
 			SetImageHeight(UIScreen.MainScreen.Bounds.Size.Height * 0.4f);
 

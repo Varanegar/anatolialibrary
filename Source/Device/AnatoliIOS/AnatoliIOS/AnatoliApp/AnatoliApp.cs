@@ -9,6 +9,8 @@ using Anatoli.Framework.AnatoliBase;
 using AnatoliIOS.Clients;
 using Anatoli.App.Model.Store;
 using Anatoli.App.Model.AnatoliUser;
+using CoreGraphics;
+using Anatoli.App.Model.Product;
 
 namespace AnatoliIOS
 {
@@ -19,7 +21,10 @@ namespace AnatoliIOS
 		private static AnatoliApp _instance;
 		public UITableView MenuTableViewReference;
 		public StoreDataModel DefaultStore;
-
+		public int ShoppingCardItemsCount;
+		public double ShoppingCardTotalPrice;
+		UILabel _counterLabel; 
+		UILabel _priceLabel;
 		public Anatoli.App.Model.CustomerViewModel Customer { get; set; }
 
 		public AnatoliUserModel User { get; set; }
@@ -30,6 +35,12 @@ namespace AnatoliIOS
 				Customer = await CustomerManager.ReadCustomerAsync ();
 				User = await AnatoliUserManager.ReadUserInfoAsync ();
 				DefaultStore = await StoreManager.GetDefaultAsync ();
+				AnatoliClient.GetInstance ().WebClient.TokenExpire += async delegate {
+					await AnatoliApp.GetInstance().LogOutAsync();
+					AnatoliApp.GetInstance().PushViewController(new LoginViewController());
+				};
+				ShoppingCardItemsCount = await ShoppingCardManager.GetItemsCountAsync();
+				ShoppingCardTotalPrice = await ShoppingCardManager.GetTotalPriceAsync();
 			} catch (Exception) {
 
 			}
@@ -254,14 +265,20 @@ namespace AnatoliIOS
 				break;
 			case MenuItem.MenuType.CatId:
 				var view = (GetVisibleViewController () as ProductsViewController);
-				if (items[index].Id == view.GroupId) {
-					CloseMenu ();
-					break;
+				if (items.Count > index) {
+					if (items[index] != null) {
+						if (items[index].Id == view.GroupId) {
+							CloseMenu ();
+							break;
+						}
+						await RefreshMenu (items [index].Id);
+						var v = new ProductsViewController ();
+						v.GroupId = items [index].Id;
+						PushViewController (v,true);
+					}
 				}
-				await RefreshMenu (items [index].Id);
-				var v = new ProductsViewController ();
-				v.GroupId = items [index].Id;
-				PushViewController (v,true);
+
+
 				break;
 			case MenuItem.MenuType.MainMenu:
 				RefreshMenu ();
@@ -277,7 +294,6 @@ namespace AnatoliIOS
 			Customer = null;
 			User = null;
 			RefreshMenu ();
-			ReplaceViewController (new FirstPageViewController ());
 		}
 
 
@@ -292,9 +308,11 @@ namespace AnatoliIOS
 
 		public UIBarButtonItem CreateBasketButton ()
 		{
-			return new UIBarButtonItem (UIImage.FromBundle ("ic_shoppingcard_on_white_24dp").Scale (new CoreGraphics.CGSize (26, 26))
-				, UIBarButtonItemStyle.Plain
-				, (sender, args) => {
+			UIView basketView = new UIView (new CGRect (0, 0, 26, 26));
+
+			var button = new UIButton (new CGRect(0,0,26,26));
+			button.SetBackgroundImage (UIImage.FromBundle ("ic_shoppingcard_on_white_24dp").Scale (new CoreGraphics.CGSize (26, 26)), UIControlState.Normal);
+			button.TouchUpInside += (object sender, EventArgs e) => {
 				if (Customer == null) {
 					var loginAlert = UIAlertController.Create ("خطا", "لطفا ابتدا وارد حساب کاربری خود شوید", UIAlertControllerStyle.Alert);
 					loginAlert.AddAction (UIAlertAction.Create ("باشه", UIAlertActionStyle.Default,
@@ -315,9 +333,42 @@ namespace AnatoliIOS
 					PresentViewController (storeAlert);
 				} else
 					AnatoliApp.GetInstance ().PushViewController (new ShoppingCardViewController ());
-			});
+				CloseMenu();
+			};
+
+			_counterLabel = new UILabel(new CGRect(18,-3,12,12));
+			_counterLabel.TextAlignment = UITextAlignment.Center;
+			_counterLabel.TextColor = UIColor.White;
+			_counterLabel.Layer.MasksToBounds = true;
+			_counterLabel.Layer.CornerRadius = 6;
+			_counterLabel.BackgroundColor = UIColor.Red;
+			_counterLabel.Font = UIFont.FromName ("IRAN", 9);
+			_counterLabel.Text = ShoppingCardItemsCount.ToString();
+
+			_priceLabel = new UILabel(new CGRect(-7,20,40,12));
+			_priceLabel.TextAlignment = UITextAlignment.Center;
+			_priceLabel.TextColor = UIColor.White;
+			_counterLabel.Layer.MasksToBounds = true;
+			_counterLabel.Layer.CornerRadius = 6;
+			_priceLabel.BackgroundColor = UIColor.Blue;
+			_priceLabel.Font = UIFont.FromName ("IRAN", 8);
+			_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
+
+
+			ShoppingCardManager.ItemChanged -=  UpdateBasketView;
+			ShoppingCardManager.ItemChanged +=  UpdateBasketView;
+
+			basketView.AddSubviews (button, _counterLabel,_priceLabel);
+			var barButton = new UIBarButtonItem (basketView);
+			return barButton;
 		}
 
+		async void UpdateBasketView(ProductModel item){
+			ShoppingCardItemsCount = await ShoppingCardManager.GetItemsCountAsync();
+			ShoppingCardTotalPrice = await ShoppingCardManager.GetTotalPriceAsync ();
+			_counterLabel.Text = ShoppingCardItemsCount.ToString();
+			_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
+		}
 	}
 
 	public static class Extensions

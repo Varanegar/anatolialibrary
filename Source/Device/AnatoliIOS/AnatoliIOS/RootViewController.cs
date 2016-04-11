@@ -5,6 +5,7 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 using Anatoli.App.Manager;
+using Anatoli.Framework.AnatoliBase;
 
 namespace AnatoliIOS
 {
@@ -22,6 +23,7 @@ namespace AnatoliIOS
         {
             base.ViewDidLoad();
             await AnatoliApp.GetInstance().Initialize();
+
 			SyncManager.ProgressChanged += (status, step) => {
 				Console.WriteLine(status);
 			};

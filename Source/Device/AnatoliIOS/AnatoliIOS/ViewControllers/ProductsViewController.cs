@@ -23,6 +23,28 @@ namespace AnatoliIOS.ViewControllers
 		public async override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
+
+			var searchButton = new UIBarButtonItem (UIImage.FromBundle ("ic_search_white_24dp").Scale (new CGSize (26, 26)),
+				UIBarButtonItemStyle.Plain,
+				(sender, args) => {
+					_searchBar.Alpha = 0;
+					UIView.Animate (0.5, 0, UIViewAnimationOptions.TransitionFlipFromLeft, () => {
+						productsTableView.TableHeaderView = _searchBar;
+						_searchBar.Alpha = 1;
+					},
+						() => {
+							productsTableView.SetContentOffset (new CGPoint (0, -productsTableView.TableHeaderView.Bounds.Height - 10), true);
+						});
+
+				});
+
+			NavigationItem.SetRightBarButtonItems (new UIBarButtonItem[] {
+				AnatoliApp.GetInstance ().CreateMenuButton (),
+				searchButton,
+				AnatoliApp.GetInstance().CreateBasketButton()
+			}, true);
+
+
 			_productsTableViewSource = new ProductsTableViewSource ();
 			if (AnatoliApp.GetInstance ().DefaultStore == null) {
 				var store = await StoreManager.GetDefaultAsync ();
@@ -51,25 +73,6 @@ namespace AnatoliIOS.ViewControllers
 			// Perform any additional setup after loading the view, typically from a nib.
 			Title = "گروه بندی کالاها";
 
-			var searchButton = new UIBarButtonItem (UIImage.FromBundle ("ic_search_white_24dp").Scale (new CGSize (26, 26)),
-				                   UIBarButtonItemStyle.Plain,
-				                   (sender, args) => {
-					_searchBar.Alpha = 0;
-					UIView.Animate (0.5, 0, UIViewAnimationOptions.TransitionFlipFromLeft, () => {
-						productsTableView.TableHeaderView = _searchBar;
-						_searchBar.Alpha = 1;
-					},
-						() => {
-							productsTableView.SetContentOffset (new CGPoint (0, -productsTableView.TableHeaderView.Bounds.Height - 10), true);
-						});
-
-				});
-				
-			NavigationItem.SetRightBarButtonItems (new UIBarButtonItem[] {
-				AnatoliApp.GetInstance ().CreateMenuButton (),
-				searchButton,
-				AnatoliApp.GetInstance().CreateBasketButton()
-			}, true);
 
 
 			_searchBar = new UISearchBar ();

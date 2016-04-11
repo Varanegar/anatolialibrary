@@ -49,7 +49,7 @@ namespace AnatoliIOS.ViewControllers
 			checkoutButton.TouchUpInside += async (object sender, EventArgs e) => {
 				try {
 					await ShoppingCardManager.ValidateRequest(AnatoliApp.GetInstance().Customer);
-					AnatoliApp.GetInstance().PushViewController(new ProformaViewController());
+					AnatoliApp.GetInstance().PresentViewController(new ProformaViewController());
 				} catch (ValidationException ex) {
 					if (ex.Code == ValidationErrorCode.CustomerInfo) {
 						var alert = UIAlertController.Create("خطا","اطلاعات خود را کامل نمایید",UIAlertControllerStyle.Alert);
