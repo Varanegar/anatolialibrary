@@ -55,8 +55,11 @@ namespace AnatoliIOS.ViewControllers
 					return;
 				}
 			}
-			if (!String.IsNullOrEmpty (GroupId))
+			if (!String.IsNullOrEmpty (GroupId)) {
+				var info = await CategoryManager.GetCategoryInfoAsync (GroupId);
+				Title = info.cat_name;
 				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (GroupId, AnatoliApp.GetInstance ().DefaultStore.store_id));
+			}
 			else
 				_productsTableViewSource.SetDataQuery (ProductManager.GetAll (AnatoliApp.GetInstance ().DefaultStore.store_id));
 			await _productsTableViewSource.RefreshAsync ();
