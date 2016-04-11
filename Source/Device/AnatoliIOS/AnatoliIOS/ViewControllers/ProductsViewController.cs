@@ -57,7 +57,9 @@ namespace AnatoliIOS.ViewControllers
 			}
 			if (!String.IsNullOrEmpty (GroupId)) {
 				var info = await CategoryManager.GetCategoryInfoAsync (GroupId);
-				Title = info.cat_name;
+				if (info != null) {
+					Title = info.cat_name;
+				}
 				_productsTableViewSource.SetDataQuery (ProductManager.SetCatId (GroupId, AnatoliApp.GetInstance ().DefaultStore.store_id));
 			}
 			else
