@@ -20,11 +20,11 @@
                             <constraint firstAttribute="width" constant="200" id="E4n-uz-wKa"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="9">
-                        <rect key="frame" x="8" y="154" width="184" height="46"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="9" alpha="0.7">
+                        <rect key="frame" x="0.0" y="164" width="200" height="36"/>
+                        <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="46" id="aJR-wE-jNQ"/>
+                            <constraint firstAttribute="height" constant="36" id="aJR-wE-jNQ"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -36,8 +36,8 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="9" secondAttribute="bottom" id="NdT-cK-L0n"/>
                 <constraint firstItem="9" firstAttribute="centerX" secondItem="cZE-iV-UFb" secondAttribute="centerX" id="Plm-Uz-dZ3"/>
-                <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="8" id="bCQ-02-ELZ"/>
-                <constraint firstItem="9" firstAttribute="leading" secondItem="cZE-iV-UFb" secondAttribute="leading" constant="8" id="esu-hj-c5f"/>
+                <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" id="bCQ-02-ELZ"/>
+                <constraint firstItem="9" firstAttribute="leading" secondItem="cZE-iV-UFb" secondAttribute="leading" id="esu-hj-c5f"/>
                 <constraint firstItem="2" firstAttribute="centerY" secondItem="cZE-iV-UFb" secondAttribute="centerY" id="oqf-8D-hWK"/>
                 <constraint firstItem="2" firstAttribute="centerX" secondItem="cZE-iV-UFb" secondAttribute="centerX" id="vN2-Be-gQJ"/>
             </constraints>
@@ -48,4 +48,23 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="ic_list_orange_24dp.png" width="72" height="72"/>
+        <image name="ic_person_gray_24dp.png" width="80" height="80"/>
+        <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
+        <image name="anatoli.ttf" width="0" height="0"/>
+        <image name="ic_search_white_24dp.png" width="96" height="96"/>
+        <image name="ic_reorder_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shopping_cart_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shoppingcard_on_white_24dp.png" width="96" height="97"/>
+        <image name="ic_call_green_24dp.png" width="70" height="70"/>
+        <image name="ic_edit_text_green_24dp.png" width="70" height="71"/>
+        <image name="Icon.png" width="57" height="57"/>
+        <image name="Icon-60.png" width="60" height="60"/>
+        <image name="Icon-Small.png" width="29" height="29"/>
+        <image name="Icon-Small-40.png" width="40" height="40"/>
+        <image name="igicon.png" width="200" height="119"/>
+        <image name="splash.png" width="365" height="648"/>
+        <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
+    </resources>
 </document>
