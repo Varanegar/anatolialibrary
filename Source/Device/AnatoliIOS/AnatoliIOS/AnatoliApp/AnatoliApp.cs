@@ -265,14 +265,20 @@ namespace AnatoliIOS
 				break;
 			case MenuItem.MenuType.CatId:
 				var view = (GetVisibleViewController () as ProductsViewController);
-				if (items[index].Id == view.GroupId) {
-					CloseMenu ();
-					break;
+				if (items.Count > index) {
+					if (items[index] != null) {
+						if (items[index].Id == view.GroupId) {
+							CloseMenu ();
+							break;
+						}
+						await RefreshMenu (items [index].Id);
+						var v = new ProductsViewController ();
+						v.GroupId = items [index].Id;
+						PushViewController (v,true);
+					}
 				}
-				await RefreshMenu (items [index].Id);
-				var v = new ProductsViewController ();
-				v.GroupId = items [index].Id;
-				PushViewController (v,true);
+
+
 				break;
 			case MenuItem.MenuType.MainMenu:
 				RefreshMenu ();
