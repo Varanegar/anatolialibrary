@@ -6,6 +6,7 @@ using Anatoli.App.Model.Product;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Manager;
 using System.Drawing;
+using Haneke;
 
 namespace AnatoliIOS.TableViewCells
 {
@@ -18,56 +19,64 @@ namespace AnatoliIOS.TableViewCells
 		{
 			Nib = UINib.FromName ("ProductSummaryViewCell", NSBundle.MainBundle);
 		}
+
 		public ProductSummaryViewCell (IntPtr handle) : base (handle)
 		{
 
 		}
 
 
-		public void BindCell(ProductModel item){
+		public void BindCell (ProductModel item)
+		{
 			addProductButton.TouchUpInside += async (object sender, EventArgs e) => {
 				addProductButton.Enabled = false;
-				if (item.count +1 > item.qty) {
-					var alert = UIAlertController.Create("خطا","موجودی کافی نیست",UIAlertControllerStyle.Alert);
-					alert.AddAction(UIAlertAction.Create("باشه",UIAlertActionStyle.Default,null));
-					AnatoliApp.GetInstance().PresentViewController(alert);
+				if (item.count + 1 > item.qty) {
+					var alert = UIAlertController.Create ("خطا", "موجودی کافی نیست", UIAlertControllerStyle.Alert);
+					alert.AddAction (UIAlertAction.Create ("باشه", UIAlertActionStyle.Default, null));
+					AnatoliApp.GetInstance ().PresentViewController (alert);
 					addProductButton.Enabled = true;
 					return;
 				}
-				var result = await ShoppingCardManager.AddProductAsync(item);
+				var result = await ShoppingCardManager.AddProductAsync (item);
 				addProductButton.Enabled = true;
 				if (result) {
-					toolsView.Hidden = false;
-					countLabel.Text = item.count.ToString() + " عدد";
-					Console.WriteLine(ShoppingCardManager.GetTotalPriceAsync());
+					toolsViewWidth.Constant = 50;	
+					countLabel.Text = item.count.ToString () + " عدد";
 				}
 			};
 			removeProductButton.TouchUpInside += async (object sender, EventArgs e) => {
 				if (item.count > 0) {
-					var result = await ShoppingCardManager.RemoveProductAsync(item);
+					var result = await ShoppingCardManager.RemoveProductAsync (item);
 					if (result) {
-						countLabel.Text = item.count.ToString() + " عدد";
+						countLabel.Text = item.count.ToString () + " عدد";
 						if (item.count == 0) {
-							toolsView.Hidden = true;
-							OnItemRemoved();
+							toolsViewWidth.Constant = 0;
+
+							OnItemRemoved ();
 						}
 					}
 				}
 			};
 		}
-		public void UpdateCell(ProductModel item){
+
+		public void UpdateCell (ProductModel item)
+		{
 			productLabel.Text = item.product_name;
 
 			if (item.count > 0) {
-				toolsView.Hidden = false;
-				countLabel.Text = item.count.ToString() + " عدد";
+				toolsViewWidth.Constant = 50;
+				countLabel.Text = item.count.ToString () + " عدد";
 			} else {
-				toolsView.Hidden = true;
+				toolsViewWidth.Constant = 0;
 			}
 			var imgUri = ProductManager.GetImageAddress (item.product_id, item.image);
 			if (imgUri != null) {
 				try {
-					//productImageView.SetImage(url : new NSUrl(imgUri),placeholder: UIImage.FromBundle ("igicon"));
+					using (var url = new NSUrl (imgUri)) {
+						productImageView.SetImage (url : url, placeholder: UIImage.FromBundle ("igicon"));
+					}
+
+
 				} catch (Exception) {
 					
 				}

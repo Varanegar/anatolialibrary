@@ -255,6 +255,9 @@
     <Reference Include="XPComponentKeyGenerator">
       <HintPath>..\packages\XPComponentKeyGenerator.dll</HintPath>
     </Reference>
+    <Reference Include="Haneke">
+      <HintPath>..\packages\Haneke.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Entitlements.plist" />

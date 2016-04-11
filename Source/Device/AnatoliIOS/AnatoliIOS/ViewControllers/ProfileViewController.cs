@@ -41,8 +41,8 @@ namespace AnatoliIOS.ViewControllers
                 addressTextField.Text = AnatoliApp.GetInstance().Customer.MainStreet;
                 titleLabel.Text = AnatoliApp.GetInstance().Customer.FirstName + " " + AnatoliApp.GetInstance().Customer.LastName;
                 numberLabel.Text = AnatoliApp.GetInstance().Customer.Mobile;
-
-                using (var url = new NSUrl(CustomerManager.GetImageAddress(AnatoliApp.GetInstance().Customer.UniqueId)))
+				var imageUri = CustomerManager.GetImageAddress(AnatoliApp.GetInstance().Customer.UniqueId);
+				using (var url = new NSUrl(imageUri))
                 {
                     using (var data = NSData.FromUrl(url))
                     {
