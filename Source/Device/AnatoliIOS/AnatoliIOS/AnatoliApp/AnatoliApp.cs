@@ -24,7 +24,7 @@ namespace AnatoliIOS
 		public int ShoppingCardItemsCount;
 		public double ShoppingCardTotalPrice;
 		UILabel _counterLabel; 
-		UILabel _priceLabel;
+		//UILabel _priceLabel;
 		public Anatoli.App.Model.CustomerViewModel Customer { get; set; }
 
 		public AnatoliUserModel User { get; set; }
@@ -372,7 +372,7 @@ namespace AnatoliIOS
 			ShoppingCardItemsCount = await ShoppingCardManager.GetItemsCountAsync();
 			ShoppingCardTotalPrice = await ShoppingCardManager.GetTotalPriceAsync ();
 			_counterLabel.Text = ShoppingCardItemsCount.ToString();
-			_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
+			//_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
 		}
 	}
 
