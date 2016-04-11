@@ -20,6 +20,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProformaViewController">
             <connections>
+                <outlet property="table" destination="w5p-R2-DrV" id="name-outlet-w5p-R2-DrV"/>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
             </connections>
         </placeholder>
@@ -27,8 +28,8 @@
         <view contentMode="scaleToFill" id="2">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="آدرس" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZk-jk-nQ4">
-                    <rect key="frame" x="10" y="10" width="580" height="40"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="آدرس" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZk-jk-nQ4">
+                    <rect key="frame" x="10" y="10" width="580" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="e5O-ej-onk"/>
                     </constraints>
@@ -37,14 +38,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B61-uc-j7O">
-                    <rect key="frame" x="0.0" y="45" width="600" height="1"/>
+                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
                     <color key="backgroundColor" red="0.41923674738219896" green="0.41923674738219896" blue="0.41923674738219896" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="bE1-Nc-GSE"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="w5p-R2-DrV">
-                    <rect key="frame" x="0.0" y="51" width="600" height="309"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="w5p-R2-DrV">
+                    <rect key="frame" x="0.0" y="61" width="600" height="299"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQc-Zu-JUX">
@@ -137,7 +138,7 @@
                 <constraint firstAttribute="trailing" secondItem="hUB-aZ-Vw4" secondAttribute="trailing" constant="10" id="OwJ-Ai-p0U"/>
                 <constraint firstItem="eLZ-Fs-dXx" firstAttribute="top" secondItem="08N-aP-ynx" secondAttribute="bottom" constant="8" id="ThY-zc-flo"/>
                 <constraint firstItem="08N-aP-ynx" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="10" id="VtL-Y4-qHG"/>
-                <constraint firstItem="B61-uc-j7O" firstAttribute="top" secondItem="SZk-jk-nQ4" secondAttribute="bottom" constant="5" id="XcD-FB-Bhl"/>
+                <constraint firstItem="B61-uc-j7O" firstAttribute="top" secondItem="SZk-jk-nQ4" secondAttribute="bottom" constant="10" id="XcD-FB-Bhl"/>
                 <constraint firstItem="08N-aP-ynx" firstAttribute="top" secondItem="eQc-Zu-JUX" secondAttribute="bottom" constant="5" id="aKc-O2-6Vn"/>
                 <constraint firstAttribute="trailing" secondItem="SZk-jk-nQ4" secondAttribute="trailing" constant="10" id="bnA-qN-UWV"/>
                 <constraint firstItem="u8J-Pe-ZZb" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="10" id="dMn-xt-Kwe"/>
@@ -152,7 +153,7 @@
                 <constraint firstItem="w5p-R2-DrV" firstAttribute="bottom" secondItem="2" secondAttribute="centerY" multiplier="1.2" id="qha-xG-HqA"/>
                 <constraint firstItem="2qS-IE-KcP" firstAttribute="top" secondItem="hUB-aZ-Vw4" secondAttribute="bottom" constant="8" id="soC-xP-DY5"/>
                 <constraint firstItem="qjx-rd-e4y" firstAttribute="leading" secondItem="u8J-Pe-ZZb" secondAttribute="trailing" constant="10" id="sqc-qL-PFo"/>
-                <constraint firstItem="w5p-R2-DrV" firstAttribute="top" secondItem="B61-uc-j7O" secondAttribute="bottom" constant="5" id="t43-Ey-Rgd"/>
+                <constraint firstItem="w5p-R2-DrV" firstAttribute="top" secondItem="B61-uc-j7O" secondAttribute="bottom" constant="10" id="t43-Ey-Rgd"/>
             </constraints>
         </view>
     </objects>

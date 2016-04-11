@@ -206,6 +206,11 @@
     <Compile Include="TableViewCells\OrderItemTableViewCell.designer.cs">
       <DependentUpon>OrderItemTableViewCell.cs</DependentUpon>
     </Compile>
+    <InterfaceDefinition Include="ViewControllers\ProformHeader.xib" />
+    <Compile Include="ViewControllers\ProformHeader.cs" />
+    <Compile Include="ViewControllers\ProformHeader.designer.cs">
+      <DependentUpon>ProformHeader.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RootViewController.cs" />

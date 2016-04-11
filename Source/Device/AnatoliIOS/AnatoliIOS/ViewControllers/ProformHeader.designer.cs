@@ -11,19 +11,11 @@ using UIKit;
 
 namespace AnatoliIOS.ViewControllers
 {
-	[Register ("ProformaViewController")]
-	partial class ProformaViewController
+	[Register ("ProformHeader")]
+	partial class ProformHeader
 	{
-		[Outlet]
-		[GeneratedCode ("iOS Designer", "1.0")]
-		UITableView table { get; set; }
-
 		void ReleaseDesignerOutlets ()
 		{
-			if (table != null) {
-				table.Dispose ();
-				table = null;
-			}
 		}
 	}
 }
