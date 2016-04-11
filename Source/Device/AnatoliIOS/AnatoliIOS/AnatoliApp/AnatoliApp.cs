@@ -30,6 +30,10 @@ namespace AnatoliIOS
 				Customer = await CustomerManager.ReadCustomerAsync ();
 				User = await AnatoliUserManager.ReadUserInfoAsync ();
 				DefaultStore = await StoreManager.GetDefaultAsync ();
+				AnatoliClient.GetInstance ().WebClient.TokenExpire += async delegate {
+					await AnatoliApp.GetInstance().LogOutAsync();
+					AnatoliApp.GetInstance().PushViewController(new LoginViewController());
+				};
 			} catch (Exception) {
 
 			}
@@ -277,7 +281,6 @@ namespace AnatoliIOS
 			Customer = null;
 			User = null;
 			RefreshMenu ();
-			ReplaceViewController (new FirstPageViewController ());
 		}
 
 

@@ -116,6 +116,7 @@ namespace AnatoliIOS.ViewControllers
             logoutButton.TouchUpInside += async (object sender, EventArgs e) =>
             {
                 await AnatoliApp.GetInstance().LogOutAsync();
+				AnatoliApp.GetInstance().ReplaceViewController(new FirstPageViewController());
             };
             saveButton.TouchUpInside += async (object sender, EventArgs e) =>
             {
