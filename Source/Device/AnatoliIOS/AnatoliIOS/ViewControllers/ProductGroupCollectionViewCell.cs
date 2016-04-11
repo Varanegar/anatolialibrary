@@ -3,6 +3,8 @@
 using Foundation;
 using UIKit;
 using Anatoli.App.Model.Product;
+using Haneke;
+using Anatoli.App.Manager;
 
 namespace AnatoliIOS
 {
@@ -23,6 +25,19 @@ namespace AnatoliIOS
 		public void UpdateCell(CategoryInfoModel item){
 			groupImageView.Image = UIImage.FromBundle("igicon");
 			groupNameLable.Text = item.cat_name;
+			var imgUri = CategoryManager.GetImageAddress(item.cat_id,item.cat_image);
+			if (imgUri != null) {
+				try {
+					using (var url = new NSUrl (imgUri)) {
+						groupImageView.SetImage (url : url, placeholder: UIImage.FromBundle ("igicon"));
+					}
+
+
+				} catch (Exception) {
+
+				}
+			}
+
 		}
 
 	}
