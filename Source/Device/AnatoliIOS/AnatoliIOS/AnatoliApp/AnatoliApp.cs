@@ -111,6 +111,10 @@ namespace AnatoliIOS
 		{
 			if (_views.Count > 0) {
 				_views.RemoveLast ();
+				var last = _views.Last;
+				if (last.Value != typeof(ProductsViewController)) {
+					RefreshMenu ();
+				}
 				return true;
 			} else
 				return false;
@@ -150,11 +154,13 @@ namespace AnatoliIOS
 						Id = parent.cat_id
 					});
 				}
-				source.Items.Add (new MenuItem () {
+				var c = new MenuItem () {
 					Title = current.cat_name,
 					Type = MenuItem.MenuType.CatId,
 					Id = catId
-				});
+				};
+				c.Color = UIColor.LightGray;
+				source.Items.Add (c);
 				foreach (var item in cats) {
 					source.Items.Add (new MenuItem () {
 						Title = item.cat_name,
@@ -252,7 +258,7 @@ namespace AnatoliIOS
 				break;
 			case MenuItem.MenuType.Products:
 				if (DefaultStore != null) {
-					await RefreshMenu ("0");
+					//await RefreshMenu ("0");
 					PushViewController (new ProductsViewController (),true);
 				} else {
 					PushViewController (new StoresViewController ());
@@ -271,7 +277,7 @@ namespace AnatoliIOS
 							CloseMenu ();
 							break;
 						}
-						await RefreshMenu (items [index].Id);
+						//await RefreshMenu (items [index].Id);
 						var v = new ProductsViewController ();
 						v.GroupId = items [index].Id;
 						PushViewController (v,true);

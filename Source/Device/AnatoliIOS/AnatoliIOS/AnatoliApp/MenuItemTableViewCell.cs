@@ -34,6 +34,7 @@ namespace AnatoliIOS
 					titleLabel.Center = new CGPoint (x, titleLabel.Center.Y);
 					titleLabel.Font = UIFont.FromName ("IRAN", 13);
 				}
+				BackgroundColor = item.Color;
 			}
 		}
 	}

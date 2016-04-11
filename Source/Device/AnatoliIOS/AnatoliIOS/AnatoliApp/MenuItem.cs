@@ -12,6 +12,7 @@ namespace AnatoliIOS
         public UIImage Icon { get; set; }
 		public MenuType Type{ get; set; }
 		public string Id{ get; set;}
+		public UIColor Color { get; set;}
 		public enum MenuType{
 			Login,
 			FirstPage,
