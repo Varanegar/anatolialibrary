@@ -277,8 +277,6 @@ namespace AnatoliIOS
 						PushViewController (v,true);
 					}
 				}
-
-
 				break;
 			case MenuItem.MenuType.MainMenu:
 				RefreshMenu ();
