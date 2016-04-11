@@ -2,26 +2,27 @@
 using System.Linq;
 using Anatoli.DataAccess;
 using System.Threading.Tasks;
-using Anatoli.Business.Proxy;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess.Models.Identity;
-using Anatoli.DataAccess.Interfaces.Account;
 using Anatoli.ViewModels.AuthorizationModels;
 using Anatoli.DataAccess.Repositories.Account;
-using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 
 namespace Anatoli.Business.Domain.Authorization
 {
-    
+
     public class AuthorizationDomain //: BusinessDomainV2<PrincipalPermission, PrincipalPermissionViewModel, PrincipalPermissionRepository, IPrincipalPermissionRepository>
     {
         #region Properties
         protected static log4net.ILog Logger { get; set; }
         public IRepository<Principal> PrincipalRepository { get; set; }
         public IRepository<Permission> PermissionRepository { get; set; }
+        public IRepository<PrincipalPermission> PrincipalPermissionRepository { get; set; }
+
+        public IRepository<PermissionCatalog> PermissionCatalogRepository { get; set; }
+        public IRepository<PrincipalPermissionCatalog> PrincipalPermissionCatalogRepository { get; set; }
+
         public AnatoliDbContext DBContext { get; set; }
         public IRepository<PrincipalPermission> MainRepository { get; set; }
         public Guid ApplicationOwnerKey { get; protected set; }
@@ -31,18 +32,24 @@ namespace Anatoli.Business.Domain.Authorization
 
         #region Ctors
         public AuthorizationDomain(Guid applicationKey)
-            : this(applicationKey, applicationKey, applicationKey) { }
-        public AuthorizationDomain(Guid applicationKey, Guid dataOwnerKey, Guid dataOwnerCenterKey) 
-            : this(applicationKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext()) { }
+            : this(applicationKey, applicationKey, applicationKey)
+        { }
+        public AuthorizationDomain(Guid applicationKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
+            : this(applicationKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
+        { }
         public AuthorizationDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
         {
             ApplicationOwnerKey = applicationOwnerKey; DataOwnerKey = dataOwnerKey; DataOwnerCenterKey = dataOwnerCenterKey;
 
             PermissionRepository = new PermissionRepository(dbc);
+            PermissionCatalogRepository = new PermissionCatalogRepository(dbc);
+            PrincipalPermissionCatalogRepository = new PrincipalPermissionCatalogRepository(dbc);
             MainRepository = new PrincipalPermissionRepository(dbc);
-            PrincipalRepository = new PrincipalRepository(dbc); 
-            DBContext = dbc;
+            PrincipalRepository = new PrincipalRepository(dbc);
 
+            PrincipalPermissionRepository = new PrincipalPermissionRepository(dbc);
+
+            DBContext = dbc;
         }
         #endregion
 
@@ -50,41 +57,28 @@ namespace Anatoli.Business.Domain.Authorization
         public List<PrincipalPermission> GetPermissionsForPrincipal(string principalId, string resource, string action)
         {
             //Todo: get all other related principal such as roles and groups
-
             var model = MainRepository.GetQuery().Where(p => p.PrincipalId == Guid.Parse(principalId) &&
                                                         p.Permission.ApplicationModuleResource.Name == resource &&
                                                         p.Permission.PermissionAction.Name == action)
                                                  .ToList();
-
             return model;
         }
-
         public async Task<ICollection<PrincipalPermissionViewModel>> GetPermissionsForPrincipal(string principalId)
         {
             //Todo: get all other related principal such as roles and groups
-            var model = new List<PrincipalPermissionViewModel>();
-            await Task.Factory.StartNew(() =>
-            {
-                var query = from pp in DBContext.PrincipalPermissions
-                            join p in DBContext.Permissions on pp.Permission_Id equals p.Id
-                            join r in DBContext.ApplicationModuleResources on p.ApplicationModuleResourceId equals r.Id
-                            join a in DBContext.PermissionActions on p.PermissionActionId equals a.Id
-                            where pp.PrincipalId == Guid.Parse(principalId)
-                            select new PrincipalPermissionViewModel
-                            {
-                                PrincipalId = principalId,
-                                Resource = r.Name,
-                                Action = a.Name,
-                                Grant = (pp.Grant == 1) ? true : false,
-                                PermissionId = pp.Id
-                            };
-                model = query.ToList();
 
+            var pid = Guid.Parse(principalId);
+            var model = await MainRepository.GetFromCachedAsync(pp => pp.PrincipalId == pid, s => new PrincipalPermissionViewModel
+            {
+                PrincipalId = principalId,
+                Resource = s.Permission.ApplicationModuleResource.Name,
+                Action = s.Permission.PermissionAction.Name,
+                Grant = (s.Grant == 1) ? true : false,
+                PermissionId = s.Permission_Id
             });
 
-            return model;
+            return model.ToList();
         }
-
         public async Task SavePermissions(List<PrincipalPermission> pp, string principalId)
         {
             try
@@ -101,32 +95,76 @@ namespace Anatoli.Business.Domain.Authorization
                 Logger.Error(ex);
             }
         }
-
         public async Task<ICollection<PermissionViewModel>> GetAllPermissions()
         {
-            var model = new List<PermissionViewModel>();
-            await Task.Factory.StartNew(() =>
+            var model = await PermissionRepository.GetFromCachedAsync(p => p.Id == ApplicationOwnerKey, s => new PermissionViewModel
             {
-                var query = from p in DBContext.Permissions 
-                            join r in DBContext.ApplicationModuleResources on p.ApplicationModuleResourceId equals r.Id
-                            join am in DBContext.ApplicationModules on r.ApplicationModuleId equals am.Id
-                            join apr in DBContext.ApplicationOwners on am.ApplicationId equals apr.ApplicationId
-                            join a in DBContext.PermissionActions on p.PermissionActionId equals a.Id
-                            where apr.Id == ApplicationOwnerKey 
-                            select new PermissionViewModel
-                            {
-                                Id = p.Id,
-                                Resource = r.Name,
-                                Action = a.Name,
-                                Title = p.Name
-                            };
-                model = query.ToList();
+                Id = s.Id,
+                Resource = s.ApplicationModuleResource.Name,
+                Action = s.PermissionAction.Name,
+                Title = s.Name
+            });
+            return model.ToList();
+        }
 
+        public async Task<ICollection<PermissionCatalogViewModel>> GetAllPermissionCatalogs()
+        {
+            // p.Id == ApplicationOwnerKey
+            var model = await PermissionCatalogRepository.GetFromCachedAsync(p => true, s => new PermissionCatalogViewModel
+            {
+                Id = s.Id,
+                Title = s.Name,
+                Parent = s.PermissionCatalougeParentId.HasValue ? s.PermissionCatalougeParentId.Value.ToString() : ""
+            });
+            return model.ToList();
+        }
+        public async Task<ICollection<PrincipalPermissionCatalogViewModel>> GetPermissionCatalogsForPrincipal(string principalId)
+        {
+            var pid = Guid.Parse(principalId);
+            var model = await PrincipalPermissionCatalogRepository.GetFromCachedAsync(pp => pp.PrincipalId == pid, s => new PrincipalPermissionCatalogViewModel
+            {
+                Id = s.Id,
+                PrincipalId = principalId,
+                Grant = (s.Grant == 1) ? true : false,
+                PermissionCatalogId = s.PermissionCatalog_Id
             });
 
-            MainRepository.DeleteBatch(p => p.Permission.PermissionAction.Name == "save");
-            return model;
+            return model.ToList();
         }
+        public async Task SavePermissionCatalogs(List<PrincipalPermissionCatalog> principalPermissionCatalogs, Guid principalId)
+        {
+            try
+            {
+                await PrincipalPermissionCatalogRepository.DeleteBatchAsync(p => p.PrincipalId == principalId);
+                await PrincipalPermissionRepository.DeleteBatchAsync(p => p.PrincipalId == principalId);
+
+                foreach (var item in principalPermissionCatalogs)
+                {
+                    await PrincipalPermissionCatalogRepository.AddAsync(item);
+
+                    var permissionCatalog = await PermissionCatalogRepository.GetByIdAsync(item.PermissionCatalog_Id);
+                    permissionCatalog.Permissions.ToList().ForEach(itm =>
+                    {
+                        PrincipalPermissionRepository.AddAsync(new PrincipalPermission
+                        {
+                            Id = Guid.NewGuid(),
+                            Grant = item.Grant,
+                            Permission_Id = itm.Id,
+                            PrincipalId = principalId
+                        });
+                    });
+                }
+
+                await PrincipalPermissionCatalogRepository.SaveChangesAsync();
+                await PrincipalPermissionRepository.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         #endregion
     }
 }

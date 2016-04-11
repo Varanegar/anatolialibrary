@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using EntityFramework.Caching;
 using System.Linq.Expressions;
+using EntityFramework.Extensions;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
-using EntityFramework.Extensions;
 
 namespace Anatoli.DataAccess.Repositories
 {
@@ -70,6 +70,13 @@ namespace Anatoli.DataAccess.Repositories
         public virtual async Task<IEnumerable<T>> GetFromCachedAsync(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
         {
             return await DbSet.Where(predicate).FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
+        }
+        public virtual async Task<IEnumerable<TResult>> GetFromCachedAsync<TResult>(Expression<Func<T, bool>> predicate,
+                                                                           Expression<Func<T, TResult>> selector, int cacheTimeOut = 300) where TResult : class
+        {
+            return await DbSet.Where(predicate)
+                              .Select(selector)
+                              .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
 
         public virtual void Add(T entity)

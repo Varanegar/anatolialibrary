@@ -88,6 +88,8 @@
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
+    <Compile Include="Configs\PermissionCatalogConfig.cs" />
+    <Compile Include="Configs\PrincipalPermissionCatalogConfig.cs" />
     <Compile Include="Configs\RegionAreaConfig.cs" />
     <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\IncompletePurchaseOrderConfig.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Configs\PrecinpleConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
     <Compile Include="Interfaces\Account\IPermissionRepository.cs" />
+    <Compile Include="Interfaces\Account\IPrincipalPermissionCatalogRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalPermissionRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
@@ -239,6 +242,22 @@
     <Compile Include="Migrations\201604040345278_Permission-Migration-7.Designer.cs">
       <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604051650537_AddingPermissionCatalog.cs" />
+    <Compile Include="Migrations\201604051650537_AddingPermissionCatalog.Designer.cs">
+      <DependentUpon>201604051650537_AddingPermissionCatalog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604051741311_AddingPermissionCatalog1.cs" />
+    <Compile Include="Migrations\201604051741311_AddingPermissionCatalog1.Designer.cs">
+      <DependentUpon>201604051741311_AddingPermissionCatalog1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604081738523_AddingPrincipalPermissionCatalog.cs" />
+    <Compile Include="Migrations\201604081738523_AddingPrincipalPermissionCatalog.Designer.cs">
+      <DependentUpon>201604081738523_AddingPrincipalPermissionCatalog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604101828582_AddingPermissionCatalog12.cs" />
+    <Compile Include="Migrations\201604101828582_AddingPermissionCatalog12.Designer.cs">
+      <DependentUpon>201604101828582_AddingPermissionCatalog12.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -256,7 +275,9 @@
     <Compile Include="Models\Identity\Application.cs" />
     <Compile Include="Models\Identity\DataOwnerCenter.cs" />
     <Compile Include="Models\BaseData\DataOwner.cs" />
+    <Compile Include="Models\Identity\PermissionCatalog.cs" />
     <Compile Include="Models\Identity\Principal.cs" />
+    <Compile Include="Models\Identity\PrincipalPermissionCatalog.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrder.cs" />
     <Compile Include="Models\PerchaseOrder\IncompletePurchaseOrderLineItem.cs" />
     <Compile Include="Models\PersonnelAcitvity\PersonnelDailyActivityDayArea.cs" />
@@ -340,7 +361,10 @@
     <Compile Include="Models\Account\Supplier.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\Account\IPermissionCatalogRepository.cs" />
+    <Compile Include="Repositories\Account\PermissionCatalogRepository.cs" />
     <Compile Include="Repositories\Account\PermissionRepository.cs" />
+    <Compile Include="Repositories\Account\PrincipalPermissionCatalogRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalPermissionRepository.cs" />
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
@@ -453,6 +477,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604040345278_Permission-Migration-7.resx">
       <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604051650537_AddingPermissionCatalog.resx">
+      <DependentUpon>201604051650537_AddingPermissionCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604051741311_AddingPermissionCatalog1.resx">
+      <DependentUpon>201604051741311_AddingPermissionCatalog1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604081738523_AddingPrincipalPermissionCatalog.resx">
+      <DependentUpon>201604081738523_AddingPrincipalPermissionCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604101828582_AddingPermissionCatalog12.resx">
+      <DependentUpon>201604101828582_AddingPermissionCatalog12.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
