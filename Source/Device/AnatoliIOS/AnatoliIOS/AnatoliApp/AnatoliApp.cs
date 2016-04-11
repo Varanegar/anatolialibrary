@@ -349,20 +349,21 @@ namespace AnatoliIOS
 			_counterLabel.Font = UIFont.FromName ("IRAN", 9);
 			_counterLabel.Text = ShoppingCardItemsCount.ToString();
 
-			_priceLabel = new UILabel(new CGRect(-7,20,40,12));
-			_priceLabel.TextAlignment = UITextAlignment.Center;
-			_priceLabel.TextColor = UIColor.White;
-			_counterLabel.Layer.MasksToBounds = true;
-			_counterLabel.Layer.CornerRadius = 6;
-			_priceLabel.BackgroundColor = UIColor.Blue;
-			_priceLabel.Font = UIFont.FromName ("IRAN", 8);
-			_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
+//			_priceLabel = new UILabel(new CGRect(-7,20,40,12));
+//			_priceLabel.TextAlignment = UITextAlignment.Center;
+//			_priceLabel.TextColor = UIColor.White;
+//			_counterLabel.Layer.MasksToBounds = true;
+//			_counterLabel.Layer.CornerRadius = 6;
+//			_priceLabel.BackgroundColor = UIColor.Blue;
+//			_priceLabel.Font = UIFont.FromName ("IRAN", 8);
+//			_priceLabel.Text = ShoppingCardTotalPrice.ToCurrency () + " تومان";
 
 
 			ShoppingCardManager.ItemChanged -=  UpdateBasketView;
 			ShoppingCardManager.ItemChanged +=  UpdateBasketView;
 
-			basketView.AddSubviews (button, _counterLabel,_priceLabel);
+//			basketView.AddSubviews (button, _counterLabel,_priceLabel);
+			basketView.AddSubviews (button, _counterLabel);
 			var barButton = new UIBarButtonItem (basketView);
 			return barButton;
 		}
