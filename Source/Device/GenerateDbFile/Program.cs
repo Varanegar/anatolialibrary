@@ -17,7 +17,7 @@ namespace GenerateDbFile
             {
                 AnatoliClient.GetInstance(new CWebClient(), new CSqliteClient(), new CFileIO());
                 Console.WriteLine("Data base connection established successfully.");
-                SyncManager.ProgressChanged += status => { Console.WriteLine(status); };
+                SyncManager.ProgressChanged += (status,step) => { Console.WriteLine(status); };
                 SyncManager.SyncDatabase().Wait();
                 Console.WriteLine("Syncronizing anatoli database finished successfully");
             }

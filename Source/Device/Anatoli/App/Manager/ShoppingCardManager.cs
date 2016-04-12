@@ -193,7 +193,9 @@ namespace Anatoli.App.Manager
                     line.Qty = item.count;
                     order.LineItems.Add(line);
                 }
-                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Purchase.CalcPromo, order);
+                var requestModel = new RequestModel.PurchaseOrderRequestModel();
+                requestModel.orderEntity = order;
+                var o = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<PurchaseOrderViewModel>(TokenType.AppToken, Configuration.WebService.Purchase.CalcPromo, requestModel);
                 return o;
             }
             catch (Exception ex)

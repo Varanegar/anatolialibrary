@@ -188,10 +188,9 @@ namespace AnatoliIOS.ViewControllers
         {
             return _items.Count;
         }
-        
+
         public event ItemSelectedEventHandler ItemSelected;
         public delegate void ItemSelectedEventHandler(DeliveryTypeModel item);
     }
 }
-
 

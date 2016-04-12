@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anatoli.App.Model.Store;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Anatoli.App.RequestModel
         public string customerId { get; set; }
         public string centerId { get; set; }
         public string poId { get; set; }
+        public PurchaseOrderViewModel orderEntity { get; set; }
+
     }
 }

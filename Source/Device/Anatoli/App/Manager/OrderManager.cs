@@ -68,7 +68,7 @@ namespace Anatoli.App.Manager
 
         public static async Task<List<PurchaseOrderViewModel>> DownloadOrdersAsync(string customerId)
         {
-            var data = new RequestModel.CustomerRequestModel();
+            var data = new RequestModel.PurchaseOrderRequestModel();
             data.customerId = customerId;
             var list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<PurchaseOrderViewModel>>(TokenType.AppToken, Configuration.WebService.Purchase.OrdersList,data);
             return list;
@@ -125,9 +125,9 @@ namespace Anatoli.App.Manager
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
