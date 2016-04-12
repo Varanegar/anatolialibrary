@@ -61,7 +61,7 @@ namespace Anatoli.Business.Domain
                         {
                             item.BasketItems.ToList().ForEach(itemDetail =>
                                 {
-                                    itemDetail.ApplicationOwnerId = item.ApplicationOwnerId;
+                                    itemDetail.ApplicationOwnerId = ApplicationOwnerKey; itemDetail.DataOwnerId = DataOwnerKey; itemDetail.DataOwnerCenterId = DataOwnerCenterKey;
                                     itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                                     itemDetail.Id = itemDetail.Id == Guid.Empty ? Guid.NewGuid() : itemDetail.Id;
                                 });

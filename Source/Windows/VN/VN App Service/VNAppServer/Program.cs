@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.ServiceProcess;
 
@@ -14,7 +15,6 @@ namespace VNAppServer
         /// </summary>
         private static void Main()
         {
-
             ServiceBase[] ServicesToRun;
             var vnApplicationServer = new VNApplicationServer();
             ServicesToRun = new ServiceBase[]

@@ -288,6 +288,16 @@ namespace Anatoli.Business.Domain
             }
 
         }
+        public async Task ChangeProductRates(Guid productId, double rate)
+        {
+            var product = MainRepository.GetById(productId);
+            if(product != null)
+            {
+                product.ProductRate = rate;
+                await  MainRepository.UpdateAsync(product);
+                await MainRepository.SaveChangesAsync();
+            }
+        }
         #endregion
     }
 }

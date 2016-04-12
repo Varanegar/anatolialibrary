@@ -43,7 +43,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
         public List<PurchaseOrderViewModel> GetAllByCustomerId(Guid customerId, string statusId, string centerId)
         {
             if (centerId.ToLower() == "all")
-                return SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId.ToString(), statusId.ToString());
+                return SellAdapter.Instance.GetPurchaseOrderByCustomerId(customerId.ToString(), statusId);
             else
                 return null;
         }
@@ -66,29 +66,17 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
 
         public PurchaseOrderViewModel GetPerformaInvoicePreview(PurchaseOrderViewModel baseViewModels)
         {
+            baseViewModels.DeliveryPDate = new PersianDate((DateTime)baseViewModels.DeliveryDate).ToShortDateString();
             var storeConfig = StoreConfigHeler.Instance.GetStoreConfig(baseViewModels.StoreGuid.ToString());
             var pmcSell = Proxy.ReverseConvert(baseViewModels, storeConfig);
 
             pmcSell.CustomerId = null;
 
             var resultEvc = EVCAdapter.Instance.CalcEvcResult(EvcProxy.ReverseConvert(pmcSell, storeConfig));
-            pmcSell = SetSellDataByEvc(pmcSell, resultEvc);
-            var resultPurchaseOrder = Proxy.Convert(pmcSell, storeConfig);
-            resultPurchaseOrder = SetHeaderData(resultPurchaseOrder, baseViewModels);
-            return resultPurchaseOrder;
+            baseViewModels = SetSellDataByEvc(baseViewModels, resultEvc);
+            return baseViewModels;
         }
-
-        private PurchaseOrderViewModel SetHeaderData(PurchaseOrderViewModel result, PurchaseOrderViewModel source)
-        {
-            result.StoreGuid = source.StoreGuid;
-            result.Customer = source.Customer;
-            result.UserId = source.UserId;
-            result.AppOrderNo = source.AppOrderNo;
-            result.Comment = source.Comment;
-            result.UniqueId = source.UniqueId;
-            return result;
-        }
-        private PMCSellViewModel SetSellDataByEvc(PMCSellViewModel sellData, PMCEvcViewModel evcData)
+        private PurchaseOrderViewModel SetSellDataByEvc(PurchaseOrderViewModel sellData, PMCEvcViewModel evcData)
         {
             sellData.Amount = evcData.Amount;
             sellData.ChargeAmount = evcData.ChargeAmount;
@@ -105,12 +93,14 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
             return sellData;
         }
 
-        private PMCSellViewModel SetSellDetailDataByEvcDetail(PMCSellViewModel sellData, PMCEvcDetailViewModel evcDetailData)
+        private PurchaseOrderViewModel SetSellDetailDataByEvcDetail(PurchaseOrderViewModel sellData, PMCEvcDetailViewModel evcDetailData)
         {
+            evcDetailData.ProductGuid = Guid.Parse(ProductAdapter.Instance.GetProductUniqueId(evcDetailData.ProductId));
+
             bool isProductExists = false;
-            sellData.SellDetail.ForEach(item =>
+            sellData.LineItems.ForEach(item =>
                 {
-                    if(item.ProductId == evcDetailData.ProductId && item.IsPrize == evcDetailData.IsPrize)
+                    if(item.ProductId == evcDetailData.ProductGuid && item.IsPrize == evcDetailData.IsPrize)
                     {
                         if(evcDetailData.IsPrize)
                         {
@@ -125,21 +115,21 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
                             item.PriceId = evcDetailData.PriceId;
                             item.TaxAmount = evcDetailData.TaxAmount;
                             item.ChargeAmount = evcDetailData.ChargeAmount;
-                            item.Amount = evcDetailData.AmountCalcBase;
                             item.NetAmount = evcDetailData.NetAmount;
                             item.DiscountAmount = evcDetailData.DiscountAmount;
                         }
                     }
                 });
+
             if(!isProductExists && evcDetailData.IsPrize)
             {
-                PMCSellDetailViewModel data = new PMCSellDetailViewModel();
+                PurchaseOrderLineItemViewModel data = new PurchaseOrderLineItemViewModel();
                 data.IsPrize = true;
-                data.SellId = sellData.SellId;
-                data.ProductId = evcDetailData.ProductId;
+                data.PurchaseOrderId = sellData.UniqueId;
+                data.ProductId = evcDetailData.ProductGuid;
                 data.PriceId = evcDetailData.PriceId;
                 data.Qty = evcDetailData.Qty;
-                sellData.SellDetail.Add(data);
+                sellData.LineItems.Add(data);
             }
             return sellData;
         }

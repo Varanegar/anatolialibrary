@@ -39,7 +39,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 
         #region Actions
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("images")]
+        [Route("images"), HttpGet, HttpPost]
         public async Task<IHttpActionResult> GetImages()
         {
             try
@@ -56,13 +56,13 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
-        [Route("images/after")]
-        public async Task<IHttpActionResult> GetProducts([FromBody]ItemImageRequestModel data)
+        [Route("images/after"), HttpPost, HttpGet]
+        public async Task<IHttpActionResult> GetProducts(string dateAfter)
         {
             try
             {
                 var productDomain = new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = DateTime.Parse(dateAfter);
                 var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -75,7 +75,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [HttpPost, Route("Save")]
-        public async Task<IHttpActionResult> SaveImage([FromBody]ItemImageRequestModel data)
+        public async Task<IHttpActionResult> SaveImag(string token, string imagetype, string imageId, bool isDefault)
         {
             try
             {
@@ -87,8 +87,8 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                 if (httpRequest.Form["token"] != null )
                     Guid.TryParse(httpRequest.Form["token"], out _token);
 
-                if(data.token != "")
-                    Guid.TryParse(data.token, out _token);
+                if(token != "")
+                    Guid.TryParse(token, out _token);
 
                 List<ItemImage> dataList = new List<ItemImage>();
                 if (httpRequest.Files.Count > 0){
@@ -96,15 +96,15 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                     {
                         HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
 
-                        await FileManager.Save(postedFile, data.imagetype, _token.ToString(), file);
+                        await FileManager.Save(postedFile, imagetype, _token.ToString(), file);
 
                         ItemImage imageViewModel = new ItemImage()
                             {
-                                TokenId = data.token,
-                                Id = Guid.Parse(data.imageId),
-                                ImageType = data.imagetype,
+                                TokenId = token,
+                                Id = Guid.Parse(imageId),
+                                ImageType = imagetype,
                                 ImageName = file,
-                                IsDefault = data.isDefault,
+                                IsDefault = isDefault,
                             };
                         dataList.Add(imageViewModel);
                     }

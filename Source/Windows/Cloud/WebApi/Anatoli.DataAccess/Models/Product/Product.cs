@@ -33,7 +33,7 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> MainSupplierId { get; set; }
         [ForeignKey("ProductType")]
         public Nullable<Guid> ProductTypeId { get; set; }
-
+        public double ProductRate { get; set; }
         public virtual ProductType ProductType { get; set; }
         public virtual Supplier MainSupplier { get; set; }
         public virtual ProductGroup ProductGroup { get; set; }

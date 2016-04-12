@@ -26,12 +26,12 @@ namespace ClientApp
             try
             {
 
-                //string servserURI = "http://46.209.104.2:7000/";
+                string servserURI = "http://217.218.53.71:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
                 //string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
-                //string servserURI = "http://localhost/";
-                string servserURI = "http://192.168.0.160:8081/";
+                //string servserURI = "http://localhost:8081/";
+                //string servserURI = "http://192.168.0.160:8081/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromHours(1);
@@ -41,14 +41,15 @@ namespace ClientApp
                 //ProductManagement.ProductGroupTest();
 
                 log4net.Config.XmlConfigurator.Configure();
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09123664255", "09123664255", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
-                    ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
+                    //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
@@ -111,7 +112,7 @@ namespace ClientApp
                     //BasketManagement.UpdateCustomerBasketFromServer(client, servserURI);
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
                     //ProductManagement.DownloadProductGroupFromServer(client, servserURI);
-                    //IncompleteManagement.GetIncompleteFromServer(client, servserURI);
+                    IncompleteManagement.GetIncompleteFromServer(client, servserURI);
                 }
                 
             }

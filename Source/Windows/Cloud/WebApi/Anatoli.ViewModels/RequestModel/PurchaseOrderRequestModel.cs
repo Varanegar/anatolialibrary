@@ -10,7 +10,7 @@ namespace Anatoli.ViewModels
     public class PurchaseOrderRequestModel
     {
         public Guid customerId { get; set; }
-        public Guid centerId { get; set; }
+        public string centerId { get; set; }
         public Guid poId { get; set; }
         public List<IncompletePurchaseOrderViewModel> incompletePurchaseOrderData { get; set; }
         public List<IncompletePurchaseOrderLineItemViewModel> incompletePurchaseOrderLineItemData { get; set; }

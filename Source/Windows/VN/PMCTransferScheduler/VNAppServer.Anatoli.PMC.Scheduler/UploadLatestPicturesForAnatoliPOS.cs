@@ -24,7 +24,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(3);
 
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," + DataOwnerKey).Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);

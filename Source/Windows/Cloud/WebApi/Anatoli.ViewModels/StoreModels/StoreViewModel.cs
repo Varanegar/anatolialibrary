@@ -14,13 +14,13 @@ namespace Anatoli.ViewModels.StoreModels
         public string Phone { get; set; }
         public long Lat { get; set; }
         public long Lng { get; set; }
-        public bool HasDelivery { get; set; }
+        public byte HasDelivery { get; set; }
         public Guid GradeValueId { get; set; }
         public Guid StoreTemplateId { get; set; }
-        public bool HasCourier { get; set; }
-        public bool SupportAppOrder { get; set; }
-        public bool SupportWebOrder { get; set; }
-        public bool SupportCallCenterOrder { get; set; }
+        public byte HasCourier { get; set; }
+        public byte SupportAppOrder { get; set; }
+        public byte SupportWebOrder { get; set; }
+        public byte SupportCallCenterOrder { get; set; }
 
         public List<StoreCalendarViewModel> StoreCalendar { get; set; }
         public List<CityRegionViewModel> StoreValidRegionInfo { get; set; }

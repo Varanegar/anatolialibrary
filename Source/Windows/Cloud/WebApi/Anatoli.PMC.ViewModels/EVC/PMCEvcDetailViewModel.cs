@@ -13,7 +13,7 @@ namespace Anatoli.PMC.ViewModels.EVC
         public decimal Amount { get; set; }
         public int ProductId { get; set; }
         public int PriceId { get; set; }
-        public double Qty { get; set; }
+        public decimal Qty { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ChargeAmount { get; set; }
         public decimal DiscountAmount { get; set; }
@@ -25,6 +25,8 @@ namespace Anatoli.PMC.ViewModels.EVC
         public int EVCID { get; set; }
         [Ignore]
         public int DetailId { get; set; }
+        [Ignore]
+        public Guid ProductGuid { get; set; }
         public bool IsPrize { get; set; }
     }
 }

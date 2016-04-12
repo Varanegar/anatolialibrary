@@ -25,7 +25,7 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(3);
 
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," +DataOwnerKey ).Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
@@ -39,6 +39,8 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     ManufactureTransferHandler.UploadManufactureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product group");
                     ProductGroupTransferHandler.UploadProductGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer main product group");
+                    MainProductGroupTransferHandler.UploadMainProductGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char type");
                     CharTypeTransferHandler.UploadCharTypeToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char group");

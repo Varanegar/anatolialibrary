@@ -24,7 +24,12 @@ namespace Anatoli.App.Model.Store
             }
         }
 
-        public string ParentUniqueIdString { get; set; }
+        string _parentUniqueIdString;
+        public string ParentUniqueIdString
+        {
+            get { return (_parentUniqueIdString != null) ? _parentUniqueIdString.ToUpper() : ""; }
+            set { _parentUniqueIdString = (value != null) ? value.ToUpper() : ""; }
+        }
         public int ParentId { get; set; }
         public string GroupName { get; set; }
         public int NLeft { get; set; }

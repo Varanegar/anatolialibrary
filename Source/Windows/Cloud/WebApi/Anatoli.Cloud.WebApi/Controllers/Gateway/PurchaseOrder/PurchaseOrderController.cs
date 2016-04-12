@@ -24,7 +24,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await orderDomain.PublishOrderOnline(new PurchaseOrderProxy().ReverseConvert(data.orderEntity));
+                var result = await orderDomain.PublishOrderOnline(data);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await orderDomain.CalcPromoOnline(data.orderEntity);
+                var result = await orderDomain.CalcPromoOnline(data);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var orderDomain = new PurchaseOrderDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await orderDomain.GetAllByCustomerIdOnLine(data.customerId);
+                var result = await orderDomain.GetAllByCustomerIdOnLine(data);
                 result.ForEach(item =>
                 {
                     item.ApplicationOwnerId = OwnerKey;
@@ -148,7 +148,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var orderDomain = new PurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await orderDomain.GetAllByPOIdOnLine(data.poId);
+                var result = await orderDomain.GetAllByPOIdOnLine(data);
                 result.ForEach(item =>
                 {
                     item.ApplicationOwnerId = OwnerKey;
@@ -173,7 +173,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderLineItemDomain();
-                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId);
+                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId.ToString());
                 });
                 return Ok(result);
             }
@@ -192,7 +192,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var orderDomain = new PurchaseOrderStatusHistoryDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var result = await orderDomain.GetAllByPOIdOnLine(data.poId);
+                var result = await orderDomain.GetAllByPOIdOnLine(data);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -213,7 +213,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderStatusHistoryDomain();
-                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId);
+                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId.ToString());
                 });
                 return Ok(result);
             }

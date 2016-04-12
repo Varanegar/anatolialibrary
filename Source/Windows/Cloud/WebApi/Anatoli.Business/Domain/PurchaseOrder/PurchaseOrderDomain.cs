@@ -15,6 +15,8 @@ using Anatoli.Business.Helpers;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Anatoli.ViewModels.CustomerModels;
+using Anatoli.ViewModels;
+using Anatoli.Business.Proxy.Concretes;
 
 namespace Anatoli.Business.Domain
 {
@@ -39,13 +41,16 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
-        public async Task<List<PurchaseOrderViewModel>> GetAllByCustomerIdOnLine(Guid custoemrId)
+        public async Task<List<PurchaseOrderViewModel>> GetAllByCustomerIdOnLine(PurchaseOrderRequestModel dataRequest)
         {
             var returnData = new List<PurchaseOrderViewModel>();
 
             await Task.Factory.StartNew(() =>
             {
-                 returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoByCustomerIdLocalURI, "customerid=" + custoemrId + "&centerId=all" ));
+                dataRequest.centerId = "all";  
+                string data = JsonConvert.SerializeObject(dataRequest);
+
+                 returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoByCustomerIdLocalURI, data ));
             });
             return returnData;
         }
@@ -147,32 +152,30 @@ namespace Anatoli.Business.Domain
             return data;
         }
 
-        public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrder order)
+        public async Task<PurchaseOrderViewModel> PublishOrderOnline(PurchaseOrderRequestModel data)
         {
-            if (order.Id == Guid.Empty)
-                order.Id = Guid.NewGuid();
+            if (data.orderEntity.UniqueId == Guid.Empty)
+                data.orderEntity.UniqueId = Guid.NewGuid();
 
             var returnData = new PurchaseOrderViewModel();
-
-            order.Customer = CustomerRepository.GetById(order.CustomerId);
-            string data = JsonConvert.SerializeObject(order);
+            var customerDomain = new CustomerDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            data.orderEntity.Customer = await customerDomain.GetByIdAsync(data.orderEntity.UserId);
+            string dataStr = JsonConvert.SerializeObject(data);
             await Task.Factory.StartNew(() =>
             {
-                returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, data, true);
+                returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, dataStr, true);
             });
-            
-            var dataList = new List<PurchaseOrder>();
-            order.AppOrderNo = returnData.AppOrderNo;
-            dataList.Add(order);
-            await PublishAsync(dataList);
+
+            var order = new PurchaseOrderProxy().ReverseConvert(returnData);
+            await PublishAsync(order);
 
             return returnData;
         }
 
-        public async Task<PurchaseOrderViewModel> CalcPromoOnline(PurchaseOrderViewModel order)
+        public async Task<PurchaseOrderViewModel> CalcPromoOnline(PurchaseOrderRequestModel dataRequest)
         {
             var returnData = new PurchaseOrderViewModel();
-            string data = JsonConvert.SerializeObject(order);
+            string data = JsonConvert.SerializeObject(dataRequest);
 
             await Task.Factory.StartNew(() =>
             {
