@@ -56,6 +56,10 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIButton pickImageButton { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UIImageView profileImageView { get; set; }
 
 		[Outlet]
@@ -107,6 +111,10 @@ namespace AnatoliIOS.ViewControllers
 			if (numberLabel != null) {
 				numberLabel.Dispose ();
 				numberLabel = null;
+			}
+			if (pickImageButton != null) {
+				pickImageButton.Dispose ();
+				pickImageButton = null;
 			}
 			if (profileImageView != null) {
 				profileImageView.Dispose ();
