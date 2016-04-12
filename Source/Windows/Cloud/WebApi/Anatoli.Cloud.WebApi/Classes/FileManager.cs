@@ -18,14 +18,14 @@ namespace Anatoli.Cloud.WebApi.Classes
             {
                 await Task.Run(() =>
                 {
-                    var physicalPath = GetPath(token, imagetype + "\\orginal", imageName + ".png");
-                    file.SaveAs(physicalPath);
-
-                    Image image100x100 = Scale(Image.FromFile(physicalPath), 100, 100);
+                    Image image100x100 = Scale(Image.FromStream(file.InputStream), 100, 100);
                     image100x100.Save(GetPath(token, imagetype + "\\100x100", imageName + ".png"));
 
-                    Image image320x320 = Scale(Image.FromFile(physicalPath), 320, 320);
+                    Image image320x320 = Scale(Image.FromStream(file.InputStream), 320, 320);
                     image320x320.Save(GetPath(token, imagetype + "\\320x320", imageName + ".png"));
+
+                    var physicalPath = GetPath(token, imagetype + "\\orginal", imageName + ".png");
+                    file.SaveAs(physicalPath);
                 });
             }
             catch(Exception ex)
