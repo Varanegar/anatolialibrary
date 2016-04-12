@@ -31,8 +31,8 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="duC-DQ-ONV">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="beH-1X-c8C" misplaced="YES">
-                            <rect key="frame" x="0.0" y="11" width="600" height="1113"/>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="beH-1X-c8C">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1113"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d56-YI-zfz">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="160"/>

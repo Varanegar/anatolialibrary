@@ -6,6 +6,8 @@ using Anatoli.App.Manager;
 using Anatoli.Framework.AnatoliBase;
 using Anatoli.App.Model.Product;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Anatoli.App.Model.Store;
 
 namespace AnatoliIOS.ViewControllers
 {
@@ -43,6 +45,12 @@ namespace AnatoliIOS.ViewControllers
 			editAddressButton.TouchUpInside += (object sender, EventArgs e) => {
 				AnatoliApp.GetInstance().PushViewController(new ProfileViewController());
 			};
+
+			var deliveryTypeModel = new DeliveryTypePickerViewModel (await DeliveryTypeManager.GetDeliveryTypesAsync ());
+			deliveryTypePicker.Model = deliveryTypeModel;
+			//deliveryTypePicker.Select (0, 0, true);
+			deliveryTypePicker.ReloadAllComponents ();
+			//timePicker.Delegate = new TimePickerViewDelegate (await DeliveryTimeManager.GetAvailableDeliveryTimes (AnatoliApp.GetInstance ().DefaultStore.store_id, DateTime.Now, deliveryTypeDelegate.SelectedItem.UniqueId));
 			itemCountLabel.Text = await ShoppingCardManager.GetItemsCountAsync () + " عدد";
 			totalPriceLabel.Text = (await ShoppingCardManager.GetTotalPriceAsync ()).ToCurrency() + " تومان";
 			ShoppingCardManager.ItemChanged += UpdateLabels;
@@ -95,6 +103,46 @@ namespace AnatoliIOS.ViewControllers
 			base.DidReceiveMemoryWarning ();
 			// Release any cached data, images, etc that aren't in use.
 
+		}
+	}
+
+	class TimePickerViewDelegate : UIPickerViewDelegate {
+		List<DeliveryTimeModel> _items;
+		public DeliveryTimeModel SelectedItem;
+		public TimePickerViewDelegate(List<DeliveryTimeModel> items){
+			_items = items;
+		}
+		public override string GetTitle (UIPickerView pickerView, nint row, nint component)
+		{
+			return _items [(int)row].ToString ();
+		}
+		public override void Selected (UIPickerView pickerView, nint row, nint component)
+		{
+			SelectedItem = _items [(int)row];
+		}
+	}
+	class DeliveryTypePickerViewModel : UIPickerViewModel {
+		List<DeliveryTypeModel> _items;
+		public DeliveryTypeModel SelectedItem;
+		public DeliveryTypePickerViewModel(List<DeliveryTypeModel> items){
+			_items = items;
+		}
+		public override string GetTitle (UIPickerView pickerView, nint row, nint component)
+		{
+			return _items [(int)row].ToString ();
+		}
+		public override void Selected (UIPickerView pickerView, nint row, nint component)
+		{
+			SelectedItem = _items [(int)row];
+		}
+		public override nint GetComponentCount (UIPickerView pickerView)
+		{
+			return 1;
+		}
+
+		public override nint GetRowsInComponent (UIPickerView pickerView, nint component)
+		{
+			return _items.Count;
 		}
 	}
 }
