@@ -17,5 +17,5 @@ namespace Anatoli.DataAccess.Models.Identity
         public Guid Permission_Id { get; set; }
         [ForeignKey("Principal")]
         public Guid PrincipalId { get; set; }
-    }
+    }    
 }

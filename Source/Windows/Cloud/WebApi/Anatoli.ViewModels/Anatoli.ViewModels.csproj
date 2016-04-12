@@ -40,8 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationModels\PermissionCatalogViewModel.cs" />
     <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
+<<<<<<< HEAD
     <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
+=======
+    <Compile Include="AuthorizationModels\PrincipalPermissionCatalogViewModel.cs" />
+>>>>>>> c646d2e94b5cfcac522abe5e16c15291d5112b80
     <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />

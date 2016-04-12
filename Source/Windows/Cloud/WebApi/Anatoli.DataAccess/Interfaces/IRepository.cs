@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using System.Data.Entity;
 
 namespace Anatoli.DataAccess.Interfaces
 {
@@ -33,8 +32,11 @@ namespace Anatoli.DataAccess.Interfaces
         /// <param name="cacheTimeOut">default timeout equals 300 seconds</param>
         /// <returns></returns>
         Task<IEnumerable<T>> GetFromCachedAsync(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300);
-
-        void Add(T entity);
+        Task<IEnumerable<TResult>> GetFromCachedAsync<TResult>(Expression<Func<T, bool>> predicate,
+                                                               Expression<Func<T, TResult>> selector,
+                                                               int cacheTimeOut = 300) where TResult : class;
+        
+       void Add(T entity);
         Task<T> AddAsync(T entity);
 
         void Update(T entity);

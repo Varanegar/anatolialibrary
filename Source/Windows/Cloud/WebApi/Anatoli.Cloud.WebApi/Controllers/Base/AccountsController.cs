@@ -65,6 +65,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [Route("permissionCatalogs"), HttpPost]
+        public async Task<IHttpActionResult> GetPersmissionCatalogs()
+        {
+            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissionCatalogs();
+
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("getPersmissionCatalogsOfUser"), HttpPost]
+        public async Task<IHttpActionResult> GetPersmissionCatalogsOfUser([FromBody] BaseRequestModel data)
+        {
+            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionCatalogsForPrincipal(data.userId);
+
+            return Ok(model.ToList());
+        }
+
+        [Authorize(Roles = "Admin")]
         [Route("getPersmissionsOfUser"), HttpPost]
         public async Task<IHttpActionResult> GetPersmissionsOfUser([FromBody] BaseRequestModel data)
         {
@@ -89,11 +107,31 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     PrincipalId = Guid.Parse(model.userId.Value),
                 });
 
-            //await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
+            await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
 
             return Ok(new { });
         }
 
+        [Authorize(Roles = "Admin")]
+        [Route("savePermissionCatalogs"), HttpPost]
+        public async Task<IHttpActionResult> SavePersmissionCatalogs([FromBody] BaseRequestModel data)
+        {
+            var model = JsonConvert.DeserializeObject<dynamic>(data.data);
+
+            var ppc = new List<PrincipalPermissionCatalog>();
+            foreach (var itm in model.permissionCatalogs)
+                ppc.Add(new PrincipalPermissionCatalog
+                {
+                    Id = Guid.NewGuid(),
+                    Grant = itm.grant.Value == true ? 1 : 0,
+                    PermissionCatalog_Id = Guid.Parse(itm.id.Value),
+                    PrincipalId = Guid.Parse(model.userId.Value),
+                });
+
+            await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissionCatalogs(ppc, Guid.Parse(model.userId.Value));
+
+            return Ok(new { });
+        }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("user/{id:guid}", Name = "GetUserById"), HttpPost]
@@ -288,7 +326,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("saveUser"), HttpPost]
         public async Task<IHttpActionResult> SaveUser([FromBody] BaseRequestModel model)
         {
-            var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.userId);
+            var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
 
             if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
                 return await UpdateUser(userModel);

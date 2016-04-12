@@ -27,7 +27,7 @@
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="12" translatesAutoresizingMaskIntoConstraints="NO" placeholder="کلمه عبور" textAlignment="right">
                     <rect key="frame" x="10" y="70" width="580" height="30"/>
                     <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES" returnKeyType="done"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="18" translatesAutoresizingMaskIntoConstraints="NO">
                     <rect key="frame" x="10" y="120" width="580" height="30"/>
@@ -86,5 +86,10 @@
         <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
         <image name="anatoli.ttf" width="0" height="0"/>
         <image name="ic_search_white_24dp.png" width="96" height="96"/>
+        <image name="ic_reorder_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shopping_cart_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shoppingcard_on_white_24dp.png" width="96" height="97"/>
+        <image name="ic_call_green_24dp.png" width="70" height="70"/>
+        <image name="ic_edit_text_green_24dp.png" width="70" height="71"/>
     </resources>
 </document>

@@ -21,6 +21,7 @@
                 <outlet property="saveButton" destination="iao-da-V4w" id="name-outlet-iao-da-V4w"/>
                 <outlet property="titleLabel" destination="11P-5H-3ns" id="name-outlet-11P-5H-3ns"/>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
+                <outlet property="pickImageButton" destination="13" id="name-outlet-13"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -31,7 +32,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="beH-1X-c8C" misplaced="YES">
-                            <rect key="frame" x="0.0" y="-393" width="600" height="1113"/>
+                            <rect key="frame" x="0.0" y="11" width="600" height="1113"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d56-YI-zfz">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="160"/>
@@ -61,6 +62,17 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="13" translatesAutoresizingMaskIntoConstraints="NO">
+                                            <rect key="frame" x="250" y="80" width="100" height="20"/>
+                                            <fontDescription key="fontDescription" name="IRANSans" family="IRAN" pointSize="12"/>
+                                            <state key="normal" title="ویرایش عکس">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <constraints>
+                                                <constraint id="15" firstItem="13" firstAttribute="height" constant="20"/>
+                                                <constraint id="16" firstItem="13" firstAttribute="width" constant="100"/>
+                                            </constraints>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" red="0.68237663296287954" green="0.74986746319686737" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -73,6 +85,8 @@
                                         <constraint firstAttribute="height" constant="160" id="laC-4W-Omf"/>
                                         <constraint firstItem="K6M-jm-0Qo" firstAttribute="top" secondItem="11P-5H-3ns" secondAttribute="bottom" constant="10" id="ryH-Ah-egW"/>
                                         <constraint firstItem="AaV-ZL-E3O" firstAttribute="centerX" secondItem="d56-YI-zfz" secondAttribute="centerX" id="ywo-zj-3Fb"/>
+                                        <constraint id="14" firstItem="13" firstAttribute="centerX" secondItem="AaV-ZL-E3O" secondAttribute="centerX"/>
+                                        <constraint id="17" firstItem="AaV-ZL-E3O" firstAttribute="bottom" secondItem="13" secondAttribute="bottom"/>
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="نام خانوادگی" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xwk-t9-ILP">
@@ -258,5 +272,11 @@
         <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
         <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
         <image name="anatoli.ttf" width="0" height="0"/>
+        <image name="ic_search_white_24dp.png" width="96" height="96"/>
+        <image name="ic_reorder_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shopping_cart_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shoppingcard_on_white_24dp.png" width="96" height="97"/>
+        <image name="ic_call_green_24dp.png" width="70" height="70"/>
+        <image name="ic_edit_text_green_24dp.png" width="70" height="71"/>
     </resources>
 </document>

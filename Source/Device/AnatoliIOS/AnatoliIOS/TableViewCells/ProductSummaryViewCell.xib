@@ -106,6 +106,7 @@
                 <outlet property="countLabel" destination="39" id="name-outlet-39"/>
                 <outlet property="removeProductButton" destination="43" id="name-outlet-43"/>
                 <outlet property="toolsView" destination="33" id="name-outlet-33"/>
+                <outlet property="toolsViewWidth" destination="35" id="name-outlet-35"/>
             </connections>
             <point key="canvasLocation" x="-9" y="-5"/>
             <rect key="contentStretch.height" x="0.95" y="0.0" width="1" height="1"/>
@@ -123,5 +124,11 @@
         <image name="ic_log_in_green_24dp.png" width="96" height="96"/>
         <image name="ic_shoppingcard_blue_24dp.png" width="109" height="96"/>
         <image name="anatoli.ttf" width="0" height="0"/>
+        <image name="ic_search_white_24dp.png" width="96" height="96"/>
+        <image name="ic_reorder_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shopping_cart_white_24dp.png" width="96" height="96"/>
+        <image name="ic_shoppingcard_on_white_24dp.png" width="96" height="97"/>
+        <image name="ic_call_green_24dp.png" width="70" height="70"/>
+        <image name="ic_edit_text_green_24dp.png" width="70" height="71"/>
     </resources>
 </document>

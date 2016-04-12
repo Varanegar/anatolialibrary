@@ -42,6 +42,10 @@ namespace AnatoliIOS.TableViewCells
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIView toolsView { get; set; }
 
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		NSLayoutConstraint toolsViewWidth { get; set; }
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (addProductButton != null) {
@@ -71,6 +75,10 @@ namespace AnatoliIOS.TableViewCells
 			if (toolsView != null) {
 				toolsView.Dispose ();
 				toolsView = null;
+			}
+			if (toolsViewWidth != null) {
+				toolsViewWidth.Dispose ();
+				toolsViewWidth = null;
 			}
 		}
 	}

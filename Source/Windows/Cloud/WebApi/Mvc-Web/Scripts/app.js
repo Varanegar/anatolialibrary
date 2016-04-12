@@ -10,7 +10,7 @@ var baseBackendUrl = 'http://localhost:59822/',
     dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
     urls = {
         loginUrl: baseBackendUrl + '/oauth/token',
-        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/', 
+        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
         userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
         saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
         searchProductsUrl: baseBackendUrl + '/api/gateway/product/searchProducts',
@@ -22,6 +22,10 @@ var baseBackendUrl = 'http://localhost:59822/',
         userUrl: baseBackendUrl + "/api/accounts/getUser",
         saveUserUrl: baseBackendUrl + '/api/accounts/saveUser',
         checkUserEmail: baseBackendUrl + '/api/accounts/checkEmailExist',
+
+        permissionCatalogsUrl: baseBackendUrl + "/api/accounts/permissionCatalogs",
+        permissionCatalogsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionCatalogsOfUser",
+        savePermissionCatalogsUrl: baseBackendUrl + "/api/accounts/savePermissionCatalogs",
 
         permissionsUrl: baseBackendUrl + "/api/accounts/permissions",
         savePermissionsUrl: baseBackendUrl + "/api/accounts/savePermissions",
@@ -182,8 +186,7 @@ function headerMenuViewModel() {
             });
             self.refreshHeaderMenu();
         }
-        else
-        {
+        else {
             $(".header-menu").html("<div class='container'><div class='navbar-header'><button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></button><a class='navbar-brand' href='/Products/ReviewProductRequest'>مدیریت تامین کالا</a></div><div class='navbar-collapse collapse'><ul class='nav navbar-nav'><li class='exit-menu-item' '='' data-bind='visible: shouldShowLogout'><a href='#' '='' class='glyphicon glyphicon-log-out'> خروج </a></li></ul></div></div>");
         }
     });
@@ -1033,16 +1036,16 @@ function UserPermissionsViewModel() {
             $(this).prop('checked', false);
         });
 
-        accountManagerApp.callApi(urls.permissionsOfUserUrl, 'POST', { userId: self.chosenUser().id }, function (data) {
+        accountManagerApp.callApi(urls.permissionCatalogsOfUserUrl, 'POST', { userId: self.chosenUser().id }, function (data) {
             data.forEach(function (itm) {
                 if (itm.grant)
-                    $('input[name="grants[]"][data-id="' + itm.permissionId + '"]').prop("checked", true);
+                    $('input[name="grants[]"][data-id="' + itm.permissionCatalogId + '"]').prop("checked", true);
             });
         });
     }, self);
 
     self.refreshPermissions = function () {
-        accountManagerApp.callApi(urls.permissionsUrl, 'POST', {}, function (data) {
+        accountManagerApp.callApi(urls.permissionCatalogsUrl, 'POST', {}, function (data) {
             self.permissions(data);
             self.initTreeView(data);
         });
@@ -1096,7 +1099,11 @@ function UserPermissionsViewModel() {
             _permissions.push(p);
         });
 
-        accountManagerApp.callApi(urls.savePermissionsUrl, 'POST', { data: JSON.stringify({ userId: self.chosenUser().id, permissions: _permissions }) }, function (data) {
+        accountManagerApp.callApi(urls.savePermissionCatalogsUrl, 'POST', {
+            data: JSON.stringify({
+                userId: self.chosenUser().id, permissionCatalogs: _permissions
+            })
+        }, function (data) {
             showSuccess('', 'اطلاعات ذخیره گردید');
         });
     };
@@ -2102,6 +2109,6 @@ function userEditManagerViewModel() {
     }
 
     self.validateEmail = function (email, userid, callback) {
-        accountManagerApp.callApi(urls.checkUserEmail, 'POST', { email: email, userid: userid}, callback);
+        accountManagerApp.callApi(urls.checkUserEmail, 'POST', { email: email, userid: userid }, callback);
     }
 };
