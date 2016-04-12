@@ -115,19 +115,31 @@ namespace Anatoli.Business
         protected TMainSourceView PostOnlineData(string webApiURI, string data, bool needReturnData = false)
         {
             var returnData = new TMainSourceView();
+
             try
             {
                 var client = new HttpClient();
+
                 client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
+
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString(), content).Result;
+                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+
+
+                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+                           , content).Result;
+
                 if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     throw new Exception("Can not save order to server");
                 else if (!result.IsSuccessStatusCode)
                     throw new Exception(result.Content.ReadAsStringAsync().Result);
+
                 if (needReturnData)
                 {
                     var json = result.Content.ReadAsStringAsync().Result;
+
                     returnData = JsonConvert.DeserializeAnonymousType(json, new TMainSourceView());
                     return returnData;
                 }
@@ -137,18 +149,35 @@ namespace Anatoli.Business
             catch (Exception ex)
             {
                 Logger.Error("Can not post to internal server", ex);
+
                 throw ex;
             }
         }
 
-        protected List<TMainSourceView> GetOnlineData(string webApiURI, string queryString)
+        protected List<TMainSourceView> GetOnlineData(string webApiURI, string data)
         {
             try
             {
                 var client = new HttpClient();
+
                 client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
-                var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString() + "&" + queryString).Result;
+
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+
+
+                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+                           , content).Result;
+
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    throw new Exception("Can not save order to server");
+                else if (!result.IsSuccessStatusCode)
+                    throw new Exception(result.Content.ReadAsStringAsync().Result);
+
                 var json = result.Content.ReadAsStringAsync().Result;
+
                 var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
                 return returnData;
             }

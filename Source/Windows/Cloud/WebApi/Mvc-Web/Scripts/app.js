@@ -2,7 +2,8 @@
 //var baseBackendUrl = 'http://46.209.104.2:7000',
 //    sslBackendUrl = 'https://localhost:443',
 //var baseBackendUrl = 'http://217.218.53.71:8090/',
-var baseBackendUrl = 'http://localhost:59822/',
+var baseBackendUrl = 'http://localhost:8081/',
+//var baseBackendUrl = 'http://localhost:59822/',
     //sslBackendUrl = 'https://localhost:44300',
 
     privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',

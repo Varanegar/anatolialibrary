@@ -57,7 +57,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images/after"), HttpPost, HttpGet]
-        public async Task<IHttpActionResult> GetProducts(string dateAfter)
+        public async Task<IHttpActionResult> GetImages(string dateAfter)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         }
 
         [HttpPost, Route("Save")]
-        public async Task<IHttpActionResult> SaveImag(string token, string imagetype, string imageId, bool isDefault)
+        public async Task<IHttpActionResult> SaveImage(string token, string imagetype, string imageId, bool isDefault)
         {
             try
             {

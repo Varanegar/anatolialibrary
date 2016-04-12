@@ -10,9 +10,6 @@ namespace Anatoli.ViewModels.StoreModels
         public Guid StoreGuid { get; set; }
         public Guid ProductGuid { get; set; }
         public decimal Price { get; set; }
-        public string StoreGuidString { get; set; }
-        public string ProductGuidString { get; set; }
-        
 
     }
 }

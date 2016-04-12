@@ -47,7 +47,7 @@ namespace Anatoli.ViewModels.StoreModels
                 }
             }
         }
-        public Guid CalendarTypeValueId { get; set; }
+        public Guid? CalendarTypeValueId { get; set; }
         public Guid StoreId { get; set; }
         public string Description { get; set; }
     }
