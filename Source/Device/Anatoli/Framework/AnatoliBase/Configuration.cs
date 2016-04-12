@@ -36,7 +36,7 @@ namespace Anatoli.Framework.AnatoliBase
             public static readonly string BaseDatas = "api/gateway/basedata/basedatas/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             public struct ImageManager
             {
-                public static readonly string ImagesAfter = "/api/imageManager/images/after/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+                public static readonly string ImagesAfter = "/api/imageManager/images/after/";
                 public static readonly string Images = "/api/imageManager/images/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
                 public static readonly string ImageSave = "/api/imageManager/save/?PrivateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
             }

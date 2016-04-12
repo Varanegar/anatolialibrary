@@ -25,7 +25,7 @@ namespace Anatoli.App.Manager
                 {
                     var data = new RequestModel.BaseRequestModel();
                     data.dateAfter = lastUpdateTime.ToString();
-                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ItemImageViewModel>>(TokenType.AppToken, Configuration.WebService.ImageManager.ImagesAfter, data);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ItemImageViewModel>>(TokenType.AppToken, Configuration.WebService.ImageManager.ImagesAfter + "?dateafter=" + lastUpdateTime.ToString(), data);
                 }
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
                 {

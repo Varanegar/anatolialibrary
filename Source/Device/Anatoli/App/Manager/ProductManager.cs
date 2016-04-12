@@ -96,7 +96,7 @@ namespace Anatoli.App.Manager
                 {
                     var data = new RequestModel.BaseRequestModel();
                     data.dateAfter = lastUpdateTime.ToString();
-                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductPriceUpdateModel>>(TokenType.AppToken, Configuration.WebService.Stores.PricesViewAfter);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductPriceUpdateModel>>(TokenType.AppToken, Configuration.WebService.Stores.PricesViewAfter, data);
                 }
                 Dictionary<string, ProductPriceModel> items = new Dictionary<string, ProductPriceModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())
