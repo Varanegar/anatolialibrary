@@ -88,7 +88,53 @@ namespace Anatoli.Business.Domain
             return dataListInfo;
 
         }
+        public async Task<ICollection<BasketItem>> PublishAsyncByProductId(List<BasketItem> dataListInfo)
+        {
+            try
+            {
+                foreach (BasketItem item in dataListInfo)
+                {
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    var currentBasket = MainRepository.GetQuery().Where(p => p.ProductId == item.ProductId && p.BasketId == item.BasketId).FirstOrDefault();
+                    if (currentBasket != null)
+                    {
+                        currentBasket.ProductId = item.ProductId;
+                        currentBasket.Qty = item.Qty;
+                        currentBasket.LastUpdate = DateTime.Now;
+                        await MainRepository.UpdateAsync(currentBasket);
+                    }
+                    else
+                    {
+                        item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
+                        item.CreatedDate = item.LastUpdate = DateTime.Now;
+                        await MainRepository.AddAsync(item);
+                    }
+                };
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("ChangeAsync", ex);
+                throw ex;
+            }
+            return dataListInfo;
 
+        }
+        public async Task DeleteAsyncByProductId(List<BasketItem> dataListInfo)
+        {
+            try
+            {
+                foreach (BasketItem item in dataListInfo)
+                {
+                    await MainRepository.DeleteBatchAsync(p => p.BasketId == item.BasketId && p.ProductId == item.ProductId);
+                };
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("ChangeAsync", ex);
+                throw ex;
+            }
+        }
         #endregion
     }
 }

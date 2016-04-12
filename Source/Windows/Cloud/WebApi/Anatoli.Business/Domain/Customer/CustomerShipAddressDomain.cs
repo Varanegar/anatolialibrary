@@ -40,7 +40,7 @@ namespace Anatoli.Business.Domain
             else if (isDetault == true)
                 customerShipAddresses = await GetAllAsync(p => p.CustomerId == customerId && p.IsDefault);
             else if (isActive == true)
-                customerShipAddresses = await GetAllAsync(p => p.CustomerId == customerId && p.IsDefault);
+                customerShipAddresses = await GetAllAsync(p => p.CustomerId == customerId && p.IsActive);
 
             return customerShipAddresses;
         }

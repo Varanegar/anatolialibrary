@@ -15,6 +15,7 @@ using Anatoli.Business.Helpers;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Anatoli.ViewModels.CustomerModels;
+using Anatoli.ViewModels;
 
 namespace Anatoli.Business.Domain
 {
@@ -36,15 +37,15 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
-        public async Task<ICollection<PurchaseOrderStatusHistoryViewModel>> GetAllByPOIdOnLine(Guid orderId)
+        public async Task<ICollection<PurchaseOrderStatusHistoryViewModel>> GetAllByPOIdOnLine(PurchaseOrderRequestModel dataRequest)
         {
             List<PurchaseOrderStatusHistoryViewModel> returnData = new List<PurchaseOrderStatusHistoryViewModel>();
             await Task.Factory.StartNew(() =>
             {
-                var result = MainRepository.DbContext.PurchaseOrders.Where(f => f.Id == orderId && f.DataOwnerId == DataOwnerKey ).Select(m => m.StoreId).First();
-        
-                if(result != null)
-                    returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoStatusHistoryByPoIdLocalURI, "poId=" + orderId + "&centerId=" + result));
+                dataRequest.centerId = "all";
+                string data = JsonConvert.SerializeObject(dataRequest);
+
+                returnData.AddRange(GetOnlineData(WebApiURIHelper.GetPoStatusHistoryByPoIdLocalURI, data));
             });
             return returnData;
         }

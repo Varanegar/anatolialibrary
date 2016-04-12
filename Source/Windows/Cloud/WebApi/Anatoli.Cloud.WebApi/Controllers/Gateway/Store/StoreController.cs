@@ -220,7 +220,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var validDate = DateTime.Parse(data.dateAfter);
                 var result = await storeDomain.GetAllChangedAfterAsync(validDate);
-                return Ok(data.dateAfter);
+                return Ok(result);
             }
             catch (Exception ex)
             {

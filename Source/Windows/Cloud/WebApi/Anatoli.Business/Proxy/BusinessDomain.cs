@@ -37,7 +37,7 @@ namespace Anatoli.Business
             try
             {
                 var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerId.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerId.ToString(), DataOwnerId.ToString()));
                 HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId="
                             + ApplicationOwnerId.ToString(), content).Result;
@@ -67,26 +67,26 @@ namespace Anatoli.Business
 
         }
 
-        protected List<TOut> GetOnlineData(string webApiURI, string queryString)
-        {
-            try
-            {
-                var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerId.ToString()));
-                var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId="
-                            + ApplicationOwnerId.ToString() + "&" + queryString).Result;
-                var json = result.Content.ReadAsStringAsync().Result;
+        //protected List<TOut> GetOnlineData(string webApiURI, string queryString)
+        //{
+        //    try
+        //    {
+        //        var client = new HttpClient();
+        //        client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerId.ToString()));
+        //        var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId="
+        //                    + ApplicationOwnerId.ToString() + "&" + queryString).Result;
+        //        var json = result.Content.ReadAsStringAsync().Result;
 
-                var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TOut>());
+        //        var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TOut>());
 
-                return returnData;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Can not read from internal server", ex);
-                throw ex;
-            }
-        }
+        //        return returnData;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error("Can not read from internal server", ex);
+        //        throw ex;
+        //    }
+        //}
     }
 
 
@@ -143,12 +143,16 @@ namespace Anatoli.Business
             {
                 var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
 
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
+                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
 
-                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId="
-                           + ApplicationOwnerKey.ToString(), content).Result;
+
+                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI 
+                           , content).Result;
 
                 if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     throw new Exception("Can not save order to server");
@@ -173,26 +177,36 @@ namespace Anatoli.Business
             }
         }
 
-        protected List<TMainSourceView> GetOnlineData(string webApiURI, string queryString)
+        protected List<TMainSourceView> GetOnlineData(string webApiURI, string data)
         {
             try
             {
                 var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
 
-                var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId="
-                           + ApplicationOwnerKey.ToString() + "&" + queryString).Result;
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
 
-                var json = result.Content.ReadAsStringAsync().Result;
 
-                var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
+                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+                           , content).Result;
 
-                return returnData;
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    throw new Exception("Can not save order to server");
+                else if (!result.IsSuccessStatusCode)
+                    throw new Exception(result.Content.ReadAsStringAsync().Result);
+
+                    var json = result.Content.ReadAsStringAsync().Result;
+
+                    var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
+                    return returnData;
             }
             catch (Exception ex)
             {
-                Logger.Error("Can not read from internal server", ex);
+                Logger.Error("Can not post to internal server", ex);
 
                 throw ex;
             }
@@ -200,16 +214,8 @@ namespace Anatoli.Business
 
         public async Task<TMainSourceView> GetByIdAsync(Guid id)
         {
-            if (GetRemovedData)
-                return await MainRepository.GetQuery()
-                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.Id == id)
-                    .AsNoTracking()
-                    .ProjectTo<TMainSourceView>().FirstAsync();
-            else
-                return await MainRepository.GetQuery()
-                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && !p.IsRemoved && p.Id == id)
-                    .AsNoTracking()
-                    .ProjectTo<TMainSourceView>().FirstAsync(); 
+            return (await GetAllAsync(p => p.Id == id)).FirstOrDefault();
+
         }
         public async Task<List<TMainSourceView>> GetAllAsync()
         {

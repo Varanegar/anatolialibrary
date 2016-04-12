@@ -117,7 +117,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var businessDomain = new IncompletePurchaseOrderLineItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                await businessDomain.DeleteAsync(data.incompletePurchaseOrderLineItemData);
+                await businessDomain.DeleteByProductIdAsync(data.incompletePurchaseOrderLineItemData);
                 return Ok(data.incompletePurchaseOrderLineItemData);
             }
             catch (Exception ex)

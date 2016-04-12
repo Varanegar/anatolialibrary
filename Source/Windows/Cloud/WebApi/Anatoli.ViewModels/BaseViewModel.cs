@@ -12,6 +12,8 @@ namespace Anatoli.ViewModels
         public Guid DataOwnerId { get; set; }
         public Guid DataCenterOwnerId { get; set; }
         public bool IsRemoved { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
     }
 }

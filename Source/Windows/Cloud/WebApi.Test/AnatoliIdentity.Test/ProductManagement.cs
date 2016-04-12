@@ -107,7 +107,10 @@ namespace ClientApp
 
             string data = new JavaScriptSerializer().Serialize(manufacture);
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "/api/gateway/base/manufacture/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            var result8 = client.PostAsync(servserURI + "/api/gateway/base/manufacture/save", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
             var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
@@ -213,7 +216,7 @@ namespace ClientApp
         {
             HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
             content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
-            content.Headers.Add("DataOwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
             content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
             var result8 = client.PostAsync(servserURI + "/api/gateway/product/products/v2", content).Result;
             if (result8.StatusCode == System.Net.HttpStatusCode.OK)

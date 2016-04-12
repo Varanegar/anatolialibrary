@@ -115,13 +115,21 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("user/{username}"), HttpPost, HttpGet]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
-            var user = await GetUserByUserName(username);
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            if (user != null)
+            try
             {
-                return Ok(this.TheModelFactory.Create(user));
+                var user = await GetUserByUserName(username);
+                //Only SuperAdmin or Admin can delete users (Later when implement roles)
+                if (user != null)
+                {
+                    return Ok(this.TheModelFactory.Create(user));
+                }
+                return BadRequest("کاربر یافت نشد");
             }
-            return BadRequest("کاربر یافت نشد");
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
+            }
+
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -428,9 +436,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("ResendPassCode", Name = "ResendPassCodeRoute")]
         public async Task<IHttpActionResult> ResendPassCode([FromBody]UserRequestModel data)
         {
-            var user = await GetUserByUserName(data.username);
-            //var user = await userStore.FindByNameAsync(username);
-            await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null);
+            try
+            {
+                var user = await GetUserByUserName(data.username);
+                //var user = await userStore.FindByNameAsync(username);
+                await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
             return Ok(new BaseViewModel());
         }
 
@@ -659,12 +675,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         private async Task<User> GetUserByUserName(string username)
         {
-            return await new UserDomain(OwnerKey, DataOwnerKey).GetByUsernameAsync(username);
+            return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
         }
 
         private async Task<User> GetUserByEMail(string email)
         {
-            return await new UserDomain(OwnerKey, DataOwnerKey).GetByEmailAsync(email);
+            return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByEmailAsync(email);
         }
     }
 }

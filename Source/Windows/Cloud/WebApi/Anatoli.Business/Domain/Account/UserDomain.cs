@@ -49,9 +49,9 @@ namespace Anatoli.Business.Domain
             return await UserRepository.FindAsync(p => p.UserNameStr == username && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
-        public async Task<User> GetByIdAsync(Guid userId)
+        public async Task<User> GetByIdAsync(string userId)
         {
-            return await UserRepository.GetByIdAsync(userId);
+            return await UserRepository.FindAsync(p => p.Id == userId && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
         public async Task<User> GetByPhoneAsync(string phone)

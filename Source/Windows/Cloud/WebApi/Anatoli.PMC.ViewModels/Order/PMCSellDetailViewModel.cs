@@ -25,8 +25,8 @@ namespace Anatoli.PMC.ViewModels.Order
         public int PackQty { get; set; }
         public double? DiscountPercent { get; set; }
         public double? AddPercent { get; set; }
-        public double Qty { get; set; }
-        public double RequestQty { get; set; }
+        public decimal Qty { get; set; }
+        public decimal RequestQty { get; set; }
         [Ignore]
         public decimal Amount { get; set; }
     }

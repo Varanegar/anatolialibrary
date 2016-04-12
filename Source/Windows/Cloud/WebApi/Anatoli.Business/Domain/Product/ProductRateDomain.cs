@@ -67,7 +67,7 @@ namespace Anatoli.Business.Domain
             return productRates.ToList(); ;
         }
 
-        public override async Task PublishAsync(List<ProductRate> ProductRates)
+        public async Task<List<ProductRate>> PublishAsyncWithResult(List<ProductRate> ProductRates)
         {
             try
             {
@@ -99,6 +99,8 @@ namespace Anatoli.Business.Domain
                 );
                 await MainRepository.SaveChangesAsync();
 
+                var productDomain = new ProductDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey);
+
                 var result = new List<ProductRate>();
                 foreach (var item in ProductRates)
                 {
@@ -109,7 +111,14 @@ namespace Anatoli.Business.Domain
                             .Select(row => new ProductRate { Avg = row.Avg, ProductId = row.ProductId });
                     result.AddRange(resulDict.ToList());
                 }
+
+                foreach (var item in result)
+                {
+                    await productDomain.ChangeProductRates(item.ProductId, item.Avg);
+                }
+
                 await MainRepository.SaveChangesAsync();
+                return result;
             }
             catch (Exception ex)
             {

@@ -44,8 +44,8 @@ namespace Anatoli.PMC.ViewModels.Order
         public string SettlementDate { get; set; }
         [Ignore]
         public string DeliveryNo { get; set; }
-        [Ignore]
-        public string DeliveryDate { get; set; }
+        public string DeliveryDateTo { get; set; }
+        public string DeliveryDateFrom  { get; set; }
         [Ignore]
         public int DeliveryTypeId { get; set; }
         [Ignore]
