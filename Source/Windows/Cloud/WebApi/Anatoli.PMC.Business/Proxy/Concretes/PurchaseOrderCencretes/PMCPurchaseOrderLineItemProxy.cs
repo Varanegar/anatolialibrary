@@ -52,8 +52,8 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
                 DiscountAmount = data.DiscountAmount,
                 PackQty = 0,
                 ProductId = currentProductId,
-                Qty = System.Convert.ToDouble(data.Qty),
-                RequestQty = System.Convert.ToDouble(data.Qty),
+                Qty = data.Qty,
+                RequestQty = data.Qty,
             };
         }
     }

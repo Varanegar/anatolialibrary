@@ -58,12 +58,10 @@ namespace Anatoli.PMC.DataAccess.Helpers
 
         public PMCStoreConfigEntity GetStoreConfig(string storeUniqueId)
         {
-            var config = AllStoreConfigs.Find(p => p.UniqueId.ToLower() == storeUniqueId.ToLower());
-            //using (var context = new DataContext())
-            //{
-            //    config.FiscalYearId = context.GetValue<int>(DBQuery.Instance.GetFiscalYearId());
-            //}
-            return config;
+            if(storeUniqueId == "all")
+                return AllStoreConfigs.Find(p => p.CenterId  == 1);
+            else
+                return AllStoreConfigs.Find(p => p.UniqueId.ToLower() == storeUniqueId.ToLower());
         }
 
         public PMCStoreConfigEntity GetStoreConfig(int storeId)

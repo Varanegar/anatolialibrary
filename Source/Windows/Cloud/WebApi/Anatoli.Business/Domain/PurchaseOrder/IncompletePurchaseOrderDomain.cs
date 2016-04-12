@@ -38,15 +38,17 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
-        public async Task<List<IncompletePurchaseOrder>> GetAllByCustomerId(Guid customerId)
+        public async Task<List<IncompletePurchaseOrderViewModel>> GetAllByCustomerId(Guid customerId)
         {
-            var data = await MainRepository.FindAllAsync(p => p.CustomerId == customerId && p.DataOwnerId == DataOwnerKey);
-            data.ToList().ForEach(item =>
-                {
-                    MainRepository.DbContext.Entry(item).Collection(c => c.IncompletePurchaseOrderLineItems).Load();
-                });
+            var data = (await GetAllAsync(p => p.CustomerId == customerId)).ToList();
 
-            return data.ToList();
+            foreach(var item in data)
+            {
+
+                var lineItems = await new IncompletePurchaseOrderLineItemDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync(p => p.IncompletePurchaseOrderId == item.UniqueId);
+                item.LineItems.AddRange(lineItems.ToList());
+            }
+            return data;
         }
 
         public override async Task PublishAsync(List<IncompletePurchaseOrder> dataList)
@@ -65,6 +67,7 @@ namespace Anatoli.Business.Domain
                         currentData.DeliveryFromTime = item.DeliveryFromTime;
                         currentData.DeliveryToTime = item.DeliveryToTime;
                         currentData.DeliveryTypeId = item.DeliveryTypeId;
+                        currentData.CustomerShipAddressId = item.CustomerShipAddressId;
                         currentData.OrderShipAddress = item.OrderShipAddress;
                         currentData.Phone = item.Phone;
                         currentData.StoreId = item.StoreId;
@@ -74,12 +77,14 @@ namespace Anatoli.Business.Domain
                     }
                     else
                     {
+                        item.Id = (item.Id == Guid.Empty) ? Guid.NewGuid() : item.Id;
                         item.CreatedDate = item.LastUpdate = DateTime.Now;
                         if (item.IncompletePurchaseOrderLineItems != null)
                         {
                             item.IncompletePurchaseOrderLineItems.ToList().ForEach(itemDetail =>
                             {
-                                itemDetail.ApplicationOwnerId = item.ApplicationOwnerId;
+                                item.Id = Guid.NewGuid();
+                                itemDetail.ApplicationOwnerId = item.ApplicationOwnerId; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                                 itemDetail.CreatedDate = itemDetail.LastUpdate = item.CreatedDate;
                             });
                         }

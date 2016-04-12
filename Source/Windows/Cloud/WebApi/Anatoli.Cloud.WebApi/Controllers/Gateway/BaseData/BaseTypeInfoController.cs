@@ -24,7 +24,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var result = await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
+                var result = await new BaseTypeDomain(OwnerKey, OwnerKey, OwnerKey).GetAllAsync();
 
                 return Ok(result);
             }
@@ -43,7 +43,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var validDate = DateTime.Parse(data.dateAfter);
-                var result = await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllChangedAfterAsync(validDate);
+                var result = await new BaseTypeDomain(OwnerKey, OwnerKey, OwnerKey).GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
@@ -61,7 +61,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new BaseTypeProxy().ReverseConvert(data.baseTypeData));
+                await new BaseTypeDomain(OwnerKey, OwnerKey, OwnerKey).PublishAsync(new BaseTypeProxy().ReverseConvert(data.baseTypeData));
                 return Ok(data.baseTypeData);
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                await new BaseTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).CheckDeletedAsync(data.baseTypeData);
+                await new BaseTypeDomain(OwnerKey, OwnerKey, OwnerKey).CheckDeletedAsync(data.baseTypeData);
                 return Ok(data.baseTypeData);
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var baseTypeDomain = new ReorderCalcTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var baseTypeDomain = new ReorderCalcTypeDomain(OwnerKey, OwnerKey, OwnerKey);
                 var result = await baseTypeDomain.GetAllAsync();
 
                 result.Add(new ReorderCalcTypeViewModel { UniqueId = Guid.Empty, ReorderTypeName = string.Empty });
@@ -122,7 +122,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var baseTypeDomain = new StockTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var baseTypeDomain = new StockTypeDomain(OwnerKey, OwnerKey, OwnerKey);
                 var result = await baseTypeDomain.GetAllAsync();
 
                 return Ok(result);
@@ -143,7 +143,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var domain = new StockProductRequestTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var domain = new StockProductRequestTypeDomain(OwnerKey, OwnerKey, OwnerKey);
                 var result = await domain.GetAllAsync();
                 return Ok(result);
             }
@@ -161,7 +161,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var businessDomain = new StockProductRequestTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var businessDomain = new StockProductRequestTypeDomain(OwnerKey, OwnerKey, OwnerKey);
                 await businessDomain.PublishAsync(new StockProductRequestTypeProxy().ReverseConvert(data.baseStockProductRequestType));
                 return Ok(data.baseStockProductRequestType);
             }

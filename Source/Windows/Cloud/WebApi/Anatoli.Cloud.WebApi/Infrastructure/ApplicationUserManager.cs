@@ -42,7 +42,7 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
             // Configure validation logic for usernames
             appUserManager.UserValidator = new UserValidator<User>(appUserManager)
             {
-                AllowOnlyAlphanumericUserNames = true,
+                AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = false
                 
             };
