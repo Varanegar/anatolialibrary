@@ -118,7 +118,7 @@ namespace Anatoli.Business
             try
             {
                 var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString(), content).Result;
                 if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -146,7 +146,7 @@ namespace Anatoli.Business
             try
             {
                 var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
                 var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString() + "&" + queryString).Result;
                 var json = result.Content.ReadAsStringAsync().Result;
                 var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
