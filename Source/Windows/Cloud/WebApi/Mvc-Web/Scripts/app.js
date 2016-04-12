@@ -2,78 +2,78 @@
 //var baseBackendUrl = 'http://46.209.104.2:7000',
 //    sslBackendUrl = 'https://localhost:443',
 //var baseBackendUrl = 'http://217.218.53.71:8090/',
-var baseBackendUrl = 'http://localhost:8081/',
-//var baseBackendUrl = 'http://localhost:59822/',
-    //sslBackendUrl = 'https://localhost:44300',
+//var baseBackendUrl = 'http://localhost:8081/',
+var baseBackendUrl = 'http://localhost:59822/';
+//sslBackendUrl = 'https://localhost:44300',
 
-    privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
-    dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
-    dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
-    urls = {
-        loginUrl: baseBackendUrl + '/oauth/token',
-        storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
-        userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
-        saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
-        searchProductsUrl: baseBackendUrl + '/api/gateway/product/searchProducts',
-        stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
-        saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/',
-        reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
+privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
+dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+urls = {
+    loginUrl: baseBackendUrl + '/oauth/token',
+    storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
+    userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
+    saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
+    searchProductsUrl: baseBackendUrl + '/api/gateway/product/searchProducts',
+    stockProductsUrl: baseBackendUrl + '/api/gateway/stock/stockproduct/stockid/',
+    saveStockProduct: baseBackendUrl + '/api/gateway/stock/stockproduct/save/',
+    reorderCalcTypeUrl: baseBackendUrl + "/api/gateway/basedata/reordercalctypes",
 
-        usersUrl: baseBackendUrl + "/api/accounts/users",
-        userUrl: baseBackendUrl + "/api/accounts/getUser",
-        saveUserUrl: baseBackendUrl + '/api/accounts/saveUser',
-        checkUserEmail: baseBackendUrl + '/api/accounts/checkEmailExist',
+    usersUrl: baseBackendUrl + "/api/accounts/users",
+    userUrl: baseBackendUrl + "/api/accounts/getUser",
+    saveUserUrl: baseBackendUrl + '/api/accounts/saveUser',
+    checkUserEmail: baseBackendUrl + '/api/accounts/checkEmailExist',
 
-        permissionCatalogsUrl: baseBackendUrl + "/api/accounts/permissionCatalogs",
-        permissionCatalogsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionCatalogsOfUser",
-        savePermissionCatalogsUrl: baseBackendUrl + "/api/accounts/savePermissionCatalogs",
+    permissionCatalogsUrl: baseBackendUrl + "/api/accounts/permissionCatalogs",
+    permissionCatalogsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionCatalogsOfUser",
+    savePermissionCatalogsUrl: baseBackendUrl + "/api/accounts/savePermissionCatalogs",
 
-        permissionsUrl: baseBackendUrl + "/api/accounts/permissions",
-        savePermissionsUrl: baseBackendUrl + "/api/accounts/savePermissions",
-        permissionsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionsOfUser",
+    permissionsUrl: baseBackendUrl + "/api/accounts/permissions",
+    savePermissionsUrl: baseBackendUrl + "/api/accounts/savePermissions",
+    permissionsOfUserUrl: baseBackendUrl + "/api/accounts/getPersmissionsOfUser",
 
-        stocksUrl: baseBackendUrl + "/api/gateway/stock/stocks",
-        stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes',
-        saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
+    stocksUrl: baseBackendUrl + "/api/gateway/stock/stocks",
+    stockTypesUrl: baseBackendUrl + '/api/gateway/basedata/stocktypes',
+    saveStocksUrl: baseBackendUrl + '/api/gateway/stock/saveStocks',
 
-        productsUrl: baseBackendUrl + '/api/gateway/product/products/v2',
-        saveProductsUrl: baseBackendUrl + '/api/gateway/product/saveProducts',
+    productsUrl: baseBackendUrl + '/api/gateway/product/products/v2',
+    saveProductsUrl: baseBackendUrl + '/api/gateway/product/saveProducts',
 
-        productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
-        productRequestRuleUrl: baseBackendUrl + '/api/gateway/stock/productRequestRule',
-        productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',
+    productRequestRulesUrl: baseBackendUrl + '/api/gateway/stock/productRequestRules',
+    productRequestRuleUrl: baseBackendUrl + '/api/gateway/stock/productRequestRule',
+    productTypesUrl: baseBackendUrl + '/api/gateway/product/productTypes',
 
-        StockProductRequestRuleTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleTypes',
-        StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
+    StockProductRequestRuleTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleTypes',
+    StockProductRequestRuleCalcTypesUrl: baseBackendUrl + '/api/gateway/stockproductrequest/stockProductRequestRuleCalcTypes',
 
-        SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers',
-        filterSuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/filterSuppliers',
+    SuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/suppliers',
+    filterSuppliersUrl: baseBackendUrl + '/api/gateway/base/supplier/filterSuppliers',
 
-        mainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/mainProductGroupList',
-        filterMainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/filterMainProductGroupList',
-        saveStockRequestProductUrl: baseBackendUrl + '/api/gateway/stockproductrequest/saveStockRequestProduct',
+    mainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/mainProductGroupList',
+    filterMainProductGroupsUrl: baseBackendUrl + '/api/gateway/product/filterMainProductGroupList',
+    saveStockRequestProductUrl: baseBackendUrl + '/api/gateway/stockproductrequest/saveStockRequestProduct',
 
-        stockProductRequestUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requests',
-        productRequestsHistory: baseBackendUrl + '/api/gateway/stockproductrequest/history',
-        stockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/detailshistory',
-        stockProductRequestProductDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requestProductDetails',
-        updateStockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/updateRequestProductDetails',
+    stockProductRequestUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requests',
+    productRequestsHistory: baseBackendUrl + '/api/gateway/stockproductrequest/history',
+    stockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/detailshistory',
+    stockProductRequestProductDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/requestProductDetails',
+    updateStockRequestReviewDetailsUrl: baseBackendUrl + '/api/gateway/stockproductrequest/updateRequestProductDetails',
 
-        myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
+    myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
 
 
-        pages: {
-            products: { url: '/Products', title: 'کالا', order: 7 },
-            stockproducts: { url: '/Stocks/products', title: 'کالای انبار', order: 9 },
-            reviewproductrequest: { url: '/Products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
-            storerequestshistory: { url: '/Products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
-            stocks: { url: '/Stocks', title: 'انبارها', order: 8 },
-            productrequestrules: { url: '/Stocks/productRequestRules', title: 'قوانین', order: 6 },
-            usermanager: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
-            userstocks: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
-            permissions: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
-        }
-    },
+    pages: {
+        products: { url: '/Products', title: 'کالا', order: 7 },
+        stockproducts: { url: '/Stocks/products', title: 'کالای انبار', order: 9 },
+        reviewproductrequest: { url: '/Products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
+        storerequestshistory: { url: '/Products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
+        stocks: { url: '/Stocks', title: 'انبارها', order: 8 },
+        productrequestrules: { url: '/Stocks/productRequestRules', title: 'قوانین', order: 6 },
+        usermanager: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
+        userstocks: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
+        permissions: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
+    }
+},
 errorMessage = {
     unAuthorized: "شما مجوز لازم را برای این درخواست ندارید!",
 },
@@ -299,7 +299,7 @@ function accountManagerViewModel() {
             grant_type: 'password',
             username: self.loginEmail(),
             password: self.loginPassword(),
-            scope: privateOwnerId
+            scope: privateOwnerId + ',' + dataOwnerId
         };
 
         freezUI();

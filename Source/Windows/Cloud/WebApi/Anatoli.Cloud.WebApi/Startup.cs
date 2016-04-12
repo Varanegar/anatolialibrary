@@ -1,12 +1,7 @@
-﻿using Anatoli.Business.Helpers;
-using Anatoli.Cloud.WebApi.Handler;
+﻿using Anatoli.Cloud.WebApi.Handler;
 using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.Cloud.WebApi.Providers;
 using Anatoli.DataAccess;
-using Anatoli.DataAccess.Models.Identity;
-using Anatoli.DataAccess.Repositories;
-using AutoMapper;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
@@ -15,23 +10,19 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net.Http.Formatting;
-using System.Web;
 using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi
 {
     public class Startup
     {
-
         public void Configuration(IAppBuilder app)
         {
-            Database.SetInitializer<AnatoliDbContext>(new MigrateDatabaseToLatestVersion<AnatoliDbContext, Anatoli.DataAccess.Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AnatoliDbContext, DataAccess.Migrations.Configuration>());
             
             var context = new AnatoliDbContext();
             var tempData = context.BaseTypes.FirstOrDefault();
@@ -53,10 +44,7 @@ namespace Anatoli.Cloud.WebApi
 
             app.UseWebApi(httpConfig);
 
-            httpConfig.EnsureInitialized();
-
-            
-
+            httpConfig.EnsureInitialized();           
         }
 
         private void ConfigureUserinfo()
