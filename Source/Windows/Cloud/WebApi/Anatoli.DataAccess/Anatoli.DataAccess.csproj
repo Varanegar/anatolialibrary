@@ -242,11 +242,10 @@
     <Compile Include="Migrations\201604040345278_Permission-Migration-7.Designer.cs">
       <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Migrations\201604120638555_ProductRate-Migration.cs" />
     <Compile Include="Migrations\201604120638555_ProductRate-Migration.Designer.cs">
       <DependentUpon>201604120638555_ProductRate-Migration.cs</DependentUpon>
-=======
+    </Compile>
     <Compile Include="Migrations\201604051650537_AddingPermissionCatalog.cs" />
     <Compile Include="Migrations\201604051650537_AddingPermissionCatalog.Designer.cs">
       <DependentUpon>201604051650537_AddingPermissionCatalog.cs</DependentUpon>
@@ -262,7 +261,6 @@
     <Compile Include="Migrations\201604101828582_AddingPermissionCatalog12.cs" />
     <Compile Include="Migrations\201604101828582_AddingPermissionCatalog12.Designer.cs">
       <DependentUpon>201604101828582_AddingPermissionCatalog12.cs</DependentUpon>
->>>>>>> c646d2e94b5cfcac522abe5e16c15291d5112b80
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
@@ -484,10 +482,9 @@
     <EmbeddedResource Include="Migrations\201604040345278_Permission-Migration-7.resx">
       <DependentUpon>201604040345278_Permission-Migration-7.cs</DependentUpon>
     </EmbeddedResource>
-<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201604120638555_ProductRate-Migration.resx">
       <DependentUpon>201604120638555_ProductRate-Migration.cs</DependentUpon>
-=======
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604051650537_AddingPermissionCatalog.resx">
       <DependentUpon>201604051650537_AddingPermissionCatalog.cs</DependentUpon>
     </EmbeddedResource>
@@ -499,7 +496,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604101828582_AddingPermissionCatalog12.resx">
       <DependentUpon>201604101828582_AddingPermissionCatalog12.cs</DependentUpon>
->>>>>>> c646d2e94b5cfcac522abe5e16c15291d5112b80
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

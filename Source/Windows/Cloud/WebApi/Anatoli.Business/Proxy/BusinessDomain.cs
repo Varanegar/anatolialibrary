@@ -374,24 +374,4 @@ namespace Anatoli.Business
         #endregion
     }
 }
-=======
-        protected List<TOut> GetOnlineData(string webApiURI, string queryString)
-        {
-            try
-            {
-                var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerId.ToString()));
-                var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerId.ToString() + "&" + queryString).Result;
-                var json = result.Content.ReadAsStringAsync().Result;
-                var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TOut>());
-                return returnData;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Can not read from internal server", ex);
-                throw ex;
-            }
-        }
-    }
-}
->>>>>>> c646d2e94b5cfcac522abe5e16c15291d5112b80
+
