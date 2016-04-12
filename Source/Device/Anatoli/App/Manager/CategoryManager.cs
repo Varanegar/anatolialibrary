@@ -24,7 +24,7 @@ namespace Anatoli.App.Manager
                 {
                     var data = new RequestModel.BaseRequestModel();
                     data.dateAfter = lastUpdateTime.ToString();
-                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductGroupModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductGroupsAfter);
+                    list = await AnatoliClient.GetInstance().WebClient.SendPostRequestAsync<List<ProductGroupModel>>(TokenType.AppToken, Configuration.WebService.Products.ProductGroupsAfter,data);
                 }
                 Dictionary<string, CategoryInfoModel> items = new Dictionary<string, CategoryInfoModel>();
                 using (var connection = AnatoliClient.GetInstance().DbClient.GetConnection())

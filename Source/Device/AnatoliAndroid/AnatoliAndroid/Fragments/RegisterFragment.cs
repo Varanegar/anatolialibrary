@@ -68,14 +68,13 @@ namespace AnatoliAndroid.Fragments
                 return;
             }
             _registerButton.Enabled = false;
-            AnatoliUserManager usermanager = new AnatoliUserManager();
             ProgressDialog dialog = new ProgressDialog(AnatoliApp.GetInstance().Activity);
             dialog.SetMessage(AnatoliApp.GetResources().GetText(Resource.String.PleaseWait));
             dialog.Show();
 
             try
             {
-                var result = await usermanager.RegisterAsync(_passwordEditText.Text, _passwordEditText.Text, _telEditText.Text, _emailEditText.Text);
+                var result = await AnatoliUserManager.RegisterAsync(_passwordEditText.Text, _passwordEditText.Text, _telEditText.Text, _emailEditText.Text);
                 dialog.Dismiss();
                 if (result.IsValid) // register success
                 {

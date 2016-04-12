@@ -495,7 +495,8 @@ namespace Anatoli.Framework.AnatoliBase
             StatusCode = 0;
         }
         public AnatoliWebClientException(IRestResponse response)
-            : base("Web Exception, Http status: " + response.StatusCode.ToString() + " at :" + response.ResponseUri.ToString())
+            : base("Web Exception, Http status: " + response.StatusCode.ToString() + " at :" + response.ResponseUri.ToString() + "" +
+            Encoding.UTF8.GetString(response.RawBytes, 0, response.RawBytes.Length))
         {
             RequestUri = response.ResponseUri.ToString();
             StatusCode = response.StatusCode;
