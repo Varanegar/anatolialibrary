@@ -48,7 +48,7 @@ namespace Anatoli.App.Manager
                         {
                             UpdateCommand command = new UpdateCommand("cityregion", new BasicParam("group_name", item.GroupName),
                             new EqFilterParam("group_id", item.UniqueId.ToUpper()),
-                            new BasicParam("parent_id", item.ParentUniqueIdString.ToUpper()),
+                            new BasicParam("parent_id", item.ParentUniqueIdString),
                             new BasicParam("level", item.NLevel.ToString()),
                             new BasicParam("left", item.NLeft.ToString()),
                             new BasicParam("right", item.NRight.ToString()));
@@ -59,7 +59,7 @@ namespace Anatoli.App.Manager
                         {
                             InsertCommand command = new InsertCommand("cityregion", new BasicParam("group_name", item.GroupName),
                                 new BasicParam("group_id", item.UniqueId.ToUpper()),
-                                new BasicParam("parent_id", item.ParentUniqueIdString.ToUpper()),
+                                new BasicParam("parent_id", item.ParentUniqueIdString),
                                 new BasicParam("level", item.NLevel.ToString()),
                                 new BasicParam("left", item.NLeft.ToString()),
                                 new BasicParam("right", item.NRight.ToString()));
