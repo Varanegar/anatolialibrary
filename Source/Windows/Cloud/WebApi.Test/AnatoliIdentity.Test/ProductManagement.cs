@@ -196,7 +196,9 @@ namespace ClientApp
         internal static List<ProductGroupViewModel> DownloadProductGroupFromServer(HttpClient client, string servserURI)
         {
             HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-            content.Headers.Add("OwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
 
             var result8 = client.PostAsync(servserURI + "/api/gateway/product/productgroups",content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;

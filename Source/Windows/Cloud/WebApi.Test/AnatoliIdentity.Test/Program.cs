@@ -19,18 +19,18 @@ namespace ClientApp
 {
     class Program
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static void Main(string[] args)
         {            
             try
             {
 
-                string servserURI = "http://217.218.53.71:7000/";
+                //string servserURI = "http://217.218.53.71:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
                 //string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://localhost:59822/";
-                //string servserURI = "http://localhost:8081/";
+                string servserURI = "http://localhost:8081/";
                 //string servserURI = "http://192.168.0.160:8081/";
                 var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
@@ -40,9 +40,9 @@ namespace ClientApp
                 //var storePriceList = StoreManagement.GetStorePriceList();
                 //ProductManagement.ProductGroupTest();
 
-                log4net.Config.XmlConfigurator.Configure();
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09123664255", "09123664255", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                //log4net.Config.XmlConfigurator.Configure();
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09123664255", "09123664255", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     //client
@@ -118,7 +118,7 @@ namespace ClientApp
             }
             catch (Exception ex)
             {
-                log.Error("error", ex);
+                //log.Error("error", ex);
                 Console.WriteLine("Error, {0}", ex.Message);
             }
         }

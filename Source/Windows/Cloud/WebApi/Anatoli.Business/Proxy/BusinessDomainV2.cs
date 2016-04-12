@@ -118,7 +118,7 @@ namespace Anatoli.Business
             try
             {
                 var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString(), content).Result;
                 if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -146,7 +146,7 @@ namespace Anatoli.Business
             try
             {
                 var client = new HttpClient();
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
                 var result = client.GetAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI + "?ApplicationOwnerId=" + ApplicationOwnerKey.ToString() + "&" + queryString).Result;
                 var json = result.Content.ReadAsStringAsync().Result;
                 var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
@@ -161,18 +161,7 @@ namespace Anatoli.Business
 
         public async Task<TMainSourceView> GetByIdAsync(Guid id)
         {
-            Expression<Func<TMainSource, bool>> perdicate = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                                                 p.DataOwnerId == DataOwnerKey &&
-                                                                 p.Id == id;
-
-            if (!GetRemovedData)
-                perdicate = p => perdicate.Invoke(p) && !p.IsRemoved;
-
-            return await MainRepository.GetQuery()
-                                       .Where(perdicate)
-                                       .AsNoTracking()
-                                       .ProjectTo<TMainSourceView>()
-                                       .FirstOrDefaultAsync();
+            return (await GetAllAsync(p => p.Id == id)).FirstOrDefault();
         }
 
         public async Task<List<TMainSourceView>> GetAllAsync()
@@ -197,12 +186,12 @@ namespace Anatoli.Business
         public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate,
                                                              Expression<Func<TMainSource, TMainSourceView>> selector)
         {
-            Expression<Func<TMainSource, bool>> criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                                                 p.DataOwnerId == DataOwnerKey &&
-                                                                 p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+            Expression<Func<TMainSource, bool>> criteria2 = null;
 
             if (predicate != null)
-                criteria2 = p => predicate.Invoke(p) && criteria2.Invoke(p);
+                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+            else
+                criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
 
             return await GetAllAsyncPrivate(criteria2, selector);
         }
