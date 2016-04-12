@@ -18,7 +18,7 @@ namespace Anatoli.Cloud.WebApi.Handler
         public static void Config()
         {
             Mapper.CreateMap<FiscalYear, FiscalYearViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
-            Mapper.CreateMap<CityRegion, CityRegionViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
+            Mapper.CreateMap<CityRegion, CityRegionViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ParentUniqueIdString, opt => opt.MapFrom(src => src.CityRegion2Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<Manufacture, ManufactureViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<Supplier, SupplierViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<BaseType, BaseTypeViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
@@ -39,7 +39,7 @@ namespace Anatoli.Cloud.WebApi.Handler
             Mapper.CreateMap<ProductTagValue, ProductTagValueViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<ProductType, ProductViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<ProductPicture, ProductPictureViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
-            Mapper.CreateMap<MainProductGroup, MainProductGroupViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
+            Mapper.CreateMap<MainProductGroup, MainProductGroupViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ParentUniqueIdString, opt => opt.MapFrom(src => src.ProductGroup2Id)).ForMember(p => p.ParentUniqueId, opt => opt.MapFrom(src => src.ProductGroup2Id)).ForMember(p => p.ID, opt => opt.Ignore());
 
             Mapper.CreateMap<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<IncompletePurchaseOrder, IncompletePurchaseOrderViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ShipAddressId, opt => opt.MapFrom(src => src.CustomerShipAddressId)).ForMember(p => p.ID, opt => opt.Ignore());

@@ -161,18 +161,7 @@ namespace Anatoli.Business
 
         public async Task<TMainSourceView> GetByIdAsync(Guid id)
         {
-            Expression<Func<TMainSource, bool>> perdicate = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                                                 p.DataOwnerId == DataOwnerKey &&
-                                                                 p.Id == id;
-
-            if (!GetRemovedData)
-                perdicate = p => perdicate.Invoke(p) && !p.IsRemoved;
-
-            return await MainRepository.GetQuery()
-                                       .Where(perdicate)
-                                       .AsNoTracking()
-                                       .ProjectTo<TMainSourceView>()
-                                       .FirstOrDefaultAsync();
+            return (await GetAllAsync(p => p.Id == id)).FirstOrDefault();
         }
 
         public async Task<List<TMainSourceView>> GetAllAsync()
@@ -197,12 +186,12 @@ namespace Anatoli.Business
         public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate,
                                                              Expression<Func<TMainSource, TMainSourceView>> selector)
         {
-            Expression<Func<TMainSource, bool>> criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                                                 p.DataOwnerId == DataOwnerKey &&
-                                                                 p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+            Expression<Func<TMainSource, bool>> criteria2 = null;
 
             if (predicate != null)
-                criteria2 = p => predicate.Invoke(p) && criteria2.Invoke(p);
+                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+            else
+                criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
 
             return await GetAllAsyncPrivate(criteria2, selector);
         }
