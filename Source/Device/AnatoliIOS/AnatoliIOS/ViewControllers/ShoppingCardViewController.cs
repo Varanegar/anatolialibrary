@@ -48,9 +48,11 @@ namespace AnatoliIOS.ViewControllers
 
 			var deliveryTypeModel = new DeliveryTypePickerViewModel (await DeliveryTypeManager.GetDeliveryTypesAsync ());
 			deliveryTypePicker.Model = deliveryTypeModel;
-			//deliveryTypePicker.Select (0, 0, true);
+			deliveryTypePicker.Select (0, 0, true);
 			deliveryTypePicker.ReloadAllComponents ();
-			//timePicker.Delegate = new TimePickerViewDelegate (await DeliveryTimeManager.GetAvailableDeliveryTimes (AnatoliApp.GetInstance ().DefaultStore.store_id, DateTime.Now, deliveryTypeDelegate.SelectedItem.UniqueId));
+			if (deliveryTypeModel.SelectedItem != null) {
+				timePicker.Model = new TimePickerViewModel (await DeliveryTimeManager.GetAvailableDeliveryTimes (AnatoliApp.GetInstance ().DefaultStore.store_id, DateTime.Now, deliveryTypeModel.SelectedItem.UniqueId));
+			}
 			itemCountLabel.Text = await ShoppingCardManager.GetItemsCountAsync () + " عدد";
 			totalPriceLabel.Text = (await ShoppingCardManager.GetTotalPriceAsync ()).ToCurrency() + " تومان";
 			ShoppingCardManager.ItemChanged += UpdateLabels;
@@ -106,10 +108,10 @@ namespace AnatoliIOS.ViewControllers
 		}
 	}
 
-	class TimePickerViewDelegate : UIPickerViewDelegate {
+	class TimePickerViewModel : UIPickerViewModel {
 		List<DeliveryTimeModel> _items;
 		public DeliveryTimeModel SelectedItem;
-		public TimePickerViewDelegate(List<DeliveryTimeModel> items){
+		public TimePickerViewModel(List<DeliveryTimeModel> items){
 			_items = items;
 		}
 		public override string GetTitle (UIPickerView pickerView, nint row, nint component)
@@ -119,6 +121,15 @@ namespace AnatoliIOS.ViewControllers
 		public override void Selected (UIPickerView pickerView, nint row, nint component)
 		{
 			SelectedItem = _items [(int)row];
+		}
+		public override nint GetComponentCount (UIPickerView pickerView)
+		{
+			return 1;
+		}
+
+		public override nint GetRowsInComponent (UIPickerView pickerView, nint component)
+		{
+			return _items.Count;
 		}
 	}
 	class DeliveryTypePickerViewModel : UIPickerViewModel {
