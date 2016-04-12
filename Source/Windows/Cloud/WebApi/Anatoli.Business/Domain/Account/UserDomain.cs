@@ -22,6 +22,7 @@ namespace Anatoli.Business.Domain
         public Guid ApplicationOwnerKey { get; protected set; }
         public Guid DataOwnerKey { get; protected set; }
         public virtual UserRepository UserRepository { get; set; }
+        public virtual PrincipalRepository PrincipalRepository { get; set; }
         public AnatoliDbContext DBContext { get; set; }
         #endregion
 
@@ -34,6 +35,7 @@ namespace Anatoli.Business.Domain
         public UserDomain(Guid applicationOwnerKey, Guid dataOwnerKey, AnatoliDbContext dbc)
         {
             UserRepository = new UserRepository(dbc);
+            PrincipalRepository = new PrincipalRepository(dbc);
             ApplicationOwnerKey = applicationOwnerKey;
             DataOwnerKey = dataOwnerKey;
             Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -44,22 +46,22 @@ namespace Anatoli.Business.Domain
         #region Methods
         public async Task<User> GetByUsernameAsync(string username)
         {
-            return await UserRepository.FindAsync(p => p.UserName == username && p.ApplicationOwnerId == ApplicationOwnerKey);
+            return await UserRepository.FindAsync(p => p.UserNameStr == username && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
-        public async Task<User> GetByIdAsync(Guid userId)
+        public async Task<User> GetByIdAsync(string userId)
         {
-            return await UserRepository.GetByIdAsync(userId);
+            return await UserRepository.FindAsync(p => p.Id == userId && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
         public async Task<User> GetByPhoneAsync(string phone)
         {
-            return await UserRepository.FindAsync(p => p.PhoneNumber == phone && p.ApplicationOwnerId == ApplicationOwnerKey);
+            return await UserRepository.FindAsync(p => p.PhoneNumber == phone && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await UserRepository.FindAsync(p => p.Email == email && p.ApplicationOwnerId == ApplicationOwnerKey);
+            return await UserRepository.FindAsync(p => p.Email == email && p.ApplicationOwnerId == ApplicationOwnerKey && DataOwnerKey == p.DataOwnerId);
         }
 
         public async Task<User> UserExists(string email, string phone, string username)
@@ -71,6 +73,21 @@ namespace Anatoli.Business.Domain
         {
             return await UserRepository.FindAsync(p => (p.Email == usernameOrEmailOrPhone || p.PhoneNumber == usernameOrEmailOrPhone || p.UserNameStr == usernameOrEmailOrPhone) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey);
         }
+
+        public async Task SavePerincipal(Principal principal)
+        {
+            try
+            {
+                await PrincipalRepository.AddAsync(principal);
+
+                await PrincipalRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
 
         #endregion
     }

@@ -84,8 +84,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 if (data != null) log.Info("save product count : " + data.productRateData.Count);
                 var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                await productRateDomain.PublishAsync(new ProductRateProxy().ReverseConvert(data.productRateData));
-                return Ok(data.productRateData);
+                var result = await productRateDomain.PublishAsyncWithResult(new ProductRateProxy().ReverseConvert(data.productRateData));
+                return Ok(result);
             }
             catch (Exception ex)
             {

@@ -97,6 +97,12 @@ namespace Anatoli.Business.Domain
             return lineItems;
 
         }
+        public async Task DeleteByProductIdAsync(List<IncompletePurchaseOrderLineItemViewModel> data)
+        {
+            foreach (var item in data)
+                await MainRepository.DeleteBatchAsync(p => p.IncompletePurchaseOrderId == item.IncompletePurchaseOrderId && p.ProductId == item.ProductId);
+        }
+
         #endregion
     }
 }

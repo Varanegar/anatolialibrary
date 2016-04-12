@@ -36,6 +36,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "User")]
         [Route("customerbaskets/bybasket")]
+        [HttpPost]
         public async Task<IHttpActionResult> GetCustomerBasketByBasketId([FromBody]CustomerRequestModel data)
         {
             try
@@ -97,7 +98,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var saveData = new BasketItemProxy().ReverseConvert(data.basketItemData);
-                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(saveData);
+                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsyncByProductId(saveData);
                 return Ok(data.basketItemData);
             }
             catch (Exception ex)
@@ -133,7 +134,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var saveData = new BasketItemProxy().ReverseConvert(data.basketItemData);
-                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).DeleteAsync(saveData);
+                await new BasketItemDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).DeleteAsyncByProductId(saveData);
                 return Ok(saveData);
             }
             catch (Exception ex)

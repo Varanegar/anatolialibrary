@@ -1,4 +1,5 @@
-﻿using Anatoli.ViewModels.BaseModels;
+﻿using Anatoli.ViewModels;
+using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.Order;
 using Anatoli.ViewModels.StoreModels;
 using Newtonsoft.Json;
@@ -20,11 +21,20 @@ namespace ClientApp
         public static List<IncompletePurchaseOrderViewModel> GetIncompleteFromServer(HttpClient client, string servserURI)
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
-            var result8 = client.GetAsync(servserURI + "/api/gateway/incompletepurchaseorder?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C&customerId=E42F8E97-BFD2-4B18-8C06-6F3BCFF9A42D").Result;
+            //var result8 = client.GetAsync(servserURI + "/api/gateway/incompletepurchaseorder?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C&customerId=E42F8E97-BFD2-4B18-8C06-6F3BCFF9A42D").Result;
+            CustomerRequestModel obj = new CustomerRequestModel();
+            obj.customerId = Guid.NewGuid();
+            string data = new JavaScriptSerializer().Serialize(obj);
+
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            var result8 = client.PostAsync(servserURI + "api/gateway/basket/customerbaskets/bycustomer", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
-            var obj = new List<IncompletePurchaseOrderViewModel>();
-            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
-            return x;
+            //var obj = new List<IncompletePurchaseOrderViewModel>();
+            //var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return null;
         }
 
 

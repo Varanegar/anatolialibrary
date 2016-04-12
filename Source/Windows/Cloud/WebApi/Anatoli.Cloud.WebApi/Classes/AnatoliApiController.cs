@@ -34,7 +34,7 @@ namespace Anatoli.Cloud.WebApi.Classes
                 if (HttpContext.Current.Request.Headers["DataOwnerKey"] == null)
                     return OwnerKey;
                 else
-                    return Guid.Parse(HttpContext.Current.Request.Headers["OwnerKey"]);
+                    return Guid.Parse(HttpContext.Current.Request.Headers["DataOwnerKey"]);
             }
         }
         public Guid DataOwnerCenterKey

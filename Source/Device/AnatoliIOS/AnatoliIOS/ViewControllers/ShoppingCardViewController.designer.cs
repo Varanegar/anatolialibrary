@@ -24,6 +24,10 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIPickerView deliveryTypePicker { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UIButton editAddressButton { get; set; }
 
 		[Outlet]
@@ -48,6 +52,10 @@ namespace AnatoliIOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UIPickerView timePicker { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel totalPriceLabel { get; set; }
 
 		void ReleaseDesignerOutlets ()
@@ -59,6 +67,10 @@ namespace AnatoliIOS.ViewControllers
 			if (checkoutButton != null) {
 				checkoutButton.Dispose ();
 				checkoutButton = null;
+			}
+			if (deliveryTypePicker != null) {
+				deliveryTypePicker.Dispose ();
+				deliveryTypePicker = null;
 			}
 			if (editAddressButton != null) {
 				editAddressButton.Dispose ();
@@ -83,6 +95,10 @@ namespace AnatoliIOS.ViewControllers
 			if (tableEmptyLabel != null) {
 				tableEmptyLabel.Dispose ();
 				tableEmptyLabel = null;
+			}
+			if (timePicker != null) {
+				timePicker.Dispose ();
+				timePicker = null;
 			}
 			if (totalPriceLabel != null) {
 				totalPriceLabel.Dispose ();

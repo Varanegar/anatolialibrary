@@ -33,7 +33,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
         {
             throw new NotImplementedException();
         }
-        public List<PurchaseOrderStatusHistoryViewModel> GetAllByOrderId(Guid orderId, Guid centerId)
+        public List<PurchaseOrderStatusHistoryViewModel> GetAllByOrderId(Guid orderId, string centerId)
         {
             var orderStatus = SellAdapter.Instance.GetPurchaseOrderStatusByPOId(orderId.ToString(), centerId.ToString());
             return orderStatus;
