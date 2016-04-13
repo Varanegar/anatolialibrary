@@ -1,16 +1,12 @@
 ﻿using Anatoli.Cloud.WebApi.Infrastructure;
+using Anatoli.DataAccess.Models.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNet.Identity.Owin;
-using Anatoli.DataAccess.Models.Identity;
-using Microsoft.AspNet.Identity;
-using log4net;
 
 namespace Anatoli.Cloud.WebApi.Providers
 {
@@ -26,7 +22,6 @@ namespace Anatoli.Cloud.WebApi.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             try
             {
                 var allowedOrigin = "*";
@@ -82,9 +77,9 @@ namespace Anatoli.Cloud.WebApi.Providers
                 logger.ErrorFormat("GrantResourceOwnerCredentials", ex);
 
                 throw;
-            }
-           
+            }           
         }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(User user, UserManager<User> manager, string authenticationType)
         {
             var userIdentity = await manager.CreateIdentityAsync(user, authenticationType);

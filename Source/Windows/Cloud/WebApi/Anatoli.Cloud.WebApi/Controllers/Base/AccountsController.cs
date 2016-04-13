@@ -459,8 +459,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> ConfirmPhoneNumber([FromBody]UserRequestModel data)
         {
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
-            var user = await GetUserByUserName(data.username);
-            //var user = await userStore.FindByNameAsync(username);
+            var userInfo = await GetUserByUserName(data.username);
+            var user = await userStore.FindByIdAsync(userInfo.Id);
             bool result = await userStore.VerifySMSCodeAsync(user, data.code);
 
             if (result)

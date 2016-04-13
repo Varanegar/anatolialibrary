@@ -343,7 +343,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [AnatoliAuthorize(Roles = "AuthorizedApp, User")] //, Resource = "Product", Action = "List"
-        [Route("products/v2")]
+        [Route("products/compress")]
         [HttpPost]
         [GzipCompression]
         public async Task<IHttpActionResult> GetProductsV2()
@@ -385,6 +385,27 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("products/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetProducts([FromBody] BaseRequestModel data)
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await productDomain.GetAllChangedAfterAsync(validDate);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("products/after/compress")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetProductsAferCompress([FromBody] BaseRequestModel data)
         {
             try
             {
