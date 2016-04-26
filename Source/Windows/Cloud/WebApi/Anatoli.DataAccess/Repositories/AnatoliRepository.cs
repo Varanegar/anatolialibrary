@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
+using LinqKit;
 
 namespace Anatoli.DataAccess.Repositories
 {
@@ -17,6 +18,8 @@ namespace Anatoli.DataAccess.Repositories
         #region Properties
         public AnatoliDbContext DbContext { get; set; }
         protected DbSet<T> DbSet { get; set; }
+
+        public Expression<Func<T, bool>> ExtraPredicate { get; set; }
         #endregion
 
         #region Ctors
@@ -50,31 +53,57 @@ namespace Anatoli.DataAccess.Repositories
 
         public virtual async Task<ICollection<T>> GetAllAsync()
         {
+            if (ExtraPredicate != null)
+                return await DbSet.Where(ExtraPredicate).ToListAsync();
+
             return await DbSet.ToListAsync();
         }
-        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        public virtual async Task<ICollection<TResult>> GetAllAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
-            var model = await DbSet.SingleOrDefaultAsync(match);
+            if (ExtraPredicate != null)
+                return await DbSet.Where(ExtraPredicate).Select(selector).ToListAsync();
 
-            return model;
+            return await DbSet.Select(selector).ToListAsync();
         }
-        public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
+
+        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await DbSet.Where(match).ToListAsync();
+            return await DbSet.SingleOrDefaultAsync(CalcExtraPredict(predicate));
+        }
+        private Expression<Func<T, bool>> CalcExtraPredict(Expression<Func<T, bool>> predict)
+        {
+            if (ExtraPredicate != null)
+                predict = PredicateBuilder.And(predict, ExtraPredicate);
+
+            return predict;
+        }
+        public virtual async Task<TResult> FindAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
+        {
+            return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).SingleOrDefaultAsync();
+        }
+
+        public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await DbSet.Where(CalcExtraPredict(predicate)).ToListAsync();
+        }
+        public virtual async Task<ICollection<TResult>> FindAllAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
+        {
+            return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).ToListAsync();
         }
 
         public virtual IEnumerable<T> GetFromCached(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
         {
-            return DbSet.Where(predicate).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)));
+            return DbSet.Where(CalcExtraPredict(predicate)).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)));
         }
         public virtual async Task<IEnumerable<T>> GetFromCachedAsync(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
         {
             return await DbSet.Where(predicate).FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
         public virtual async Task<IEnumerable<TResult>> GetFromCachedAsync<TResult>(Expression<Func<T, bool>> predicate,
-                                                                           Expression<Func<T, TResult>> selector, int cacheTimeOut = 300) where TResult : class
+                                                                                    Expression<Func<T, TResult>> selector,
+                                                                                    int cacheTimeOut = 300) where TResult : class
         {
-            return await DbSet.Where(predicate)
+            return await DbSet.Where(CalcExtraPredict(predicate))
                               .Select(selector)
                               .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }

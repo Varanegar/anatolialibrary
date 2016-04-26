@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Data.Entity;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
 using Anatoli.DataAccess.Configs;
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Models.Identity;
@@ -170,8 +167,8 @@ namespace Anatoli.DataAccess
            // modelBuilder.Configurations.Add(new RoleConfig());
             modelBuilder.Configurations.Add(new PrincipalPermissionConfig());
 
-            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
-            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            modelBuilder.Entity<IdentityUserLogin>().HasKey(l => l.UserId);
+            modelBuilder.Entity<IdentityRole>().HasKey(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
 
