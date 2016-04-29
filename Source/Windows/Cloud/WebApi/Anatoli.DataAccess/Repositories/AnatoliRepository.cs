@@ -10,6 +10,7 @@ using Anatoli.DataAccess.Interfaces;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using LinqKit;
+using AutoMapper.QueryableExtensions;
 
 namespace Anatoli.DataAccess.Repositories
 {
@@ -60,10 +61,15 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<ICollection<TResult>> GetAllAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
-            if (ExtraPredicate != null)
-                return await DbSet.Where(ExtraPredicate).Select(selector).ToListAsync();
+            var query = GetQuery();
 
-            return await DbSet.Select(selector).ToListAsync();
+            if (ExtraPredicate != null)
+                query = query.Where(ExtraPredicate);
+
+            if (selector != null)
+                return await query.Select(selector).ToListAsync();
+
+            return await query.ProjectTo<TResult>().ToListAsync();
         }
 
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
@@ -79,7 +85,10 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<TResult> FindAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
         {
-            return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).SingleOrDefaultAsync();
+            if (selector != null)
+                return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).SingleOrDefaultAsync();
+
+            return await DbSet.Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().SingleOrDefaultAsync();
         }
 
         public virtual async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
@@ -88,7 +97,10 @@ namespace Anatoli.DataAccess.Repositories
         }
         public virtual async Task<ICollection<TResult>> FindAllAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
         {
-            return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).ToListAsync();
+            if (selector != null)
+                return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).ToListAsync();
+
+            return await DbSet.Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().ToListAsync();
         }
 
         public virtual IEnumerable<T> GetFromCached(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
@@ -103,8 +115,13 @@ namespace Anatoli.DataAccess.Repositories
                                                                                     Expression<Func<T, TResult>> selector,
                                                                                     int cacheTimeOut = 300) where TResult : class
         {
+            if (selector != null)
+                return await DbSet.Where(CalcExtraPredict(predicate))
+                                  .Select(selector)
+                                  .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
+
             return await DbSet.Where(CalcExtraPredict(predicate))
-                              .Select(selector)
+                              .ProjectTo<TResult>()
                               .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
 

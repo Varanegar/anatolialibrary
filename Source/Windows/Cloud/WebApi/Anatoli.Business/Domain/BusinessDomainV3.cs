@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using EntityFramework.Extensions;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
+using AutoMapper.QueryableExtensions;
 
 namespace Anatoli.Business.Domain
 {
@@ -169,9 +170,14 @@ namespace Anatoli.Business.Domain
                                                             p.DataOwnerId == DataOwnerKey &&
                                                             p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
             if (predicate != null)
-                criteria2 = PredicateBuilder.And(predicate, criteria2);                                 
-           
-            return await MainRepository.GetQuery().Where(criteria2).AsNoTracking().Select(selector).ToListAsync();
+                criteria2 = PredicateBuilder.And(predicate, criteria2);
+
+            var query = MainRepository.GetQuery().Where(criteria2).AsNoTracking();
+
+            if (selector != null)
+               return await query.Select(selector).ToListAsync();
+            else
+                return await query.ProjectTo<TResult>().ToListAsync();
         }
 
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate)

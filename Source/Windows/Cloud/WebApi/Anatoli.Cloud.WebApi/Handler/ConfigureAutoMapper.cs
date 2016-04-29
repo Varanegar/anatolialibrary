@@ -1,15 +1,12 @@
-﻿using Anatoli.DataAccess.Models;
-using Anatoli.ViewModels.BaseModels;
-using Anatoli.ViewModels.CustomerModels;
+﻿using AutoMapper;
 using Anatoli.ViewModels.Order;
-using Anatoli.ViewModels.ProductModels;
+using Anatoli.DataAccess.Models;
+using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.StoreModels;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Anatoli.ViewModels.ProductModels;
+using Anatoli.ViewModels.CustomerModels;
+
 
 namespace Anatoli.Cloud.WebApi.Handler
 {
