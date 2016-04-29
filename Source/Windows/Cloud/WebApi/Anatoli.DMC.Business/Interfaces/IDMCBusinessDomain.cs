@@ -11,7 +11,5 @@ namespace Anatoli.DMC.Business
         where TSource : class, new()
         where TOut : class, new()
     {
-        List<TOut> GetAll();
-        List<TOut> GetAllChangedAfter(DateTime selectedDate);
     }
 }

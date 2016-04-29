@@ -13,13 +13,18 @@ using System.Web;
 
 namespace Anatoli.Cloud.WebApi.Handler
 {
-    public static class ConfigureRastakAutoMapper
+    public static class ConfigDMCAutoMapperHelper
     {
-        public static void ConfigModelToViewModel()
+        public static void Config()
+        {
+            ConfigModelToViewModel();
+            ConfigViewModelToModel();
+        }
+        private static void ConfigModelToViewModel()
         {
         }
 
-        public static void ConfigViewModelToModel()
+        private static void ConfigViewModelToModel()
         {
         }
 

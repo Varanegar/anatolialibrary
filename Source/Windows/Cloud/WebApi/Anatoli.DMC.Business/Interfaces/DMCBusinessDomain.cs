@@ -1,15 +1,16 @@
-﻿using Anatoli.DMC.DataAccess.Helpers;
-using Anatoli.ViewModels.BaseModels;
+﻿using Anatoli.DMC.ViewModels;
+using Anatoli.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Thunderstruck;
 
-namespace Anatoli.DMC.DataAccess.DataAdapter
+namespace Anatoli.DMC.Business.Proxy.Interfaces
 {
-    public abstract class BaseAdapter
+    public class DMCBusinessDomain  <TSource, TOut>
+        where TSource : DMCBaseViewModel, new()
+        where TOut : BaseViewModel, new()
     {
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

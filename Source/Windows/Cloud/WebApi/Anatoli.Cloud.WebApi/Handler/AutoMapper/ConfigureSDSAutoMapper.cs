@@ -13,17 +13,22 @@ using System.Web;
 
 namespace Anatoli.Cloud.WebApi.Handler
 {
-    public static class ConfigPMCAutoMapperHelper
+    public static class ConfigAutoMapperBase
     {
-        public static void ConfigModelToViewModel()
+        public static void Config()
+        {
+            ConfigModelToViewModel();
+            ConfigViewModelToModel();
+        }
+        private static void ConfigModelToViewModel()
         {
         }
 
-        public static void ConfigViewModelToModel()
+        private static void ConfigViewModelToModel()
         {
         }
 
-        private static Guid? ConvertNullableStringToGuid(string data)
+        public static Guid? ConvertNullableStringToGuid(string data)
         {
             var guid = Guid.Empty;
             Guid.TryParse(data, out guid);

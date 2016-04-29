@@ -15,7 +15,12 @@ namespace Anatoli.Cloud.WebApi.Handler
 {
     public static class ConfigDefaultAutoMapperHelper
     {
-        public static void ConfigModelToViewModel()
+        public static void Config()
+        {
+            ConfigModelToViewModel();
+            ConfigViewModelToModel();
+        }
+        private static void ConfigModelToViewModel()
         {
             Mapper.CreateMap<FiscalYear, FiscalYearViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<CityRegion, CityRegionViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ParentUniqueIdString, opt => opt.MapFrom(src => src.CityRegion2Id.ToString())).ForMember(p => p.ID, opt => opt.Ignore());
@@ -74,7 +79,7 @@ namespace Anatoli.Cloud.WebApi.Handler
 
         }
 
-        public static void ConfigViewModelToModel()
+        private static void ConfigViewModelToModel()
         {
             Mapper.CreateMap<FiscalYearViewModel, FiscalYear>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.Number_ID, opt => opt.Ignore());
             Mapper.CreateMap<CityRegionViewModel, CityRegion>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.CityRegion2Id, opt => opt.ResolveUsing(src => ConvertNullableStringToGuid(src.ParentUniqueIdString))).ForMember(p => p.Number_ID, opt => opt.Ignore());
@@ -131,7 +136,6 @@ namespace Anatoli.Cloud.WebApi.Handler
             Mapper.CreateMap<StockProductRequestTypeViewModel, StockProductRequestType>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.Number_ID, opt => opt.Ignore());
             Mapper.CreateMap<StockProductRequestViewModel, StockProductRequest>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.Number_ID, opt => opt.Ignore());
         }
-
         private static Guid? ConvertNullableStringToGuid(string data)
         {
             var guid = Guid.Empty;

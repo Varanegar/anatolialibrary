@@ -221,11 +221,11 @@
     <Compile Include="Controllers\TestAuthController.cs" />
     <Compile Include="Classes\CompressionAttributes.cs" />
     <Compile Include="Handler\ApiResponse.cs" />
-    <Compile Include="Handler\ConfigureRastakAutoMapper.cs" />
-    <Compile Include="Handler\ConfigureSDSAutoMapper.cs" />
-    <Compile Include="Handler\ConfigurePMCAutoMapper.cs" />
-    <Compile Include="Handler\ConfigureDMCAutoMapper.cs" />
-    <Compile Include="Handler\ConfigureDefaultAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ConfigureRastakAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ConfigureSDSAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ConfigurePMCAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ConfigureDMCAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ConfigureDefaultAutoMapper.cs" />
     <Compile Include="Handler\WrappingHandler.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />

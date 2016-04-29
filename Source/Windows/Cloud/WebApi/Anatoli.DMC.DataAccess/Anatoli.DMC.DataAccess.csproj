@@ -48,7 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAdapter\BaseAdapter.cs" />
+    <Compile Include="DataAdapter\DMCBaseAdapter.cs" />
+    <Compile Include="DataAdapter\DMCCustomerAdapter.cs" />
     <Compile Include="Helpers\DBQuery.cs" />
     <Compile Include="Helpers\Entity\DMCGetIdEntity.cs" />
     <Compile Include="Helpers\Entity\DMCBranchConfigEntity.cs" />

@@ -212,7 +212,7 @@ namespace Anatoli.Cloud.WebApi
 
         private void ConfigureAutoMapper()
         {
-            ConfigDefaultAutoMapperHelper.ConfigModelToViewModel();
+            ConfigDefaultAutoMapperHelper.Config();
         }
     }
 }

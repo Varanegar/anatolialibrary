@@ -13,13 +13,18 @@ using System.Web;
 
 namespace Anatoli.Cloud.WebApi.Handler
 {
-    public static class ConfigSDSAutoMapperHelper
+    public static class ConfigPMCAutoMapperHelper
     {
-        public static void ConfigModelToViewModel()
+        public static void Config()
+        {
+            ConfigModelToViewModel();
+            ConfigViewModelToModel();
+        }
+        private static void ConfigModelToViewModel()
         {
         }
 
-        public static void ConfigViewModelToModel()
+        private static void ConfigViewModelToModel()
         {
         }
 
