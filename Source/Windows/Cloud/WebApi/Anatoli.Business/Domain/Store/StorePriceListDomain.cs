@@ -52,7 +52,7 @@ namespace Anatoli.Business.Domain
 
                 foreach (var item in data)
                 {
-                    var model = dataList.Find(p => p.StoreId == item.StoreId && p.ProductId == item.StoreId);
+                    var model = dataList.Find(p => p.StoreId == item.StoreId && p.ProductId == item.ProductId);
                     item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
                     AddDataToRepository(model, item);
                 }

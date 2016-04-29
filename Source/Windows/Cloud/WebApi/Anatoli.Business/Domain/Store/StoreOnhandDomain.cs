@@ -46,7 +46,32 @@ namespace Anatoli.Business.Domain
         {
            return GetOnlineData(WebApiURIHelper.GetStoreOnHandLocalURI, "id=" + id);
         }
+        public override async Task PublishAsync(List<StoreActiveOnhand> data)
+        {
+            try
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                var dataList = GetDataListToCheckForExistsData();
 
+                foreach (var item in data)
+                {
+                    var model = dataList.Find(p => p.StoreId == item.StoreId && p.ProductId == item.ProductId);
+                    item.ApplicationOwnerId = ApplicationOwnerKey; item.DataOwnerId = DataOwnerKey; item.DataOwnerCenterId = DataOwnerCenterKey;
+                    AddDataToRepository(model, item);
+                }
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("PublishAsync", ex);
+                throw ex;
+            }
+            finally
+            {
+                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                Logger.Info("PublishAsync Finish" + data.Count);
+            }
+        }
         protected override void AddDataToRepository(StoreActiveOnhand currentStoreAciveOnHand, StoreActiveOnhand item)
         {
             if (currentStoreAciveOnHand != null)

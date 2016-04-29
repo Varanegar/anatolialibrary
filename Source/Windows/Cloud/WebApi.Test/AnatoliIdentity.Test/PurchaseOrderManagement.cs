@@ -1,4 +1,5 @@
 ﻿
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.Order;
 using Anatoli.ViewModels.ProductModels;
@@ -30,9 +31,19 @@ namespace ClientApp
 
         public static List<PurchaseOrderLineItemViewModel> GetCustomerSellDetailInfoFromServer(HttpClient client, string servserURI)
         {
+            var dataInfo = new PurchaseOrderRequestModel();
+            dataInfo.customerId = Guid.Parse("05496ec3-1d64-4ae3-b6d2-e78cbd89c843");
+            dataInfo.centerId = "";
+            string data = JsonConvert.SerializeObject(dataInfo);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
-            //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local?customerId=2BFFBDF6-9362-4CB6-807B-37D2DFBEBB96&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
-            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/lineitem/?poId=406de307-39aa-40e9-9ecc-4779b181a11e&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.PostAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local", content).Result;
+            //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/lineitem/?poId=406de307-39aa-40e9-9ecc-4779b181a11e&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<PurchaseOrderLineItemViewModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);

@@ -13,7 +13,6 @@ namespace Anatoli.Rastak.Business.Proxy.Interfaces
         where TOut : BaseViewModel, new()
     {
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        protected IAnatoliProxy<TSource, TOut> Proxy { get; set; }
 
     }
 }

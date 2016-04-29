@@ -18,7 +18,7 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
     {
         private static readonly string CustomerDataType = "Customer";
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public static void UploadCustomerToServer(HttpClient client, string serverURI, string dataOwner, string dataOwnerCenter, string privateOwnerId)
+        public static void UploadCustomerToServer(HttpClient client, string serverURI, string privateOwnerId, string dataOwner, string dataOwnerCenter)
         {
             try
             {
@@ -35,14 +35,18 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                                 item.SendPassSMS = false;
                                 string data = JsonConvert.SerializeObject(item);
                                 string getUserURI = serverURI + UriInfo.GetUserURI + "/" + item.Mobile;
-                                var user = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, getUserURI, client, privateOwnerId, dataOwner, dataOwnerCenter);
-                                if (user != null)
-                                    CustomerAdapter.Instance.SetCustomerSiteUserId(user.Id, user.Mobile);
-                                else
+                                try
+                                {
+                                    var user = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, getUserURI, client, privateOwnerId, dataOwner, dataOwnerCenter);
+                                    if (user != null)
+                                        CustomerAdapter.Instance.SetCustomerSiteUserId(user.Id, user.Mobile);
+                                }
+                                catch (Exception ex2)
                                 {
                                     string URI = serverURI + UriInfo.SaveUserURI;
                                     UserReturnModel result = ConnectionHelper.CallServerServicePost<UserReturnModel>(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                                     CustomerAdapter.Instance.SetCustomerSiteUserId(result.Id, result.Mobile);
+
                                 }
                             }
                             catch (Exception ex)

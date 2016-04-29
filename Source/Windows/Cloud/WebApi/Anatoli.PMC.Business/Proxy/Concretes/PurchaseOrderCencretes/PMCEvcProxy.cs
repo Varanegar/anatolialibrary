@@ -2,14 +2,7 @@
 using Anatoli.PMC.DataAccess.Helpers.Entity;
 using Anatoli.PMC.ViewModels.EVC;
 using Anatoli.PMC.ViewModels.Order;
-using Anatoli.PMC.ViewModels.StoreModels;
-using Anatoli.ViewModels.Order;
-using Anatoli.ViewModels.StoreModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
 {

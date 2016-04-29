@@ -51,7 +51,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         public void SetCustomerSiteUserId(string UserId, string Mobile)
         {
             try {
-                using (var context = new DataContext())
+                using (var context = new DataContext(Transaction.No))
                 {
                     context.Execute("update Customer set customerSiteUserId ='" + UserId + "' where mobile='" + Mobile + "'");
                 }

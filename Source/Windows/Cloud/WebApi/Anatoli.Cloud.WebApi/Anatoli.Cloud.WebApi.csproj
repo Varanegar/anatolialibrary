@@ -197,6 +197,8 @@
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
     <Compile Include="Controllers\Base\PushNotificationController.cs" />
+    <Compile Include="Controllers\DSD\BaseData\BackOfficeBaseDataController.cs" />
+    <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelTrackingController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelController.cs" />
     <Compile Include="Controllers\DSD\RouteManagement\RouteManagementController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
@@ -219,7 +221,11 @@
     <Compile Include="Controllers\TestAuthController.cs" />
     <Compile Include="Classes\CompressionAttributes.cs" />
     <Compile Include="Handler\ApiResponse.cs" />
-    <Compile Include="Handler\ConfigureAutoMapper.cs" />
+    <Compile Include="Handler\ConfigureRastakAutoMapper.cs" />
+    <Compile Include="Handler\ConfigureSDSAutoMapper.cs" />
+    <Compile Include="Handler\ConfigurePMCAutoMapper.cs" />
+    <Compile Include="Handler\ConfigureDMCAutoMapper.cs" />
+    <Compile Include="Handler\ConfigureDefaultAutoMapper.cs" />
     <Compile Include="Handler\WrappingHandler.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />

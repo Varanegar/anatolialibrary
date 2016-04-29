@@ -270,6 +270,10 @@
     <Compile Include="Migrations\201604121528251_Merge-Migration-1.Designer.cs">
       <DependentUpon>201604121528251_Merge-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604291628527_StoreActiveOnHand-Migration-2.cs" />
+    <Compile Include="Migrations\201604291628527_StoreActiveOnHand-Migration-2.Designer.cs">
+      <DependentUpon>201604291628527_StoreActiveOnHand-Migration-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -507,6 +511,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604121528251_Merge-Migration-1.resx">
       <DependentUpon>201604121528251_Merge-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604291628527_StoreActiveOnHand-Migration-2.resx">
+      <DependentUpon>201604291628527_StoreActiveOnHand-Migration-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

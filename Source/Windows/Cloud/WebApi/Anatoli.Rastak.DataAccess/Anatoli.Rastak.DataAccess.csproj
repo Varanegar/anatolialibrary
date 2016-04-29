@@ -48,25 +48,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAdapter\BaseAdapter.cs" />
-    <Compile Include="DataAdapter\CharGroupAdapter.cs" />
-    <Compile Include="DataAdapter\CityRegionAdapter.cs" />
-    <Compile Include="DataAdapter\CustomerAdapter.cs" />
-    <Compile Include="DataAdapter\EVCAdapter.cs" />
-    <Compile Include="DataAdapter\FiscalYearAdapter.cs" />
-    <Compile Include="DataAdapter\ManufactureAdapter.cs" />
-    <Compile Include="DataAdapter\ImageAdapter.cs" />
-    <Compile Include="DataAdapter\ProductAdapter.cs" />
-    <Compile Include="DataAdapter\SellAdapter.cs" />
-    <Compile Include="DataAdapter\StockAdapter.cs" />
-    <Compile Include="DataAdapter\StoreAdapter.cs" />
-    <Compile Include="DataAdapter\SupplierAdapter.cs" />
-    <Compile Include="Helpers\DBQuery.cs" />
+    <Compile Include="DataAdapter\RastakBaseAdapter.cs" />
+    <Compile Include="DataAdapter\RastakCharGroupAdapter.cs" />
+    <Compile Include="DataAdapter\RastakCityRegionAdapter.cs" />
+    <Compile Include="DataAdapter\RastakCustomerAdapter.cs" />
+    <Compile Include="DataAdapter\RastakEVCAdapter.cs" />
+    <Compile Include="DataAdapter\RastakFiscalYearAdapter.cs" />
+    <Compile Include="DataAdapter\RastakManufactureAdapter.cs" />
+    <Compile Include="DataAdapter\RastakImageAdapter.cs" />
+    <Compile Include="DataAdapter\RastakProductAdapter.cs" />
+    <Compile Include="DataAdapter\RastakSellAdapter.cs" />
+    <Compile Include="DataAdapter\RastakStockAdapter.cs" />
+    <Compile Include="DataAdapter\RastakStoreAdapter.cs" />
+    <Compile Include="DataAdapter\RastakSupplierAdapter.cs" />
+    <Compile Include="Helpers\RastakDBQuery.cs" />
     <Compile Include="Helpers\Entity\RastakGetIdEntity.cs" />
-    <Compile Include="Helpers\Entity\RastakStoreConfigEntity.cs" />
-    <Compile Include="Helpers\GeneralCommands.cs" />
+    <Compile Include="Helpers\Entity\RastakBranchConfigEntity.cs" />
+    <Compile Include="Helpers\RastakGeneralCommands.cs" />
     <Compile Include="Helpers\PersianDate.cs" />
-    <Compile Include="Helpers\StoreConfigHeler.cs" />
+    <Compile Include="Helpers\RastakBranchConfigHeler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
