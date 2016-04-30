@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38C82039-12E3-4C4D-A972-AD1D1A216D7B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Anatoli.VNGRS.Business</RootNamespace>
+    <AssemblyName>Anatoli.VNGRS.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.BulkInsert-ef6.6.0.2.8\lib\Net45\EntityFramework.BulkInsert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MappingAPI.6.0.0.7\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\AreaService.cs" />
+    <Compile Include="BL\EntityDataReader.cs" />
+    <Compile Include="BL\ConfigService.cs" />
+    <Compile Include="BL\GoodByValueReportService.cs" />
+    <Compile Include="BL\CustomerReportService.cs" />
+    <Compile Include="BL\GoodReportService.cs" />
+    <Compile Include="BL\LastStatusService.cs" />
+    <Compile Include="BL\TransactionService.cs" />
+    <Compile Include="DataSourceResult.cs" />
+    <Compile Include="DBManagement\EfRepository.cs" />
+    <Compile Include="DBManagement\IDbContext.cs" />
+    <Compile Include="DBManagement\IRepository.cs" />
+    <Compile Include="Entity\AreaEntity.cs" />
+    <Compile Include="Entity\BaseEntity.cs" />
+    <Compile Include="Entity\BaseEntityAutoIncId.cs" />
+    <Compile Include="Entity\AreaPointEntity.cs" />
+    <Compile Include="Entity\BaseEntityWithouteAutoIncId.cs" />
+    <Compile Include="Entity\CustomerAreaEntity.cs" />
+    <Compile Include="Entity\CustomerEntity.cs" />
+    <Compile Include="Entity\GoodReportEntity.cs" />
+    <Compile Include="Entity\TransactionEntity.cs" />
+    <Compile Include="Entity\VisitorPathEntity.cs" />
+    <Compile Include="Entity\VisitorEntity.cs" />
+    <Compile Include="Entity\VisitorGroupEntity.cs" />
+    <Compile Include="Entity\VisitorDailyPathEntity.cs" />
+    <Compile Include="Enum\Enumeration.cs" />
+    <Compile Include="Filter\TrackerFilter.cs" />
+    <Compile Include="Filter\ReportFilter.cs" />
+    <Compile Include="BL\AreaPointService.cs" />
+    <Compile Include="BL\SettingService.cs" />
+    <Compile Include="PagingList.cs" />
+    <Compile Include="Tools\DateTools.cs" />
+    <Compile Include="Tools\DBUtility.cs" />
+    <Compile Include="Tools\GeneralTools.cs" />
+    <Compile Include="Tools\JsonTools.cs" />
+    <Compile Include="Tools\PointTools.cs" />
+    <Compile Include="BL\VisitorService.cs" />
+    <Compile Include="BL\CustomerService.cs" />
+    <Compile Include="DBManagement\MapContext.cs" />
+    <Compile Include="DBManagement\MapDBInitializer.cs" />
+    <Compile Include="DefaultValue.cs" />
+    <Compile Include="BL\LogService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AreaModel.cs" />
+    <Compile Include="ViewModel\AreaPointListView.cs" />
+    <Compile Include="ViewModel\AreaPointView.cs" />
+    <Compile Include="ViewModel\AreaView.cs" />
+    <Compile Include="ViewModel\ConfigView.cs" />
+    <Compile Include="ViewModel\CustomerAreaView.cs" />
+    <Compile Include="ViewModel\CustomerPointView.cs" />
+    <Compile Include="ViewModel\CustomerView.cs" />
+    <Compile Include="ViewModel\IdView.cs" />
+    <Compile Include="ViewModel\LastStatusModel.cs" />
+    <Compile Include="ViewModel\PointView.cs" />
+    <Compile Include="ViewModel\PolyView.cs" />
+    <Compile Include="ViewModel\ReturnValue.cs" />
+    <Compile Include="ViewModel\VisitorModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
+      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
+      <Name>Anatoli.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

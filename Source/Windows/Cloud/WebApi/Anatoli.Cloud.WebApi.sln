@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.SDS.ViewModels", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.SDS.DataAccess", "Anatoli.SDS.DataAccess\Anatoli.SDS.DataAccess.csproj", "{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.VNGRS.Business", "Anatoli.VNGRS.Business\Anatoli.VNGRS.Business.csproj", "{38C82039-12E3-4C4D-A972-AD1D1A216D7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,10 @@ Global
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
