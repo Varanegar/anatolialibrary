@@ -39,7 +39,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var userId = HttpContext.Current.User.Identity.GetUserId();
             var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
 
-            var result = data.Where(p => p.Resource == "Pages").ToList();
+            var result = data.Where(p => p.Action == "Page").ToList();
 
             return Ok(result);
         }
@@ -51,7 +51,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
-            var model = this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u));
+            var model = this.AppUserManager.Users.ToList().Where(f => f.DataOwnerId == DataOwnerKey ).Select(u => this.TheModelFactory.Create(u));
 
             return Ok(model);
         }

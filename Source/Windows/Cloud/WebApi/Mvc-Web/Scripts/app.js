@@ -2,9 +2,9 @@
 //var baseBackendUrl = 'http://46.209.104.2:7000',
 //    sslBackendUrl = 'https://localhost:443',
 //var baseBackendUrl = 'http://217.218.53.71:8090/',
-//var baseBackendUrl = 'http://localhost:8081/',
+//var baseBackendUrl = 'http://192.168.0.160:7070/',
 var baseBackendUrl = 'http://localhost:59822/';
-//sslBackendUrl = 'https://localhost:44300',
+//sslBackendUrl = 'http://localhost',
 
 privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
 dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
@@ -63,15 +63,15 @@ urls = {
 
 
     pages: {
-        products: { url: '/Products', title: 'کالا', order: 7 },
-        stockproducts: { url: '/Stocks/products', title: 'کالای انبار', order: 9 },
-        reviewproductrequest: { url: '/Products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
-        storerequestshistory: { url: '/Products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
-        stocks: { url: '/Stocks', title: 'انبارها', order: 8 },
+        product: { url: '/Products', title: 'کالا', order: 7 },
+        stockproduct: { url: '/Stocks/products', title: 'کالای انبار', order: 9 },
+        stockproductrequest: { url: '/Products/reviewProductRequest', title: 'بازنگری درخواست ها', order: 4 },
+        stockproductrequesthistory: { url: '/Products/storeRequestsHistory', title: 'سوابق درخواست ها', order: 5 },
+        stock: { url: '/Stocks', title: 'انبارها', order: 8 },
         productrequestrules: { url: '/Stocks/productRequestRules', title: 'قوانین', order: 6 },
-        usermanager: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
+        usermanagement: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
         userstocks: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
-        permissions: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
+        permission: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
     }
 },
 errorMessage = {
@@ -173,11 +173,11 @@ function headerMenuViewModel() {
                     data.forEach(function (itm) {
                         if (itm.action !== '' && itm.action !== 'List') {
 
-                            var url = urls.pages[itm.action.toLowerCase()].url;
+                            var url = urls.pages[itm.resource.toLowerCase()].url;
 
-                            var title = urls.pages[itm.action.toLowerCase()].title;
+                            var title = urls.pages[itm.resource.toLowerCase()].title;
 
-                            var order = urls.pages[itm.action.toLowerCase()].order;
+                            var order = urls.pages[itm.resource.toLowerCase()].order;
 
                             $(".header-menu .navbar-nav .exit-menu-item").before('<li data-order=' + order + '><a href="' + url + '">' + title + '</a></li>');
                         }

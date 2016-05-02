@@ -29,7 +29,7 @@ namespace Anatoli.Cloud.WebApi.Models
             {
                 Url = _UrlHelper.Link("GetUserById", new { id = appUser.Id }),
                 Id = appUser.Id,
-                UserName = appUser.UserName,
+                UserName = appUser.UserNameStr,
                 FullName = appUser.FullName,
                 Email = appUser.Email,
                 EmailConfirmed = appUser.EmailConfirmed,

@@ -21,7 +21,7 @@ namespace ClientApp
         public static List<PurchaseOrderViewModel> GetCustomerSellInfoFromServer(HttpClient client, string servserURI)
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
-            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/?customerId=05496ec3-1d64-4ae3-b6d2-e78cbd89c843&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local/?customerId=05496ec3-1d64-4ae3-b6d2-e78cbd89c843&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
             //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local?customerId=7A86ABD1-A660-4905-957F-447546112981&centerid=A7B07040-707A-4D51-9703-BB6710EBADE7").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<PurchaseOrderViewModel>();

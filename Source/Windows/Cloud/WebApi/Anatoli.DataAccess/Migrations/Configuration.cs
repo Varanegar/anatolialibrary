@@ -18,11 +18,53 @@
 
         protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
         {
-            //if (!_pendingMigrations) return;
+            #region Permission Info
             context.Applications.AddOrUpdate(item => item.Id,
                 new Application { Id = Guid.Parse("8A074FD5-9311-4F8E-AF47-0572DE1A7B6A"), Name = "Anatoli Market place" },
                 new Application { Id = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC"), Name = "VN Cloud" }
                 );
+
+            context.ApplicationModules.AddOrUpdate(item => item.Id,
+                new ApplicationModule { Id = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523"), Name = "SCM Module", ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC") }
+                );
+
+            context.ApplicationModuleResources.AddOrUpdate(item => item.Id,
+                new ApplicationModuleResource { Id = Guid.Parse("68F751E3-8744-4775-8942-39501F56452F"), Name = "Stock", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("12BA035E-B336-41B5-8DBF-1C7DE2162139"), Name = "StockProduct", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("E62CF7C0-869C-46DC-8380-70623A35F642"), Name = "StockProductRequest", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("D18144DB-DAAC-4BF8-8FB9-B852DABC1F0C"), Name = "StockProductRequestHistory", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("0B6CE4DD-DCFE-436F-B995-18F9842A2DA5"), Name = "StockRequest", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("BE2B20D7-D1B7-44EE-80DA-55C07C9782A9"), Name = "ProductRequestRules", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("01AC3D14-7ED5-4AE5-AF23-4180F15F9677"), Name = "ProductGroup", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("D9AC9D01-A00C-4201-9C2D-4F92D29358E9"), Name = "Product", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("7BA8CC86-CB32-403E-A7D1-E53710BBDC02"), Name = "Permission", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
+                new ApplicationModuleResource { Id = Guid.Parse("1FD9D17F-5AAC-4B27-A8A9-0DCCF84FE8A2"), Name = "UserManagement", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") }
+                );
+
+            context.PermissionActions.AddOrUpdate(item => item.Id,
+                new PermissionAction { Id = Guid.Parse("66A925B5-0F61-41D0-86B6-B7E867D4E208"), Name = "List" },
+                new PermissionAction { Id = Guid.Parse("1145EF8D-1BAA-404A-80DA-B7847F0A4763"), Name = "Save" },
+                new PermissionAction { Id = Guid.Parse("EF7F974F-0E0F-45A1-B454-F94E8AC16FE7"), Name = "View" },
+                new PermissionAction { Id = Guid.Parse("0B9A0BF2-7A19-4AAF-8C91-3AC0322D7B74"), Name = "Delete" },
+                new PermissionAction { Id = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Page" },
+                new PermissionAction { Id = Guid.Parse("F25A6068-4BD3-44C8-9035-EEAF30C64084"), Name = "Custom" }
+                );
+
+
+            context.Permissions.AddOrUpdate(item => item.Id,
+                new Permission { Id = Guid.Parse("35A62A10-451F-4FC7-B3E5-2E98EDCB6BCD"), ApplicationModuleResourceId = Guid.Parse("68F751E3-8744-4775-8942-39501F56452F"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Stock Page" },
+                new Permission { Id = Guid.Parse("6E6C61BC-7B18-4757-AE2F-3D411B7B5E0F"), ApplicationModuleResourceId = Guid.Parse("D18144DB-DAAC-4BF8-8FB9-B852DABC1F0C"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Stock Request History Page" },
+                new Permission { Id = Guid.Parse("A9D36EAF-8C6F-42D6-B496-880ED5F2E442"), ApplicationModuleResourceId = Guid.Parse("7BA8CC86-CB32-403E-A7D1-E53710BBDC02"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Permision Page" },
+                new Permission { Id = Guid.Parse("05321E5D-3FFF-41AB-821A-AF47FBE8B53E"), ApplicationModuleResourceId = Guid.Parse("12BA035E-B336-41B5-8DBF-1C7DE2162139"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Stock Product Page" },
+                new Permission { Id = Guid.Parse("40AF7559-8D25-4523-849C-BB71D9A49C32"), ApplicationModuleResourceId = Guid.Parse("1FD9D17F-5AAC-4B27-A8A9-0DCCF84FE8A2"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "User Management Page" },
+                new Permission { Id = Guid.Parse("87FE4232-11C3-4885-B3C2-EBEEB7F45C1A"), ApplicationModuleResourceId = Guid.Parse("BE2B20D7-D1B7-44EE-80DA-55C07C9782A9"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Product Request Rule Page" },
+                new Permission { Id = Guid.Parse("ECD68A39-8F5F-43C6-9B58-FA978057374D"), ApplicationModuleResourceId = Guid.Parse("D9AC9D01-A00C-4201-9C2D-4F92D29358E9"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Product Page" }
+                );
+
+            ;
+            #endregion
+
+            #region Base Data
 
             context.AnatoliContactTypes.AddOrUpdate(item => item.Id,
                 new AnatoliContactType { Id = Guid.Parse("0B8F7429-B33C-4209-ABED-1192E7B36657"), Name = "حقیقی" },
@@ -179,6 +221,7 @@
                     LastUpdate = DateTime.Now,
                 }
                 );
+            #endregion
 
             #region Add Users
             var userId = "02D3C1AA-6149-4810-9F83-DF3928BFDF16";
