@@ -166,6 +166,7 @@ namespace Anatoli.Business.Domain
             {
                 currentProduct.ProductName = item.ProductName;
                 currentProduct.ProductGroupId = item.ProductGroupId;
+                currentProduct.BrandId = item.BrandId;
                 currentProduct.ManufactureId = item.ManufactureId;
                 currentProduct.Desctription = item.Desctription;
                 currentProduct.QtyPerPack = item.QtyPerPack;

@@ -9,13 +9,13 @@ namespace Anatoli.DataAccess.Configs
         {
             HasOptional(o => o.PermissionCatalougeParent);
 
-            HasMany(p => p.Permissions).WithMany(pp => pp.PermissionCatalogs)
-                                       .Map(cs =>
-                                       {
-                                           cs.MapLeftKey("PermissionCatalogId");
-                                           cs.MapRightKey("PermissionID");
-                                           cs.ToTable("PermissionCatalogPermissions");
-                                       });
+            //HasMany(p => p.Permissions).WithMany(pp => pp.PermissionCatalogs)
+            //                           .Map(cs =>
+            //                           {
+            //                               cs.MapLeftKey("PermissionCatalogId");
+            //                               cs.MapRightKey("PermissionID");
+            //                               cs.ToTable("PermissionCatalogPermissions");
+            //                           });
         }
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionCatalogViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
+    <Compile Include="BaseModels\BrandViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />

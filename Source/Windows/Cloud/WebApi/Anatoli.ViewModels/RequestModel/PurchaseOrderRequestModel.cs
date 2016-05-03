@@ -15,5 +15,6 @@ namespace Anatoli.ViewModels
         public List<IncompletePurchaseOrderViewModel> incompletePurchaseOrderData { get; set; }
         public List<IncompletePurchaseOrderLineItemViewModel> incompletePurchaseOrderLineItemData { get; set; }
         public PurchaseOrderViewModel orderEntity { get; set; }
+        public bool getAllOrderTypes { get; set; }
     }
 }

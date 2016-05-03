@@ -13,6 +13,7 @@ namespace Anatoli.ViewModels
         public List<FiscalYearViewModel> fiscalYearData { get; set; }
         public List<CityRegionViewModel> cityRegionData { get; set; }
         public List<SupplierViewModel> supplierData { get; set; }
+        public List<BrandViewModel> brandData { get; set; }
         public List<ManufactureViewModel> manufactureData { get; set; }
         public List<StockProductRequestTypeViewModel> baseStockProductRequestType { get; set; }
     }

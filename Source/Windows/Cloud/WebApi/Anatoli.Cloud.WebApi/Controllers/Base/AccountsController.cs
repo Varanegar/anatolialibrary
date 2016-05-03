@@ -172,7 +172,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("createbybackoffice"), HttpPost]
-        public async Task<IHttpActionResult> CreateUserByBackoffice(CreateUserBindingModel createUserModel)
+        public async Task<IHttpActionResult> CreateUserByBackoffice(CreateUserBindingModel createUserModel, bool isCustomer = true)
         {
             try
             {
@@ -209,14 +209,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 {
                     var emailUser = await userDomain.GetByPhoneAsync(createUserModel.Mobile);
                     if (emailUser != null)
-                        return GetErrorResult("ایمیل شما قبلا استفاده شده است");
+                        return GetErrorResult("موبایل شما قبلا استفاده شده است");
                 }
 
                 if (createUserModel.Username != null)
                 {
                     var emailUser = await userDomain.GetByUsernameAsync(createUserModel.Username);
                     if (emailUser != null)
-                        return GetErrorResult("ایمیل شما قبلا استفاده شده است");
+                        return GetErrorResult("نام کاربری شما قبلا استفاده شده است");
                 }
 
                 using (var transaction = Request.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
@@ -255,25 +255,28 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                         AppUserManager.AddToRoles(user.Id, new string[] { "User" });
 
-                        var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
-                        var customer = new CustomerViewModel()
+                        if (isCustomer)
                         {
-                            Mobile = createUserModel.Mobile,
-                            UniqueId = Guid.Parse(user.Id),
-                            Email = createUserModel.Email,
-                        };
+                            var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
+                            var customer = new CustomerViewModel()
+                            {
+                                Mobile = createUserModel.Mobile,
+                                UniqueId = Guid.Parse(user.Id),
+                                Email = createUserModel.Email,
+                            };
 
-                        List<CustomerViewModel> customerList = new List<CustomerViewModel>();
-                        customer.CompanyId = DataOwnerKey;
-                        customerList.Add(customer);
-                        await customerDomain.PublishAsync(new CustomerProxy().ReverseConvert(customerList));
+                            List<CustomerViewModel> customerList = new List<CustomerViewModel>();
+                            customer.CompanyId = DataOwnerKey;
+                            customerList.Add(customer);
+                            await customerDomain.PublishAsync(new CustomerProxy().ReverseConvert(customerList));
 
-                        List<BasketViewModel> basketList = new List<BasketViewModel>();
-                        basketList.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId, customer.UniqueId));
-                        basketList.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId, customer.UniqueId));
+                            List<BasketViewModel> basketList = new List<BasketViewModel>();
+                            basketList.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId, customer.UniqueId));
+                            basketList.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId, customer.UniqueId));
 
-                        var basketDomain = new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
-                        await basketDomain.PublishAsync(new BasketProxy().ReverseConvert(basketList));
+                            var basketDomain = new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
+                            await basketDomain.PublishAsync(new BasketProxy().ReverseConvert(basketList));
+                        }
 
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
@@ -331,7 +334,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
                 return await UpdateUser(userModel);
             else
-                return await AddUser(userModel);
+                return await CreateUserByBackoffice(userModel, false);
+
         }
 
         private async Task<IHttpActionResult> UpdateUser(CreateUserBindingModel model)
@@ -350,66 +354,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
             await userStore.UpdateAsync(user);
 
             return Ok(model);
-        }
-
-        private async Task<IHttpActionResult> AddUser(CreateUserBindingModel model)
-        {
-            try
-            {
-                Uri locationHeader = null;
-                if (!ModelState.IsValid)
-                    return GetErrorResult(ModelState);
-
-                var id = Guid.NewGuid();
-                var user = new User()
-                {
-                    Id = id.ToString(),
-                    FullName = model.FullName,
-                    UserName = model.Username,
-                    Email = model.Email,
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
-                    CreatedDate = DateTime.Now,
-                    PhoneNumber = model.Mobile,
-                    ApplicationOwnerId = OwnerKey,
-                };
-
-                if (model.Email != null)
-                {
-                    var emailUser = await GetUserByEMail(model.Email);
-                    //var emailUser = await AppUserManager.FindByEmailAsync(model.Email);
-                    if (emailUser != null)
-                        return GetErrorResult("ایمیل شما قبلا استفاده شده است");
-                }
-
-                using (var transaction = Request.GetOwinContext().Get<AnatoliDbContext>().Database.BeginTransaction(IsolationLevel.ReadCommitted))
-                {
-                    try
-                    {
-                        var addUserResult = await AppUserManager.CreateAsync(user, model.Password);
-
-                        if (!addUserResult.Succeeded)
-                            return GetErrorResult(addUserResult);
-
-                        AppUserManager.AddToRoles(user.Id, new string[] { "User" });
-
-                        locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
-
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-
-                        return GetErrorResult(ex);
-                    }
-                }
-                return Created(locationHeader, TheModelFactory.Create(user));
-            }
-            catch (Exception ex)
-            {
-                return GetErrorResult(ex);
-            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]

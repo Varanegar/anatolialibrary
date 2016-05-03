@@ -27,18 +27,18 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
         }
         SellAdapter() { }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, bool getAllOrderTypes)
         {
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
             var stores = StoreConfigHeler.Instance.AllStoreConfigs;
             stores.ForEach(item =>
             {
                 if(item.CenterId != 1)
-                result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, item.ConnectionString));
+                result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, getAllOrderTypes, item.ConnectionString));
             });
             return result;
         }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId, string connectionString)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId, bool getAllOrderTypes, string connectionString)
         {
             log.Debug(" customerId " + customerId + " & centerId " + centerId);
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
@@ -48,11 +48,20 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 try
                 {
                     IEnumerable<PurchaseOrderViewModel> data = null;
-                    if(statusId != null)
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                    if (getAllOrderTypes)
+                    {
+                        if (statusId != null)
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                        else
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "'");
+                    }
                     else
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "'");
-
+                    {
+                        if (statusId != null)
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfoAllTypes() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                        else
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfoAllTypes() + " and C.CustomerSiteUserId='" + customerId + "'");
+                    }
                     result = data.ToList();
                 }
                 catch (Exception ex)
@@ -67,7 +76,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return result;
         }
-        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, string centerId)
+        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, string centerId, bool getAllOrderTypes)
         {
             List<PurchaseOrderLineItemViewModel> result = new List<PurchaseOrderLineItemViewModel>();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
@@ -76,8 +85,16 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where S.UniqueId='" + pOId + "'");
-                    result = data.ToList();
+                    if (getAllOrderTypes)
+                    {
+                        var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where S.UniqueId='" + pOId + "'");
+                        result = data.ToList();
+                    }
+                    else
+                    {
+                        var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfoAllTypes() + " where S.UniqueId='" + pOId + "'");
+                        result = data.ToList();
+                    }
                 }
                 catch (Exception ex)
                 {

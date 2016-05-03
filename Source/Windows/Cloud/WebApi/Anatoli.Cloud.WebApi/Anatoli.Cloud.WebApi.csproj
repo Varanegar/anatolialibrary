@@ -202,6 +202,7 @@
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelController.cs" />
     <Compile Include="Controllers\DSD\RouteManagement\RouteManagementController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\BrandController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\SupplierController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />

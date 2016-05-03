@@ -28,7 +28,7 @@ namespace Anatoli.DataAccess.Configs
                 .WillCascadeOnDelete(true);
 
             this.HasMany<IncompletePurchaseOrder>(cr => cr.IncompletePurchaseOrders)
-                .WithRequired(svr => svr.Store)
+                .WithOptional(svr => svr.Store)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<Stock>(cr => cr.StoreStocks)

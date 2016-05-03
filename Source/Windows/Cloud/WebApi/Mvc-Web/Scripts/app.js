@@ -70,7 +70,7 @@ urls = {
         stock: { url: '/Stocks', title: 'انبارها', order: 8 },
         productrequestrules: { url: '/Stocks/productRequestRules', title: 'قوانین', order: 6 },
         usermanagement: { url: '/UserManager', title: 'مدیریت کاربران', order: 1 },
-        userstocks: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
+        userstock: { url: '/UserManager/stocks', title: 'تخصیص انبار', order: 3 },
         permission: { url: '/UserManager/permissions', title: 'مجوز دسترسی', order: 2 },
     }
 },

@@ -1,4 +1,5 @@
-﻿using Anatoli.ViewModels.CustomerModels;
+﻿using Anatoli.ViewModels;
+using Anatoli.ViewModels.CustomerModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,25 @@ namespace ClientApp
 {
     public static class CustomerManagement
     {
-        public static CustomerViewModel GetCustomerFromServer(HttpClient client, string servserURI)
+        public static List<CustomerViewModel> GetCustomerFromServer(HttpClient client, string servserURI)
         {
+            var dataInfo = new CustomerRequestModel();
+            dataInfo.customerId = Guid.Parse("05496ec3-1d64-4ae3-b6d2-e78cbd89c843");
+            string data = JsonConvert.SerializeObject(dataInfo);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
-            var result8 = client.GetAsync(servserURI + "/api/gateway/customer/customers?id=308E176C-74E0-4916-95F5-FFDF4E35AE22&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.PostAsync(servserURI + "/api/gateway/customer/customers", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
-            var obj = new CustomerViewModel();
+            var obj = new List<CustomerRequestModel>();
             var x = JsonConvert.DeserializeAnonymousType(json8, obj);
-            return x;
+            return null;
+
+            //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
         }
 
         public static void UpdateCustomerFromServer(HttpClient client, string servserURI)

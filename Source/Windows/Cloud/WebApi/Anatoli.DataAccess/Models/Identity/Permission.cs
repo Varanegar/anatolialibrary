@@ -18,6 +18,6 @@ namespace Anatoli.DataAccess.Models.Identity
         public virtual PermissionAction PermissionAction { get; set; }
 
         public virtual ICollection<PrincipalPermission> PrincipalPermissions { get; set; }
-        public virtual ICollection<PermissionCatalog> PermissionCatalogs { get; set; }
+        public virtual ICollection<PermissionCatalogPermission> PermissionCatalogPermissions { get; set; }
     }
 }
