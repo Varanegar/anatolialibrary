@@ -35,16 +35,16 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
-                dbData = ProductAdapter.Instance.GetAllProducts(DateTime.MinValue);
-                if (dbData != null)
-                {
-                    ProductRequestModel request = new ProductRequestModel() { productData = dbData };
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    js.MaxJsonLength = Int32.MaxValue;
-                    string data = js.Serialize(request);
-                    string URI = serverURI + UriInfo.CheckDeletedProductURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
-                }
+                //dbData = ProductAdapter.Instance.GetAllProducts(DateTime.MinValue);
+                //if (dbData != null)
+                //{
+                //    ProductRequestModel request = new ProductRequestModel() { productData = dbData };
+                //    JavaScriptSerializer js = new JavaScriptSerializer();
+                //    js.MaxJsonLength = Int32.MaxValue;
+                //    string data = js.Serialize(request);
+                //    string URI = serverURI + UriInfo.CheckDeletedProductURI;
+                //    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
+                //}
 
                 Utility.SetLastUploadTime(ProductDataType, currentTime);
 

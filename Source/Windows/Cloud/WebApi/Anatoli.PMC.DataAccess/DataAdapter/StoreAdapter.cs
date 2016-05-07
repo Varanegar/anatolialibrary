@@ -40,11 +40,11 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     storeList = data.ToList();
                     storeList.ForEach(item =>
                     {
-                        //var ts = TimeSpan.ParseExact("0:0", @"h\:m",
-                        //     CultureInfo.InvariantCulture);
+                        var ts = TimeSpan.ParseExact("0:0", @"h\:m",
+                             CultureInfo.InvariantCulture);
 
-                        //var storeCalendar = context.All<StoreCalendarViewModel>(DBQuery.Instance.GetStoreCalendarQuery(item.CenterId));
-                        //item.StoreCalendar = storeCalendar.ToList();
+                        var storeCalendar = context.All<StoreCalendarViewModel>(DBQuery.Instance.GetStoreCalendarQuery(item.CenterId));
+                        item.StoreCalendar = storeCalendar.ToList();
 
                         var storeValidRegion = context.All<CityRegionViewModel>(DBQuery.Instance.GetStoreDeliveryRegion(item.CenterId));
                         item.StoreValidRegionInfo = storeValidRegion.ToList();

@@ -52,12 +52,14 @@ namespace Anatoli.Business.Domain
                 currentStore.Lng = item.Lng;
                 currentStore.LastUpdate = DateTime.Now;
                 currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), DBContext);
+                currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), DBContext);
                 MainRepository.Update(currentStore);
             }
             else
             {
                 item.CreatedDate = item.LastUpdate = DateTime.Now;
                 item = SetStoreRegionData(item, item.StoreValidRegionInfoes.ToList(), DBContext);
+                item = SetStoreCalendarData(item, item.StoreCalendars.ToList(), DBContext);
                 MainRepository.Add(item);
             }
 
@@ -78,6 +80,21 @@ namespace Anatoli.Business.Domain
             return data;
         }
 
+
+        public Store SetStoreCalendarData(Store data, List<StoreCalendar> storeCalendars, AnatoliDbContext context)
+        {
+            DBContext.Database.ExecuteSqlCommand("delete from StoreCalendars where StoreId='" + data.Id + "'");
+            data.StoreCalendars.Clear();
+            storeCalendars.ForEach(item =>
+            {
+                var calendar = StoreCalendarRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
+                if (calendar != null)
+                {
+                    data.StoreCalendars.Add(calendar);
+                }
+            });
+            return data;
+        }
         #endregion
     }
 }

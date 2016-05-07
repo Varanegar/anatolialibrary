@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using log4net;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using VNAppServer.PMC.Anatoli.DataTranster;
 namespace VNAppServer.Anatoli.PMC.Scheduler
 {
     [DisallowConcurrentExecution]
-    public class UploadLatestPicturesForAnatoliPOS : IAnatoliJob, IJob    
+    public class UploadLatestOnHandForAnatoliPOS : IAnatoliJob, IJob    
     {
         public void Execute(IJobExecutionContext context)
         {
@@ -25,23 +26,20 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(3);
 
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," + DataOwnerKey).Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," +DataOwnerKey ).Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+                    client.Timeout = TimeSpan.FromMilliseconds(120 * 60 * 1000);
 
-                    log.Info("Transfer Product Group Picture");
-                    ProductGroupPictureTransferHandler.UploadProductGroupPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer Product Picture");
-                    ProductPictureTransferHandler.UploadProductPictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer Store Picture");
-                    StorePictureTransferHandler.UploadStorePictureToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer store onhand");
+                    StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else
                     log.Error("Login Failed user : AnatoliMobileApp");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 log.Error("Sync job failed ", ex);
             }

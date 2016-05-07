@@ -14,7 +14,7 @@ using VNAppServer.PMC.Anatoli.DataTranster;
 namespace VNAppServer.Anatoli.PMC.Scheduler
 {
     [DisallowConcurrentExecution]
-    public class UploadStockOnHandForStockLogistic : IAnatoliJob, IJob    
+    public class UploadLatestStoreInfoForAnatoliPOS : IAnatoliJob, IJob    
     {
         public void Execute(IJobExecutionContext context)
         {
@@ -26,15 +26,22 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromMinutes(3);
 
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," + DataOwnerKey).Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", OwnerKey + "," +DataOwnerKey ).Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     client.SetBearerToken(oauthresult.AccessToken);
+                    client.Timeout = TimeSpan.FromMilliseconds(120 * 60 * 1000);
 
-
-                    log.Info("Start CallServerService URI ");
-                    log.Info("Transfer stock hand");
-                    StockOnHandTransferHandler.UploadStockOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                    log.Info("Transfer new customers");
+                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer ciry region");
+                    CityRegionTransferHandler.UploadCityRegionToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer store");
+                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer product");
+                    ProductTransferHandler.UploadProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    log.Info("Transfer store price list");
+                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

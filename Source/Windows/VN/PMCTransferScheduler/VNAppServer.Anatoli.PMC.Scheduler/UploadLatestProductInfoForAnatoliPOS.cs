@@ -13,7 +13,8 @@ using VNAppServer.PMC.Anatoli.DataTranster;
 
 namespace VNAppServer.Anatoli.PMC.Scheduler
 {
-    public class UploadLatestDataForAnatoliPOS : IAnatoliJob, IJob    
+    [DisallowConcurrentExecution]
+    public class UploadLatestProductInfoForAnatoliPOS : IAnatoliJob, IJob    
     {
         public void Execute(IJobExecutionContext context)
         {
@@ -31,8 +32,6 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     client.SetBearerToken(oauthresult.AccessToken);
                     client.Timeout = TimeSpan.FromMilliseconds(120 * 60 * 1000);
 
-                    log.Info("Transfer new customers");
-                    CustomerTransferHandler.UploadCustomerToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer supplier");
                     SupplierTransferHandler.UploadSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer manufacture");
@@ -42,23 +41,15 @@ namespace VNAppServer.Anatoli.PMC.Scheduler
                     log.Info("Transfer main product group");
                     MainProductGroupTransferHandler.UploadMainProductGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char type");
-                    CharTypeTransferHandler.UploadCharTypeToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //CharTypeTransferHandler.UploadCharTypeToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer char group");
-                    CharGroupTransferHandler.UploadCharGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer ciry region");
-                    CityRegionTransferHandler.UploadCityRegionToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer store");
-                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //CharGroupTransferHandler.UploadCharGroupToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product");
                     ProductTransferHandler.UploadProductToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product supplier");
-                    ProductTransferHandler.UploadProductSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //ProductTransferHandler.UploadProductSupplierToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Transfer product char value");
-                    ProductTransferHandler.UploadProductCharValueToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer store price list");
-                    StorePriceListTransferHandler.UploadStorePriceListToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
-                    log.Info("Transfer store onhand");
-                    StoreOnHandTransferHandler.UploadStoreOnHandToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
+                    //ProductTransferHandler.UploadProductCharValueToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     log.Info("Completed Transfer Data Job");
                 }
                 else

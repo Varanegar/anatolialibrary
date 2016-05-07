@@ -57,7 +57,7 @@ namespace Anatoli.Cloud.WebApi.Handler
 
 
             Mapper.CreateMap<Store, StoreViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
-            Mapper.CreateMap<StoreCalendar, StoreCalendarViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ID, opt => opt.Ignore());
+            Mapper.CreateMap<StoreCalendar, StoreCalendarViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.FromTimeString, opt => opt.MapFrom(src => src.FromTime.ToString())).ForMember(p => p.ToTimeString, opt => opt.MapFrom(src => src.ToTime.ToString())).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<StoreActiveOnhand, StoreActiveOnhandViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ProductGuid, opt => opt.MapFrom(src => src.ProductId)).ForMember(p => p.StoreGuid, opt => opt.MapFrom(src => src.StoreId)).ForMember(p => p.ID, opt => opt.Ignore());
             Mapper.CreateMap<StoreActivePriceList, StoreActivePriceListViewModel>().ForMember(p => p.UniqueId, opt => opt.MapFrom(src => src.Id)).ForMember(p => p.ProductGuid, opt => opt.MapFrom(src => src.ProductId)).ForMember(p => p.StoreGuid, opt => opt.MapFrom(src => src.StoreId)).ForMember(p => p.ID, opt => opt.Ignore());
 
