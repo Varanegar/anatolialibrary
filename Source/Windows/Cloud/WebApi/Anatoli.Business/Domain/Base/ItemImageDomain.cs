@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Linq;
-using Anatoli.Business.Proxy;
-using System.Threading.Tasks;
-using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
-using Anatoli.DataAccess.Interfaces;
-using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
+using Anatoli.DataAccess.Models;
+using Anatoli.DataAccess.Interfaces;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.DataAccess.Repositories;
 
 namespace Anatoli.Business.Domain
 {
     public class ItemImageDomain : BusinessDomainV2<ItemImage, ItemImageViewModel, ItemImageRepository, IItemImageRepository>, IBusinessDomainV2<ItemImage, ItemImageViewModel>
     {
-        #region Properties
-        #endregion
-
         #region Ctors
         public ItemImageDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
             : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())

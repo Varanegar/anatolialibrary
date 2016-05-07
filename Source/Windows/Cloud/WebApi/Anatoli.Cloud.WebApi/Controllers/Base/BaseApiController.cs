@@ -1,16 +1,13 @@
-﻿using Anatoli.Cloud.WebApi.Infrastructure;
-using Anatoli.Cloud.WebApi.Models;
-using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Text;
 using System.Web.Http;
 using System.Net.Http;
-using Microsoft.AspNet.Identity.Owin;
-using System.Web.Http.ModelBinding;
-using System.Web.Http.Results;
-using System.Text;
 using System.Collections;
+using Microsoft.AspNet.Identity;
+using Anatoli.Cloud.WebApi.Models;
+using System.Web.Http.ModelBinding;
+using Microsoft.AspNet.Identity.Owin;
+using Anatoli.Cloud.WebApi.Infrastructure;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -47,49 +44,46 @@ namespace Anatoli.Cloud.WebApi.Controllers
             get
             {
                 if (_modelFactory == null)
-                {
-                    _modelFactory = new ModelFactory(this.Request, this.AppUserManager);
-                }
+                    _modelFactory = new ModelFactory(Request, AppUserManager);
+
                 return _modelFactory;
             }
         }
 
         protected IHttpActionResult GetErrorResult(ModelStateDictionary modelState)
         {
-            
             return BadRequest(modelState);
         }
+
         protected IHttpActionResult GetErrorResult(string error)
         {
             if (error == null)
-            {
-                return InternalServerError();
-            }
-            ModelState.AddModelError(String.Empty, error);
-            return BadRequest(ModelState);
 
+                return InternalServerError();
+
+            ModelState.AddModelError(string.Empty, error);
+
+            return BadRequest(ModelState);
         }
 
         protected IHttpActionResult GetErrorResult(Exception ex)
         {
             if (ex == null)
-            {
                 return InternalServerError();
-            }
+
             var builder = new StringBuilder();
+
             WriteExceptionDetails(ex, builder, 0, ModelState);
 
             return BadRequest(ModelState);
-
         }
+
         public static void WriteExceptionDetails(Exception exception, StringBuilder builderToFill, int level, ModelStateDictionary modelState)
         {
             var indent = new string(' ', level);
 
             if (level > 0)
-            {
                 builderToFill.AppendLine(indent + "=== INNER EXCEPTION ===");
-            }
 
             Action<string> append = (prop) =>
             {
@@ -117,33 +111,23 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
 
             if (exception.InnerException != null)
-            {
                 WriteExceptionDetails(exception.InnerException, builderToFill, ++level, modelState);
-            }
         }
 
         protected IHttpActionResult GetErrorResult(IdentityResult result)
         {
             if (result == null)
-            {
                 return InternalServerError();
-            }
 
             if (!result.Succeeded)
             {
                 if (result.Errors != null)
-                {
                     foreach (string error in result.Errors)
-                    {
                         ModelState.AddModelError("", error);
-                    }
-                }
 
+                // No ModelState errors are available to send, so just return an empty BadRequest.
                 if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
                     return BadRequest(ModelState);
-                }
 
                 return BadRequest(ModelState);
             }
