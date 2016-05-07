@@ -1,22 +1,11 @@
 ﻿using System;
-using System.IO;
-using System.Net;
 using System.Web;
-using System.Linq;
-using System.Drawing;
 using System.Web.Http;
-using System.Net.Http;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using System.Drawing.Drawing2D;
+using Anatoli.Business.Domain;
+using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.Cloud.WebApi.Classes;
-using Anatoli.ViewModels.BaseModels;
-using Anatoli.Business.Domain;
-using Anatoli.Business.Proxy.ProductConcretes;
-using Anatoli.ViewModels;
-using Anatoli.DataAccess.Models;
 
 namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 {
@@ -46,11 +35,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             {
                 var items = await new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
-                return Ok(items) ;
+                return Ok(items);
             }
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
+
                 return GetErrorResult(ex);
             }
         }
@@ -70,6 +60,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
+
                 return GetErrorResult(ex);
             }
         }
@@ -87,38 +78,38 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
         {
             try
             {
-
                 var itemImageDomain = new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
                 var httpRequest = HttpContext.Current.Request;
-                Guid _token = Guid.Empty;
-                if (httpRequest.Form["token"] != null )
+
+                var _token = Guid.Empty;
+                if (httpRequest.Form["token"] != null)
                     Guid.TryParse(httpRequest.Form["token"], out _token);
 
-                if(token != "")
+                if (token != "")
                     Guid.TryParse(token, out _token);
 
-                List<ItemImage> dataList = new List<ItemImage>();
-                if (httpRequest.Files.Count > 0){
+                if (httpRequest.Files.Count > 0)
+                {
+                    var dataList = new List<ItemImage>();
                     foreach (string file in httpRequest.Files)
                     {
                         HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
 
-                        await FileManager.Save(postedFile, imagetype, _token.ToString(), file);
+                        //you can still use same old method without ImageMagick.
+                        await FileManager.SaveWithMagick(postedFile, imagetype, _token.ToString(), file);
 
-                        ItemImage imageViewModel = new ItemImage()
-                            {
-                                TokenId = token,
-                                Id = Guid.Parse(imageId),
-                                ImageType = imagetype,
-                                ImageName = file,
-                                IsDefault = isDefault,
-                            };
-                        dataList.Add(imageViewModel);
+                        dataList.Add(new ItemImage()
+                        {
+                            TokenId = token,
+                            Id = Guid.Parse(imageId),
+                            ImageType = imagetype,
+                            ImageName = file,
+                            IsDefault = isDefault,
+                        });
                     }
 
                     await itemImageDomain.PublishAsync(dataList);
-
                 }
 
                 return Ok("");
@@ -126,10 +117,10 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
+
                 return GetErrorResult(ex);
             }
         }
-
         #endregion
     }
 }

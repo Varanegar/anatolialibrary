@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using ImageMagick;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -28,12 +29,47 @@ namespace Anatoli.Cloud.WebApi.Classes
                     file.SaveAs(physicalPath);
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
                 throw ex;
             }
         }
+
+        public async Task SaveWithMagick(System.Web.HttpPostedFileBase file, string imagetype, string token, string imageName)
+        {
+            try
+            {
+                await Task.Factory.StartNew(() =>
+                {
+                    using (var image = new MagickImage(file.InputStream))
+                    {
+                        var size = new MagickGeometry(100, 100);
+                        // This will resize the image to a fixed size without maintaining the aspect ratio.
+                        // Normally an image will be resized to fit inside the specified size.
+                        size.IgnoreAspectRatio = true;
+                        image.Resize(size);
+                        image.Write(GetPath(token, imagetype + "\\100x100", imageName + ".png"));
+
+                        size = new MagickGeometry(320, 320);
+                        size.IgnoreAspectRatio = true;
+                        image.Resize(size);
+                        image.Write(GetPath(token, imagetype + "\\320x320", imageName + ".png"));
+                    }
+
+                    var physicalPath = GetPath(token, imagetype + "\\orginal", imageName + ".png");
+
+                    file.SaveAs(physicalPath);
+                });
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+
+                throw ex;
+            }
+        }
+
 
         public string GetPath(string token, string imagetype, string fileName)
         {
@@ -119,13 +155,13 @@ namespace Anatoli.Cloud.WebApi.Classes
             // change size proportially depending on width or height
             else if (Height != 0)
             {
-                destWidth = (float)(Height * sourceWidth) / sourceHeight;
+                destWidth = Height * sourceWidth / sourceHeight;
                 destHeight = Height;
             }
             else if (Width != 0)
             {
                 destWidth = Width;
-                destHeight = (float)(sourceHeight * Width / sourceWidth);
+                destHeight = sourceHeight * Width / sourceWidth;
             }
 
             Bitmap bmPhoto = new Bitmap((int)destWidth, (int)destHeight);//,
