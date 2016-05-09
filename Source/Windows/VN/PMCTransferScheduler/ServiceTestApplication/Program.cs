@@ -17,7 +17,7 @@ namespace ServiceTestApplication
             try
             {
                 var restul = log4net.Config.XmlConfigurator.Configure();
-                string ServerURI = "http://localhost:8081/";
+                //string ServerURI = "http://localhost:8081/";
                 //string ServerURI = "http://46.209.104.2:7000/";
                 //string ServerURI = "http://217.218.53.71:8090/";
                 //string ServerURI = "http://192.168.0.160:8081/";
@@ -53,7 +53,7 @@ namespace ServiceTestApplication
                     //log.Info("Transfer ciry region");
                     //CityRegionTransferHandler.UploadCityRegionToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerKey);
                     //log.Info("Transfer store");
-                    //StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                    StoreTransferHandler.UploadStoreToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     //log.Info("Transfer stock");
                     //StockTransferHandler.UploadStockToServer(client, ServerURI, OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                     //log.Info("Transfer product");
