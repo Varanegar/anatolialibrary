@@ -166,7 +166,8 @@ namespace Anatoli.Business.Domain
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate,
                                                              Expression<Func<TSource, TResult>> selector)
         {
-            Expression<Func<TSource, bool>> criteria2 = p=> p.ApplicationOwnerId == ApplicationOwnerKey && 
+            //Todo: move this predicate to repository and make it force to use it
+            Expression<Func<TSource, bool>> criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
                                                             p.DataOwnerId == DataOwnerKey &&
                                                             p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
             if (predicate != null)
@@ -175,7 +176,7 @@ namespace Anatoli.Business.Domain
             var query = MainRepository.GetQuery().Where(criteria2).AsNoTracking();
 
             if (selector != null)
-               return await query.Select(selector).ToListAsync();
+                return await query.Select(selector).ToListAsync();
             else
                 return await query.ProjectTo<TResult>().ToListAsync();
         }
