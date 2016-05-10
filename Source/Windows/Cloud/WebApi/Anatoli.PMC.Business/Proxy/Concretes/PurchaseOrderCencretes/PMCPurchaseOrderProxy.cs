@@ -47,7 +47,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
                 TaxAmount = data.TaxAmount,
                 ActionSourceValueId = data.SellNotInPersonTypeGuid,
                 DeliveryTypeId = data.DeliveryTypeGuid,
-
+                ShipAddress = data.Address,
                 LineItems = PMCSellDetailProxy.Convert(data.SellDetail, storeConfig),
             };
         }
@@ -88,6 +88,7 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
                 PayTypeId = 1, //نقد 
                 SellNotInPersonTypeGuid = data.ActionSourceValueId,
                 DeliveryTypeGuid = data.DeliveryTypeId,
+                Address = data.ShipAddress,
 
 
                 SellDetail = PMCSellDetailProxy.ReverseConvert(data.LineItems, storeConfig),

@@ -52,14 +52,16 @@ namespace Anatoli.Business.Domain
                 currentStore.Lng = item.Lng;
                 currentStore.LastUpdate = DateTime.Now;
                 currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), DBContext);
-                currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), DBContext);
+                if(item.StoreCalendars != null)
+                    currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), DBContext);
                 MainRepository.Update(currentStore);
             }
             else
             {
                 item.CreatedDate = item.LastUpdate = DateTime.Now;
                 item = SetStoreRegionData(item, item.StoreValidRegionInfoes.ToList(), DBContext);
-                item = SetStoreCalendarData(item, item.StoreCalendars.ToList(), DBContext);
+                if(item.StoreCalendars != null)
+                    item = SetStoreCalendarData(item, item.StoreCalendars.ToList(), DBContext);
                 MainRepository.Add(item);
             }
 
@@ -87,11 +89,12 @@ namespace Anatoli.Business.Domain
             data.StoreCalendars.Clear();
             storeCalendars.ForEach(item =>
             {
-                var calendar = StoreCalendarRepository.GetQuery().Where(p => p.Id == item.Id).FirstOrDefault();
-                if (calendar != null)
-                {
-                    data.StoreCalendars.Add(calendar);
-                }
+                item.ApplicationOwnerId = data.ApplicationOwnerId;
+                item.DataOwnerCenterId = data.DataOwnerCenterId;
+                item.DataOwnerId = data.DataOwnerId;
+                item.StoreId = data.Id;
+                item.CreatedDate = item.LastUpdate = DateTime.Now;
+                StoreCalendarRepository.Add(item);
             });
             return data;
         }
