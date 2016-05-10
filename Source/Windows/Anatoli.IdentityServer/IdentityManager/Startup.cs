@@ -57,12 +57,12 @@ namespace Anatoli.IdentityServer
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                Authority = "https://localhost:44300/core",
+                Authority = "https://localhost:44399/core",
 
                 ClientId = "mvc",
                 Scope = "openid profile email read write",
                 ResponseType = "id_token token",
-                RedirectUri = "https://localhost:44300/",
+                RedirectUri = "https://localhost:44399/",
 
                 SignInAsAuthenticationType = "Cookies",
                 UseTokenLifetime = false,

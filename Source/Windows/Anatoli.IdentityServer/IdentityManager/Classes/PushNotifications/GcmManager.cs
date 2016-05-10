@@ -19,8 +19,8 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
             set;
         }
 
-        const string GcmSenderId = "asd";
-        const string GcmAuthToken = "asd";
+        const string GcmSenderId = "";
+        const string GcmAuthToken = "AIzaSyACVwqtAd3r8WkyO54mRkAAnRg8-WMBUHo";
         public GcmManager(NotificationFailureDelegate<GcmNotification> onNotificationFailed, NotificationSuccessDelegate<GcmNotification> onNotificationSucceeded)
         {
             Config = new GcmConfiguration(GcmSenderId, GcmAuthToken, null);

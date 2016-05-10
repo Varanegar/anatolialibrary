@@ -5,7 +5,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
 {
     public interface IPushNotificationProvider
     {
-        Task RegisterAppToken(string userId, string platform, string clientId, string appToken);
+        Task<string> RegisterAppToken(string userId, string platform, string clientId, string appToken);
         Task DeactiveAppToken(string userId, string platform, string clientId, string appToken);
         Task CreateChannel(string channelName, List<string> userIds);
         Task RemoveChannel(string channelName);

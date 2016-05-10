@@ -88,26 +88,33 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
             }
         }
 
-        public async Task RegisterAppToken(string userId, string platform, string clientId, string appToken)
+        public async Task<string> RegisterAppToken(string userId, string platform, string clientId, string appToken)
         {
             try
             {
                 var client = DbContext.Clients.FirstOrDefault(p => p.ClientId == clientId);
 
-                DbContext.UserDeviceToken.Add(new UserDeviceToken
-                {
-                    UserId = userId,
-                    Platform = platform,
-                    ClientId = client.Id,
-                    AppToken = appToken
-                });
+                if (!DbContext.UserDeviceToken.Any(p => p.AppToken == appToken && p.UserId == userId))
+                    DbContext.UserDeviceToken.Add(new UserDeviceToken
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = userId,
+                        Platform = platform,
+                        ClientId = client.Id,
+                        AppToken = appToken,
+                        IsActive = true
+                    });
 
                 await DbContext.SaveChangesAsync();
+
+                return appToken;
             }
             catch (Exception ex)
             {
                 Serilog.Log.Logger.Error("error in RegisterAppToken, {0}", ex);
             }
+
+            return string.Empty;
         }
 
         public async Task RemoveChannel(string channelName)

@@ -2,6 +2,7 @@
 using PushSharp.Core;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Anatoli.IdentityServer.Classes.PushNotifications
 {
@@ -9,12 +10,19 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
     {
         public ApnsConfiguration Config { get; set; }
         public ApnsServiceBroker Broker { get; set; }
-
-        const string ApnsCertificateFile = "asd";
-        const string ApnsCertificatePassword = "asd";
+        //"\\Certificate_for_push_develop.p12"
+        //pushcert.p12
+        const string ApnsCertificateFile = "\\pushcert.p12";
+        const string ApnsCertificatePassword = "123456";
         public ApnsManager(NotificationFailureDelegate<ApnsNotification> onNotificationFailed, NotificationSuccessDelegate<ApnsNotification> onNotificationSucceeded)
         {
-            Config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, ApnsCertificateFile, ApnsCertificatePassword);
+
+            var path = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+            var directory = Path.GetDirectoryName(path);
+
+            var apnsCertificateFile = directory.Replace("file:\\", "") + ApnsCertificateFile;
+
+            Config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, apnsCertificateFile, ApnsCertificatePassword);
             Broker = new ApnsServiceBroker(Config);
             Broker.OnNotificationFailed += onNotificationFailed;
             Broker.OnNotificationSucceeded += onNotificationSucceeded;
@@ -28,7 +36,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
                 Broker.QueueNotification(new ApnsNotification
                 {
                     DeviceToken = dt,
-                    Payload = JObject.Parse("{ \"aps\" : { \"alert\" : " + msg + " } }")
+                    Payload = JObject.Parse("{\"aps\":{\"badge\":7}}")
                 });
 
             Broker.Stop();

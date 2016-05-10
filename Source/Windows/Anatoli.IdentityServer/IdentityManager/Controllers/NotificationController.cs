@@ -6,7 +6,7 @@ using Anatoli.IdentityServer.Classes.PushNotifications;
 
 namespace Anatoli.IdentityServer.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/notification")]
     public class NotificationController : ApiController
     {
@@ -22,15 +22,39 @@ namespace Anatoli.IdentityServer.Controllers
             public List<string> channelNames { get; internal set; }
         }
 
+        //[Authorize]
         [HttpGet, Route("test")]
         public IHttpActionResult Test()
         {
-            var userId = User.GetClaimUserId();
+            // var userId = User.GetClaimUserId();
+            Task.Factory.StartNew(() =>
+            {
+                new PushNotificationProvider().SendNotification("Hello World!!!", new List<string> { "BB5063E9-E5AE-4BAB-A89F-5DDCA0E27700" });
+            }).Wait();
 
-            return Ok(userId);
+            return Ok(new { result = "OK" });
         }
 
-        [HttpPost,Route("registerToken")]
+        [HttpPost, Route("registerApnToken")]
+        public async Task<IHttpActionResult> RegisterApnToken([FromBody] RequestModel data)
+        {
+            try
+            {
+                var result = await new PushNotificationProvider().RegisterAppToken("BB5063E9-E5AE-4BAB-A89F-5DDCA0E27700",
+                                                                   PushNotificationProvider.Platforms.IOS.ToString(),
+                                                                   "mvc", data.appToken);
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                Serilog.Log.Logger.Error("error in RegisterApnToken, {0}", ex);
+
+                return Ok(string.Empty);
+            }
+        }
+
+        [Authorize]
+        [HttpPost, Route("registerToken")]
         public async Task<IHttpActionResult> RegisterAppToken([FromBody] RequestModel data)
         {
             await new PushNotificationProvider().RegisterAppToken(data.userId, data.platform, data.clientId, data.appToken);
@@ -38,6 +62,7 @@ namespace Anatoli.IdentityServer.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost, Route("unsubscribeChannel")]
         public async Task<IHttpActionResult> UnsubscribeChannel([FromBody] RequestModel data)
         {
