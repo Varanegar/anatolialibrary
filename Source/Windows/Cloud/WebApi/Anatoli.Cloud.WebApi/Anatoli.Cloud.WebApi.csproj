@@ -67,9 +67,9 @@
     <Reference Include="Log4Net.Async">
       <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
-    <Reference Include="Magick.NET-Q16-x86, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=x86">
-      <HintPath>..\packages\Magick.NET-Q16-x86.7.0.1.101\lib\net40-client\Magick.NET-Q16-x86.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.0.1.101\lib\net40-client\Magick.NET-Q16-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -333,9 +333,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\Magick.NET-Q16-x86.7.0.1.101\build\net40-client\Magick.NET-Q16-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Magick.NET-Q16-x86.7.0.1.101\build\net40-client\Magick.NET-Q16-x86.targets'))" />
   </Target>
-  <Import Project="..\packages\Magick.NET-Q16-x86.7.0.1.101\build\net40-client\Magick.NET-Q16-x86.targets" Condition="Exists('..\packages\Magick.NET-Q16-x86.7.0.1.101\build\net40-client\Magick.NET-Q16-x86.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

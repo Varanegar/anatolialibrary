@@ -15,7 +15,11 @@ namespace Anatoli.ViewModels.StoreModels
         public string ToTimeString { get; set; }
         public TimeSpan FromTime { 
             get {
-                if (FromTimeString.Length == 5)
+                if(FromTimeString.Length > 5)
+                {
+                    return TimeSpan.Parse(FromTimeString);
+                }
+                else if (FromTimeString.Length == 5)
                 {
                     var ts = TimeSpan.ParseExact(FromTimeString, @"h\:m",
                                  CultureInfo.InvariantCulture);
@@ -33,7 +37,11 @@ namespace Anatoli.ViewModels.StoreModels
         {
             get
             {
-                if (ToTimeString.Length == 5)
+                if (ToTimeString.Length > 5)
+                {
+                    return TimeSpan.Parse(ToTimeString);
+                }
+                else if (ToTimeString.Length == 5)
                 {
                     var ts = TimeSpan.ParseExact(ToTimeString, @"h\:m",
                                  CultureInfo.InvariantCulture);

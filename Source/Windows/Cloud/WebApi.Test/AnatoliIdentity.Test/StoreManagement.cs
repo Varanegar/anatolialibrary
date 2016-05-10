@@ -1,4 +1,5 @@
-﻿using Anatoli.ViewModels.BaseModels;
+﻿using Anatoli.ViewModels;
+using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.StoreModels;
 using Newtonsoft.Json;
 using System;
@@ -16,6 +17,21 @@ namespace ClientApp
 {
     public static class StoreManagement
     {
+        public static List<CityRegionViewModel> GetStoreCalendarFromServer(HttpClient client, string servserURI)
+        {
+            //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
+            string data = "";
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/store/storecalendar", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<CityRegionViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
         public static List<CityRegionViewModel> GetStoreFromServer(HttpClient client, string servserURI)
         {
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
@@ -70,12 +86,31 @@ namespace ClientApp
 
         public static void UploadStoreOnHandDataToServer(HttpClient client, string servserURI)
         {
-            var storeInfo = GetStoreActiveOnhand();
+            var dataInfo = new StoreRequestModel();
+            List<StoreActiveOnhandViewModel> dataOnHand = new List<StoreActiveOnhandViewModel>();
+            var itemOnhand = new StoreActiveOnhandViewModel()
+            {
+                ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                DataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
+                DataCenterOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
+                StoreGuid = Guid.Parse("1AC6CE15-4E70-4D60-B3D0-A40A412729E9"),
+                ProductGuid = Guid.Parse("664E6BD1-9BBE-47B8-882E-00067E666791"),
+                Qty = 9
+            };
+            dataOnHand.Add(itemOnhand);
+            dataInfo.storeActiveOnhandData = dataOnHand;
+
+            string data = JsonConvert.SerializeObject(dataInfo);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+
+            //var storeInfo = GetStoreActiveOnhand();
 
             //obj.Baskets.RemoveAt(1);
-            string data = new JavaScriptSerializer().Serialize(storeInfo);
-            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "/api/gateway/store/storeOnhand/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            var result8 = client.PostAsync(servserURI + "/api/gateway/store/storeOnhand/save", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
             var x = JsonConvert.DeserializeAnonymousType(json8, obj2);

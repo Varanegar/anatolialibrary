@@ -12,6 +12,7 @@ using VNAppServer.PMC.Anatoli.DataTranster;
 
 namespace VNAppServer.Anatoli.PMC.Scheduler
 {
+    [DisallowConcurrentExecution]
     public class UploadLatestPicturesForAnatoliPOS : IAnatoliJob, IJob    
     {
         public void Execute(IJobExecutionContext context)

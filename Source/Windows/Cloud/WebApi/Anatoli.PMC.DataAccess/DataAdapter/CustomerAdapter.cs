@@ -38,14 +38,25 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             return result;
         }
 
-        public bool IsCustomerValid(string UserId)
+        public bool IsCustomerValid(string UserId, string connectionString = null, string centerId = null)
         {
             int count = 0;
-            using (var context = new DataContext())
+            string query = "select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'";
+            if (centerId == null)
             {
-                count = new DataContext().GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+                using (var context = new DataContext())
+                {
+                    count = new DataContext().GetValue<int>(query);
+                }
             }
-            
+            else
+            {
+                using (var context = new DataContext(centerId, connectionString, Transaction.No))
+                {
+                    count = new DataContext().GetValue<int>(query);
+                }
+            }
+
             return (count > 0) ? true : false;
         }
         public void SetCustomerSiteUserId(string UserId, string Mobile)

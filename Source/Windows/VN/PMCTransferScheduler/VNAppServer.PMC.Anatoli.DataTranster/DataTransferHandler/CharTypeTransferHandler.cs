@@ -36,16 +36,16 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                     var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
                 }
 
-                dbData = CharGroupAdapter.Instance.GetAllCharTypes(DateTime.MinValue);
-                if (dbData != null)
-                {
-                    ProductRequestModel model = new ProductRequestModel();
-                    model.charTypeData = dbData;
+                //dbData = CharGroupAdapter.Instance.GetAllCharTypes(DateTime.MinValue);
+                //if (dbData != null)
+                //{
+                //    ProductRequestModel model = new ProductRequestModel();
+                //    model.charTypeData = dbData;
 
-                    string data = JsonConvert.SerializeObject(model);
-                    string URI = serverURI + UriInfo.CheckDeletedCharTypeURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
-                }
+                //    string data = JsonConvert.SerializeObject(model);
+                //    string URI = serverURI + UriInfo.CheckDeletedCharTypeURI;
+                //    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
+                //}
                 
                 Utility.SetLastUploadTime(CharTypeDataType, currentTime);
 
