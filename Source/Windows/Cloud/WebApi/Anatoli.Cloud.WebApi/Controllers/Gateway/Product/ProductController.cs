@@ -323,6 +323,29 @@ namespace Anatoli.Cloud.WebApi.Controllers
         #endregion
 
         #region Products
+
+        [Route("productsTest")]
+        public  ProductViewModel GetProductsTest()
+        {
+            try
+            {
+                //var productDomain = new ProductDomain(Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                //                                      Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
+                //                                      Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"));
+
+                //var result = await productDomain.GetAllAsync();
+
+                return new ProductViewModel { ID = 1, ProductName = "tests", UniqueId = Guid.NewGuid() };
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+              //  return GetErrorResult(ex);
+            }
+            return null;
+
+        }
+
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("products")]
         [HttpPost]

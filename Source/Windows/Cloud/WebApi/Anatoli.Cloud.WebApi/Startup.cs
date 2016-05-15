@@ -15,6 +15,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using WebApiContrib.Formatting;
 
 namespace Anatoli.Cloud.WebApi
 {
@@ -208,6 +209,8 @@ namespace Anatoli.Cloud.WebApi
             //config.MessageHandlers.Add(new WrappingHandler());
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.Formatters.Add(new ProtoBufFormatter());
         }
 
         private void ConfigureAutoMapper()

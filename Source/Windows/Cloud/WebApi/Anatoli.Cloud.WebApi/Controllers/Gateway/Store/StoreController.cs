@@ -1,11 +1,8 @@
-﻿using Anatoli.Business;
-using Anatoli.Business.Domain;
+﻿using Anatoli.Business.Domain;
 using Anatoli.ViewModels.StoreModels;
 using Anatoli.PMC.Business.Domain.Store;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Anatoli.Cloud.WebApi.Classes;

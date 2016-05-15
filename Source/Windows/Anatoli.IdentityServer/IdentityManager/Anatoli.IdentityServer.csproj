@@ -324,6 +324,11 @@
     <EmbeddedResource Include="Migrations\201605030724271_AddingPushNotificationEntities.resx">
       <DependentUpon>201605030724271_AddingPushNotificationEntities.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Classes\PushNotifications\pushcert.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Classes\PushNotifications\Certificate_for_push_develop.p12" />
+    <None Include="Properties\PublishProfiles\MRG.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
