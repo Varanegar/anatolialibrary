@@ -195,6 +195,7 @@
   <ItemGroup>
     <Compile Include="Classes\AnatoliApiController.cs" />
     <Compile Include="Classes\AnatoliAuthorizeAttribute.cs" />
+    <Compile Include="Classes\EncodingForBase64.cs" />
     <Compile Include="Classes\FileManager.cs" />
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />

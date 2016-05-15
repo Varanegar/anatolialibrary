@@ -25,9 +25,9 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> RegionLevel3Id { get; set; }
         [ForeignKey("RegionLevel4"), Column(Order = 4)]
         public Nullable<Guid> RegionLevel4Id { get; set; }
-        [StringLength(50)]
+        [StringLength(500)]
         public string MainStreet { get; set; }
-        [StringLength(50)]
+        [StringLength(500)]
         public string OtherStreet { get; set; }
         [StringLength(20)]
         public string PostalCode { get; set; }

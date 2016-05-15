@@ -17,7 +17,7 @@
         }
 
         protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
-        {
+        {/*
             #region Permission Info
             context.Applications.AddOrUpdate(item => item.Id,
                 new Application { Id = Guid.Parse("8A074FD5-9311-4F8E-AF47-0572DE1A7B6A"), Name = "Anatoli Market place" },
@@ -426,6 +426,7 @@
                 );
             }
             #endregion
+            */
         }
     }
 }

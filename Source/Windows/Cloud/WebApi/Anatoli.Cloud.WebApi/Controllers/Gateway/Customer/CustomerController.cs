@@ -70,7 +70,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                         userStoreData.Email = data.customerData.Email;
                         await userStore.ChangeEmailAddress(userStoreData, data.customerData.Email);
                     }
-                    userStoreData.FullName = data.customerData.LastName + ", " + data.customerData.FirstName;
+                    userStoreData.FullName = data.customerData.FirstName + " " + data.customerData.LastName;
                     await userStore.UpdateAsync(userStoreData);
 
                 }

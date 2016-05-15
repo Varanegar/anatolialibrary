@@ -303,7 +303,7 @@ namespace Anatoli.Business
             try
             {
                 var currentDataList = MainRepository.GetQuery()
-                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
+                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == false)
                                                     .Select(data => new TMainSourceView { UniqueId = data.Id })
                                                     .AsNoTracking()
                                                     .ToList();

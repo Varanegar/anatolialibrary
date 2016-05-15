@@ -26,6 +26,7 @@ using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.CustomerConcretes;
 using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.Business.Domain.Authorization;
+using System.Text;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -155,7 +156,29 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var user = await GetUserByUserName(username);
+                var user = await GetUserByNameOrEmailOrPhoneAsync(username);
+                //Only SuperAdmin or Admin can delete users (Later when implement roles)
+                if (user != null)
+                {
+                    return Ok(this.TheModelFactory.Create(user));
+                }
+                return BadRequest("کاربر یافت نشد");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
+            }
+
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("userencoded/{username}"), HttpPost, HttpGet]
+        public async Task<IHttpActionResult> GetUserByNameWithBase64(string usernameEncoded)
+        {
+            try
+            {
+                string username = EncodingForBase64.DecodeBase64(Encoding.UTF8, usernameEncoded);
+                var user = await GetUserByNameOrEmailOrPhoneAsync(username);
                 //Only SuperAdmin or Admin can delete users (Later when implement roles)
                 if (user != null)
                 {
@@ -658,6 +681,11 @@ namespace Anatoli.Cloud.WebApi.Controllers
         private async Task<User> GetUserByUserName(string username)
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
+        }
+
+        private async Task<User> GetUserByNameOrEmailOrPhoneAsync(string username)
+        {
+            return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).FindByNameOrEmailOrPhoneAsync(username);
         }
 
         private async Task<User> GetUserByEMail(string email)

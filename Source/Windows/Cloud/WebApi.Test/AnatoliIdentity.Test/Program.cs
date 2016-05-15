@@ -38,16 +38,16 @@ namespace ClientApp
                 //var storeData = StoreManagement.GetStoreInfo();
                 //var storeOnHand = StoreManagement.GetStoreActiveOnhand();
                 //var storePriceList = StoreManagement.GetStorePriceList();
-                //ProductManagement.ProductGroupTest();
 
                 //log4net.Config.XmlConfigurator.Configure();
-                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("+989121764212", "123456", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("hooman.ahmadi@gmail.com", "123456", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                 var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
                 if (oauthresult.AccessToken != null)
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
                     //CustomerManagement.GetCustomerFromServer(client, servserURI);
+                    //ProductManagement.CheckDeletedProductGroupFromServer(client, servserURI);
                     //StoreManagement.GetStoreCalendarFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
@@ -68,9 +68,9 @@ namespace ClientApp
                     //string data = new JavaScriptSerializer().Serialize(requestData);
 
 
-                    //HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    //var result8 = client.PostAsync(servserURI + "/api/accounts/user/?username=0912073282&password=123456", content).Result;
-                    //var json8 = result8.Content.ReadAsStringAsync().Result;
+                    HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+                    var result8 = client.PostAsync(servserURI + "api/accounts/userencoded/YWxpYXNnaGFyLnR", content).Result;
+                    var json8 = result8.Content.ReadAsStringAsync().Result;
 
                     ////HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
                     ////var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
@@ -96,7 +96,7 @@ namespace ClientApp
                     //ProductManagement.UploadSupplierToServer(client, servserURI);
                     //ProductManagement.UploadManufactureToServer(client, servserURI);
                     //ProductManagement.UploadProductGroupToServer(client, servserURI);
-                    ProductManagement.UploadProductToServer(client, servserURI);
+                    //ProductManagement.UploadProductToServer(client, servserURI);
                     //CharGroupManagement.SaveCharTypeInfoToServer(client, servserURI);
                     //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);

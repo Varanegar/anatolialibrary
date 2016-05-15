@@ -67,7 +67,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {
@@ -99,7 +99,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                   // throw ex;
                 }
                 finally
                 {
@@ -123,7 +123,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {

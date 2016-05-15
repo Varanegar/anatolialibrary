@@ -294,6 +294,10 @@
     <Compile Include="Migrations\201605032028455_Brand-Migration-1.Designer.cs">
       <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.cs" />
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.Designer.cs">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -551,6 +555,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605032028455_Brand-Migration-1.resx">
       <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.resx">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

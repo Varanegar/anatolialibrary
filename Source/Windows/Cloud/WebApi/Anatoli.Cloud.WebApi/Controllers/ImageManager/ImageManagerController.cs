@@ -97,7 +97,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                         HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
 
                         //you can still use same old method without ImageMagick.
-                        await FileManager.SaveWithMagick(postedFile, imagetype, _token.ToString(), file);
+                        await FileManager.Save(postedFile, imagetype, _token.ToString(), file);
 
                         dataList.Add(new ItemImage()
                         {
