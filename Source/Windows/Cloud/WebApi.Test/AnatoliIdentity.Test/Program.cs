@@ -38,24 +38,22 @@ namespace ClientApp
                 //var storeData = StoreManagement.GetStoreInfo();
                 //var storeOnHand = StoreManagement.GetStoreActiveOnhand();
                 //var storePriceList = StoreManagement.GetStorePriceList();
+                //ProductManagement.ProductGroupTest();
 
                 //log4net.Config.XmlConfigurator.Configure();
-                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09125793221", "123456", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09123664255", "09123664255", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+//                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+               
                 if (oauthresult.AccessToken != null)
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
-                    //UserManagement.TestUserInfo(client, servserURI);
-                    PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
-                    //ProductManagement.GetProductFromServer(client, servserURI);
-                    //ProductManagement.CheckDeletedProductGroupFromServer(client, servserURI);
-                    //StoreManagement.GetStoreCalendarFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
-                    //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
+                    PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
                     //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
@@ -70,9 +68,9 @@ namespace ClientApp
                     //string data = new JavaScriptSerializer().Serialize(requestData);
 
 
-                    HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                    var result8 = client.PostAsync(servserURI + "api/accounts/userencoded/YWxpYXNnaGFyLnR", content).Result;
-                    var json8 = result8.Content.ReadAsStringAsync().Result;
+                    //HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+                    //var result8 = client.PostAsync(servserURI + "/api/accounts/user/?username=0912073282&password=123456", content).Result;
+                    //var json8 = result8.Content.ReadAsStringAsync().Result;
 
                     ////HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
                     ////var result8 = client.PostAsync(servserURI + "/api/accounts/ResetPassword/?username=0912073282&password=123456", content).Result;
@@ -88,7 +86,7 @@ namespace ClientApp
                     //var json3 = result3.Content.ReadAsStringAsync().Result;
 
                     //var oauthresult2 = oauthClient.RequestResourceOwnerPasswordAsync("maryamshkr@gmail.com", "1234567", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-
+                    
                     //ProductManagement.DownloadProductRateFromServer(client, servserURI);
 
                     //ImageManagement.UploadCenterPicture(client, servserURI);
@@ -98,14 +96,16 @@ namespace ClientApp
                     //ProductManagement.UploadSupplierToServer(client, servserURI);
                     //ProductManagement.UploadManufactureToServer(client, servserURI);
                     //ProductManagement.UploadProductGroupToServer(client, servserURI);
-                    //ProductManagement.UploadProductToServer(client, servserURI);
+                    //ProductManagement.DownloadProductGroupFromServer(client, servserURI);
                     //CharGroupManagement.SaveCharTypeInfoToServer(client, servserURI);
                     //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
                     //StoreManagement.GetStoreFromServer(client, servserURI);
+                    //StoreManagement.UploadStoreDataToServer(client, servserURI);
                     //ProductManagement.UploadProductToServer(client, servserURI);
-
+                    
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
+                    //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
                     //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
@@ -115,7 +115,32 @@ namespace ClientApp
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
                     //ProductManagement.DownloadProductGroupFromServer(client, servserURI);
                     //IncompleteManagement.GetIncompleteFromServer(client, servserURI);
-                    //PermissionManagement.GetPermissions(client, servserURI);
+
+
+                    #region VnGIS
+
+                    //VnGisManagement.TestLoadRegionAreas(client, servserURI);
+                    //VnGisManagement.TestLoadRegionAreasPoints(client, servserURI);
+                    //VnGisManagement.TestHasAreasPoints(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaPath(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaSelectedCustomer(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaNotSelectedCustomer(client, servserURI);
+                    //VnGisManagement.SaveRegionAreaPoint(client, servserURI);
+                    //VnGisManagement.TestLoadRigenAreaParentPoints(client, servserURI);
+                    //VnGisManagement.TestLoadAreaSibilingPoints(client, servserURI);
+                    //VnGisManagement.TestLoadAreaChildPoints(client, servserURI);
+                    //VnGisManagement.TestRemoveAreaPointsByAreaId(client, servserURI);
+                    //VnGisManagement.TestAddCustomerToRegionArea(client, servserURI);
+                    //VnGisManagement.TestRemoveCustomerFromRegionArea(client, servserURI);
+                    //VnGisManagement.TestChangeCustomerPosition(client, servserURI);
+                    //VnGisManagement.TestLoadCustomerBySearchTerm(client, servserURI);
+                    //VnGisManagement.TestLoadPersonByGroup(client, servserURI);
+                    //VnGisManagement.TestLoadGroupGroupByArea(client, servserURI);
+                    //VnGisManagement.TestLoadRegionAreaByLevel(client, servserURI);
+                    //VnGisManagement.TestLoadPersonelsPath(client, servserURI);
+                    VnGisManagement.TestLoadPersonActivities(client, servserURI);
+                    
+                    #endregion
                 }
                 
             }

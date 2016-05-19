@@ -212,7 +212,10 @@
     <Compile Include="Controllers\Base\ClaimsController.cs" />
     <Compile Include="Controllers\Base\PushNotificationController.cs" />
     <Compile Include="Controllers\DSD\BaseData\BackOfficeBaseDataController.cs" />
+    <Compile Include="Controllers\DSD\Customer\CustomerController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelTrackingController.cs" />
+    <Compile Include="Controllers\DSD\Report\ProductReportController.cs" />
+    <Compile Include="Controllers\DSD\Report\ProductReportFilterController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelController.cs" />
     <Compile Include="Controllers\DSD\RouteManagement\RouteManagementController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
@@ -238,10 +241,11 @@
     <Compile Include="Handler\ApiResponse.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureRastakAutoMapper.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureSDSAutoMapper.cs" />
+    <Compile Include="Handler\WrappingHandler.cs" />
     <Compile Include="Handler\AutoMapper\ConfigurePMCAutoMapper.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureDMCAutoMapper.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureDefaultAutoMapper.cs" />
-    <Compile Include="Handler\WrappingHandler.cs" />
+    <Compile Include="Handler\AutoMapper\ExtentionDMCAutoMapper.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
     <Compile Include="Infrastructure\ApplicationRoleManager.cs" />
     <Compile Include="Infrastructure\ApplicationUserManager.cs" />
@@ -270,6 +274,14 @@
       <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
       <Name>Anatoli.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Anatoli.DMC.Business\Anatoli.DMC.Business.csproj">
+      <Project>{9302997d-6fed-4e0d-b2d4-a7628b101e79}</Project>
+      <Name>Anatoli.DMC.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.DMC.ViewModels\Anatoli.DMC.ViewModels.csproj">
+      <Project>{bcde0e1e-9e20-4dca-b20b-63705ceb57bd}</Project>
+      <Name>Anatoli.DMC.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Anatoli.PMC.Business\Anatoli.PMC.Business.csproj">
       <Project>{47d02eb7-3284-4b5d-8d27-9a190fb95980}</Project>
       <Name>Anatoli.PMC.Business</Name>
@@ -293,6 +305,14 @@
     <ProjectReference Include="..\Anatoli.Rastak.ViewModels\Anatoli.Rastak.ViewModels.csproj">
       <Project>{a7938bcc-748b-43d8-859d-f62dfbf642ef}</Project>
       <Name>Anatoli.Rastak.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.SDS.Business\Anatoli.SDS.Business.csproj">
+      <Project>{7a486b94-ada3-4f18-83a2-8ee7b4de9c11}</Project>
+      <Name>Anatoli.SDS.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anatoli.SDS.ViewModels\Anatoli.SDS.ViewModels.csproj">
+      <Project>{eeebef7d-7124-4477-8acf-b9373028aeb8}</Project>
+      <Name>Anatoli.SDS.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
       <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>

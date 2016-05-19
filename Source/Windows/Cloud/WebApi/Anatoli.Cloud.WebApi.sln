@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Cloud.WebApi", "Anatoli.Cloud.WebApi\Anatoli.Cloud.WebApi.csproj", "{FE46F959-09B9-4182-9AEC-E66364EFC1AC}"
 EndProject
@@ -43,8 +43,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.SDS.ViewModels", "Anatoli.SDS.ViewModels\Anatoli.SDS.ViewModels.csproj", "{EEEBEF7D-7124-4477-8ACF-B9373028AEB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.SDS.DataAccess", "Anatoli.SDS.DataAccess\Anatoli.SDS.DataAccess.csproj", "{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.VNGRS.Business", "Anatoli.VNGRS.Business\Anatoli.VNGRS.Business.csproj", "{38C82039-12E3-4C4D-A972-AD1D1A216D7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,10 +122,6 @@ Global
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38C82039-12E3-4C4D-A972-AD1D1A216D7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

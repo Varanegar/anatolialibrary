@@ -66,8 +66,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Parse">
       <HintPath>..\packages\Parse.1.6.2\lib\net45\Parse.dll</HintPath>
@@ -100,6 +101,8 @@
     <Compile Include="Domain\Base\ItemImageDomain.cs" />
     <Compile Include="Domain\Base\CityRegionDomain.cs" />
     <Compile Include="Domain\BusinessDomainV3.cs" />
+    <Compile Include="Domain\CompanyPersonel\PersonnelDailyActivityEventDomain.cs" />
+    <Compile Include="Domain\CompanyPersonel\PersonnelDailyActivityPointDomain.cs" />
     <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerShipAddressDomain.cs" />

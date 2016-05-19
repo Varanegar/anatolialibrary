@@ -46,10 +46,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Area\DMCCustomerPointViewModel.cs" />
+    <Compile Include="Area\DMCRegionAreaCustomerViewModel.cs" />
+    <Compile Include="Area\DMCVisitTemplatePathViewModel.cs" />
     <Compile Include="Base\DMCDBQueryViewModel.cs" />
     <Compile Include="Customer\DMCCustomerViewModel.cs" />
     <Compile Include="DMCBaseViewModel.cs" />
+    <Compile Include="Enumeration.cs" />
+    <Compile Include="Area\DMCRegionAreaPointViewModel.cs" />
+    <Compile Include="Gis\DMCPolyViewModel.cs" />
+    <Compile Include="Gis\DMCPointViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\DMCProductReportFilterModel.cs" />
+    <Compile Include="Report\DMCProductValueReportViewModel.cs" />
+    <Compile Include="Report\DMCProductReportViewModel.cs" />
+    <Compile Include="Report\DMCProductValueReportFilterModel.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>

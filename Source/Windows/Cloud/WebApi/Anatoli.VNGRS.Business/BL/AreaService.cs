@@ -13,20 +13,11 @@ namespace TrackingMap.Service.BL
 {
     public class AreaService
     {
-        private readonly AreaPointService _areaPointService;
-        private readonly IRepository<AreaEntity> _areaRepository;
-
-        public AreaService( 
-            IRepository<AreaEntity>  areaRepository,
-            AreaPointService areaPointService)
-        {
-            _areaRepository = areaRepository;
-            _areaPointService = areaPointService;
-        }
 
         public Guid? GetParentIdById(Guid? id)
         {
-            var area = _areaRepository.GetById(id);
+            var areaRepository = new EfRepository<AreaEntity>();
+            var area = areaRepository.GetById(id);
             if (area == null)
                 return null;
             return area.ParentId;
@@ -34,7 +25,8 @@ namespace TrackingMap.Service.BL
 
         public IList<TextValueView> LoadArea1() // level 1
         {
-            var list = _areaRepository.Table.Where(x => x.ParentId == null)
+            var areaRepository = new EfRepository<AreaEntity>();
+            var list = areaRepository.Table.Where(x => x.ParentId == null)
                 .Select(x => new TextValueView()
                 {
                     Id = x.Id,
@@ -44,9 +36,10 @@ namespace TrackingMap.Service.BL
         }
 
 
-        public IList<AreaView> LoadAreaByParentId(Guid? id)
+        public List<AreaView> LoadAreaByParentId(Guid? id)
         {
-            var list = _areaRepository.Table.Where(x => x.ParentId == id)
+            var areaRepository = new EfRepository<AreaEntity>();
+            var list = areaRepository.Table.Where(x => x.ParentId == id)
                 .Select(x => new AreaView()
                 {
                     Id = x.Id,
@@ -61,20 +54,22 @@ namespace TrackingMap.Service.BL
         {
             if (id == null)
                 return new AreaView();
+            var areaRepository = new EfRepository<AreaEntity>();
 
-            return _areaRepository.GetById(id).GetView();
+            return areaRepository.GetById(id).GetView();
         }
 
         public List<AreaView> GetAreaPathById(Guid? id)
         {
+            var areaRepository = new EfRepository<AreaEntity>();
             var list = new List<AreaView>();
             if (id != null)
             {
-                var entity = _areaRepository.GetById(id);
+                var entity = areaRepository.GetById(id);
                 while (entity.ParentId != null)
                 {
                     list.Add(entity.GetView());
-                    entity = _areaRepository.GetById(entity.ParentId);
+                    entity = areaRepository.GetById(entity.ParentId);
 
                 }
                 list.Add(entity.GetView());

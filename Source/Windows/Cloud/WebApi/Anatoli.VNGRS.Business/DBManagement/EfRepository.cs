@@ -24,9 +24,10 @@ namespace TrackingMap.Service.DBManagement
         /// Ctor
         /// </summary>
         /// <param name="context">Object context</param>
-        public EfRepository(IDbContext context)
+        public EfRepository()
         {
-            this._context = context;
+
+            this._context = new MapContext();
         }
 
         /// <summary>

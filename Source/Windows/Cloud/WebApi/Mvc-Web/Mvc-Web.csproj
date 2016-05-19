@@ -229,9 +229,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\app.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
@@ -264,26 +261,28 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <None Include="Properties\PublishProfiles\SCM.pubxml" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
+    <Content Include="Scripts\jquery-2.2.0.min.map" />
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery.cookie.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\kendo.all.min.js" />
-    <Content Include="Scripts\kendo.messages.fa-IR.js" />
     <Content Include="Scripts\kendo.messages.en-US.js" />
+    <Content Include="Scripts\kendo.messages.fa-IR.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js" />
     <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
@@ -299,6 +298,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -308,14 +308,12 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Products\StoreRequestsHistory.cshtml" />
     <Content Include="Views\Products\ReviewProductRequest.cshtml" />
     <Content Include="Views\UserManager\Index.cshtml" />
@@ -323,10 +321,12 @@
     <Content Include="Views\Stocks\Index.cshtml" />
     <Content Include="Views\Stocks\ProductRequestRules.cshtml" />
     <Content Include="Views\Stocks\ProductRequestRule.cshtml" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Views\Stocks\Products.cshtml" />
     <Content Include="Views\UserManager\Stocks.cshtml" />
     <Content Include="Views\UserManager\Edit.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

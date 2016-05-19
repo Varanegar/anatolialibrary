@@ -1,13 +1,8 @@
 ﻿using System;
-using Anatoli.ViewModels.User;
 using System.Collections.Generic;
-using Anatoli.ViewModels.StockModels;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.BaseModels;
-using Anatoli.ViewModels.CustomerModels;
-using Anatoli.ViewModels.Route;
+using Anatoli.ViewModels.VnGisModels;
 
-namespace Anatoli.ViewModels
+namespace Anatoli.ViewModels.RequestModel
 {
     public class RegionAreaRequestModel : BaseRequestModel
     {
@@ -16,8 +11,13 @@ namespace Anatoli.ViewModels
         public bool showCustOtherRoute { get; set; }
         public bool showCustWithOutRoute { get; set; }
         public Guid regionAreaId { get; set; }
-
-        public CustomerAreaViewModel customerAreadata { get; set; }
+        public Guid customerId { get; set; }
+        public Guid? regionAreaParentId { get; set; }
+        public int regionAreaLevel { get; set; }
+      //  public CustomerAreaViewModel customerAreadata { get; set; }
         public List<RegionAreaPointViewModel> regionAreaPointDataList { get; set; }
+        public List<CustomerPointViewModel> customerPointDataList { get; set; }
+
+        public List<Guid> regionAreaIds { get; set; }
     }
 }
