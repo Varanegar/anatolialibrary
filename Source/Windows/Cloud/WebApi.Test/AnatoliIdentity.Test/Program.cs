@@ -53,7 +53,7 @@ namespace ClientApp
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
-                    PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
+                    PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
                     //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
