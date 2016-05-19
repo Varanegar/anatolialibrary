@@ -166,6 +166,15 @@ namespace Anatoli.Business.Domain
                 returnData = PostOnlineData(WebApiURIHelper.SaveOrderLocalURI, dataStr, true);
             });
 
+            try
+            {
+                await new SMSManager().SendSMS(data.orderEntity.Customer.Mobile, SMSManager.SMSBody.PURCHASE_CONFIRM, returnData.AppOrderNo.ToString());
+            }
+            catch(Exception ex)
+            {
+
+            }
+
             var order = new PurchaseOrderProxy().ReverseConvert(returnData);
             await PublishAsync(order);
 

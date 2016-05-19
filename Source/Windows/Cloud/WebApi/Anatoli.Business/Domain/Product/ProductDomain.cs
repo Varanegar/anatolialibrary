@@ -136,6 +136,8 @@ namespace Anatoli.Business.Domain
             return data => new ProductViewModel
                     {
                         ID = data.Number_ID,
+                        CreatedDate = data.CreatedDate,
+                        LastUpdate = data.LastUpdate,
                         UniqueId = data.Id,
                         ProductCode = data.ProductCode,
                         Desctription = data.Desctription,

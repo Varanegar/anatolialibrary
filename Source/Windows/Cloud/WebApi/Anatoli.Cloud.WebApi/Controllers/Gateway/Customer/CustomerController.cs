@@ -75,6 +75,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                 }
 
+                if(data.customerData.Mobile != null)
+                {
+
+                }
 
                 data.customerData.CompanyId = DataOwnerKey;
                 var saveData = new CustomerProxy().ReverseConvert(data.customerData);

@@ -139,6 +139,7 @@
     <Compile Include="Domain\Store\StoreOnHandDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
     <Compile Include="Helpers\InterServerCommunication.cs" />
+    <Compile Include="Helpers\SMSManager.cs" />
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />

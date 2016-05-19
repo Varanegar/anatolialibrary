@@ -172,6 +172,25 @@ namespace ClientApp
             var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
             var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
         }
+        public static void GetProductFromServer(HttpClient client, string servserURI)
+        {
+            var dbData = new List<ProductViewModel>();
+            ProductRequestModel model = new ProductRequestModel();
+            model.productData = dbData;
+
+            //var manufacture = GetProductInfo();
+            string data = new JavaScriptSerializer().Serialize(model);
+
+            HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/products", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+        }
         public static List<ProductViewModel> GetProductInfo()
         {
             List<ProductViewModel> manufacture = new List<ProductViewModel>();

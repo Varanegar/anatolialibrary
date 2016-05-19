@@ -16,7 +16,7 @@ namespace ClientApp
         public static List<CustomerViewModel> GetCustomerFromServer(HttpClient client, string servserURI)
         {
             var dataInfo = new CustomerRequestModel();
-            dataInfo.customerId = Guid.Parse("4bd55fe2-1879-4e33-a931-0398b831108c");
+            dataInfo.customerId = Guid.Parse("C13B074C-D8F9-4E15-89C5-FEDF877362C3");
             string data = JsonConvert.SerializeObject(dataInfo);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
