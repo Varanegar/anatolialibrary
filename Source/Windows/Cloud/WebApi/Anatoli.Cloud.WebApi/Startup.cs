@@ -1,4 +1,5 @@
 ﻿using Anatoli.Cloud.WebApi.Handler;
+using Anatoli.Cloud.WebApi.Handler.AutoMapper;
 using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.Cloud.WebApi.Providers;
 using Anatoli.DataAccess;
@@ -213,6 +214,7 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureAutoMapper()
         {
             ConfigDefaultAutoMapperHelper.Config();
+            ConfigDMCAutoMapperHelper.Config();
         }
     }
 }

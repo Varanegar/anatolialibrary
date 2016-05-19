@@ -48,11 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAdapter\DMCCompanyPersonelAdapter.cs" />
+    <Compile Include="DataAdapter\DMCProductReportAdapter.cs" />
+    <Compile Include="DataAdapter\DMCRegionAreaCustomerAdapter.cs" />
+    <Compile Include="DataAdapter\DMCRegionAreaPointAdapter.cs" />
+    <Compile Include="DataAdapter\DMCVisitTemplatePathAdapter.cs" />
     <Compile Include="DataAdapter\DMCBaseAdapter.cs" />
     <Compile Include="DataAdapter\DMCCustomerAdapter.cs" />
     <Compile Include="Helpers\DBQuery.cs" />
     <Compile Include="Helpers\Entity\DMCGetIdEntity.cs" />
     <Compile Include="Helpers\Entity\DMCBranchConfigEntity.cs" />
+    <Compile Include="Helpers\Entity\DMCRegionAreaCustomerEntity.cs" />
+    <Compile Include="Helpers\Entity\DMCRegionAreaPointEntity.cs" />
+    <Compile Include="Helpers\Entity\DMCVisitTemplatePathEntity.cs" />
+    <Compile Include="Helpers\Entity\DMCProductReportCacheEntity.cs" />
     <Compile Include="Helpers\GeneralCommands.cs" />
     <Compile Include="Helpers\PersianDate.cs" />
     <Compile Include="Helpers\BranchConfigHeler.cs" />

@@ -8,6 +8,7 @@ namespace Anatoli.DMC.ViewModels.Base
 {
     public class DMCCustomerViewModel : DMCBaseViewModel
     {
+        public Guid? UniqueId { set; get; }
         public long? CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public DateTime? BirthDay { get; set; }

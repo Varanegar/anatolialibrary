@@ -16,29 +16,15 @@ namespace TrackingMap.Service.BL
 {
     public class AreaPointService
     {
-        private readonly IDbContext _ctx;
-        private IRepository<AreaPointEntity> _areaPointRepository;
-        private IRepository<AreaEntity> _areaRepository;
-        private readonly IRepository<CustomerAreaEntity> _customerAreaRepository;
-        private readonly IRepository<CustomerEntity> _customerRepository;
-
-        public AreaPointService(IDbContext ctx,
-            IRepository<AreaPointEntity>  areaPointRepository,
-            IRepository<CustomerEntity> customerRepository,
-            IRepository<CustomerAreaEntity> customerAreaRepository,
-            IRepository<AreaEntity> areaRepository
-            )
+ 
+        public AreaPointService()
         {
-            _ctx = ctx;
-            _areaRepository = areaRepository;
-            _areaPointRepository = areaPointRepository;
-            _customerRepository = customerRepository;
-            _customerAreaRepository = customerAreaRepository;
         }
 
         public List<PointView> LoadAreaPointById(Guid? id)
         {
-            var list = _areaPointRepository.Table.Where(x => id == null || x.AreaEntityId == id)
+            var areaPointRepository = new EfRepository<AreaPointEntity>();
+            var list = areaPointRepository.Table.Where(x => id == null || x.AreaEntityId == id)
                 .OrderBy(x => x.Priority)
                 .Select(x => new PointView()
                 {
@@ -59,16 +45,19 @@ namespace TrackingMap.Service.BL
         }
 
         public int GetMaxPointPriorityByAreaId(Guid id) {
-            var m =_areaPointRepository.Table.Where(x => x.AreaEntityId == id).Select(x => (int?) x.Priority).Max() ?? 0;
+            var areaPointRepository = new EfRepository<AreaPointEntity>();            
+            var m =  areaPointRepository.Table.Where(x => x.AreaEntityId == id).Select(x => (int?) x.Priority).Max() ?? 0;
             if (m == null) m = 0;
             return m;        
         }
 
         public IList<PointView> LoadAreaPointByParentId(Guid? pId, Guid? id = null )
         {
+            var areaRepository = new EfRepository<AreaEntity>();
+            var areaPointRepository = new EfRepository<AreaPointEntity>();            
 
-            var q = from area in _areaRepository.Table
-                    join point in _areaPointRepository.Table on area.Id equals point.AreaEntityId
+            var q = from area in areaRepository.Table
+                    join point in areaPointRepository.Table on area.Id equals point.AreaEntityId
                     where (area.ParentId == pId)
                     && ((id == null) || (area.Id != id))
                     orderby area.Id ,point.Priority
@@ -91,41 +80,50 @@ namespace TrackingMap.Service.BL
 
         public void AddAreaPoint(AreaPointView entityview)
         {
+            var areaPointRepository = new EfRepository<AreaPointEntity>();            
+
             var entity = new AreaPointEntity(entityview);
             entity.Priority = GetMaxPointPriorityByAreaId(entityview.AreaId) +1;
-            _areaPointRepository.Insert(entity);
+            areaPointRepository.Insert(entity);
 
         }
         internal void RemoveAreaPoint(Guid customerId, Guid areaId)
         {
-            var list = _areaPointRepository.Table.Where(x => x.CustomerEntityId == customerId && x.AreaEntityId == areaId).ToList();
+            var areaPointRepository = new EfRepository<AreaPointEntity>();            
+
+            var list = areaPointRepository.Table.Where(x => x.CustomerEntityId == customerId && x.AreaEntityId == areaId).ToList();
             foreach (var en in list)
             {
-                _areaPointRepository.Delete(en);
+                areaPointRepository.Delete(en);
             }
         }
 
 
-        public void SaveAreaPointList(Guid id, List<AreaPointView> entities)
+        public ReturnValue SaveAreaPointList(Guid id, List<AreaPointView> entities)
         {
-            _ctx.GetDatabase().ExecuteSqlCommand(string.Format("delete from AreaPoint where AreaId = '{0}'", id) );
-            _ctx.GetDatabase().ExecuteSqlCommand(string.Format("delete from CustomerArea where AreaId = '{0}'", id));
+            var areaPointRepository = new EfRepository<AreaPointEntity>();
+            var customerAreaRepository = new EfRepository<CustomerAreaEntity>();
+            using (var ctx = new MapContext())
+            {
+                ctx.GetDatabase().ExecuteSqlCommand(string.Format("delete from AreaPoint where AreaId = '{0}'", id));
+                ctx.GetDatabase().ExecuteSqlCommand(string.Format("delete from CustomerArea where AreaId = '{0}'", id));
+            }
             foreach (var entityview in entities)
             {
                 var entity = new AreaPointEntity(entityview);
                 entity.AreaEntityId = id;
                 entity.IntId = 0;
-                _areaPointRepository.Insert(entity);
+                areaPointRepository.Insert(entity);
                 if (entityview.CstId != null)
                 {
                     var custar = new CustomerAreaEntity() { 
                             AreaEntityId = id, 
                             CustomerEntityId = (entityview.CstId ?? Guid.Empty)};
-                    _customerAreaRepository.Insert(custar);
+                    customerAreaRepository.Insert(custar);
 
                 }
             }
-            
+            return new ReturnValue { Success = true };
 
             //Oldversion
                 //foreach (var entityview in entities)
@@ -156,19 +154,23 @@ namespace TrackingMap.Service.BL
         public bool RemoveAreaPointsByAreaId(Guid? id)
         {
 
-            var ids = _areaRepository.Table.Where(x => x.ParentId == id).Select(x => x.Id).ToList();
+            var areaRepository = new EfRepository<AreaEntity>();
+            var areaPointRepository = new EfRepository<AreaPointEntity>();
+            var customerAreaRepository = new EfRepository<CustomerAreaEntity>();
 
-            if (_areaPointRepository.Table.Any(x => ids.Contains(x.Id)))
+            var ids = areaRepository.Table.Where(x => x.ParentId == id).Select(x => x.Id).ToList();
+
+            if (areaPointRepository.Table.Any(x => ids.Contains(x.Id)))
                 return false; //has child
 
 
-            var list = _areaPointRepository.Table.Where(x => x.AreaEntityId == id).ToList();
+            var list = areaPointRepository.Table.Where(x => x.AreaEntityId == id).ToList();
             foreach(var en in list){
                 if (en.CustomerEntityId != null) {
-                    var custar = _customerAreaRepository.Table.FirstOrDefault(x => x.CustomerEntityId == en.CustomerEntityId && x.AreaEntityId == en.AreaEntityId);
-                    _customerAreaRepository.Delete(custar);
+                    var custar = customerAreaRepository.Table.FirstOrDefault(x => x.CustomerEntityId == en.CustomerEntityId && x.AreaEntityId == en.AreaEntityId);
+                    customerAreaRepository.Delete(custar);
                 }
-                _areaPointRepository.Delete(en);
+                areaPointRepository.Delete(en);
             }
             return true;
         }
@@ -176,25 +178,29 @@ namespace TrackingMap.Service.BL
 
         public bool HaseAreaPoint(Guid? id)
         {
-            return _areaPointRepository.Table.Where(x => x.AreaEntityId == id).Count() > 3;
+            var areaPointRepository = new EfRepository<AreaPointEntity>();
+            return areaPointRepository.Table.Count(x => x.AreaEntityId == id) > 3;
         }
 
 
         #region customer
         public bool AddCustomerToSelected(Guid customerId, Guid areaId)
         {
+            var customerAreaRepository = new EfRepository<CustomerAreaEntity>();
+            var customerRepository = new EfRepository<CustomerEntity>();
+
             var custar = new CustomerAreaEntity();
             custar.AreaEntityId = areaId;
             custar.CustomerEntityId = customerId;
 
-            var find = _customerAreaRepository.Table
+            var find = customerAreaRepository.Table
                 .FirstOrDefault(x => x.AreaEntityId == areaId && x.CustomerEntityId == customerId);
             if (find == null)
             {
-                var cust = _customerRepository.GetById(customerId);
+                var cust = customerRepository.GetById(customerId);
                 if (cust != null)
                 {
-                    _customerAreaRepository.Insert(custar);
+                    customerAreaRepository.Insert(custar);
                     var entityview = new AreaPointView()
                     {
                         AreaId = areaId,
@@ -211,8 +217,10 @@ namespace TrackingMap.Service.BL
 
         public bool RemoveCustomerFromSelected(Guid customerId, Guid areaId)
         {
-            var custar = _customerAreaRepository.Table.FirstOrDefault(x => x.CustomerEntityId == customerId && x.AreaEntityId == areaId);
-            _customerAreaRepository.Delete(custar);
+            var customerAreaRepository = new EfRepository<CustomerAreaEntity>();
+
+            var custar = customerAreaRepository.Table.FirstOrDefault(x => x.CustomerEntityId == customerId && x.AreaEntityId == areaId);
+            customerAreaRepository.Delete(custar);
             RemoveAreaPoint(customerId, areaId);
             return true;
         }

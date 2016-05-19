@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAdapter\Gis\SDSProductReportAdapter.cs" />
+    <Compile Include="DataAdapter\Gis\SDSProductReportFilterAdapter.cs" />
     <Compile Include="DataAdapter\SDSBaseAdapter.cs" />
     <Compile Include="Helpers\SDSDBQuery.cs" />
     <Compile Include="Helpers\Entity\SDSGetIdEntity.cs" />

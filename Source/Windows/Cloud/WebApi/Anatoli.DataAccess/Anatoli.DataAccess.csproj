@@ -141,6 +141,8 @@
     <Compile Include="Interfaces\Customer\IBasketItemRepository.cs" />
     <Compile Include="Interfaces\Customer\ICustomerRepository.cs" />
     <Compile Include="Interfaces\Customer\ICustomerShipAddressRepository.cs" />
+    <Compile Include="Interfaces\PersonnelAcitvity\IPersonnelDailyActivityPointepository.cs" />
+    <Compile Include="Interfaces\PersonnelAcitvity\IPersonnelDailyActivityEventRepository.cs" />
     <Compile Include="Interfaces\Product\ICharValueRepository.cs" />
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
@@ -394,6 +396,8 @@
     <Compile Include="Repositories\Customer\BasketItemRepository.cs" />
     <Compile Include="Repositories\Customer\CustomerRepository.cs" />
     <Compile Include="Repositories\Customer\CustomerShipAddressRepository.cs" />
+    <Compile Include="Repositories\PersonnelAcitvity\PersonnelDailyActivityPointRepository.cs" />
+    <Compile Include="Repositories\PersonnelAcitvity\PersonnelDailyActivityEventRepository.cs" />
     <Compile Include="Repositories\Product\CharValueRepository.cs" />
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />

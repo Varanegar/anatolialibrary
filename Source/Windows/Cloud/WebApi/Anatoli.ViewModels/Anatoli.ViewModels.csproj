@@ -59,13 +59,17 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BaseModels\BasketItemViewModel.cs" />
     <Compile Include="BaseModels\BasketViewModel.cs" />
+    <Compile Include="CommonModels\SelectListItemViewModel.cs" />
     <Compile Include="CustomerModels\CustomerShipAddressViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
+    <Compile Include="Enumeration.cs" />
     <Compile Include="OrderModels\IncompletePurchaseOrderLineItemViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderLineItemViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
     <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityEventViewModel.cs" />
     <Compile Include="ProductModels\ProductSupplierViewModel.cs" />
     <Compile Include="ProductModels\ProductCharValueViewModel.cs" />
     <Compile Include="ProductModels\ProductPictureViewModel.cs" />
@@ -81,6 +85,9 @@
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel\PersonelRequestModel.cs" />
+    <Compile Include="RequestModel\ProductReportRequestModel.cs" />
+    <Compile Include="RequestModel\ReportDataRequestModel.cs" />
     <Compile Include="RequestModel\UserRequestModel.cs" />
     <Compile Include="RequestModel\RegionAreaRequestModel.cs" />
     <Compile Include="RequestModel\ItemImageRequestModel.cs" />
@@ -93,9 +100,13 @@
     <Compile Include="RequestModel\StockProductRequestRequestModel.cs" />
     <Compile Include="RequestModel\ProductRequestModel.cs" />
     <Compile Include="RequestModel\BaseRequestModel.cs" />
-    <Compile Include="Route\RegionAreaViewModel.cs" />
-    <Compile Include="Route\RegionAreaPointViewModel.cs" />
-    <Compile Include="Route\CustomerAreaViewModel.cs" />
+    <Compile Include="VnGisModels\CustomerComboViewModel.cs" />
+    <Compile Include="VnGisModels\CustomerPointViewModel.cs" />
+    <Compile Include="VnGisModels\PointViewModel.cs" />
+    <Compile Include="VnGisModels\PolyViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaPointViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaCustomerViewModel.cs" />
     <Compile Include="StockModels\StockHistoryOnHandViewModel.cs" />
     <Compile Include="StockModels\StockOnHandSyncViewModel.cs" />
     <Compile Include="StockModels\StockProductRequestProductDetailViewModel.cs" />
@@ -120,15 +131,10 @@
     <Compile Include="User\ChangePasswordBindingModel.cs" />
     <Compile Include="User\UserReturnModel.cs" />
     <Compile Include="User\CreateUserBindingModel.cs" />
-    <Compile Include="VNGRSModel\AutoCompleteFilter.cs" />
-    <Compile Include="VNGRSModel\ComboFilter.cs" />
-    <Compile Include="VNGRSModel\CustomerReportModel.cs" />
-    <Compile Include="VNGRSModel\GoodByValueReportModel.cs" />
-    <Compile Include="VNGRSModel\GoodReportModel.cs" />
-    <Compile Include="VNGRSModel\TextValueView.cs" />
-    <Compile Include="VNGRSModel\VnCustomerView.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Route\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -11,7 +11,7 @@ using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.DataAccess.Models.Route;
-using Anatoli.ViewModels.Route;
+using Anatoli.ViewModels.VnGisModels;
 
 namespace Anatoli.Business.Domain.Route
 {
