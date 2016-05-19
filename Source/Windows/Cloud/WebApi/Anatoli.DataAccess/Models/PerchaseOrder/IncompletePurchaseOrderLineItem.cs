@@ -8,7 +8,7 @@ namespace Anatoli.DataAccess.Models
     {
         public decimal Qty { get; set; }
         [ForeignKey("Product")]
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
         [ForeignKey("IncompletePurchaseOrder")]
         public Guid IncompletePurchaseOrderId { get; set; }
         public virtual Product Product { get; set; }

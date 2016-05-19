@@ -25,7 +25,7 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
             var userDomain = new UserDomain(applicationOwner, dataOwnerKey);
 
-            var user = await userDomain.UserExists(usernameOrEmailOrPhone);
+            var user = await userDomain.FindByNameOrEmailOrPhoneAsync(usernameOrEmailOrPhone);
             if (user != null)
                 return await FindAsync(user.UserName, password);
             else

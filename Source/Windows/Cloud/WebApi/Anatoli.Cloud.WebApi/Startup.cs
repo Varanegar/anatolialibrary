@@ -16,6 +16,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using WebApiContrib.Formatting;
 
 namespace Anatoli.Cloud.WebApi
 {
@@ -175,7 +176,7 @@ namespace Anatoli.Cloud.WebApi
                 //For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/oauth/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(365),
                 Provider = new CustomOAuthProvider(),
                 AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["server:URI"])
             };
@@ -209,6 +210,8 @@ namespace Anatoli.Cloud.WebApi
             //config.MessageHandlers.Add(new WrappingHandler());
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.Formatters.Add(new ProtoBufFormatter());
         }
 
         private void ConfigureAutoMapper()

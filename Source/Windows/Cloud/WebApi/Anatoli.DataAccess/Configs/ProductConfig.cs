@@ -27,7 +27,7 @@ namespace Anatoli.DataAccess.Configs
                 .WillCascadeOnDelete(false);
 
             this.HasMany<IncompletePurchaseOrderLineItem>(pp => pp.IncompletePurchaseOrderLineItems)
-                .WithRequired(p => p.Product)
+                .WithOptional(p => p.Product)
                 .WillCascadeOnDelete(false);
 
             this.HasMany<StockProductRequestRule>(pp => pp.StockProductRequestRules)

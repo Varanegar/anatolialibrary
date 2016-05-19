@@ -10,6 +10,7 @@ using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.BaseModels;
+using System.Linq.Expressions;
 
 namespace Anatoli.Business.Domain
 {
@@ -134,6 +135,27 @@ namespace Anatoli.Business.Domain
                 Logger.Error("ChangeAsync", ex);
                 throw ex;
             }
+        }
+        protected override Expression<Func<BasketItem, BasketItemViewModel>> GetAllSelector()
+        {
+            return data => new BasketItemViewModel
+            {
+                ID = data.Number_ID,
+                UniqueId = data.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
+                DataCenterOwnerId = data.DataOwnerCenterId,
+                DataOwnerId = data.DataOwnerId,
+                IsRemoved = data.IsRemoved,
+                CreatedDate = data.CreatedDate,
+                LastUpdate = data.LastUpdate,
+                Qty = data.Qty,
+                Comment = data.Comment,
+                ProductId = data.ProductId,
+                BasketId = data.BasketId,
+                ProductCode = data.Product.ProductCode,
+                ProductName = data.Product.ProductName,
+                ProductRate = data.Product.ProductRate
+            };
         }
         #endregion
     }

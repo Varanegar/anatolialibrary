@@ -18,6 +18,7 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         public IRepository<StockProductRequestRule> ProductRequestRuleRepository { get; set; }
+        public IRepository<PrincipalStock> PrincipalStockRepository { get; set; }
         public IRepository<Principal> PrincipalRepository { get; set; }
         #endregion
 
@@ -31,25 +32,30 @@ namespace Anatoli.Business.Domain
             : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
             PrincipalRepository = new PrincipalRepository(dbc);
+            PrincipalStockRepository = new PrincipalStockRepository(dbc);
             ProductRequestRuleRepository = new StockProductRequestRuleRepository(dbc);
         }
         #endregion
 
         #region Methods
-        //public async Task<ICollection<Stock>> GetAllByUserId(Guid userId)
-        //{
-        //    try
-        //    {
-        //        var user = await PrincipalRepository.FindAsync(p => p.Id == userId);
-
-        //        return user.Stocks;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Error("GetAll", ex);
-        //        throw ex;
-        //    }
-        //}
+        public async Task<ICollection<Stock>> GetAllByUserId(Guid userId)
+        {
+            try
+            {
+                var result = new List<Stock>();
+                var principalStocks = await PrincipalStockRepository.FindAllAsync(p => p.PrincipalId == userId);
+                principalStocks.ToList().ForEach(item =>
+                {
+                    result.Add(item.Stock);
+                });
+                return result;// user.Stocks;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetAll", ex);
+                throw ex;
+            }
+        }
 
         public async Task<ICollection<Stock>> GetStockCompleteInfo(string stockId)
         {
@@ -91,20 +97,31 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        //public async Task SaveStocksUser(Guid userId, List<Guid> stockIds)
-        //{
-        //    var user = await PrincipalRepository.FindAsync(p => p.Id == userId);
-        //    user.Stocks.Clear();
+        public async Task SaveStocksUser(Guid userId, List<Guid> stockIds)
+        {
+            DBContext.Database.ExecuteSqlCommand("delete from PrincipalStocks where PrincipalId='" + userId + "'");
 
-        //    if (stockIds != null)
-        //    {
-        //        var stocks = await MainRepository.FindAllAsync(p => stockIds.Contains(p.Id));
+            if (stockIds != null)
+            {
+                var stocks = await MainRepository.FindAllAsync(p => stockIds.Contains(p.Id));
 
-        //        stocks.ToList().ForEach(itm => user.Stocks.Add(itm));
-        //    }
 
-        //    await PrincipalRepository.SaveChangesAsync();
-        //}
+                stocks.ToList().ForEach(
+
+                    itm =>
+                    {
+                        PrincipalStock ps = new PrincipalStock()
+                        {
+                            PrincipalId = userId,
+                            StockId = itm.Id
+                        };
+                        PrincipalStockRepository.Add(ps);
+                    }
+                    );
+            }
+
+            await PrincipalRepository.SaveChangesAsync();
+        }
 
 
         #endregion

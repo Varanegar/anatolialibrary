@@ -27,18 +27,18 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
         }
         SellAdapter() { }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, bool getAllOrderTypes)
         {
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
             var stores = StoreConfigHeler.Instance.AllStoreConfigs;
             stores.ForEach(item =>
             {
                 if(item.CenterId != 1)
-                result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, item.ConnectionString));
+                result.AddRange(GetPurchaseOrderByCustomerId(customerId, statusId, item.UniqueId, getAllOrderTypes, item.ConnectionString));
             });
             return result;
         }
-        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId, string connectionString)
+        public List<PurchaseOrderViewModel> GetPurchaseOrderByCustomerId(string customerId, string statusId, string centerId, bool getAllOrderTypes, string connectionString)
         {
             log.Debug(" customerId " + customerId + " & centerId " + centerId);
             List<PurchaseOrderViewModel> result = new List<PurchaseOrderViewModel>();
@@ -48,17 +48,26 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 try
                 {
                     IEnumerable<PurchaseOrderViewModel> data = null;
-                    if(statusId != null)
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                    if (getAllOrderTypes)
+                    {
+                        if (statusId != null)
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfoAllTypes() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                        else
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfoAllTypes() + " and C.CustomerSiteUserId='" + customerId + "'");
+                    }
                     else
-                        data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "'");
-
+                    {
+                        if (statusId != null)
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "' and SS.UniqueId = '" + statusId + "'");
+                        else
+                            data = context.All<PurchaseOrderViewModel>(DBQuery.Instance.GetSellInfo() + " and C.CustomerSiteUserId='" + customerId + "'");
+                    }
                     result = data.ToList();
                 }
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {
@@ -67,7 +76,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             }
             return result;
         }
-        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, string centerId)
+        public List<PurchaseOrderLineItemViewModel> GetPurchaseOrderLineItemsByPOId(string pOId, string centerId, bool getAllOrderTypes)
         {
             List<PurchaseOrderLineItemViewModel> result = new List<PurchaseOrderLineItemViewModel>();
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(centerId).ConnectionString;
@@ -76,13 +85,21 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
-                    var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where S.UniqueId='" + pOId + "'");
-                    result = data.ToList();
+                    if (getAllOrderTypes)
+                    {
+                        var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfoAllTypes() + " where S.UniqueId='" + pOId + "'");
+                        result = data.ToList();
+                    }
+                    else
+                    {
+                        var data = context.All<PurchaseOrderLineItemViewModel>(DBQuery.Instance.GetSellDetailInfo() + " where S.UniqueId='" + pOId + "'");
+                        result = data.ToList();
+                    }
                 }
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                   // throw ex;
                 }
                 finally
                 {
@@ -106,7 +123,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {
@@ -118,15 +135,52 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
         public long SavePurchaseOrder(PMCSellViewModel orderInfo, PMCCustomerViewModel customer)
         {
             var connectionString = StoreConfigHeler.Instance.GetStoreConfig(orderInfo.CenterId).ConnectionString;
-
+            
             using (var context = new DataContext(Transaction.Begin))
             {
                 try
                 {
+
                     if (CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId))
+                    {
                         orderInfo.CustomerId = CustomerAdapter.Instance.GetCustomerId(customer.CustomerSiteUserId);
+                        var genScript = context.GetValue<string>(@"EXEC usp_GenData 'Customer','customerid=" + customer.CustomerId + "' ,1,1");
+                        StoreConfigHeler.Instance.AllStoreConfigs.ForEach(item =>
+                        {
+                            if (item.CenterId == orderInfo.CenterId)
+                            {
+                                if (!CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId, item.ConnectionString, item.CenterId.ToString()))
+                                {
+                                    log.Debug("customer id : " + customer.CustomerSiteUserId + ", name: " + customer.CustomerName + ", mobile:" + customer.Mobile);
+
+                                    log.Info(connectionString);
+                                    log.Info(genScript);
+                                    using (var contextTemp = new DataContext(item.CenterId.ToString(), item.ConnectionString, Transaction.Begin))
+                                    {
+                                        try
+                                        {
+                                            contextTemp.Execute(@"update CenterSetting set LogIsActive = 0");
+                                            contextTemp.Execute(genScript);
+                                            contextTemp.Execute(@"update CenterSetting set LogIsActive = 1");
+                                            contextTemp.Commit();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            contextTemp.Rollback();
+                                            log.Error(ex.Message, ex);
+                                            throw ex;
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        });
+                    }
                     else
                     {
+                        log.Debug("customer id : " + customer.CustomerSiteUserId + ", name: " + customer.CustomerName + ", mobile:" + customer.Mobile);
+
                         DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
                         customer.CustomerId = GeneralCommands.GetId(context, "Customer");
                         customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);
@@ -136,12 +190,14 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
 
                         StoreConfigHeler.Instance.AllStoreConfigs.ForEach(item =>
                         {
-                            if (item.CenterId != 1)
+                            if (item.CenterId == orderInfo.CenterId)
                             {
                                 using (var contextTemp = new DataContext(item.CenterId.ToString(), item.ConnectionString, Transaction.Begin))
                                 {
                                     try
                                     {
+                                        log.Info(connectionString);
+                                        log.Info(genScript);
                                         contextTemp.Execute(@"update CenterSetting set LogIsActive = 0");
                                         contextTemp.Execute(genScript);
                                         contextTemp.Execute(@"update CenterSetting set LogIsActive = 1");

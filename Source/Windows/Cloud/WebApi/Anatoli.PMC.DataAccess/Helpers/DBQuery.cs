@@ -619,9 +619,19 @@ namespace Anatoli.PMC.DataAccess.Helpers
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetSellInfo".ToLower()).QueryTSql;
             //return @"select * from sell ";
         }
+        public string GetSellInfoAllTypes()
+        {
+            return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetSellInfoAllTypes".ToLower()).QueryTSql;
+            //return @"select * from sell ";
+        }
         public string GetSellDetailInfo()
         {
             return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetSellDetailInfo".ToLower()).QueryTSql;
+            //return @"select * from sell ";
+        }
+        public string GetSellDetailInfoAllTypes()
+        {
+            return queryList.Find(item => item.AnatoliQueryName.ToLower() == "GetSellDetailInfoAllTypes".ToLower()).QueryTSql;
             //return @"select * from sell ";
         }
         public string GetSellActionInfo()

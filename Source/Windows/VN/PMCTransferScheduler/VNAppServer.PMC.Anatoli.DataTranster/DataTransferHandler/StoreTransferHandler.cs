@@ -38,16 +38,16 @@ namespace VNAppServer.PMC.Anatoli.DataTranster
                 else
                     log.Info("Null data to transfer " + serverURI);
 
-                dbData = StoreAdapter.Instance.GetAllStores(DateTime.MinValue);
-                if (dbData != null)
-                {
-                    StoreRequestModel model = new StoreRequestModel();
-                    model.storeData = dbData;
+                //dbData = StoreAdapter.Instance.GetAllStores(DateTime.MinValue);
+                //if (dbData != null)
+                //{
+                //    StoreRequestModel model = new StoreRequestModel();
+                //    model.storeData = dbData;
                     
-                    string data = JsonConvert.SerializeObject(model);
-                    string URI = serverURI + UriInfo.CheckDeletedStoreURI;
-                    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
-                }
+                //    string data = JsonConvert.SerializeObject(model);
+                //    string URI = serverURI + UriInfo.CheckDeletedStoreURI;
+                //    var result = ConnectionHelper.CallServerServicePost(data, URI, client, privateOwnerId, dataOwner, dataOwnerCenter);
+                //}
 
                 Utility.SetLastUploadTime(StoreDataType, currentTime);
 

@@ -92,6 +92,7 @@
     <Compile Include="Configs\CustomerConfig.cs" />
     <Compile Include="Configs\CustomerShipAddressConfig.cs" />
     <Compile Include="Configs\DeliveryPersonConfig.cs" />
+    <Compile Include="Configs\BrandConfig.cs" />
     <Compile Include="Configs\PermissionCatalogConfig.cs" />
     <Compile Include="Configs\PrincipalPermissionCatalogConfig.cs" />
     <Compile Include="Configs\RegionAreaConfig.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Configs\ProductGroupConfig.cs" />
     <Compile Include="Configs\FiscalYearConfig.cs" />
     <Compile Include="Configs\RegionAreaLevelTypeConfig.cs" />
+    <Compile Include="Configs\PrincipalStockConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleConfig.cs" />
     <Compile Include="Configs\StockProductRequestProductConfig.cs" />
     <Compile Include="Configs\StockProductRequestRuleCalcTypeConfig.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IMainProductGroupRepository.cs" />
+    <Compile Include="Interfaces\Product\IBrandRepository.cs" />
     <Compile Include="Interfaces\Product\IProductPictureRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRateRepository.cs" />
     <Compile Include="Interfaces\Product\IProductTagValueRepository.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="Interfaces\Stock\IStockActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockHistoryOnHandRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockOnHandSyncRepository.cs" />
+    <Compile Include="Interfaces\Stock\IPrincipalStockRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockProductRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockProductRequestProductDetailRepository.cs" />
     <Compile Include="Interfaces\Stock\IStockProductRequestProductRepository.cs" />
@@ -276,10 +280,31 @@
     <Compile Include="Migrations\201604291628527_StoreActiveOnHand-Migration-2.Designer.cs">
       <DependentUpon>201604291628527_StoreActiveOnHand-Migration-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605030423589_SCM-Permision-Migration-1.cs" />
+    <Compile Include="Migrations\201605030423589_SCM-Permision-Migration-1.Designer.cs">
+      <DependentUpon>201605030423589_SCM-Permision-Migration-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605030437569_SCM-Permision-Migration-2.cs" />
+    <Compile Include="Migrations\201605030437569_SCM-Permision-Migration-2.Designer.cs">
+      <DependentUpon>201605030437569_SCM-Permision-Migration-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605030450201_SCM-Permision-Migration-3.cs" />
+    <Compile Include="Migrations\201605030450201_SCM-Permision-Migration-3.Designer.cs">
+      <DependentUpon>201605030450201_SCM-Permision-Migration-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605032028455_Brand-Migration-1.cs" />
+    <Compile Include="Migrations\201605032028455_Brand-Migration-1.Designer.cs">
+      <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.cs" />
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.Designer.cs">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
     <Compile Include="Models\Account\CompanyCenter.cs" />
+    <Compile Include="Models\Account\Brand.cs" />
     <Compile Include="Models\Anatoli\AnatoliAccount.cs" />
     <Compile Include="Models\Anatoli\AnatoliRegion.cs" />
     <Compile Include="Models\Account\Company.cs" />
@@ -293,6 +318,7 @@
     <Compile Include="Models\Identity\Application.cs" />
     <Compile Include="Models\Identity\DataOwnerCenter.cs" />
     <Compile Include="Models\BaseData\DataOwner.cs" />
+    <Compile Include="Models\Identity\PermissionCatalogPermission.cs" />
     <Compile Include="Models\Identity\PermissionCatalog.cs" />
     <Compile Include="Models\Identity\Principal.cs" />
     <Compile Include="Models\Identity\PrincipalPermissionCatalog.cs" />
@@ -317,6 +343,7 @@
     <Compile Include="Models\Route\RegionArea.cs" />
     <Compile Include="Models\Route\RegionAreaPoint.cs" />
     <Compile Include="Models\Route\CompanyPersonnelRoute.cs" />
+    <Compile Include="Models\Stock\BaseData\PrincipalStock.cs" />
     <Compile Include="Models\Store\CalendarTemplate.cs" />
     <Compile Include="Models\Store\CalendarTemplateHoliday.cs" />
     <Compile Include="Models\Store\CalendarTemplateOpenTime.cs" />
@@ -387,6 +414,7 @@
     <Compile Include="Repositories\AnatoliRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Repositories\Account\AnatoliUserStore.cs" />
+    <Compile Include="Repositories\Base\BrandRepository.cs" />
     <Compile Include="Repositories\Base\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Base\FiscalYearRepository.cs" />
     <Compile Include="Repositories\Base\BaseTypeRepository.cs" />
@@ -424,6 +452,7 @@
     <Compile Include="Repositories\Route\RegionAreaRepository.cs" />
     <Compile Include="Repositories\Stock\StockHistoryOnHandRepository.cs" />
     <Compile Include="Repositories\Stock\StockActiveOnHandRepository.cs" />
+    <Compile Include="Repositories\Stock\PrincipalStockRepository.cs" />
     <Compile Include="Repositories\Stock\StockProductRequestProductDetailRepository.cs" />
     <Compile Include="Repositories\Stock\StockProductRequestProductRepository.cs" />
     <Compile Include="Repositories\Stock\StockProductRequestTypeRepository.cs" />
@@ -518,6 +547,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604291628527_StoreActiveOnHand-Migration-2.resx">
       <DependentUpon>201604291628527_StoreActiveOnHand-Migration-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605030423589_SCM-Permision-Migration-1.resx">
+      <DependentUpon>201605030423589_SCM-Permision-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605030437569_SCM-Permision-Migration-2.resx">
+      <DependentUpon>201605030437569_SCM-Permision-Migration-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605030450201_SCM-Permision-Migration-3.resx">
+      <DependentUpon>201605030450201_SCM-Permision-Migration-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605032028455_Brand-Migration-1.resx">
+      <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.resx">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.Order;
+using System.Linq.Expressions;
 
 namespace Anatoli.Business.Domain
 {
@@ -103,6 +104,27 @@ namespace Anatoli.Business.Domain
                 await MainRepository.DeleteBatchAsync(p => p.IncompletePurchaseOrderId == item.IncompletePurchaseOrderId && p.ProductId == item.ProductId);
         }
 
+        protected override Expression<Func<IncompletePurchaseOrderLineItem, IncompletePurchaseOrderLineItemViewModel>> GetAllSelector()
+        {
+            return data => new IncompletePurchaseOrderLineItemViewModel
+            {
+                ID = data.Number_ID,
+                UniqueId = data.Id,
+                ApplicationOwnerId = data.ApplicationOwnerId,
+                DataCenterOwnerId = data.DataOwnerCenterId,
+                DataOwnerId = data.DataOwnerId,
+                IsRemoved = data.IsRemoved,
+                CreatedDate = data.CreatedDate,
+                LastUpdate = data.LastUpdate,
+
+                Qty = data.Qty,
+                ProductId = data.ProductId,
+                IncompletePurchaseOrderId = data.IncompletePurchaseOrderId,
+                ProductCode = data.Product.ProductCode,
+                ProductName = data.Product.ProductName,
+                ProductRate = data.Product.ProductRate
+            };
+        }
         #endregion
     }
 }

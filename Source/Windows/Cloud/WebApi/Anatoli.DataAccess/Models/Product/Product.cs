@@ -29,6 +29,8 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> MainProductGroupId { get; set; }
         [ForeignKey("Manufacture")]
         public Nullable<Guid> ManufactureId { get; set; }
+        [ForeignKey("Brand")]
+        public Nullable<Guid> BrandId { get; set; }
         [ForeignKey("MainSupplier")]
         public Nullable<Guid> MainSupplierId { get; set; }
         [ForeignKey("ProductType")]
@@ -54,6 +56,7 @@ namespace Anatoli.DataAccess.Models
         public virtual ICollection<Supplier> Suppliers { get; set; }
         public virtual ICollection<IncompletePurchaseOrderLineItem> IncompletePurchaseOrderLineItems { get; set; }
         public virtual Manufacture Manufacture { get; set; }
+        public virtual Brand Brand { get; set; }
         public virtual bool IsActiveInOrder { get; set; }
     }
 }

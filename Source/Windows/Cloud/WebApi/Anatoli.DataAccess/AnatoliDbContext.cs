@@ -67,6 +67,7 @@ namespace Anatoli.DataAccess
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<PurchaseOrderClearance> PurchaseOrderClearances { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         public DbSet<Manufacture> Manufactures { get; set; }
         public DbSet<ItemImage> Images { get; set; }
         public DbSet<ReorderCalcType> ReorderCalcTypes { get; set; }
@@ -75,6 +76,7 @@ namespace Anatoli.DataAccess
         public DbSet<StockActiveOnHand> StockActiveOnHands { get; set; }
         public DbSet<StockHistoryOnHand> StockHistoryOnHands { get; set; }
         public DbSet<StockOnHandSync> StockOnHandSyncs { get; set; }
+        public DbSet<PrincipalStock> PrincipalStocks { get; set; }
         public DbSet<StockProduct> StockProducts { get; set; }
         public DbSet<StockProductRequest> StockProductRequests { get; set; }
         public DbSet<StockProductRequestProduct> StockProductRequestProducts { get; set; }
@@ -105,6 +107,7 @@ namespace Anatoli.DataAccess
         public DbSet<IdentityUserRole> UserRoles { get; set; }
         public DbSet<Principal> Principals { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionCatalog> PermissionCatalogs { get; set; }
         public DbSet<PermissionAction> PermissionActions { get; set; }
         public DbSet<ApplicationModuleResource> ApplicationModuleResources { get; set; }
         public DbSet<ApplicationModule> ApplicationModules { get; set; }
@@ -124,6 +127,7 @@ namespace Anatoli.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new BasketConfig());
+            modelBuilder.Configurations.Add(new BrandConfig());
             modelBuilder.Configurations.Add(new CalendarTemplateConfig());
             modelBuilder.Configurations.Add(new CharGroupConfig());
             modelBuilder.Configurations.Add(new CharTypeConfig());
@@ -147,6 +151,7 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new PurchaseOrderConfig());
             modelBuilder.Configurations.Add(new ReorderCalcTypeConfig());
             modelBuilder.Configurations.Add(new StockConfig());
+            modelBuilder.Configurations.Add(new PrincipalStockConfig());
             modelBuilder.Configurations.Add(new StockProductConfig());
             modelBuilder.Configurations.Add(new StockProductRequestConfig());
             modelBuilder.Configurations.Add(new StockProductRequestProductConfig());

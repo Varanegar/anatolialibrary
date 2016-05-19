@@ -129,7 +129,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderDomain();
-                    result = orderDomain.GetAllByCustomerId(data.customerId, null, data.centerId.ToString());
+                    result = orderDomain.GetAllByCustomerId(data.customerId, null, data.centerId.ToString(), data.getAllOrderTypes);
                 });
                 return Ok(result);
             }
@@ -173,7 +173,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 await Task.Factory.StartNew(() =>
                 {
                     var orderDomain = new PMCPurchaseOrderLineItemDomain();
-                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId.ToString());
+                    result = orderDomain.GetAllByOrderId(data.poId, data.centerId.ToString(), data.getAllOrderTypes);
                 });
                 return Ok(result);
             }

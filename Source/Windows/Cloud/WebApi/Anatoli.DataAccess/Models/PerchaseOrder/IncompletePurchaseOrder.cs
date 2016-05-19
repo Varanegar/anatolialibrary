@@ -8,12 +8,12 @@
     public class IncompletePurchaseOrder : BaseModel
     {
         [ForeignKey("Store")]
-        public Guid StoreId { get; set; }
+        public Guid? StoreId { get; set; }
         [ForeignKey("CityRegion")]
-        public Guid CityRegionId { get; set; }
+        public Guid? CityRegionId { get; set; }
         [ForeignKey("Customer")]
-        public Guid CustomerId { get; set; }
-        public Guid DeliveryTypeId { get; set; }
+        public Guid? CustomerId { get; set; }
+        public Guid? DeliveryTypeId { get; set; }
         public Guid? PaymentTypeId { get; set; }
         public string OrderShipAddress { get; set; }
         [ForeignKey("CustomerShipAddress")]

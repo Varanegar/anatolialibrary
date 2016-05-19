@@ -14,7 +14,7 @@ namespace Anatoli.ViewModels.CustomerModels
         {
             get
             {
-                return LastName + ", " + FirstName;
+                return FirstName + " " + LastName ;
             }
             set { }
         }

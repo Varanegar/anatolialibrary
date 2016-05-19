@@ -23,6 +23,8 @@
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +66,10 @@
     </Reference>
     <Reference Include="Log4Net.Async">
       <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.0.1.101\lib\net40-client\Magick.NET-Q16-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,6 +121,10 @@
     </Reference>
     <Reference Include="PersianDate, Version=1.3.5419.21406, Culture=neutral, PublicKeyToken=0690767615cbef5c, processorArchitecture=MSIL">
       <HintPath>..\packages\PersianDate.1.3.5\lib\PersianDate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.480\lib\net40\protobuf-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid">
@@ -170,6 +180,10 @@
     <Reference Include="Thinktecture.IdentityModel.Core">
       <HintPath>..\packages\Thinktecture.IdentityModel.Core.1.4.0\lib\net45\Thinktecture.IdentityModel.Core.dll</HintPath>
     </Reference>
+    <Reference Include="WebApiContrib.Formatting.ProtoBuf, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebApiContrib.Formatting.ProtoBuf.0.9.5.0\lib\net40\WebApiContrib.Formatting.ProtoBuf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -189,10 +203,10 @@
   <ItemGroup>
     <Compile Include="Classes\AnatoliApiController.cs" />
     <Compile Include="Classes\AnatoliAuthorizeAttribute.cs" />
+    <Compile Include="Classes\EncodingForBase64.cs" />
     <Compile Include="Classes\FileManager.cs" />
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />
-    <Compile Include="Classes\SMSManager.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
@@ -205,6 +219,7 @@
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelController.cs" />
     <Compile Include="Controllers\DSD\RouteManagement\RouteManagementController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\FiscalYearController.cs" />
+    <Compile Include="Controllers\Gateway\BaseData\BrandController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\SupplierController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\ManufactureController.cs" />
     <Compile Include="Controllers\Gateway\BaseData\RegionController.cs" />

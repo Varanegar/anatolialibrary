@@ -1,4 +1,5 @@
-﻿using Anatoli.ViewModels.ProductModels;
+﻿using Anatoli.ViewModels;
+using Anatoli.ViewModels.ProductModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -154,12 +155,38 @@ namespace ClientApp
         #region Product
         public static void UploadProductToServer(HttpClient client, string servserURI)
         {
-            var manufacture = GetProductInfo();
-            var js = new JavaScriptSerializer();
-            js.MaxJsonLength = Int32.MaxValue;
-            string data = js.Serialize(manufacture);
+            var dbData = new List<ProductViewModel>();
+            ProductRequestModel model = new ProductRequestModel();
+            model.productData = dbData;
+
+            //var manufacture = GetProductInfo();
+            string data = new JavaScriptSerializer().Serialize(model);
+
             HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "/api/gateway/product/save?privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/save", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
+        }
+        public static void GetProductFromServer(HttpClient client, string servserURI)
+        {
+            var dbData = new List<ProductViewModel>();
+            ProductRequestModel model = new ProductRequestModel();
+            model.productData = dbData;
+
+            //var manufacture = GetProductInfo();
+            string data = new JavaScriptSerializer().Serialize(model);
+
+            HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/products", content).Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj2 = new { message = "", ModelState = new Dictionary<string, string[]>() };
             var x = JsonConvert.DeserializeAnonymousType(json8, obj2);
@@ -192,6 +219,27 @@ namespace ClientApp
             return manufacture;
         }
         #endregion
+
+        internal static List<ProductGroupViewModel> CheckDeletedProductGroupFromServer(HttpClient client, string servserURI)
+        {
+            var dbData = new List<MainProductGroupViewModel>();
+
+            ProductRequestModel model = new ProductRequestModel();
+            model.mainProductGroupData = dbData;
+
+            string data = new JavaScriptSerializer().Serialize(model);
+
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+            content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
+
+            var result8 = client.PostAsync(servserURI + "/api/gateway/product/mainproductgroups/checkdeleted", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+            var obj = new List<ProductGroupViewModel>();
+            var x = JsonConvert.DeserializeAnonymousType(json8, obj);
+            return x;
+        }
 
         internal static List<ProductGroupViewModel> DownloadProductGroupFromServer(HttpClient client, string servserURI)
         {

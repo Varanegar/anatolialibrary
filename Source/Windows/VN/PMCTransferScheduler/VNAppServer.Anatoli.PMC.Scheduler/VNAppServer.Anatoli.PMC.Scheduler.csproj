@@ -79,10 +79,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UploadLatestStoreInfoForAnatoliPOS.cs" />
+    <Compile Include="UploadLatestOnHandForAnatoliPOS.cs" />
     <Compile Include="UploadStockOnHandForStockLogistic.cs" />
     <Compile Include="UploadLatestDataForStockLogistic.cs" />
     <Compile Include="UploadLatestPicturesForAnatoliPOS.cs" />
-    <Compile Include="UploadLatestDataForAnatoliPOS.cs" />
+    <Compile Include="UploadLatestProductInfoForAnatoliPOS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

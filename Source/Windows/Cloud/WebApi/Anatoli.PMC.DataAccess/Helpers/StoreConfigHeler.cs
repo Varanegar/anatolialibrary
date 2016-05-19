@@ -32,7 +32,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
         {
             using (DataContext context = new DataContext())
             {
-                DataObject<PMCStoreConfigEntity> configDataObject = new DataObject<PMCStoreConfigEntity>("Center");
+                DataObject<PMCStoreConfigEntity> configDataObject = new DataObject<PMCStoreConfigEntity>("vwCenterCloud");
                 AllStoreConfigs= configDataObject.Select.All("where isReal=1").ToList();
             }
         }
