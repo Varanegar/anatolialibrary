@@ -26,7 +26,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<DMCVisitTemplatePathViewModel> LoadAreaByParentId(Guid? id)
         {
             List<DMCVisitTemplatePathViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var where = (id == null ? "" : "WHERE ParentUniqueId = '" + id.ToString() + "'");
                 result =
@@ -44,10 +44,10 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public Guid? GetParentIdById(Guid? id)
         {
             Guid result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result =
-                    context.GetValue<Guid>("select ParentUniqueId from VisitTemplatePath where UniqueId = '" + id.ToString() +
+                    context.GetValue<Guid>("SELECT ParentUniqueId FROM VisitTemplatePath WHERE UniqueId = '" + id.ToString() +
                                            "'");
             }
             return result;
@@ -56,10 +56,10 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<DMCVisitTemplatePathViewModel> LoadArea1() // level 1
         {
             List<DMCVisitTemplatePathViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result =
-                    context.All<DMCVisitTemplatePathViewModel>("select UniqueId , PathTitle from VisitTemplatePath where ParentId =  null").ToList();
+                    context.All<DMCVisitTemplatePathViewModel>("SELECT UniqueId , PathTitle FROM VisitTemplatePath WHERE ParentId =  null").ToList();
             }
             return result;
         }
@@ -71,7 +71,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             if (id == null)
                 return new DMCVisitTemplatePathViewModel();
             DMCVisitTemplatePathViewModel result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result =
                     context.First<DMCVisitTemplatePathViewModel>("SELECT UniqueId, " +
@@ -108,7 +108,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool HasChild(Guid id)
         {
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var result =
                     context.GetValue<int>("SELECT count(UniqueId) " +
@@ -121,7 +121,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public List<SelectListItemViewModel> LoadByLevel(int level, Guid? areaId)
         {
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var where = "";
                 if (level == 1)

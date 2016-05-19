@@ -13,7 +13,7 @@ using System.Data.SqlClient;
 
 namespace Anatoli.DMC.DataAccess.DataAdapter
 {
-    public class DMCProductReportAdapter
+    public class DMCProductReportAdapter : DMCBaseAdapter
     {
         #region ctor
 
@@ -94,7 +94,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
                         ")";
 
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 foreach (var item in list)
                 {
@@ -184,7 +184,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public List<DMCPointViewModel> LoadCustomer(Guid clientId, List<Guid> areaIds)
         {
-            using (var context = new DataContext(Transaction.No))
+            using (var context = GetDataContext(Transaction.No))
             {
                 var views = context.All<DMCPointViewModel>("exec GisLoadProductReportCustomer " +
                                                            "@ClientId = " + clientId + "," +
@@ -205,7 +205,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool RemoveProductReportCache(Guid guid)
         {
-            using (var context = new DataContext(Transaction.No))
+            using (var context = GetDataContext(Transaction.No))
             {
                 context.Execute("DELETE FROM  GisProductReportCache " +
                                 "WHERE ClientId = '" + guid + "'");

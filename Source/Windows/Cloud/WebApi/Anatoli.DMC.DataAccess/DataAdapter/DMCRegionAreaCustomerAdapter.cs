@@ -37,7 +37,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             //var areaidParam = new SqlParameter("@areaid", areaid);
             //var selectedParam = new SqlParameter("@selected", selected);
 
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext(Transaction.No))
             {
                 list =
                     ctx.All<DMCRegionAreaCustomerViewModel>("exec GisLoadCustomerViewByAreaId " +
@@ -50,7 +50,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<DMCPointViewModel> LoadCustomerPointByAreaId(Guid? areaid, Guid? routeid, bool showcustrout, bool showcustotherrout, bool showcustwithoutrout)
         {
             List<DMCPointViewModel> list;
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext(Transaction.No))
             {
                 list =
                     ctx.All<DMCPointViewModel>("exec GisLoadCustomerPointByAreaId " +
@@ -61,7 +61,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool AddCustomerToRegionArea(Guid customerId, Guid areaId)
         {
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext(Transaction.No))
             {
                 try
                 {
@@ -114,7 +114,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool RemoveCustomerFromRegionArea(Guid customerId, Guid areaId)
         {
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext())
             {
                 try
                 {

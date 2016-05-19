@@ -26,7 +26,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<DMCPointViewModel> LoadPointsByAreaId(Guid? id)
         {
             List<DMCPointViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result =
                 context.All<DMCPointViewModel>("SELECT UniqueId, " +
@@ -77,7 +77,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public int GetMaxPointPriorityByAreaId(Guid id)
         {
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var result =
                     context.GetValue<int>("SELECT max(Priority) " +
@@ -91,7 +91,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool HaseAreaPoint(Guid? id)
         {
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var result =
                     context.GetValue<int>("SELECT count(UniqueId) " +
@@ -104,7 +104,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool SaveAreaPointList(Guid id, List<DMCRegionAreaPointViewModel> points)
         {
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext())
             {
                 try
                 {
@@ -154,7 +154,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public void RemoveByAreaId(Guid id)
         {
-            using (var ctx = new DataContext())
+            using (var ctx = GetDataContext())
             {
                 try { 
                 ctx.Execute(string.Format(DMCRegionAreaPointEntity.RemoveByAreaId, id));
@@ -173,7 +173,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         {
             try
             {
-                using (var context = new DataContext(Transaction.No))
+                using (var context = GetDataContext(Transaction.No))
                 {
                     context.Execute("UPDATE GisRegionAreaPoint " +
                                     "SET  [Latitude] = " + customerPoint.Latitude + "," +
