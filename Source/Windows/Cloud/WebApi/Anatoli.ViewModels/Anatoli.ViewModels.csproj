@@ -36,6 +36,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\protobuf-net.2.0.0.480\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,6 +55,7 @@
     <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionCatalogViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
+    <Compile Include="BaseModels\BrandViewModel.cs" />
     <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
     <Compile Include="BaseModels\FiscalYearViewModel.cs" />
     <Compile Include="BaseModels\BaseTypeViewModel.cs" />
