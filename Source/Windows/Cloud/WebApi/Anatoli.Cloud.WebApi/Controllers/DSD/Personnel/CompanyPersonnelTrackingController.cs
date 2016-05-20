@@ -35,18 +35,20 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
                 if (data.orderEvent != null)
                 {
                     entity = data.orderEvent.ToModel();
-                   // pointentity = data.orderEvent.ToPointModel();
+                    pointentity = data.orderEvent.ToPointModel();
                     entity.JData = (data.orderEvent.eventData).GetJson();                    
                 }
                 else if (data.lackOfOrderEvent != null)
                 {
                     entity = data.lackOfOrderEvent.ToModel();
+                    pointentity = data.orderEvent.ToPointModel();
                     entity.JData = (data.lackOfOrderEvent.eventData).GetJson();
 
                 }
                 else if (data.lackOfVisitEvent != null)
                 {
                     entity = data.lackOfVisitEvent.ToModel();
+                    pointentity = data.orderEvent.ToPointModel();
                     entity.JData = (data.lackOfVisitEvent.eventData).GetJson();
 
                 }
@@ -54,6 +56,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
                 {
                     pointentity = data.pointEvent.ToModel();
                 }
+
                 if (entity != null)
                 await service.SavePersonelActivitie(entity);
 
@@ -128,7 +131,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             {
                 var service = new PersonnelDailyActivityPointDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                var list = await service.LoadPersonelsPath(data.date, data.personelIds);
+                var list =  await service.LoadPersonelsPath(data.date, data.personelIds);
 
                 #region ToPolyViewModel
 
@@ -218,10 +221,10 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             try
             {
                 var service = new PersonnelDailyActivityPointDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-
+               
                 var list = await service.LoadPersonelsLastPoint(data.personelIds);
 
-                #region ToPolyViewModel
+                #region ToPointViewModel
 
                 Guid? group = null;
                 var points = new List<PointViewModel>();

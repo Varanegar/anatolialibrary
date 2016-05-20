@@ -146,7 +146,9 @@ namespace ClientApp
 
                     //TrackingManagment.TestSavePersonelActivitieOrder(client, servserURI);
                     //TrackingManagment.TestSavePersonelActivitieLackOfOrder(client, servserURI);
-                    TrackingManagment.TestSavePersonelActivitieLackOfVisit(client, servserURI);
+                    //TrackingManagment.TestSavePersonelActivitieLackOfVisit(client, servserURI);
+                    TrackingManagment.TestSavePersonelActivitiePoint(client, servserURI);
+                    
                     
                     #endregion
                 }

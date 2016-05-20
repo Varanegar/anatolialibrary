@@ -242,6 +242,7 @@
     <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Controllers\Base\OrdersController.cs" />
     <Compile Include="Controllers\ImageManager\ImageManagerController.cs" />
+    <Compile Include="Controllers\Samples\ProtobufSampleController.cs" />
     <Compile Include="Controllers\TestAuthController.cs" />
     <Compile Include="Classes\CompressionAttributes.cs" />
     <Compile Include="Handler\ApiResponse.cs" />

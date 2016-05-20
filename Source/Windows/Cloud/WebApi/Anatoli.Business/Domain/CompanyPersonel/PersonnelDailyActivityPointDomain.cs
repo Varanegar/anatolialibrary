@@ -1,6 +1,9 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Interfaces.PersonnelAcitvity;
@@ -30,22 +33,28 @@ namespace Anatoli.Business.Domain.CompanyPersonel
         public async Task<List<PersonnelDailyActivityPoint>> LoadPersonelsPath(string date, List<Guid> personIds)
         {
 
-            var list = await MainRepository.FindAllAsync(x => 
+            var list = MainRepository.GetQuery().Where(x => 
                     (personIds.Contains(x.CompanyPersonnelId))                
                 &&  (x.ActivityPDate == date) 
-                );
-            return list.ToList();              
+                ).OrderBy(x => x.ActivityDate);
+            return await list.ToListAsync();              
         }
+
 
         public async Task<List<PersonnelDailyActivityPoint>> LoadPersonelsLastPoint(List<Guid> personIds)
         {
 
-            var list = await MainRepository.FindAllAsync(x => 
-                    (personIds.Contains(x.CompanyPersonnelId))                
-                );
-            return list.ToList();              
-        }
+            var maxdte = MainRepository.GetQuery().GroupBy(x => x.CompanyPersonnelId)
+                .Select(g => g.OrderByDescending(x => x.ActivityDate).FirstOrDefault().Id)
+                .ToList();
 
+            var query =  MainRepository.GetQuery().Where(r => 
+                (personIds.Contains(r.CompanyPersonnelId)) &&
+                (maxdte.Contains(r.Id) ));
+          
+
+            return await query.ToListAsync();
+        }
 
 
         public async Task SavePersonelPoint(PersonnelDailyActivityPoint entity)

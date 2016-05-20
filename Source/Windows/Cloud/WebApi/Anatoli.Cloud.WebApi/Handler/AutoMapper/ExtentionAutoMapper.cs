@@ -14,6 +14,11 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
         {
             return Mapper.Map<PersonnelDailyActivityEvent>(view);
         }
+        public static PersonnelDailyActivityPoint ToPointModel(this PersonnelDailyActivityEventViewModel view)
+        {
+            return Mapper.Map<PersonnelDailyActivityPoint>(view);
+        }
+
         public static PersonnelDailyActivityPoint ToModel(this PersonnelDailyActivityPointViewModel view)
         {
             return Mapper.Map<PersonnelDailyActivityPoint>(view);
