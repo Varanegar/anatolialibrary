@@ -88,7 +88,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             var result = new List<DMCVisitTemplatePathViewModel>();
 
             if (id != null)
-                using (var context = new DataContext())
+                using (var context = GetDataContext(Transaction.No))
                 {
                     var entity = GetViewById(id);
 

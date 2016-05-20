@@ -32,7 +32,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public int GetCustomerId(string UserId)
         {
             int result;
-            using(var context = new DataContext())
+            using(var context = GetDataContext(Transaction.No))
             {
                 result = context.GetValue<int>("select CustomerId from Customer where customerSiteUserId='" + UserId.ToString() + "'");
             }
@@ -42,9 +42,9 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public bool IsCustomerValid(string UserId)
         {
             int count = 0;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
-                count = new DataContext().GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
+                count = context.GetValue<int>("select count(CustomerId) from Customer where customerSiteUserId='" + UserId.ToString() + "'");
             }
             
             return (count > 0) ? true : false;
@@ -66,10 +66,13 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public long GetNewCustomerCode(string UserId)
         {
-            long customerCode = new DataContext().GetValue<int>(@"declare @CustomerCode bigint
+            using (var context = new DataContext(Transaction.No))
+            {
+                long customerCode = context.GetValue<int>(@"declare @CustomerCode bigint
                 set @CustomerCode = (SELECT isnull(MAX(CAST(CustomerCode AS int)),0)+ 1 as CustomerCode FROM Customer)
                 select @CustomerCode");
-            return customerCode;
+                return customerCode;
+            }
         }
 
         public List<CreateUserBindingModel> GetNewUsers(DateTime lastUpload)
@@ -77,7 +80,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             try
             {
                 List<CreateUserBindingModel> userList = new List<CreateUserBindingModel>();
-                using (var context = new DataContext())
+                using (var context = GetDataContext(Transaction.No))
                 {
                     string where = "";
                     if (lastUpload != DateTime.MinValue) where = " and ModifiedDate >= '" + lastUpload.ToString("yyyy-MM-dd HH:mm:ss") + "'";
@@ -118,7 +121,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public List<DMCCustomerViewModel> LoadCustomerBySearchTerm(string searchStr)
         {
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var list = 
                     context.All<DMCCustomerViewModel>("SELECT	customer.UniqueId, "+
