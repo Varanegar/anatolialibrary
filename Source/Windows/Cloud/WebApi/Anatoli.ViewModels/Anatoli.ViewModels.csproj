@@ -80,7 +80,9 @@
     <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
     <Compile Include="PersonnelAcitvityModel\BaseActivityEventViewModel.cs" />
-    <Compile Include="PersonnelAcitvityModel\OrderActivityEventViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\LackOfOrderActivityEventPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\LackOfVisitActivityEventPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\OrderActivityEventPointViewModel.cs" />
     <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityPointViewModel.cs" />
     <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityEventViewModel.cs" />
     <Compile Include="ProductModels\ProductSupplierViewModel.cs" />

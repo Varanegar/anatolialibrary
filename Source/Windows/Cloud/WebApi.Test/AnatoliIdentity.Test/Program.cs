@@ -55,7 +55,7 @@ namespace ClientApp
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
-                    PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
+                    //PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
                     //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
                     //string data = new JavaScriptSerializer().Serialize(requestData);
@@ -141,7 +141,10 @@ namespace ClientApp
                     //TrackingManagment.TestLoadPersonelsPath(client, servserURI);
                     //TrackingManagment.TestLoadPersonActivities(client, servserURI);
 
-                    TrackingManagment.TestSavePersonelActivitie(client, servserURI);
+                    //TrackingManagment.TestSavePersonelActivitieOrder(client, servserURI);
+                    //TrackingManagment.TestSavePersonelActivitieLackOfOrder(client, servserURI);
+                    TrackingManagment.TestSavePersonelActivitieLackOfVisit(client, servserURI);
+                    
                     #endregion
                 }
                 

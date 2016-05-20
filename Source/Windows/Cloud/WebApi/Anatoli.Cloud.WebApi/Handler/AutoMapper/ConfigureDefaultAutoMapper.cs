@@ -8,6 +8,7 @@ using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.StoreModels;
 using AutoMapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,9 +139,8 @@ namespace Anatoli.Cloud.WebApi.Handler
             Mapper.CreateMap<StockProductRequestTypeViewModel, StockProductRequestType>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.Number_ID, opt => opt.Ignore());
             Mapper.CreateMap<StockProductRequestViewModel, StockProductRequest>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId)).ForMember(p => p.Number_ID, opt => opt.Ignore());
 
-
-            Mapper.CreateMap<PersonnelDailyActivityEventViewModel, PersonnelDailyActivityEvent>().ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId))
-                .ForMember(p => p.JData, opt => opt.MapFrom(src => src.Event.GetJson()));
+            Mapper.CreateMap<PersonnelDailyActivityEventViewModel, PersonnelDailyActivityEvent>()
+                .ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId));
 
         }
         private static Guid? ConvertNullableStringToGuid(string data)

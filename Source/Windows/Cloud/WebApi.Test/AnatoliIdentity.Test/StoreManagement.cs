@@ -92,7 +92,7 @@ namespace ClientApp
             {
                 ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
                 DataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
-                DataCenterOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
+                DataOwnerCenterId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
                 StoreGuid = Guid.Parse("1AC6CE15-4E70-4D60-B3D0-A40A412729E9"),
                 ProductGuid = Guid.Parse("664E6BD1-9BBE-47B8-882E-00067E666791"),
                 Qty = 9
