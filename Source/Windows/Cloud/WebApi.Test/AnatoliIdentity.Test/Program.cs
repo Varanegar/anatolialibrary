@@ -48,7 +48,7 @@ namespace ClientApp
                 if (oauthresult.AccessToken != null)
                 {
                     //client
-                    client.SetBearerToken(oauthresult.AccessToken);
+                    //client.SetBearerToken(oauthresult.AccessToken);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
@@ -119,7 +119,7 @@ namespace ClientApp
 
                     #region VnGIS
 
-                    VnGisManagement.TestLoadRegionAreas(client, servserURI);
+                   // VnGisManagement.TestLoadRegionAreas(client, servserURI);
                     //VnGisManagement.TestLoadRegionAreasPoints(client, servserURI);
                     //VnGisManagement.TestHasAreasPoints(client, servserURI);
                     //VnGisManagement.TestGetRegionAreaPath(client, servserURI);
@@ -140,7 +140,7 @@ namespace ClientApp
                     //TrackingManagment.TestLoadPersonelsPath(client, servserURI);
                     //TrackingManagment.TestLoadPersonActivities(client, servserURI);
 
-                    //TrackingManagment.TestSavePersonelActivitie(client, servserURI);
+                    TrackingManagment.TestSavePersonelActivitie(client, servserURI);
                     #endregion
                 }
                 

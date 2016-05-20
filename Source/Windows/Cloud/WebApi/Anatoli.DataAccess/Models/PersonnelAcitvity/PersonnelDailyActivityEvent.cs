@@ -32,7 +32,6 @@ namespace Anatoli.DataAccess.Models.PersonnelAcitvity
         [StringLength(10)]
         public string ActivityPDate { get; set; }
 
-        //[Column("JData", TypeName = "varchar(MAX)")]
         public string JData { get; set; }
     }
 }
