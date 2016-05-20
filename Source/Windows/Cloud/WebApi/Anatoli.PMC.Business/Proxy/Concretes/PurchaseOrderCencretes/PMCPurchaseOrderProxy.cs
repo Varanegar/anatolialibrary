@@ -54,9 +54,11 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
 
         public override PMCSellViewModel ReverseConvert(PurchaseOrderViewModel data, PMCStoreConfigEntity storeConfig)
         {
-            //int currentCustomerId = CustomerAdapter.Instance.GetCustomerId(data.UserId);
+            int currentCustomerId = -1;
+            if(CustomerAdapter.Instance.IsCustomerValid(data.UserId.ToString()))
+                currentCustomerId = CustomerAdapter.Instance.GetCustomerId(data.UserId.ToString());
             int fiscalYearId = GeneralCommands.GetFiscalYearId(null);
-            return new PMCSellViewModel()
+            var result =  new PMCSellViewModel()
             {
                 UniqueId = data.UniqueId.ToString(),
                 AppUserId = storeConfig.AppUserId,
@@ -89,10 +91,14 @@ namespace Anatoli.PMC.Business.Proxy.Concretes.PurchaseOrder
                 SellNotInPersonTypeGuid = data.ActionSourceValueId,
                 DeliveryTypeGuid = data.DeliveryTypeId,
                 Address = data.ShipAddress,
-
-
                 SellDetail = PMCSellDetailProxy.ReverseConvert(data.LineItems, storeConfig),
             };
+
+            if (currentCustomerId != -1)
+                result.CustomerId = currentCustomerId;
+
+            return result;
+
         }
     }
 }

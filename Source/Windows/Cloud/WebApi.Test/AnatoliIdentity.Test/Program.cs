@@ -41,14 +41,14 @@ namespace ClientApp
                 //ProductManagement.ProductGroupTest();
 
                 //log4net.Config.XmlConfigurator.Configure();
-                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09123664255", "09123664255", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-//                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-               
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09125793221", "9876", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                                                                                                                                                                                            //                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+
                 if (oauthresult.AccessToken != null)
                 {
                     //client
-                    //client.SetBearerToken(oauthresult.AccessToken);
+                    client.SetBearerToken(oauthresult.AccessToken);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
