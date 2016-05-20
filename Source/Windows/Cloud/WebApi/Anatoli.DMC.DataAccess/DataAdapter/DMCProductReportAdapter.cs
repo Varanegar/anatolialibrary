@@ -99,8 +99,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 foreach (var item in list)
                 {
                     context.Execute(string.Format(query,
-                        item.Latitude,
-                        item.Longitude, //1
+                        (item.Latitude ?? 0),
+                        (item.Longitude ?? 0), //1
                         item.Desc, //2
                         item.OrderCount, //3
                         item.SaleCount, //4
@@ -134,7 +134,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public DMCProductReportForMapViewModel LoadGoodReport(Guid areaId, DMCProductReportFilterModel filter)
         {
-            using (var context = new DataContext(Transaction.No))
+            using (var context = GetDataContext(Transaction.No))
             {
                 var views = context.First<DMCProductReportForMapViewModel>("exec GisLoadProductReport " +
                                                                            "@ClientId = '" + filter.ClientId + "'," +

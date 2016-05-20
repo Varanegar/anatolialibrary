@@ -12,6 +12,7 @@ namespace Anatoli.ViewModels.RequestModel
         public OrderActivityEventPointViewModel orderEvent { get; set; }
         public LackOfOrderActivityEventPointViewModel lackOfOrderEvent { get; set; }
         public LackOfVisitActivityEventPointViewModel lackOfVisitEvent { get; set; }
+        public PersonnelDailyActivityPointViewModel pointEvent { get; set; }
   
         public string date { get; set; }
         public string fromTime { get; set; }

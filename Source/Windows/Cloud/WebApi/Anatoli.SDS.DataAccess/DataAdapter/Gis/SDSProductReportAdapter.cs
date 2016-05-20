@@ -36,17 +36,17 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
 
                             "@Startdate = '"+ filter.FromDate.Substring(2)+"',"+
                             "@EndDate = '"+ filter.ToDate.Substring(2)+"',"+
-                            "@SaleOfficeList ='"+  IsNull(filter.SaleOffice, "-1").ToString() +"',"+
-                            "@SupervisorList ='"+ IsNull(filter.Header, "-1")+"',"+
-                            "@DealerList = '"+IsNull((filter.Seller == "" ? "-1" : filter.Seller), "-1")+"',"+
-                            "@CustCtgrList ='"+ IsNull(filter.CustomerClass, "-1").ToString() +"',"+
-                            "@CustActList = '"+IsNull(filter.CustomerActivity, "-1").ToString() +"',"+
-                            "@CustLevelList = '"+IsNull(filter.CustomerDegree, "-1").ToString() +"',"+
-                            "@CountNotVisit = '"+IsNull(filter.DayCount, "-1").ToString() +"',"+
-                            "@GoodsGroupList = '" + IsNull((filter.GoodGroup == "" ? "-1" : filter.GoodGroup), "-1").ToString() + "'," +
-                            "@SubTypeList = '"+IsNull(filter.DynamicGroup, "-1").ToString() +"',"+
+                            "@SaleOfficeList ='" + (filter.SaleOffice == "" ? "-1" : filter.SaleOffice) + "'," +
+                            "@SupervisorList ='"+ (filter.Header == "" ? "-1" : filter.Header )+"',"+
+                            "@DealerList = '"+(filter.Seller == "" ? "-1" : filter.Seller)+"',"+
+                            "@CustCtgrList ='"+ (filter.CustomerClass == "" ?  "-1": filter.CustomerClass) +"',"+
+                            "@CustActList = '"+(filter.CustomerActivity == "" ?  "-1": filter.CustomerActivity) +"',"+
+                            "@CustLevelList = '"+(filter.CustomerDegree == "" ?  "-1" : filter.CustomerDegree) +"',"+
+                            "@CountNotVisit = '"+ filter.DayCount.ToString() +"',"+
+                            "@GoodsGroupList = '" + (filter.GoodGroup == "" ? "-1" : filter.GoodGroup) + "'," +
+                                "@SubTypeList = '"+(filter.DynamicGroup == "" ? "-1" : filter.DynamicGroup).ToString() +"',"+
                             "@BrandList = '-1' ,"+
-                            "@GoodsList = '"+ IsNull((filter.Good == "" ? "-1" : filter.Good), "-1").ToString() +"',"+
+                            "@GoodsList = '"+ (filter.Good == "" ? "-1" : filter.Good) +"',"+
 
                             "@ShowOrderCount = true,"+
                             "@ShowSaleCount = true,"+
