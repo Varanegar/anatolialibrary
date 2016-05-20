@@ -26,6 +26,8 @@ using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.CustomerConcretes;
 using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.Business.Domain.Authorization;
+using System.Text;
+using Anatoli.Business.Helpers;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -155,7 +157,29 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var user = await GetUserByUserName(username);
+                var user = await GetUserByNameOrEmailOrPhoneAsync(username);
+                //Only SuperAdmin or Admin can delete users (Later when implement roles)
+                if (user != null)
+                {
+                    return Ok(this.TheModelFactory.Create(user));
+                }
+                return BadRequest("کاربر یافت نشد");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
+            }
+
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
+        [Route("userencoded/{username}"), HttpPost, HttpGet]
+        public async Task<IHttpActionResult> GetUserByNameWithBase64(string usernameEncoded)
+        {
+            try
+            {
+                string username = EncodingForBase64.DecodeBase64(Encoding.UTF8, usernameEncoded);
+                var user = await GetUserByNameOrEmailOrPhoneAsync(username);
                 //Only SuperAdmin or Admin can delete users (Later when implement roles)
                 if (user != null)
                 {
@@ -280,12 +304,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                         locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
-                        if (createUserModel.SendPassSMS)
-                        {
-                            var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(createUserModel.Password);
+                        var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(createUserModel.Password);
 
-                            await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword);
-                        }
+                        var sms = new SMSManager();
+                        if (createUserModel.SendPassSMS)
+                            await sms.SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER);
+                        else
+                            await sms.SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER_BACKOFFICE);
 
                         transaction.Commit();
                     }
@@ -343,7 +368,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var user = AppUserManager.Users.Where(p => p.Id == model.UniqueId.ToString()).First();
 
             user.FullName = model.FullName;
-            user.PhoneNumber = model.Mobile;
+            //if(model.Mobile != null)
+            //    user.PhoneNumber = model.Mobile;
 
             if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
                 user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
@@ -422,7 +448,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var user = await GetUserByUserName(data.username);
                 //var user = await userStore.FindByNameAsync(username);
-                await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null);
+                await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
             }
             catch (Exception ex)
             {
@@ -439,7 +465,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var user = await GetUserByUserName(data.username);
             //var user = await userStore.FindByNameAsync(username);
-            await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null);
+            await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
             return Ok(new BaseViewModel());
         }
 
@@ -454,7 +480,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult("کاربر یافت نشد");
             //this.AppUserManager.AddPassword()
             String hashedNewPassword = this.AppUserManager.PasswordHasher.HashPassword(data.password);
-            await SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword);
+            await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
             return Ok(new BaseViewModel());
         }
 
@@ -633,31 +659,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return Ok();
         }
 
-        private async Task SendResetPasswordSMS(User user, AnatoliDbContext dbContext, string pass)
-        {
-            string message = "";
-            string phoneNumber = "";
-            phoneNumber = user.PhoneNumber;
-            //phoneNumber = "09122039700";
-            if (phoneNumber.Length >= 10)
-            {
-                phoneNumber = phoneNumber.Substring(phoneNumber.Length - 10);
-                phoneNumber = "98" + phoneNumber;
-
-                Random rnd = new Random();
-                int rndValue = rnd.Next(111111, 999999);
-                message = "شماره کد رمز" + rndValue;
-
-                var smsManager = new SMSManager();
-                var userStore = new AnatoliUserStore(dbContext);
-                await userStore.SetResetSMSCodeAsync(user, rndValue.ToString(), pass);
-                await smsManager.SendSMS(phoneNumber, message);
-            }
-        }
-
         private async Task<User> GetUserByUserName(string username)
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
+        }
+
+        private async Task<User> GetUserByNameOrEmailOrPhoneAsync(string username)
+        {
+            return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).FindByNameOrEmailOrPhoneAsync(username);
         }
 
         private async Task<User> GetUserByEMail(string email)

@@ -18,5 +18,6 @@ namespace Anatoli.ViewModels
         public List<BasketItemViewModel> basketItemData { get; set; }
         public List<BasketViewModel> basketData { get; set; }
         public List<CustomerViewModel> customerListData { get; set; }
+
     }
 }

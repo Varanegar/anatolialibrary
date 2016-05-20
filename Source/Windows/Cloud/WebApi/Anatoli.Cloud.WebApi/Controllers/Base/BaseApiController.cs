@@ -8,12 +8,13 @@ using Anatoli.Cloud.WebApi.Models;
 using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity.Owin;
 using Anatoli.Cloud.WebApi.Infrastructure;
+using NLog;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
     public class BaseApiController : ApiController
     {
-        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString(), System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private ModelFactory _modelFactory;
         private ApplicationUserManager _AppUserManager = null;
@@ -133,6 +134,44 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
 
             return null;
+        }
+
+        protected void LogMessage(HttpRequestMessage request, string logMessage, Exception ex)
+        {
+            /*
+            log.
+            var message = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(logMessage))
+                message.Append("").Append(logMessage + Environment.NewLine);
+
+            if (record.Request != null)
+            {
+                if (record.Request.Method != null)
+                    message.Append("Method: " + record.Request.Method + Environment.NewLine);
+
+                if (record.Request.RequestUri != null)
+                    message.Append("").Append("URL: " + record.Request.RequestUri + Environment.NewLine);
+
+                if (record.Request.Headers != null && record.Request.Headers.Contains("Token") && record.Request.Headers.GetValues("Token") != null && record.Request.Headers.GetValues("Token").FirstOrDefault() != null)
+                    message.Append("").Append("Token: " + record.Request.Headers.GetValues("Token").FirstOrDefault() + Environment.NewLine);
+            }
+
+            if (!string.IsNullOrWhiteSpace(record.Category))
+                message.Append("").Append(record.Category);
+
+            if (!string.IsNullOrWhiteSpace(record.Operator))
+                message.Append(" ").Append(record.Operator).Append(" ").Append(record.Operation);
+
+            if (record.Exception != null && !string.IsNullOrWhiteSpace(record.Exception.GetBaseException().Message))
+            {
+                var exceptionType = record.Exception.GetType();
+                message.Append(Environment.NewLine);
+                message.Append("").Append("Error: " + record.Exception.GetBaseException().Message + Environment.NewLine);
+            }
+
+            Logger[record.Level](Convert.ToString(message) + Environment.NewLine);
+            */
         }
     }
 }

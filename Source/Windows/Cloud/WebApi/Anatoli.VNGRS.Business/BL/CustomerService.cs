@@ -12,22 +12,6 @@ namespace TrackingMap.Service.BL
 {
     public class CustomerService
     {
-        private readonly IDbContext _ctx;
-        private readonly IRepository<CustomerEntity> _customerRepository;
-        private readonly IRepository<AreaPointEntity> _areaPointRepository;
-
-
-
-        public CustomerService(IDbContext ctx,
-            IRepository<CustomerEntity> customerRepository,
-            IRepository<AreaPointEntity> areaPointRepository
-            )
-        {
-            _ctx = ctx;
-            _customerRepository = customerRepository;
-            _areaPointRepository = areaPointRepository;
-
-        }
 
         public List<PointView> LoadCustomerByAreaId(Guid? areaid, Guid? routid = null,
                 bool showcustrout = false,
@@ -50,18 +34,21 @@ namespace TrackingMap.Service.BL
             var showcustotherrout_param = new SqlParameter("@ShowCustOtherRout", showcustotherrout);
             var showcustwithoutrout_param = new SqlParameter("@ShowCustEithoutRout", showcustwithoutrout);
 
-            list = _ctx.GetDatabase().SqlQuery<PointView>("LoadCustomerByAreaId @AreaId," +
-                                                          "@RoutId," +
-                                                          "@ShowCustRout," +
-                                                          "@ShowCustOtherRout," +
-                                                          "@ShowCustEithoutRout ",
-                                                          areaid_param,
-                                                          routid_param,
-                                                          showcustrout_param,
-                                                          showcustotherrout_param,
-                                                          showcustwithoutrout_param
-                                                          ).ToList();
+            using (var ctx = new MapContext())
+            {
+                list = ctx.GetDatabase().SqlQuery<PointView>("LoadCustomerByAreaId @AreaId," +
+                                                              "@RoutId," +
+                                                              "@ShowCustRout," +
+                                                              "@ShowCustOtherRout," +
+                                                              "@ShowCustEithoutRout ",
+                                                              areaid_param,
+                                                              routid_param,
+                                                              showcustrout_param,
+                                                              showcustotherrout_param,
+                                                              showcustwithoutrout_param
+                                                              ).ToList();
 
+            }
             return list;
         }
 
@@ -73,8 +60,14 @@ namespace TrackingMap.Service.BL
             SqlParameter areaid_param = new SqlParameter("@areaid", areaid);
             SqlParameter selected_param = new SqlParameter("@selected", selected);
 
-            list = _ctx.GetDatabase().SqlQuery<CustomerView>("LoadSelectedCustomerByPathId @AreaId, @Selected ", areaid_param, selected_param).ToList();
-
+            using (var ctx = new MapContext())
+            {
+                list =
+                    ctx.GetDatabase()
+                        .SqlQuery<CustomerView>("LoadSelectedCustomerByPathId @AreaId, @Selected ", areaid_param,
+                            selected_param)
+                        .ToList();
+            }
             return list;
 
             //List<CustomerView> list;
@@ -103,12 +96,13 @@ namespace TrackingMap.Service.BL
             //return list;
         }
 
-        public void SaveCustomerPointList(List<ViewModel.CustomerPointView> points)
+        public bool SaveCustomerPointList(List<ViewModel.CustomerPointView> points)
         {
             foreach (var cust in points)
             {
+                var customerRepository = new EfRepository<CustomerEntity>();
                 CustomerEntity en;
-                en = _customerRepository.GetById(cust.Id);
+                en = customerRepository.GetById(cust.Id);
                 if (en == null)
                 {
                     en = new CustomerEntity()
@@ -119,27 +113,32 @@ namespace TrackingMap.Service.BL
                         Title = "test",
                         IntId = 0
                     };
-                    _customerRepository.Insert(en);
+                    customerRepository.Insert(en);
                 }
                 else
                 {
                     en.Latitude = cust.Lat;
                     en.Longitude = cust.Lng;
-                    _customerRepository.Update(en);
-                    var customerpoints = _areaPointRepository.Table.Where(x => x.CustomerEntityId == cust.Id).ToList();
+                    customerRepository.Update(en);
+                    var areaPointRepository = new EfRepository<AreaPointEntity>();
+
+                    var customerpoints = areaPointRepository.Table.Where(x => x.CustomerEntityId == cust.Id).ToList();
                     foreach (var cp in customerpoints)
                     {
                         cp.Latitude = cust.Lat;
                         cp.Longitude = cust.Lng;
-                        _areaPointRepository.Update(cp);
+                        areaPointRepository.Update(cp);
                     }
 
                 }
             }
+            return true;
         }
         public List<VnCustomerView> LoadCustomerAutoComplete(AutoCompleteFilter filter)
         {
-            return _customerRepository.TableNoTracking
+            var customerRepository = new EfRepository<CustomerEntity>();
+
+            return customerRepository.TableNoTracking
                 .Where(x => (x.Title + " " + x.Code + " " + x.ShopTitle).Contains(filter.SearchValue))
                 .Select(x => new VnCustomerView
                 {

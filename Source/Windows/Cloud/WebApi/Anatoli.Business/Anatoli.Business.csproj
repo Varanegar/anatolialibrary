@@ -50,12 +50,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\LinqKit.1.1.3.1\lib\net45\LinqKit.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Log4Net.Async">
-      <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
-    </Reference>
     <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
       <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.0.1.101\lib\net40-client\Magick.NET-Q16-AnyCPU.dll</HintPath>
       <Private>True</Private>
@@ -66,8 +60,13 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Parse">
       <HintPath>..\packages\Parse.1.6.2\lib\net45\Parse.dll</HintPath>
@@ -100,6 +99,8 @@
     <Compile Include="Domain\Base\ItemImageDomain.cs" />
     <Compile Include="Domain\Base\CityRegionDomain.cs" />
     <Compile Include="Domain\BusinessDomainV3.cs" />
+    <Compile Include="Domain\CompanyPersonel\PersonnelDailyActivityEventDomain.cs" />
+    <Compile Include="Domain\CompanyPersonel\PersonnelDailyActivityPointDomain.cs" />
     <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerShipAddressDomain.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Domain\Store\StoreOnHandDomain.cs" />
     <Compile Include="Domain\Store\StoreCalendarDomain.cs" />
     <Compile Include="Helpers\InterServerCommunication.cs" />
+    <Compile Include="Helpers\SMSManager.cs" />
     <Compile Include="Helpers\WebApiURIHelper.cs" />
     <Compile Include="Parse\IPushNotificationProvider.cs" />
     <Compile Include="Parse\ParseNotificationProvider.cs" />

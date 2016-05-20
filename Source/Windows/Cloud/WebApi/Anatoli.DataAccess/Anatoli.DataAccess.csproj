@@ -52,13 +52,6 @@
       <HintPath>..\packages\LinqKit.1.1.3.1\lib\net45\LinqKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Log4Net.Async">
-      <HintPath>..\packages\Log4Net.Async.2.0.0.0\lib\net40\Log4Net.Async.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -143,6 +136,8 @@
     <Compile Include="Interfaces\Customer\IBasketItemRepository.cs" />
     <Compile Include="Interfaces\Customer\ICustomerRepository.cs" />
     <Compile Include="Interfaces\Customer\ICustomerShipAddressRepository.cs" />
+    <Compile Include="Interfaces\PersonnelAcitvity\IPersonnelDailyActivityPointepository.cs" />
+    <Compile Include="Interfaces\PersonnelAcitvity\IPersonnelDailyActivityEventRepository.cs" />
     <Compile Include="Interfaces\Product\ICharValueRepository.cs" />
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
@@ -294,6 +289,14 @@
     <Compile Include="Migrations\201605032028455_Brand-Migration-1.Designer.cs">
       <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.cs" />
+    <Compile Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.Designer.cs">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605200126333_Personnel-Activity-Migration-1.cs" />
+    <Compile Include="Migrations\201605200126333_Personnel-Activity-Migration-1.Designer.cs">
+      <DependentUpon>201605200126333_Personnel-Activity-Migration-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
@@ -418,6 +421,8 @@
     <Compile Include="Repositories\Customer\BasketItemRepository.cs" />
     <Compile Include="Repositories\Customer\CustomerRepository.cs" />
     <Compile Include="Repositories\Customer\CustomerShipAddressRepository.cs" />
+    <Compile Include="Repositories\PersonnelAcitvity\PersonnelDailyActivityPointRepository.cs" />
+    <Compile Include="Repositories\PersonnelAcitvity\PersonnelDailyActivityEventRepository.cs" />
     <Compile Include="Repositories\Product\CharValueRepository.cs" />
     <Compile Include="Repositories\Product\CharTypeRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalRepository.cs" />
@@ -551,6 +556,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605032028455_Brand-Migration-1.resx">
       <DependentUpon>201605032028455_Brand-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605121213163_Customer-ShipAdress-MainStreet-Migration.resx">
+      <DependentUpon>201605121213163_Customer-ShipAdress-MainStreet-Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605200126333_Personnel-Activity-Migration-1.resx">
+      <DependentUpon>201605200126333_Personnel-Activity-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

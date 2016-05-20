@@ -1,6 +1,6 @@
 ﻿using Anatoli.Rastak.DataAccess.Helpers.Entity;
 using Anatoli.Rastak.ViewModels;
-using log4net;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Anatoli.Rastak.DataAccess.Helpers
 {
     public class RastakBranchConfigHeler
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         private static RastakBranchConfigEntity currentConfig = null;
         public List<RastakBranchConfigEntity> AllStoreConfigs { get; private set; }
 

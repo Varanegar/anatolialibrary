@@ -31,5 +31,7 @@ namespace Anatoli.DataAccess.Models.PersonnelAcitvity
         public DateTime ActivityDate { get; set; }
         [StringLength(10)]
         public string ActivityPDate { get; set; }
+
+        public string JData { get; set; }
     }
 }

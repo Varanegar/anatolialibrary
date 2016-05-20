@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Base\SDSDBQueryViewModel.cs" />
     <Compile Include="Customer\SDSCustomerViewModel.cs" />
+    <Compile Include="GisReport\SDSProductReportFilterModel.cs" />
+    <Compile Include="GisReport\SDSProductReportViewModel.cs" />
     <Compile Include="SDSBaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />

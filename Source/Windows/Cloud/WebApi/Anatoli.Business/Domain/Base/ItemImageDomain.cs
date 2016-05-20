@@ -26,7 +26,12 @@ namespace Anatoli.Business.Domain
         {
             if (currentItemImage != null)
             {
-                currentItemImage.LastUpdate = DateTime.Now;
+                if(currentItemImage.TokenId != item.TokenId ||
+                    currentItemImage.ImageName != item.ImageName ||
+                    currentItemImage.IsDefault != item.IsDefault ||
+                    currentItemImage.ImageType != item.ImageType
+                    )
+                    currentItemImage.LastUpdate = DateTime.Now;
                 currentItemImage.TokenId = item.TokenId;
                 currentItemImage.ImageName = item.ImageName;
                 currentItemImage.IsDefault = item.IsDefault;

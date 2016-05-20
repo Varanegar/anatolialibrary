@@ -1,6 +1,6 @@
 ﻿using Anatoli.DMC.DataAccess.Helpers.Entity;
 using Anatoli.DMC.ViewModels;
-using log4net;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Anatoli.DMC.DataAccess.Helpers
 {
     public class BranchConfigHeler
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         private static DMCBranchConfigEntity currentConfig = null;
         public List<DMCBranchConfigEntity> AllStoreConfigs { get; private set; }
 

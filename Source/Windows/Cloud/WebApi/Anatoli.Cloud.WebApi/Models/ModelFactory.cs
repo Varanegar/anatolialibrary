@@ -32,7 +32,7 @@ namespace Anatoli.Cloud.WebApi.Models
                 UserName = appUser.UserNameStr,
                 FullName = appUser.FullName,
                 Email = appUser.Email,
-                EmailConfirmed = appUser.EmailConfirmed,
+                //EmailConfirmed = appUser.EmailConfirmed,
                 CreateDate = appUser.CreatedDate,
                 Mobile = appUser.PhoneNumber,
                 //Roles = _AppUserManager.GetRolesAsync(appUser.Id).Result,

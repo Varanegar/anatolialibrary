@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using AutoMapper.QueryableExtensions;
 using Anatoli.DataAccess.Repositories;
+using NLog;
 
 namespace Anatoli.Business
 {
@@ -28,11 +29,7 @@ namespace Anatoli.Business
         where TIMainSourceRepository : IRepository<TMainSource>
     {
         #region Properties
-        protected static log4net.ILog Logger
-        {
-            get;
-            set;
-        }
+        protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
 
         public IPrincipalRepository PrincipalRepository
         {
@@ -107,8 +104,6 @@ namespace Anatoli.Business
             DataOwnerKey = dataOwnerKey;
             DataOwnerCenterKey = dataOwnerCenterKey;
             GetRemovedData = true;
-
-            Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
         #endregion
 
@@ -157,36 +152,28 @@ namespace Anatoli.Business
 
         protected List<TMainSourceView> GetOnlineData(string webApiURI, string data)
         {
-            try
-            {
-                var client = new HttpClient();
+            var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
+            client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
 
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
-                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
-                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+            content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+            content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
 
 
-                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
-                           , content).Result;
+            var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+                        , content).Result;
 
-                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    throw new Exception("Can not save order to server");
-                else if (!result.IsSuccessStatusCode)
-                    throw new Exception(result.Content.ReadAsStringAsync().Result);
+            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                throw new Exception(result.Content.ReadAsStringAsync().Result);
+            else if (!result.IsSuccessStatusCode)
+                throw new Exception(result.Content.ReadAsStringAsync().Result);
 
-                var json = result.Content.ReadAsStringAsync().Result;
+            var json = result.Content.ReadAsStringAsync().Result;
 
-                var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
-                return returnData;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Can not read from internal server", ex);
-                throw ex;
-            }
+            var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
+            return returnData;
         }
 
         public async Task<TMainSourceView> GetByIdAsync(Guid id)
@@ -303,7 +290,7 @@ namespace Anatoli.Business
             try
             {
                 var currentDataList = MainRepository.GetQuery()
-                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
+                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == false)
                                                     .Select(data => new TMainSourceView { UniqueId = data.Id })
                                                     .AsNoTracking()
                                                     .ToList();

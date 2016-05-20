@@ -41,20 +41,21 @@ namespace ClientApp
                 //ProductManagement.ProductGroupTest();
 
                 //log4net.Config.XmlConfigurator.Configure();
-                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("+989121764212", "123456", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09125793221", "9876", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
+                                                                                                                                                                                            //                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+
                 if (oauthresult.AccessToken != null)
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
-                    //CustomerManagement.GetCustomerFromServer(client, servserURI);
-                    //StoreManagement.GetStoreCalendarFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
-                    //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
+                    PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
+                    //PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
                     //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
                     //string data = new JavaScriptSerializer().Serialize(requestData);
@@ -96,14 +97,16 @@ namespace ClientApp
                     //ProductManagement.UploadSupplierToServer(client, servserURI);
                     //ProductManagement.UploadManufactureToServer(client, servserURI);
                     //ProductManagement.UploadProductGroupToServer(client, servserURI);
-                    ProductManagement.UploadProductToServer(client, servserURI);
+                    //ProductManagement.DownloadProductGroupFromServer(client, servserURI);
                     //CharGroupManagement.SaveCharTypeInfoToServer(client, servserURI);
                     //CharGroupManagement.SaveCharGroupInfoToServer(client, servserURI);
                     //CityRegionManagement.UpdateCityRegionFromServer(client, servserURI);
                     //StoreManagement.GetStoreFromServer(client, servserURI);
+                    //StoreManagement.UploadStoreDataToServer(client, servserURI);
                     //ProductManagement.UploadProductToServer(client, servserURI);
 
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
+                    //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
                     //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
                     //BaseDataManagement.SaveBaseTypeInfoToServer(client, servserURI);
 
@@ -113,7 +116,36 @@ namespace ClientApp
                     //BasketManagement.DeleteCustomerBaskets(client, servserURI);
                     //ProductManagement.DownloadProductGroupFromServer(client, servserURI);
                     //IncompleteManagement.GetIncompleteFromServer(client, servserURI);
-                    //PermissionManagement.GetPermissions(client, servserURI);
+
+
+                    #region VnGIS
+
+                    // VnGisManagement.TestLoadRegionAreas(client, servserURI);
+                    //VnGisManagement.TestLoadRegionAreasPoints(client, servserURI);
+                    //VnGisManagement.TestHasAreasPoints(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaPath(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaSelectedCustomer(client, servserURI);
+                    //VnGisManagement.TestGetRegionAreaNotSelectedCustomer(client, servserURI);
+                    //VnGisManagement.SaveRegionAreaPoint(client, servserURI);
+                    //VnGisManagement.TestLoadRigenAreaParentPoints(client, servserURI);
+                    //VnGisManagement.TestLoadAreaSibilingPoints(client, servserURI);
+                    //VnGisManagement.TestLoadAreaChildPoints(client, servserURI);
+                    //VnGisManagement.TestRemoveAreaPointsByAreaId(client, servserURI);
+                    //VnGisManagement.TestAddCustomerToRegionArea(client, servserURI);
+                    //VnGisManagement.TestRemoveCustomerFromRegionArea(client, servserURI);
+                    //VnGisManagement.TestChangeCustomerPosition(client, servserURI);
+                    //VnGisManagement.TestLoadCustomerBySearchTerm(client, servserURI);
+                    //VnGisManagement.TestLoadPersonByGroup(client, servserURI);
+                    //VnGisManagement.TestLoadGroupGroupByArea(client, servserURI);
+                    //VnGisManagement.TestLoadRegionAreaByLevel(client, servserURI);
+                    //TrackingManagment.TestLoadPersonelsPath(client, servserURI);
+                    //TrackingManagment.TestLoadPersonActivities(client, servserURI);
+
+                    //TrackingManagment.TestSavePersonelActivitieOrder(client, servserURI);
+                    //TrackingManagment.TestSavePersonelActivitieLackOfOrder(client, servserURI);
+                    TrackingManagment.TestSavePersonelActivitieLackOfVisit(client, servserURI);
+                    
+                    #endregion
                 }
                 
             }

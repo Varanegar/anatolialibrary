@@ -11,9 +11,9 @@ using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.DataAccess.Models.Route;
-using Anatoli.ViewModels.Route;
 using Anatoli.ViewModels.CustomerModels;
 using System.Data.Entity;
+using Anatoli.ViewModels.VnGisModels;
 using AutoMapper.QueryableExtensions;
 
 namespace Anatoli.Business.Domain.Route
@@ -64,10 +64,10 @@ namespace Anatoli.Business.Domain.Route
              if (regionAreaId != null)
              {
                  var entity = await GetByIdAsync(regionAreaId);
-                 while (entity.RegionAreaParentId != null)
+                 while (entity.ParentId != null)
                  {
                      list.Add(entity);
-                     entity = await GetByIdAsync((Guid)entity.RegionAreaParentId);
+                     entity = await GetByIdAsync((Guid)entity.ParentId);
 
                  }
                  list.Add(entity);

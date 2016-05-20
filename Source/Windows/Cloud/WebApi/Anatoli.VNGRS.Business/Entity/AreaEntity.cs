@@ -25,7 +25,7 @@ namespace TrackingMap.Service.Entity
         public int RightCode { set; get; }
 
 
-        [Column("Title", TypeName = "varchar")]
+        [Column("PathTitle", TypeName = "varchar")]
         [MaxLength(200)]
         public string Title { set; get; }
 

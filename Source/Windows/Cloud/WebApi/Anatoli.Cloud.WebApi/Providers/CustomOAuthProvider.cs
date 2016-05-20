@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
+using NLog;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
-        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
@@ -74,7 +75,7 @@ namespace Anatoli.Cloud.WebApi.Providers
             }
             catch (Exception ex)
             {
-                logger.ErrorFormat("GrantResourceOwnerCredentials", ex);
+                logger.Error("GrantResourceOwnerCredentials", ex);
 
                 throw;
             }           

@@ -12,13 +12,14 @@ using System.Linq.Expressions;
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Repositories;
+using NLog;
 
 namespace Anatoli.Business
 {
     public abstract class BusinessDomain<TOut>
         where TOut : BaseViewModel, new ()
     {
-        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         public IPrincipalRepository PrincipalRepository
         {
             get;

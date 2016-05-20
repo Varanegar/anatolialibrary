@@ -1,30 +1,47 @@
-﻿using Anatoli.Business.Domain;
-using Anatoli.Business.Domain.Route;
-using Anatoli.Business.Proxy.Concretes.ProductConcretes;
-using Anatoli.Cloud.WebApi.Classes;
-using Anatoli.ViewModels;
-using Anatoli.ViewModels.BaseModels;
-using Anatoli.ViewModels.CustomerModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Anatoli.Business.Domain.CompanyPersonel;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.Cloud.WebApi.Handler.AutoMapper;
+using Anatoli.DMC.Business.Domain;
+using Anatoli.DMC.ViewModels.Gis;
+using Anatoli.ViewModels.CommonModels;
+using Anatoli.ViewModels.RequestModel;
+using Anatoli.ViewModels.VnGisModels;
+using System.Drawing;
 
-namespace Anatoli.Cloud.WebApi.Controllers
+namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
 {
     [RoutePrefix("api/dsd/personnel")]
     public class CompanyPersonnelController : AnatoliApiController
     {
+
+        [HttpGet]
+        [Route("ping")]
+        public IHttpActionResult Ping()
+        {
+            return Ok(true);
+        }
+
         [Authorize(Roles = "User")]
-        [Route("byareas")]
+        [Route("ldgrpbyarea")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetPersonGroupByArea([FromBody]RegionAreaRequestModel data)
+        public async Task<IHttpActionResult> LoadGroupByArea([FromBody]PersonelRequestModel data)
         {
             try
             {
-                return BadRequest();
+                var result = new List<SelectListItemViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var service = new DMCCompanyPersonelDomain();
+                    result = service.LoadGroupByArea(data.regionAreaId);
+
+                });
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -34,13 +51,21 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "User")]
-        [Route("byorgcharts")]
+        [Route("ldperbygrp")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetPersonByGroup([FromBody]RegionAreaRequestModel data)
+        public async Task<IHttpActionResult> LoadPersonByGroup([FromBody]PersonelRequestModel data)
         {
             try
             {
-                return BadRequest();
+                var result = new List<SelectListItemViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var service = new DMCCompanyPersonelDomain();
+                    result = service.LoadPersonByGroup(data.groupId);
+
+                });
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -49,36 +74,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "User")]
-        [Route("events")]
-        [HttpPost]
-        public async Task<IHttpActionResult> GetPersonEvents([FromBody]RegionAreaRequestModel data)
-        {
-            try
-            {
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-                return GetErrorResult(ex);
-            }
-        }
 
-        [Authorize(Roles = "User")]
-        [Route("activities")]
-        [HttpPost]
-        public async Task<IHttpActionResult> GetPersonActivities([FromBody]RegionAreaRequestModel data)
-        {
-            try
-            {
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-                return GetErrorResult(ex);
-            }
-        }
+
+
     }
 }

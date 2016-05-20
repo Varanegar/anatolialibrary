@@ -67,7 +67,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {
@@ -99,7 +99,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                   // throw ex;
                 }
                 finally
                 {
@@ -123,7 +123,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                 catch (Exception ex)
                 {
                     log.Error(ex.Message, ex);
-                    throw ex;
+                    //throw ex;
                 }
                 finally
                 {
@@ -140,6 +140,7 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
             {
                 try
                 {
+
                     if (CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId))
                     {
                         orderInfo.CustomerId = CustomerAdapter.Instance.GetCustomerId(customer.CustomerSiteUserId);
@@ -150,6 +151,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                             {
                                 if (!CustomerAdapter.Instance.IsCustomerValid(customer.CustomerSiteUserId, item.ConnectionString, item.CenterId.ToString()))
                                 {
+                                    log.Debug("customer id : " + customer.CustomerSiteUserId + ", name: " + customer.CustomerName + ", mobile:" + customer.Mobile);
+
                                     log.Info(connectionString);
                                     log.Info(genScript);
                                     using (var contextTemp = new DataContext(item.CenterId.ToString(), item.ConnectionString, Transaction.Begin))
@@ -176,6 +179,8 @@ namespace Anatoli.PMC.DataAccess.DataAdapter
                     }
                     else
                     {
+                        log.Debug("customer id : " + customer.CustomerSiteUserId + ", name: " + customer.CustomerName + ", mobile:" + customer.Mobile);
+
                         DataObject<PMCCustomerViewModel> customerDataObject = new DataObject<PMCCustomerViewModel>("Customer", "InvalidId");
                         customer.CustomerId = GeneralCommands.GetId(context, "Customer");
                         customer.CustomerCode = CustomerAdapter.Instance.GetNewCustomerCode(customer.CustomerSiteUserId);

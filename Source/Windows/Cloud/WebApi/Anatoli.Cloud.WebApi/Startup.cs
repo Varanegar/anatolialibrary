@@ -1,4 +1,5 @@
 ﻿using Anatoli.Cloud.WebApi.Handler;
+using Anatoli.Cloud.WebApi.Handler.AutoMapper;
 using Anatoli.Cloud.WebApi.Infrastructure;
 using Anatoli.Cloud.WebApi.Providers;
 using Anatoli.DataAccess;
@@ -8,6 +9,8 @@ using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using NLog;
+using NLog.Targets;
 using Owin;
 using System;
 using System.Configuration;
@@ -28,7 +31,7 @@ namespace Anatoli.Cloud.WebApi
             var context = new AnatoliDbContext();
             var tempData = context.BaseTypes.FirstOrDefault();
 
-            log4net.Config.XmlConfigurator.Configure();
+            LogManager.ReconfigExistingLoggers();
 
             HttpConfiguration httpConfig = new HttpConfiguration();
 
@@ -206,6 +209,7 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureWebApi(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+            //config.Filters.Add(new LoggingFilterAttribute());
             //config.MessageHandlers.Add(new WrappingHandler());
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -216,6 +220,7 @@ namespace Anatoli.Cloud.WebApi
         private void ConfigureAutoMapper()
         {
             ConfigDefaultAutoMapperHelper.Config();
+            ConfigDMCAutoMapperHelper.Config();
         }
     }
 }
