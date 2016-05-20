@@ -22,6 +22,7 @@ namespace Anatoli.ViewModels.PersonnelAcitvityModel
         public string ShortDescription { get; set; }
         public DateTime ActivityDate { get; set; }
         public string ActivityPDate { get; set; }
+        public BaseActivityEventViewModel Event { get; set; }
 
     }
 }

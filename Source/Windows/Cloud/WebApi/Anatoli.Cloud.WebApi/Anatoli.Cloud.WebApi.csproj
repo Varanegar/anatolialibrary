@@ -241,6 +241,7 @@
     <Compile Include="Handler\ApiResponse.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureRastakAutoMapper.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureSDSAutoMapper.cs" />
+    <Compile Include="Handler\AutoMapper\ExtentionAutoMapper.cs" />
     <Compile Include="Handler\WrappingHandler.cs" />
     <Compile Include="Handler\AutoMapper\ConfigurePMCAutoMapper.cs" />
     <Compile Include="Handler\AutoMapper\ConfigureDMCAutoMapper.cs" />

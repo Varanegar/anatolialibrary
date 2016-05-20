@@ -41,6 +41,20 @@ namespace Anatoli.Business.Domain.CompanyPersonel
         }
 
 
+        public async Task SavePersonelActivitie(PersonnelDailyActivityEvent entity)
+        {
+            try
+            {
+                await MainRepository.AddAsync(entity);
+
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         #endregion
 
     }

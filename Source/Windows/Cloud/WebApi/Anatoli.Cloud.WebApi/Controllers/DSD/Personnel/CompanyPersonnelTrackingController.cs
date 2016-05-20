@@ -18,9 +18,33 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
     public class CompanyPersonnelTrackingController : AnatoliApiController
     {
         [Authorize(Roles = "User")]
+        [Route("svprsact")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SavePersonelActivitie([FromBody]PersonelTrackingRequestModel data)
+        {
+            try
+            {
+                var service = new PersonnelDailyActivityEventDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+
+                await service.SavePersonelActivitie(data.activity.ToModel());
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+
+        }
+
+        
+        
+        [Authorize(Roles = "User")]
         [Route("ldprsacts")]
         [HttpPost]
-        public async Task<IHttpActionResult> LoadPersonelsActivities([FromBody]PersonelRequestModel data)
+        public async Task<IHttpActionResult> LoadPersonelsActivities([FromBody]PersonelTrackingRequestModel data)
         {
             try
             {
@@ -65,7 +89,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
         [Authorize(Roles = "User")]
         [Route("ldprspth")]
         [HttpPost]
-        public async Task<IHttpActionResult> LoadPersonelsPath([FromBody]PersonelRequestModel data)
+        public async Task<IHttpActionResult> LoadPersonelsPath([FromBody]PersonelTrackingRequestModel data)
         {
             try
             {
@@ -132,7 +156,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
         [Authorize(Roles = "User")]
         [Route("ldprsprgpth")]
         [HttpPost]
-        public async Task<IHttpActionResult> LoadPersonelsProgramPath([FromBody]PersonelRequestModel data)
+        public async Task<IHttpActionResult> LoadPersonelsProgramPath([FromBody]PersonelTrackingRequestModel data)
         {
             try
             {
@@ -156,7 +180,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
         [Authorize(Roles = "User")]
         [Route("ldlstpnt")]
         [HttpPost]
-        public async Task<IHttpActionResult> LoadLastPoints([FromBody]PersonelRequestModel data)
+        public async Task<IHttpActionResult> LoadLastPoints([FromBody]PersonelTrackingRequestModel data)
         {
             try
             {

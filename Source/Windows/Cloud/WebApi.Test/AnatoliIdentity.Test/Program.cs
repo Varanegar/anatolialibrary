@@ -53,7 +53,7 @@ namespace ClientApp
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
-                    PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
+                    //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
                     //var requestData = new RequestModel();
                     //requestData.installationId = Guid.Parse("b3cfc74e-2004-47f5-acd7-a9b6f8811076");
@@ -119,7 +119,7 @@ namespace ClientApp
 
                     #region VnGIS
 
-                    //VnGisManagement.TestLoadRegionAreas(client, servserURI);
+                    VnGisManagement.TestLoadRegionAreas(client, servserURI);
                     //VnGisManagement.TestLoadRegionAreasPoints(client, servserURI);
                     //VnGisManagement.TestHasAreasPoints(client, servserURI);
                     //VnGisManagement.TestGetRegionAreaPath(client, servserURI);
@@ -137,9 +137,10 @@ namespace ClientApp
                     //VnGisManagement.TestLoadPersonByGroup(client, servserURI);
                     //VnGisManagement.TestLoadGroupGroupByArea(client, servserURI);
                     //VnGisManagement.TestLoadRegionAreaByLevel(client, servserURI);
-                    //VnGisManagement.TestLoadPersonelsPath(client, servserURI);
-                    VnGisManagement.TestLoadPersonActivities(client, servserURI);
-                    
+                    //TrackingManagment.TestLoadPersonelsPath(client, servserURI);
+                    //TrackingManagment.TestLoadPersonActivities(client, servserURI);
+
+                    //TrackingManagment.TestSavePersonelActivitie(client, servserURI);
                     #endregion
                 }
                 

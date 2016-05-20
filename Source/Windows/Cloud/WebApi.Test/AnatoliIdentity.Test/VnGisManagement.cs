@@ -12,16 +12,9 @@ using Newtonsoft.Json;
 
 namespace ClientApp
 {
-    public class VnGisManagement
+    public class VnGisManagement : BaseTestManagment
     {
-        private static void WriteToConsole(string str)
-        {
-            Console.WriteLine("<------------------------------------------------------------------------------>");
-            Console.WriteLine("<" + DateTime.Now.ToString("F") + ">");
-            Console.WriteLine(str);
-            Console.WriteLine("<------------------------------------------------------------------------------>");
-            Console.ReadLine();
-        }
+      
 
         #region Area
         public static void TestLoadRegionAreas(HttpClient client, string servserURI)
@@ -129,24 +122,24 @@ namespace ClientApp
             {
                 new RegionAreaPointViewModel()
                 {
-                    Longitude = 46.944150,
-                    Latitude = 38.131865,
-                    Priority = 1,
-                    CustomerUniqueId = null
+                    Lng = 46.944150,
+                    Lat = 38.131865,
+                    Pr = 1,
+                    CstId = null
                 },
                 new RegionAreaPointViewModel()
                 {
-                    Longitude = 46.948150,
-                    Latitude = 38.132865,
-                    Priority = 2,
-                    CustomerUniqueId = Guid.Parse("DD0BE467-42A6-43D9-BFE1-6067956EEC82")
+                    Lng = 46.948150,
+                    Lat = 38.132865,
+                    Pr = 2,
+                    CstId = Guid.Parse("DD0BE467-42A6-43D9-BFE1-6067956EEC82")
                 },
                 new RegionAreaPointViewModel()
                 {
-                    Longitude = 46.955150,
-                    Latitude = 38.135865,
-                    Priority = 3,
-                    CustomerUniqueId = null
+                    Lng = 46.955150,
+                    Lat = 38.135865,
+                    Pr = 3,
+                    CstId = null
                 },
 
             };
@@ -267,16 +260,16 @@ namespace ClientApp
             var list = new List<CustomerPointViewModel>();
             list.Add(new CustomerPointViewModel()
             {
-                CustomerUniqueId = Guid.Parse("DD0BE467-42A6-43D9-BFE1-6067956EEC82"),
-                Longitude = 46.96815,
-                Latitude = 38.132469
+                UniqueId = Guid.Parse("DD0BE467-42A6-43D9-BFE1-6067956EEC82"),
+                Lng = 46.96815,
+                Lat = 38.132469
             
             });
             list.Add(new CustomerPointViewModel()
             {
-                CustomerUniqueId = Guid.Parse("0CF20312-15DD-47B5-AC70-7C4A9F5FBCF6"),
-                Longitude = 46.99815,
-                Latitude = 38.402069
+                UniqueId = Guid.Parse("0CF20312-15DD-47B5-AC70-7C4A9F5FBCF6"),
+                Lng = 46.99815,
+                Lat = 38.402069
 
             });
             req.customerPointDataList = list;
@@ -358,41 +351,6 @@ namespace ClientApp
             WriteToConsole(json8);
         }
 
-        public static void TestLoadPersonelsPath(HttpClient client, string servserURI)
-        {
-            var req = new PersonelRequestModel();
-            var list = new List<Guid>();
-            list.Add(Guid.Parse("AF1A3BBC-FFED-4E4A-977F-94B304C12140")); 
-            req.personelIds = list;
-
-            string data = new JavaScriptSerializer().Serialize(req);
-            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "api/dsd/personnel/ldprspth", content).Result;
-            var json8 = result8.Content.ReadAsStringAsync().Result;
-            // var obj = new { message = "", ModelState = new Dictionary<string, string[]>() };
-            //var x = JsonConvert.DeserializeAnonymousType(json8, obj);
-            WriteToConsole(json8);
-
-        }
-
-        public static void TestLoadPersonActivities(HttpClient client, string servserURI)
-        {
-            var req = new PersonelRequestModel();
-            var list = new List<Guid>();
-            list.Add(Guid.Parse("AF1A3BBC-FFED-4E4A-977F-94B304C12140"));
-            req.personelIds = list;
-            req.order = true;
-            req.lackOrder = true;
-
-            string data = new JavaScriptSerializer().Serialize(req);
-            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            var result8 = client.PostAsync(servserURI + "api/dsd/personnel/ldprsacts", content).Result;
-            var json8 = result8.Content.ReadAsStringAsync().Result;
-            // var obj = new { message = "", ModelState = new Dictionary<string, string[]>() };
-            //var x = JsonConvert.DeserializeAnonymousType(json8, obj);
-            WriteToConsole(json8);
-
-        }
         
         #endregion
     }
