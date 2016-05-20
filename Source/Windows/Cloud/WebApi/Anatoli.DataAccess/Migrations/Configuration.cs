@@ -135,8 +135,9 @@
                 );
 
             context.PersonnelDailyActivityVisitTypes.AddOrUpdate(item => item.Id,
-                new PersonnelDailyActivityVisitType { Id = Guid.Parse("9A5C443C-3E83-47DD-A986-E69ED134B43B"), Title = "داخل مسیر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-                new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "خارج مسیر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("9A5C443C-3E83-47DD-A986-E69ED134B43B"), Title = "فروش گرم", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "پیش ویزیت", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("8722D784-0814-4986-B065-17CBD4945306"), Title = "توزیع", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
                 );
 
             context.StockProductRequestTypes.AddOrUpdate(item => item.Id,
@@ -434,7 +435,7 @@
                 );
             }
             #endregion
-    */            
+    */
         }
     }
 }

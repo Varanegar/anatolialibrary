@@ -38,7 +38,7 @@ namespace ClientApp
                 CustomerName = "عليرضا تاملي",
                 
                 PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName  = "سفارش",
+                PersonnelDailyActivityVisitTypeName = "فروش گرم",
                 PersonnelDailyActivityEventTypeId = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"),
                 PersonnelDailyActivityEventTypeName  = "سفارش",
                 Latitude = 38.084812,
@@ -83,7 +83,7 @@ namespace ClientApp
                 CustomerName = "عليرضا تاملي",
 
                 PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName = "سفارش",
+                PersonnelDailyActivityVisitTypeName = "فروش گرم",
                 PersonnelDailyActivityEventTypeId = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"),
                 PersonnelDailyActivityEventTypeName = "سفارش",
                 Latitude = 38.084812,
@@ -129,7 +129,7 @@ namespace ClientApp
                 CustomerName = "عليرضا تاملي",
 
                 PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName = "داخل مسیر",
+                PersonnelDailyActivityVisitTypeName = "فروش گرم",
                 PersonnelDailyActivityEventTypeId = Guid.Parse("E68F7931-2189-4000-B173-D02719720923"),
                 PersonnelDailyActivityEventTypeName = "عدم ویزیت",
                 Latitude = 38.084812,
