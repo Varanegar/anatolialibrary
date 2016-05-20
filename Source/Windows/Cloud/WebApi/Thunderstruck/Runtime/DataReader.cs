@@ -87,7 +87,7 @@ namespace Thunderstruck.Runtime
                 var isNull = _dataReader[field] == null || _dataReader[field] is DBNull;
                 if ((propertyType == typeof(Guid) || propertyType == typeof(Guid?)) && _dataReader[field].GetType() == typeof(string))
                 {
-                    if (_dataReader[field] != null )
+                    if (!isNull)
                         safeValue = Guid.Parse(_dataReader[field].ToString());
                 }
                 else
