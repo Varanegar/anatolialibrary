@@ -8,6 +8,7 @@ using Anatoli.DataAccess.Repositories;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.AuthorizationModels;
 using Anatoli.DataAccess.Repositories.Account;
+using NLog;
 
 namespace Anatoli.Business.Domain.Authorization
 {
@@ -15,7 +16,7 @@ namespace Anatoli.Business.Domain.Authorization
     public class AuthorizationDomain //: BusinessDomainV2<PrincipalPermission, PrincipalPermissionViewModel, PrincipalPermissionRepository, IPrincipalPermissionRepository>
     {
         #region Properties
-        protected static log4net.ILog Logger { get; set; }
+        protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         public IRepository<Principal> PrincipalRepository { get; set; }
         public IRepository<Permission> PermissionRepository { get; set; }
         public IRepository<PrincipalPermission> PrincipalPermissionRepository { get; set; }

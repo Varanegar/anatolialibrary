@@ -17,13 +17,14 @@ using EntityFramework.Extensions;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using AutoMapper.QueryableExtensions;
+using NLog;
 
 namespace Anatoli.Business.Domain
 {
     public abstract class BusinessDomainV3<TSource> : IBusinessDomainV3<TSource> where TSource : BaseModel, new()
     {
         #region Properties
-        protected static log4net.ILog Logger { get; set; }
+        protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         public IPrincipalRepository PrincipalRepository { get; set; }
         public Guid ApplicationOwnerKey { get; protected set; }
         public Guid DataOwnerKey { get; protected set; }
@@ -63,8 +64,6 @@ namespace Anatoli.Business.Domain
             ApplicationOwnerKey = applicationOwnerKey;
             DataOwnerKey = dataOwnerKey;
             DataOwnerCenterKey = dataOwnerCenterKey;
-
-            Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
         #endregion
 

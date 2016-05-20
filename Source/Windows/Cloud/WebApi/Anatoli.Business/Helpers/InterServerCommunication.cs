@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,7 +12,7 @@ namespace Anatoli.Business.Helpers
 {
     public class InterServerCommunication
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         private string InternalUsername = "AnatoliMobileApp";
         private string InternalPassword = "Anatoli@App@Vn";
 

@@ -30,7 +30,7 @@ namespace ClientApp
             content.Headers.Add("DataOwnerKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
             content.Headers.Add("DataOwnerCenterKey", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
 
-            var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local/?customerId=05496ec3-1d64-4ae3-b6d2-e78cbd89c843&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result;
+            var result8 = client.PostAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/?customerId=05496ec3-1d64-4ae3-b6d2-e78cbd89c843&privateOwnerId=3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C", content).Result;
             //var result8 = client.GetAsync(servserURI + "/api/gateway/purchaseorder/bycustomerid/local?customerId=7A86ABD1-A660-4905-957F-447546112981&centerid=A7B07040-707A-4D51-9703-BB6710EBADE7").Result;
             var json8 = result8.Content.ReadAsStringAsync().Result;
             var obj = new List<PurchaseOrderViewModel>();
@@ -78,7 +78,7 @@ namespace ClientApp
                 ApplicationOwnerId = new Guid("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
                 DeliveryDate = DateTime.Now,
                 DataOwnerId = new Guid("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
-                UserId = Guid.Parse("4bd55fe2-1879-4e33-a931-0398b831108c"),
+                UserId = Guid.Parse("68caca00-15d9-4fc1-b424-f57f0d193cd6"),
                 StoreGuid = Guid.Parse("A7B07040-707A-4D51-9703-BB6710EBADE7"),
                 UniqueId = Guid.NewGuid(),
                 PaymentTypeValueId = Guid.Parse("B63FCB2D-ED98-4029-86B1-5B9D64DD5320"),

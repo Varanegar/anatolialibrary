@@ -1,6 +1,7 @@
 ﻿using Anatoli.DataAccess;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.DataAccess.Repositories;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Anatoli.Business.Helpers
 
     public class SMSManager
     {
-        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         public async Task SendSMS(string phoneNo, string messageBody)
         {
             string uriStr = "";
