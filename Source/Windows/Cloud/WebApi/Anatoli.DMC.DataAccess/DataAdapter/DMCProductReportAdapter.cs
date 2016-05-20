@@ -99,8 +99,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 foreach (var item in list)
                 {
                     context.Execute(string.Format(query,
-                        item.Latitude,
-                        item.Longitude, //1
+                        (item.Latitude ?? 0),
+                        (item.Longitude ?? 0), //1
                         item.Desc, //2
                         item.OrderCount, //3
                         item.SaleCount, //4
