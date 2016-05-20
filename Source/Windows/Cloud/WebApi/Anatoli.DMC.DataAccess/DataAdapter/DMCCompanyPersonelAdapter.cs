@@ -10,7 +10,7 @@ using Thunderstruck;
 
 namespace Anatoli.DMC.DataAccess.DataAdapter
 {
-    public class DMCCompanyPersonelAdapter
+    public class DMCCompanyPersonelAdapter : DMCBaseAdapter
     {
         #region ctor
         private static DMCCompanyPersonelAdapter instance = null;
@@ -32,7 +32,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<SelectListItemViewModel> LoadPersonByGroup(Guid? groupId)
         {
             List<SelectListItemViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result = context.All<SelectListItemViewModel>("SELECT Title, UniqueId FROM GisCompanyPersonnel2 where GroupUniqueId='" + groupId.ToString() + "'").ToList();
             }
@@ -45,7 +45,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<SelectListItemViewModel> LoadGroupByArea(Guid? areaId)
         {
             List<SelectListItemViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result = context.All<SelectListItemViewModel>("SELECT UniqueId, Title  FROM GisCompanyPersonnelSuperviser2 WHERE RegionAreaUniqueId='" + areaId.ToString() + "'").ToList();
             }
@@ -64,7 +64,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 }
 
                 ids = ids.Remove(ids.Length - 1);
-                using (var context = new DataContext())
+                using (var context = GetDataContext(Transaction.No))
                 {
                     result = context.All<DMCPointViewModel>(
                                 "SELECT  p.[UniqueId] as [UniqueId]"+
@@ -90,7 +90,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
             var ids = personIds.Aggregate("", (current, id) => current + ( id.ToString() + ","));
             ids = ids.Remove(ids.Length - 1);
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 result = context.All<DMCPointViewModel>(string.Format(
                     "exec [GisLoadPersonelActivities] '{0}', {1}, {2}, {3}, {4}, {5}",
@@ -113,7 +113,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 }
 
                 ids = ids.Remove(ids.Length - 1);
-                using (var context = new DataContext())
+                using (var context = GetDataContext(Transaction.No))
                 {
                     result = context.All<DMCPointViewModel>("SELECT [UniqueId]" +
                                                             ",[PersonelUniqueId] as MasterId" +

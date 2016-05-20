@@ -141,6 +141,8 @@ namespace Anatoli.Cloud.WebApi.Handler
 
             Mapper.CreateMap<PersonnelDailyActivityEventViewModel, PersonnelDailyActivityEvent>()
                 .ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId));
+            Mapper.CreateMap<PersonnelDailyActivityPointViewModel, PersonnelDailyActivityPoint>()
+                .ForMember(p => p.Id, opt => opt.MapFrom(src => src.UniqueId));
 
         }
         private static Guid? ConvertNullableStringToGuid(string data)

@@ -47,6 +47,20 @@ namespace Anatoli.Business.Domain.CompanyPersonel
         }
 
 
+
+        public async Task SavePersonelPoint(PersonnelDailyActivityPoint entity)
+        {
+            try
+            {
+                await MainRepository.AddAsync(entity);
+
+                await MainRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
         
         #endregion
 

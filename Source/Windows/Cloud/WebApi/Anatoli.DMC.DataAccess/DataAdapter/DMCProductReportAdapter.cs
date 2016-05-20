@@ -134,7 +134,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public DMCProductReportForMapViewModel LoadGoodReport(Guid areaId, DMCProductReportFilterModel filter)
         {
-            using (var context = new DataContext(Transaction.No))
+            using (var context = GetDataContext(Transaction.No))
             {
                 var views = context.First<DMCProductReportForMapViewModel>("exec GisLoadProductReport " +
                                                                            "@ClientId = '" + filter.ClientId + "'," +
@@ -313,7 +313,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             //if (filter.ToBonusAmount != null)
             //    where = "AND ( SaleCount <= " + filter.ToBonusAmount + ")";
 
-            using (var context = new DataContext(Transaction.No))
+            using (var context = GetDataContext(Transaction.No))
             {
                 var list = context.All<DMCPointViewModel>("exec GisLoadGoodByValueReport " +
                                                           "@ClientId ='" + filter.ClientId + "'," +

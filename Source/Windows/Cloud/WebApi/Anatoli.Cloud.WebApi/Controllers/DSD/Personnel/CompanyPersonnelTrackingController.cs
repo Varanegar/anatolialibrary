@@ -26,12 +26,16 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
         {
             try
             {
+                var pointservice = new PersonnelDailyActivityPointDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                PersonnelDailyActivityPoint pointentity = null;
+
+
                 var service = new PersonnelDailyActivityEventDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 PersonnelDailyActivityEvent entity = null;
-
                 if (data.orderEvent != null)
                 {
                     entity = data.orderEvent.ToModel();
+                   // pointentity = data.orderEvent.ToPointModel();
                     entity.JData = (data.orderEvent.eventData).GetJson();                    
                 }
                 else if (data.lackOfOrderEvent != null)
@@ -46,9 +50,16 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
                     entity.JData = (data.lackOfVisitEvent.eventData).GetJson();
 
                 }
-
+                else if (data.pointEvent != null)
+                {
+                    pointentity = data.pointEvent.ToModel();
+                }
                 if (entity != null)
                 await service.SavePersonelActivitie(entity);
+
+                if (pointentity != null)
+                    await pointservice.SavePersonelPoint(pointentity);
+
 
                 return Ok(true);
             }
