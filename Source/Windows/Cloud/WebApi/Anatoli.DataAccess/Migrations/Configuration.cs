@@ -19,7 +19,7 @@
 
         protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
         {
-            /*
+            
             #region Permission Info
             context.Applications.AddOrUpdate(item => item.Id,
                 new Application { Id = Guid.Parse("8A074FD5-9311-4F8E-AF47-0572DE1A7B6A"), Name = "Anatoli Market place" },
@@ -27,10 +27,14 @@
                 );
 
             context.ApplicationModules.AddOrUpdate(item => item.Id,
-                new ApplicationModule { Id = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523"), Name = "SCM Module", ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC") }
+                new ApplicationModule { Id = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523"), Name = "SCM Module", ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC") },
+                new ApplicationModule { Id = Guid.Parse("56E3B436-06C9-4A43-AF16-DF0B122B1747"), Name = "VN GRS", ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC") }
                 );
 
             context.ApplicationModuleResources.AddOrUpdate(item => item.Id,
+                new ApplicationModuleResource { Id = Guid.Parse("214336BD-FB51-48E0-8DC5-74A1396DE916"), Name = "Route Planning", ApplicationModuleId = Guid.Parse("56E3B436-06C9-4A43-AF16-DF0B122B1747") },
+                new ApplicationModuleResource { Id = Guid.Parse("33C98AA3-CB90-4724-8EAD-45959C3C6551"), Name = "Personnel Tracking", ApplicationModuleId = Guid.Parse("56E3B436-06C9-4A43-AF16-DF0B122B1747") },
+                new ApplicationModuleResource { Id = Guid.Parse("A515CCD7-CFBE-4407-9959-DF4CEAFBD444"), Name = "GRS Reporting", ApplicationModuleId = Guid.Parse("56E3B436-06C9-4A43-AF16-DF0B122B1747") },
                 new ApplicationModuleResource { Id = Guid.Parse("68F751E3-8744-4775-8942-39501F56452F"), Name = "Stock", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
                 new ApplicationModuleResource { Id = Guid.Parse("12BA035E-B336-41B5-8DBF-1C7DE2162139"), Name = "StockProduct", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
                 new ApplicationModuleResource { Id = Guid.Parse("E62CF7C0-869C-46DC-8380-70623A35F642"), Name = "StockProductRequest", ApplicationModuleId = Guid.Parse("1539E462-467A-48F3-9697-597EDED27523") },
@@ -55,6 +59,12 @@
 
 
             context.Permissions.AddOrUpdate(item => item.Id,
+                new Permission { Id = Guid.Parse("2AAA4A5B-5550-43EB-BDF4-41908F002EA3"), ApplicationModuleResourceId = Guid.Parse("214336BD-FB51-48E0-8DC5-74A1396DE916"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Route Planning" },
+                new Permission { Id = Guid.Parse("9747552B-575F-4E0F-AF39-668B28EBB537"), ApplicationModuleResourceId = Guid.Parse("33C98AA3-CB90-4724-8EAD-45959C3C6551"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Personnel Tracking" },
+                new Permission { Id = Guid.Parse("A573A0B8-0B92-4D4E-8396-F3A87EF41F69"), ApplicationModuleResourceId = Guid.Parse("33C98AA3-CB90-4724-8EAD-45959C3C6551"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Personnel Latest Status" },
+                new Permission { Id = Guid.Parse("EF265174-3703-497D-A10D-870FCDDC31EF"), ApplicationModuleResourceId = Guid.Parse("A515CCD7-CFBE-4407-9959-DF4CEAFBD444"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Sales Report" },
+                new Permission { Id = Guid.Parse("91EBFC80-A8CA-4D82-A7BE-303F73B78961"), ApplicationModuleResourceId = Guid.Parse("A515CCD7-CFBE-4407-9959-DF4CEAFBD444"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Financial Report" },
+                new Permission { Id = Guid.Parse("EB1DB303-AF51-4BD6-A69A-24F995ED7D74"), ApplicationModuleResourceId = Guid.Parse("A515CCD7-CFBE-4407-9959-DF4CEAFBD444"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Delivery Report" },
                 new Permission { Id = Guid.Parse("35A62A10-451F-4FC7-B3E5-2E98EDCB6BCD"), ApplicationModuleResourceId = Guid.Parse("68F751E3-8744-4775-8942-39501F56452F"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Stock Page" },
                 new Permission { Id = Guid.Parse("6E6C61BC-7B18-4757-AE2F-3D411B7B5E0F"), ApplicationModuleResourceId = Guid.Parse("D18144DB-DAAC-4BF8-8FB9-B852DABC1F0C"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Stock Request History Page" },
                 new Permission { Id = Guid.Parse("A9D36EAF-8C6F-42D6-B496-880ED5F2E442"), ApplicationModuleResourceId = Guid.Parse("7BA8CC86-CB32-403E-A7D1-E53710BBDC02"), PermissionActionId = Guid.Parse("8B31C770-CD0D-440F-83E4-B7A9469B5BCE"), Name = "Permision Page" },
@@ -66,6 +76,15 @@
                 );
 
             context.PermissionCatalogs.AddOrUpdate(item => item.Id,
+                new PermissionCatalog { Id = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609"), Name = "سامانه راهبری مبتنی بر نقشه", PermissionCatalougeParentId = null  },
+                new PermissionCatalog { Id = Guid.Parse("863F50DF-1191-43FA-916E-034A5565C3B9"), Name = "مدیریت کاربران", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("E88D621C-876F-4BC1-B9EB-075191E23F5E"), Name = "مدیریت دسترسی", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("7096ED44-B450-4885-9A0C-2D64E848AE93"), Name = "مسیر بندی", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("3DA3BE95-E92B-4A5F-B37E-41A668E1DCF3"), Name = "ردیابی", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("924698F0-034B-422F-A23D-5879C7E42828"), Name = "آخرین وضعیت ", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("1D7B9A8A-A20E-4224-994E-5E9F3B57809D"), Name = "گزارش فروش", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("09553C3D-7CB4-42D9-A351-9E94264BAD69"), Name = "گزارش مالی", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
+                new PermissionCatalog { Id = Guid.Parse("1923CC4A-DD7C-4E29-A5F3-A1C749506B36"), Name = "گزارش توزیع", PermissionCatalougeParentId = Guid.Parse("017664FA-676A-43AD-B32B-E8E4CE84C609") },
                 new PermissionCatalog { Id = Guid.Parse("BEEBAE84-6690-421C-8E94-9BAD1EFC6856"), Name = "سامانه تامین مرکزی", PermissionCatalougeParentId = null  },
                 new PermissionCatalog { Id = Guid.Parse("C9126FD9-6B3B-4F8D-8C41-C4220C5ABEAB"), Name = "مدیریت کاربران", PermissionCatalougeParentId = Guid.Parse("BEEBAE84-6690-421C-8E94-9BAD1EFC6856") },
                 new PermissionCatalog { Id = Guid.Parse("1156B463-1E62-4AA2-9035-AA3BEF5AEB62"), Name = "مدیریت دسترسی", PermissionCatalougeParentId = Guid.Parse("BEEBAE84-6690-421C-8E94-9BAD1EFC6856") },
@@ -78,9 +97,6 @@
                 new PermissionCatalog { Id = Guid.Parse("56D12CA0-5F50-47CD-92A4-D88D4F024FCB"), Name = "مدیریت کالا", PermissionCatalougeParentId = Guid.Parse("BEEBAE84-6690-421C-8E94-9BAD1EFC6856") }
                 );
 
-            //context.permi.AddOrUpdate(item => item.Id,
-            //    new PermissionCatalog { Id = Guid.Parse("BEEBAE84-6690-421C-8E94-9BAD1EFC6856"), Name = "سامانه تامین مرکزی", PermissionCatalougeParentId = null },
-            //;
             #endregion
 
             #region Base Data
@@ -93,8 +109,8 @@
 
 
             context.AnatoliContacts.AddOrUpdate(
-                new AnatoliContact { Id = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "نیک توشه زیست", Phone = "+98-21-", Email = "info@eiggstores.com", Website = "http://www.eiggstores.com/" },
-                //new AnatoliContact { Id = Guid.Parse("A60F9E34-5A69-4B0A-A555-CA1F54343D74"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "شرکت چی توز", Phone = "+98-21-", Email = "info@", Website = "" }
+                new AnatoliContact { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "نیک توشه زیست", Phone = "+98-21-", Email = "info@eiggstores.com", Website = "http://www.eiggstores.com/" },
+                new AnatoliContact { Id = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "شرکت دومینو", Phone = "+98-21-", Email = "info@", Website = "" },
                 new AnatoliContact { Id = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), AnatoliContactTypeId = Guid.Parse("8E1DB1BC-52FD-456B-95FB-F2BBCA07C87D"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, IsRemoved = false, ContactName = "داده کاوان پیشرو ایده ورانگر", Phone = "+98-21-87134", Email = "info@varanegar.com", Website = "http://www.varanegar.com/" }
                 );
 
@@ -107,11 +123,13 @@
 
             context.DataOwners.AddOrUpdate(item => item.Id,
                 new DataOwner { Id = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), Title = "نرم افزارهای ابری داده کاوان پیشرو ایده ورانگر", WebHookUsername = "anatoli-inter-com@varanegar.com" },
-                new DataOwner { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" }
+                new DataOwner { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" },
+                new DataOwner { Id = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار ردیابی شرکت دومینو", WebHookUsername = "" }
             );
 
             context.DataOwnerCenters.AddOrUpdate(item => item.Id,
                 new DataOwnerCenter { Id = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), Title = "نرم افزارهای ابری داده کاوان پیشرو ایده ورانگر", WebHookUsername = "anatoli-inter-com@varanegar.com" },
+                new DataOwnerCenter { Id = Guid.Parse("02313882-9767-446D-B4CE-54004EF0AAC4"), DataOwnerId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "دومینو دفتر تهران", WebHookUsername = "" },
                 new DataOwnerCenter { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), DataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" }
             );
 
@@ -125,7 +143,8 @@
             );
 
             context.Companies.AddOrUpdate(item => item.Id,
-                new Company { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CompanyCode = 1, CompanyName = "نیک توشه زیست", AnatoliAccountId = null, IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                new Company { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CompanyCode = 1, CompanyName = "نیک توشه زیست", AnatoliAccountId = null, IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
+                new Company { Id = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), CompanyCode = 2, CompanyName = "دومینو", AnatoliAccountId = null, IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
             );
 
             context.PersonnelDailyActivityEventTypes.AddOrUpdate(item => item.Id,
@@ -136,7 +155,7 @@
 
             context.PersonnelDailyActivityVisitTypes.AddOrUpdate(item => item.Id,
                 new PersonnelDailyActivityVisitType { Id = Guid.Parse("9A5C443C-3E83-47DD-A986-E69ED134B43B"), Title = "فروش گرم", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-                new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "پیش ویزیت", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "پیش ویزیت", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
                 new PersonnelDailyActivityVisitType { Id = Guid.Parse("8722D784-0814-4986-B065-17CBD4945306"), Title = "توزیع", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
                 );
 
@@ -252,6 +271,7 @@
             #endregion
 
             #region Add Users
+            #region Anatoli VN Users
             var userId = "02D3C1AA-6149-4810-9F83-DF3928BFDF16";
             var applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
             var dataOwnerId = applicationOwnerId;
@@ -271,7 +291,7 @@
                         PhoneNumber = "87135000",
                         UserName = "anatoli",
                         UserNameStr = "anatoli",
-                        PasswordHash = "AJ1iTXc0/EgQyLWeHZFh4xrX6vpu37VCmAfcTNm1bUBU+zcc2dqnTKuXyeZmhfC4+A==",
+                        PasswordHash = "ALcPM/XAJNHiJUxe/vMfqY4eCRmDOGnJsjd2lCC8fSPdnh19Phs6+4EkTZxXz7xBqA==",
                         Email = "anatoli@varanegar.com",
                         EmailConfirmed = true,
                         AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"),
@@ -281,7 +301,7 @@
                         LastEntry = DateTime.Now,
                         DataOwnerId = dataOwnerId,
                         ApplicationOwnerId = applicationOwnerId,
-                        SecurityStamp = "28a22f1c-83d8-4aee-8f9e-02441f25092c",
+                        SecurityStamp = "d752d1f2-2fe5-4fb4-b47c-580329de70d5",
                     });
 
             }
@@ -343,7 +363,8 @@
                     new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = "E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2" }
                 );
             }
-
+            #endregion
+            #region Petropay Users
             applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
             dataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C");
 
@@ -435,7 +456,96 @@
                 );
             }
             #endregion
-    */
+            #region Domino Users
+            applicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            dataOwnerId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE");
+
+            userId = "D0BBD3F2-CF76-4C5B-9336-0D38F1B6DAAB";
+
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Principal
+                {
+                    Id = Guid.Parse(userId),
+                    ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                });
+
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId))
+            {
+                context.Users.AddOrUpdate(item => item.Id,
+                    new User
+                    {
+                        Id = userId,
+                        PrincipalId = Guid.Parse(userId),
+                        UserName = userId,
+                        PhoneNumber = "87135000",
+                        UserNameStr = "AnatoliMobileApp",
+                        PasswordHash = "AIr8brRUrX1bD/U74Fk/ww5Kbcl0BnMsGZB+3lOkyoAjCBDTn2QFAJ7Oy9KjM3sQGA==",
+                        Email = "anatolimobileapp@varanegar.com",
+                        EmailConfirmed = true,
+                        //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
+                        PhoneNumberConfirmed = true,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        LastEntry = DateTime.Now,
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
+                        SecurityStamp = "2ffde61f-3d90-48de-bdf2-ecd619134201",
+                    });
+
+            }
+
+            if (context.Users.Any(item => item.Id == userId))
+            {
+                context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
+                    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = userId }
+                );
+            }
+
+            userId = "7EDE6F2E-653B-43DF-AF84-650D533A9571";
+
+            context.Principals.AddOrUpdate(item => item.Id,
+                new Principal
+                {
+                    Id = Guid.Parse(userId),
+                    ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                });
+
+            if (!context.Users.Any(item => item.Id == userId && item.DataOwnerId == dataOwnerId && item.ApplicationOwnerId == applicationOwnerId))
+            {
+                context.Users.AddOrUpdate(item => item.Id,
+                    new User
+                    {
+                        Id = userId,
+                        PrincipalId = Guid.Parse(userId),
+                        UserName = userId,
+                        PhoneNumber = "87135000",
+                        UserNameStr = "domino",
+                        PasswordHash = "AJQcFArf7wTB89V3jt2XBCLUzipw1vLmvW4FtlZdw9m4u02WoNzpcTqta6ee+ejJiQ==",
+                        Email = "domino@varanegar.com",
+                        EmailConfirmed = true,
+                        //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
+                        PhoneNumberConfirmed = true,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        LastEntry = DateTime.Now,
+                        DataOwnerId = dataOwnerId,
+                        ApplicationOwnerId = applicationOwnerId,
+                        SecurityStamp = "14658655-8eec-4d9f-895f-c436244b81cb",
+                    });
+
+            }
+
+            if (context.Users.Any(item => item.Id == userId))
+            {
+                context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
+                    new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = userId },
+                    new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = userId },
+                    new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = userId }
+                );
+            }
+            #endregion
+            #endregion
+            
         }
     }
 }

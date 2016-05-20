@@ -365,16 +365,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         private async Task<IHttpActionResult> UpdateUser(CreateUserBindingModel model)
         {
-            var user = AppUserManager.Users.Where(p => p.Id == model.UniqueId.ToString()).First();
+            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
+            var user = await GetUserByUserId(model.UniqueId.ToString());
 
-            user.FullName = model.FullName;
-            //if(model.Mobile != null)
-            //    user.PhoneNumber = model.Mobile;
-
+            if(model.FullName != null)
+                user.FullName = model.FullName;
+            user.SecurityStamp = Guid.NewGuid().ToString();
             if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
                 user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
 
-            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
             user.PhoneNumberConfirmed = true;
             user.EmailConfirmed = true;
             await userStore.UpdateAsync(user);
@@ -495,6 +494,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             if (user == null)
                 return GetErrorResult("کاربر یافت نشد");
 
+            user.SecurityStamp = Guid.NewGuid().ToString();
             var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(data.password);
             bool result = await userStore.ResetPasswordByCodeAsync(user, hashedNewPassword, data.code);
 
@@ -662,6 +662,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         private async Task<User> GetUserByUserName(string username)
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
+        }
+        private async Task<User> GetUserByUserId(string userId) 
+        {
+            return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByIdAsync(userId);
         }
 
         private async Task<User> GetUserByNameOrEmailOrPhoneAsync(string username)

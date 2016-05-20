@@ -31,6 +31,8 @@ namespace Anatoli.DataAccess
         public DbSet<DiscountCode> DiscountCodes { get; set; }
         public DbSet<CompanyOrgChart> CompanyOrgCharts { get; set; }
         public DbSet<CompanyCenter> CompanyCenters { get; set; }
+        public DbSet<CompanyDevice> CompanyDevices { get; set; }
+        public DbSet<CompanyDeviceLicense> CompanyDeviceLicenses { get; set; }
         public DbSet<RegionArea> RegionAreas { get; set; }
         public DbSet<RegionAreaLevelType> RegionAreaLevelTypes { get; set; }
         public DbSet<FiscalYear> FiscalYears { get; set; }
