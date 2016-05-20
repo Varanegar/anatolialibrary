@@ -10,11 +10,11 @@
 
     public sealed class Configuration : DbMigrationsConfiguration<Anatoli.DataAccess.AnatoliDbContext>
     {
-        private readonly bool _pendingMigrations;
+        private bool _pendingMigrations;
         public Configuration()
         {
             var migrator = new DbMigrator(this);
-            var _pendingMigrations = migrator.GetPendingMigrations().Any();
+            _pendingMigrations = migrator.GetPendingMigrations().Any();
         }
 
         protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
