@@ -70,7 +70,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
             var storeConfig = StoreConfigHeler.Instance.GetStoreConfig(baseViewModels.StoreGuid.ToString());
             var pmcSell = Proxy.ReverseConvert(baseViewModels, storeConfig);
 
-            pmcSell.CustomerId = null;
+            //pmcSell.CustomerId = null;
 
             var resultEvc = EVCAdapter.Instance.CalcEvcResult(EvcProxy.ReverseConvert(pmcSell, storeConfig));
             baseViewModels = SetSellDataByEvc(baseViewModels, resultEvc);
