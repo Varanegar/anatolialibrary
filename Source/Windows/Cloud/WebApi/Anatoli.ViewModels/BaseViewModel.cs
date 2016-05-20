@@ -15,7 +15,7 @@ namespace Anatoli.ViewModels
         [ProtoMember(4)]
         public Guid DataOwnerId { get; set; }
         [ProtoMember(5)]
-        public Guid DataCenterOwnerId { get; set; }
+        public Guid DataOwnerCenterId { get; set; }
         [ProtoMember(6)]
         public bool IsRemoved { get; set; }
         [ProtoMember(7)]

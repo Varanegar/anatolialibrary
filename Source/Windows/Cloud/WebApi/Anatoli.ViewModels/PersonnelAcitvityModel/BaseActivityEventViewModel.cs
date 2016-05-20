@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 
 namespace Anatoli.ViewModels.PersonnelAcitvityModel
 {
-    public class BaseActivityEventViewModel
+    public  class BaseActivityEventViewModel
     {
-        public string GetJson()
+        public virtual string GetJson()
         {
             return JsonConvert.SerializeObject(this);
         }

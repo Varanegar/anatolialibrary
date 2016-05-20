@@ -36,7 +36,7 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
                 .ForMember(dest => dest.Priority, opt => opt.Ignore())
                 .ForMember(dest => dest.RegionAreaLevelTypeId, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
-                .ForMember(dest => dest.DataCenterOwnerId, opt => opt.Ignore())
+                .ForMember(dest => dest.DataOwnerCenterId, opt => opt.Ignore())
                 .ForMember(dest => dest.DataOwnerId, opt => opt.Ignore())
                 .ForMember(dest => dest.LastUpdate, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())

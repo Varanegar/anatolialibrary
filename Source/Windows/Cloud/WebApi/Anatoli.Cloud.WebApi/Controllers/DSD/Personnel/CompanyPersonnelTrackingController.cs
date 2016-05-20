@@ -7,8 +7,10 @@ using System.Web.Http;
 using Anatoli.Business.Domain.CompanyPersonel;
 using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.Cloud.WebApi.Handler.AutoMapper;
+using Anatoli.DataAccess.Models.PersonnelAcitvity;
 using Anatoli.DMC.Business.Domain;
 using Anatoli.DMC.ViewModels.Gis;
+using Anatoli.ViewModels.PersonnelAcitvityModel;
 using Anatoli.ViewModels.RequestModel;
 using Anatoli.ViewModels.VnGisModels;
 
@@ -25,8 +27,28 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             try
             {
                 var service = new PersonnelDailyActivityEventDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                PersonnelDailyActivityEvent entity = null;
 
-                await service.SavePersonelActivitie(data.activity.ToModel());
+                if (data.orderEvent != null)
+                {
+                    entity = data.orderEvent.ToModel();
+                    entity.JData = (data.orderEvent.eventData).GetJson();                    
+                }
+                else if (data.lackOfOrderEvent != null)
+                {
+                    entity = data.lackOfOrderEvent.ToModel();
+                    entity.JData = (data.lackOfOrderEvent.eventData).GetJson();
+
+                }
+                else if (data.lackOfVisitEvent != null)
+                {
+                    entity = data.lackOfVisitEvent.ToModel();
+                    entity.JData = (data.lackOfVisitEvent.eventData).GetJson();
+
+                }
+
+                if (entity != null)
+                await service.SavePersonelActivitie(entity);
 
                 return Ok(true);
             }

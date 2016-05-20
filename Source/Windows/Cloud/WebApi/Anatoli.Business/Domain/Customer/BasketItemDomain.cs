@@ -143,7 +143,7 @@ namespace Anatoli.Business.Domain
                 ID = data.Number_ID,
                 UniqueId = data.Id,
                 ApplicationOwnerId = data.ApplicationOwnerId,
-                DataCenterOwnerId = data.DataOwnerCenterId,
+                DataOwnerCenterId = data.DataOwnerCenterId,
                 DataOwnerId = data.DataOwnerId,
                 IsRemoved = data.IsRemoved,
                 CreatedDate = data.CreatedDate,

@@ -29,7 +29,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
         [Authorize(Roles = "User")]
         [Route("ldgrpbyarea")]
         [HttpPost]
-        public async Task<IHttpActionResult> LoadGroupGroupByArea([FromBody]PersonelRequestModel data)
+        public async Task<IHttpActionResult> LoadGroupByArea([FromBody]PersonelRequestModel data)
         {
             try
             {
