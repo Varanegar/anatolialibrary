@@ -40,9 +40,9 @@ namespace ClientApp
         {
             var dataInfo = new BaseRequestModel();
             var userInfo = new CreateUserBindingModel();
-            userInfo.UniqueId = Guid.Parse("7EDE6F2E-653B-43DF-AF84-650D533A9571");
-            userInfo.Password = "1234356";
-            userInfo.ConfirmPassword = "1234356";
+            userInfo.UniqueId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16");
+            userInfo.Password = "anatoli@vn@87134 ";
+            userInfo.ConfirmPassword = "anatoli@vn@87134 ";
             userInfo.FullName = "";
 
             dataInfo.user = JsonConvert.SerializeObject(userInfo);

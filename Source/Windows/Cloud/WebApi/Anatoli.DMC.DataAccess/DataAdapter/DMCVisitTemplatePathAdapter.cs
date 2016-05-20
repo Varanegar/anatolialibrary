@@ -43,12 +43,14 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public Guid? GetParentIdById(Guid? id)
         {
-            Guid result;
+            if (id == null) return null;
+            Guid? result;
             using (var context = GetDataContext(Transaction.No))
             {
                 result =
-                    context.GetValue<Guid>("SELECT ParentUniqueId FROM VisitTemplatePath WHERE UniqueId = '" + id.ToString() +
-                                           "'");
+                    context.GetValue<Guid>("SELECT ParentUniqueId FROM VisitTemplatePath WHERE UniqueId = '" + id.ToString() +"'");
+                if (result == Guid.Empty)
+                    result = null;
             }
             return result;
         }
