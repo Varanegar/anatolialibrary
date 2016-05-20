@@ -2,6 +2,7 @@
 {
     using Anatoli.DataAccess.Models;
     using Anatoli.DataAccess.Models.Identity;
+    using Anatoli.DataAccess.Models.PersonnelAcitvity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity.Migrations;
@@ -17,7 +18,7 @@
         }
 
         protected override void Seed(Anatoli.DataAccess.AnatoliDbContext context)
-        {/*
+        {
             #region Permission Info
             context.Applications.AddOrUpdate(item => item.Id,
                 new Application { Id = Guid.Parse("8A074FD5-9311-4F8E-AF47-0572DE1A7B6A"), Name = "Anatoli Market place" },
@@ -125,11 +126,17 @@
             context.Companies.AddOrUpdate(item => item.Id,
                 new Company { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CompanyCode = 1, CompanyName = "نیک توشه زیست", AnatoliAccountId = null, IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
             );
-            //context.ProductType.AddOrUpdate(item => item.Id,
-            //    new ProductType { Id = Guid.Parse("72E59112-6054-4140-8E33-947228616393"), ProductTypeName = "کالای زیر صفر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-            //    new ProductType { Id = Guid.Parse("6FC2FD34-4CBC-4EB1-BD7E-1BD751E4F2A2"), ProductTypeName = "کالای یخچالی", IsRemoved = false, ApplicationOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-            //    new ProductType { Id = Guid.Parse("8E85E5B0-9242-47A1-99A1-7B90566C36D4"), ProductTypeName = "انباری ساده", IsRemoved = false, ApplicationOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
-            //    );
+
+            context.PersonnelDailyActivityEventTypes.AddOrUpdate(item => item.Id,
+                new PersonnelDailyActivityEventType { Id = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"), Title = "سفارش", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
+                new PersonnelDailyActivityEventType { Id = Guid.Parse("E8ED4D92-CBC0-40F1-A732-53CFF4C91AC5"), Title = "عدم سفارش", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
+                new PersonnelDailyActivityEventType { Id = Guid.Parse("E68F7931-2189-4000-B173-D02719720923"), Title = "عدم ویزیت", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                );
+
+            context.PersonnelDailyActivityVisitTypes.AddOrUpdate(item => item.Id,
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("9A5C443C-3E83-47DD-A986-E69ED134B43B"), Title = "داخل مسیر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
+                new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "خارج مسیر", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
+                );
 
             context.StockProductRequestTypes.AddOrUpdate(item => item.Id,
                 new StockProductRequestType { Id = Guid.Parse("1462A36B-9AB0-41AB-88F1-AAD152A7E425"), StockProductRequestTypeName = "محاسبه دوره ای", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
@@ -426,7 +433,7 @@
                 );
             }
             #endregion
-            */
+            
         }
     }
 }
