@@ -23,7 +23,7 @@ namespace Anatoli.Business.Helpers
                 using (var client = new HttpClient())
                 {
                     messageBody = messageBody.Replace(" ", "%20");
-                    uriStr = "https://ws.adpdigital.com/url/send?unicode=1&srcaddress=98200087134&username=varanegar&password=varanegar&dstaddress=" + phoneNo + "&body=" + messageBody + "&clientid=1";
+                    uriStr = "http://ws.adpdigital.com/url/send?unicode=1&srcaddress=98200087134&username=varanegar&password=varanegar&dstaddress=" + phoneNo + "&body=" + messageBody + "&clientid=1";
 
                     var uri = new Uri(uriStr);
 
