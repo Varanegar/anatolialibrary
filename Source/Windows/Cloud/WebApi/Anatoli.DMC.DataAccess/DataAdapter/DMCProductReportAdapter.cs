@@ -43,9 +43,9 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public void UpdateReportCache(Guid guid, List<DMCProductReportCacheEntity> list)
         {
 
-            var query = "INSERT INTO [dbo].[GisProductReportCache]" +
+
+             var query = "INSERT INTO [dbo].[GisProductReportCache]" +
                         "([UniqueId]" +
-                        ",[IntId]" +
                         ",[ClientId]" +
                         ",[Latitude]" +
                         ",[Longitude]" +
@@ -68,8 +68,9 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         ",[SalePrizeCount]" +
                         ",[PrizeQty]" +
                         ",[PrizeCarton]" +
+                        ",[IntId]" +
                         ")" +
-                        "VALUES( NEWID(), 0, '" + guid.ToString() + "'" +
+                        "VALUES( NEWID(),  '" + guid.ToString() + "'" +
                         ",{0}" + //lat
                         ",{1}" + //long
                         ",'{2}'" + //[Desc]
@@ -91,11 +92,13 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         ",{18}" + //SalePrizeCount
                         ",{19}" + //PrizeQty
                         ",{20}" + //PrizeCarton
-
+                        ",{21}" + //customerId
                         ")";
 
-            using (var context = GetDataContext(Transaction.No))
+            using (var context = GetDataContext())
             {
+                context.Execute(string.Format("DELETE FROM GisProductReportCache WHERE ClientId = '{0}'", guid));
+
                 foreach (var item in list)
                 {
                     context.Execute(string.Format(query,
@@ -119,7 +122,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         item.RetSaleDiscount, //
                         item.SalePrizeCount, //
                         item.PrizeQty, //19
-                        item.PrizeCarton //20
+                        item.PrizeCarton, //20
+                        item.IntId //20
                         ));
                 }
                 context.Commit();
@@ -187,7 +191,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             using (var context = GetDataContext(Transaction.No))
             {
                 var views = context.All<DMCPointViewModel>("exec GisLoadProductReportCustomer " +
-                                                           "@ClientId = " + clientId + "," +
+                                                           "@ClientId = '" + clientId + "'," +
                                                            "@Ids = '" + GuidListTostring(areaIds) + "'"
 
                     ).ToList();

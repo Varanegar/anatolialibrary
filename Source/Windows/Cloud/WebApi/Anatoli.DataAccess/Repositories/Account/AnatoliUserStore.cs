@@ -98,14 +98,14 @@ namespace Anatoli.DataAccess.Repositories
             await UserRepository.SaveChangesAsync();
         }
 
-        public async Task<User> FindByIdAsync(string userId)
+        public override async Task<User> FindByIdAsync(string userId)
         {
             var model = await UserRepository.FindAsync(p => p.Id == userId);
 
             return model;
         }
 
-        public async Task<User> FindByNameAsync(string userName)
+        public override async Task<User> FindByNameAsync(string userName)
         {
             var model = await UserRepository.FindAsync(p => p.UserName == userName);
 
@@ -119,16 +119,16 @@ namespace Anatoli.DataAccess.Repositories
             return model;
         }
 
-        public async Task<User> FindByEmailAsync(string email)
+        public override async Task<User> FindByEmailAsync(string email)
         {
             var model = await UserRepository.FindAsync(p => p.Email == email);
 
             return model;
         }
 
-        public async Task UpdateAsync(User user)
+        public override async Task UpdateAsync(User user)
         {
-            UserRepository.EntryModified(user);
+            await UserRepository.UpdateAsync(user);
 
             await UserRepository.SaveChangesAsync();
         }

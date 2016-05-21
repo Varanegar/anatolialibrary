@@ -28,11 +28,12 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             List<DMCVisitTemplatePathViewModel> result;
             using (var context = GetDataContext(Transaction.No))
             {
-                var where = (id == null ? "" : "WHERE ParentUniqueId = '" + id.ToString() + "'");
+                var where = (id == null ? "WHERE (ParentUniqueId IS NULL)" : "WHERE (ParentUniqueId = '" + id.ToString() + "')");
+                where += "AND(NOT VisitPathTypeId  IS NULL)";
                 result =
                     context.All<DMCVisitTemplatePathViewModel>("SELECT UniqueId, " +
                                                    "PathTitle, " +
-                                                   "IsLeaf, " +
+                                                   "isnull((select 1 where VisitPathTypeId  = 4),0) IsLeaf, " +
                                                    "ParentUniqueId as ParentId " +
                                                "FROM  " + DMCVisitTemplatePathEntity.TabelName+" "+
                                                where+ " "+
@@ -43,12 +44,14 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public Guid? GetParentIdById(Guid? id)
         {
-            Guid result;
+            if (id == null) return null;
+            Guid? result;
             using (var context = GetDataContext(Transaction.No))
             {
                 result =
-                    context.GetValue<Guid>("SELECT ParentUniqueId FROM VisitTemplatePath WHERE UniqueId = '" + id.ToString() +
-                                           "'");
+                    context.GetValue<Guid>("SELECT ParentUniqueId FROM VisitTemplatePath WHERE UniqueId = '" + id.ToString() +"'");
+                if (result == Guid.Empty)
+                    result = null;
             }
             return result;
         }
@@ -76,7 +79,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 result =
                     context.First<DMCVisitTemplatePathViewModel>("SELECT UniqueId, " +
                                                "PathTitle, ParentUniqueId," +
-                                               "IsLeaf " +
+                                               "isnull((select 1 where VisitPathTypeId  = 4),0) IsLeaf " +
                                                "FROM VisitTemplatePath " +
                                                "WHERE UniqueId = '" + id.ToString() + "'");
             }
@@ -88,7 +91,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             var result = new List<DMCVisitTemplatePathViewModel>();
 
             if (id != null)
-                using (var context = new DataContext())
+                using (var context = GetDataContext(Transaction.No))
                 {
                     var entity = GetViewById(id);
 
@@ -123,14 +126,14 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         {
             using (var context = GetDataContext(Transaction.No))
             {
-                var where = "";
+                var where = "WHERE (NOT VisitPathTypeId IS NULL) ";
                 if (level == 1)
                 {
-                    where = "WHERE ParentUniqueId Is Null ";
+                    where += "AND (ParentUniqueId Is Null) ";
                 }
                 else
                 {
-                    where = "WHERE ParentUniqueId = '" + areaId + "' ";
+                    where += "AND (ParentUniqueId = '" + areaId + "') ";
                 }
 
                 var result =

@@ -56,18 +56,14 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
         {
             try
             {
-                var dmcpoints = new List<DMCPointViewModel>();
                 var result = new List<PointViewModel>();
 
                 await Task.Factory.StartNew(() =>
                 {
                     var service = new DMCProductReportDomain();
-                    foreach (Guid id in filter.AreaIds)
-                    {
-                        dmcpoints = service.LoadProductValueReport(id , filter.ToDMCProductValueReportFilterViewModel());
-                        result.AddRange(dmcpoints.Select(x  => x.ToViewModel()).ToList());
-                    }
 
+                    var dmcpoints = service.LoadProductValueReport(filter.ToDMCProductValueReportFilterViewModel());
+                    result.AddRange(dmcpoints.Select(x  => x.ToViewModel()).ToList());
                 });
 
                 return Ok(result);

@@ -297,7 +297,13 @@
     <Compile Include="Migrations\201605200126333_Personnel-Activity-Migration-1.Designer.cs">
       <DependentUpon>201605200126333_Personnel-Activity-Migration-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605201439213_Tracking-Device-Management-Migration-1.cs" />
+    <Compile Include="Migrations\201605201439213_Tracking-Device-Management-Migration-1.Designer.cs">
+      <DependentUpon>201605201439213_Tracking-Device-Management-Migration-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\CompanyDeviceLicense.cs" />
+    <Compile Include="Models\Account\CompanyDevice.cs" />
     <Compile Include="Models\Account\CompanyOrgChart.cs" />
     <Compile Include="Models\Account\CompanyPersonnel.cs" />
     <Compile Include="Models\Account\CompanyCenter.cs" />
@@ -563,6 +569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605200126333_Personnel-Activity-Migration-1.resx">
       <DependentUpon>201605200126333_Personnel-Activity-Migration-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605201439213_Tracking-Device-Management-Migration-1.resx">
+      <DependentUpon>201605201439213_Tracking-Device-Management-Migration-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
