@@ -1,5 +1,6 @@
 ﻿using Anatoli.ViewModels;
 using Anatoli.ViewModels.CustomerModels;
+using Anatoli.ViewModels.User;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,28 @@ namespace ClientApp
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
         }
 
+
+        public static void ChangePassword(HttpClient client, string servserURI)
+        {
+            var dataInfo = new BaseRequestModel();
+            var userInfo = new CreateUserBindingModel();
+            userInfo.UniqueId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16");
+            userInfo.Password = "anatoli@vn@87134 ";
+            userInfo.ConfirmPassword = "anatoli@vn@87134 ";
+            userInfo.FullName = "";
+
+            dataInfo.user = JsonConvert.SerializeObject(userInfo);
+            string data = JsonConvert.SerializeObject(dataInfo);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerCenterKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+
+
+            //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
+            var result8 = client.PostAsync(servserURI + "/api/accounts/saveUser", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+        }
         public static void UpdateCustomerFromServer(HttpClient client, string servserURI)
         {
             //try

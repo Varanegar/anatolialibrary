@@ -46,7 +46,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public List<DMCPointViewModel> LoadPointsByParentId(Guid? pId, Guid? id = null)
         {
             List<DMCPointViewModel> result;
-            using (var context = new DataContext())
+            using (var context = GetDataContext(Transaction.No))
             {
                 var where = "";
                 if (pId != null)
