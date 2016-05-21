@@ -2,7 +2,7 @@
 
 namespace Anatoli.DataAccess.Repositories.Account
 {
-    public class PermissionCatalogRepository : AnatoliRepository<PermissionCatalog>, IPermissionCatalogRepository
+    public class PermissionCatalogRepository : BaseAnatoliRepository<PermissionCatalog>, IPermissionCatalogRepository
     {
         #region Ctors
         public PermissionCatalogRepository() : this(new AnatoliDbContext()) { }

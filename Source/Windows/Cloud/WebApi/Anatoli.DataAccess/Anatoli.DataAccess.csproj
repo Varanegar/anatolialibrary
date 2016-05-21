@@ -308,6 +308,7 @@
     <Compile Include="Models\Anatoli\AnatoliContact.cs" />
     <Compile Include="Models\Anatoli\AnatoliPlace.cs" />
     <Compile Include="Models\Anatoli\AnatoliContactType.cs" />
+    <Compile Include="Models\Anatoli\OwnerInfo.cs" />
     <Compile Include="Models\BaseData\BaseModelAnatoli.cs" />
     <Compile Include="Models\Identity\PermissionAction.cs" />
     <Compile Include="Models\Identity\ApplicationModuleResource.cs" />

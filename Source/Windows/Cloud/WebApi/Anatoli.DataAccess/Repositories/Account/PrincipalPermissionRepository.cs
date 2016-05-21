@@ -3,7 +3,7 @@ using Anatoli.DataAccess.Interfaces.Account;
 
 namespace Anatoli.DataAccess.Repositories.Account
 {
-    public class PrincipalPermissionRepository : AnatoliRepository<PrincipalPermission>, IPrincipalPermissionRepository
+    public class PrincipalPermissionRepository : BaseAnatoliRepository<PrincipalPermission>, IPrincipalPermissionRepository
     {
         #region Ctors
         public PrincipalPermissionRepository() : this(new AnatoliDbContext()) { }

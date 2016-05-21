@@ -6,17 +6,21 @@ using System.Collections.Generic;
 
 namespace Anatoli.DataAccess.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         AnatoliDbContext DbContext { get; set; }
         IQueryable<T> GetQuery();
 
         T GetById(Guid id);
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(Guid id);      
 
-        Task<ICollection<T>> GetAllAsync();
-        Task<T> FindAsync(Expression<Func<T, bool>> match);
-        Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
+        List<T> GetAll();
+        Task<List<T>> GetAllAsync();
+        Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, TResult>> selector);
+        Task<T> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<TResult> FindAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector);
+        Task<List<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
+        Task<List<TResult>> FindAllAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// To query and get data and cache it.
@@ -35,8 +39,8 @@ namespace Anatoli.DataAccess.Interfaces
         Task<IEnumerable<TResult>> GetFromCachedAsync<TResult>(Expression<Func<T, bool>> predicate,
                                                                Expression<Func<T, TResult>> selector,
                                                                int cacheTimeOut = 300) where TResult : class;
-        
-       void Add(T entity);
+
+        void Add(T entity);
         Task<T> AddAsync(T entity);
 
         void Update(T entity);
@@ -76,5 +80,11 @@ namespace Anatoli.DataAccess.Interfaces
 
         int Count();
         Task<int> CountAsync();
+    }
+
+    public interface IRepository<T>: IBaseRepository<T> where T : class {
+        TResult GetById<TResult>(Guid id);
+        Task<TResult> GetByIdAsync<TResult>(Guid id);
+        Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<T, TResult>> selector);
     }
 }

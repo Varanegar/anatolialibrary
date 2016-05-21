@@ -7,10 +7,6 @@ using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
-using Anatoli.DataAccess.Models.Identity;
-using Anatoli.Business.Proxy.Concretes.StockConcretes;
-using Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes;
 
 namespace Anatoli.Business.Domain
 {
@@ -19,7 +15,7 @@ namespace Anatoli.Business.Domain
         #region Properties
         public IRepository<StockProductRequestRule> ProductRequestRuleRepository { get; set; }
         public IRepository<PrincipalStock> PrincipalStockRepository { get; set; }
-        public IRepository<Principal> PrincipalRepository { get; set; }
+       // public IBaseRepository<Principal> PrincipalRepository { get; set; }
         #endregion
 
         #region Ctors

@@ -3,7 +3,7 @@ using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class UserRepository : AnatoliRepository<User>, IUserRepository
+    public class UserRepository : BaseAnatoliRepository<User>, IUserRepository
     {
         #region Ctors
         public UserRepository() : this(new AnatoliDbContext()) { }

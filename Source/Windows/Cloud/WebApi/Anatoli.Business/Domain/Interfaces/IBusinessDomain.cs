@@ -45,11 +45,6 @@ namespace Anatoli.Business
 
     public interface IBusinessDomainV3<TSource> where TSource : BaseModel, new()
     {
-        Guid ApplicationOwnerKey { get; }
-        Guid DataOwnerKey { get; }
-        Guid DataOwnerCenterKey { get; }
-       
-
         Task<List<TResult>> GetAllAsync<TResult>();
         Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate, Expression<Func<TSource, TResult>> selector);
 
@@ -64,5 +59,4 @@ namespace Anatoli.Business
         Task DeleteAsync<TResult>(List<TResult> data) where TResult : BaseViewModel;
         Task CheckDeletedAsync<TResult>(List<TResult> data) where TResult : BaseViewModel, new();
     }
-
 }

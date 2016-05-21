@@ -17,15 +17,15 @@ namespace Anatoli.Business.Domain.Authorization
     {
         #region Properties
         protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
-        public IRepository<Principal> PrincipalRepository { get; set; }
-        public IRepository<Permission> PermissionRepository { get; set; }
-        public IRepository<PrincipalPermission> PrincipalPermissionRepository { get; set; }
+        public IBaseRepository<Principal> PrincipalRepository { get; set; }
+        public IBaseRepository<Permission> PermissionRepository { get; set; }
+        public IBaseRepository<PrincipalPermission> PrincipalPermissionRepository { get; set; }
 
-        public IRepository<PermissionCatalog> PermissionCatalogRepository { get; set; }
-        public IRepository<PrincipalPermissionCatalog> PrincipalPermissionCatalogRepository { get; set; }
+        public IBaseRepository<PermissionCatalog> PermissionCatalogRepository { get; set; }
+        public IBaseRepository<PrincipalPermissionCatalog> PrincipalPermissionCatalogRepository { get; set; }
 
         public AnatoliDbContext DBContext { get; set; }
-        public IRepository<PrincipalPermission> MainRepository { get; set; }
+        public IBaseRepository<PrincipalPermission> MainRepository { get; set; }
         public Guid ApplicationOwnerKey { get; protected set; }
         public Guid DataOwnerKey { get; protected set; }
         public Guid DataOwnerCenterKey { get; protected set; }

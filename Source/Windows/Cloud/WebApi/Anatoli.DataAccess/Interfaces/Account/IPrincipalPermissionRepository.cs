@@ -2,7 +2,7 @@
 
 namespace Anatoli.DataAccess.Interfaces.Account
 {
-    public interface IPrincipalPermissionRepository : IRepository<PrincipalPermission>
+    public interface IPrincipalPermissionRepository : IBaseRepository<PrincipalPermission>
     {
     }    
 }

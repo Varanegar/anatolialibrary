@@ -25,12 +25,10 @@ namespace Anatoli.Business.Domain
     {
         #region Properties
         protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
-        public IPrincipalRepository PrincipalRepository { get; set; }
-        public Guid ApplicationOwnerKey { get; protected set; }
-        public Guid DataOwnerKey { get; protected set; }
-        public Guid DataOwnerCenterKey { get; protected set; }
-        public bool GetRemovedData { get; protected set; }
+        public OwnerInfo OwnerInfo { get; set; }
+
         public AnatoliDbContext DBContext { get; set; }
+
         public virtual IRepository<TSource> MainRepository { get; set; }
         #endregion
 
@@ -39,31 +37,31 @@ namespace Anatoli.Business.Domain
         {
         }
 
-        public BusinessDomainV3(Guid applicationOwnerKey) : this(applicationOwnerKey, applicationOwnerKey, applicationOwnerKey, new AnatoliDbContext())
+        public BusinessDomainV3(Guid applicationOwnerKey) : this(applicationOwnerKey, applicationOwnerKey, applicationOwnerKey)
         {
         }
 
         public BusinessDomainV3(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey) :
-                                this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
+                                this(new OwnerInfo
+                                {
+                                    DataOwnerKey = dataOwnerKey,
+                                    ApplicationOwnerKey = applicationOwnerKey,
+                                    DataOwnerCenterKey = dataOwnerCenterKey,
+                                    RemovedData = true
+                                }, new AnatoliDbContext())
         {
         }
 
-        public BusinessDomainV3(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc) :
-                                this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey,
-                                    (IRepository<TSource>)Activator.CreateInstance(typeof(IRepository<TSource>), dbc),
-                                    new PrincipalRepository(dbc))
+        public BusinessDomainV3(OwnerInfo ownerInfo, AnatoliDbContext dbc) :
+                                this(ownerInfo, (IRepository<TSource>)Activator.CreateInstance(typeof(IRepository<TSource>), dbc, ownerInfo))
         {
             DBContext = dbc;
         }
 
-        public BusinessDomainV3(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, IRepository<TSource> dataRepository,
-                                IPrincipalRepository principalRepository)
+        public BusinessDomainV3(OwnerInfo ownerInfo, IRepository<TSource> dataRepository)
         {
             MainRepository = dataRepository;
-            PrincipalRepository = principalRepository;
-            ApplicationOwnerKey = applicationOwnerKey;
-            DataOwnerKey = dataOwnerKey;
-            DataOwnerCenterKey = dataOwnerCenterKey;
+            OwnerInfo = ownerInfo;
         }
         #endregion
 
@@ -83,13 +81,14 @@ namespace Anatoli.Business.Domain
             {
                 var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(OwnerInfo.ApplicationOwnerKey.ToString(),
+                                      OwnerInfo.DataOwnerKey.ToString()));
 
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
 
-                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
-                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
-                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+                content.Headers.Add("OwnerKey", OwnerInfo.ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", OwnerInfo.DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", OwnerInfo.DataOwnerKey.ToString());
 
 
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI, content).Result;
@@ -123,13 +122,13 @@ namespace Anatoli.Business.Domain
             {
                 var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
+                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(OwnerInfo.ApplicationOwnerKey.ToString(), OwnerInfo.DataOwnerKey.ToString()));
 
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
 
-                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
-                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
-                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+                content.Headers.Add("OwnerKey", OwnerInfo.ApplicationOwnerKey.ToString());
+                content.Headers.Add("DataOwnerKey", OwnerInfo.DataOwnerKey.ToString());
+                content.Headers.Add("DataOwnerCenterKey", OwnerInfo.DataOwnerKey.ToString());
 
                 var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
                            , content).Result;
@@ -154,7 +153,10 @@ namespace Anatoli.Business.Domain
 
         public async Task<TResult> GetByIdAsync<TResult>(Guid id)
         {
-            return await MainRepository.GetQuery().Where(p => p.Id == id).Select(GetAllSelector<TResult>()).FirstOrDefaultAsync();
+            if (GetAllSelector<TResult>() == null)
+                return await MainRepository.GetByIdAsync(id,GetAllSelector<TResult>());
+
+            return await MainRepository.GetByIdAsync<TResult>(id);
         }
 
         public async Task<List<TResult>> GetAllAsync<TResult>()
@@ -165,19 +167,7 @@ namespace Anatoli.Business.Domain
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate,
                                                              Expression<Func<TSource, TResult>> selector)
         {
-            //Todo: move this predicate to repository and make it force to use it
-            Expression<Func<TSource, bool>> criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                                            p.DataOwnerId == DataOwnerKey &&
-                                                            p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
-            if (predicate != null)
-                criteria2 = PredicateBuilder.And(predicate, criteria2);
-
-            var query = MainRepository.GetQuery().Where(criteria2).AsNoTracking();
-
-            if (selector != null)
-                return await query.Select(selector).ToListAsync();
-            else
-                return await query.ProjectTo<TResult>().ToListAsync();
+            return await MainRepository.FindAllAsync(predicate, selector);
         }
 
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate)
@@ -202,9 +192,9 @@ namespace Anatoli.Business.Domain
                 {
                     var model = dataList.Find(p => p.Id == item.Id);
 
-                    item.ApplicationOwnerId = ApplicationOwnerKey;
-                    item.DataOwnerId = DataOwnerKey;
-                    item.DataOwnerCenterId = DataOwnerCenterKey;
+                    item.ApplicationOwnerId = OwnerInfo.ApplicationOwnerKey;
+                    item.DataOwnerId = OwnerInfo.DataOwnerKey;
+                    item.DataOwnerCenterId = OwnerInfo.DataOwnerCenterKey;
 
                     AddDataToRepository(model, item);
                 }
@@ -227,9 +217,9 @@ namespace Anatoli.Business.Domain
         {
             var model = await MainRepository.GetByIdAsync(data.Id);
 
-            data.ApplicationOwnerId = ApplicationOwnerKey;
-            data.DataOwnerId = DataOwnerKey;
-            data.DataOwnerCenterId = DataOwnerCenterKey;
+            data.ApplicationOwnerId = OwnerInfo.ApplicationOwnerKey;
+            data.DataOwnerId = OwnerInfo.DataOwnerKey;
+            data.DataOwnerCenterId = OwnerInfo.DataOwnerCenterKey;
 
             AddDataToRepository(model, data);
 
@@ -252,12 +242,8 @@ namespace Anatoli.Business.Domain
         {
             try
             {
-                var currentDataList = MainRepository.GetQuery()
-                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey)
-                                                    .Select(data => new TResult { UniqueId = data.Id })
-                                                    .AsNoTracking()
-                                                    .ToList();
-
+                var currentDataList = await MainRepository.GetAllAsync(data => new TResult { UniqueId = data.Id });
+                
                 currentDataList.ForEach(item =>
                 {
                     if (dataViewModels.Find(p => p.UniqueId == item.UniqueId) == null)
@@ -282,10 +268,7 @@ namespace Anatoli.Business.Domain
 
         public virtual List<TSource> GetDataListToCheckForExistsData()
         {
-            return MainRepository.GetQuery()
-                                 .Where(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey)
-                                 .AsNoTracking()
-                                 .ToList();
+            return MainRepository.GetAll();
         }
         #endregion
     }

@@ -3,7 +3,7 @@ using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.DataAccess.Repositories.Account
 {
-    public interface IPermissionCatalogRepository : IRepository<PermissionCatalog>
+    public interface IPermissionCatalogRepository : IBaseRepository<PermissionCatalog>
     {
     }
 }
