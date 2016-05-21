@@ -153,6 +153,37 @@ namespace ClientApp
         }
 
 
+        public static void TestSavePersonelActivitiePoint(HttpClient client, string servserURI)
+        {
+
+            var eventpoint = new PersonnelDailyActivityPointViewModel()
+            {
+                UniqueId = Guid.NewGuid(),
+
+                //CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),
+                CompanyPersonnelId = Guid.Parse("c99ae71a-a82d-4879-a859-82079ecb69c7"), // ایمانی
+                //Latitude = 38.075812,
+                //Longitude = 46.285022,
+                Latitude = 38.041751,
+                Longitude = 46.105754,
+                ActivityDate = DateTime.Now,
+                ActivityPDate = "1395/02/29",
+                LastUpdate = DateTime.Now,
+                CreatedDate = DateTime.Now,
+                DataOwnerId = Guid.Parse(DataOwnerKey),
+                ApplicationOwnerId = Guid.Parse(OwnerKey),
+                DataOwnerCenterId = Guid.Parse(DataOwnerCenterKey)
+            };
+
+            var req = new PersonelTrackingRequestModel();
+            req.pointEvent = eventpoint;
+
+            Call(client, servserURI + "api/dsd/tracking/svprsact", req);
+
+        }
+
+
+
         public static void TestLoadPersonelsPath(HttpClient client, string servserURI)
         {
             var req = new PersonelTrackingRequestModel();

@@ -205,10 +205,11 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         public bool RemoveProductReportCache(Guid guid)
         {
-            using (var context = GetDataContext(Transaction.No))
+            using (var context = GetDataContext())
             {
                 context.Execute("DELETE FROM  GisProductReportCache " +
                                 "WHERE ClientId = '" + guid + "'");
+                context.Commit();
                 return true;
             }
         }
