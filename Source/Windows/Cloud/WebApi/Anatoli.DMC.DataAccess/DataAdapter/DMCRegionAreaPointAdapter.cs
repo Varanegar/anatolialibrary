@@ -67,7 +67,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                                                "[CustomerUniqueId] as ReferId " +
                                            "FROM  " + DMCRegionAreaPointEntity.TabelName + " AS P JOIN "+
                                                 DMCVisitTemplatePathEntity.TabelName +" AS V ON P.[RegionAreaUniqueId] = V.UniqueId "+
-                                           where
+                                           where+
+                                           " ORDER BY Priority "
                                            ).ToList();
 
             }
