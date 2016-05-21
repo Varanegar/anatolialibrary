@@ -1,9 +1,16 @@
 ﻿using System;
 using ProtoBuf;
+using Anatoli.ViewModels.StockModels;
+using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.ViewModels
 {
     [ProtoContract]
+    [ProtoInclude(9, typeof(ProductViewModel))]
+    [ProtoInclude(10, typeof(ProductTypeViewModel))]
+    [ProtoInclude(11, typeof(SupplierViewModel))]
+    [ProtoInclude(12, typeof(CharValueViewModel))]
+    [ProtoInclude(13, typeof(ProductPictureViewModel))]
     public class BaseViewModel
     {
         [ProtoMember(1)]

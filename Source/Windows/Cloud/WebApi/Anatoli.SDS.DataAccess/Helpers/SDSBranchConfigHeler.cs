@@ -1,6 +1,6 @@
 ﻿using Anatoli.SDS.DataAccess.Helpers.Entity;
 using Anatoli.SDS.ViewModels;
-using log4net;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,8 @@ namespace Anatoli.SDS.DataAccess.Helpers
 {
     public class SDSBranchConfigHeler
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+
         private static SDSBranchConfigEntity currentConfig = null;
         public List<SDSBranchConfigEntity> AllStoreConfigs { get; private set; }
 

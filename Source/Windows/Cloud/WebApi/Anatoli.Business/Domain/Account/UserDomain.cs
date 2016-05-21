@@ -12,13 +12,14 @@ using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.BaseModels;
 using Anatoli.DataAccess.Models.Identity;
+using NLog;
 
 namespace Anatoli.Business.Domain
 {
     public class UserDomain 
     {
         #region Properties
-        protected static log4net.ILog Logger { get; set; }
+        protected static Logger Logger { get; set; }
         public Guid ApplicationOwnerKey { get; protected set; }
         public Guid DataOwnerKey { get; protected set; }
         public virtual UserRepository UserRepository { get; set; }
@@ -38,7 +39,7 @@ namespace Anatoli.Business.Domain
             PrincipalRepository = new PrincipalRepository(dbc);
             ApplicationOwnerKey = applicationOwnerKey;
             DataOwnerKey = dataOwnerKey;
-            Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
 
         }
         #endregion

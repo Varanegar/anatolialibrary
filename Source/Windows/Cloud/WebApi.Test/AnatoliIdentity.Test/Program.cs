@@ -52,7 +52,7 @@ namespace ClientApp
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
-                    //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
+                    PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
@@ -87,7 +87,7 @@ namespace ClientApp
                     //var json3 = result3.Content.ReadAsStringAsync().Result;
 
                     //var oauthresult2 = oauthClient.RequestResourceOwnerPasswordAsync("maryamshkr@gmail.com", "1234567", "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
-                    
+
                     //ProductManagement.DownloadProductRateFromServer(client, servserURI);
 
                     //ImageManagement.UploadCenterPicture(client, servserURI);
@@ -104,7 +104,7 @@ namespace ClientApp
                     //StoreManagement.GetStoreFromServer(client, servserURI);
                     //StoreManagement.UploadStoreDataToServer(client, servserURI);
                     //ProductManagement.UploadProductToServer(client, servserURI);
-                    
+
                     //StoreManagement.UploadStorePriceListDataToServer(client, servserURI);
                     //StoreManagement.UploadStoreOnHandDataToServer(client, servserURI);
                     //StoreManagement.DownloadOnhandOnlineFromServer(client, servserURI);
@@ -120,7 +120,7 @@ namespace ClientApp
 
                     #region VnGIS
 
-                   // VnGisManagement.TestLoadRegionAreas(client, servserURI);
+                    // VnGisManagement.TestLoadRegionAreas(client, servserURI);
                     //VnGisManagement.TestLoadRegionAreasPoints(client, servserURI);
                     //VnGisManagement.TestHasAreasPoints(client, servserURI);
                     //VnGisManagement.TestGetRegionAreaPath(client, servserURI);

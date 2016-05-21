@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using ImageMagick;
+using NLog;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
     public class FileManager : IFileManager
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         #region Methods
         public async Task Save(System.Web.HttpPostedFileBase file, string imagetype, string token, string imageName)
         {

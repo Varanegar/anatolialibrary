@@ -1,6 +1,6 @@
 ﻿using Anatoli.PMC.DataAccess.Helpers.Entity;
 using Anatoli.PMC.ViewModels;
-using log4net;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Anatoli.PMC.DataAccess.Helpers
 {
     public class StoreConfigHeler
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly Logger log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         private static PMCStoreConfigEntity currentConfig = null;
         public List<PMCStoreConfigEntity> AllStoreConfigs { get; private set; }
 
