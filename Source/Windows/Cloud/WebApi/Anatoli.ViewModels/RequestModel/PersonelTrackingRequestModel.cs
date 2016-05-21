@@ -23,6 +23,8 @@ namespace Anatoli.ViewModels.RequestModel
         public bool lackVisit { get; set; }
         public bool stopWithoutCustomer { get; set; }
         public bool stopWithoutActivity { get; set; }
+        public string IMEI { get; set; }
+        public string DeviceID { get; set; }
 
         public List<Guid> personelIds { get; set; }
     }
