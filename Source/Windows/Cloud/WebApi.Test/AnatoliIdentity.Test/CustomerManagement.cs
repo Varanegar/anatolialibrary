@@ -40,17 +40,17 @@ namespace ClientApp
         {
             var dataInfo = new BaseRequestModel();
             var userInfo = new CreateUserBindingModel();
-            userInfo.UniqueId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16");
-            userInfo.Password = "anatoli@vn@87134 ";
-            userInfo.ConfirmPassword = "anatoli@vn@87134 ";
+            userInfo.UniqueId = Guid.Parse("7EDE6F2E-653B-43DF-AF84-650D533A9571");
+            userInfo.Password = "1";
+            userInfo.ConfirmPassword = "1";
             userInfo.FullName = "";
 
             dataInfo.user = JsonConvert.SerializeObject(userInfo);
             string data = JsonConvert.SerializeObject(dataInfo);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
-            content.Headers.Add("DataOwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
-            content.Headers.Add("DataOwnerCenterKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "DD86E785-7171-498E-A9BB-82E1DBE334EE");
+            content.Headers.Add("DataOwnerCenterKey", "DD86E785-7171-498E-A9BB-82E1DBE334EE");
 
 
             //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9

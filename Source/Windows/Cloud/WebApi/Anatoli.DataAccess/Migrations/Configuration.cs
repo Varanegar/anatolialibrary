@@ -549,7 +549,8 @@
                     context.UserRoles.AddOrUpdate(item => new { item.RoleId, item.UserId },
                         new IdentityUserRole { RoleId = "4d10bd96-7f25-477a-a544-75e54b619a1f", UserId = userId },
                         new IdentityUserRole { RoleId = "C0614C05-855F-45C6-A93C-EB3B8A8B2D94", UserId = userId },
-                        new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = userId }
+                        new IdentityUserRole { RoleId = "AE4AF236-E229-45A8-B1C0-CBE6CB104721", UserId = userId },
+                        new IdentityUserRole { RoleId = "4447853b-e19f-42ce-bb29-f5aa1943b542", UserId = userId }
                     );
                 }
                 #endregion
