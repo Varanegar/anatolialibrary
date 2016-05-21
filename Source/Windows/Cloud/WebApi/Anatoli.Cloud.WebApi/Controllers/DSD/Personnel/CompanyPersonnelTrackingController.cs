@@ -104,7 +104,8 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
                         MasterId = pActivityPoint.CompanyPersonnelId,
                         Latitude = pActivityPoint.Latitude,
                         Longitude = pActivityPoint.Longitude,
-                        PointType = 0
+                        JData = pActivityPoint.JData,
+                        PointType = pActivityPoint.PersonnelDailyActivityEventTypeId
                     });
                 }
 
@@ -164,14 +165,14 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
                         MasterId = pActivityPoint.CompanyPersonnelId,
                         Latitude = pActivityPoint.Latitude,
                         Longitude = pActivityPoint.Longitude,
-                        PointType = 0
+                        Desc = "<p><br/>" + pActivityPoint.ActivityDate.ToString("HH:mm:ss") + "</p>",
+                        PointType = null
                     });
                 }
 
                 color = GetRandomColor();
                 lines.Add(new PolyViewModel()
                 {
-
                     masterId = group,
                     points = line,
                     color = color.ToArgb().ToString()

@@ -21,9 +21,9 @@ namespace Anatoli.ViewModels.PersonnelAcitvityModel
         public string Phone { set; get; }
         public string Address { set; get; }
 
-        public int WatingTime { set; get; }
-        public int StartTime { set; get; }
-        public int EndTime { set; get; }
+        public string WatingTime { set; get; }
+        public string StartTime { set; get; }
+        public string EndTime { set; get; }
         public int OrderQty { set; get; }
         public long OrderAmunt { set; get; }
         

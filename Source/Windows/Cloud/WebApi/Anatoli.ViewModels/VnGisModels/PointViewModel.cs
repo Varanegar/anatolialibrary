@@ -16,9 +16,9 @@ namespace Anatoli.ViewModels.VnGisModels
 
         //public DateTime Timestpm { set; get;}
 
-        public int PointType { set; get; }
+        public Guid? PointType { set; get; }
         
-        public int SubType { set; get; }
+        public Guid SubType { set; get; }
 
         public Guid MasterId { set; get; }
 
