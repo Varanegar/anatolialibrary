@@ -36,12 +36,12 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         {
             try
             {
-                using (var context = new DataContext(Transaction.No))
+                using (var context = GetDataContext(Transaction.No))
                 {
                     context.Execute("UPDATE Customer " +
                                     "SET  [Latitude] = " + customerPoint.Latitude +"* 1000000,"+
                                          "[Longitude] = " + customerPoint.Longitude + "* 1000000 " +
-                                    "WHERE UniqueId='" + customerPoint.CustomerUniqueId + "'");
+                                    "WHERE UniqueId= cast('" + customerPoint.CustomerUniqueId + "' as uniqueidentifier )");
                 }
                 return true;
             }
