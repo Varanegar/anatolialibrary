@@ -126,14 +126,14 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         {
             using (var context = GetDataContext(Transaction.No))
             {
-                var where = "";
+                var where = "WHERE (NOT VisitPathTypeId IS NULL) ";
                 if (level == 1)
                 {
-                    where = "WHERE ParentUniqueId Is Null ";
+                    where += "AND (ParentUniqueId Is Null) ";
                 }
                 else
                 {
-                    where = "WHERE ParentUniqueId = '" + areaId + "' ";
+                    where += "AND (ParentUniqueId = '" + areaId + "') ";
                 }
 
                 var result =

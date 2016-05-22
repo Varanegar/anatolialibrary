@@ -43,7 +43,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         public void UpdateReportCache(Guid guid, List<DMCProductReportCacheEntity> list)
         {
 
-            var query = "INSERT INTO [dbo].[GisProductReportCache]" +
+
+             var query = "INSERT INTO [dbo].[GisProductReportCache]" +
                         "([UniqueId]" +
                         ",[ClientId]" +
                         ",[Latitude]" +
@@ -94,8 +95,10 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         ",{21}" + //customerId
                         ")";
 
-            using (var context = GetDataContext(Transaction.No))
+            using (var context = GetDataContext())
             {
+                context.Execute(string.Format("DELETE FROM GisProductReportCache WHERE ClientId = '{0}'", guid));
+
                 foreach (var item in list)
                 {
                     context.Execute(string.Format(query,
