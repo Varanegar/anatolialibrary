@@ -6,6 +6,7 @@ namespace Anatoli.DMC.DataAccess.Helpers.Entity
     {
         //  public DbGeometry CPoint { set; get; }
         public Guid Id { get; set; }
+        public int? IntId { get; set; }
         public double? Latitude { set; get; }
         public double? Longitude { set; get; }
         public Guid ClientId { set; get; }

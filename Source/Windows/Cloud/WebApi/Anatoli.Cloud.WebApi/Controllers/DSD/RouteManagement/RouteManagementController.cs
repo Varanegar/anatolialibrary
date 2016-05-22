@@ -175,13 +175,23 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.RouteManagement
                 await Task.Factory.StartNew(() =>
                 {
                     var areaPointService = new DMCRegionAreaPointDomain();
+                    var areaService = new DMCVisitTemplatePathDomain();
+
                     foreach (var areaId in data.regionAreaIds)
                     {
+
+
+
                         var poly = new PolyViewModel();
                         var points = areaPointService.LoadAreaPointById(areaId);
+                        var view = areaService.GetViewById(areaId);
+
                         poly.color = "#000000";
                         poly.desc = "";
                         poly.points = points.Select(x => x.ToViewModel()).ToList();
+                        poly.masterId = areaId;
+                        poly.lable = view.PathTitle;
+                        poly.isLeaf = view.IsLeaf;
                         polies.Add(poly);
                     }
                 });

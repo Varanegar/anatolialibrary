@@ -131,7 +131,7 @@ namespace Anatoli.DMC.Business.Domain
                 if (group == null)
                     group = pointView.MasterId;
 
-                if (group != pointView.MasterId)
+                if (!group.Equals(pointView.MasterId))
                 {
                     if (randomColor) color = GetRandomColor();
 

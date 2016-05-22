@@ -121,12 +121,7 @@
                 //new ApplicationOwner { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), ApplicationId = Guid.Parse("081AF21C-06E4-44DD-88B4-0A68710131DC"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروشگاهی نیک توشه زیست", WebHookUsername = "anatoli-inter-com@varanegar.com" },
                 //new ApplicationOwner { Id = Guid.Parse("897DAD91-EB44-407A-9C63-9132132E1F99"), ApplicationId = Guid.Parse("61B8646F-77D4-49D1-8949-909EA771DEED"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار تامین داخلی نیک توشه زیست", WebHookUsername = "anatoli-inter-com@varanegar.com" }
                 );
-
-                context.PersonnelDailyActivityVisitTypes.AddOrUpdate(item => item.Id,
-                    new PersonnelDailyActivityVisitType { Id = Guid.Parse("9A5C443C-3E83-47DD-A986-E69ED134B43B"), Title = "فروش گرم", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-                    new PersonnelDailyActivityVisitType { Id = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), Title = "پیش ویزیت", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, },
-                    new PersonnelDailyActivityVisitType { Id = Guid.Parse("8722D784-0814-4986-B065-17CBD4945306"), Title = "توزیع", IsRemoved = false, ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerCenterId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), CreatedDate = DateTime.Now, LastUpdate = DateTime.Now, }
-                );
+  
 
                 context.DataOwners.AddOrUpdate(item => item.Id,
                     new DataOwner { Id = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), Title = "نرم افزارهای ابری داده کاوان پیشرو ایده ورانگر", WebHookUsername = "anatoli-inter-com@varanegar.com" },

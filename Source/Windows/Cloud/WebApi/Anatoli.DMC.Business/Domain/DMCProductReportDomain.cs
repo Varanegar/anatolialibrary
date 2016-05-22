@@ -48,14 +48,20 @@ namespace Anatoli.DMC.Business.Domain
         }
 
 
-        public List<DMCPointViewModel> LoadProductValueReport(Guid id, DMCProductValueReportFilterModel filter)
+        public List<DMCPointViewModel> LoadProductValueReport(DMCProductValueReportFilterModel filter)
         {
             if (filter.ChangeFilter)
             {
                 ReloadCacheData(filter);
             }
-
-            return DMCProductReportAdapter.Instance.LoadProductValueReport(id, filter);
+            var points = new List<DMCPointViewModel>();
+            foreach (Guid id in filter.AreaIds)
+            {
+                var list = DMCProductReportAdapter.Instance.LoadProductValueReport(id, filter);
+                points.AddRange(list);
+            }
+           
+            return points;
 
         }
 
@@ -114,7 +120,9 @@ namespace Anatoli.DMC.Business.Domain
                 RetSaleDiscount = view.RetSaleDiscount,
                 SalePrizeCount = view.SalePrizeCount,
                 PrizeQty = view.PrizeQty,
-                PrizeCarton = view.PrizeCarton
+                PrizeCarton = view.PrizeCarton,
+                IntId = view.CustRef
+                
             }).ToList();
             DMCProductReportAdapter.Instance.UpdateReportCache(filter.ClientId, dmclist);
 
