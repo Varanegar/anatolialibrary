@@ -8,7 +8,10 @@ namespace Anatoli.DataAccess.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
+        Expression<Func<T, bool>> ExtraPredicate { get; set; }
         AnatoliDbContext DbContext { get; set; }
+
+
         IQueryable<T> GetQuery();
 
         T GetById(Guid id);

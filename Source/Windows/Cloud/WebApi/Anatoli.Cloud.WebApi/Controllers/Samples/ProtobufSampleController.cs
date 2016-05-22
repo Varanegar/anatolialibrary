@@ -113,34 +113,41 @@ namespace Anatoli.Cloud.WebApi.Controllers.Samples
         /// </summary>
         /// <returns></returns>
         [Route("productsTest")]
-        public ProductViewModel GetProductsTest()
+        public async Task<List<ProductViewModel>> GetProductsTest()
         {
             try
             {
-                var id = Guid.NewGuid();
+                var productDomain = new Business.Domain.ProductDomain(Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                                        Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"),
+                                        Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"));
+                var result = await productDomain.GetAllAsync();
 
-                var model = new ProductViewModel
-                {
-                    UniqueId = id,
-                    ProductName = "test Mrg",
-                    Barcode = "ba",
-                    Desctription = "dsf",
-                    IsActiveInOrder = true,
-                    MainSupplierName = "sf",
-                    PackWeight = 125,
-                    ProductCode = "sf234234swa",
-                    ProductRate = 5,
-                    QtyPerPack = 6,
-                    StoreProductName = "test Mrg1234",
-                    ProductTypeInfo = new ProductTypeViewModel
-                    {
-                        UniqueId = id,
-                        ProductTypeName = "type1"
-                    },
-                    ProductTypeId = id
-                };
+                return result;
 
-                return model;
+                //var id = Guid.NewGuid();
+
+                //var model = new ProductViewModel
+                //{
+                //    UniqueId = id,
+                //    ProductName = "test Mrg",
+                //    Barcode = "ba",
+                //    Desctription = "dsf",
+                //    IsActiveInOrder = true,
+                //    MainSupplierName = "sf",
+                //    PackWeight = 125,
+                //    ProductCode = "sf234234swa",
+                //    ProductRate = 5,
+                //    QtyPerPack = 6,
+                //    StoreProductName = "test Mrg1234",
+                //    ProductTypeInfo = new ProductTypeViewModel
+                //    {
+                //        UniqueId = id,
+                //        ProductTypeName = "type1"
+                //    },
+                //    ProductTypeId = id
+                //};
+
+                //return model;
             }
             catch (Exception ex)
             {

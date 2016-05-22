@@ -45,6 +45,9 @@ namespace Anatoli.Business
 
     public interface IBusinessDomainV3<TSource> where TSource : BaseModel, new()
     {
+        Expression<Func<TSource, TResult>> GetAllSelector<TResult>();
+        void SetConditionForFetchingData();
+
         Task<List<TResult>> GetAllAsync<TResult>();
         Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate, Expression<Func<TSource, TResult>> selector);
 
@@ -53,7 +56,9 @@ namespace Anatoli.Business
         Task<List<TResult>> GetAllChangedAfterAsync<TResult>(DateTime selectedDate);
 
         Task PublishAsync(List<TSource> data);
+        Task PublishAsync<TResult>(List<TResult> data) where TResult : BaseViewModel;
         Task PublishAsync(TSource data);
+        Task PublishAsync<TResult>(TResult data) where TResult : BaseViewModel;
 
         Task DeleteAsync(List<TSource> data);
         Task DeleteAsync<TResult>(List<TResult> data) where TResult : BaseViewModel;

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Web;
-using System.Collections.Generic;
-using Anatoli.ViewModels.StockModels;
+using Anatoli.DataAccess.Models;
 using Anatoli.Cloud.WebApi.Controllers;
-using Anatoli.ViewModels.ProductModels;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -45,6 +43,19 @@ namespace Anatoli.Cloud.WebApi.Classes
                     return DataOwnerKey;
                 else
                     return Guid.Parse(HttpContext.Current.Request.Headers["DataOwnerCenterKey"]);
+            }
+        }
+
+        public OwnerInfo OwnerInfo
+        {
+            get
+            {
+                return new OwnerInfo
+                {
+                    ApplicationOwnerKey = OwnerKey,
+                    DataOwnerCenterKey = DataOwnerCenterKey,
+                    DataOwnerKey = DataOwnerKey
+                };
             }
         }
     }

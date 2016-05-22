@@ -18,6 +18,7 @@ using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using AutoMapper.QueryableExtensions;
 using NLog;
+using AutoMapper;
 
 namespace Anatoli.Business.Domain
 {
@@ -66,12 +67,19 @@ namespace Anatoli.Business.Domain
         #endregion
 
         #region Methods
-        protected abstract Expression<Func<TSource, TResult>> GetAllSelector<TResult>();
+        public virtual Expression<Func<TSource, TResult>> GetAllSelector<TResult>()
+        {
+            return null;
+        }
+
         /// <summary>
-        /// To set MainRepository ExtraPredicate property
+        /// To set MainRepository.ExtraPredicate property
         /// </summary>
         /// <returns></returns>
-        protected abstract Expression<Func<TSource, bool>> SetConditionForFetchingData();
+        public virtual void SetConditionForFetchingData()
+        {
+
+        }
 
         protected TResult PostOnlineData<TResult>(string webApiURI, string data, bool needReturnData = false) where TResult : class, new()
         {
@@ -154,7 +162,7 @@ namespace Anatoli.Business.Domain
         public async Task<TResult> GetByIdAsync<TResult>(Guid id)
         {
             if (GetAllSelector<TResult>() == null)
-                return await MainRepository.GetByIdAsync(id,GetAllSelector<TResult>());
+                return await MainRepository.GetByIdAsync(id, GetAllSelector<TResult>());
 
             return await MainRepository.GetByIdAsync<TResult>(id);
         }
@@ -213,6 +221,13 @@ namespace Anatoli.Business.Domain
             }
         }
 
+        public virtual async Task PublishAsync<TResult>(List<TResult> data) where TResult : BaseViewModel
+        {
+            var dest = Mapper.Map<List<TResult>, List<TSource>>(data);
+
+            await PublishAsync(dest);
+        }
+
         public virtual async Task PublishAsync(TSource data)
         {
             var model = await MainRepository.GetByIdAsync(data.Id);
@@ -224,6 +239,13 @@ namespace Anatoli.Business.Domain
             AddDataToRepository(model, data);
 
             await MainRepository.SaveChangesAsync();
+        }
+
+        public virtual async Task PublishAsync<TResult>(TResult data) where TResult : BaseViewModel
+        {
+            var dest = Mapper.Map<TResult, TSource>(data);
+
+            await PublishAsync(dest);
         }
 
         public virtual async Task DeleteAsync(List<TSource> data)
@@ -243,7 +265,7 @@ namespace Anatoli.Business.Domain
             try
             {
                 var currentDataList = await MainRepository.GetAllAsync(data => new TResult { UniqueId = data.Id });
-                
+
                 currentDataList.ForEach(item =>
                 {
                     if (dataViewModels.Find(p => p.UniqueId == item.UniqueId) == null)
@@ -261,7 +283,7 @@ namespace Anatoli.Business.Domain
             }
         }
 
-        protected virtual void AddDataToRepository(TSource currentData, TSource newItem)
+        public virtual void AddDataToRepository(TSource currentData, TSource newItem)
         {
             return;
         }
