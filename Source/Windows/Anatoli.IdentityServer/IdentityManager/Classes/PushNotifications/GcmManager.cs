@@ -19,7 +19,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
             set;
         }
 
-        const string GcmSenderId = "";
+        const string GcmSenderId = "269775973801";
         const string GcmAuthToken = "AIzaSyACVwqtAd3r8WkyO54mRkAAnRg8-WMBUHo";
         public GcmManager(NotificationFailureDelegate<GcmNotification> onNotificationFailed, NotificationSuccessDelegate<GcmNotification> onNotificationSucceeded)
         {
@@ -36,7 +36,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
                 Broker.QueueNotification(new GcmNotification
                 {
                     RegistrationIds = new List<string> { regId },
-                    Data = JObject.Parse("{ \"alert\" : " + msg + " }") //Priority= GcmNotificationPriority.High                    
+                    Data = JObject.Parse("{ \"alert\" : \"Hassan\" }") //Priority= GcmNotificationPriority.High                    
                 });
             Broker.Stop();
         }
