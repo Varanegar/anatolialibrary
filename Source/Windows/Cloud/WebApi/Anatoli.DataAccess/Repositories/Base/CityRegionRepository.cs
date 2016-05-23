@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
-using System.Data.Entity;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Repositories
@@ -13,6 +9,10 @@ namespace Anatoli.DataAccess.Repositories
         public CityRegionRepository() : this(new AnatoliDbContext()) { }
         public CityRegionRepository(AnatoliDbContext context)
             : base(context)
+        {
+        }
+        public CityRegionRepository(AnatoliDbContext context,OwnerInfo ownerInfo)
+            : base(context, ownerInfo)
         {
         }
         #endregion
