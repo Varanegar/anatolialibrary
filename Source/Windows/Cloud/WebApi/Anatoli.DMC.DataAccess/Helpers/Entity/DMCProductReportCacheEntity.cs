@@ -5,8 +5,7 @@ namespace Anatoli.DMC.DataAccess.Helpers.Entity
     public class DMCProductReportCacheEntity
     {
         //  public DbGeometry CPoint { set; get; }
-        public Guid Id { get; set; }
-        public int? IntId { get; set; }
+        public Guid UniqueId { get; set; }
         public double? Latitude { set; get; }
         public double? Longitude { set; get; }
         public Guid ClientId { set; get; }
@@ -29,6 +28,7 @@ namespace Anatoli.DMC.DataAccess.Helpers.Entity
         public int? SalePrizeCount { set; get; }
         public double? PrizeQty { set; get; }
         public double? PrizeCarton { set; get; }
+        public int? IntId { get; set; }
 
         public DMCProductReportCacheEntity()
         {
