@@ -100,6 +100,7 @@ namespace Anatoli.DMC.Business.Domain
             var list = new SDSProductReportDomain().ReloadReportData(pmcfilter);
             var dmclist = list.Select(view => new DMCProductReportCacheEntity()
             {
+                UniqueId = Guid.NewGuid(),
                 ClientId = filter.ClientId,
                 Latitude = view.Latitude / 1000000,
                 Longitude = view.Longitude / 1000000,

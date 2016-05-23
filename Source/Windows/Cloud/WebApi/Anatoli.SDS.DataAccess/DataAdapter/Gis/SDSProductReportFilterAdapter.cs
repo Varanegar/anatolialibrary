@@ -29,10 +29,9 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
         {
             using (var context =  GetDataContext(Transaction.No))
             {
-                valueName = "NEWID()";
 
                 var result =
-                    context.All<SelectListItemViewModel>("SELECT "+ valueName +" as UniqueId, " +
+                    context.All<SelectListItemViewModel>("SELECT "+ valueName +" as intId, " +
                                                          textName+" as Title " +
                                           "FROM "  + tblName
                         ).ToList();
@@ -45,10 +44,9 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
         {
             using (var context = GetDataContext(Transaction.No))
             {
-                valueName = "NEWID()";
 
                 var result =
-                    context.All<SelectListItemViewModel>("SELECT " + valueName + " as UniqueId, " +
+                    context.All<SelectListItemViewModel>("SELECT " + valueName + " as intId, " +
                                                          textName + " as Title " +
                                           "FROM " + tblName+
                                           " WHERE " + textName + " like '%" + searchTerm + "%'").ToList();

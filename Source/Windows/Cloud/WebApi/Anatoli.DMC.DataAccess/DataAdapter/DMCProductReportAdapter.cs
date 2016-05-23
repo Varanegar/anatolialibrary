@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,6 @@ using System.Threading.Tasks;
 using Anatoli.DMC.DataAccess.Helpers.Entity;
 using Anatoli.DMC.ViewModels.Gis;
 using Anatoli.DMC.ViewModels.Report;
-
 using Thunderstruck;
 using System.Data.SqlClient;
 
@@ -39,101 +39,32 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         #region method
 
-
+        public static DataTable GetDataTable<T>(List<T> data)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+            var table = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            foreach (T item in data)
+            {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                table.Rows.Add(row);
+            }
+            return table;
+        }
+       
         public void UpdateReportCache(Guid guid, List<DMCProductReportCacheEntity> list)
         {
-
-
-             var query = "INSERT INTO [dbo].[GisProductReportCache]" +
-                        "([UniqueId]" +
-                        ",[ClientId]" +
-                        ",[Latitude]" +
-                        ",[Longitude]" +
-                        ",[Desc]" +
-                        ",[OrderCount]" +
-                        ",[SaleCount]" +
-                        ",[RetSaleCount]" +
-                        ",[SaleItemCount]" +
-                        ",[RetSaleItemCount]" +
-                        ",[SaleQty]" +
-                        ",[SaleCarton]" +
-                        ",[SaleAmount]" +
-                        ",[RetSaleQty]" +
-                        ",[RetSaleCarton]" +
-                        ",[RetSaleAmount]" +
-                        ",[SaleWeight]" +
-                        ",[RetSaleWeight]" +
-                        ",[SaleDiscount]" +
-                        ",[RetSaleDiscount]" +
-                        ",[SalePrizeCount]" +
-                        ",[PrizeQty]" +
-                        ",[PrizeCarton]" +
-                        ",[IntId]" +
-                        ")" +
-                        "VALUES( NEWID(),  '" + guid.ToString() + "'" +
-                        ",{0}" + //lat
-                        ",{1}" + //long
-                        ",'{2}'" + //[Desc]
-                        ",{3}" + //OrderCount
-                        ",{4}" + //SaleCount
-                        ",{5}" + //RetSaleCount
-                        ",{6}" + //SaleItemCount
-                        ",{7}" + //RetSaleItemCount
-                        ",{8}" + //SaleQty
-                        ",{9}" + //SaleCarton
-                        ",{10}" + //SaleAmount
-                        ",{11}" + //RetSaleQty
-                        ",{12}" + //RetSaleCarton
-                        ",{13}" + //RetSaleAmount
-                        ",{14}" + //SaleWeight
-                        ",{15}" + //RetSaleWeight
-                        ",{16}" + //SaleDiscount
-                        ",{17}" + //RetSaleDiscount
-                        ",{18}" + //SalePrizeCount
-                        ",{19}" + //PrizeQty
-                        ",{20}" + //PrizeCarton
-                        ",{21}" + //customerId
-                        ")";
-
-            using (var context = GetDataContext())
+            var con = GetConnectionString();
+            using (var bulk = new SqlBulkCopy(con) { DestinationTableName = "GisProductReportCache" })
             {
-                context.Execute(string.Format("DELETE FROM GisProductReportCache WHERE ClientId = '{0}'", guid));
+                var saveData = list.ToList();
+                var dd = GetDataTable<DMCProductReportCacheEntity>(saveData);
+                bulk.WriteToServer(dd);
 
-                foreach (var item in list)
-                {
-                    context.Execute(string.Format(query,
-                        (item.Latitude ?? 0),
-                        (item.Longitude ?? 0), //1
-                        item.Desc, //2
-                        item.OrderCount, //3
-                        item.SaleCount, //4
-                        item.RetSaleCount, //5
-                        item.SaleItemCount, //6
-                        item.RetSaleItemCount, //7
-                        item.SaleQty, //8
-                        item.SaleCarton, //
-                        item.SaleAmount, //
-                        item.RetSaleQty, //
-                        item.RetSaleCarton, //
-                        item.RetSaleAmount, //
-                        item.SaleWeight, //
-                        item.RetSaleWeight, //
-                        item.SaleDiscount, //
-                        item.RetSaleDiscount, //
-                        item.SalePrizeCount, //
-                        item.PrizeQty, //19
-                        item.PrizeCarton, //20
-                        item.IntId //20
-                        ));
-                }
-                context.Commit();
             }
-        }
-
-        private object IsNull(object val, object def)
-        {
-            if (val != null) return val;
-            return def;
         }
 
         public DMCProductReportForMapViewModel LoadGoodReport(Guid areaId, DMCProductReportFilterModel filter)
