@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using App.Authorise;
+using log4net;
 using log4net.Config;
 using log4net.Repository;
 using Newtonsoft.Json;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -25,14 +27,17 @@ namespace ClientApp
         {            
             try
             {
+                JiraLogin();
 
-                //string servserURI = "http://217.218.53.71:7000/";
+
+                string servserURI = "http://217.218.53.71:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
                 //string servserURI = "http://79.175.166.186/";
-                string servserURI = "http://localhost:59822/";
+                //string servserURI = "http://46.209.104.2:7000/";
                 //string servserURI = "http://46.209.104.2:7000/";
                 //string servserURI = "http://192.168.0.160:8081/";
-                var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
+                var oauthClient = new OAuth2Client(new Uri(servserURI));
+                //var oauthClient = new OAuth2Client(new Uri(servserURI + "/oauth/token"));
                 var client = new HttpClient();
                 client.Timeout = TimeSpan.FromHours(1);
                 //var storeData = StoreManagement.GetStoreInfo();
@@ -44,18 +49,21 @@ namespace ClientApp
                 //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("09125793221", "9876", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C").Result; //, "foo bar"
                 //                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("anatoli", "anatoli@vn@87134", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
                 //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
-                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
+                var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("h.ahmadi", "ahmadi123", "").Result; //, "foo bar"
+                //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("AnatoliMobileApp", "Anatoli@App@Vn", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240").Result; //, "foo bar"
                 //var oauthresult = oauthClient.RequestResourceOwnerPasswordAsync("domino", "1234356", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240,DD86E785-7171-498E-A9BB-82E1DBE334EE").Result; //, "foo bar"
 
                 if (oauthresult.AccessToken != null)
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
-                    CustomerManagement.ChangePassword(client, servserURI);
+                    CityRegionManagement.GetCityRegionFromServer(client, servserURI);
+
+                    //CustomerManagement.ChangePassword(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //ProductManagement.DownloadSimpleProductFromServer(client, servserURI);
-                    PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
+                    //PurchaseOrderManagement.GetCustomerSellInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellDetailInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.GetCustomerSellHistoryInfoFromServer(client, servserURI);
                     //PurchaseOrderManagement.CalcPromoFromServer(client, servserURI);
@@ -159,6 +167,12 @@ namespace ClientApp
                 //log.Error("error", ex);
                 Console.WriteLine("Error, {0}", ex.Message);
             }
+        }
+
+        private static void JiraLogin()
+        {
+            var jira = new CrowdSSO();
+            jira.Authenticate()
         }
     }
     public class data

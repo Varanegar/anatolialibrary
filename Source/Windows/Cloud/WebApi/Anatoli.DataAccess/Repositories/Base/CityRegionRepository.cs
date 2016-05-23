@@ -15,6 +15,10 @@ namespace Anatoli.DataAccess.Repositories
             : base(context)
         {
         }
+        public CityRegionRepository(AnatoliDbContext context, OwnerInfo ownerInfo)
+            : base(context, ownerInfo)
+        {
+        }
         #endregion
     }
 }
