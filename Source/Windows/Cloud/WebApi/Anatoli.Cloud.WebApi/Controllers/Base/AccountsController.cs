@@ -53,7 +53,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
-            var model = this.AppUserManager.Users.ToList().Where(f => f.DataOwnerId == DataOwnerKey ).Select(u => this.TheModelFactory.Create(u));
+            var model = this.AppUserManager.Users.ToList().Where(f => f.DataOwnerId == DataOwnerKey).Select(u => this.TheModelFactory.Create(u));
 
             return Ok(model);
         }
@@ -211,7 +211,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var user = new User()
                 {
                     Id = id.ToString(),
-                    UserName = (OwnerKey == anatoliKey && DataOwnerKey == anatoliKey)?createUserModel.Username:id.ToString(),
+                    UserName = (OwnerKey == anatoliKey && DataOwnerKey == anatoliKey) ? createUserModel.Username : id.ToString(),
                     Email = createUserModel.Email,
                     EmailConfirmed = false,
                     PhoneNumberConfirmed = false,
@@ -368,7 +368,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
             var user = await GetUserByUserId(model.UniqueId.ToString());
 
-            if(model.FullName != null)
+            if (model.FullName != null)
                 user.FullName = model.FullName;
             user.SecurityStamp = Guid.NewGuid().ToString();
             if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
@@ -447,14 +447,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
             {
                 var user = await GetUserByUserName(data.username);
                 //var user = await userStore.FindByNameAsync(username);
-                await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
+                await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null,
+                                                            SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
+                return Ok(new BaseViewModel());
             }
             catch (Exception ex)
             {
-                log.Error("Web API Call Error", ex);
+                log.Error(ex, "Web API Call Error in ResendPassCode. ", data.username);
+
                 return GetErrorResult(ex);
             }
-            return Ok(new BaseViewModel());
         }
 
         [AllowAnonymous]
@@ -462,10 +464,24 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("SendPassCode", Name = "SendPassCodeRoute")]
         public async Task<IHttpActionResult> SendPassCode([FromBody]UserRequestModel data)
         {
-            var user = await GetUserByUserName(data.username);
-            //var user = await userStore.FindByNameAsync(username);
-            await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
-            return Ok(new BaseViewModel());
+            try
+            {
+                var user = await GetUserByUserName(data.username);
+                //var user = await userStore.FindByNameAsync(username);
+                if (user == null)
+                    return GetErrorResult("کاربر یافت نشد");
+
+                await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null,
+                                                            SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
+
+                return Ok(new BaseViewModel());
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Web API Call Error in SendPassCode. ", data.username);
+
+                return GetErrorResult(ex); ;
+            }
         }
 
         [AllowAnonymous]
@@ -475,11 +491,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             var user = await GetUserByUserName(data.username);
             //var user = await userStore.FindByNameAsync(username);
+
             if (user == null)
                 return GetErrorResult("کاربر یافت نشد");
+
             //this.AppUserManager.AddPassword()
-            String hashedNewPassword = this.AppUserManager.PasswordHasher.HashPassword(data.password);
+            var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(data.password);
+
             await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
+
             return Ok(new BaseViewModel());
         }
 
@@ -663,7 +683,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
         }
-        private async Task<User> GetUserByUserId(string userId) 
+        private async Task<User> GetUserByUserId(string userId)
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByIdAsync(userId);
         }

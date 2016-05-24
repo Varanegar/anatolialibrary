@@ -100,3 +100,7 @@ div.chk-grid {
     height: 100%;
     text-align: center;
 }
+
+.k-window-titlebar {
+    min-height: 25px !important;
+}
