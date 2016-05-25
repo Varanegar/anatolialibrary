@@ -36,6 +36,29 @@ namespace ClientApp
         }
 
 
+        public static void CreateUser(HttpClient client, string servserURI)
+        {
+            var dataInfo = new BaseRequestModel();
+            var userInfo = new CreateUserBindingModel();
+            userInfo.UniqueId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE");
+            userInfo.Mobile = "09125793221";
+            userInfo.Password = "1";
+            userInfo.ConfirmPassword = "1";
+            userInfo.FullName = "";
+
+            dataInfo.user = JsonConvert.SerializeObject(userInfo);
+            string data = JsonConvert.SerializeObject(dataInfo);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            content.Headers.Add("OwnerKey", "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240");
+            content.Headers.Add("DataOwnerKey", "DD86E785-7171-498E-A9BB-82E1DBE334EE");
+            content.Headers.Add("DataOwnerCenterKey", "DD86E785-7171-498E-A9BB-82E1DBE334EE");
+
+
+            //F125EDC7-473D-4C59-B966-3EF9E6E6A7D9
+            var result8 = client.PostAsync(servserURI + "/api/accounts/saveUser", content).Result;
+            var json8 = result8.Content.ReadAsStringAsync().Result;
+        }
+
         public static void ChangePassword(HttpClient client, string servserURI)
         {
             var dataInfo = new BaseRequestModel();

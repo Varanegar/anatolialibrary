@@ -229,7 +229,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                         return GetErrorResult("ایمیل شما قبلا استفاده شده است");
                 }
 
-                if (createUserModel.Password != null)
+                if (createUserModel.Mobile != null)
                 {
                     var emailUser = await userDomain.GetByPhoneAsync(createUserModel.Mobile);
                     if (emailUser != null)

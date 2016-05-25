@@ -125,14 +125,14 @@
 
                 context.DataOwners.AddOrUpdate(item => item.Id,
                     new DataOwner { Id = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), Title = "نرم افزارهای ابری داده کاوان پیشرو ایده ورانگر", WebHookUsername = "anatoli-inter-com@varanegar.com" },
-                    new DataOwner { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" },
-                    new DataOwner { Id = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار ردیابی شرکت دومینو", WebHookUsername = "" }
+                    new DataOwner { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" },
+                    new DataOwner { Id = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), ApplicationOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), Title = "نرم افزار ردیابی شرکت دومینو", WebHookUsername = "" }
                 );
 
                 context.DataOwnerCenters.AddOrUpdate(item => item.Id,
                     new DataOwnerCenter { Id = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), DataOwnerId = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"), AnatoliContactId = Guid.Parse("02D3C1AA-6149-4810-9F83-DF3928BFDF16"), Title = "نرم افزارهای ابری داده کاوان پیشرو ایده ورانگر", WebHookUsername = "anatoli-inter-com@varanegar.com" },
-                    new DataOwnerCenter { Id = Guid.Parse("02313882-9767-446D-B4CE-54004EF0AAC4"), DataOwnerId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "دومینو دفتر تهران", WebHookUsername = "" },
-                    new DataOwnerCenter { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), DataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), AnatoliContactId = Guid.Parse("D186DFBC-611F-42ED-B3D8-ACF92A8DE3C9"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" }
+                    new DataOwnerCenter { Id = Guid.Parse("02313882-9767-446D-B4CE-54004EF0AAC4"), DataOwnerId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), AnatoliContactId = Guid.Parse("DD86E785-7171-498E-A9BB-82E1DBE334EE"), Title = "دومینو دفتر تهران", WebHookUsername = "" },
+                    new DataOwnerCenter { Id = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), DataOwnerId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), AnatoliContactId = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C"), Title = "نرم افزار فروش اینترنتی نیک توشه زیست", WebHookUsername = "info@eiggstores.com" }
                 );
 
                 context.Roles.AddOrUpdate(item => item.Id,
