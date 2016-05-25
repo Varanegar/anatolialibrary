@@ -128,7 +128,7 @@ namespace Anatoli.Business
                            , content).Result;
 
                 if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    throw new Exception("Can not save order to server");
+                    throw new Exception(result.Content.ReadAsStringAsync().Result);
                 else if (!result.IsSuccessStatusCode)
                     throw new Exception(result.Content.ReadAsStringAsync().Result);
 
