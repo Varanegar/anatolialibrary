@@ -86,7 +86,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             {
                 var service = new PersonnelDailyActivityEventDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                var list = await service.LoadPersonelsEvents(data.date,
+                var list = await service.LoadPersonelsEvents(data.date, data.fromTime, data.toTime, 
                         data.personelIds,
                         data.order, data.lackOrder, data.lackVisit, data.stopWithoutActivity, data.stopWithoutCustomer);
 
@@ -132,7 +132,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             {
                 var service = new PersonnelDailyActivityPointDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
 
-                var list =  await service.LoadPersonelsPath(data.date, data.personelIds);
+                var list =  await service.LoadPersonelsPath(data.date, data.personelIds, data.fromTime, data.toTime);
 
                 #region ToPolyViewModel
 
