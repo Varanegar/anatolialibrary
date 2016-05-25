@@ -1,4 +1,5 @@
-﻿using Anatoli.DMC.DataAccess.Helpers;
+﻿using System.Configuration;
+using Anatoli.DMC.DataAccess.Helpers;
 using Anatoli.ViewModels.BaseModels;
 using NLog;
 using System;
@@ -18,5 +19,14 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
         {
             return new DataContext("DMCConnectionString", tran);
         }
+
+
+        protected static string GetConnectionString()
+        {
+            ConnectionStringSettings mySetting = ConfigurationManager.ConnectionStrings["DMCConnectionString"];
+            return mySetting.ToString();
+        }
+
+
     }
 }

@@ -15,6 +15,32 @@ namespace Anatoli.Cloud.WebApi.Controllers
     [RoutePrefix("api/gateway/base/region")]
     public class RegionController : AnatoliApiController
     {
+        /// <summary>
+        /// Todo: remove it after your testing
+        /// </summary>
+        /// <returns></returns>
+        [Route("cityregionsTest")]
+        public async Task<IHttpActionResult> GetCityRegionTest()
+        {
+            try
+            {
+                var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
+                {
+                    ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                    DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                    DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
+                }).GetAllAsync<CityRegionViewModel>();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+
+                return GetErrorResult(ex);
+            }
+        }
+
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("cityregions")]
         [HttpPost]

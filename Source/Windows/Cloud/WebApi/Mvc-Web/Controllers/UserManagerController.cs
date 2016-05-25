@@ -25,5 +25,10 @@ namespace Mvc_Web.Controllers
         {
             return View();
         }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
     }
 }

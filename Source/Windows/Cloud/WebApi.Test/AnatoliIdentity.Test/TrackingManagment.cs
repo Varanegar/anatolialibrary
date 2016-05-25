@@ -165,7 +165,7 @@ namespace ClientApp
                 //Latitude = 38.075812,
                 //Longitude = 46.285022,
                 Latitude = 38.041751,
-                Longitude = 46.105754,
+                Longitude = 46.104754,
                 ActivityDate = DateTime.Now,
                 ActivityPDate = "1395/02/29",
                 LastUpdate = DateTime.Now,

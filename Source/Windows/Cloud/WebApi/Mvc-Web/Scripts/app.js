@@ -7,7 +7,7 @@ var baseBackendUrl = 'http://localhost:59822';
 //sslBackendUrl = 'http://localhost',
 
 privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
-dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+dataOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
 dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 urls = {
     loginUrl: baseBackendUrl + '/oauth/token',
@@ -61,6 +61,9 @@ urls = {
 
     myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
 
+    sendPassCodeUrl: baseBackendUrl + '/api/accounts/SendPassCode',
+    resetPasswordByCodeUrl: baseBackendUrl + '/api/accounts/ResetPasswordByCode',
+    changePasswordUrl: baseBackendUrl + '/api/accounts/ChangePassword',
 
     pages: {
         product: { url: '/Products', title: 'کالا', order: 7 },
@@ -156,7 +159,7 @@ function headerMenuViewModel() {
     self.refreshHeaderMenu = function () {
 
         if ($(".header-menu .navbar-nav li").length < 2) self.shouldShowLogout(true);
-        //debugger
+
         //$(".header-menu .navbar-nav").html("<li class='exit-menu-item'' data-bind='visible: shouldShowLogout'><a href='#'' class='glyphicon glyphicon-log-out'> خروج </a></li>");
 
         var $wrapper = $('.header-menu ul.navbar-nav');
@@ -206,8 +209,12 @@ function accountManagerViewModel() {
     self.loginEmail = ko.observable();
     self.loginPassword = ko.observable();
     self.requestAppObject = ko.observable();
+    self.resetCode = ko.observable('');
+    self.newPass = ko.observable('');
+    self.confirmNewPass = ko.observable('');
 
     function showAjaxError(jqXHR) {
+
         var title = jqXHR.status,
             message = jqXHR.statusText
 
@@ -215,7 +222,6 @@ function accountManagerViewModel() {
             title = jqXHR.responseJSON.error;
             message = jqXHR.responseJSON.error_description;
         }
-
         if (jqXHR.status == 401) {
             title = '401';
             message = errorMessage.unAuthorized;
@@ -237,6 +243,11 @@ function accountManagerViewModel() {
             }
             message = errorsString;
         }
+        if (jqXHR.status == 400 && jqXHR.responseJSON.modelState == undefined) {
+            title = 'خطا';
+            message = jqXHR.responseJSON.message;
+        }
+
         showError(title, message);
 
         console.log(title + ': ' + message);
@@ -291,7 +302,8 @@ function accountManagerViewModel() {
         self.result('');
 
         if (self.loginEmail() == undefined || self.loginEmail() == '' || self.loginPassword() == undefined || self.loginPassword() == '') {
-            self.result('لطفا اطلاعات کاربری خود را وارد نمایید');
+            showError('', 'لطفا اطلاعات کاربری خود را وارد نمایید');
+            $(".email-txt").focus()
             return;
         }
 
@@ -314,14 +326,13 @@ function accountManagerViewModel() {
             data: loginData,
         }).done(function (data) {
             self.user(data.userName);
-            //debugger
+
             $.cookie("token", data.access_token, { path: '/' });
             $loginForm.data("kendoWindow").close();
 
             var retUrlObject = self.requestAppObject();
             if (retUrlObject)
                 self.callApi(retUrlObject.url, retUrlObject.callType, {}, retUrlObject.callBackFunc);
-
 
             headerMenu.shouldShowLogout(true);
             unfreezUI();
@@ -346,9 +357,66 @@ function accountManagerViewModel() {
         $loginForm.data("kendoWindow").open();
     }
 
-    $(document).on("click", ".btn-login", function () {
-        self.login();
-    });
+    self.onRequestRestorePass = function () {
+        if (self.loginEmail() !== "" && self.loginEmail() !== undefined) {
+            $.ajax({
+                type: "POST",
+                url: urls.sendPassCodeUrl,
+                data: { username: self.loginEmail() },
+                dataType: "json",
+                crossOrigin: true,
+                beforeSend: function (request) {
+                    request.setRequestHeader("OwnerKey", privateOwnerId);
+                    request.setRequestHeader("DataOwnerKey", dataOwnerId);
+                    request.setRequestHeader("DataOwnerCenterKey", dataOwnerCenterId);
+                    request.setRequestHeader("Access-Control-Allow-Origin", "*");
+                },
+                success: function (response) {
+                    self.showRestorePasswordDiv();
+                    showSuccess('', 'کد بازیابی رمز عبور برای شما ارسال گردید');
+                }
+            }).fail(showAjaxError);
+        }
+        else {
+            showError('', 'لطفا نام کاربری خود را وارد نمایید');
+            $(".email-txt").focus()
+        }
+    };
+
+    self.onRestorePass = function () {
+        if (self.resetCode() === '' || self.newPass() === '' || self.confirmNewPass() === '') {
+            showError('', 'لطفا اطلاعات درخواست شده را تکمیل  نمایید');
+            $(".sms-reset-code").focus()
+            return;
+        }
+        if (self.newPass() !== self.confirmNewPass()) {
+            showError('', 'رمز عبور جدید با تکرار آن برابر نیست');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: urls.resetPasswordByCodeUrl,
+            data: { username: self.loginEmail(), password: self.newPass(), code: self.resetCode() },
+            dataType: "json",
+            crossOrigin: true,
+            beforeSend: function (request) {
+                request.setRequestHeader("OwnerKey", privateOwnerId);
+                request.setRequestHeader("DataOwnerKey", dataOwnerId);
+                request.setRequestHeader("DataOwnerCenterKey", dataOwnerCenterId);
+                request.setRequestHeader("Access-Control-Allow-Origin", "*");
+            },
+            success: function (response) {
+
+                self.hideRestorePasswordDiv();
+                showSuccess('', 'رمز عبور شما با موفقیت تغییر کرد');
+            }
+        }).fail(showAjaxError);
+    };
+
+    self.onCancelRestorePass = function () {
+        self.hideRestorePasswordDiv();
+    };
 
     self.initLoginWindow = function () {
         $loginForm.removeClass('hide');
@@ -365,6 +433,26 @@ function accountManagerViewModel() {
     };
 
     self.initLoginWindow();
+
+    self.showRestorePasswordDiv = function () {
+        self.clearRestorePasswordform();
+        $(".restore-password-div").removeClass('hide').show();
+        $(".login-div").hide();
+        $(".k-window-title").html("بازیابی رمزعبور");
+    };
+
+    self.hideRestorePasswordDiv = function () {
+        $(".restore-password-div").hide();
+        $(".login-div").show();
+        $(".k-window-title").html("ورود");
+        self.clearRestorePasswordform();
+    };
+
+    self.clearRestorePasswordform = function () {
+        self.resetCode('');
+        self.newPass('');
+        self.confirmNewPass('');
+    };
 };
 var accountManagerApp = new accountManagerViewModel();
 //******************************************************************//
@@ -2018,7 +2106,7 @@ function userEditManagerViewModel() {
 
     $(".user-edit-page").on("click", '.btn-save', function (e) {
         e.preventDefault;
-        //debugger
+
         var data = {
             uniqueId: $('#userId').val(),
             userId: $('#userId').val(),
@@ -2037,11 +2125,9 @@ function userEditManagerViewModel() {
         else
             valid = self.validateCreateModel(data);
 
-        //debugger
         if (valid)
             self.validateEmail(data.email, data.userId, function (isValidEmail) {
                 if (isValidEmail) {
-                    //debugger
                     accountManagerApp.callApi(urls.saveUserUrl, 'POST', { user: JSON.stringify(data) }, function (data) {
                         $(".edit-window").data("kendoWindow").close();
                     });
@@ -2112,4 +2198,40 @@ function userEditManagerViewModel() {
     self.validateEmail = function (email, userid, callback) {
         accountManagerApp.callApi(urls.checkUserEmail, 'POST', { email: email, userid: userid }, callback);
     }
+};
+//******************************************************************//
+
+function changePasswordViewModel() {
+    // Data
+    var self = this;
+
+    self.oldPass = ko.observable('');
+    self.newPass = ko.observable('');
+    self.confirmNewPass = ko.observable('');
+
+    self.onChangePass = function () {
+        if (self.oldPass() === '' || self.newPass() === '' || self.confirmNewPass() === '') {
+            showError('', 'لطفا اطلاعات درخواستی را تکمیل نمایید');
+            $(".old-pass").focus();
+            return;
+        }
+        if (self.newPass() !== self.confirmNewPass()) {
+            showError('', 'رمز عبور جدید با تکرار آن برابر نیست');
+            $(".new-pass").focus();
+            return;
+        }
+
+        accountManagerApp.callApi(urls.changePasswordUrl, "POST", {
+            oldPassword: self.oldPass(), newPassword: self.newPass(), confirmPassword: self.confirmNewPass
+        }, function (data) {
+            showSuccess('', 'رمز عبور شما تغییر کرد');
+            self.clearForm();
+        });
+    };
+
+    self.clearForm = function () {
+        self.oldPass('');
+        self.newPass('');
+        self.confirmNewPass('');
+    };
 };

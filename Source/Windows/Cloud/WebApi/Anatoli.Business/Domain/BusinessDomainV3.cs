@@ -1,12 +1,13 @@
-﻿using System;
-using LinqKit;
+﻿using NLog;
+using System;
+using AutoMapper;
 using System.Text;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Reflection;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels;
-using System.Data.Entity;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
@@ -15,22 +16,31 @@ using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using EntityFramework.Extensions;
 using Anatoli.DataAccess.Interfaces;
-using Anatoli.DataAccess.Repositories;
-using AutoMapper.QueryableExtensions;
-using NLog;
-using AutoMapper;
 
 namespace Anatoli.Business.Domain
 {
     public abstract class BusinessDomainV3<TSource> : IBusinessDomainV3<TSource> where TSource : BaseModel, new()
     {
         #region Properties
-        protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        protected static readonly Logger Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.ToString());
+
         public OwnerInfo OwnerInfo { get; set; }
 
         public AnatoliDbContext DBContext { get; set; }
 
         public virtual IRepository<TSource> MainRepository { get; set; }
+
+        public static TypeInfo TypeofMainRepository
+        {
+            get
+            {
+                var currentAssembly = typeof(IRepository<TSource>).GetTypeInfo().Assembly;
+
+                return currentAssembly.DefinedTypes
+                                      .Where(typ => typ.ImplementedInterfaces.Any(inter => inter == typeof(IRepository<TSource>)))
+                                      .FirstOrDefault();
+            }
+        }
         #endregion
 
         #region Ctors
@@ -54,7 +64,7 @@ namespace Anatoli.Business.Domain
         }
 
         public BusinessDomainV3(OwnerInfo ownerInfo, AnatoliDbContext dbc) :
-                                this(ownerInfo, (IRepository<TSource>)Activator.CreateInstance(typeof(IRepository<TSource>), dbc, ownerInfo))
+                           this(ownerInfo, (IRepository<TSource>)Activator.CreateInstance(TypeofMainRepository, new object[] { dbc, ownerInfo }))
         {
             DBContext = dbc;
         }
@@ -63,6 +73,7 @@ namespace Anatoli.Business.Domain
         {
             MainRepository = dataRepository;
             OwnerInfo = ownerInfo;
+            SetConditionForFetchingData();
         }
         #endregion
 
@@ -173,7 +184,7 @@ namespace Anatoli.Business.Domain
         }
 
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<TSource, bool>> predicate,
-                                                             Expression<Func<TSource, TResult>> selector)
+                                                              Expression<Func<TSource, TResult>> selector)
         {
             return await MainRepository.FindAllAsync(predicate, selector);
         }
