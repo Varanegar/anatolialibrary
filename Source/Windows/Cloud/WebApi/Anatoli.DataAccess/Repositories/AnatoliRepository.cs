@@ -18,6 +18,8 @@ namespace Anatoli.DataAccess.Repositories
     public abstract class BaseAnatoliRepository<T> : IDisposable, IBaseRepository<T> where T : class
     {
         #region Properties
+        public OwnerInfo OwnerInfo { get; set; }
+
         public AnatoliDbContext DbContext { get; set; }
         protected DbSet<T> DbSet { get; set; }
 
@@ -35,6 +37,10 @@ namespace Anatoli.DataAccess.Repositories
             DbSet = DbContext.Set<T>();
 
             DbContext.Database.Log = Console.Write;
+        }
+        public BaseAnatoliRepository(AnatoliDbContext dbContext, OwnerInfo ownerInfo) : this(dbContext)
+        {
+            OwnerInfo = ownerInfo;
         }
         #endregion
 
@@ -55,19 +61,21 @@ namespace Anatoli.DataAccess.Repositories
        
         public virtual List<T> GetAll()
         {
-            return DbSet.Where(CalcExtraPredict())
-                              .AsNoTracking()
-                              .ToList();
+            return DbSet.AsExpandable()
+                        .Where(CalcExtraPredict())
+                        .AsNoTracking()
+                        .ToList();
         }
         public virtual async Task<List<T>> GetAllAsync()
         {
-            return await DbSet.Where(CalcExtraPredict())
+            return await DbSet.AsExpandable()
+                              .Where(CalcExtraPredict())
                               .AsNoTracking()
                               .ToListAsync();
         }
         public virtual async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
-            var query = GetQuery().Where(CalcExtraPredict()).AsNoTracking();
+            var query = GetQuery().AsExpandable().Where(CalcExtraPredict()).AsNoTracking();
 
             if (selector != null)
                 return await query.Select(selector).ToListAsync();
@@ -77,46 +85,48 @@ namespace Anatoli.DataAccess.Repositories
 
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await DbSet.SingleOrDefaultAsync(CalcExtraPredict(predicate));
+            return await DbSet.AsExpandable().SingleOrDefaultAsync(CalcExtraPredict(predicate));
         }
         public virtual async Task<TResult> FindAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
         {
             if (selector != null)
-                return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).SingleOrDefaultAsync();
+                return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).Select(selector).SingleOrDefaultAsync();
 
-            return await DbSet.Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().SingleOrDefaultAsync();
+            return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().SingleOrDefaultAsync();
         }
 
         public virtual async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
         {
-            return await DbSet.Where(CalcExtraPredict(predicate)).ToListAsync();
+            return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).ToListAsync();
         }
         public virtual async Task<List<TResult>> FindAllAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
         {
             if (selector != null)
-                return await DbSet.Where(CalcExtraPredict(predicate)).Select(selector).ToListAsync();
+                return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).Select(selector).ToListAsync();
 
-            return await DbSet.Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().ToListAsync();
+            return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).ProjectTo<TResult>().ToListAsync();
         }
 
         public virtual IEnumerable<T> GetFromCached(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
         {
-            return DbSet.Where(CalcExtraPredict(predicate)).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)));
+            return DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)));
         }
         public virtual async Task<IEnumerable<T>> GetFromCachedAsync(Expression<Func<T, bool>> predicate, int cacheTimeOut = 300)
         {
-            return await DbSet.Where(CalcExtraPredict(predicate)).FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
+            return await DbSet.AsExpandable().Where(CalcExtraPredict(predicate)).FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
         public virtual async Task<IEnumerable<TResult>> GetFromCachedAsync<TResult>(Expression<Func<T, bool>> predicate,
                                                                                     Expression<Func<T, TResult>> selector,
                                                                                     int cacheTimeOut = 300) where TResult : class
         {
             if (selector != null)
-                return await DbSet.Where(CalcExtraPredict(predicate))
+                return await DbSet.AsExpandable()
+                                  .Where(CalcExtraPredict(predicate))
                                   .Select(selector)
                                   .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
 
-            return await DbSet.Where(CalcExtraPredict(predicate))
+            return await DbSet.AsExpandable()
+                              .Where(CalcExtraPredict(predicate))
                               .ProjectTo<TResult>()
                               .FromCacheAsync(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(300)), tags: new List<string> { typeof(T).ToString() });
         }
@@ -322,10 +332,6 @@ namespace Anatoli.DataAccess.Repositories
 
     public abstract class AnatoliRepository<T> : BaseAnatoliRepository<T>, IDisposable, IRepository<T> where T : BaseModel, new()
     {
-        #region Properties
-        public OwnerInfo OwnerInfo { get; set; }
-        #endregion
-
         #region Ctors
         public AnatoliRepository(AnatoliDbContext dbContext) : base(dbContext) { }
 
