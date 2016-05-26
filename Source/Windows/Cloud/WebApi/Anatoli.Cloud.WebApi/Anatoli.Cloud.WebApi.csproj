@@ -211,6 +211,7 @@
     <Compile Include="Classes\AnatoliAuthorizeAttribute.cs" />
     <Compile Include="Classes\EncodingForBase64.cs" />
     <Compile Include="Classes\FileManager.cs" />
+    <Compile Include="Classes\GzipBodyAttribute.cs" />
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />

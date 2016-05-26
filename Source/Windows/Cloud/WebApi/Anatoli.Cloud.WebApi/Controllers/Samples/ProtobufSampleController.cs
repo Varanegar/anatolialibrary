@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using WebApiContrib.Formatting;
 using System.Collections.Generic;
+using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.ProductModels;
+using System.Text;
+using System.IO;
+using System.IO.Compression;
+using Newtonsoft.Json;
 
 namespace Anatoli.Cloud.WebApi.Controllers.Samples
 {
@@ -155,5 +160,79 @@ namespace Anatoli.Cloud.WebApi.Controllers.Samples
             }
         }
 
+        [Route("sendingGzipSample")]
+        public async Task<IHttpActionResult> SendingGzipSample()
+        {
+            try
+            {
+                var id = Guid.NewGuid();
+
+                var model = new List<ProductViewModel>
+                {
+                    new ProductViewModel
+                    {
+                        UniqueId = id,
+                        ProductName = "test Mrg",
+                        Barcode = "ba",
+                        Desctription = "dsf",
+                        IsActiveInOrder = true,
+                        MainSupplierName = "sf",
+                        PackWeight = 125,
+                        ProductCode = "sf234234swa",
+                        ProductRate = 5,
+                        QtyPerPack = 6,
+                        StoreProductName = "test Mrg1234",
+                        ProductTypeInfo = new ProductTypeViewModel
+                        {
+                            UniqueId = id,
+                            ProductTypeName = "type1"
+                        },
+                        ProductTypeId = id
+                    }
+                };
+
+                var results = new List<ProductViewModel>();
+
+                using (HttpClientHandler handler = new HttpClientHandler())
+                {
+                    handler.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate;
+
+                    using (HttpClient client = new HttpClient(handler, false))
+                    {
+                        var json = JsonConvert.SerializeObject(model);
+                        var jsonBytes = Encoding.UTF8.GetBytes(json);
+                        var ms = new MemoryStream();
+
+                        using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
+                        {
+                            gzip.Write(jsonBytes, 0, jsonBytes.Length);
+                        }
+
+                        ms.Position = 0;
+
+                        var content = new StreamContent(ms);
+
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        content.Headers.ContentEncoding.Add("gzip");
+
+                        var response = await client.PostAsync("http://localhost:59822/api/ProtobufSample/recievingGzipModel", content);
+
+                        results = await response.Content.ReadAsAsync<List<ProductViewModel>>();
+                    }
+                }
+                return Ok(results);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("recievingGzipModel"), HttpPost]
+        public async Task<IHttpActionResult> RecievingGzipModel([GzipBody] List<ProductViewModel> model)
+        {
+            return Ok(model);
+        }
     }
 }

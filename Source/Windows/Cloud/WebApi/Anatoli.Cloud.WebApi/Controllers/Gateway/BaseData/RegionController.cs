@@ -32,7 +32,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                log.Error("Web API Call Error", ex);
+                log.Error(ex, "Web API Call Error");
 
                 return GetErrorResult(ex);
             }

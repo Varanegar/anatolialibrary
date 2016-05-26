@@ -43,10 +43,10 @@ namespace Anatoli.Cloud.WebApi
         public override void OnActionExecuted(HttpActionExecutedContext actContext)
         {
             var content = actContext.Response.Content;
-            var bytes = content == null ? null : content.ReadAsByteArrayAsync().Result;
-            var zlibbedContent = bytes == null ? new byte[0] :
 
-            CompressionHelper.DeflateByte(bytes);
+            var bytes = content == null ? null : content.ReadAsByteArrayAsync().Result;
+
+            var zlibbedContent = bytes == null ? new byte[0] : CompressionHelper.DeflateByte(bytes);
 
             actContext.Response.Content = new ByteArrayContent(zlibbedContent);
 
@@ -59,26 +59,26 @@ namespace Anatoli.Cloud.WebApi
             base.OnActionExecuted(actContext);
         }
     }
+
     public class GzipCompressionAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuted(HttpActionExecutedContext actContext)
+        public override void OnActionExecuted(HttpActionExecutedContext actionContext)
         {
-            var content = actContext.Response.Content;
+            var content = actionContext.Response.Content;
+
             var bytes = content == null ? null : content.ReadAsByteArrayAsync().Result;
-            var zlibbedContent = bytes == null ? new byte[0] :
 
-            CompressionHelper.GzipByte(bytes);
+            var zlibbedContent = bytes == null ? new byte[0] : CompressionHelper.GzipByte(bytes);
 
-            actContext.Response.Content = new ByteArrayContent(zlibbedContent);
+            actionContext.Response.Content = new ByteArrayContent(zlibbedContent);
 
-            actContext.Response.Content.Headers.Remove("Content-Type");
+            actionContext.Response.Content.Headers.Remove("Content-Type");
 
-            actContext.Response.Content.Headers.Add("Content-encoding", "gzip");
+            actionContext.Response.Content.Headers.Add("Content-encoding", "gzip");
 
-            actContext.Response.Content.Headers.Add("Content-Type", "application/json");
+            actionContext.Response.Content.Headers.Add("Content-Type", "application/json");
 
-            base.OnActionExecuted(actContext);
+            base.OnActionExecuted(actionContext);
         }
     }
-
 }
