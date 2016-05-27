@@ -1,57 +1,119 @@
-﻿using System;
-using Anatoli.DataAccess;
-using Anatoli.DataAccess.Models;
-using Anatoli.DataAccess.Interfaces;
+﻿using Anatoli.Business.Domain;
+using Anatoli.Business.Proxy.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
-using Anatoli.DataAccess.Repositories;
-using System.Linq.Expressions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http;
 
-namespace Anatoli.Business.Domain
+namespace Anatoli.Cloud.WebApi.Controllers
 {
-    public class CityRegionDomain : BusinessDomainV3<CityRegion>, IBusinessDomainV3<CityRegion>
+    [RoutePrefix("api/gateway/base/region")]
+    public class RegionController : AnatoliApiController
     {
-        #region Ctors
-        public CityRegionDomain(OwnerInfo ownerInfo)
-            : this(ownerInfo, new AnatoliDbContext())
-        {
-        }
-        public CityRegionDomain(OwnerInfo ownerInfo, AnatoliDbContext dbc)
-            : base(ownerInfo, dbc)
-        {
-        }
-        #endregion
+        /// <summary>
+        /// Todo: remove it after your testing
+        /// </summary>
+        /// <returns></returns>
+        //[Route("cityregionsTest")]
+        //public async Task<IHttpActionResult> GetCityRegionTest()
+        //{
+        //    try
+        //    {
+        //        var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
+        //        {
+        //            ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+        //            DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+        //            DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
+        //        }).GetAllAsync<CityRegionViewModel>();
 
-        #region Methods
-        public override void AddDataToRepository(CityRegion currentCityRegion, CityRegion item)
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex, "Web API Call Error");
+
+        //        return GetErrorResult(ex);
+        //    }
+        //}
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("cityregions")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegion()
         {
-            if (currentCityRegion != null)
+            try
             {
-                if (currentCityRegion.GroupName != item.GroupName ||
-                    currentCityRegion.NLeft != item.NLeft ||
-                    currentCityRegion.NRight != item.NRight ||
-                    currentCityRegion.NLevel != item.NLevel ||
-                    currentCityRegion.CityRegion2Id != item.CityRegion2Id)
-                {
-                    currentCityRegion.LastUpdate = DateTime.Now;
-                    currentCityRegion.GroupName = item.GroupName;
-                    currentCityRegion.NLeft = item.NLeft;
-                    currentCityRegion.NRight = item.NRight;
-                    currentCityRegion.NLevel = item.NLevel;
-                    currentCityRegion.CityRegion2Id = item.CityRegion2Id;
-                    MainRepository.Update(currentCityRegion);
-                }
+                var result = await new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
+
+                return Ok(result);
             }
-            else
+            catch (Exception ex)
             {
-                item.CreatedDate = item.LastUpdate = DateTime.Now;
-                MainRepository.Add(item);
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
             }
         }
 
-        public override void SetConditionForFetchingData()
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("cityregions/after")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegion([FromBody]BaseRequestModel data)
         {
-            MainRepository.ExtraPredicate = p => true;
+            try
+            {
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var validDate = DateTime.Parse(data.dateAfter);
+                var result = await cityRegionDomain.GetAllChangedAfterAsync(validDate);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
-        #endregion
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
+        [Route("save")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SaveCityRegionInfo([FromBody]GeneralRequestModel data)
+        {
+            try
+            {
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var saveData = new CityRegionProxy().ReverseConvert(data.cityRegionData);
+                await cityRegionDomain.PublishAsync(saveData);
+                return Ok(data.cityRegionData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "DataSync, BaseDataAdmin")]
+        [Route("checkdeleted")]
+        [HttpPost]
+        public async Task<IHttpActionResult> CheckDeletedCityRegionInfo([FromBody]GeneralRequestModel data)
+        {
+            try
+            {
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                await cityRegionDomain.CheckDeletedAsync(data.cityRegionData);
+                return Ok(data.cityRegionData);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
     }
 }
