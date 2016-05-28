@@ -1,11 +1,14 @@
-﻿using System;
-using System.Web.Http;
-using Anatoli.ViewModels;
-using System.Threading.Tasks;
-using Anatoli.Business.Domain;
-using Anatoli.Cloud.WebApi.Classes;
+﻿using Anatoli.Business.Domain;
 using Anatoli.Business.Proxy.ProductConcretes;
+using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -16,27 +19,27 @@ namespace Anatoli.Cloud.WebApi.Controllers
         /// Todo: remove it after your testing
         /// </summary>
         /// <returns></returns>
-        [Route("cityregionsTest")]
-        public async Task<IHttpActionResult> GetCityRegionTest()
-        {
-            try
-            {
-                var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
-                {
-                    ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
-                    DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
-                    DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
-                }).GetAllAsync<CityRegionViewModel>();
+        //[Route("cityregionsTest")]
+        //public async Task<IHttpActionResult> GetCityRegionTest()
+        //{
+        //    try
+        //    {
+        //        var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
+        //        {
+        //            ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+        //            DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+        //            DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
+        //        }).GetAllAsync<CityRegionViewModel>();
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex, "Web API Call Error");
 
-                return GetErrorResult(ex);
-            }
-        }
+        //        return GetErrorResult(ex);
+        //    }
+        //}
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("cityregions")]
@@ -45,14 +48,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var result = await new CityRegionDomain(OwnerInfo).GetAllAsync<CityRegionViewModel>();
+                var result = await new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
-
                 return GetErrorResult(ex);
             }
         }
@@ -64,18 +66,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var cityRegionDomain = new CityRegionDomain(OwnerInfo);
-
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var validDate = DateTime.Parse(data.dateAfter);
-
-                var result = await cityRegionDomain.GetAllChangedAfterAsync<CityRegionViewModel>(validDate);
+                var result = await cityRegionDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
-
                 return GetErrorResult(ex);
             }
         }
@@ -87,7 +86,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var cityRegionDomain = new CityRegionDomain(OwnerInfo);
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var saveData = new CityRegionProxy().ReverseConvert(data.cityRegionData);
                 await cityRegionDomain.PublishAsync(saveData);
                 return Ok(data.cityRegionData);
@@ -95,7 +94,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
-
                 return GetErrorResult(ex);
             }
         }
@@ -107,14 +105,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var cityRegionDomain = new CityRegionDomain(OwnerInfo);
+                var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 await cityRegionDomain.CheckDeletedAsync(data.cityRegionData);
                 return Ok(data.cityRegionData);
             }
             catch (Exception ex)
             {
                 log.Error("Web API Call Error", ex);
-
                 return GetErrorResult(ex);
             }
         }
