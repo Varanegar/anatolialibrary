@@ -26,5 +26,7 @@ namespace Anatoli.DMC.ViewModels.Base
         public int InitialBalanceTypeId  { get; set; }
         public string DeclareDate  { get; set; }
         public bool IsBlackList { get; set; }
+        public int Longitude { set; get; }
+        public int Latitude { set; get; }
     }
 }

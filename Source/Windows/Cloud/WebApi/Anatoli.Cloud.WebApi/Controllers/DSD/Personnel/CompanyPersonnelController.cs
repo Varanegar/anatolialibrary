@@ -34,6 +34,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             try
             {
                 var result = new List<SelectListItemViewModel>();
+                if (data.regionAreaId != null)
                 await Task.Factory.StartNew(() =>
                 {
                     var service = new DMCCompanyPersonelDomain();
@@ -58,6 +59,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
             try
             {
                 var result = new List<SelectListItemViewModel>();
+                if (data.groupId != null)
                 await Task.Factory.StartNew(() =>
                 {
                     var service = new DMCCompanyPersonelDomain();

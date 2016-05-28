@@ -34,6 +34,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Customer
             try
             {
                 var result = new List<CustomerComboViewModel>();
+                if (data.searchTerm != "")
                 await Task.Factory.StartNew(() =>
                 {
                     var customerService = new DMCCustomerDomain();

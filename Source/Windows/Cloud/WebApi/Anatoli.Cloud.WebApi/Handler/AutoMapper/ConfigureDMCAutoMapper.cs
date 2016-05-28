@@ -48,7 +48,8 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
             Mapper.CreateMap<DMCPointViewModel, PointViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UniqueId));
             Mapper.CreateMap<DMCCustomerViewModel, CustomerComboViewModel>()
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CustomerName + ' '+ src.CustomerCode));
+                .ForMember(dest => dest.hasLatLng, opt => opt.MapFrom(src => src.Latitude + src.Longitude > 0))
+                .ForMember(dest => dest.title, opt => opt.MapFrom(src => src.CustomerName + ' '+ src.CustomerCode));
 
 
         }

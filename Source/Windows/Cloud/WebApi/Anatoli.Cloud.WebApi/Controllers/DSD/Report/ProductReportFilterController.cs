@@ -47,6 +47,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
             try
             {
                 var result = new List<SelectListItemViewModel>();
+                if (filter.searchTrem != "")
                 await Task.Factory.StartNew(() =>
                 {
                     var service = new SDSProductReportFilterDomain();

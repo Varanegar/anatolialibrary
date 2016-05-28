@@ -8,8 +8,8 @@ namespace Anatoli.ViewModels.VnGisModels
 {
     public class CustomerComboViewModel
     {
-        public Guid UniqueId { set; get; }
-        public string Title { get; set; }
-        public bool HasLatLng { set; get; }
+        public Guid uniqueId { set; get; }
+        public string title { get; set; }
+        public bool hasLatLng { set; get; }
     }
 }
