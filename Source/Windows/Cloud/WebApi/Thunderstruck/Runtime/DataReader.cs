@@ -130,7 +130,11 @@ namespace Thunderstruck.Runtime
         public static T CastTo<T>(object value)
         {
             if (value is DBNull) return default(T);
+            if ((typeof(T) == typeof(Guid) || typeof(T) == typeof(Guid?)) && value.GetType() == typeof(string))
+               value = Guid.Parse(value.ToString());
+
             return (T)Convert.ChangeType(value, typeof(T));
+
         }
     }
 }

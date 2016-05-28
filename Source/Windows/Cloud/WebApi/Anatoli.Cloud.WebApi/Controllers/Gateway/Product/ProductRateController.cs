@@ -63,7 +63,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var productRateDomain = new ProductRateDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await productRateDomain.GetAllAvgChangeAfter(validDate);
 
                 return Ok(result);

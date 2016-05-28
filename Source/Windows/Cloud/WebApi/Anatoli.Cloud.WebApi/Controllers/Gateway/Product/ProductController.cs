@@ -42,7 +42,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var charGroupDomain = new CharGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await charGroupDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -119,7 +119,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var charTypeDomain = new CharTypeDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(model.dateAfter);
+                var validDate = GetDateFromString(model.dateAfter);
                 var result = await charTypeDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -196,7 +196,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var domain = new ProductTagDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(model.dateAfter);
+                var validDate = GetDateFromString(model.dateAfter);
                 var result = await domain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -273,7 +273,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var domain = new ProductTagValueDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(model.dateAfter);
+                var validDate = GetDateFromString(model.dateAfter);
                 var result = await domain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -389,7 +389,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -410,7 +410,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
@@ -556,7 +556,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var productGroupDomain = new ProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(model.dateAfter);
+                var validDate = GetDateFromString(model.dateAfter);
                 var result = await productGroupDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
@@ -665,7 +665,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var productGroupDomain = new MainProductGroupDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await productGroupDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }

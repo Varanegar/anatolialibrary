@@ -62,7 +62,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var supplierDomain = new SupplierDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await supplierDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);

@@ -48,7 +48,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var stockDomain = new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var validDate = DateTime.Now;
                 if (data.ruleDate != "" && data.ruleDate != null)
-                    validDate = DateTime.Parse(data.ruleDate);
+                    validDate = GetDateFromString(data.ruleDate);
 
                 var result = await stockDomain.GetAllValidAsync(validDate);
                 return Ok(result);
@@ -70,7 +70,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var stockDomain = new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 var validDate = DateTime.Now;
                 if (data.dateAfter != "" && data.dateAfter != null)
-                    validDate = DateTime.Parse(data.dateAfter);
+                    validDate = GetDateFromString(data.dateAfter);
 
                 var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);

@@ -67,7 +67,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var cityRegionDomain = new CityRegionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await cityRegionDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);

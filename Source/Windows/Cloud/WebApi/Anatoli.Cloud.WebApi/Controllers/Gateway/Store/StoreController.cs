@@ -40,7 +40,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
@@ -122,7 +122,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var storeDomain = new StoreActiveOnhandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await storeDomain.GetAllByStoreIdChangedAfter(data.storeId, validDate);
                 return Ok(data.storeId);
             }
@@ -215,7 +215,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await storeDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
@@ -234,7 +234,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var storeDomain = new StoreActivePriceListDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await storeDomain.GetAllByStoreIdChangedAfterAsync(data.storeId, validDate);
                 return Ok(result);
             }
@@ -309,7 +309,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var storeDomain = new StoreDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await storeDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }

@@ -483,7 +483,7 @@
                             UserName = userId,
                             PhoneNumber = "87135000",
                             UserNameStr = "AnatoliMobileApp",
-                            PasswordHash = "AIr8brRUrX1bD/U74Fk/ww5Kbcl0BnMsGZB+3lOkyoAjCBDTn2QFAJ7Oy9KjM3sQGA==",
+                            PasswordHash = "AEeZFHD0JoCSW5J3+p7qq983Qp72sWRd1LEiLKSJQicxnQUNBijUM3KSw1kyGSa0KA==",
                             Email = "anatolimobileapp@varanegar.com",
                             EmailConfirmed = true,
                         //AnatoliContactId = Guid.Parse("E8724E69-0A81-4DC6-87FE-FDA91D1D2EC2"),
@@ -493,7 +493,7 @@
                             LastEntry = DateTime.Now,
                             DataOwnerId = dataOwnerId,
                             ApplicationOwnerId = applicationOwnerId,
-                            SecurityStamp = "2ffde61f-3d90-48de-bdf2-ecd619134201",
+                            SecurityStamp = "843957f1-640c-4201-96af-d39ce581efb5",
                         });
 
                 }

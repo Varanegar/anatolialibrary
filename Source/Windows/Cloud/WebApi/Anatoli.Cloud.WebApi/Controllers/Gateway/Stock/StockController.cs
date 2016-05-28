@@ -45,7 +45,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var stockDomain = new StockActiveOnHandDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(validDate);
             }
@@ -201,7 +201,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var stockDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }
@@ -261,7 +261,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var stockDomain = new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await stockDomain.GetAllChangedAfterAsync(validDate);
                 return Ok(result);
             }

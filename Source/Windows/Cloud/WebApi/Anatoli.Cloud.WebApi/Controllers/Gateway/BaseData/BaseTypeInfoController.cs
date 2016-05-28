@@ -42,7 +42,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await new BaseTypeDomain(OwnerKey, OwnerKey, OwnerKey).GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);

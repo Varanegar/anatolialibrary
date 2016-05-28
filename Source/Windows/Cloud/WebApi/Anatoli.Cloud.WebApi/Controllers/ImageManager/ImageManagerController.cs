@@ -52,7 +52,7 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
             try
             {
                 var productDomain = new ItemImageDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(dateAfter);
+                var validDate = GetDateFromString(dateAfter);
                 var result = await productDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);

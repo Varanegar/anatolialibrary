@@ -2,6 +2,7 @@
 using System.Web;
 using Anatoli.DataAccess.Models;
 using Anatoli.Cloud.WebApi.Controllers;
+using System.Globalization;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -57,6 +58,17 @@ namespace Anatoli.Cloud.WebApi.Classes
                     DataOwnerKey = DataOwnerKey
                 };
             }
+        }
+
+        public DateTime GetDateFromString(string dateStr)
+        {
+            var validDate = DateTime.MinValue;
+            try { validDate = DateTime.Parse(dateStr); }
+            catch (Exception ex) {
+                DateTime.TryParseExact(dateStr, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture,
+                        DateTimeStyles.None, out validDate);
+            }
+            return validDate;
         }
     }
 }

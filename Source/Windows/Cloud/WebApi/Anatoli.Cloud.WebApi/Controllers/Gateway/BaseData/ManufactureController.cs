@@ -44,7 +44,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var manufactureDomain = new ManufactureDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
-                var validDate = DateTime.Parse(data.dateAfter);
+                var validDate = GetDateFromString(data.dateAfter);
                 var result = await manufactureDomain.GetAllChangedAfterAsync(validDate);
 
                 return Ok(result);
