@@ -36,17 +36,17 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
 
                             "@Startdate = '"+ filter.FromDate.Substring(2)+"',"+
                             "@EndDate = '"+ filter.ToDate.Substring(2)+"',"+
-                            "@SaleOfficeList ='" + (filter.SaleOffice == "" ? "-1" : filter.SaleOffice) + "'," +
-                            "@SupervisorList ='"+ (filter.Header == "" ? "-1" : filter.Header )+"',"+
-                            "@DealerList = '"+(filter.Seller == "" ? "-1" : filter.Seller)+"',"+
-                            "@CustCtgrList ='"+ (filter.CustomerClass == "" ?  "-1": filter.CustomerClass) +"',"+
-                            "@CustActList = '"+(filter.CustomerActivity == "" ?  "-1": filter.CustomerActivity) +"',"+
-                            "@CustLevelList = '"+(filter.CustomerDegree == "" ?  "-1" : filter.CustomerDegree) +"',"+
+                            "@SaleOfficeList ='" + (filter.SaleOffice == "" || filter.SaleOffice == "null" ? "-1" : filter.SaleOffice) + "'," +
+                            "@SupervisorList ='" + (filter.Header == "" || filter.Header == "null" ? "-1" : filter.Header) + "'," +
+                            "@DealerList = '"+(filter.Seller == "" || filter.Seller == "null" ? "-1" : filter.Seller)+"',"+
+                            "@CustCtgrList ='" + (filter.CustomerClass == "" || filter.CustomerClass == "null" ? "-1" : filter.CustomerClass) + "'," +
+                            "@CustActList = '" + (filter.CustomerActivity == "" || filter.CustomerActivity == "null" ? "-1" : filter.CustomerActivity) + "'," +
+                            "@CustLevelList = '" + (filter.CustomerDegree == "" || filter.CustomerDegree == "null" ? "-1" : filter.CustomerDegree) + "'," +
                             "@CountNotVisit = '"+ filter.DayCount.ToString() +"',"+
-                            "@GoodsGroupList = '" + (filter.GoodGroup == "" ? "-1" : filter.GoodGroup) + "'," +
-                                "@SubTypeList = '"+(filter.DynamicGroup == "" ? "-1" : filter.DynamicGroup).ToString() +"',"+
+                            "@GoodsGroupList = '" + (filter.GoodGroup == "" || filter.GoodGroup == "null" ? "-1" : filter.GoodGroup) + "'," +
+                                "@SubTypeList = '" + (filter.DynamicGroup == "" || filter.DynamicGroup == "null" ? "-1" : filter.DynamicGroup).ToString() + "'," +
                             "@BrandList = '-1' ,"+
-                            "@GoodsList = '"+ (filter.Good == "" ? "-1" : filter.Good) +"',"+
+                            "@GoodsList = '" + (filter.Good == "" || filter.Good == "null" ? "-1" : filter.Good) + "'," +
 
                             "@ShowOrderCount = true,"+
                             "@ShowSaleCount = true,"+
