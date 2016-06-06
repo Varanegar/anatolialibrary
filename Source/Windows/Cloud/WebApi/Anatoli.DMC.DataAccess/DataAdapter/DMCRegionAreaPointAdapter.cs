@@ -131,8 +131,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         {
                             customerquery += string.Format(DMCRegionAreaCustomerEntity.Insert,
                                 id,
-                                point.CustomerUniqueId,
-                                0
+                                point.CustomerUniqueId
                                 );
                         }
 

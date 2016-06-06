@@ -4,7 +4,7 @@ namespace Anatoli.DMC.DataAccess.Helpers.Entity
 {
     public class DMCRegionAreaCustomerEntity
     {
-        public const string TabelName = "[GisRegionAreaCustomer]";
+        public const string TabelName = "[VisitTemplateCustomer]";
 
         public const string RemoveByAreaId = "DELETE FROM " + TabelName + " WHERE [RegionAreaUniqueId] = '{0}'";
 
@@ -12,7 +12,14 @@ namespace Anatoli.DMC.DataAccess.Helpers.Entity
                                      "([UniqueId] " +
                                      ",[RegionAreaUniqueId]" +
                                      ",[CustomerUniqueId]" +
-                                     ",[IntId])" +
-                                     "VALUES(NEWID(), '{0}' , '{1}', {2});";
+                                     ",OrderOf" +
+                                     ",VisitTemplatePathId" +
+                                     ",CustomerId" +
+                                     ",VisitTemplateCustomerId )" +
+                                     "VALUES(NEWID(), '{0}' , '{1}', " +
+                                     "0," +
+                                     "ISNULL((SELECT VTP.[VisitTemplatePathId] FROM VisitTemplatePath VTP WHERE VTP.UniqueId = '{0}' ),0)," +
+                                     "ISNULL((SELECT C.[CustomerId] FROM Customer C WHERE C.UniqueId = '{1}' ),0)," +
+                                     "ISNULL((SELECT MAX(T.[VisitTemplateCustomerId]) FROM " + TabelName + " T ),0)+1 );";
     }
 }

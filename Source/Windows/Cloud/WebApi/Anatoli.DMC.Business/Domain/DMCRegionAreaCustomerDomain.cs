@@ -44,7 +44,17 @@ namespace Anatoli.DMC.Business.Domain
         {
             return DMCRegionAreaCustomerAdapter.Instance.RemoveCustomerFromRegionArea(customerId, areaId);
         }
+
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerWithouteLocation(Guid areaId)
+        {
+            return DMCRegionAreaCustomerAdapter.Instance.LoadCustomerWithouteLocation(areaId);
+        }
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerInvalidLocation(Guid areaId)
+        {
+            return DMCRegionAreaCustomerAdapter.Instance.LoadCustomerInvalidLocation(areaId);
+        }
         #endregion
+
 
 
     }
