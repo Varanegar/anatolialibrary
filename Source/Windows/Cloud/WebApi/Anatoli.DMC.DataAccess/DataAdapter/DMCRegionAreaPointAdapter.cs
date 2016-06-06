@@ -113,6 +113,9 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                     ctx.Execute(string.Format(DMCRegionAreaCustomerEntity.RemoveByAreaId, id));
                     var customerquery = "";
                     var pointquery = "";
+                    
+                    var firstpoints = "";
+                    var areapoints = "";
 
                     foreach (var point in points)
                     {
@@ -128,16 +131,34 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                         {
                             customerquery += string.Format(DMCRegionAreaCustomerEntity.Insert,
                                 id,
-                                point.CustomerUniqueId,
-                                0
+                                point.CustomerUniqueId
                                 );
                         }
+
+                        if (areapoints == "")
+                        {
+                            firstpoints = point.Longitude + " " + point.Latitude;
+                            areapoints = firstpoints;
+                        }
+                        else
+                            areapoints += ","+point.Longitude + " " + point.Latitude;
+                        
                     }
+   
                     if (pointquery != "")
                         ctx.Execute(pointquery);
                     if (customerquery != "")
                         ctx.Execute(customerquery);
-
+                    if (areapoints != "")
+                    {
+                        areapoints += "," + firstpoints;
+                        ctx.Execute(string.Format(
+                                    "UPDATE " + DMCVisitTemplatePathEntity.TabelName + " " +
+                                    "SET PlygonRegionArea = geometry::STPolyFromText('POLYGON((" + areapoints + "))', 4326).MakeValid() " +
+                                    "WHERE UniqueId = '{0}'",
+                                    id)
+                            );
+                    }
                     ctx.Commit();
                 }
                 catch (Exception e)

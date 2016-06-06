@@ -142,8 +142,41 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         }
 
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerWithouteLocation(Guid areaId)
+        {
+            List<DMCRegionAreaCustomerViewModel> list;
 
+            //var areaidParam = new SqlParameter("@areaid", areaid);
+            //var selectedParam = new SqlParameter("@selected", selected);
+
+            using (var ctx = GetDataContext(Transaction.No))
+            {
+                list =
+                    ctx.All<DMCRegionAreaCustomerViewModel>(
+                    "SELECT customer.UniqueId,"+ 
+				        "[Address] as [Desc],"+
+                        "'('+[CustomerCode] + ')' +[CustomerName] as CustomerName " +
+	                "FROM Customer "+
+	                "WHERE (ISNULL(Latitude,0) = 0) AND (ISNULL(Longitude,0) = 0)"
+                    
+                    ).ToList();
+            }
+            return list;
+        }
+
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerInvalidLocation(Guid areaId)
+        {
+            List<DMCRegionAreaCustomerViewModel> list;
+            using (var ctx = GetDataContext(Transaction.No))
+            {
+                list =
+                    ctx.All<DMCRegionAreaCustomerViewModel>(string.Format("exec [GisLoadCustomerInvalidLocation] @AreaId= '{0}' ", areaId)
+                    ).ToList();
+            }
+            return list;
+        }
         #endregion
+
 
     }
 }

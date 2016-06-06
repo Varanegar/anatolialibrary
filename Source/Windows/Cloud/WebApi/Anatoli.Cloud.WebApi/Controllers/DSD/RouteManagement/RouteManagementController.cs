@@ -524,6 +524,51 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.RouteManagement
 
         }
 
+        [Authorize(Roles = "User")]
+        [Route("ldcustnoloc")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadCustomerWithouteLocation([FromBody]RegionAreaRequestModel data)
+        {
+            try
+            {
+                var result = new List<DMCRegionAreaCustomerViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var customerService = new DMCRegionAreaCustomerDomain();
+                    result = customerService.LoadCustomerWithouteLocation(data.regionAreaId);
+                });
+
+                return Ok(result.Select(x => x.ToViewModel()).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("ldcustinvloc")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadCustomerInvalidLocation([FromBody]RegionAreaRequestModel data)
+        {
+            try
+            {
+                var result = new List<DMCRegionAreaCustomerViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var customerService = new DMCRegionAreaCustomerDomain();
+                    result = customerService.LoadCustomerInvalidLocation(data.regionAreaId);
+                });
+
+                return Ok(result.Select(x => x.ToViewModel()).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
         #endregion
 
 
