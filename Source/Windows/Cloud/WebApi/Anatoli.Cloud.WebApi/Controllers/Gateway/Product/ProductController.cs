@@ -346,20 +346,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("products/compress")]
         [HttpPost]
         [GzipCompression]
-        public async Task<IHttpActionResult> GetProductsV2()
+        public async Task<IHttpActionResult> GetProductsCompress()
         {
-            try
-            {
-                var result = await new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllAsync();
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-
-                return GetErrorResult(ex);
-            }
+            return await GetProducts();
         }
 
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]
@@ -399,6 +388,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("products/compress/after")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetProductsCompress([FromBody] BaseRequestModel data)
+        {
+            return await GetProducts(data);
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
@@ -549,6 +547,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("productgroups/compress")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetProductGroupsCompress()
+        {
+            return await GetProductGroups();
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("productgroups/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetProductGroups([FromBody]BaseRequestModel model)
@@ -565,6 +572,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("productgroups/compress/after")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetProductGroupsCompress([FromBody]BaseRequestModel model)
+        {
+            return await GetProductGroups(model);
         }
 
         [Authorize(Roles = "DataSync, BaseDataAdmin")]

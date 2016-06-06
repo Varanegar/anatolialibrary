@@ -60,6 +60,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("cityregions/compress")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegionCompress()
+        {
+            return await GetCityRegion();
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("cityregions/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetCityRegion([FromBody]BaseRequestModel data)
@@ -77,6 +86,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("cityregions/compress/after")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetCityRegionCompress([FromBody]BaseRequestModel data)
+        {
+            return await GetCityRegion(data);
         }
 
         [Authorize(Roles = "DataSync, BaseDataAdmin")]

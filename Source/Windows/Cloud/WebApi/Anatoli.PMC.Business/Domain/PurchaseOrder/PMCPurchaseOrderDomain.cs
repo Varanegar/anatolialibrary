@@ -84,6 +84,7 @@ namespace Anatoli.PMC.Business.Domain.PurchaseOrder
             sellData.DiscountAmount2 = evcData.DiscountAmount2;
             sellData.TaxAmount = evcData.TaxAmount;
             sellData.NetAmount = evcData.NetAmount;
+            sellData.PayableAmount = evcData.NetAmount;
 
             evcData.EVCDetail.ForEach(item =>
                 {
