@@ -22,11 +22,11 @@ namespace Anatoli.IdentityServer.Controllers
             public List<string> channelNames { get; internal set; }
         }
 
-        //[Authorize]
+       // [Authorize]
         [HttpGet, Route("test")]
         public IHttpActionResult Test()
         {
-            // var userId = User.GetClaimUserId();
+             //var userId = User.GetClaimUserId();
             Task.Factory.StartNew(() =>
             {
                 new PushNotificationProvider().SendNotification("Hello World!!!", new List<string> { "BB5063E9-E5AE-4BAB-A89F-5DDCA0E27700" });

@@ -1,7 +1,8 @@
-﻿
+﻿using System.Threading.Tasks;
+using IdentityServer3.Core.Models;
+using IdentityServer3.Core.Services;
 using Anatoli.IdentityServer.Entities;
 using IdentityServer3.Core.Configuration;
-using IdentityServer3.Core.Services;
 
 namespace Anatoli.IdentityServer.Classes
 {
@@ -14,6 +15,9 @@ namespace Anatoli.IdentityServer.Classes
             factory.Register(new Registration<UserStore>());
             factory.Register(new Registration<AnatoliScopeStore>());
             factory.Register(new Registration<AnatoliClientStore>());
+
+            factory.Register(new Registration<AscendClaimsProvider>());
+
             factory.Register(new Registration<Context>(resolver => new Context(connString)));
         }
     }
@@ -23,6 +27,20 @@ namespace Anatoli.IdentityServer.Classes
         public UserService(UserManager userMgr)
             : base(userMgr)
         {
+        }
+
+        //Microsoft.Owin.OwinContext ctx;
+        //public UserService(OwinEnvironmentService owinEnv)
+        //{
+        //    ctx = new Microsoft.Owin.OwinContext(owinEnv.Environment);
+        //}
+        public override Task PreAuthenticateAsync(PreAuthenticationContext context)
+        {
+            //var id = ctx.Request.Query.Get("signin");
+            //context.AuthenticateResult = new AuthenticateResult("~/custom/login?id=" + id, (System.Collections.Generic.IEnumerable<Claim>)null);
+            //return Task.FromResult(0);
+            
+            return base.PreAuthenticateAsync(context);
         }
     }
 }

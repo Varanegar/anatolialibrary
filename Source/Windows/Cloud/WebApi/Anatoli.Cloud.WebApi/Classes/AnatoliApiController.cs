@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Web;
-using Anatoli.DataAccess.Models;
 using Anatoli.Cloud.WebApi.Controllers;
-using System.Globalization;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
     public abstract class AnatoliApiController : BaseApiController
     {
-
-
         public bool GetRemovedData
         {
             get

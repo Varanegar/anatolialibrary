@@ -1,24 +1,25 @@
-﻿using Anatoli.Cloud.WebApi.Handler;
-using Anatoli.Cloud.WebApi.Handler.AutoMapper;
-using Anatoli.Cloud.WebApi.Infrastructure;
-using Anatoli.Cloud.WebApi.Providers;
-using Anatoli.DataAccess;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler.Encoder;
-using Microsoft.Owin.Security.Jwt;
-using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
-using NLog;
-using NLog.Targets;
+﻿using NLog;
 using Owin;
 using System;
-using System.Configuration;
-using System.Data.Entity;
 using System.Linq;
-using System.Net.Http.Formatting;
+using Microsoft.Owin;
 using System.Web.Http;
+using Anatoli.DataAccess;
+using System.Data.Entity;
+using System.Configuration;
+using Microsoft.Owin.Security;
 using WebApiContrib.Formatting;
+using System.Net.Http.Formatting;
+using System.IdentityModel.Tokens;
+using Microsoft.Owin.Security.Jwt;
+using Anatoli.Cloud.WebApi.Handler;
+using Newtonsoft.Json.Serialization;
+using Microsoft.Owin.Security.OAuth;
+using Anatoli.Cloud.WebApi.Providers;
+using Anatoli.Cloud.WebApi.Infrastructure;
+using IdentityServer3.AccessTokenValidation;
+using Anatoli.Cloud.WebApi.Handler.AutoMapper;
+using Microsoft.Owin.Security.DataHandler.Encoder;
 
 namespace Anatoli.Cloud.WebApi
 {
@@ -28,17 +29,31 @@ namespace Anatoli.Cloud.WebApi
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AnatoliDbContext, DataAccess.Migrations.Configuration>());
             
-            var context = new AnatoliDbContext();
-            var tempData = context.BaseTypes.FirstOrDefault();
+            var tempData = new AnatoliDbContext().BaseTypes.FirstOrDefault();
 
             LogManager.ReconfigExistingLoggers();
 
-            HttpConfiguration httpConfig = new HttpConfiguration();
-
             ConfigureOAuthTokenGeneration(app);
-
             ConfigureOAuthTokenConsumption(app);
 
+            ///*****************************************************************/
+            if (bool.Parse(ConfigurationManager.AppSettings["UseIdentityServer"]))
+            {
+                JwtSecurityTokenHandler.InboundClaimTypeMap.Clear();
+
+                app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
+                {
+                    Authority = "https://localhost:44300/core",
+                    RequiredScopes = new[] { "write" },
+
+                    // client credentials for the introspection endpoint
+                    ClientId = "write",
+                    ClientSecret = "secret"
+                });
+            }
+            ///*****************************************************************/
+
+            var httpConfig = new HttpConfiguration();
             ConfigureWebApi(httpConfig);
 
             ConfigureAutoMapper();

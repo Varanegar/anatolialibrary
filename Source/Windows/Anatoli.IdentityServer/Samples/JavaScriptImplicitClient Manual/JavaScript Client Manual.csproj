@@ -69,6 +69,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="index2.html" />
     <Content Include="index.html" />
     <Content Include="js\crypto.js" />
     <Content Include="js\es6-promise-2.0.0.js" />

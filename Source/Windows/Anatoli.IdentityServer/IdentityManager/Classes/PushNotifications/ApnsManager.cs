@@ -12,7 +12,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
         public ApnsServiceBroker Broker { get; set; }
         //"\\Certificate_for_push_develop.p12"
         //pushcert.p12
-        const string ApnsCertificateFile = "\\pushcert.p12";
+        const string ApnsCertificateFile = "\\vn_cert_v1.p12";
         const string ApnsCertificatePassword = "123456";
         public ApnsManager(NotificationFailureDelegate<ApnsNotification> onNotificationFailed, NotificationSuccessDelegate<ApnsNotification> onNotificationSucceeded)
         {
@@ -22,7 +22,7 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
 
             var apnsCertificateFile = directory.Replace("file:\\", "") + ApnsCertificateFile;
 
-            Config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, apnsCertificateFile, ApnsCertificatePassword);
+            Config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, apnsCertificateFile, ApnsCertificatePassword);
             Broker = new ApnsServiceBroker(Config);
             Broker.OnNotificationFailed += onNotificationFailed;
             Broker.OnNotificationSucceeded += onNotificationSucceeded;

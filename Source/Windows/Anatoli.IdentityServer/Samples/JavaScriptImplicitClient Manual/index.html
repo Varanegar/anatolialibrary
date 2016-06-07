@@ -33,6 +33,10 @@
     <button class="get">Get Token</button>
     <button class="validate">Validate Token</button>
     <button class="api">Call API</button>
+    <hr />
+    <input type="button" class="mrg" title="Call mrg API2" />
+    <hr />
+    xzvxvxvc
     <button class="logout">Logout</button>
     <pre class="results"></pre>
 
@@ -46,6 +50,7 @@
         document.querySelector(".get").addEventListener("click", getToken, false);
         document.querySelector(".validate").addEventListener("click", validateToken, false);
         document.querySelector(".api").addEventListener("click", callApi, false);
+        document.querySelector(".mrg").addEventListener("click", callApi2, false);
         document.querySelector(".logout").addEventListener("click", logout, false);
 
         function show(data) {
@@ -217,6 +222,15 @@
                 show(response);
             }, showError);
         }
+
+        function callApi2() {
+            clear();
+            getJson("http://localhost:59822/api/ProtobufSample/productsTest2", access_token).then(function (response) {
+                debugger
+                show(response);
+            }, showError);
+        }
+
 
         function logout() {
             //window.location = "https://localhost:44300/core/connect/endsession";

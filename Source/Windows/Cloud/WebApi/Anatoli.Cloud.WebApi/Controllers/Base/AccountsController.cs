@@ -28,6 +28,7 @@ using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.Business.Domain.Authorization;
 using System.Text;
 using Anatoli.Business.Helpers;
+using Anatoli.Cloud.WebApi.Classes.Helpers;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -38,11 +39,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("myWebpages"), HttpPost]
         public async Task<IHttpActionResult> GetPages()
         {
-            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var userId = User.GetAnatoliUserId();
             var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
-
             var result = data.Where(p => p.Action == "Page").ToList();
-
             return Ok(result);
         }
 
@@ -71,7 +70,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetPersmissionCatalogs()
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissionCatalogs();
-
             return Ok(model);
         }
 
@@ -80,7 +78,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetPersmissionCatalogsOfUser([FromBody] BaseRequestModel data)
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionCatalogsForPrincipal(data.userId);
-
             return Ok(model.ToList());
         }
 
@@ -89,7 +86,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetPersmissionsOfUser([FromBody] BaseRequestModel data)
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(data.userId);
-
             return Ok(model.ToList());
         }
 
@@ -98,20 +94,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> SavePersmissions([FromBody] BaseRequestModel data)
         {
             var model = JsonConvert.DeserializeObject<dynamic>(data.data);
-
             var pp = new List<PrincipalPermission>();
             foreach (var itm in model.permissions)
-                pp.Add(new PrincipalPermission
-                {
-                    Id = Guid.NewGuid(),
-                    Grant = itm.grant.Value,
-                    Permission_Id = Guid.Parse(itm.id.Value),
-                    PrincipalId = Guid.Parse(model.userId.Value),
-                });
-
+                pp.Add(new PrincipalPermission { Id = Guid.NewGuid(), Grant = itm.grant.Value, Permission_Id = Guid.Parse(itm.id.Value), PrincipalId = Guid.Parse(model.userId.Value), });
             await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
+            return Ok(new
+                {
+            }
 
-            return Ok(new { });
+            );
         }
 
         [Authorize(Roles = "Admin")]
@@ -119,20 +110,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> SavePersmissionCatalogs([FromBody] BaseRequestModel data)
         {
             var model = JsonConvert.DeserializeObject<dynamic>(data.data);
-
             var ppc = new List<PrincipalPermissionCatalog>();
             foreach (var itm in model.permissionCatalogs)
-                ppc.Add(new PrincipalPermissionCatalog
-                {
-                    Id = Guid.NewGuid(),
-                    Grant = itm.grant.Value == true ? 1 : 0,
-                    PermissionCatalog_Id = Guid.Parse(itm.id.Value),
-                    PrincipalId = Guid.Parse(model.userId.Value),
-                });
-
+                ppc.Add(new PrincipalPermissionCatalog { Id = Guid.NewGuid(), Grant = itm.grant.Value == true ? 1 : 0, PermissionCatalog_Id = Guid.Parse(itm.id.Value), PrincipalId = Guid.Parse(model.userId.Value), });
             await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissionCatalogs(ppc, Guid.Parse(model.userId.Value));
+            return Ok(new
+                {
+            }
 
-            return Ok(new { });
+            );
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -140,15 +126,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetUser(string Id)
         {
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var user = await this.AppUserManager.FindByIdAsync(Id);
-
+            var user = await AppUserManager.FindByIdAsync(Id);
             if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
+                return Ok(TheModelFactory.Create(user));
             return NotFound();
-
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -160,16 +141,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var user = await GetUserByNameOrEmailOrPhoneAsync(username);
                 //Only SuperAdmin or Admin can delete users (Later when implement roles)
                 if (user != null)
-                {
-                    return Ok(this.TheModelFactory.Create(user));
-                }
+                    return Ok(TheModelFactory.Create(user));
                 return BadRequest("کاربر یافت نشد");
             }
             catch (Exception ex)
             {
                 return GetErrorResult(ex);
             }
-
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -178,20 +156,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                string username = EncodingForBase64.DecodeBase64(Encoding.UTF8, usernameEncoded);
+                var username = EncodingForBase64.DecodeBase64(Encoding.UTF8, usernameEncoded);
                 var user = await GetUserByNameOrEmailOrPhoneAsync(username);
                 //Only SuperAdmin or Admin can delete users (Later when implement roles)
                 if (user != null)
-                {
-                    return Ok(this.TheModelFactory.Create(user));
-                }
+                    return Ok(TheModelFactory.Create(user));
                 return BadRequest("کاربر یافت نشد");
             }
             catch (Exception ex)
             {
                 return GetErrorResult(ex);
             }
-
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -203,12 +178,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 var userDomain = new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>());
 
                 var anatoliKey = Guid.Parse("79a0d598-0bd2-45b1-baaa-0a9cf9eff240");
+
                 Uri locationHeader = null;
+
                 if (!ModelState.IsValid)
                     return GetErrorResult(ModelState);
 
                 var id = Guid.NewGuid();
-                var user = new User()
+
+                var user = new User
                 {
                     Id = id.ToString(),
                     UserName = (OwnerKey == anatoliKey && DataOwnerKey == anatoliKey) ? createUserModel.Username : id.ToString(),
@@ -231,15 +209,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
                 if (createUserModel.Mobile != null)
                 {
-                    var emailUser = await userDomain.GetByPhoneAsync(createUserModel.Mobile);
-                    if (emailUser != null)
+                    var mobile = await userDomain.GetByPhoneAsync(createUserModel.Mobile);
+                    if (mobile != null)
                         return GetErrorResult("موبایل شما قبلا استفاده شده است");
                 }
 
                 if (createUserModel.Username != null)
                 {
-                    var emailUser = await userDomain.GetByUsernameAsync(createUserModel.Username);
-                    if (emailUser != null)
+                    var username = await userDomain.GetByUsernameAsync(createUserModel.Username);
+                    if (username != null)
                         return GetErrorResult("نام کاربری شما قبلا استفاده شده است");
                 }
 
@@ -249,69 +227,47 @@ namespace Anatoli.Cloud.WebApi.Controllers
                     {
                         Guid currentPrincipleId = Guid.NewGuid();
                         var userPrincipal = new Principal()
-                        {
-                            Id = currentPrincipleId,
-                            Title = user.UserNameStr,
-                            ApplicationOwnerId = (Guid)user.ApplicationOwnerId
-                        };
+                        { Id = currentPrincipleId, Title = user.UserNameStr, ApplicationOwnerId = (Guid)user.ApplicationOwnerId };
                         await userDomain.SavePerincipal(userPrincipal);
                         user.PrincipalId = currentPrincipleId;
-
                         var addUserResult = await AppUserManager.CreateAsync(user, createUserModel.Password);
-
                         if (!addUserResult.Succeeded)
                             return GetErrorResult(addUserResult);
-
                         if (AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
                         {
-                            AppRoleManager.Create(new IdentityRole
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                Name = "User"
-                            });
-
-                            AppRoleManager.Create(new IdentityRole
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                Name = createUserModel.RoleName
-                            });
+                            AppRoleManager.Create(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = "User" });
+                            AppRoleManager.Create(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = createUserModel.RoleName });
                         }
 
                         AppUserManager.AddToRoles(user.Id, new string[] { "User" });
-
                         if (isCustomer)
                         {
                             var customerDomain = new CustomerDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
                             var customer = new CustomerViewModel()
-                            {
-                                Mobile = createUserModel.Mobile,
-                                UniqueId = Guid.Parse(user.Id),
-                                Email = createUserModel.Email,
-                            };
-
+                            { Mobile = createUserModel.Mobile, UniqueId = Guid.Parse(user.Id), Email = createUserModel.Email, };
                             List<CustomerViewModel> customerList = new List<CustomerViewModel>();
                             customer.CompanyId = DataOwnerKey;
                             customerList.Add(customer);
                             await customerDomain.PublishAsync(new CustomerProxy().ReverseConvert(customerList));
-
                             List<BasketViewModel> basketList = new List<BasketViewModel>();
                             basketList.Add(new BasketViewModel(BasketViewModel.CheckOutBasketTypeId, customer.UniqueId));
                             basketList.Add(new BasketViewModel(BasketViewModel.FavoriteBasketTypeId, customer.UniqueId));
-
                             var basketDomain = new BasketDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey, Request.GetOwinContext().Get<AnatoliDbContext>());
                             await basketDomain.PublishAsync(new BasketProxy().ReverseConvert(basketList));
                         }
 
-                        locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+                        locationHeader = new Uri(Url.Link("GetUserById", new
+                        {
+                            id = user.Id
+                        }
 
+                        ));
                         var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(createUserModel.Password);
-
                         var sms = new SMSManager();
                         if (createUserModel.SendPassSMS)
                             await sms.SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER);
                         else
                             await sms.SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), hashedNewPassword, SMSManager.SMSBody.NEW_USER_BACKOFFICE);
-
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -343,10 +299,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> CheckEmailExist([FromBody] AccountRequestModel model)
         {
             var emailUser = await GetUserByEMail(model.email);
-
             if (emailUser != null && emailUser.Id != model.userId)
                 return Ok(false);
-
             return Ok(true);
         }
 
@@ -355,12 +309,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> SaveUser([FromBody] BaseRequestModel model)
         {
             var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
-
             if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
                 return await UpdateUser(userModel);
             else
                 return await CreateUserByBackoffice(userModel, false);
-
         }
 
         private async Task<IHttpActionResult> UpdateUser(CreateUserBindingModel model)
@@ -373,11 +325,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
             user.SecurityStamp = Guid.NewGuid().ToString();
             if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
                 user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
-
             user.PhoneNumberConfirmed = true;
             user.EmailConfirmed = true;
             await userStore.UpdateAsync(user);
-
             return Ok(model);
         }
 
@@ -385,24 +335,23 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("getUser"), HttpPost]
         public IHttpActionResult GetUser([FromBody] BaseRequestModel model)
         {
-            var user = AppUserManager.Users.Where(p => p.Id == model.userId)
-                                     .Select(s => new
+            var user = AppUserManager.Users.Where(p => p.Id == model.userId).Select(s => new
                                      {
                                          userId = s.Id,
                                          fullName = s.FullName,
                                          userName = s.UserName,
                                          email = s.Email,
                                          mobile = s.PhoneNumber,
-                                     })
-                                    .FirstOrDefault();
+            }
 
+            ).FirstOrDefault();
             return Ok(user);
         }
 
         [AllowAnonymous]
         [HttpGet]
         [Route("ConfirmEmail", Name = "ConfirmEmailRoute")]
-        public async Task<IHttpActionResult> ConfirmEmail([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> ConfirmEmail([FromBody] UserRequestModel data)
         {
             if (string.IsNullOrWhiteSpace(data.userId) || string.IsNullOrWhiteSpace(data.code))
             {
@@ -410,28 +359,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await this.AppUserManager.ConfirmEmailAsync(data.userId, data.code);
-
+            var result = await AppUserManager.ConfirmEmailAsync(data.userId, data.code);
             if (result.Succeeded)
-            {
                 return Ok();
-            }
             else
-            {
                 return GetErrorResult(result);
             }
-        }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("ConfirmMobile", Name = "ConfirmMobileRoute")]
-        public async Task<IHttpActionResult> ConfirmPhoneNumber([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> ConfirmPhoneNumber([FromBody] UserRequestModel data)
         {
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
             var userInfo = await GetUserByUserName(data.username);
             var user = await userStore.FindByIdAsync(userInfo.Id);
             bool result = await userStore.VerifySMSCodeAsync(user, data.code);
-
             if (result)
                 return Ok(new BaseViewModel());
             else
@@ -441,7 +384,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("ResendPassCode", Name = "ResendPassCodeRoute")]
-        public async Task<IHttpActionResult> ResendPassCode([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> ResendPassCode([FromBody] UserRequestModel data)
         {
             try
             {
@@ -462,20 +405,20 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("SendPassCode", Name = "SendPassCodeRoute")]
-        public async Task<IHttpActionResult> SendPassCode([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> SendPassCode([FromBody] UserRequestModel data)
         {
             try
             {
-                var user = await GetUserByUserName(data.username);
-                //var user = await userStore.FindByNameAsync(username);
+            var user = await GetUserByUserName(data.username);
+            //var user = await userStore.FindByNameAsync(username);
                 if (user == null)
                     return GetErrorResult("کاربر یافت نشد");
 
                 await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null,
                                                             SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
 
-                return Ok(new BaseViewModel());
-            }
+            return Ok(new BaseViewModel());
+        }
             catch (Exception ex)
             {
                 log.Error(ex, "Web API Call Error in SendPassCode. ", data.username);
@@ -487,7 +430,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("ResetPassword", Name = "ResetPasswordRoute")]
-        public async Task<IHttpActionResult> ResetPassword([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> ResetPassword([FromBody] UserRequestModel data)
         {
             var user = await GetUserByUserName(data.username);
             //var user = await userStore.FindByNameAsync(username);
@@ -506,18 +449,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("ResetPasswordByCode", Name = "ResetPasswordByCodeRoute")]
-        public async Task<IHttpActionResult> ResetPasswordByCode([FromBody]UserRequestModel data)
+        public async Task<IHttpActionResult> ResetPasswordByCode([FromBody] UserRequestModel data)
         {
             var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
             var user = await GetUserByUserName(data.username);
             //var user = await userStore.FindByNameAsync(username);
             if (user == null)
                 return GetErrorResult("کاربر یافت نشد");
-
             user.SecurityStamp = Guid.NewGuid().ToString();
             var hashedNewPassword = AppUserManager.PasswordHasher.HashPassword(data.password);
             bool result = await userStore.ResetPasswordByCodeAsync(user, hashedNewPassword, data.code);
-
             if (result)
                 return Ok(new BaseViewModel());
             else
@@ -534,8 +475,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-
+            IdentityResult result = await AppUserManager.ChangePasswordAsync(User.GetAnatoliUserId(), model.OldPassword, model.NewPassword);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -552,26 +492,17 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> DeleteUser(string id)
         {
-
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
-
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-
+            var appUser = await AppUserManager.FindByIdAsync(id);
             if (appUser != null)
             {
-                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-
+                IdentityResult result = await AppUserManager.DeleteAsync(appUser);
                 if (!result.Succeeded)
-                {
                     return GetErrorResult(result);
-                }
-
                 return Ok();
-
             }
 
             return NotFound();
-
         }
 
         [Authorize(Roles = "Admin")]
@@ -579,35 +510,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
         {
-
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-
+            var appUser = await AppUserManager.FindByIdAsync(id);
             if (appUser == null)
-            {
                 return NotFound();
-            }
-
-            var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
-
-            var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
-
+            var currentRoles = await AppUserManager.GetRolesAsync(appUser.Id);
+            var rolesNotExists = rolesToAssign.Except(AppRoleManager.Roles.Select(x => x.Name)).ToArray();
             if (rolesNotExists.Count() > 0)
             {
-
                 ModelState.AddModelError("", string.Format("Roles '{0}' does not exixts in the system", string.Join(",", rolesNotExists)));
                 return BadRequest(ModelState);
             }
 
-            IdentityResult removeResult = await this.AppUserManager.RemoveFromRolesAsync(appUser.Id, currentRoles.ToArray());
-
+            var removeResult = await AppUserManager.RemoveFromRolesAsync(appUser.Id, currentRoles.ToArray());
             if (!removeResult.Succeeded)
             {
                 ModelState.AddModelError("", "Failed to remove user roles");
                 return BadRequest(ModelState);
             }
 
-            IdentityResult addResult = await this.AppUserManager.AddToRolesAsync(appUser.Id, rolesToAssign);
-
+            var addResult = await AppUserManager.AddToRolesAsync(appUser.Id, rolesToAssign);
             if (!addResult.Succeeded)
             {
                 ModelState.AddModelError("", "Failed to add user roles");
@@ -615,7 +536,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
 
             return Ok();
-
         }
 
         [Authorize(Roles = "Admin")]
@@ -623,28 +543,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> AssignClaimsToUser([FromUri] string id, [FromBody] List<ClaimBindingModel> claimsToAssign)
         {
-
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-
+            var appUser = await AppUserManager.FindByIdAsync(id);
             if (appUser == null)
-            {
                 return NotFound();
-            }
-
             foreach (ClaimBindingModel claimModel in claimsToAssign)
             {
                 if (appUser.Claims.Any(c => c.ClaimType == claimModel.Type))
-                {
-
-                    await this.AppUserManager.RemoveClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
-                }
-
-                await this.AppUserManager.AddClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
+                    await AppUserManager.RemoveClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
+                await AppUserManager.AddClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
             }
 
             return Ok();
@@ -655,27 +563,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> RemoveClaimsFromUser([FromUri] string id, [FromBody] List<ClaimBindingModel> claimsToRemove)
         {
-
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-
+            var appUser = await AppUserManager.FindByIdAsync(id);
             if (appUser == null)
-            {
                 return NotFound();
-            }
-
             foreach (ClaimBindingModel claimModel in claimsToRemove)
-            {
                 if (appUser.Claims.Any(c => c.ClaimType == claimModel.Type))
-                {
-                    await this.AppUserManager.RemoveClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
-                }
-            }
-
+                    await AppUserManager.RemoveClaimAsync(id, ExtendedClaimsProvider.CreateClaim(claimModel.Type, claimModel.Value));
             return Ok();
         }
 
@@ -683,7 +578,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
         }
-        private async Task<User> GetUserByUserId(string userId)
+
+        private async Task<User> GetUserByUserId(string userId) 
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByIdAsync(userId);
         }
