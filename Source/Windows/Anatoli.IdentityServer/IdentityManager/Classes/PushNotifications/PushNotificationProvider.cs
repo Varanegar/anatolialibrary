@@ -148,21 +148,21 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
                                                           s.Platform
                                                       }).ToList();
 
-                //var allAppleUsers = allSelectedUsersTokens.Where(p => p.Platform == Platforms.IOS.ToString())
-                //                                          .Select(s => s.AppToken)
-                //                                          .ToList();
+                var allAppleUsers = allSelectedUsersTokens.Where(p => p.Platform == Platforms.IOS.ToString())
+                                                          .Select(s => s.AppToken)
+                                                          .ToList();
 
-                //if (allAppleUsers.Count > 0)
-                //    await Task.Factory.StartNew(() =>
-                //    {
-                //        new ApnsManager((notification, ex) =>
-                //        {
-                //            Serilog.Log.Logger.Information("notification process failed, {0}, {1}", notification, ex);
-                //        }, (notification) =>
-                //         {
-                //             Serilog.Log.Logger.Information("notification process succeeded, {0}, {1}", notification);
-                //         }).Send(message, allAppleUsers);
-                //    });
+                if (allAppleUsers.Count > 0)
+                    await Task.Factory.StartNew(() =>
+                    {
+                        new ApnsManager((notification, ex) =>
+                        {
+                            Serilog.Log.Logger.Information("notification process failed, {0}, {1}", notification, ex);
+                        }, (notification) =>
+                         {
+                             Serilog.Log.Logger.Information("notification process succeeded, {0}, {1}", notification);
+                         }).Send(message, allAppleUsers);
+                    });
 
                 var allAndroidUsers = allSelectedUsersTokens.Where(p => p.Platform == Platforms.Android.ToString())
                                                             .Select(s => s.AppToken)

@@ -36,7 +36,8 @@ namespace Anatoli.IdentityServer.Classes.PushNotifications
                 Broker.QueueNotification(new ApnsNotification
                 {
                     DeviceToken = dt,
-                    Payload = JObject.Parse("{\"aps\":{\"badge\":7}}")
+                    //Payload = JObject.Parse("{\"aps\":{\"content-available\":1}, \"update\" : \"storeonhande\"}")
+                    Payload = JObject.Parse("{\"aps\":{\"alert\":\"This is test alert.\",\"badge\":9,\"sound\":\"bingbong.aiff\"},\"data\":\"some data\"}")
                 });
 
             Broker.Stop();
