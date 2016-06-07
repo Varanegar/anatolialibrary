@@ -30,9 +30,9 @@ namespace ClientApp
                 //JiraLogin();
 
 
-                //string servserURI = "http://217.218.53.71:7000/";
+                string servserURI = "http://217.218.53.71:7000/";
                 //string servserURI = "http://192.168.201.71:8090/";
-                string servserURI = "http://localhost:59822/";
+                //string servserURI = "http://localhost:59822/";
                 //string servserURI = "http://79.175.166.186/";
                 //string servserURI = "http://46.209.104.2:7000/";
                 //string servserURI = "http://46.209.104.2:7000/";
@@ -58,7 +58,8 @@ namespace ClientApp
                 {
                     //client
                     client.SetBearerToken(oauthresult.AccessToken);
-                    CustomerManagement.CreateUser(client, servserURI);
+                    //CustomerManagement.CreateUser(client, servserURI);
+                    BaseDataManagement.GetBaseDataFromServer(client, servserURI);
                     //CityRegionManagement.GetCityRegionFromServer(client, servserURI);
 
                     //CustomerManagement.ChangePassword(client, servserURI);

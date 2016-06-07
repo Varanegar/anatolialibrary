@@ -34,6 +34,22 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("storeOnhand/compress")]
+        [HttpPost,GzipCompression]
+        public async Task<IHttpActionResult> GetStoreOnhandsComopress()
+        {
+            return await GetStoreOnhands();
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("storeOnhand/compress/after")]
+        [HttpPost, GzipCompression]
+        public async Task<IHttpActionResult> GetStoreOnhandsCompress([FromBody] StoreRequestModel data)
+        {
+            return await GetStoreOnhands(data);
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("storeOnhand/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStoreOnhands([FromBody] StoreRequestModel data)
@@ -172,8 +188,19 @@ namespace Anatoli.Cloud.WebApi.Controllers
 
         #region Store Price List
         [Authorize(Roles = "AuthorizedApp")]
+        [Route("storepricelist/compress")]
+        [HttpPost]
+        [GzipCompression]
+
+        public async Task<IHttpActionResult> GetStorePriceListsCompress()
+        {
+            return await GetStorePriceLists();
+        }
+
+        [Authorize(Roles = "AuthorizedApp")]
         [Route("storepricelist")]
         [HttpPost]
+
         public async Task<IHttpActionResult> GetStorePriceLists()
         {
             try
@@ -225,6 +252,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return GetErrorResult(ex);
             }
         }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("storepricelist/compress/after")]
+        [HttpPost, GzipCompression]
+        public async Task<IHttpActionResult> GetStorePriceListsAfterCompress([FromBody] StoreRequestModel data)
+        {
+            return await GetStorePriceListsAfter(data);
+        }
+
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("storepricelistbyid/after/")]
@@ -302,6 +338,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("stores/compress")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoresCompress()
+        {
+            return await GetStores();
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("stores/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStores([FromBody] StoreRequestModel data)
@@ -318,6 +363,14 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 log.Error("Web API Call Error", ex);
                 return GetErrorResult(ex);
             }
+        }
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("stores/compress/after")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStoresCompress([FromBody] StoreRequestModel data)
+        {
+            return await GetStores(data);
         }
 
         [Authorize(Roles = "DataSync, BaseDataAdmin")]

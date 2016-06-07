@@ -36,6 +36,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("basedatas/compress")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetBaseTypesCompresss()
+        {
+            return await GetBaseTypes();
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
         [Route("basedatas/after")]
         [HttpPost]
         public async Task<IHttpActionResult> GetBaseTypes([FromBody]BaseRequestModel data)
@@ -54,6 +63,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("basedatas/compress/after")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetBaseTypesCompress([FromBody]BaseRequestModel data)
+        {
+            return await GetBaseTypes(data);
+        }
         [Authorize(Roles = "DataSync, BaseDataAdmin")]
         [Route("basedatas/save")]
         [HttpPost]

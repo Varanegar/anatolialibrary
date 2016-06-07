@@ -44,6 +44,12 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
                 return GetErrorResult(ex);
             }
         }
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("images/compress"), HttpGet, HttpPost, GzipCompression]
+        public async Task<IHttpActionResult> GetImagesCompress()
+        {
+            return await GetImages();
+        }
 
         [Authorize(Roles = "AuthorizedApp, User")]
         [Route("images/after"), HttpPost, HttpGet]
@@ -63,6 +69,13 @@ namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 
                 return GetErrorResult(ex);
             }
+        }
+
+        [Authorize(Roles = "AuthorizedApp, User")]
+        [Route("images/compress/after"), HttpPost, HttpGet, GzipCompression]
+        public async Task<IHttpActionResult> GetImagesCompress(string dateAfter)
+        {
+            return await GetImages(dateAfter);
         }
 
         [Authorize(Roles = "AuthorizedApp, User")]
