@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anatoli.DMC.ViewModels.Area;
 
 namespace Anatoli.DMC.ViewModels.Report
 {
     public class DMCProductValueReportFilterModel : DMCProductReportFilterModel
     {
+        public List<DMCRegionAreaPointViewModel> CustomPoint { set; get; }
         public int? FromRequestCount { set; get; }
         public int? ToRequestCount { set; get; }
         public int? FromFactorCount { set; get; }

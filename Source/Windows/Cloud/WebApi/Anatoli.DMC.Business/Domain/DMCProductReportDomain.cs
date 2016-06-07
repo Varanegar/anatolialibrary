@@ -55,12 +55,19 @@ namespace Anatoli.DMC.Business.Domain
                 ReloadCacheData(filter);
             }
             var points = new List<DMCPointViewModel>();
-            foreach (Guid id in filter.AreaIds)
+
+            if ((filter.AreaIds != null) && (filter.AreaIds.Any()))
+                foreach (Guid id in filter.AreaIds)
+                {
+                    var list = DMCProductReportAdapter.Instance.LoadProductValueReport(id, filter);
+                    points.AddRange(list);
+                }
+            else
+            if ((filter.CustomPoint != null) && (filter.CustomPoint.Any()))
             {
-                var list = DMCProductReportAdapter.Instance.LoadProductValueReport(id, filter);
-                points.AddRange(list);
+                var list = DMCProductReportAdapter.Instance.LoadProductValueReport(null, filter);
+                points.AddRange(list);                
             }
-           
             return points;
 
         }
