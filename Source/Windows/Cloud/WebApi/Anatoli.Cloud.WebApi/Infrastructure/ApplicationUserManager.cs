@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Owin;
-using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
-using Microsoft.AspNet.Identity.Owin;
-using Anatoli.DataAccess.Models.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Anatoli.DataAccess;
-using Anatoli.DataAccess.Repositories;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 using Anatoli.Business.Domain;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Anatoli.DataAccess.Repositories;
+using Anatoli.DataAccess.Models.Identity;
 
 namespace Anatoli.Cloud.WebApi.Infrastructure
 {
@@ -21,21 +17,21 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
         }
 
-         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner, Guid dataOwnerKey)
+        public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner, Guid dataOwnerKey)
         {
             var userDomain = new UserDomain(applicationOwner, dataOwnerKey);
 
             var user = await userDomain.FindByNameOrEmailOrPhoneAsync(usernameOrEmailOrPhone);
+
             if (user != null)
                 return await FindAsync(user.UserName, password);
             else
                 return null;
-
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            
+
             var appDbContext = context.Get<AnatoliDbContext>();
             var appUserManager = new ApplicationUserManager(new AnatoliUserStore(appDbContext));
 
@@ -44,7 +40,7 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = false
-                
+
             };
 
             // Configure validation logic for passwords
@@ -56,8 +52,8 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
-            
-            appUserManager.EmailService = new Anatoli.Cloud.WebApi.Services.EmailService();
+
+            appUserManager.EmailService = new Services.EmailService();
 
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
@@ -68,7 +64,7 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
                     TokenLifespan = TimeSpan.FromHours(6)
                 };
             }
-           
+
             return appUserManager;
         }
     }

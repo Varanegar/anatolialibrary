@@ -8,12 +8,14 @@ using System;
 using System.Security.Claims;
 using System.Linq;
 using IdentityServer3.Core;
-using IdentityServer3.Core.Configuration;
+//using IdentityServer3.Core.Configuration;
 using IdentityModel.Client;
 using System.Threading.Tasks;
 using Serilog;
 using IdentityManager.Logging;
 using Anatoli.IdentityServer.Classes;
+using IdentityServer3.Core.Configuration;
+using IdentityServer3.Core.Services;
 
 [assembly: OwinStartup(typeof(Anatoli.IdentityServer.Startup))]
 namespace Anatoli.IdentityServer
@@ -30,11 +32,26 @@ namespace Anatoli.IdentityServer
 
             Log.Logger.Debug("Getting claims for identity token");
 
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
+            app.Map("/admin", adminApp =>
+            {
+                var factory = new IdentityManager.Configuration.IdentityManagerServiceFactory();
+                factory.ConfigureIdentityManagerService("IdSvr3Config");
+
+                adminApp.UseIdentityManager(new IdentityManager.Configuration.IdentityManagerOptions()
+                {
+                    Factory = factory
+                });
+            });
 
             app.Map("/core", core =>
             {
                 var idSvrFactory = Factory.Config("IdSvr3Config");
+
                 idSvrFactory.ConfigureUserService("IdSvr3Config");
+
+                idSvrFactory.ClaimsProvider = new Registration<IClaimsProvider>(typeof(AscendClaimsProvider));
 
                 var options = new IdentityServerOptions
                 {
@@ -46,7 +63,6 @@ namespace Anatoli.IdentityServer
                         //IdentityProviders = ConfigureAdditionalIdentityProviders,                        
                     }
                 };
-
                 core.UseIdentityServer(options);
             });
 

@@ -8,11 +8,11 @@ using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
 using PersianDate;
 using System.Web;
-using Microsoft.AspNet.Identity;
 using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes;
 using Anatoli.Business.Proxy.Concretes.StockProductRequestTypeConcretes;
 using Anatoli.Business.Proxy.Concretes.StockProductRequestConcretes;
+using Anatoli.Cloud.WebApi.Classes.Helpers;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -130,7 +130,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 if (tmp.ruleId != "")
                     model.UniqueId = tmp.ruleId;
 
-                await new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new StockProductRequestRuleProxy().ReverseConvert( new List<StockProductRequestRuleViewModel> { model }));
+                await new StockProductRequestRuleDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).PublishAsync(new StockProductRequestRuleProxy().ReverseConvert(new List<StockProductRequestRuleViewModel> { model }));
 
                 return Ok();
             }
@@ -278,7 +278,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
             try
             {
                 var term = data != null ? data.searchTerm : string.Empty;
-                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+
+                var currentUserId = User.GetAnatoliUserId();
 
                 var model = await new StockProductRequestDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetStockProductRequests(term, Guid.Parse(currentUserId));
 
@@ -286,7 +287,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                log.Error("Web API Call Error", ex);
+                log.Error(ex, "Web API Call Error");
 
                 return GetErrorResult(ex);
             }
@@ -316,7 +317,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+                var currentUserId = User.GetAnatoliUserId();
 
                 await new StockProductRequestProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).UpdateStockProductRequestProductDetails(data.stockProductRequestProductData, Guid.Parse(data.stockId), Guid.Parse(currentUserId));
 
@@ -324,7 +325,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                log.Error("Web API Call Error", ex);
+                log.Error(ex, "Web API Call Error");
 
                 return GetErrorResult(ex);
             }

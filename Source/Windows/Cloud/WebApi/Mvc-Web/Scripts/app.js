@@ -7,10 +7,11 @@ var baseBackendUrl = 'http://localhost:59822';
 //sslBackendUrl = 'http://localhost',
 
 privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
-dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
+dataOwnerId = //'3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 urls = {
-    loginUrl: baseBackendUrl + '/oauth/token',
+    //loginUrl: baseBackendUrl + '/oauth/token',
+    loginUrl: baseBackendUrl + '/api/identityAccounts/login',
     storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
     userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
     saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
@@ -216,6 +217,12 @@ function accountManagerViewModel() {
             message = jqXHR.responseJSON.error_description;
         }
 
+        if (jqXHR.status == 400)
+        {
+            title = '400';
+            message = jqXHR.responseJSON.message;
+        }
+
         if (jqXHR.status == 401) {
             title = '401';
             message = errorMessage.unAuthorized;
@@ -248,7 +255,7 @@ function accountManagerViewModel() {
             return;
 
         self.result('');
-
+        
         var token = $.cookie("token"),
             headers = { ownerKey: privateOwnerId };
 
@@ -289,7 +296,7 @@ function accountManagerViewModel() {
     var $loginForm = $(".login-form");
     self.login = function () {
         self.result('');
-
+        
         if (self.loginEmail() == undefined || self.loginEmail() == '' || self.loginPassword() == undefined || self.loginPassword() == '') {
             self.result('لطفا اطلاعات کاربری خود را وارد نمایید');
             return;
@@ -313,16 +320,15 @@ function accountManagerViewModel() {
             url: urls.loginUrl,
             data: loginData,
         }).done(function (data) {
+            debugger
             self.user(data.userName);
-            //debugger
             $.cookie("token", data.access_token, { path: '/' });
             $loginForm.data("kendoWindow").close();
 
             var retUrlObject = self.requestAppObject();
             if (retUrlObject)
                 self.callApi(retUrlObject.url, retUrlObject.callType, {}, retUrlObject.callBackFunc);
-
-
+            
             headerMenu.shouldShowLogout(true);
             unfreezUI();
 
