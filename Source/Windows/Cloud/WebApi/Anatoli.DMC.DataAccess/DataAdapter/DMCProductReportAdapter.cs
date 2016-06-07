@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Anatoli.DMC.DataAccess.Helpers.Entity;
 using Anatoli.DMC.ViewModels.Gis;
 using Anatoli.DMC.ViewModels.Report;
+using Anatoli.ViewModels.VnGisModels;
 using Thunderstruck;
 using System.Data.SqlClient;
 
@@ -149,8 +150,29 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             }
         }
 
-        public List<DMCPointViewModel> LoadProductValueReport(Guid id, DMCProductValueReportFilterModel filter)
+        public List<DMCPointViewModel> LoadProductValueReport(Guid? id, DMCProductValueReportFilterModel filter)
         {
+            var custompoint = "";
+            var firstpoints = "";
+
+
+            if (id == null)
+            {
+                foreach (var point in filter.CustomPoint)
+                {
+                    if (custompoint == "")
+                    {
+                        firstpoints = point.Longitude + " " + point.Latitude;
+                        custompoint = firstpoints;
+                    }
+                    else
+                        custompoint += "," + point.Longitude + " " + point.Latitude;
+
+                }
+                if (custompoint != "")
+                    custompoint += "," + firstpoints;
+
+            }
 
             var where = "";
 
@@ -253,8 +275,9 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             {
                 var list = context.All<DMCPointViewModel>("exec GisLoadGoodByValueReport " +
                                                           "@ClientId ='" + filter.ClientId + "'," +
-                                                          "@AreaId = '" + id.ToString() + "', " +
-                                                          "@HavingCondition = '" + where + "'"
+                                                          "@AreaId = " + (id == null ? "null" : "'"+id+"'") + ", " +
+                                                          "@HavingCondition = '" + where + "',"+
+                                                          "@CustomPoints =  '"+ custompoint +"' "
                     ).ToList();
 
                 return list;
