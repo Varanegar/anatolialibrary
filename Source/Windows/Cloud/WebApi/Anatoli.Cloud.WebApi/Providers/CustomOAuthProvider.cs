@@ -52,7 +52,7 @@ namespace Anatoli.Cloud.WebApi.Providers
                 }
 
                 //var user = userManager.FindByName(context.UserName);
-                var user = userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner).Result;
+                var user =await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
                 //var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)

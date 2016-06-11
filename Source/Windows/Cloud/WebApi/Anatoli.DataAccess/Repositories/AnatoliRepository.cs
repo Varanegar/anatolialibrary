@@ -87,7 +87,7 @@ namespace Anatoli.DataAccess.Repositories
         {
             try
             {
-                return DbSet.AsExpandable().SingleOrDefaultAsync(CalcExtraPredict(predicate)).Result;
+                return await DbSet.AsExpandable().SingleOrDefaultAsync(CalcExtraPredict(predicate));
             }catch(Exception ex)
             {
                 return null;
