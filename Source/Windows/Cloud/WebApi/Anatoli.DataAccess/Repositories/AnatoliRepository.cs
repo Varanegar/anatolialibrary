@@ -85,7 +85,13 @@ namespace Anatoli.DataAccess.Repositories
 
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await DbSet.AsExpandable().SingleOrDefaultAsync(CalcExtraPredict(predicate));
+            try
+            {
+                return DbSet.AsExpandable().SingleOrDefaultAsync(CalcExtraPredict(predicate)).Result;
+            }catch(Exception ex)
+            {
+                return null;
+            }
         }
         public virtual async Task<TResult> FindAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
         {
