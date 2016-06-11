@@ -120,6 +120,7 @@
     <Compile Include="VnGisModels\CustomerPointViewModel.cs" />
     <Compile Include="VnGisModels\PointViewModel.cs" />
     <Compile Include="VnGisModels\PolyViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaCustomerLocCountViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaPointViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaCustomerViewModel.cs" />

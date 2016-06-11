@@ -11,9 +11,9 @@ namespace ClientApp
     {
 
         protected static string OwnerKey = "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240";
-        protected static string DataOwnerKey = "79a0d598-0bd2-45b1-baaa-0a9cf9eff240";
-        protected static string DataOwnerCenterKey = "79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240";
-
+        protected static string DataOwnerKey = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+        protected static string DataOwnerCenterKey = "3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C";
+      
 
         protected static void WriteToConsole(string str)
         {

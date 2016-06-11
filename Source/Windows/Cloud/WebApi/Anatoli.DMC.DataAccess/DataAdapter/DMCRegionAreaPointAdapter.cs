@@ -55,7 +55,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 if (id != null)
                 {
                     where += (where == "" ? "WHERE " : "AND");
-                    where += string.Format(" (P.UniqueId <> '{0}' )", id);
+                    where += string.Format(" (P.RegionAreaUniqueId <> '{0}' )", id);
                 }
 
 
@@ -68,7 +68,7 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                                            "FROM  " + DMCRegionAreaPointEntity.TabelName + " AS P JOIN "+
                                                 DMCVisitTemplatePathEntity.TabelName +" AS V ON P.[RegionAreaUniqueId] = V.UniqueId "+
                                            where+
-                                           " ORDER BY [RegionAreaUniqueId],Priority "
+                                           " ORDER BY P.[RegionAreaUniqueId],Priority "
                                            ).ToList();
 
             }
@@ -90,6 +90,21 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
          }
 
 
+        public DMCPointViewModel GetAreaCenterPointById(Guid id)
+        {
+            using (var context = GetDataContext(Transaction.No))
+            {
+                var result =
+                    context.First<DMCPointViewModel>("SELECT UniqueId, " +
+                                               "'' as Lable, " +
+                                               "[UniqueId] as MasterId, " +
+                                               "CenterLatitude as Latitude,CenterLongitude as Longitude " +
+                                           "FROM  " + DMCVisitTemplatePathEntity.TabelName + "  " +
+                                          "WHERE UniqueId = '" + id + "'"
+                        );
+                return result;
+            }
+        }
         public bool HaseAreaPoint(Guid? id)
         {
             using (var context = GetDataContext(Transaction.No))

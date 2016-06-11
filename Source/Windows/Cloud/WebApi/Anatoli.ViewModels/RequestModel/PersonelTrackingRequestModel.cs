@@ -9,10 +9,10 @@ namespace Anatoli.ViewModels.RequestModel
 {
     public class PersonelTrackingRequestModel
     {
-        public OrderActivityEventPointViewModel orderEvent { get; set; }
-        public LackOfOrderActivityEventPointViewModel lackOfOrderEvent { get; set; }
-        public LackOfVisitActivityEventPointViewModel lackOfVisitEvent { get; set; }
-        public PersonnelDailyActivityPointViewModel pointEvent { get; set; }
+        public List<OrderActivityEventPointViewModel> orderEvent { get; set; }
+        public List<LackOfOrderActivityEventPointViewModel> lackOfOrderEvent { get; set; }
+        public List<LackOfVisitActivityEventPointViewModel> lackOfVisitEvent { get; set; }
+        public List<PersonnelDailyActivityPointViewModel> pointEvent { get; set; }
   
         public string date { get; set; }
         public string fromTime { get; set; }

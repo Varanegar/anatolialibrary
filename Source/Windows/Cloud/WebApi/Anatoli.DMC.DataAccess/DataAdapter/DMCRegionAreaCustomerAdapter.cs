@@ -142,7 +142,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
         }
 
-        public List<DMCRegionAreaCustomerViewModel> LoadCustomerWithouteLocation(Guid areaId)
+
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerWithoutLocation(Guid areaId)
         {
             List<DMCRegionAreaCustomerViewModel> list;
 
@@ -151,6 +152,21 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
 
             using (var ctx = GetDataContext(Transaction.No))
             {
+                var typ =
+                    ctx.GetValue<int>(string.Format("select VisitPathTypeId from VisitTemplatePath where UniqueId = '{0}'",
+                    areaId));
+                var isleaf = typ == 4;
+
+                if (isleaf)
+                list =
+                    ctx.All<DMCRegionAreaCustomerViewModel>(string.Format(
+                    "SELECT customer.UniqueId,"+ 
+				        "[Address] as [Desc],"+
+                        "'('+[CustomerCode] + ')' +[CustomerName] as CustomerName " +
+	                    "FROM customer JOIN 	VisitTemplateCustomer AC ON (customer.UniqueId = AC.CustomerUniqueId) "+
+                    "WHERE ([RegionAreaUniqueId] = '{0}') AND (ISNULL(Latitude,0) = 0) AND (ISNULL(Longitude,0) = 0)", areaId)
+                    ).ToList();
+                else
                 list =
                     ctx.All<DMCRegionAreaCustomerViewModel>(
                     "SELECT customer.UniqueId,"+ 
@@ -163,6 +179,36 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             }
             return list;
         }
+        public int GetCustomerWithoutLocationCount(Guid areaId)
+        {
+            List<DMCRegionAreaCustomerViewModel> list;
+
+            //var areaidParam = new SqlParameter("@areaid", areaid);
+            //var selectedParam = new SqlParameter("@selected", selected);
+
+            using (var ctx = GetDataContext(Transaction.No))
+            {
+                var result =
+                    ctx.GetValue<int>(string.Format(
+                        "SELECT count(customer.UniqueId) " +
+                        "FROM customer JOIN VisitTemplateCustomer AC ON (customer.UniqueId = AC.CustomerUniqueId) " +
+                        "WHERE ([RegionAreaUniqueId] = '{0}') AND (ISNULL(Latitude,0) = 0) AND (ISNULL(Longitude,0) = 0)",
+                        areaId));
+                return result;
+            }
+        }
+
+        public List<DMCRegionAreaCustomerViewModel> LoadCustomerValidLocation(Guid areaId)
+        {
+            List<DMCRegionAreaCustomerViewModel> list;
+            using (var ctx = GetDataContext(Transaction.No))
+            {
+                list =
+                    ctx.All<DMCRegionAreaCustomerViewModel>(string.Format("exec [GisLoadCustomerLocation] @AreaId= '{0}', @SelectedType = 0, @ReturnType = 0 ", areaId)
+                    ).ToList();
+            }
+            return list;
+        }
 
         public List<DMCRegionAreaCustomerViewModel> LoadCustomerInvalidLocation(Guid areaId)
         {
@@ -170,10 +216,18 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             using (var ctx = GetDataContext(Transaction.No))
             {
                 list =
-                    ctx.All<DMCRegionAreaCustomerViewModel>(string.Format("exec [GisLoadCustomerInvalidLocation] @AreaId= '{0}' ", areaId)
+                    ctx.All<DMCRegionAreaCustomerViewModel>(string.Format("exec [GisLoadCustomerLocation] @AreaId= '{0}', @SelectedType =1, @ReturnType = 0 ", areaId)
                     ).ToList();
             }
             return list;
+        }
+
+        public int GetCustomerInvalidLocationCount(Guid areaId)
+        {
+            using (var ctx = GetDataContext(Transaction.No))
+            {
+                return ctx.GetValue<int>(string.Format("exec [GisLoadCustomerLocation] @AreaId= '{0}', @SelectedType = 1, @ReturnType = 1 ", areaId));
+            }
         }
         #endregion
 
