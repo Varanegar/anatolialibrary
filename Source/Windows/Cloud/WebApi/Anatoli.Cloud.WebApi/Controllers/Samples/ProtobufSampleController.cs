@@ -170,24 +170,24 @@ namespace Anatoli.Cloud.WebApi.Controllers.Samples
                 var model = new List<ProductViewModel>
                 {
                     new ProductViewModel
+                {
+                    UniqueId = id,
+                    ProductName = "test Mrg",
+                    Barcode = "ba",
+                    Desctription = "dsf",
+                    IsActiveInOrder = true,
+                    MainSupplierName = "sf",
+                    PackWeight = 125,
+                    ProductCode = "sf234234swa",
+                    ProductRate = 5,
+                    QtyPerPack = 6,
+                    StoreProductName = "test Mrg1234",
+                    ProductTypeInfo = new ProductTypeViewModel
                     {
                         UniqueId = id,
-                        ProductName = "test Mrg",
-                        Barcode = "ba",
-                        Desctription = "dsf",
-                        IsActiveInOrder = true,
-                        MainSupplierName = "sf",
-                        PackWeight = 125,
-                        ProductCode = "sf234234swa",
-                        ProductRate = 5,
-                        QtyPerPack = 6,
-                        StoreProductName = "test Mrg1234",
-                        ProductTypeInfo = new ProductTypeViewModel
-                        {
-                            UniqueId = id,
-                            ProductTypeName = "type1"
-                        },
-                        ProductTypeId = id
+                        ProductTypeName = "type1"
+                    },
+                    ProductTypeId = id
                     }
                 };
 
@@ -229,6 +229,41 @@ namespace Anatoli.Cloud.WebApi.Controllers.Samples
             }
         }
 
+        [AnatoliAuthorize,Route("productsTest2")]
+        public ProductViewModel GetProductsTest2()
+        {
+            try
+            {
+                var id = Guid.NewGuid();
+
+                var model = new ProductViewModel
+                {
+                    UniqueId = id,
+                    ProductName = "test Mrg",
+                    Barcode = "ba",
+                    Desctription = "dsf",
+                    IsActiveInOrder = true,
+                    MainSupplierName = "sf",
+                    PackWeight = 125,
+                    ProductCode = "sf234234swa",
+                    ProductRate = 5,
+                    QtyPerPack = 6,
+                    StoreProductName = "test Mrg1234",
+                    ProductTypeInfo = new ProductTypeViewModel
+                    {
+                        UniqueId = id,
+                        ProductTypeName = "type1"
+                    },
+                    ProductTypeId = id
+                };
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         [Route("recievingGzipModel"), HttpPost]
         public async Task<IHttpActionResult> RecievingGzipModel([GzipBody] List<ProductViewModel> model)
         {

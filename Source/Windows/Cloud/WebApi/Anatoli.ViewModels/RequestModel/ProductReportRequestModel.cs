@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anatoli.ViewModels.VnGisModels;
 
 namespace Anatoli.ViewModels.RequestModel
 {
@@ -47,6 +48,8 @@ namespace Anatoli.ViewModels.RequestModel
         public int DefaultField { set; get; }
 
         //value
+        public List<RegionAreaPointViewModel> CustomPoint { set; get; }
+
         public int? FromRequestCount { set; get; }
         public int? ToRequestCount { set; get; }
         public int? FromFactorCount { set; get; }

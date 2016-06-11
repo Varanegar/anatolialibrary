@@ -7,10 +7,11 @@ var baseBackendUrl = 'http://localhost:59822';
 //sslBackendUrl = 'http://localhost',
 
 privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
-dataOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
+dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 urls = {
-    loginUrl: baseBackendUrl + '/oauth/token',
+    //loginUrl: baseBackendUrl + '/oauth/token',
+    loginUrl: baseBackendUrl + '/api/identityAccounts/login',
     storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
     userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
     saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
@@ -222,6 +223,13 @@ function accountManagerViewModel() {
             title = jqXHR.responseJSON.error;
             message = jqXHR.responseJSON.error_description;
         }
+
+        if (jqXHR.status == 400)
+        {
+            title = '400';
+            message = jqXHR.responseJSON.message;
+        }
+
         if (jqXHR.status == 401) {
             title = '401';
             message = errorMessage.unAuthorized;
@@ -325,6 +333,7 @@ function accountManagerViewModel() {
             url: urls.loginUrl,
             data: loginData,
         }).done(function (data) {
+            debugger
             self.user(data.userName);
 
             $.cookie("token", data.access_token, { path: '/' });
@@ -439,7 +448,7 @@ function accountManagerViewModel() {
         $(".restore-password-div").removeClass('hide').show();
         $(".login-div").hide();
         $(".k-window-title").html("بازیابی رمزعبور");
-    };
+};
 
     self.hideRestorePasswordDiv = function () {
         $(".restore-password-div").hide();

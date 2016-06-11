@@ -1,18 +1,9 @@
-﻿using System;
-using System.Linq;
-using Anatoli.Business.Proxy;
+﻿using NLog;
+using System;
 using System.Threading.Tasks;
-using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
-using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.StockModels;
-using Anatoli.ViewModels.BaseModels;
 using Anatoli.DataAccess.Models.Identity;
-using NLog;
 
 namespace Anatoli.Business.Domain
 {
@@ -40,7 +31,6 @@ namespace Anatoli.Business.Domain
             ApplicationOwnerKey = applicationOwnerKey;
             DataOwnerKey = dataOwnerKey;
             Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
-
         }
         #endregion
 
@@ -88,8 +78,6 @@ namespace Anatoli.Business.Domain
                 Logger.Error(ex);
             }
         }
-
-
         #endregion
     }
 }

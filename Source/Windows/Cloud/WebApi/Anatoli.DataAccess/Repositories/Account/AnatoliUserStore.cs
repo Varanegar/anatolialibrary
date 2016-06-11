@@ -137,12 +137,12 @@ namespace Anatoli.DataAccess.Repositories
         #region User Password Store
         public Task<string> GetPasswordHashAsync(User user)
         {
-            return Task<string>.FromResult(user.Password);
+            return Task.FromResult(user.Password);
         }
 
         public Task<bool> HasPasswordAsync(User user)
         {
-            return Task<bool>.FromResult(string.IsNullOrEmpty(user.Password));
+            return Task.FromResult(string.IsNullOrEmpty(user.Password));
         }
 
         public Task SetPasswordHashAsync(User user, string passwordHash)

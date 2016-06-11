@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample Web API", "Samples\S
 		{66427FB5-20B2-4C37-B4EF-628A8C6F26F3} = {66427FB5-20B2-4C37-B4EF-628A8C6F26F3}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{55F4D119-5F1E-42BF-AF64-C68D6384A776}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnatoliIdentityUnitTests", "AnatoliIdentityUnitTests\AnatoliIdentityUnitTests.csproj", "{9B654FDE-4410-4E76-91EF-7744E6E1DBDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,10 @@ Global
 		{C8CD1733-783A-4655-814B-9CF7FD7FDFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CD1733-783A-4655-814B-9CF7FD7FDFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8CD1733-783A-4655-814B-9CF7FD7FDFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B654FDE-4410-4E76-91EF-7744E6E1DBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B654FDE-4410-4E76-91EF-7744E6E1DBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B654FDE-4410-4E76-91EF-7744E6E1DBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B654FDE-4410-4E76-91EF-7744E6E1DBDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,5 +50,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0109EFFE-B823-47C0-A27D-6DFD7B7169F2} = {0CFFA7A2-79F0-42BA-BEB8-52E2FC28A249}
 		{C8CD1733-783A-4655-814B-9CF7FD7FDFE8} = {0CFFA7A2-79F0-42BA-BEB8-52E2FC28A249}
+		{9B654FDE-4410-4E76-91EF-7744E6E1DBDD} = {55F4D119-5F1E-42BF-AF64-C68D6384A776}
 	EndGlobalSection
 EndGlobal

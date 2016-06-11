@@ -4,10 +4,9 @@ using System.Web;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Web.Http.Controllers;
-//using Anatoli.Business.Domain.Authorization;
+using Anatoli.Cloud.WebApi.Classes.Helpers;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -64,7 +63,7 @@ namespace Anatoli.Cloud.WebApi.Classes
                 if (IsApiPageRequested(actionContext))
                     if (!HasOwnerKey)
                     {
-                        this.HandleUnauthorizedRequest(actionContext);
+                        HandleUnauthorizedRequest(actionContext);
 
                         _responseReason = "Application key required.";
                     }
@@ -76,7 +75,7 @@ namespace Anatoli.Cloud.WebApi.Classes
 
                 throw ex;
             }
-           
+
         }
 
         private bool HasWebApiAccess()
@@ -84,17 +83,16 @@ namespace Anatoli.Cloud.WebApi.Classes
             if (string.IsNullOrEmpty(Resource) && string.IsNullOrEmpty(Action))
                 return true;
 
-            var user = HttpContext.Current.User;
-
-            if (user == null || string.IsNullOrEmpty(user.Identity.GetUserId()))
+            if (string.IsNullOrEmpty(HttpContext.Current.User.GetAnatoliUserId()))
                 return false;
 
-            //var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.Identity.GetUserId(), Resource, Action);
+            //var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.GetAnatoliUserId(), Resource, Action);
 
             //if (permissions == null || permissions.Count == 0 || permissions.Any(a => a.Grant == -1))
             //    return false;
 
             //check resource action from db for this Principal.
+
             return true;
         }
 
@@ -107,9 +105,9 @@ namespace Anatoli.Cloud.WebApi.Classes
                 return true;
 
             //checking against our custom table goes here
-            if (!this.HasWebApiAccess())
+            if (!HasWebApiAccess())
             {
-                this.HandleUnauthorizedRequest(actionContext);
+                HandleUnauthorizedRequest(actionContext);
 
                 _responseReason = "Access Denied";
 

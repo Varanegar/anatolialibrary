@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Text;
 using System.Web.Http;
 using System.Net.Http;
@@ -8,7 +9,6 @@ using Anatoli.Cloud.WebApi.Models;
 using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity.Owin;
 using Anatoli.Cloud.WebApi.Infrastructure;
-using NLog;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

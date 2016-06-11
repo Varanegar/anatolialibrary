@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Web;
-using Anatoli.DataAccess.Models;
 using Anatoli.Cloud.WebApi.Controllers;
 using System.Globalization;
+using Anatoli.DataAccess.Models;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
     public abstract class AnatoliApiController : BaseApiController
     {
-
-
         public bool GetRemovedData
         {
             get
@@ -65,7 +63,7 @@ namespace Anatoli.Cloud.WebApi.Classes
             var validDate = DateTime.MinValue;
             try { validDate = DateTime.Parse(dateStr); }
             catch (Exception ex) {
-                DateTime.TryParseExact(dateStr, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture,
+                DateTime.TryParseExact(dateStr, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture,
                         DateTimeStyles.None, out validDate);
             }
             return validDate;
