@@ -93,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Account\UserDomain.cs" />
+    <Compile Include="Domain\Application\ApplicationDomain.cs" />
+    <Compile Include="Domain\Application\ModuleDomain.cs" />
+    <Compile Include="Domain\Application\ResourceDomain.cs" />
     <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Domain\Customer\BasketDomain.cs" />
     <Compile Include="Domain\Customer\CustomerShipAddressDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
+    <Compile Include="Domain\Permissions\PermissionDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
     <Compile Include="Domain\Product\CharGroupDomain.cs" />
     <Compile Include="Domain\Product\CharValueDomain.cs" />
@@ -123,6 +127,7 @@
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderStatusHistoryDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderLineItemDomain.cs" />
     <Compile Include="Domain\PurchaseOrder\PurchaseOrderDomain.cs" />
+    <Compile Include="Domain\RawBusinessDomain.cs" />
     <Compile Include="Domain\Route\RegionAreaPointDomain.cs" />
     <Compile Include="Domain\Route\RegionAreaDomain.cs" />
     <Compile Include="Domain\Stock\StockActiveOnHandDomain.cs" />

@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Modules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container module-management-page">
+    <h2>Modules</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div id="module-management-grid"></div>
+        </div>
+    </div>
+    <script type="text/x-kendo-template" id="toolbar-template">
+        <div class="toolbar">
+            <button type="button" data-bind="click: addModule" class="k-button k-button-icontext add-user">
+                <span class="k-icon k-add"></span>افزودن
+            </button>
+        </div>
+    </script>
+    <div class="hide">
+        <div id="add-module-window" style="padding:-5px;" data-bind="kendoWindow: { isOpen: showModuleDialog, width: 400, resizable:false, title: 'Module', position: { top: '20%', left:'30%' } }">
+            <div class="row">
+                <div class="form-group">
+                    <label for="appName">From App:</label>
+                    <select id="appName" class="form-control" data-bind="options: appList, optionsText: 'name', value: selectedApp"></select>
+                </div>
+                <div class="form-group">
+                    <label for="moduleName">Module Name:</label>
+                    <input class="form-control" id="moduleName" name="moduleName" type="text" data-bind="value: moduleName" placeholder="نام ماژول" />
+                </div>
+                <div class="form-group">
+                    <button type="button" data-bind="click: moduleSave" class="btn btn-success">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> ثبت
+                    </button>
+                    <button type="button" data-bind="click: moduleCancel" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> انصراف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            ko.applyBindings(new modulesViewModel(), $('.module-management-page')[0]);
+        });
+    </script>
+}

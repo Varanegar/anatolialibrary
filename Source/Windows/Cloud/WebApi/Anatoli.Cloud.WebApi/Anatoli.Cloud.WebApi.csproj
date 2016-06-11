@@ -228,10 +228,13 @@
     <Compile Include="Classes\GzipBodyAttribute.cs" />
     <Compile Include="Classes\IFileManager.cs" />
     <Compile Include="Classes\ObjectTypes.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\Base\AccountsController.cs" />
+    <Compile Include="Controllers\Base\ActionController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Base\ClaimsController.cs" />
     <Compile Include="Controllers\Base\IdentityAccounts.cs" />
+    <Compile Include="Controllers\Base\PermissionController.cs" />
     <Compile Include="Controllers\Base\PushNotificationController.cs" />
     <Compile Include="Controllers\DSD\BaseData\BackOfficeBaseDataController.cs" />
     <Compile Include="Controllers\DSD\Customer\CustomerController.cs" />
@@ -258,6 +261,8 @@
     <Compile Include="Controllers\Base\RolesController.cs" />
     <Compile Include="Controllers\Base\OrdersController.cs" />
     <Compile Include="Controllers\ImageManager\ImageManagerController.cs" />
+    <Compile Include="Controllers\ModuleController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\Samples\ProtobufSampleController.cs" />
     <Compile Include="Controllers\TestAuthController.cs" />
     <Compile Include="Classes\CompressionAttributes.cs" />
@@ -344,6 +349,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
   <PropertyGroup>
@@ -357,16 +363,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>59822</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59822/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
