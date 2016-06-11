@@ -32,38 +32,53 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Personnel
 
                 var service = new PersonnelDailyActivityEventDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
                 PersonnelDailyActivityEvent entity = null;
-                if (data.orderEvent != null)
+                
+                //order events 
+                if ((data.orderEvent != null) && (data.orderEvent.Count > 0))
                 {
-                    entity = data.orderEvent.ToModel();
-                    pointentity = data.orderEvent.ToPointModel();
-                    entity.JData = (data.orderEvent.eventData).GetJson();                    
-                }
-                else if (data.lackOfOrderEvent != null)
-                {
-                    entity = data.lackOfOrderEvent.ToModel();
-                    pointentity = data.orderEvent.ToPointModel();
-                    entity.JData = (data.lackOfOrderEvent.eventData).GetJson();
-
-                }
-                else if (data.lackOfVisitEvent != null)
-                {
-                    entity = data.lackOfVisitEvent.ToModel();
-                    pointentity = data.orderEvent.ToPointModel();
-                    entity.JData = (data.lackOfVisitEvent.eventData).GetJson();
-
-                }
-                else if (data.pointEvent != null)
-                {
-                    pointentity = data.pointEvent.ToModel();
+                    foreach (var item in data.orderEvent)
+                    {
+                        entity = item.ToModel();
+                        pointentity = item.ToPointModel();
+                        entity.JData = (item.eventData).GetJson();
+                        await service.SavePersonelActivitie(entity);
+                        await pointservice.SavePersonelPoint(pointentity);
+                    }
                 }
 
-                if (entity != null)
-                await service.SavePersonelActivitie(entity);
-
-                if (pointentity != null)
-                    await pointservice.SavePersonelPoint(pointentity);
-
-
+                //lackOfOrder events
+                if ((data.lackOfOrderEvent != null) && (data.lackOfOrderEvent.Count > 0))
+                {
+                    foreach (var item in data.lackOfOrderEvent)
+                    {
+                        entity = item.ToModel();
+                        pointentity = item.ToPointModel();
+                        entity.JData = (item.eventData).GetJson();
+                        await service.SavePersonelActivitie(entity);
+                        await pointservice.SavePersonelPoint(pointentity);
+                    }
+                }
+                
+                if ((data.lackOfVisitEvent != null)&& (data.lackOfVisitEvent.Count > 0))
+                {
+                    foreach (var item in data.lackOfVisitEvent)
+                    {
+                        entity = item.ToModel();
+                        pointentity = item.ToPointModel();
+                        entity.JData = (item.eventData).GetJson();
+                        await service.SavePersonelActivitie(entity);
+                        await pointservice.SavePersonelPoint(pointentity);
+                    }
+                }
+                
+                if ((data.pointEvent != null) && (data.pointEvent.Count > 0))
+                {
+                    foreach (var item in data.pointEvent)
+                    {
+                        pointentity = item.ToModel();
+                        await pointservice.SavePersonelPoint(pointentity);
+                    }
+                }
                 return Ok(true);
             }
             catch (Exception ex)

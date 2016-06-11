@@ -29,31 +29,21 @@ namespace ClientApp
             {
                 UniqueId = Guid.NewGuid(),
 
-                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),
-                CompanyPersonnelName = "بهزاد احمديان هزه بران",
-                
-                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),
-                CustomerName = "عليرضا تاملي",
-                
-                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName = "فروش گرم",
-                PersonnelDailyActivityEventTypeId = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"),
-                PersonnelDailyActivityEventTypeName  = "سفارش",
+                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),//"بهزاد احمديان هزه بران"
+                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),//"عليرضا تاملي",                
+                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"), //"فروش گرم"
+                PersonnelDailyActivityEventTypeId = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"),//"سفارش",
                 Latitude = 38.084812,
                 Longitude = 46.295516,
-                ShortDescription = "test",
                 ActivityDate = DateTime.Now,
                 ActivityPDate= "1395/02/29",
-                LastUpdate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                DataOwnerId = Guid.Parse(DataOwnerKey),
-                ApplicationOwnerId = Guid.Parse(OwnerKey),
-                DataOwnerCenterId = Guid.Parse(DataOwnerCenterKey),
                 eventData = eventdata
             };
 
-            var req = new PersonelTrackingRequestModel();
-            req.orderEvent = eventpoint;
+            var req = new PersonelTrackingRequestModel
+            {
+                orderEvent = new List<OrderActivityEventPointViewModel> {eventpoint}
+            };
 
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
@@ -73,32 +63,21 @@ namespace ClientApp
             var eventpoint = new LackOfOrderActivityEventPointViewModel()
             {
                 UniqueId = Guid.NewGuid(),
-
-                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),
-                CompanyPersonnelName = "بهزاد احمديان هزه بران",
-
-                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),
-                CustomerName = "عليرضا تاملي",
-
-                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName = "فروش گرم",
-                PersonnelDailyActivityEventTypeId = Guid.Parse("E780728B-9BAC-4E86-AFE0-9886AD101128"),
-                PersonnelDailyActivityEventTypeName = "سفارش",
+                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"), //"بهزاد احمديان هزه بران",
+                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),//"عليرضا تاملي",
+                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),//"فروش گرم",
+                PersonnelDailyActivityEventTypeId = Guid.Parse("E8ED4D92-CBC0-40F1-A732-53CFF4C91AC5"),// "عدم سفارش",
                 Latitude = 38.084812,
                 Longitude = 46.295516,
-                ShortDescription = "test",
                 ActivityDate = DateTime.Now,
                 ActivityPDate = "1395/02/29",
-                LastUpdate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                DataOwnerId = Guid.Parse(DataOwnerKey),
-                ApplicationOwnerId = Guid.Parse(OwnerKey),
-                DataOwnerCenterId = Guid.Parse(DataOwnerCenterKey),
                 eventData = eventdata
             };
 
-            var req = new PersonelTrackingRequestModel();
-            req.lackOfOrderEvent = eventpoint;
+            var req = new PersonelTrackingRequestModel
+            {
+                lackOfOrderEvent = new List<LackOfOrderActivityEventPointViewModel> { eventpoint }
+            };
 
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
@@ -119,32 +98,24 @@ namespace ClientApp
             {
                 UniqueId = Guid.NewGuid(),
 
-                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),
-                CompanyPersonnelName = "بهزاد احمديان هزه بران",
+                CompanyPersonnelId = Guid.Parse("ABDBCF7B-0540-46C8-9CA3-0BB427C9FE59"),// "بهزاد احمديان هزه بران",
 
-                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),
-                CustomerName = "عليرضا تاملي",
+                CustomerId = Guid.Parse("BC145F27-2714-4610-ACBF-04A0679894AE"),// "عليرضا تاملي",
 
-                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),
-                PersonnelDailyActivityVisitTypeName = "فروش گرم",
-                PersonnelDailyActivityEventTypeId = Guid.Parse("E68F7931-2189-4000-B173-D02719720923"),
-                PersonnelDailyActivityEventTypeName = "عدم ویزیت",
-                Latitude = 38.084812,
-                Longitude = 46.295516,
-                ShortDescription = "test",
+                PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),// "فروش گرم",
+                PersonnelDailyActivityEventTypeId = Guid.Parse("E68F7931-2189-4000-B173-D02719720923"),// "عدم ویزیت",
+                Latitude = 38.084912,
+                Longitude = 46.290506,
                 ActivityDate = DateTime.Now,
-                ActivityPDate = "1395/02/31",
-                LastUpdate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                DataOwnerId = Guid.Parse(DataOwnerKey),
-                ApplicationOwnerId = Guid.Parse(OwnerKey),
-                DataOwnerCenterId = Guid.Parse(DataOwnerCenterKey),
+                ActivityPDate = "1395/03/22",
                 eventData = eventdata
             };
 
-            var req = new PersonelTrackingRequestModel();
-            req.lackOfVisitEvent = eventpoint;
-
+            var req = new PersonelTrackingRequestModel
+            {
+                lackOfVisitEvent = new List<LackOfVisitActivityEventPointViewModel> { eventpoint }
+            };
+          
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
         }
@@ -159,19 +130,16 @@ namespace ClientApp
                 CompanyPersonnelId = Guid.Parse("c99ae71a-a82d-4879-a859-82079ecb69c7"), // ایمانی
                 //Latitude = 38.075812,
                 //Longitude = 46.285022,
-                Latitude = 38.041751,
-                Longitude = 46.104754,
+                Latitude = 38.041951,
+                Longitude = 46.104700,
                 ActivityDate = DateTime.Now,
                 ActivityPDate = "1395/02/29",
-                LastUpdate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                DataOwnerId = Guid.Parse(DataOwnerKey),
-                ApplicationOwnerId = Guid.Parse(OwnerKey),
-                DataOwnerCenterId = Guid.Parse(DataOwnerCenterKey)
             };
 
-            var req = new PersonelTrackingRequestModel();
-            req.pointEvent = eventpoint;
+            var req = new PersonelTrackingRequestModel
+            {
+                pointEvent = new List<PersonnelDailyActivityPointViewModel> { eventpoint }
+            };
 
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
