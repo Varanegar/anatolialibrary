@@ -13,8 +13,6 @@ namespace ClientApp
 {
     public class TrackingManagment : BaseTestManagment
     {
-
-
         public static void TestSavePersonelActivitieOrder(HttpClient client, string servserURI)
         {
             var eventdata = new OrderActivityEventViewModel()
@@ -84,7 +82,6 @@ namespace ClientApp
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
         }
-
         public static void TestSavePersonelActivitieLackOfVisit(HttpClient client, string servserURI)
         {
             var eventdata = new LackeOfVisitActivityEventViewModel()
@@ -122,8 +119,6 @@ namespace ClientApp
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
         }
-
-
         public static void TestSavePersonelActivitiePoint(HttpClient client, string servserURI)
         {
 
@@ -149,9 +144,6 @@ namespace ClientApp
             Call(client, servserURI + "api/dsd/tracking/svprsact", req);
 
         }
-
-
-
         public static void TestLoadPersonelsPath(HttpClient client, string servserURI)
         {
             var req = new PersonelTrackingRequestModel();
@@ -162,7 +154,6 @@ namespace ClientApp
             Call(client, servserURI + "api/dsd/tracking/ldprspth", req);
 
         }
-
         public static void TestLoadPersonActivities(HttpClient client, string servserURI)
         {
             var req = new PersonelTrackingRequestModel();
@@ -176,6 +167,5 @@ namespace ClientApp
 
 
         }
-
     }
 }
