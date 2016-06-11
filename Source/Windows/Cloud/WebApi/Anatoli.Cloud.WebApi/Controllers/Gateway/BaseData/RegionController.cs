@@ -24,14 +24,15 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
-                {
-                    ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
-                    DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
-                    DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
-                }).GetAllAsync<CityRegionViewModel>();
+                //var result = await new CityRegionDomain(new DataAccess.Models.OwnerInfo
+                //{
+                //    ApplicationOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                //    DataOwnerKey = Guid.Parse("79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240"),
+                //    DataOwnerCenterKey = Guid.Parse("3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C")
+                //}).GetAllAsync<CityRegionViewModel>();
 
-                return Ok(result);
+                //return Ok(result);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -107,6 +107,20 @@ namespace Anatoli.Business.Domain.Authorization
             });
             return model.ToList();
         }
+        public async Task<ICollection<PermissionViewModel>> GetAllPermissionsOfCatalog(string catalogId)
+        {
+            var model = await PermissionRepository.GetFromCachedAsync(
+                p => p.Id == ApplicationOwnerKey && 
+                p.PermissionCatalogPermissions.Any(q => q.PermissionCatalog.Id == Guid.Parse(catalogId)), 
+                s => new PermissionViewModel
+            {
+                Id = s.Id,
+                Resource = s.ApplicationModuleResource.Name,
+                Action = s.PermissionAction.Name,
+                Title = s.Name
+            });
+            return model.ToList();
+        }
 
         public async Task<ICollection<PermissionCatalogViewModel>> GetAllPermissionCatalogs()
         {

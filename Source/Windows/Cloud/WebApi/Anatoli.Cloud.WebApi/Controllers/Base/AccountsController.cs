@@ -28,6 +28,8 @@ using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.Business.Domain.Authorization;
 using System.Text;
 using Anatoli.Business.Helpers;
+using Anatoli.ViewModels.AuthorizationModels;
+using Anatoli.Business.Domain.Permissions;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -63,6 +65,75 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetPersmissions()
         {
             var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissions();
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("allPermissions"), HttpGet]
+        public IHttpActionResult GetAllPermissions()
+        {
+            var model = new List<PermissionDetailViewModel>();
+            var domain = new PermissionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            foreach (var item in domain.GetAllPermissions())
+            {
+                model.Add(new PermissionDetailViewModel()
+                {
+                    ApplicationId = item.ApplicationModuleResource.ApplicationModule.ApplicationId,
+                    ApplicationName = item.ApplicationModuleResource.ApplicationModule.Application.Name,
+
+                    ModuleId = item.ApplicationModuleResource.ApplicationModuleId,
+                    ModuleName = item.ApplicationModuleResource.ApplicationModule.Name,
+
+                    ResourceId = item.ApplicationModuleResourceId,
+                    ResourceName = item.ApplicationModuleResource.Name,
+
+                    ActionId = item.PermissionActionId,
+                    ActionName = item.PermissionAction.Name,
+
+                    PermissionId = item.Id,
+                    PermissionName = item.Name
+                });
+            }
+
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("allPermissionsOfCatalog/{catalogId}"), HttpGet]
+        public IHttpActionResult GetAllPermissionsOfCatalog(Guid catalogId)
+        {
+            var model = new List<PermissionDetailViewModel>();
+            var domain = new PermissionDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+            foreach (var item in domain.GetAllPermissionsOfCatalog(catalogId))
+            {
+                model.Add(new PermissionDetailViewModel()
+                {
+                    ApplicationId = item.ApplicationModuleResource.ApplicationModule.ApplicationId,
+                    ApplicationName = item.ApplicationModuleResource.ApplicationModule.Application.Name,
+
+                    ModuleId = item.ApplicationModuleResource.ApplicationModuleId,
+                    ModuleName = item.ApplicationModuleResource.ApplicationModule.Name,
+
+                    ResourceId = item.ApplicationModuleResourceId,
+                    ResourceName = item.ApplicationModuleResource.Name,
+
+                    ActionId = item.PermissionActionId,
+                    ActionName = item.PermissionAction.Name,
+
+                    PermissionId = item.Id,
+                    PermissionName = item.Name
+                });
+            }
+
+            return Ok(model);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [Route("permissionsOfCatalog/{catalogId}"), HttpPost]
+        public async Task<IHttpActionResult> PermissionsOfCatalog(string catalogId)
+        {
+            var model = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllPermissionsOfCatalog(catalogId);
             return Ok(model);
         }
 
@@ -342,43 +413,59 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("checkEmailExist"), HttpPost]
         public async Task<IHttpActionResult> CheckEmailExist([FromBody] AccountRequestModel model)
         {
-            var emailUser = await GetUserByEMail(model.email);
+            try
+            {
+                var emailUser = await GetUserByEMail(model.email);
 
-            if (emailUser != null && emailUser.Id != model.userId)
-                return Ok(false);
+                if (emailUser != null && emailUser.Id != model.userId)
+                    return Ok(false);
 
-            return Ok(true);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
         [Route("saveUser"), HttpPost]
         public async Task<IHttpActionResult> SaveUser([FromBody] BaseRequestModel model)
         {
-            var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
+            try
+            {
+                var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
 
-            if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
-                return await UpdateUser(userModel);
-            else
-                return await CreateUserByBackoffice(userModel, false);
-
+                if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
+                    return await UpdateUser(userModel);
+                else
+                    return await CreateUserByBackoffice(userModel, false);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         private async Task<IHttpActionResult> UpdateUser(CreateUserBindingModel model)
         {
-            var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>());
-            var user = await GetUserByUserId(model.UniqueId.ToString());
+            using (var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>()))
+            {
 
-            if (model.FullName != null)
-                user.FullName = model.FullName;
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
-                user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
+                var user = await GetUserByUserId(model.UniqueId.ToString());
 
-            user.PhoneNumberConfirmed = true;
-            user.EmailConfirmed = true;
-            await userStore.UpdateAsync(user);
+                if (model.FullName != null)
+                    user.FullName = model.FullName;
+                user.SecurityStamp = Guid.NewGuid().ToString();
+                if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                    user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
 
-            return Ok(model);
+                user.PhoneNumberConfirmed = true;
+                user.EmailConfirmed = true;
+                await userStore.UpdateAsync(user);
+
+                return Ok(model);
+            }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
