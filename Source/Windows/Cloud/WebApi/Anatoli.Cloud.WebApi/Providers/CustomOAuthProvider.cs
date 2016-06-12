@@ -50,7 +50,9 @@ namespace Anatoli.Cloud.WebApi.Providers
                     context.SetError("خطا در ورود به سیستم", "شرکت کاربر مشخص نشده است");
                     return;
                 }
-                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
+
+                //var user = userManager.FindByName(context.UserName);
+                var user =await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
                 //var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)

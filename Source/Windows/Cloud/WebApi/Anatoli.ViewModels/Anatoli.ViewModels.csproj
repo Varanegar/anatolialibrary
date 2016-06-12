@@ -56,7 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModels\ApplicationItemViewModel.cs" />
+    <Compile Include="AppModels\ApplicationViewModel.cs" />
+    <Compile Include="AppModels\ModuleListViewModel.cs" />
+    <Compile Include="AppModels\ModuleViewModel.cs" />
+    <Compile Include="AppModels\ResourceViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionActionViewModel.cs" />
     <Compile Include="AuthorizationModels\PermissionCatalogViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionDetailViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionSaveViewModel.cs" />
     <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
     <Compile Include="AuthorizationModels\PrincipalPermissionCatalogViewModel.cs" />
@@ -120,6 +128,7 @@
     <Compile Include="VnGisModels\CustomerPointViewModel.cs" />
     <Compile Include="VnGisModels\PointViewModel.cs" />
     <Compile Include="VnGisModels\PolyViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaCustomerLocCountViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaPointViewModel.cs" />
     <Compile Include="VnGisModels\RegionAreaCustomerViewModel.cs" />

@@ -48,6 +48,7 @@ namespace Anatoli.DMC.Business.Domain
         }
 
 
+
         public List<DMCPointViewModel> LoadProductValueReport(DMCProductValueReportFilterModel filter)
         {
             if (filter.ChangeFilter)
