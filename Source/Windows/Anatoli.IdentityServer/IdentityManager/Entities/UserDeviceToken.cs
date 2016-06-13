@@ -38,6 +38,7 @@ namespace Anatoli.IdentityServer.Entities
             get;
             set;
         }
+
         [ForeignKey("Client")]
         public int ClientId
         {

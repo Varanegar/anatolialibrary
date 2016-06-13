@@ -38,6 +38,9 @@ namespace Anatoli.IdentityServer.Controllers
             public string phonenumber { get; set; }
             public bool phonenumberConfirmed { get; set; }
             public string roles { get; set; }
+            public string userId { get; set; }
+            public string oldPassword { get; set; }
+            public string newPassword { get; set; }
         }
 
         [Authorize, HttpPost, Route("ValidateToken")]
@@ -61,10 +64,10 @@ namespace Anatoli.IdentityServer.Controllers
         {
             try
             {
-                if (UserManager.FindByNameOrEmailOrPhoneAsync(model.username) != null ||
-                    UserManager.FindByNameOrEmailOrPhoneAsync(model.email) != null ||
-                    UserManager.FindByNameOrEmailOrPhoneAsync(model.phonenumber) != null)
-                    return Ok(new { });
+                if (await UserManager.FindByNameOrEmailOrPhoneAsync(model.username) != null ||
+                    await UserManager.FindByNameOrEmailOrPhoneAsync(model.email) != null ||
+                    await UserManager.FindByNameOrEmailOrPhoneAsync(model.phonenumber) != null)
+                    return Ok();
 
                 var user = new Entities.User
                 {
@@ -105,7 +108,7 @@ namespace Anatoli.IdentityServer.Controllers
                     await UserManager.AddClaimAsync(user.Id, new Claim(IdentityServer3.Core.Constants.ClaimTypes.PhoneNumberVerified, user.PhoneNumberConfirmed.ToString()));
                 }
 
-                return Ok(new { });
+                return Ok();
             }
             catch
             {
@@ -138,6 +141,122 @@ namespace Anatoli.IdentityServer.Controllers
 
                 return claimList;
             });
+        }
+
+        [Authorize, HttpPost, Route("updateUser")]
+        public async Task<IHttpActionResult> UpdateUser([FromBody]RequestModel model)
+        {
+            try
+            {
+                var user = await UserManager.FindByNameOrEmailOrPhoneAsync(model.username);
+
+                if (user != null)
+                    return Ok(new { });
+
+                user.FirstName = model.fullname;
+
+                user.LastName = model.fullname;
+
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.password);
+
+                await UserManager.UpdateAsync(user);
+
+                return Ok(new { });
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [AllowAnonymous, HttpPost, Route("checkUserExist")]
+        public async Task<IHttpActionResult> CheckUserExist([FromBody]RequestModel model)
+        {
+            try
+            {
+                if (await UserManager.FindByNameOrEmailOrPhoneAsync(model.username) != null ||
+                    await UserManager.FindByNameOrEmailOrPhoneAsync(model.email) != null ||
+                    await UserManager.FindByNameOrEmailOrPhoneAsync(model.phonenumber) != null)
+                    return Ok(new { result = true });
+
+                return Ok(new { result = false });
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize, HttpPost, Route("confirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail([FromBody]RequestModel model)
+        {
+            try
+            {
+                var user = await UserManager.FindByNameOrEmailOrPhoneAsync(model.username);
+
+                user.EmailConfirmed = true;
+
+                await UserManager.UpdateAsync(user);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize, HttpPost, Route("confirmPhoneNumber")]
+        public async Task<IHttpActionResult> ConfirmPhoneNumber([FromBody]RequestModel model)
+        {
+            try
+            {
+                var user = await UserManager.FindByNameOrEmailOrPhoneAsync(model.username);
+
+                user.PhoneNumberConfirmed = true;
+
+                await UserManager.UpdateAsync(user);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [AllowAnonymous, HttpPost, Route("resetPasswordByCode")]
+        public async Task<IHttpActionResult> ResetPasswordByCode([FromBody]RequestModel model)
+        {
+            try
+            {
+                var user = await UserManager.FindByNameOrEmailOrPhoneAsync(model.username);
+
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.password);
+
+                await UserManager.UpdateAsync(user);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize, HttpPost, Route("changePassword")]
+        public async Task<IHttpActionResult> ChangePassword([FromBody]RequestModel model)
+        {
+            try
+            {
+                await UserManager.ChangePasswordAsync(model.userId, model.oldPassword, model.newPassword);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

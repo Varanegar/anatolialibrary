@@ -17,6 +17,15 @@ namespace Anatoli.Cloud.WebApi.Infrastructure
         {
         }
 
+        public User FindByNameOrEmailOrPhone(string usernameOrEmailOrPhone, Guid applicationOwner, Guid dataOwnerKey)
+        {
+            return new UserDomain(applicationOwner, dataOwnerKey).FindByNameOrEmailOrPhone(usernameOrEmailOrPhone);
+        }
+        public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, Guid applicationOwner, Guid dataOwnerKey)
+        {
+            return await new UserDomain(applicationOwner, dataOwnerKey).FindByNameOrEmailOrPhoneAsync(usernameOrEmailOrPhone);
+        }
+
         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone, string password, Guid applicationOwner, Guid dataOwnerKey)
         {
             var userDomain = new UserDomain(applicationOwner, dataOwnerKey);

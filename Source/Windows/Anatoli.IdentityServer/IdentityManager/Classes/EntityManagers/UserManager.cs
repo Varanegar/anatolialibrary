@@ -8,20 +8,22 @@ namespace Anatoli.IdentityServer.Classes
 {
     public class UserManager : UserManager<User, string>
     {
-        public UserManager(UserStore store): base (store)
+        public UserManager(UserStore store) : base(store)
         {
             ClaimsIdentityFactory = new ClaimsFactory();
         }
 
         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone)
         {
-            return await Users.Where(p => (p.Email == usernameOrEmailOrPhone ||
-                                           p.PhoneNumber == usernameOrEmailOrPhone ||
-                                           p.UserName == usernameOrEmailOrPhone))
-                               .FirstOrDefaultAsync();
-                                           //p.UserNameStr == usernameOrEmailOrPhone) &&
-                                           //p.ApplicationOwnerId == ApplicationOwnerKey &&
-                                           //p.DataOwnerId == DataOwnerKey);
+            var model = await Users.Where(p => (p.Email == usernameOrEmailOrPhone ||
+                                             p.PhoneNumber == usernameOrEmailOrPhone ||
+                                             p.UserName == usernameOrEmailOrPhone))
+                                .FirstOrDefaultAsync();
+
+            return model;
+            //p.UserNameStr == usernameOrEmailOrPhone) &&
+            //p.ApplicationOwnerId == ApplicationOwnerKey &&
+            //p.DataOwnerId == DataOwnerKey);
         }
     }
 }

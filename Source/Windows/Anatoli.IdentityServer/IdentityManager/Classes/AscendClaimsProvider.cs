@@ -23,8 +23,7 @@ namespace Anatoli.IdentityServer.Classes
         {
             var claimsTask = await base.GetAccessTokenClaimsAsync(subject, client, scopes, request);
 
-
-            var profileDataRequestContext = new ProfileDataRequestContext(subject, client, "", new string[] { "role" });
+            var profileDataRequestContext = new ProfileDataRequestContext(subject, client, "", new string[] { "role","Name","GivenName","Email" });
 
             await _users.GetProfileDataAsync(profileDataRequestContext);
 

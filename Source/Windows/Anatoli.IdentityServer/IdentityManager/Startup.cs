@@ -8,7 +8,6 @@ using System;
 using System.Security.Claims;
 using System.Linq;
 using IdentityServer3.Core;
-//using IdentityServer3.Core.Configuration;
 using IdentityModel.Client;
 using System.Threading.Tasks;
 using Serilog;

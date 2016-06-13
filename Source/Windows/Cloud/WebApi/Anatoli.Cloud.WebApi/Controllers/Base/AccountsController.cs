@@ -16,10 +16,8 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
-//using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
-//using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 using Anatoli.ViewModels.User;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
@@ -28,7 +26,6 @@ using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.Business.Domain.Authorization;
 using System.Text;
 using Anatoli.Business.Helpers;
-using Anatoli.Cloud.WebApi.Classes.Helpers;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
@@ -39,9 +36,10 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("myWebpages"), HttpPost]
         public async Task<IHttpActionResult> GetPages()
         {
-            var userId = User.GetAnatoliUserId();
-            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
+            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(CurrentUserId);
+
             var result = data.Where(p => p.Action == "Page").ToList();
+
             return Ok(result);
         }
 
@@ -98,11 +96,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             foreach (var itm in model.permissions)
                 pp.Add(new PrincipalPermission { Id = Guid.NewGuid(), Grant = itm.grant.Value, Permission_Id = Guid.Parse(itm.id.Value), PrincipalId = Guid.Parse(model.userId.Value), });
             await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
-            return Ok(new
-                {
-            }
-
-            );
+            return Ok(new { });
         }
 
         [Authorize(Roles = "Admin")]
@@ -115,7 +109,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 ppc.Add(new PrincipalPermissionCatalog { Id = Guid.NewGuid(), Grant = itm.grant.Value == true ? 1 : 0, PermissionCatalog_Id = Guid.Parse(itm.id.Value), PrincipalId = Guid.Parse(model.userId.Value), });
             await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissionCatalogs(ppc, Guid.Parse(model.userId.Value));
             return Ok(new
-                {
+            {
             }
 
             );
@@ -230,7 +224,9 @@ namespace Anatoli.Cloud.WebApi.Controllers
                         { Id = currentPrincipleId, Title = user.UserNameStr, ApplicationOwnerId = (Guid)user.ApplicationOwnerId };
                         await userDomain.SavePerincipal(userPrincipal);
                         user.PrincipalId = currentPrincipleId;
+
                         var addUserResult = await AppUserManager.CreateAsync(user, createUserModel.Password);
+
                         if (!addUserResult.Succeeded)
                             return GetErrorResult(addUserResult);
                         if (AppRoleManager.Roles.Where(p => p.Name == "User").FirstOrDefault() == null)
@@ -336,12 +332,12 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public IHttpActionResult GetUser([FromBody] BaseRequestModel model)
         {
             var user = AppUserManager.Users.Where(p => p.Id == model.userId).Select(s => new
-                                     {
-                                         userId = s.Id,
-                                         fullName = s.FullName,
-                                         userName = s.UserName,
-                                         email = s.Email,
-                                         mobile = s.PhoneNumber,
+            {
+                userId = s.Id,
+                fullName = s.FullName,
+                userName = s.UserName,
+                email = s.Email,
+                mobile = s.PhoneNumber,
             }
 
             ).FirstOrDefault();
@@ -364,7 +360,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return Ok();
             else
                 return GetErrorResult(result);
-            }
+        }
 
         [AllowAnonymous]
         [HttpPost]
@@ -409,16 +405,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-            var user = await GetUserByUserName(data.username);
-            //var user = await userStore.FindByNameAsync(username);
+                var user = await GetUserByUserName(data.username);
+                //var user = await userStore.FindByNameAsync(username);
                 if (user == null)
                     return GetErrorResult("کاربر یافت نشد");
 
                 await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null,
                                                             SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
 
-            return Ok(new BaseViewModel());
-        }
+                return Ok(new BaseViewModel());
+            }
             catch (Exception ex)
             {
                 log.Error(ex, "Web API Call Error in SendPassCode. ", data.username);
@@ -475,7 +471,8 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await AppUserManager.ChangePasswordAsync(User.GetAnatoliUserId(), model.OldPassword, model.NewPassword);
+            var result = await AppUserManager.ChangePasswordAsync(CurrentUserId, model.OldPassword, model.NewPassword);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -579,7 +576,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
         }
 
-        private async Task<User> GetUserByUserId(string userId) 
+        private async Task<User> GetUserByUserId(string userId)
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByIdAsync(userId);
         }
