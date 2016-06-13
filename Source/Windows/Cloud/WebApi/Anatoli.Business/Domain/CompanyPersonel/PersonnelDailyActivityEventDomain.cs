@@ -52,6 +52,13 @@ namespace Anatoli.Business.Domain.CompanyPersonel
         {
             try
             {
+                entity.LastUpdate = DateTime.Now;
+                entity.CreatedDate = DateTime.Now;
+                entity.ApplicationOwnerId = ApplicationOwnerKey;
+                entity.DataOwnerId = DataOwnerKey; 
+                entity.DataOwnerCenterId = DataOwnerCenterKey;
+
+
                 await MainRepository.AddAsync(entity);
 
                 await MainRepository.SaveChangesAsync();

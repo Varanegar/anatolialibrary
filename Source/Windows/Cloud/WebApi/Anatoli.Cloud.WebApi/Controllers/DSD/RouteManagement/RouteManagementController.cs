@@ -165,6 +165,33 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.RouteManagement
         }
 
         [Authorize(Roles = "User")]
+        [Route("gtareacntpnt")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetAreaCenterPoint([FromBody]RegionAreaRequestModel data)
+        {
+
+            try
+            {
+                var result = new PointViewModel(); 
+                await Task.Factory.StartNew(() =>
+                {
+
+                    var areaPointService = new DMCRegionAreaPointDomain();
+                    var point = areaPointService.GetAreaCenterPointById(data.regionAreaId);
+                    result = point.ToViewModel();
+
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "User")]
         [Route("ldarealines")]
         [HttpPost]
         public async Task<IHttpActionResult> LoadAreaLines([FromBody]RegionAreaRequestModel data)
@@ -569,8 +596,57 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.RouteManagement
                 return GetErrorResult(ex);
             }
         }
-        #endregion
 
+        [Authorize(Roles = "User")]
+        [Route("ldcustvloc")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadCustomerValidLocation([FromBody]RegionAreaRequestModel data)
+        {
+            try
+            {
+                var result = new List<DMCRegionAreaCustomerViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var customerService = new DMCRegionAreaCustomerDomain();
+                    result = customerService.LoadCustomerValidLocation(data.regionAreaId);
+                });
+
+                return Ok(result.Select(x => x.ToViewModel()).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("ldcustloccnt")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadCustomerInvalidLocationCount([FromBody]RegionAreaRequestModel data)
+        {
+            try
+            {
+                var invalidc = 0;
+                var withoutc = 0;
+
+                await Task.Factory.StartNew(() =>
+                {
+                    var customerService = new DMCRegionAreaCustomerDomain();
+                    invalidc = customerService.GetCustomerInvalidLocationCount(data.regionAreaId);
+                    withoutc = customerService.GetCustomerWithoutLocationCount(data.regionAreaId);
+                });
+                var result = new RegionAreaCustomerLocCountViewModel() { invalidLocationCount = invalidc, withoutLocationCount = withoutc };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        #endregion
 
 
 

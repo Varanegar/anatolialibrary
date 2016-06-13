@@ -1,0 +1,119 @@
+﻿@using System.Web.Optimization;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendo")
+    @RenderSection("header", false)
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                @Html.ActionLink("Data Management Panel", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="@Url.Action("Index", "Application")">Apps</a></li>
+                <li><a href="@Url.Action("Index", "Module")">Modules</a></li>
+                <li><a href="@Url.Action("Index", "Resource")">Module Resources</a></li>
+                <li><a href="@Url.Action("PermissionCatalogs", "UserManager")">Permission Catalogs</a></li>
+                <li><a href="@Url.Action("Index", "UserManager")">Users</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    <div class="login-form k-rtl hide">
+        <div class="login-div">
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="form-control email-txt" type="text" data-bind="value: loginEmail" placeholder="نام کاربری یا ایمیل" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="form-control" type="password" data-bind="value: loginPassword" placeholder="رمزعبور" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a data-bind="click: onRequestRestorePass" class="lnk-restore-password" href="#">فراموشی رمز عبور!</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" data-bind="click: login" class="btn btn-primary btn-lg btn-login">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ورود
+                    </button>
+                </div>
+            </div>
+            @*<div class="row"><span class="text-danger" data-bind="text: result" /></div>*@
+        </div>
+        <div class="restore-password-div hide">
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="form-control sms-reset-code" type="text" data-bind="value: resetCode" placeholder="کد ارسالی پیام کوتاه" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="form-control" type="password" data-bind="value: newPass" placeholder="رمزعبور جدید" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="form-control" type="password" data-bind="value: confirmNewPass" placeholder="تکرار رمزعبور" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" data-bind="click: onRestorePass" class="btn btn-success btn-lg btn-restore-pass">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> ثبت
+                    </button>
+                    <button type="button" data-bind="click: onCancelRestorePass" class="btn btn-warning btn-lg btn-cancel-restore-pass">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> انصراف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/knockout")
+    <script src="~/Scripts/jszip.min.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    @Scripts.Render("~/bundles/kendo")
+    <script src="~/Scripts/kendo.messages.fa-IR.js"></script>
+    <script src="~/Scripts/persianDatepicker.min.js"></script>
+
+    @Scripts.Render("~/bundles/app")
+    <script>
+        $(function () {
+            ko.applyBindings(accountManagerApp, $(".login-form")[0]);
+
+            $(document).on("click", ".glyphicon-log-out", function () {
+                accountManagerApp.logout();
+            });
+
+            headerMenu.refreshHeaderMenu();
+        });
+    </script>
+
+    @RenderSection("scripts", false)
+</body>
+</html>

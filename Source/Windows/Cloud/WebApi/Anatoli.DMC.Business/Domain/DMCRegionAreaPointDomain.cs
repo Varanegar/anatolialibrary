@@ -34,6 +34,12 @@ namespace Anatoli.DMC.Business.Domain
             return DMCRegionAreaPointAdapter.Instance.GetMaxPointPriorityByAreaId(id); 
         }
 
+
+        public DMCPointViewModel GetAreaCenterPointById(Guid id)
+        {
+            return DMCRegionAreaPointAdapter.Instance.GetAreaCenterPointById(id);
+        }
+
         public bool HaseAreaPoint(Guid? id)
         {
             return DMCRegionAreaPointAdapter.Instance.HaseAreaPoint(id);
@@ -91,6 +97,7 @@ namespace Anatoli.DMC.Business.Domain
          */
 
         #endregion
+
 
 
 

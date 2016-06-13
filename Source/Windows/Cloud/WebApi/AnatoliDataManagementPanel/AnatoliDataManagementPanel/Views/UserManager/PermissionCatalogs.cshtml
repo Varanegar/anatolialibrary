@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/x-kendo-template" id="all-permissions-toolbar-template">
+    <div class="toolbar">
+        <button type="button" data-bind="click: addPermission" class="k-button k-button-icontext add-user">
+            <span class="k-icon k-add"></span>افزودن مجوز جدید
+        </button>
+        <button type="button" data-bind="click: addToCatalog" class="k-button k-button-icontext add-user">
+            <span class="k-icon k-add"></span>افزودن به کاتالوگ
+        </button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="selected-catalog-permissions-toolbar-template">
+    <div class="toolbar">
+    </div>
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Permission Catalogs</h3>
+            <div id="permission-catalogs-tree"></div>
+        </div>
+        <div class="col-md-9">
+            <h3>Selected catalogs permissions</h3>
+            <div id="selected-catalog-permissions-grid"></div>
+
+            <h3>All available permissions</h3>
+            <div id="all-permissions-grid"></div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="add-permission-window" style="padding:-10px;" data-bind="kendoWindow: { isOpen: showPermissionDialog, width: 400, resizable:false, title: 'Permission', position: { top: '20%', left:'30%' } }">
+            <div class="row">
+                <div class="form-group">
+                    <label for="appName">For App:</label>
+                    <select id="appName" class="form-control" data-bind="options: appList, optionsText: 'applicationName', value: selectedApp"></select>
+                </div>
+                <div class="form-group">
+                    <label for="moduleName">For Module:</label>
+                    <select id="moduleName" class="form-control"
+                            data-bind="options: moduleList, optionsText: 'moduleName', value: selectedModule"></select>
+                </div>
+                <div class="form-group">
+                    <label for="resourceName">For Resource:</label>
+                    <select id="resourceName" class="form-control"
+                            data-bind="options: resourceList, optionsText: 'resourceName', value: selectedResource"></select>
+                </div>
+                <div class="form-group">
+                    <label for="actionName">For Action:</label>
+                    <select id="actionName" class="form-control"
+                            data-bind="options: actionList, optionsText: 'actionName', value: selectedAction"></select>
+                </div>
+                <div class="form-group">
+                    <label for="permissionName">Permission Name:</label>
+                    <input class="form-control" id="permissionName" name="permissionName" type="text"
+                           data-bind="value: permissionName"
+                           placeholder="نام مجوز" />
+                </div>
+                <div class="form-group">
+                    <button type="button" data-bind="click: permissionSave" class="btn btn-success">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> ثبت
+                    </button>
+                    <button type="button" data-bind="click: permissionCancel" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> انصراف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script>
+        $(function () {
+            ko.applyBindings(new catalogViewModel(), $('.container')[0]);
+        });
+    </script>
+}
