@@ -351,6 +351,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
             return await GetProducts();
         }
 
+        [AnatoliAuthorize(Roles = "AnatoliInterCom")] //, Resource = "Product", Action = "List"
+        [Route("products/local/compress")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetProductsCompressLocal()
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productDomain.GetAllAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]
         [Route("searchProducts"), HttpPost]
         public async Task<IHttpActionResult> SearchProductList([FromBody] BaseRequestModel data)

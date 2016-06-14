@@ -112,6 +112,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
             }
         }
 
+        [AnatoliAuthorize(Roles = "AnatoliInterCom")] //, Resource = "Stock", Action = "List"
+        [Route("stocks/local/compress"), HttpPost, GzipCompression]
+        public async Task<IHttpActionResult> GetStocksLocalCompress()
+        {
+            try
+            {
+                var stockDomain = new StockDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+
+                var result = await stockDomain.GetAllAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
         [AnatoliAuthorize(Roles = "AuthorizedApp, User, DataSync, BaseDataAdmin"),
          Route("save"), HttpPost] //, Resource = "Stock", Action = "SaveStocks"
         public async Task<IHttpActionResult> SaveStocks([FromBody] StockRequestModel data)
@@ -238,6 +257,25 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [GzipCompression]
         [HttpPost]
         public async Task<IHttpActionResult> GetStockProductsByStockId([FromBody] StockRequestModel data)
+        {
+            try
+            {
+                var result = await new StockProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetAllByStockId(data.stockId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "AnatoliInterCom")]
+        [Route("stockproduct/stockid/local/compress")]
+        [GzipCompression]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetStockProductsByStockIdLocalCompress([FromBody] StockRequestModel data)
         {
             try
             {
