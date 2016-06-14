@@ -3,6 +3,9 @@ using System.Web;
 using Anatoli.Cloud.WebApi.Controllers;
 using System.Globalization;
 using Anatoli.DataAccess.Models;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System.Linq;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -62,11 +65,39 @@ namespace Anatoli.Cloud.WebApi.Classes
         {
             var validDate = DateTime.MinValue;
             try { validDate = DateTime.Parse(dateStr); }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 DateTime.TryParseExact(dateStr, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture,
                         DateTimeStyles.None, out validDate);
             }
             return validDate;
+        }
+
+
+        private string _currentUserId;
+        public string CurrentUserId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_currentUserId))
+                    _currentUserId = GetUserId();
+
+                return _currentUserId;
+            }
+        }
+        private string GetUserId()
+        {
+            if (User == null)
+                return string.Empty;
+
+            if (!string.IsNullOrEmpty(User.Identity.GetUserId()))
+                return User.Identity.GetUserId();
+
+            var email = ClaimsPrincipal.Current.Claims.Where(c => c.Type == "Email").Select(s => s.Value).FirstOrDefault();
+
+            var user = AppUserManager.FindByNameOrEmailOrPhone(email, OwnerInfo.ApplicationOwnerKey, OwnerInfo.DataOwnerKey);
+
+            return user.Id;
         }
     }
 }

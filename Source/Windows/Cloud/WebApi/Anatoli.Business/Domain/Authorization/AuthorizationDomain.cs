@@ -151,6 +151,7 @@ namespace Anatoli.Business.Domain.Authorization
             try
             {
                 await PrincipalPermissionCatalogRepository.DeleteBatchAsync(p => p.PrincipalId == principalId);
+
                 await PrincipalPermissionRepository.DeleteBatchAsync(p => p.PrincipalId == principalId);
 
                 foreach (var item in principalPermissionCatalogs)
@@ -158,21 +159,22 @@ namespace Anatoli.Business.Domain.Authorization
                     await PrincipalPermissionCatalogRepository.AddAsync(item);
 
                     var permissionCatalog = await PermissionCatalogRepository.GetByIdAsync(item.PermissionCatalog_Id);
-                    //permissionCatalog.Permissions.ToList().ForEach(itm =>
-                    //{
-                    //    PrincipalPermissionRepository.AddAsync(new PrincipalPermission
-                    //    {
-                    //        Id = Guid.NewGuid(),
-                    //        Grant = item.Grant,
-                    //        Permission_Id = itm.Id,
-                    //        PrincipalId = principalId
-                    //    });
-                    //});
+
+                    permissionCatalog.PermissionCatalogPermissions.ToList().ForEach(itm =>
+                    {
+                        PrincipalPermissionRepository.AddAsync(new PrincipalPermission
+                        {
+                            Id = Guid.NewGuid(),
+                            Grant = item.Grant,
+                            Permission_Id = itm.Id,
+                            PrincipalId = principalId
+                        });
+                    });
                 }
 
                 await PrincipalPermissionCatalogRepository.SaveChangesAsync();
-                await PrincipalPermissionRepository.SaveChangesAsync();
 
+                await PrincipalPermissionRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {

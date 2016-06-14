@@ -10,6 +10,6 @@ namespace Anatoli.IdentityServer.Classes
             HasRequired(u => u.Client);
 
             HasRequired(u => u.User).WithMany(dt => dt.UserDeviceTokens);
-        }
+        }              
     }
 }
