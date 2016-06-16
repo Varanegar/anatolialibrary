@@ -13,8 +13,30 @@ namespace Anatoli.Cloud.WebApi.Providers
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
+        /// <summary>
+        /// To support angularjs options request.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override Task MatchEndpoint(OAuthMatchEndpointContext context)
+        {
+            if (context.IsTokenEndpoint && context.Request.Method == "OPTIONS")
+            {
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Headers", new[] {
+                    "authorization", "Content-Type", "accept", "access-control-allow-origin",
+                     "access-control-allow-headers", "access-control-allow-methods"
+                });
+                context.RequestCompleted();
+
+                return Task.FromResult(0);
+            }
+
+            return base.MatchEndpoint(context);
+        }
+
         protected static readonly Logger logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
-        
+
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -52,7 +74,7 @@ namespace Anatoli.Cloud.WebApi.Providers
                 }
 
                 //var user = userManager.FindByName(context.UserName);
-                var user =await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
+                var user = await userManager.FindByNameOrEmailOrPhoneAsync(context.UserName, context.Password, appOwner, dataOwner);
                 //var user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
@@ -80,7 +102,7 @@ namespace Anatoli.Cloud.WebApi.Providers
                 logger.Error("GrantResourceOwnerCredentials", ex);
 
                 throw;
-            }           
+            }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(User user, UserManager<User> manager, string authenticationType)

@@ -68,7 +68,7 @@ namespace Anatoli.Cloud.WebApi.Classes
 
                 return _currentUserId;
             }
-        }        
+        }
 
         #region Methods
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -168,6 +168,9 @@ namespace Anatoli.Cloud.WebApi.Classes
             var AppUserManager = HttpContext.Current.Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
             var user = AppUserManager.FindByNameOrEmailOrPhone(email, OwnerKey, DataOwnerKey);
+
+            if (user == null)
+                return string.Empty;
 
             return user.Id;
         }
