@@ -130,9 +130,12 @@
     <Compile Include="Configs\StoreConfig.cs" />
     <Compile Include="Configs\PrecinpleConfig.cs" />
     <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Interfaces\Account\IPermissionCatalogRepository.cs" />
     <Compile Include="Interfaces\Account\IPermissionRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalPermissionCatalogRepository.cs" />
     <Compile Include="Interfaces\Account\IPrincipalPermissionRepository.cs" />
+    <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
+    <Compile Include="Interfaces\Account\IUserRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseTypeRepository.cs" />
     <Compile Include="Interfaces\Base\ICurrencyTypeRepository.cs" />
     <Compile Include="Interfaces\Base\IBaseValueRepository.cs" />
@@ -163,7 +166,6 @@
     <Compile Include="Interfaces\PersonnelAcitvity\IPersonnelDailyActivityEventRepository.cs" />
     <Compile Include="Interfaces\Product\ICharValueRepository.cs" />
     <Compile Include="Interfaces\Product\ICharTypeRepository.cs" />
-    <Compile Include="Interfaces\Account\IPrincipalRepository.cs" />
     <Compile Include="Interfaces\Product\ICharGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IMainProductGroupRepository.cs" />
     <Compile Include="Interfaces\Product\IBrandRepository.cs" />
@@ -202,7 +204,6 @@
     <Compile Include="Interfaces\Store\IStoreActiveOnHandRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreActivePriceListRepository.cs" />
     <Compile Include="Interfaces\Store\IStoreRepository.cs" />
-    <Compile Include="Interfaces\Account\IUserRepository.cs" />
     <Compile Include="Migrations\201603211306245_Initial-DB-Migration.cs" />
     <Compile Include="Migrations\201603211306245_Initial-DB-Migration.Designer.cs">
       <DependentUpon>201603211306245_Initial-DB-Migration.cs</DependentUpon>
@@ -431,7 +432,6 @@
     <Compile Include="Models\Account\Supplier.cs" />
     <Compile Include="Configs\ProductConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\Account\IPermissionCatalogRepository.cs" />
     <Compile Include="Repositories\Account\PermissionCatalogRepository.cs" />
     <Compile Include="Repositories\Account\PermissionRepository.cs" />
     <Compile Include="Repositories\Account\PrincipalPermissionCatalogRepository.cs" />
