@@ -174,7 +174,6 @@
     <Compile Include="Interfaces\Product\IProductTypeRepository.cs" />
     <Compile Include="Interfaces\Product\ISupplierRepository.cs" />
     <Compile Include="Interfaces\Product\IProductGroupRepository.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Customer\IBasketRepository.cs" />
     <Compile Include="Interfaces\Product\IManufactureRepository.cs" />
     <Compile Include="Interfaces\PurchaseOrder\IIncompletePurchaseOrderLineItemRepository.cs">

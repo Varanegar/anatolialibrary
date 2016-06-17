@@ -1,10 +1,11 @@
 namespace Anatoli.DataAccess.Models
 {
+    using Common.DataAccess.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    
+
     public class CustomerGroup : BaseModel
     {
         [StringLength(200)]
