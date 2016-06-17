@@ -8,7 +8,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     
-    public class Customer : BaseModel
+    public class Customer : AnatoliBaseModel
     {
         public Nullable<long> CustomerCode { get; set; }
         [StringLength(200)]

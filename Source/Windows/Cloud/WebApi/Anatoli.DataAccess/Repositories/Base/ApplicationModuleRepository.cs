@@ -1,11 +1,10 @@
-﻿using Anatoli.DataAccess.Models;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using Anatoli.DataAccess.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Anatoli.Common.DataAccess.Models;
+using Anatoli.Common.DataAccess.Repositories;
 
 namespace Anatoli.DataAccess.Repositories.Base
 {
@@ -23,12 +22,12 @@ namespace Anatoli.DataAccess.Repositories.Base
 
         public IEnumerable<ApplicationModule> GetAllModulesWithApp()
         {
-            return DbContext.ApplicationModules.Include(m => m.Application).ToList();
+            return ((AnatoliDbContext)DbContext).ApplicationModules.Include(m => m.Application).ToList();
         }
 
         public IEnumerable<ApplicationModule> GetAllModulesOfApp(Guid appId)
         {
-            return DbContext.ApplicationModules.Where(m => m.ApplicationId == appId).Include(m => m.Application).ToList();
+            return ((AnatoliDbContext)DbContext).ApplicationModules.Where(m => m.ApplicationId == appId).Include(m => m.Application).ToList();
         }
     }
 }

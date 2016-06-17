@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;  
       
-    public class Basket : BaseModel
+    public class Basket : AnatoliBaseModel
     {       
         public Guid BasketTypeValueGuid { get; set; }
         [StringLength(200)]

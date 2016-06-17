@@ -1,10 +1,9 @@
-﻿using Anatoli.DataAccess.Models;
-using Anatoli.DataAccess.Models.Identity;
-using System;
+﻿using Anatoli.DataAccess.Models.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Threading.Tasks;
+using Anatoli.Common.DataAccess.Models;
+using Anatoli.Common.DataAccess.Repositories;
 
 namespace Anatoli.DataAccess.Repositories.Base
 {
@@ -20,7 +19,7 @@ namespace Anatoli.DataAccess.Repositories.Base
 
         public IEnumerable<Application> GetAppsWithModulesAndResources()
         {
-            return DbContext.Applications.Include(app => app.ApplicationModules.Select(m => m.ApplicationModuleResources)).AsNoTracking().ToList();
+            return ((AnatoliDbContext)DbContext).Applications.Include(app => app.ApplicationModules.Select(m => m.ApplicationModuleResources)).AsNoTracking().ToList();
         }
     }
 }

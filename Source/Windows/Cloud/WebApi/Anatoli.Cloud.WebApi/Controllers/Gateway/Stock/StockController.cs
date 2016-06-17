@@ -12,6 +12,7 @@ using Anatoli.Business.Proxy.Concretes.StockActiveOnHandConcretes;
 using Anatoli.Business.Proxy.Concretes.StockConcretes;
 using Anatoli.Business.Proxy.Concretes.StockProductConcretes;
 using Anatoli.Business.Proxy.Concretes.StockProductRequestRuleConcretes;
+using Anatoli.Common.WebApi;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations; 
        
-    public class CalendarTemplate : BaseModel
+    public class CalendarTemplate : AnatoliBaseModel
     {
         [StringLength(200)]
         public string CalendarTemplateName { get; set; }

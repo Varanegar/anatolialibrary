@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockProductRequestProductDetail : BaseModel
+    public class StockProductRequestProductDetail : AnatoliBaseModel
     {
         public decimal RequestQty { get; set; }
         [ForeignKey("StockProductRequestProduct")]

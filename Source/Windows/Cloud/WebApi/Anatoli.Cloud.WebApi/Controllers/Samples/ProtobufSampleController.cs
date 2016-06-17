@@ -13,6 +13,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
+using Anatoli.Common.WebApi;
 
 namespace Anatoli.Cloud.WebApi.Controllers.Samples
 {

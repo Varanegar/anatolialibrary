@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class CompanyDeviceLicense : BaseModel
+    public class CompanyDeviceLicense : AnatoliBaseModel
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public class ProductPicture : BaseModel
+    public class ProductPicture : AnatoliBaseModel
     {
         public Guid PictureTypeValueGuid { get; set; }
         public bool IsDefault { get; set; }

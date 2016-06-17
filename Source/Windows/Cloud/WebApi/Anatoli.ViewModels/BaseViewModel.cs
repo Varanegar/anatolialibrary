@@ -2,6 +2,7 @@
 using ProtoBuf;
 using Anatoli.ViewModels.StockModels;
 using Anatoli.ViewModels.ProductModels;
+using Anatoli.Common.ViewModel;
 
 namespace Anatoli.ViewModels
 {
@@ -11,24 +12,24 @@ namespace Anatoli.ViewModels
     [ProtoInclude(11, typeof(SupplierViewModel))]
     [ProtoInclude(12, typeof(CharValueViewModel))]
     [ProtoInclude(13, typeof(ProductPictureViewModel))]
-    public class BaseViewModel
+    public class BaseViewModel: CBaseViewModel
     {
         [ProtoMember(1)]
-        public int ID { get; set; }
+        public override int ID { get; set; }
         [ProtoMember(2)]
-        public Guid UniqueId { get; set; }
+        public override Guid UniqueId { get; set; }
         [ProtoMember(3)]
-        public Guid ApplicationOwnerId { get; set; }
+        public override Guid ApplicationOwnerId { get; set; }
         [ProtoMember(4)]
-        public Guid DataOwnerId { get; set; }
+        public override Guid DataOwnerId { get; set; }
         [ProtoMember(5)]
-        public Guid DataOwnerCenterId { get; set; }
+        public override Guid DataOwnerCenterId { get; set; }
         [ProtoMember(6)]
-        public bool IsRemoved { get; set; }
+        public override bool IsRemoved { get; set; }
         [ProtoMember(7)]
-        public DateTime CreatedDate { get; set; }
+        public override DateTime CreatedDate { get; set; }
         [ProtoMember(8)]
-        public DateTime LastUpdate { get; set; }
+        public override DateTime LastUpdate { get; set; }
 
     }
 }

@@ -22,7 +22,7 @@ using Anatoli.Business.Proxy.Concretes.ProductConcretes;
 using Anatoli.ViewModels;
 using Newtonsoft.Json;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Cloud.WebApi.Classes.Helpers;
+using Anatoli.Common.WebApi;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

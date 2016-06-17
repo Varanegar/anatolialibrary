@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Anatoli.DataAccess;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.DataAccess.Models.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

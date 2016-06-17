@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class ProductComment : BaseModel
+    public class ProductComment : AnatoliBaseModel
     {
         public DateTime CommentDate { get; set; }
         public TimeSpan CommentTime { get; set; }

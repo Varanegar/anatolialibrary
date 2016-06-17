@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class Clearance : BaseModel
+    public class Clearance : AnatoliBaseModel
     {
         public Nullable<DateTime> ClearanceDate { get; set; }
         [StringLength(10)]

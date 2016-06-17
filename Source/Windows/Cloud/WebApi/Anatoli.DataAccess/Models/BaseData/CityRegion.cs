@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class CityRegion : BaseModel
+    public class CityRegion : AnatoliBaseModel
     {
         public string GroupName { get; set; }
         public int NLeft { get; set; }

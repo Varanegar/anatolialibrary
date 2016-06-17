@@ -1,5 +1,5 @@
+using Anatoli.Common.DataAccess.Repositories;
 using Anatoli.DataAccess.Interfaces.PersonnelAcitvity;
-using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Models.PersonnelAcitvity;
 
 namespace Anatoli.DataAccess.Repositories.PersonnelAcitvity

@@ -7,7 +7,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Anatoli.DataAccess.Configs
 {
-    public abstract class BaseModelConfig<T> : EntityTypeConfiguration<T> where T :BaseModel
+    public abstract class BaseModelConfig<T> : EntityTypeConfiguration<T> where T :AnatoliBaseModel
     {
         public BaseModelConfig()
         {

@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Store : BaseModel
+    public class Store : AnatoliBaseModel
     {
         public int StoreCode { get; set; }
         [StringLength(100)]

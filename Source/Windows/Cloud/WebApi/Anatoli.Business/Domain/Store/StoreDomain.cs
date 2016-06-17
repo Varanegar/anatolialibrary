@@ -1,15 +1,14 @@
 using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
-using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.StoreModels;
-using Anatoli.ViewModels.BaseModels;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -51,17 +50,17 @@ namespace Anatoli.Business.Domain
                 currentStore.Lat = item.Lat;
                 currentStore.Lng = item.Lng;
                 currentStore.LastUpdate = DateTime.Now;
-                currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), DBContext);
+                currentStore = SetStoreRegionData(currentStore, item.StoreValidRegionInfoes.ToList(), ((AnatoliDbContext)DBContext));
                 if(item.StoreCalendars != null)
-                    currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), DBContext);
+                    currentStore = SetStoreCalendarData(currentStore, item.StoreCalendars.ToList(), ((AnatoliDbContext)DBContext));
                 MainRepository.Update(currentStore);
             }
             else
             {
                 item.CreatedDate = item.LastUpdate = DateTime.Now;
-                item = SetStoreRegionData(item, item.StoreValidRegionInfoes.ToList(), DBContext);
+                item = SetStoreRegionData(item, item.StoreValidRegionInfoes.ToList(), ((AnatoliDbContext)DBContext));
                 if(item.StoreCalendars != null)
-                    item = SetStoreCalendarData(item, item.StoreCalendars.ToList(), DBContext);
+                    item = SetStoreCalendarData(item, item.StoreCalendars.ToList(), ((AnatoliDbContext)DBContext));
                 MainRepository.Add(item);
             }
 

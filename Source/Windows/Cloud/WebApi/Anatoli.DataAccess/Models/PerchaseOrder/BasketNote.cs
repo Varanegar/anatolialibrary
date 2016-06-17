@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;    
-    public class BasketNote : BaseModel
+    public class BasketNote : AnatoliBaseModel
     {
         //public int BasketNoteId { get; set; }
         //public int BasketId { get; set; }

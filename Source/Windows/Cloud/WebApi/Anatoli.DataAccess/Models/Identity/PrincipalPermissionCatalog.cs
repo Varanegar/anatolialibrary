@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models.Identity
 {
-    public class PrincipalPermissionCatalog : BaseModelAnatoli
+    public class PrincipalPermissionCatalog //: BaseModelAnatoli
     {
         [Key]
         public Guid Id { get; set; }
