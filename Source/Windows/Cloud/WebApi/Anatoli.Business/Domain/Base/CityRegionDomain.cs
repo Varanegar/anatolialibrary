@@ -1,33 +1,31 @@
 ﻿using System;
+using Anatoli.DataAccess;
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Interfaces;
-using Anatoli.DataAccess.Repositories;
-using Anatoli.DataAccess;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.DataAccess.Repositories;
+using System.Linq.Expressions;
 using Anatoli.Common.Business;
 using Anatoli.Common.Business.Interfaces;
+using Anatoli.Common.DataAccess.Models;
 
 namespace Anatoli.Business.Domain
 {
-    public class CityRegionDomain : BusinessDomainV2<CityRegion, CityRegionViewModel, CityRegionRepository, ICityRegionRepository>, IBusinessDomainV2<CityRegion, CityRegionViewModel>
+    public class CityRegionDomain : BusinessDomainV3<CityRegion>, IBusinessDomainV3<CityRegion>
     {
-        #region Properties
-        #endregion
-
         #region Ctors
-        public CityRegionDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey)
-            : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
+        public CityRegionDomain(OwnerInfo ownerInfo)
+            : this(ownerInfo, new AnatoliDbContext())
         {
-
         }
-        public CityRegionDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
-            : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
+        public CityRegionDomain(OwnerInfo ownerInfo, AnatoliDbContext dbc)
+            : base(ownerInfo, dbc)
         {
         }
         #endregion
 
         #region Methods
-        protected override void AddDataToRepository(CityRegion currentCityRegion, CityRegion item)
+        public override void AddDataToRepository(CityRegion currentCityRegion, CityRegion item)
         {
             if (currentCityRegion != null)
             {
@@ -51,6 +49,11 @@ namespace Anatoli.Business.Domain
                 item.CreatedDate = item.LastUpdate = DateTime.Now;
                 MainRepository.Add(item);
             }
+        }
+
+        public override void SetConditionForFetchingData()
+        {
+            MainRepository.ExtraPredicate = p => true;
         }
         #endregion
     }
