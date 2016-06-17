@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.PersonnelAcitvity
 {
-    public class PersonnelDailyActivityEvent : BaseModel
+    public class PersonnelDailyActivityEvent : AnatoliBaseModel
     {
         [ForeignKey("CompanyPersonnel")]
         public Guid CompanyPersonnelId { get; set; }

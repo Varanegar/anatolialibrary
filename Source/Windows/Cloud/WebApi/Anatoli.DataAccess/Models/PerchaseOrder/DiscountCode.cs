@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class DiscountCode : BaseModel
+    public class DiscountCode : AnatoliBaseModel
     {
         //public string DiscountCodeId { get; set; }
         public Guid DiscountCodeUniqueId { get; set; }

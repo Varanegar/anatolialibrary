@@ -1,6 +1,7 @@
 ﻿using Anatoli.Business.Domain;
 using Anatoli.Business.Proxy.ProductConcretes;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.Common.WebApi;
 using Anatoli.ViewModels;
 using Anatoli.ViewModels.BaseModels;
 using System;

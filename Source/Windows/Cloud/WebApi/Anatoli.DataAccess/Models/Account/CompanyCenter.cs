@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class CompanyCenter : BaseModel
+    public class CompanyCenter : AnatoliBaseModel
     {
         public int NLeft { get; set; }
         public int NRight { get; set; }

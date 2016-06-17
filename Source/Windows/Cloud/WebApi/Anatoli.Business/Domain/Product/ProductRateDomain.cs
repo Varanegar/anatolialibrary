@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -44,7 +44,7 @@ namespace Anatoli.Business.Domain
         public async Task<List<ProductRateViewModel>> GetAllAvgChangeAfter(DateTime selectedDate)
         {
             var productRates = await MainRepository.FindAllAsync(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey);
-            var changedProducts = MainRepository.DbContext.ProductRates
+            var changedProducts = ((AnatoliDbContext)MainRepository.DbContext).ProductRates
                             .Where(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey && p.LastUpdate >= selectedDate)
                             .Select(m => m.ProductId)
                             .Distinct();

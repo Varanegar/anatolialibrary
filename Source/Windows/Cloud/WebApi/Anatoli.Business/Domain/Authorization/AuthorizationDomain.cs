@@ -3,12 +3,12 @@ using System.Linq;
 using Anatoli.DataAccess;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.DataAccess.Models.Identity;
 using Anatoli.ViewModels.AuthorizationModels;
 using Anatoli.DataAccess.Repositories.Account;
 using NLog;
+using Anatoli.Common.DataAccess.Interfaces;
 
 namespace Anatoli.Business.Domain.Authorization
 {

@@ -10,6 +10,7 @@ using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.BaseConcretes;
 using Anatoli.Business.Proxy.Concretes.StockProductRequestTypeConcretes;
+using Anatoli.Common.WebApi;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {

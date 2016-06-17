@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Http.Controllers;
-using Anatoli.Cloud.WebApi.Classes.Helpers;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity.Owin;
@@ -177,21 +176,21 @@ namespace Anatoli.Cloud.WebApi.Classes
         #endregion
     }
 
-    public class RequireHttpsAttribute : AuthorizeAttribute
-    {
-        public override void OnAuthorization(HttpActionContext actionContext)
-        {
-            if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
-            {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
-                {
-                    ReasonPhrase = "HTTPS Required"
-                };
-            }
-            else
-            {
-                base.OnAuthorization(actionContext);
-            }
-        }
-    }
+    //public class RequireHttpsAttribute : AuthorizeAttribute
+    //{
+    //    public override void OnAuthorization(HttpActionContext actionContext)
+    //    {
+    //        if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
+    //        {
+    //            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
+    //            {
+    //                ReasonPhrase = "HTTPS Required"
+    //            };
+    //        }
+    //        else
+    //        {
+    //            base.OnAuthorization(actionContext);
+    //        }
+    //    }
+    //}
 }

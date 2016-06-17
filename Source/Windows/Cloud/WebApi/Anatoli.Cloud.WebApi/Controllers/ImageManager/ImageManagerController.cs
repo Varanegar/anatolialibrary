@@ -6,6 +6,7 @@ using Anatoli.Business.Domain;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.Common.WebApi;
 
 namespace Anatoli.Cloud.WebApi.Controllers.ImageManager
 {

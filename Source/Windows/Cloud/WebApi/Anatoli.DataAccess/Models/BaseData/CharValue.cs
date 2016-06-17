@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class CharValue : BaseModel
+    public class CharValue : AnatoliBaseModel
     {
         [StringLength(200)]
         public string CharValueText { get; set; }

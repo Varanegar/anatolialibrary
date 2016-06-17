@@ -1,332 +1,334 @@
-﻿using System;
-using LinqKit;
-using System.Text;
-using System.Linq;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Anatoli.ViewModels;
-using Anatoli.DataAccess;
-using System.Data.Entity;
-using System.Configuration;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Anatoli.Business.Helpers;
-using Anatoli.DataAccess.Models;
-using EntityFramework.Extensions;
-using System.Collections.Generic;
-using Anatoli.DataAccess.Interfaces;
-using AutoMapper.QueryableExtensions;
-using Anatoli.DataAccess.Repositories;
-using NLog;
+﻿//using System;
+//using LinqKit;
+//using System.Text;
+//using System.Linq;
+//using System.Net.Http;
+//using Newtonsoft.Json;
+//using Anatoli.ViewModels;
+//using Anatoli.DataAccess;
+//using System.Data.Entity;
+//using System.Configuration;
+//using System.Threading.Tasks;
+//using System.Linq.Expressions;
+//using Anatoli.Business.Helpers;
+//using Anatoli.DataAccess.Models;
+//using EntityFramework.Extensions;
+//using System.Collections.Generic;
+//using Anatoli.DataAccess.Interfaces;
+//using AutoMapper.QueryableExtensions;
+//using Anatoli.DataAccess.Repositories;
+//using NLog;
+//using Anatoli.Common.DataAccess.Interfaces;
+//using Anatoli.Common.DataAccess.Repositories;
 
 namespace Anatoli.Business
 {
-    public abstract class BusinessDomainV2<TMainSource, TMainSourceView, TMainSourceRepository, TIMainSourceRepository> :
-        IBusinessDomainV2<TMainSource, TMainSourceView>
-        where TMainSource : BaseModel, new()
-        where TMainSourceView : BaseViewModel, new()
-        where TMainSourceRepository : AnatoliRepository<TMainSource>, TIMainSourceRepository, new()
-        where TIMainSourceRepository : IRepository<TMainSource>
-    {
-        #region Properties
-        protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+    //public abstract class BusinessDomainV2<TMainSource, TMainSourceView, TMainSourceRepository, TIMainSourceRepository> :
+    //    IBusinessDomainV2<TMainSource, TMainSourceView>
+    //    where TMainSource : AnatoliBaseModel, new()
+    //    where TMainSourceView : BaseViewModel, new()
+    //    where TMainSourceRepository : AnatoliRepository<TMainSource>, TIMainSourceRepository, new()
+    //    where TIMainSourceRepository : IRepository<TMainSource>
+    //{
+    //    #region Properties
+    //    protected static readonly Logger Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
 
-        public IPrincipalRepository PrincipalRepository
-        {
-            get;
-            set;
-        }
+    //    public IPrincipalRepository PrincipalRepository
+    //    {
+    //        get;
+    //        set;
+    //    }
 
-        public Guid ApplicationOwnerKey
-        {
-            get;
-            protected set;
-        }
+    //    public Guid ApplicationOwnerKey
+    //    {
+    //        get;
+    //        protected set;
+    //    }
 
-        public Guid DataOwnerKey
-        {
-            get;
-            protected set;
-        }
+    //    public Guid DataOwnerKey
+    //    {
+    //        get;
+    //        protected set;
+    //    }
 
-        public Guid DataOwnerCenterKey
-        {
-            get;
-            protected set;
-        }
+    //    public Guid DataOwnerCenterKey
+    //    {
+    //        get;
+    //        protected set;
+    //    }
 
-        public bool GetRemovedData
-        {
-            get;
-            protected set;
-        }
+    //    public bool GetRemovedData
+    //    {
+    //        get;
+    //        protected set;
+    //    }
 
-        public virtual TMainSourceRepository MainRepository
-        {
-            get;
-            set;
-        }
+    //    public virtual TMainSourceRepository MainRepository
+    //    {
+    //        get;
+    //        set;
+    //    }
 
-        public AnatoliDbContext DBContext
-        {
-            get;
-            set;
-        }
+    //    public AnatoliDbContext DBContext
+    //    {
+    //        get;
+    //        set;
+    //    }
 
-        #endregion
+    //    #endregion
 
-        #region Ctors
-        BusinessDomainV2()
-        {
-        }
+    //    #region Ctors
+    //    BusinessDomainV2()
+    //    {
+    //    }
 
-        public BusinessDomainV2(Guid applicationOwnerKey) : this(applicationOwnerKey, applicationOwnerKey, applicationOwnerKey, new AnatoliDbContext())
-        {
-        }
+    //    public BusinessDomainV2(Guid applicationOwnerKey) : this(applicationOwnerKey, applicationOwnerKey, applicationOwnerKey, new AnatoliDbContext())
+    //    {
+    //    }
 
-        public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey) : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
-        {
-        }
+    //    public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey) : this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, new AnatoliDbContext())
+    //    {
+    //    }
 
-        public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc) :
-            this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey,
-                (TMainSourceRepository)Activator.CreateInstance(typeof(TMainSourceRepository), dbc), new PrincipalRepository(dbc))
-        {
-            DBContext = dbc;
-        }
+    //    public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc) :
+    //        this(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey,
+    //            (TMainSourceRepository)Activator.CreateInstance(typeof(TMainSourceRepository), dbc), new PrincipalRepository(dbc))
+    //    {
+    //        DBContext = dbc;
+    //    }
 
-        public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, TMainSourceRepository dataRepository,
-                                IPrincipalRepository principalRepository)
-        {
-            MainRepository = dataRepository;
-            PrincipalRepository = principalRepository;
-            ApplicationOwnerKey = applicationOwnerKey;
-            DataOwnerKey = dataOwnerKey;
-            DataOwnerCenterKey = dataOwnerCenterKey;
-            GetRemovedData = true;
-        }
-        #endregion
+    //    public BusinessDomainV2(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, TMainSourceRepository dataRepository,
+    //                            IPrincipalRepository principalRepository)
+    //    {
+    //        MainRepository = dataRepository;
+    //        PrincipalRepository = principalRepository;
+    //        ApplicationOwnerKey = applicationOwnerKey;
+    //        DataOwnerKey = dataOwnerKey;
+    //        DataOwnerCenterKey = dataOwnerCenterKey;
+    //        GetRemovedData = true;
+    //    }
+    //    #endregion
 
-        #region Methods
-        protected TMainSourceView PostOnlineData(string webApiURI, string data, bool needReturnData = false)
-        {
-            var returnData = new TMainSourceView();
+    //    #region Methods
+    //    protected TMainSourceView PostOnlineData(string webApiURI, string data, bool needReturnData = false)
+    //    {
+    //        var returnData = new TMainSourceView();
 
-            try
-            {
-                var client = new HttpClient();
+    //        try
+    //        {
+    //            var client = new HttpClient();
 
-                client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
+    //            client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
 
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
-                content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
-                content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
-
-
-                var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
-                           , content).Result;
-
-                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    throw new Exception(result.Content.ReadAsStringAsync().Result);
-                else if (!result.IsSuccessStatusCode)
-                    throw new Exception(result.Content.ReadAsStringAsync().Result);
-
-                if (needReturnData)
-                {
-                    var json = result.Content.ReadAsStringAsync().Result;
-
-                    returnData = JsonConvert.DeserializeAnonymousType(json, new TMainSourceView());
-                    return returnData;
-                }
-                else
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Can not post to internal server", ex);
-
-                throw ex;
-            }
-        }
-
-        protected List<TMainSourceView> GetOnlineData(string webApiURI, string data)
-        {
-            var client = new HttpClient();
-
-            client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
-
-            var content = new StringContent(data, Encoding.UTF8, "application/json");
-            content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
-            content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
-            content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
+    //            var content = new StringContent(data, Encoding.UTF8, "application/json");
+    //            content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+    //            content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+    //            content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
 
 
-            var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
-                        , content).Result;
+    //            var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+    //                       , content).Result;
 
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                throw new Exception(result.Content.ReadAsStringAsync().Result);
-            else if (!result.IsSuccessStatusCode)
-                throw new Exception(result.Content.ReadAsStringAsync().Result);
+    //            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+    //                throw new Exception(result.Content.ReadAsStringAsync().Result);
+    //            else if (!result.IsSuccessStatusCode)
+    //                throw new Exception(result.Content.ReadAsStringAsync().Result);
 
-            var json = result.Content.ReadAsStringAsync().Result;
+    //            if (needReturnData)
+    //            {
+    //                var json = result.Content.ReadAsStringAsync().Result;
 
-            var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
-            return returnData;
-        }
+    //                returnData = JsonConvert.DeserializeAnonymousType(json, new TMainSourceView());
+    //                return returnData;
+    //            }
+    //            else
+    //                return null;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Logger.Error("Can not post to internal server", ex);
 
-        public async Task<TMainSourceView> GetByIdAsync(Guid id)
-        {
-            return (await GetAllAsync(p => p.Id == id)).FirstOrDefault();
-        }
+    //            throw ex;
+    //        }
+    //    }
 
-        public async Task<List<TMainSourceView>> GetAllAsync()
-        {
-            return await GetAllAsync(null);
-        }
+    //    protected List<TMainSourceView> GetOnlineData(string webApiURI, string data)
+    //    {
+    //        var client = new HttpClient();
 
-        private async Task<List<TMainSourceView>> GetAllAsyncPrivate(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
-        {
-            IQueryable<TMainSourceView> model = null;
+    //        client.SetBearerToken(InterServerCommunication.Instance.GetInternalServerToken(ApplicationOwnerKey.ToString(), DataOwnerKey.ToString()));
 
-            var queryable = MainRepository.GetQuery().Where(predicate.Expand()).AsNoTracking();
+    //        var content = new StringContent(data, Encoding.UTF8, "application/json");
+    //        content.Headers.Add("OwnerKey", ApplicationOwnerKey.ToString());
+    //        content.Headers.Add("DataOwnerKey", DataOwnerKey.ToString());
+    //        content.Headers.Add("DataOwnerCenterKey", DataOwnerKey.ToString());
 
-            if (selector != null)
-                model = queryable.Select(selector);
-            else
-                model = queryable.ProjectTo<TMainSourceView>();
 
-            return await model.ToListAsync();
-        }
+    //        var result = client.PostAsync(ConfigurationManager.AppSettings["InternalServer"] + webApiURI
+    //                    , content).Result;
 
-        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate,
-                                                             Expression<Func<TMainSource, TMainSourceView>> selector)
-        {
-            Expression<Func<TMainSource, bool>> criteria2 = null;
+    //        if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+    //            throw new Exception(result.Content.ReadAsStringAsync().Result);
+    //        else if (!result.IsSuccessStatusCode)
+    //            throw new Exception(result.Content.ReadAsStringAsync().Result);
 
-            if (predicate != null)
-                criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
-            else
-                criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+    //        var json = result.Content.ReadAsStringAsync().Result;
 
-            return await GetAllAsyncPrivate(criteria2, selector);
-        }
+    //        var returnData = JsonConvert.DeserializeAnonymousType(json, new List<TMainSourceView>());
+    //        return returnData;
+    //    }
 
-        public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate)
-        {
-            return await GetAllAsync(predicate, GetAllSelector());
-        }
+    //    public async Task<TMainSourceView> GetByIdAsync(Guid id)
+    //    {
+    //        return (await GetAllAsync(p => p.Id == id)).FirstOrDefault();
+    //    }
 
-        public async Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate)
-        {
-            return await GetAllAsync(p => p.LastUpdate >= selectedDate);
-        }
+    //    public async Task<List<TMainSourceView>> GetAllAsync()
+    //    {
+    //        return await GetAllAsync(null);
+    //    }
 
-        public virtual async Task PublishAsync(List<TMainSource> data)
-        {
-            try
-            {
-                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
+    //    private async Task<List<TMainSourceView>> GetAllAsyncPrivate(Expression<Func<TMainSource, bool>> predicate, Expression<Func<TMainSource, TMainSourceView>> selector)
+    //    {
+    //        IQueryable<TMainSourceView> model = null;
 
-                var dataList = GetDataListToCheckForExistsData();
+    //        var queryable = MainRepository.GetQuery().Where(predicate.Expand()).AsNoTracking();
 
-                foreach (var item in data)
-                {
-                    var model = dataList.Find(p => p.Id == item.Id);
+    //        if (selector != null)
+    //            model = queryable.Select(selector);
+    //        else
+    //            model = queryable.ProjectTo<TMainSourceView>();
 
-                    item.ApplicationOwnerId = ApplicationOwnerKey;
-                    item.DataOwnerId = DataOwnerKey;
-                    item.DataOwnerCenterId = DataOwnerCenterKey;
+    //        return await model.ToListAsync();
+    //    }
 
-                    AddDataToRepository(model, item);
-                }
+    //    public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate,
+    //                                                         Expression<Func<TMainSource, TMainSourceView>> selector)
+    //    {
+    //        Expression<Func<TMainSource, bool>> criteria2 = null;
 
-                await MainRepository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("PublishAsync", ex);
-                throw ex;
-            }
-            finally
-            {
-                MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                Logger.Info("PublishAsync Finish" + data.Count);
-            }
-        }
+    //        if (predicate != null)
+    //            criteria2 = p => predicate.Invoke(p) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
+    //        else
+    //            criteria2 = p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == (GetRemovedData ? p.IsRemoved : false);
 
-        public virtual async Task PublishAsync(TMainSource data)
-        {
-            var model = await MainRepository.GetByIdAsync(data.Id);
+    //        return await GetAllAsyncPrivate(criteria2, selector);
+    //    }
 
-            data.ApplicationOwnerId = ApplicationOwnerKey;
-            data.DataOwnerId = DataOwnerKey;
-            data.DataOwnerCenterId = DataOwnerCenterKey;
+    //    public async Task<List<TMainSourceView>> GetAllAsync(Expression<Func<TMainSource, bool>> predicate)
+    //    {
+    //        return await GetAllAsync(predicate, GetAllSelector());
+    //    }
 
-            AddDataToRepository(model, data);
+    //    public async Task<List<TMainSourceView>> GetAllChangedAfterAsync(DateTime selectedDate)
+    //    {
+    //        return await GetAllAsync(p => p.LastUpdate >= selectedDate);
+    //    }
 
-            await MainRepository.SaveChangesAsync();
-        }
+    //    public virtual async Task PublishAsync(List<TMainSource> data)
+    //    {
+    //        try
+    //        {
+    //            MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = false;
 
-        public virtual async Task DeleteAsync(List<TMainSource> data)
-        {
-            foreach (var item in data)
-                await MainRepository.DeleteBatchAsync(p => p.Id == item.Id);
-        }
+    //            var dataList = GetDataListToCheckForExistsData();
 
-        public virtual async Task DeleteAsync(List<TMainSourceView> data)
-        {
-            foreach (var item in data)
-                await MainRepository.DeleteBatchAsync(p => p.Id == item.UniqueId);
-        }
+    //            foreach (var item in data)
+    //            {
+    //                var model = dataList.Find(p => p.Id == item.Id);
 
-        public virtual Expression<Func<TMainSource, bool>> GetCondition() {
-            return null;
-        }
+    //                item.ApplicationOwnerId = ApplicationOwnerKey;
+    //                item.DataOwnerId = DataOwnerKey;
+    //                item.DataOwnerCenterId = DataOwnerCenterKey;
 
-        public virtual async Task CheckDeletedAsync(List<TMainSourceView> dataViewModels)
-        {
-            try
-            {
-                var currentDataList = MainRepository.GetQuery()
-                                                    .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == false)
-                                                    .Select(data => new TMainSourceView { UniqueId = data.Id })
-                                                    .AsNoTracking()
-                                                    .ToList();
+    //                AddDataToRepository(model, item);
+    //            }
 
-                currentDataList.ForEach(item =>
-                {
-                    if (dataViewModels.Find(p => p.UniqueId == item.UniqueId) == null)
-                        MainRepository.GetQuery()
-                                      .Where(p => p.Id == item.UniqueId)
-                                      .UpdateAsync(t => new TMainSource { LastUpdate = DateTime.Now, IsRemoved = true });
-                });
+    //            await MainRepository.SaveChangesAsync();
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Logger.Error("PublishAsync", ex);
+    //            throw ex;
+    //        }
+    //        finally
+    //        {
+    //            MainRepository.DbContext.Configuration.AutoDetectChangesEnabled = true;
+    //            Logger.Info("PublishAsync Finish" + data.Count);
+    //        }
+    //    }
 
-                await MainRepository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("CheckForDeletedAsync", ex);
-                throw ex;
-            }
-        }
+    //    public virtual async Task PublishAsync(TMainSource data)
+    //    {
+    //        var model = await MainRepository.GetByIdAsync(data.Id);
 
-        protected virtual void AddDataToRepository(TMainSource currentData, TMainSource newItem) {
-            return;
-        }
-        protected virtual Expression<Func<TMainSource, TMainSourceView>> GetAllSelector()
-        {
-            return null;
-        }
+    //        data.ApplicationOwnerId = ApplicationOwnerKey;
+    //        data.DataOwnerId = DataOwnerKey;
+    //        data.DataOwnerCenterId = DataOwnerCenterKey;
 
-        public virtual List<TMainSource> GetDataListToCheckForExistsData()
-        {
-            return MainRepository.GetQuery()
-                                 .Where(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey)
-                                 .AsNoTracking()
-                                 .ToList();
-        }
-        #endregion
-    }
+    //        AddDataToRepository(model, data);
+
+    //        await MainRepository.SaveChangesAsync();
+    //    }
+
+    //    public virtual async Task DeleteAsync(List<TMainSource> data)
+    //    {
+    //        foreach (var item in data)
+    //            await MainRepository.DeleteBatchAsync(p => p.Id == item.Id);
+    //    }
+
+    //    public virtual async Task DeleteAsync(List<TMainSourceView> data)
+    //    {
+    //        foreach (var item in data)
+    //            await MainRepository.DeleteBatchAsync(p => p.Id == item.UniqueId);
+    //    }
+
+    //    public virtual Expression<Func<TMainSource, bool>> GetCondition() {
+    //        return null;
+    //    }
+
+    //    public virtual async Task CheckDeletedAsync(List<TMainSourceView> dataViewModels)
+    //    {
+    //        try
+    //        {
+    //            var currentDataList = MainRepository.GetQuery()
+    //                                                .Where(p => p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey && p.IsRemoved == false)
+    //                                                .Select(data => new TMainSourceView { UniqueId = data.Id })
+    //                                                .AsNoTracking()
+    //                                                .ToList();
+
+    //            currentDataList.ForEach(item =>
+    //            {
+    //                if (dataViewModels.Find(p => p.UniqueId == item.UniqueId) == null)
+    //                    MainRepository.GetQuery()
+    //                                  .Where(p => p.Id == item.UniqueId)
+    //                                  .UpdateAsync(t => new TMainSource { LastUpdate = DateTime.Now, IsRemoved = true });
+    //            });
+
+    //            await MainRepository.SaveChangesAsync();
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Logger.Error("CheckForDeletedAsync", ex);
+    //            throw ex;
+    //        }
+    //    }
+
+    //    protected virtual void AddDataToRepository(TMainSource currentData, TMainSource newItem) {
+    //        return;
+    //    }
+    //    protected virtual Expression<Func<TMainSource, TMainSourceView>> GetAllSelector()
+    //    {
+    //        return null;
+    //    }
+
+    //    public virtual List<TMainSource> GetDataListToCheckForExistsData()
+    //    {
+    //        return MainRepository.GetQuery()
+    //                             .Where(p => p.DataOwnerId == DataOwnerKey && p.ApplicationOwnerId == ApplicationOwnerKey)
+    //                             .AsNoTracking()
+    //                             .ToList();
+    //    }
+    //    #endregion
+    //}
 }

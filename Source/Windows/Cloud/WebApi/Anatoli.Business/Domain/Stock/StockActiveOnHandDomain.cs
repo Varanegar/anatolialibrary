@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.StockModels;
-using Anatoli.DataAccess.Models.Identity;
 using Anatoli.PMC.DataAccess.Helpers;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -54,7 +52,7 @@ namespace Anatoli.Business.Domain
                 Guid stockId = dataList[0].StockId;
                 await MainRepository.DeleteBatchAsync(p => p.StockId == stockId && p.DataOwnerId == DataOwnerKey);
 
-                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, DBContext);
+                var syncId = await PublishAsyncOnHandSyncInfo(dataList[0].StockId, ((AnatoliDbContext)DBContext));
                 
                 dataList.ForEach(item =>
                 {

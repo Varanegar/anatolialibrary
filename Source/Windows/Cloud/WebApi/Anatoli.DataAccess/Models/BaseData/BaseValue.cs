@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
         
-    public class BaseValue : BaseModel
+    public class BaseValue : AnatoliBaseModel
     {
         [StringLength(200)]
         public string BaseValueName { get; set; }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class FiscalYear : BaseModel
+    public class FiscalYear : AnatoliBaseModel
     {
         [StringLength(10)]
         public string FromPdate { get; set; }

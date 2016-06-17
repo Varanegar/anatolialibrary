@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class PurchaseOrder : BaseModel
+    public class PurchaseOrder : AnatoliBaseModel
     {        
         public Guid ActionSourceId { get; set; }
         public string DeviceIMEI { get; set; }

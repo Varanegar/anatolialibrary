@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.Route
 {
-    public class CustomerArea : BaseModel
+    public class CustomerArea : AnatoliBaseModel
     {
         [ForeignKey("RegionArea")]
         public Guid RegionAreaId { get; set; }

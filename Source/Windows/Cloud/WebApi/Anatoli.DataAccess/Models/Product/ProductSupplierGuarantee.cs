@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class ProductSupplierGuarantee : BaseModel
+    public class ProductSupplierGuarantee : AnatoliBaseModel
     {
         public int SupplierProductGuaranteeId { get; set; }
         public long GuaranteeTypeValueId { get; set; }

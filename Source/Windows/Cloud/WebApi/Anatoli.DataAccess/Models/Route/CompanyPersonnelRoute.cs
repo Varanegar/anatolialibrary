@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.Route
 {
-    public class CompanyPersonnelRoute : BaseModel
+    public class CompanyPersonnelRoute : AnatoliBaseModel
     {
     }
 }

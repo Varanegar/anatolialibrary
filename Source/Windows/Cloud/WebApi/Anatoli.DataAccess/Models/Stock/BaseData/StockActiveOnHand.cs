@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockActiveOnHand : BaseModel
+    public class StockActiveOnHand : AnatoliBaseModel
     {
 
         public decimal Qty { get; set; }

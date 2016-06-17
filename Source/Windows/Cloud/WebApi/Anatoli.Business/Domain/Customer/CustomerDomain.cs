@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.CustomerModels;
 using System.Data.Entity.Spatial;
 using AutoMapper.QueryableExtensions;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -29,7 +28,7 @@ namespace Anatoli.Business.Domain
         public CustomerDomain(Guid applicationOwnerKey, Guid dataOwnerKey, Guid dataOwnerCenterKey, AnatoliDbContext dbc)
             : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
-        }        
+        }
         #endregion
 
         #region Methods
@@ -89,12 +88,14 @@ namespace Anatoli.Business.Domain
 
         public async Task<List<CustomerViewModel>> GetCustomersByLocation(DbGeometry areaPolygon, bool getSelected)
         {
-            var q = from cust in DBContext.Customers
-                        join custArea in DBContext.CustomerAreas on cust.Id equals custArea.CustomerId
-                        where cust.CustomerPoint.Intersects(areaPolygon) 
-                            && (getSelected && custArea.RegionAreaId != null) || (!getSelected && custArea.RegionAreaId == null)
-                            && cust.ApplicationOwnerId == ApplicationOwnerKey && cust.DataOwnerId == DataOwnerKey
-                        select new {cust};
+            var ctx = ((AnatoliDbContext)DBContext);
+
+            var q = from cust in ctx.Customers
+                    join custArea in ctx.CustomerAreas on cust.Id equals custArea.CustomerId
+                    where cust.CustomerPoint.Intersects(areaPolygon)
+                        && (getSelected && custArea.RegionAreaId != null) || (!getSelected && custArea.RegionAreaId == null)
+                        && cust.ApplicationOwnerId == ApplicationOwnerKey && cust.DataOwnerId == DataOwnerKey
+                    select new { cust };
             return q.ProjectTo<CustomerViewModel>().ToList();
         }
         #endregion

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.Route
 {
-    public class RegionAreaLevelType : BaseModel
+    public class RegionAreaLevelType : AnatoliBaseModel
     {
         [StringLength(100)]
         public string RegionAreaLevelTypeName { get; set; }

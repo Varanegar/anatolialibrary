@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Anatoli.Business.Proxy;
-using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.StockModels;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
