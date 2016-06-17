@@ -44,6 +44,10 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> RegionLevel3Id { get; set; }
         [ForeignKey("RegionLevel4"), Column(Order = 4)]
         public Nullable<Guid> RegionLevel4Id { get; set; }
+        [ForeignKey("CustomerGroup")]
+        public Nullable<Guid> CustomerGroupId { get; set; }
+        [ForeignKey("LoyaltyTier")]
+        public Nullable<Guid> LoyaltyTierId { get; set; }
         [ForeignKey("DefauleStore")]
         public Nullable<Guid> DefauleStoreId { get; set; }
         [ForeignKey("Company")]
@@ -54,9 +58,11 @@ namespace Anatoli.DataAccess.Models
         public Nullable<Guid> AnatoliAccountId { get; set; }
         public virtual AnatoliAccount AnatoliAccount { get; set; }
 
+        public virtual ICollection<CustomerLoyaltyTierHistory> CustomerLoyaltyTierHistories { get; set; }
         public virtual ICollection<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public virtual ICollection<Basket> CustomerBaskets { get; set; }
         public virtual ICollection<IncompletePurchaseOrder> IncompletePurchaseOrders { get; set; }
+        public virtual ICollection<LoyaltyCard> LoyaltyCards { get; set; }
         public virtual ICollection<CustomerArea> CustomerAreas { get; set; }
         public virtual Store DefauleStore { get; set; }
         public virtual CityRegion RegionInfo { get; set; }
@@ -64,6 +70,8 @@ namespace Anatoli.DataAccess.Models
         public virtual CityRegion RegionLevel2 { get; set; }
         public virtual CityRegion RegionLevel3 { get; set; }
         public virtual CityRegion RegionLevel4 { get; set; }
+        public virtual CustomerGroup CustomerGroup { get; set; }
+        public virtual LoyaltyTier LoyaltyTier { get; set; }
 
         public virtual ICollection<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }
         public DbGeometry CustomerPoint { get; set; }

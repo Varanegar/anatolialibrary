@@ -29,6 +29,7 @@ namespace Anatoli.DataAccess.Models
         public bool SupportAppOrder { get; set; }
         public bool SupportWebOrder { get; set; }
         public bool SupportCallCenterOrder { get; set; }
+        public bool SupportPOS { get; set; }
         public virtual ICollection<CompanyCenter> CompanyCenters { get; set; }
         public virtual ICollection<Stock> DistCenterStocks { get; set; }
 
