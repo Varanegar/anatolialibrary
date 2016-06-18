@@ -84,6 +84,7 @@
     <Compile Include="BaseModels\BasketItemViewModel.cs" />
     <Compile Include="BaseModels\BasketViewModel.cs" />
     <Compile Include="CommonModels\SelectListItemViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerGroupViewModel.cs" />
     <Compile Include="CustomerModels\CustomerShipAddressViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
     <Compile Include="Enumeration.cs" />
