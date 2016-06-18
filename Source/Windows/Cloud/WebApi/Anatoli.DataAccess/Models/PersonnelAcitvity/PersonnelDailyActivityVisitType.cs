@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.PersonnelAcitvity
 {
-    public class PersonnelDailyActivityVisitType : BaseModel
+    public class PersonnelDailyActivityVisitType : AnatoliBaseModel
     {
         public string Title { get; set; }
         public virtual ICollection<PersonnelDailyActivityEvent> PersonnelDailyActivityEvents { get; set; }

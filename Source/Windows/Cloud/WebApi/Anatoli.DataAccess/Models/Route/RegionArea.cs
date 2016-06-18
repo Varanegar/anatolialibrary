@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.Route
 {
-    public class RegionArea : BaseModel
+    public class RegionArea : AnatoliBaseModel
     {
         [StringLength(200)]
         public string AreaName { get; set; }

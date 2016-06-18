@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class PurchaseOrderPayment : BaseModel
+    public class PurchaseOrderPayment : AnatoliBaseModel
     {
         public int PurchaseOrderGiftCardId { get; set; }
         //public int PurchaseOrderId { get; set; }

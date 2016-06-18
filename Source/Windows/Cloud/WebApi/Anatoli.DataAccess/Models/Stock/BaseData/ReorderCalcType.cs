@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class ReorderCalcType : BaseModel
+    public class ReorderCalcType : AnatoliBaseModel
     {
         [StringLength(100)]
         public string ReorderTypeName { get; set; }

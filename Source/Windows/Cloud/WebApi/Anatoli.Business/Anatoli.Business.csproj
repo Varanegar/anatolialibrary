@@ -32,6 +32,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anatoli.Common.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.ViewModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +111,7 @@
     <Compile Include="Domain\Application\ResourceDomain.cs" />
     <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />
     <Compile Include="Domain\Base\BaseTypeDomain.cs" />
+    <Compile Include="Domain\Base\CurrencyTypeDomain.cs" />
     <Compile Include="Domain\Base\ReorderCalcTypeDomain.cs" />
     <Compile Include="Domain\Base\FiscalYearDomain.cs" />
     <Compile Include="Domain\Base\ItemImageDomain.cs" />
@@ -108,8 +121,24 @@
     <Compile Include="Domain\CompanyPersonel\PersonnelDailyActivityPointDomain.cs" />
     <Compile Include="Domain\Customer\BasketItemDomain.cs" />
     <Compile Include="Domain\Customer\BasketDomain.cs" />
+    <Compile Include="Domain\Customer\CustomerLoyaltyTierHistoryDomain.cs" />
+    <Compile Include="Domain\Customer\CustomerGroupDomain.cs" />
     <Compile Include="Domain\Customer\CustomerShipAddressDomain.cs" />
     <Compile Include="Domain\Customer\CustomerDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyActionTypeDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyCardBatchDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyCardDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyCardSetDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyProgramDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyProgramRuleDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyRuleActionDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyRuleConditionDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyRuleConditionTypeDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyRuleDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyRuleTypeDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyTierDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyTriggerTypeDomain.cs" />
+    <Compile Include="Domain\Loyalty\LoyaltyValueTypeDomain.cs" />
     <Compile Include="Domain\Permissions\PermissionDomain.cs" />
     <Compile Include="Domain\Product\CharTypeDomain.cs" />
     <Compile Include="Domain\Product\CharGroupDomain.cs" />

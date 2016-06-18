@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class StockProductRequestRule : BaseModel
+    public class StockProductRequestRule : AnatoliBaseModel
     {
         [StringLength(200)]
         public string StockProductRequestRuleName { get; set; }

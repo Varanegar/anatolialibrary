@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public class StoreCalendarHistory : BaseModel
+    public class StoreCalendarHistory : AnatoliBaseModel
     {
         public Nullable<Guid> ApplyBy { get; set; }
         public Nullable<DateTime> ApplyDate { get; set; }

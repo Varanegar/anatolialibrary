@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.PersonnelAcitvity
 {
-    public class PersonnelDailyActivityCommentType : BaseModel
+    public class PersonnelDailyActivityCommentType : AnatoliBaseModel
     {
         public string Title { get; set; }
     }

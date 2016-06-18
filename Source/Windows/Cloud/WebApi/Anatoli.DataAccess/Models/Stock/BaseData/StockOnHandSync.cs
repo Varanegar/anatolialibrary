@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockOnHandSync : BaseModel
+    public class StockOnHandSync : AnatoliBaseModel
     {
         public DateTime SyncDate { get; set; }
         [StringLength(10)]

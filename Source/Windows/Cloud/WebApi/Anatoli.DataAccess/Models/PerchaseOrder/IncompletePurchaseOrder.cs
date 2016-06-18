@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class IncompletePurchaseOrder : BaseModel
+    public class IncompletePurchaseOrder : AnatoliBaseModel
     {
         [ForeignKey("Store")]
         public Guid? StoreId { get; set; }

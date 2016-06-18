@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
 using Anatoli.ViewModels.BaseModels;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.DataAccess.Models.Identity;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -29,7 +30,6 @@ namespace Anatoli.Business.Domain
             : base(applicationOwnerKey, dataOwnerKey, dataOwnerCenterKey, dbc)
         {
             BaseValueRepository = new BaseValueRepository(dbc);
-            PrincipalRepository = new PrincipalRepository(dbc);
         }
         #endregion
 
@@ -48,7 +48,7 @@ namespace Anatoli.Business.Domain
                     {
                         currentType.BaseTypeDesc = item.BaseTypeDesc;
                         currentType.LastUpdate = DateTime.Now;
-                        currentType = await SetBaseValueData(currentType, item.BaseValues.ToList(), MainRepository.DbContext);
+                        currentType = await SetBaseValueData(currentType, item.BaseValues.ToList(), ((AnatoliDbContext)MainRepository.DbContext));
                         await MainRepository.UpdateAsync(currentType);
                     }
                     else

@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class StoreCalendar : BaseModel
+    public class StoreCalendar : AnatoliBaseModel
     {
       	public DateTime Date { get; set; }
         [StringLength(10)]

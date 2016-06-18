@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
 	using System;
 	using System.Collections.Generic;
 
-    public class StoreDeliveryPerson : BaseModel
+    public class StoreDeliveryPerson : AnatoliBaseModel
     {
         public Nullable<byte> Status { get; set; }
     

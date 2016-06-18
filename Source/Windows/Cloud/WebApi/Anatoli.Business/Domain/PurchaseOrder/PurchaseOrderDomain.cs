@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.Order;
 using Anatoli.Business.Helpers;
-using System.Web.Script.Serialization;
 using Newtonsoft.Json;
-using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels;
 using Anatoli.Business.Proxy.Concretes;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -109,7 +106,7 @@ namespace Anatoli.Business.Domain
                         currentData.TotalAmount = item.TotalAmount;
                         currentData.TotalFinalAmount = item.TotalFinalAmount;
                         currentData.LastUpdate = DateTime.Now;
-                        currentData = await SetLineItemData(currentData, item.PurchaseOrderLineItems.ToList(), DBContext);
+                        currentData = await SetLineItemData(currentData, item.PurchaseOrderLineItems.ToList(), ((AnatoliDbContext)DBContext));
                         await MainRepository.UpdateAsync(currentData);
                     }
                     else

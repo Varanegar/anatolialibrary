@@ -6,7 +6,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class CompanyPersonnel : BaseModel
+    public class CompanyPersonnel : AnatoliBaseModel
     {
         [StringLength(100)]
         public string LastName { get; set; }

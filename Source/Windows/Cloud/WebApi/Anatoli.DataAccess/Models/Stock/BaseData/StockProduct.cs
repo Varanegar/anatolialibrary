@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockProduct : BaseModel
+    public class StockProduct : AnatoliBaseModel
     {
         public decimal MinQty { get; set; }
         public decimal ReorderLevel { get; set; }

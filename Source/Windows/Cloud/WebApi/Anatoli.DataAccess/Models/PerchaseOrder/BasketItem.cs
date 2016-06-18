@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;    
-    public class BasketItem : BaseModel
+    public class BasketItem : AnatoliBaseModel
     {
         [ForeignKey("Product")]
         public Guid ProductId { get; set; }

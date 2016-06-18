@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class StoreAction : BaseModel
+    public class StoreAction : AnatoliBaseModel
     {
         public long StoreActionValueId { get; set; }
         public DateTime ActionDate { get; set; }

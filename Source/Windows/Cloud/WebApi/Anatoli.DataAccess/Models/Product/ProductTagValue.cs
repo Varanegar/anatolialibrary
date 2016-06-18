@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class ProductTagValue : BaseModel
+    public class ProductTagValue : AnatoliBaseModel
     {
         public DateTime? FromDate { get; set; }
         public string FromPDate { get; set; }

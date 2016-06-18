@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
-using Anatoli.DataAccess.Models.Route;
+﻿using Anatoli.DataAccess.Models.Route;
+using Anatoli.Common.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Interfaces
 {

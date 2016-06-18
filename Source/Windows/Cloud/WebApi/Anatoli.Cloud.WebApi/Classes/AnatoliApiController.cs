@@ -2,10 +2,10 @@
 using System.Web;
 using Anatoli.Cloud.WebApi.Controllers;
 using System.Globalization;
-using Anatoli.DataAccess.Models;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Linq;
+using Anatoli.Common.DataAccess.Models;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {

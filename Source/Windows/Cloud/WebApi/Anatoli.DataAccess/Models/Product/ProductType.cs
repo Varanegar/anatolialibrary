@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class ProductType : BaseModel
+    public class ProductType : AnatoliBaseModel
     {
         [StringLength(100)]
         public string ProductTypeName { get; set; }

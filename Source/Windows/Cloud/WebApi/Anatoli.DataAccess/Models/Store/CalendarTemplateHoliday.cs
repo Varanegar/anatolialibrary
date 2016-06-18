@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;    
-    public class CalendarTemplateHoliday : BaseModel
+    public class CalendarTemplateHoliday : AnatoliBaseModel
     {
         public Nullable<DateTime> Date { get; set; }
         [StringLength(10)]

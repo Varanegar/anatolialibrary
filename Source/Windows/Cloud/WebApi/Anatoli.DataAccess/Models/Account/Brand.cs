@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class Brand : BaseModel
+    public class Brand : AnatoliBaseModel
     {
         [StringLength(100)]
         public string BrandName { get; set; }

@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;  
       
-    public class BaseType : BaseModel
+    public class BaseType : AnatoliBaseModel
     {
         //public int BaseTypeId { get; set; }
         [StringLength(500)]

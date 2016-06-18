@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public class CharType : BaseModel
+    public class CharType : AnatoliBaseModel
     {
         public string CharTypeDesc { get; set; }
         public Guid DefaultCharValueGuid { get; set; }

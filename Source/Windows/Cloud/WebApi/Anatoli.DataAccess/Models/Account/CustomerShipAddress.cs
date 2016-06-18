@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class CustomerShipAddress : BaseModel
+    public class CustomerShipAddress : AnatoliBaseModel
     {
         [StringLength(100)]
         public string AddressName { get; set; }

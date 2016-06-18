@@ -24,11 +24,28 @@ namespace Anatoli.DataAccess
         public DbSet<CharValue> CharValues { get; set; }
         public DbSet<CityRegion> CityRegions { get; set; }
         public DbSet<Clearance> Clearances { get; set; }
+        public DbSet<CurrencyType> CurrencyTypes { get; set; }
         public DbSet<CustomerArea> CustomerAreas { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerGroup> CustomerGroups { get; set; }
+        public DbSet<CustomerLoyaltyTierHistory> CustomerLoyaltyTierHistories { get; set; }
         public DbSet<CustomerShipAddress> CustomerShipAddresses { get; set; }
         public DbSet<DeliveryPerson> DeliveryPersons { get; set; }
         public DbSet<DiscountCode> DiscountCodes { get; set; }
+        public DbSet<LoyaltyActionType> LoyaltyActionTypes { get; set; }
+        public DbSet<LoyaltyCard> LoyaltyCards { get; set; }
+        public DbSet<LoyaltyCardBatch> LoyaltyCardBatchs { get; set; }
+        public DbSet<LoyaltyCardSet> LoyaltyCardSets { get; set; }
+        public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
+        public DbSet<LoyaltyProgramRule> LoyaltyProgramRules { get; set; }
+        public DbSet<LoyaltyRule> LoyaltyRules { get; set; }
+        public DbSet<LoyaltyRuleAction> LoyaltyRuleActions { get; set; }
+        public DbSet<LoyaltyRuleCondition> LoyaltyRuleConditions { get; set; }
+        public DbSet<LoyaltyRuleConditionType> LoyaltyRuleConditionTypes { get; set; }
+        public DbSet<LoyaltyRuleType> LoyaltyRuleTypes { get; set; }
+        public DbSet<LoyaltyTier> LoyaltyTiers { get; set; }
+        public DbSet<LoyaltyTriggerType> LoyaltyTriggerTypes { get; set; }
+        public DbSet<LoyaltyValueType> LoyaltyValueTypes { get; set; }
         public DbSet<CompanyOrgChart> CompanyOrgCharts { get; set; }
         public DbSet<CompanyCenter> CompanyCenters { get; set; }
         public DbSet<CompanyDevice> CompanyDevices { get; set; }
@@ -137,6 +154,8 @@ namespace Anatoli.DataAccess
             modelBuilder.Configurations.Add(new CityRegionConfig());
             modelBuilder.Configurations.Add(new CompanyConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
+            modelBuilder.Configurations.Add(new CustomerGroupConfig());
+            modelBuilder.Configurations.Add(new CustomerLoyaltyTierHistoryConfig());
             modelBuilder.Configurations.Add(new CustomerShipAddressConfig());
             modelBuilder.Configurations.Add(new DeliveryPersonConfig());
             modelBuilder.Configurations.Add(new CompanyCenterConfig());

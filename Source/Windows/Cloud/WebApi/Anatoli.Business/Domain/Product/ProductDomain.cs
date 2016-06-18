@@ -5,17 +5,19 @@ using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
 using Anatoli.ViewModels.ProductModels;
-using Anatoli.Business.Proxy.ProductConcretes;
 using System.Data.Entity;
 using Anatoli.ViewModels.StockModels;
 using System.Linq.Expressions;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
-    public class ProductDomain : BusinessDomainV2<Product, ProductViewModel, ProductRepository, IProductRepository>, IBusinessDomainV2<Product, ProductViewModel>
+    public class ProductDomain : BusinessDomainV2<Product, ProductViewModel, ProductRepository, IProductRepository>,
+                                IBusinessDomainV2<Product, ProductViewModel>
     {
         #region Properties
         public IRepository<Supplier> SupplierRepository { get; set; }
@@ -212,7 +214,7 @@ namespace Anatoli.Business.Domain
 
 
                 var products = GetDataListToCheckForExistsData();
-                var suppliers = new SupplierDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, DBContext).GetDataListToCheckForExistsData();
+                var suppliers = new SupplierDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, ((AnatoliDbContext)DBContext)).GetDataListToCheckForExistsData();
 
                 products.ForEach(item =>
                 {
@@ -247,7 +249,7 @@ namespace Anatoli.Business.Domain
 
 
                 var products = GetDataListToCheckForExistsData();
-                var charValues = new CharValueDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, DBContext).GetDataListToCheckForExistsData();
+                var charValues = new CharValueDomain(ApplicationOwnerKey, DataOwnerKey, DataOwnerCenterKey, ((AnatoliDbContext)DBContext)).GetDataListToCheckForExistsData();
 
                 products.ForEach(item =>
                 {
