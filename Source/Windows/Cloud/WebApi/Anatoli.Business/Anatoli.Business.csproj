@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Domain\Account\UserDomain.cs" />
     <Compile Include="Domain\Application\ApplicationDomain.cs" />
+    <Compile Include="Domain\Application\DataOwnerDomain.cs" />
     <Compile Include="Domain\Application\ModuleDomain.cs" />
     <Compile Include="Domain\Application\ResourceDomain.cs" />
     <Compile Include="Domain\Authorization\AuthorizationDomain.cs" />

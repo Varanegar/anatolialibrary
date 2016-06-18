@@ -422,6 +422,7 @@
     <Compile Include="Repositories\Base\ApplicationResourceRepository.cs" />
     <Compile Include="Repositories\Base\BrandRepository.cs" />
     <Compile Include="Repositories\Base\ApplicationModuleRepository.cs" />
+    <Compile Include="Repositories\Base\DataOwnerRepository.cs" />
     <Compile Include="Repositories\Base\ReorderCalcTypeRepository.cs" />
     <Compile Include="Repositories\Base\FiscalYearRepository.cs" />
     <Compile Include="Repositories\Base\BaseTypeRepository.cs" />

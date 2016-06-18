@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AppModels\ApplicationItemViewModel.cs" />
     <Compile Include="AppModels\ApplicationViewModel.cs" />
+    <Compile Include="AppModels\DataOwnerViewModel.cs" />
     <Compile Include="AppModels\ModuleListViewModel.cs" />
     <Compile Include="AppModels\ModuleViewModel.cs" />
     <Compile Include="AppModels\ResourceViewModel.cs" />
