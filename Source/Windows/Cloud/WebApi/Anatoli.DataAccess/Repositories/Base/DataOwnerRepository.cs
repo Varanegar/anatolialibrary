@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Threading.Tasks;
-using Anatoli.DataAccess.Models;
+using Anatoli.Common.DataAccess.Repositories;
+using Anatoli.Common.DataAccess.Models;
 
 namespace Anatoli.DataAccess.Repositories.Base
 {
@@ -20,7 +20,7 @@ namespace Anatoli.DataAccess.Repositories.Base
 
         public IEnumerable<DataOwner> GetDataOwnerWithDetails()
         {
-            return DbContext.DataOwners.Include(dataOwner => dataOwner.ApplicationOwner).Include(dataOwner => dataOwner.AnatoliContact).ToList();
+            return DbContext.Set<DataOwner>().Include(dataOwner => dataOwner.ApplicationOwner).Include(dataOwner => dataOwner.AnatoliContact).ToList();
         }
     }
 }
