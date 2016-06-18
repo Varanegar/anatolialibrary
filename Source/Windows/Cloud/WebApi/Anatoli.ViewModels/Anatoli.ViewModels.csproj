@@ -88,6 +88,20 @@
     <Compile Include="CustomerModels\CustomerShipAddressViewModel.cs" />
     <Compile Include="CustomerModels\CustomerViewModel.cs" />
     <Compile Include="Enumeration.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyActionTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardBatchViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardSetViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyProgramViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyProgramRuleViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleActionViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleConditionViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleConditionTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyTierViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyTriggerTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyValueTypeViewModel.cs" />
     <Compile Include="OrderModels\IncompletePurchaseOrderLineItemViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderLineItemViewModel.cs" />
     <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
@@ -114,6 +128,7 @@
     <Compile Include="ProductModels\ProductTypeViewModel.cs" />
     <Compile Include="ProductModels\ProductViewModel.cs" />
     <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel\LoyaltyRequestModel.cs" />
     <Compile Include="RequestModel\PersonelTrackingRequestModel.cs" />
     <Compile Include="RequestModel\PersonelRequestModel.cs" />
     <Compile Include="RequestModel\ProductReportRequestModel.cs" />
@@ -164,6 +179,7 @@
     <Compile Include="User\CreateUserBindingModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CompanyModels\" />
     <Folder Include="Route\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
