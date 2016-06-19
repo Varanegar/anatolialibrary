@@ -1,18 +1,15 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Interfaces.PersonnelAcitvity;
 using Anatoli.DataAccess.Models.PersonnelAcitvity;
 using Anatoli.DataAccess.Repositories.PersonnelAcitvity;
-using Anatoli.ViewModels.CommonModels;
 using Anatoli.ViewModels.PersonnelAcitvityModel;
-using Anatoli.ViewModels.VnGisModels;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain.CompanyPersonel
 {

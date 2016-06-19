@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class CompanyCenter : BaseModel
+    public class CompanyCenter : AnatoliBaseModel
     {
         public int NLeft { get; set; }
         public int NRight { get; set; }
@@ -29,6 +29,7 @@ namespace Anatoli.DataAccess.Models
         public bool SupportAppOrder { get; set; }
         public bool SupportWebOrder { get; set; }
         public bool SupportCallCenterOrder { get; set; }
+        public bool SupportPOS { get; set; }
         public virtual ICollection<CompanyCenter> CompanyCenters { get; set; }
         public virtual ICollection<Stock> DistCenterStocks { get; set; }
 

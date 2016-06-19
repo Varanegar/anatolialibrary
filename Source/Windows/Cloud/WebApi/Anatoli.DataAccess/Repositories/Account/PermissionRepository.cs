@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Anatoli.Common.DataAccess.Repositories;
 
 namespace Anatoli.DataAccess.Repositories.Account
 {
@@ -19,7 +20,7 @@ namespace Anatoli.DataAccess.Repositories.Account
 
         public IEnumerable<Permission> GetPermissionsWithDetails()
         {
-            return DbContext.Permissions
+            return ((AnatoliDbContext)DbContext).Permissions
                 .Include(p => p.ApplicationModuleResource.ApplicationModule.Application)
                 .Include(p => p.PermissionAction)
                 .AsNoTracking();
@@ -27,7 +28,7 @@ namespace Anatoli.DataAccess.Repositories.Account
 
         public IEnumerable<Permission> GetPermissionsWithDetails(Guid permissionCatalogId)
         {
-            return DbContext.Permissions
+            return ((AnatoliDbContext)DbContext).Permissions
                 .Where(p => p.PermissionCatalogPermissions.Any(c => c.PermissionCatalog.Id == permissionCatalogId))
                 .Include(p => p.ApplicationModuleResource.ApplicationModule.Application)
                 .Include(p => p.PermissionAction)
@@ -36,13 +37,13 @@ namespace Anatoli.DataAccess.Repositories.Account
 
         public IEnumerable<PermissionAction> GetAllPermissionActions()
         {
-            return DbContext.PermissionActions.AsNoTracking().ToList();
+            return ((AnatoliDbContext)DbContext).PermissionActions.AsNoTracking().ToList();
         }
 
         public void AddToCatalog(Guid catalogId, Guid permissionId)
         {
-            var catalog = DbContext.PermissionCatalogs.Include(c => c.PermissionCatalogPermissions).FirstOrDefault(c => c.Id == catalogId);
-            var permisson = DbContext.Permissions.FirstOrDefault(p => p.Id == permissionId);
+            var catalog = ((AnatoliDbContext)DbContext).PermissionCatalogs.Include(c => c.PermissionCatalogPermissions).FirstOrDefault(c => c.Id == catalogId);
+            var permisson = ((AnatoliDbContext)DbContext).Permissions.FirstOrDefault(p => p.Id == permissionId);
 
             if (!catalog.PermissionCatalogPermissions.Any(p => p.Permission.Id == permissionId))
             {
@@ -57,8 +58,8 @@ namespace Anatoli.DataAccess.Repositories.Account
 
         public void RemoveFromCatalog(Guid catalogId, Guid permissionId)
         {
-            var catalog = DbContext.PermissionCatalogs.Include(c => c.PermissionCatalogPermissions).FirstOrDefault(c => c.Id == catalogId);
-            var permisson = DbContext.Permissions.FirstOrDefault(p => p.Id == permissionId);
+            var catalog = ((AnatoliDbContext)DbContext).PermissionCatalogs.Include(c => c.PermissionCatalogPermissions).FirstOrDefault(c => c.Id == catalogId);
+            var permisson = ((AnatoliDbContext)DbContext).Permissions.FirstOrDefault(p => p.Id == permissionId);
             var permissionCatalogPermission = catalog.PermissionCatalogPermissions.FirstOrDefault(p =>
                 p.PermissionCatalog.Id == catalogId && p.Permission.Id == permissionId);
             if (permissionCatalogPermission != null)

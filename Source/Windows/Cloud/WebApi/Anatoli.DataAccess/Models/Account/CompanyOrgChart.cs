@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class CompanyOrgChart : BaseModel
+    public class CompanyOrgChart : AnatoliBaseModel
     {
 
         [StringLength(200)]

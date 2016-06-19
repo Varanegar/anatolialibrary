@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class DeliveryPerson : BaseModel
+    public class DeliveryPerson : AnatoliBaseModel
     {
         [StringLength(100)]
         public string LastName { get; set; }

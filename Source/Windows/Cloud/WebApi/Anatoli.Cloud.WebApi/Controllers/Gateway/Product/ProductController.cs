@@ -1,6 +1,7 @@
 ﻿using Anatoli.Business.Domain;
 using Anatoli.Business.Proxy.ProductConcretes;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.Common.WebApi;
 using Anatoli.ViewModels;
 using Anatoli.ViewModels.ProductModels;
 using System;
@@ -349,6 +350,26 @@ namespace Anatoli.Cloud.WebApi.Controllers
         public async Task<IHttpActionResult> GetProductsCompress()
         {
             return await GetProducts();
+        }
+
+        [AnatoliAuthorize(Roles = "AnatoliInterCom")] //, Resource = "Product", Action = "List"
+        [Route("products/local/compress")]
+        [HttpPost]
+        [GzipCompression]
+        public async Task<IHttpActionResult> GetProductsCompressLocal()
+        {
+            try
+            {
+                var productDomain = new ProductDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey);
+                var result = await productDomain.GetAllAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
         }
 
         [AnatoliAuthorize(Roles = "AuthorizedApp, User", Resource = "Product", Action = "SearchProducts")]

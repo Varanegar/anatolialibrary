@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models
 {
-    public class CompanyDevice : BaseModel
+    public class CompanyDevice : AnatoliBaseModel
     {
         [StringLength(100)]
         public string DeviceModel { get; set; }

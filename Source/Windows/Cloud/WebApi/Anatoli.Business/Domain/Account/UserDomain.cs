@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.DataAccess;
 using Anatoli.DataAccess.Models.Identity;
+using System.Linq;
 
 namespace Anatoli.Business.Domain
 {
-    public class UserDomain 
+    public class UserDomain
     {
         #region Properties
         protected static Logger Logger { get; set; }
@@ -60,6 +61,16 @@ namespace Anatoli.Business.Domain
             return await UserRepository.FindAsync(p => (p.Email == email || p.PhoneNumber == phone || p.UserNameStr == username) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey);
         }
 
+        public User FindByNameOrEmailOrPhone(string usernameOrEmailOrPhone)
+        {
+            return UserRepository.GetQuery()
+                                 .Where(p => (p.Email == usernameOrEmailOrPhone ||
+                                              p.PhoneNumber == usernameOrEmailOrPhone ||
+                                              p.UserNameStr == usernameOrEmailOrPhone) &&
+                                              p.ApplicationOwnerId == ApplicationOwnerKey &&
+                                              p.DataOwnerId == DataOwnerKey)
+                                .FirstOrDefault();
+        }
         public async Task<User> FindByNameOrEmailOrPhoneAsync(string usernameOrEmailOrPhone)
         {
             return await UserRepository.FindAsync(p => (p.Email == usernameOrEmailOrPhone || p.PhoneNumber == usernameOrEmailOrPhone || p.UserNameStr == usernameOrEmailOrPhone) && p.ApplicationOwnerId == ApplicationOwnerKey && p.DataOwnerId == DataOwnerKey);

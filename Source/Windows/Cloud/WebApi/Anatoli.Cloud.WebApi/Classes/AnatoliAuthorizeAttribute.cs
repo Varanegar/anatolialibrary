@@ -6,7 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Http.Controllers;
-using Anatoli.Cloud.WebApi.Classes.Helpers;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity.Owin;
+using Anatoli.Cloud.WebApi.Infrastructure;
 
 namespace Anatoli.Cloud.WebApi.Classes
 {
@@ -16,11 +19,31 @@ namespace Anatoli.Cloud.WebApi.Classes
         private string _responseReason = "";
         public bool ByPassAuthorization { get; set; }
 
-        public object OwnerKey
+        public Guid OwnerKey
         {
             get
             {
-                return HttpContext.Current.Request.Headers["OwnerKey"];
+                return Guid.Parse(HttpContext.Current.Request.Headers["OwnerKey"]);
+            }
+        }
+        public Guid DataOwnerKey
+        {
+            get
+            {
+                if (HttpContext.Current.Request.Headers["DataOwnerKey"] == null)
+                    return OwnerKey;
+                else
+                    return Guid.Parse(HttpContext.Current.Request.Headers["DataOwnerKey"]);
+            }
+        }
+        public Guid DataOwnerCenterKey
+        {
+            get
+            {
+                if (HttpContext.Current.Request.Headers["DataOwnerCenterKey"] == null)
+                    return DataOwnerKey;
+                else
+                    return Guid.Parse(HttpContext.Current.Request.Headers["DataOwnerCenterKey"]);
             }
         }
         public bool HasOwnerKey
@@ -33,6 +56,18 @@ namespace Anatoli.Cloud.WebApi.Classes
         public string Resource { get; set; }
         public string Action { get; set; }
         #endregion
+
+        private string _currentUserId;
+        public string CurrentUserId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_currentUserId))
+                    _currentUserId = GetUserId();
+
+                return _currentUserId;
+            }
+        }
 
         #region Methods
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -83,7 +118,7 @@ namespace Anatoli.Cloud.WebApi.Classes
             if (string.IsNullOrEmpty(Resource) && string.IsNullOrEmpty(Action))
                 return true;
 
-            if (string.IsNullOrEmpty(HttpContext.Current.User.GetAnatoliUserId()))
+            if (string.IsNullOrEmpty(CurrentUserId))
                 return false;
 
             //var permissions = new AuthorizationDomain(Guid.Parse(OwnerKey.ToString())).GetPermissionsForPrincipal(user.GetAnatoliUserId(), Resource, Action);
@@ -116,24 +151,46 @@ namespace Anatoli.Cloud.WebApi.Classes
 
             return base.IsAuthorized(actionContext);
         }
+
+        private string GetUserId()
+        {
+            if (HttpContext.Current.User == null)
+                return string.Empty;
+
+            var uid = HttpContext.Current.User.Identity.GetUserId();
+
+            if (!string.IsNullOrEmpty(uid))
+                return uid;
+
+            var email = ClaimsPrincipal.Current.Claims.Where(c => c.Type == "Email").Select(s => s.Value).FirstOrDefault();
+
+            var AppUserManager = HttpContext.Current.Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            var user = AppUserManager.FindByNameOrEmailOrPhone(email, OwnerKey, DataOwnerKey);
+
+            if (user == null)
+                return string.Empty;
+
+            return user.Id;
+        }
         #endregion
     }
 
-    public class RequireHttpsAttribute : AuthorizeAttribute
-    {
-        public override void OnAuthorization(HttpActionContext actionContext)
-        {
-            if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
-            {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
-                {
-                    ReasonPhrase = "HTTPS Required"
-                };
-            }
-            else
-            {
-                base.OnAuthorization(actionContext);
-            }
-        }
-    }
+    //public class RequireHttpsAttribute : AuthorizeAttribute
+    //{
+    //    public override void OnAuthorization(HttpActionContext actionContext)
+    //    {
+    //        if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
+    //        {
+    //            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
+    //            {
+    //                ReasonPhrase = "HTTPS Required"
+    //            };
+    //        }
+    //        else
+    //        {
+    //            base.OnAuthorization(actionContext);
+    //        }
+    //    }
+    //}
 }

@@ -6,7 +6,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockProductRequest : BaseModel
+    public class StockProductRequest : AnatoliBaseModel
     {
         public DateTime RequestDate { get; set; }
         [StringLength(10)]

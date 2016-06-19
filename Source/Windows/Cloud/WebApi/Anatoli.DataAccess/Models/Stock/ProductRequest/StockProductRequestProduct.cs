@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class StockProductRequestProduct : BaseModel
+    public class StockProductRequestProduct : AnatoliBaseModel
     {
         public decimal RequestQty { get; set; }
         public decimal Accepted1Qty { get; set; }

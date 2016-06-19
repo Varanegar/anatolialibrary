@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Repositories
 {
-    public class ProductRepository : AnatoliRepository<Product>, IProductRepository
+    public class ProductRepository : Common.DataAccess.Repositories.AnatoliRepository<Product>, IProductRepository
     {
         #region Ctors
         public ProductRepository() : this(new AnatoliDbContext()) { }

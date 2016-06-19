@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations; 
        
-    public class ItemImage : BaseModel
+    public class ItemImage : AnatoliBaseModel
     {
         [StringLength(50)]
         public string TokenId { get; set; }

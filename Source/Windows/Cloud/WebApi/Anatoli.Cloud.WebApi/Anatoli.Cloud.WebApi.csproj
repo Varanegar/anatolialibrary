@@ -44,6 +44,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anatoli.Common.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.ViewModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.WebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
@@ -239,6 +255,7 @@
     <Compile Include="Controllers\Base\IdentityAccounts.cs" />
     <Compile Include="Controllers\Base\PermissionController.cs" />
     <Compile Include="Controllers\Base\PushNotificationController.cs" />
+    <Compile Include="Controllers\DataOwnerController.cs" />
     <Compile Include="Controllers\DSD\BaseData\BackOfficeBaseDataController.cs" />
     <Compile Include="Controllers\DSD\Customer\CustomerController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelTrackingController.cs" />
@@ -366,7 +383,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59822</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59822/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

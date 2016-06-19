@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using Anatoli.DataAccess.Models;
-using System.Collections.Generic;
+﻿using Anatoli.DataAccess.Models;
 
 namespace Anatoli.DataAccess.Interfaces
 {
-    public interface IProductRepository : IRepository<Product>
+    public interface IProductRepository : Common.DataAccess.Interfaces.IRepository<Product>
     {
     }
 }

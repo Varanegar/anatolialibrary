@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/apps")]
     public class ApplicationController : AnatoliApiController
     {

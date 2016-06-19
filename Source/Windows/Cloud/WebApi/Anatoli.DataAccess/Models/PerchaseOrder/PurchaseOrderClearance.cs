@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public class PurchaseOrderClearance : BaseModel
+    public class PurchaseOrderClearance : AnatoliBaseModel
     {
         //public int PurchaseOrderClearanceId { get; set; }
         //public int PurchaseOrderId { get; set; }

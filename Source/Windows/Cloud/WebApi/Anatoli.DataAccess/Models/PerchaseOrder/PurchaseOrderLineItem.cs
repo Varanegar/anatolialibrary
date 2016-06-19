@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class PurchaseOrderLineItem : BaseModel
+    public class PurchaseOrderLineItem : AnatoliBaseModel
     {
         public decimal UnitPrice { get; set; }
         public decimal Qty { get; set; }

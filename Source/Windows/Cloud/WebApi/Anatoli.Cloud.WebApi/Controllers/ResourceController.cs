@@ -12,6 +12,7 @@ using System.Web.Http;
 
 namespace Anatoli.Cloud.WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/resources")]
     public class ResourceController : AnatoliApiController
     {

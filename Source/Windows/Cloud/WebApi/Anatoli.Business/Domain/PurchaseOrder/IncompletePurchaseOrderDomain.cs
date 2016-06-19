@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Anatoli.Business.Proxy;
 using System.Threading.Tasks;
 using Anatoli.DataAccess.Models;
 using System.Collections.Generic;
 using Anatoli.DataAccess.Interfaces;
 using Anatoli.DataAccess.Repositories;
-using Anatoli.Business.Proxy.Interfaces;
 using Anatoli.DataAccess;
-using Anatoli.ViewModels.ProductModels;
-using Anatoli.ViewModels.BaseModels;
 using Anatoli.ViewModels.Order;
-using Anatoli.Business.Helpers;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
+using Anatoli.Common.DataAccess.Interfaces;
+using Anatoli.Common.Business;
+using Anatoli.Common.Business.Interfaces;
 
 namespace Anatoli.Business.Domain
 {
@@ -110,7 +106,7 @@ namespace Anatoli.Business.Domain
                     var itemDetailData = LineItemRepository.GetQuery().Where(p => p.IncompletePurchaseOrderId == item.Id);
                     itemDetailData.ToList().ForEach(itemDetail =>
                         {
-                            LineItemRepository.DbContext.IncompletePurchaseOrderLineItems.Remove(itemDetail);
+                            ((AnatoliDbContext)LineItemRepository.DbContext).IncompletePurchaseOrderLineItems.Remove(itemDetail);
                         });
                 });
             });

@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public class CharGroup : BaseModel
+    public class CharGroup : AnatoliBaseModel
     {
         public int CharGroupCode { get; set; }
         [StringLength(200)]

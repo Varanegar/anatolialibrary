@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anatoli.ViewModels.CustomerModels
+namespace Anatoli.ViewModels.LoyaltyModels
 {
     public class CustomerShipAddressViewModel : BaseViewModel
     {

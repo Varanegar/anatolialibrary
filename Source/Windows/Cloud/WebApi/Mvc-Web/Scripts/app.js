@@ -10,8 +10,8 @@ privateOwnerId = '79A0D598-0BD2-45B1-BAAA-0A9CF9EFF240',
 dataOwnerId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 dataOwnerCenterId = '3EEE33CE-E2FD-4A5D-A71C-103CC5046D0C',
 urls = {
-    //loginUrl: baseBackendUrl + '/oauth/token',
-    loginUrl: baseBackendUrl + '/api/identityAccounts/login',
+    loginUrl: baseBackendUrl + '/oauth/token',
+    //loginUrl: baseBackendUrl + '/api/identityAccounts/login',
     storesUrl: baseBackendUrl + '/api/gateway/stock/stocks/',
     userStocksUrl: baseBackendUrl + '/api/gateway/stock/userStocks',
     saveStocksUsersUrl: baseBackendUrl + '/api/gateway/stock/saveUserStocks',
@@ -22,7 +22,9 @@ urls = {
 
     usersUrl: baseBackendUrl + "/api/accounts/users",
     userUrl: baseBackendUrl + "/api/accounts/getUser",
-    saveUserUrl: baseBackendUrl + '/api/accounts/saveUser',
+
+    saveUserUrl: baseBackendUrl + '/api/identityAccounts/saveUser',
+
     checkUserEmail: baseBackendUrl + '/api/accounts/checkEmailExist',
 
     permissionCatalogsUrl: baseBackendUrl + "/api/accounts/permissionCatalogs",
@@ -62,9 +64,9 @@ urls = {
 
     myWebpages: baseBackendUrl + '/api/accounts/myWebpages',
 
-    sendPassCodeUrl: baseBackendUrl + '/api/accounts/SendPassCode',
-    resetPasswordByCodeUrl: baseBackendUrl + '/api/accounts/ResetPasswordByCode',
-    changePasswordUrl: baseBackendUrl + '/api/accounts/ChangePassword',
+    sendPassCodeUrl: baseBackendUrl + '/api/identityAccounts/SendPassCode',
+    resetPasswordByCodeUrl: baseBackendUrl + '/api/identityAccounts/ResetPasswordByCode',
+    changePasswordUrl: baseBackendUrl + '/api/identityAccounts/ChangePassword',
 
     pages: {
         product: { url: '/Products', title: 'کالا', order: 7 },
@@ -224,8 +226,7 @@ function accountManagerViewModel() {
             message = jqXHR.responseJSON.error_description;
         }
 
-        if (jqXHR.status == 400)
-        {
+        if (jqXHR.status == 400) {
             title = '400';
             message = jqXHR.responseJSON.message;
         }
@@ -269,7 +270,7 @@ function accountManagerViewModel() {
         self.result('');
 
         var token = $.cookie("token"),
-            headers = { ownerKey: privateOwnerId };
+            headers = { ownerKey: privateOwnerId, dataOwnerKey: dataOwnerId, dataOwnerCenterKey: dataOwnerCenterId };
 
         if (token)
             headers.Authorization = 'Bearer ' + token;
@@ -448,7 +449,7 @@ function accountManagerViewModel() {
         $(".restore-password-div").removeClass('hide').show();
         $(".login-div").hide();
         $(".k-window-title").html("بازیابی رمزعبور");
-};
+    };
 
     self.hideRestorePasswordDiv = function () {
         $(".restore-password-div").hide();

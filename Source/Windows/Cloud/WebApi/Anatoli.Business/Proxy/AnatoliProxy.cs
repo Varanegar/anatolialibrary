@@ -9,7 +9,7 @@ using Anatoli.DataAccess.Models.Identity;
 namespace Anatoli.Business.Proxy
 {
     public abstract class AnatoliProxy<TSource, TOut> : IAnatoliProxy<TSource, TOut>
-        where TSource : BaseModel, new()
+        where TSource : AnatoliBaseModel, new()
         where TOut : BaseViewModel, new()
     {
 

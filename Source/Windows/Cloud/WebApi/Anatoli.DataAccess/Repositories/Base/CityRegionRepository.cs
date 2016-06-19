@@ -1,5 +1,7 @@
 using Anatoli.DataAccess.Models;
 using Anatoli.DataAccess.Interfaces;
+using Anatoli.Common.DataAccess.Models;
+using Anatoli.Common.DataAccess.Repositories;
 
 namespace Anatoli.DataAccess.Repositories
 {
@@ -11,7 +13,7 @@ namespace Anatoli.DataAccess.Repositories
             : base(context)
         {
         }
-        public CityRegionRepository(AnatoliDbContext context,OwnerInfo ownerInfo)
+        public CityRegionRepository(AnatoliDbContext context, OwnerInfo ownerInfo)
             : base(context, ownerInfo)
         {
         }

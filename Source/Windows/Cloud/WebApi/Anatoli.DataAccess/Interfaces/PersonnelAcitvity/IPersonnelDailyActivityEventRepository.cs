@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Anatoli.DataAccess.Models.PersonnelAcitvity;
+﻿using Anatoli.DataAccess.Models.PersonnelAcitvity;
+using Anatoli.Common.DataAccess.Interfaces;
 
 namespace Anatoli.DataAccess.Interfaces.PersonnelAcitvity
 {

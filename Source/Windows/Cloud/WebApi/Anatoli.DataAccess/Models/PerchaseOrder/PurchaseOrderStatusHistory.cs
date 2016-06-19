@@ -5,7 +5,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class PurchaseOrderStatusHistory : BaseModel
+    public class PurchaseOrderStatusHistory : AnatoliBaseModel
     {
         public Guid StatusValueId { get; set; }
         public DateTime StatusDate { get; set; }

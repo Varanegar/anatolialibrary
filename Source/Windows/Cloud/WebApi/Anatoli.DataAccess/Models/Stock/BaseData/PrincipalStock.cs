@@ -6,7 +6,7 @@ namespace Anatoli.DataAccess.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class PrincipalStock : BaseModel
+    public class PrincipalStock : AnatoliBaseModel
     {
         public Guid PrincipalId { get; set; }
         [ForeignKey("Stock")]

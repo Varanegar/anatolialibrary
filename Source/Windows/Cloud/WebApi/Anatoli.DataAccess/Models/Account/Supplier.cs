@@ -3,7 +3,7 @@ namespace Anatoli.DataAccess.Models
 	using System;
 	using System.Collections.Generic;
   
-    public class Supplier : BaseModel
+    public class Supplier : AnatoliBaseModel
     {
         public string SupplierName { get; set; }
         public bool OrderAllProduct { get; set; }

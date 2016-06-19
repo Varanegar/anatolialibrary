@@ -16,10 +16,8 @@ using Anatoli.DataAccess;
 using Anatoli.Business.Domain;
 using Anatoli.ViewModels.CustomerModels;
 using Anatoli.ViewModels.BaseModels;
-//using Anatoli.Business.Domain.Authorization;
 using Anatoli.Cloud.WebApi.Classes;
 using Newtonsoft.Json;
-//using Anatoli.Business.Proxy.Concretes.AuthorizationProxies;
 using Anatoli.ViewModels.User;
 using Anatoli.DataAccess.Repositories;
 using Anatoli.ViewModels;
@@ -40,8 +38,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         [Route("myWebpages"), HttpPost]
         public async Task<IHttpActionResult> GetPages()
         {
-            var userId = HttpContext.Current.User.Identity.GetUserId();
-            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(userId);
+            var data = await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).GetPermissionsForPrincipal(CurrentUserId);
 
             var result = data.Where(p => p.Action == "Page").ToList();
 
@@ -181,7 +178,6 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 });
 
             await new AuthorizationDomain(OwnerKey, DataOwnerKey, DataOwnerCenterKey).SavePermissions(pp, Guid.Parse(model.userId.Value));
-
             return Ok(new { });
         }
 
@@ -415,13 +411,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var emailUser = await GetUserByEMail(model.email);
+            var emailUser = await GetUserByEMail(model.email);
 
-                if (emailUser != null && emailUser.Id != model.userId)
-                    return Ok(false);
+            if (emailUser != null && emailUser.Id != model.userId)
+                return Ok(false);
 
-                return Ok(true);
-            }
+            return Ok(true);
+        }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
@@ -434,13 +430,13 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
+            var userModel = JsonConvert.DeserializeObject<CreateUserBindingModel>(model.user);
 
-                if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
-                    return await UpdateUser(userModel);
-                else
-                    return await CreateUserByBackoffice(userModel, false);
-            }
+            if (userModel.UniqueId != Guid.Empty && userModel.UniqueId != null)
+                return await UpdateUser(userModel);
+            else
+                return await CreateUserByBackoffice(userModel, false);
+        }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
@@ -452,20 +448,20 @@ namespace Anatoli.Cloud.WebApi.Controllers
             using (var userStore = new AnatoliUserStore(Request.GetOwinContext().Get<AnatoliDbContext>()))
             {
 
-                var user = await GetUserByUserId(model.UniqueId.ToString());
+            var user = await GetUserByUserId(model.UniqueId.ToString());
 
-                if (model.FullName != null)
-                    user.FullName = model.FullName;
-                user.SecurityStamp = Guid.NewGuid().ToString();
-                if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
-                    user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
+            if (model.FullName != null)
+                user.FullName = model.FullName;
+            user.SecurityStamp = Guid.NewGuid().ToString();
+            if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                user.PasswordHash = AppUserManager.PasswordHasher.HashPassword(model.Password);
 
-                user.PhoneNumberConfirmed = true;
-                user.EmailConfirmed = true;
-                await userStore.UpdateAsync(user);
+            user.PhoneNumberConfirmed = true;
+            user.EmailConfirmed = true;
+            await userStore.UpdateAsync(user);
 
-                return Ok(model);
-            }
+            return Ok(model);
+        }
         }
 
         [Authorize(Roles = "AuthorizedApp")]
@@ -553,16 +549,16 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             try
             {
-                var user = await GetUserByUserName(data.username);
-                //var user = await userStore.FindByNameAsync(username);
+            var user = await GetUserByUserName(data.username);
+            //var user = await userStore.FindByNameAsync(username);
                 if (user == null)
                     return GetErrorResult("کاربر یافت نشد");
 
                 await new SMSManager().SendResetPasswordSMS(user, Request.GetOwinContext().Get<AnatoliDbContext>(), null,
                                                             SMSManager.SMSBody.NEW_USER_FORGET_PASSWORD);
 
-                return Ok(new BaseViewModel());
-            }
+            return Ok(new BaseViewModel());
+        }
             catch (Exception ex)
             {
                 log.Error(ex, "Web API Call Error in SendPassCode. ", data.username);
@@ -621,7 +617,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var result = await AppUserManager.ChangePasswordAsync(CurrentUserId, model.OldPassword, model.NewPassword);
 
             if (!result.Succeeded)
             {
@@ -770,7 +766,7 @@ namespace Anatoli.Cloud.WebApi.Controllers
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByUsernameAsync(username);
         }
-        private async Task<User> GetUserByUserId(string userId)
+        private async Task<User> GetUserByUserId(string userId) 
         {
             return await new UserDomain(OwnerKey, DataOwnerKey, Request.GetOwinContext().Get<AnatoliDbContext>()).GetByIdAsync(userId);
         }

@@ -4,7 +4,7 @@ namespace Anatoli.DataAccess.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class StoreActivePriceList : BaseModel
+    public class StoreActivePriceList : AnatoliBaseModel
     {
         public decimal Price { get; set; }
         [ForeignKey("Store")]

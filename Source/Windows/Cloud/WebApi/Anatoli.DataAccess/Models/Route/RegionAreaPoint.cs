@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DataAccess.Models.Route
 {
-    public class RegionAreaPoint : BaseModel
+    public class RegionAreaPoint : AnatoliBaseModel
     {
         public double Longitude { set; get; }
         public double Latitude { set; get; }
