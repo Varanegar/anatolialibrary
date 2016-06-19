@@ -48,57 +48,6 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
             }
         }
 
-        [Authorize(Roles = "User")]
-        [Route("expprdrepexcl")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ExportProductReportToExcel([FromBody]ProductReportRequestModel data)
-        {
-            try
-            {
-                var result = new List<DMCPolyViewModel>();
-                await Task.Factory.StartNew(() =>
-                {
-                    var service = new DMCProductReportDomain();
-                    result = service.LoadProductReport(data.ToDMCProductReportFilterViewModel());
-                });
-
-                var excelApp = new Excel.Application();
-                // Make the object visible.
-                excelApp.Visible = true;
-
-                // Create a new, empty workbook and add it to the collection returned 
-                var oWB =  excelApp.Workbooks.Add();
-
-                Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
-
-                workSheet.Cells[1, "A"] = "Title";
-                workSheet.Cells[1, "B"] = "Data";
-
-                var row = 1;
-                foreach (var item in result)
-                {
-                    row++;
-                    workSheet.Cells[row, "A"] = item.Desc;
-                    workSheet.Cells[row, "B"] = "";
-                }
-
-                ((Excel.Range)workSheet.Columns[1]).AutoFit();
-                ((Excel.Range)workSheet.Columns[2]).AutoFit();
-
-                oWB.SaveAs("c:\\test\\test505.xls", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
-        false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
-        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-                oWB.Close();
-
-                return Ok(true);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Web API Call Error", ex);
-                return GetErrorResult(ex);
-            }
-        }
 
         [Authorize(Roles = "User")]
         [Route("ldprdvalrep")]

@@ -104,7 +104,7 @@ namespace ClientApp
 
                 PersonnelDailyActivityVisitTypeId = Guid.Parse("AF24B66E-069C-4EB6-926D-852664237251"),// "فروش گرم",
                 PersonnelDailyActivityEventTypeId = Guid.Parse("E68F7931-2189-4000-B173-D02719720923"),// "عدم ویزیت",
-                Latitude = 38.084912,
+                Latitude = 38.084900,
                 Longitude = 46.290506,
                 ActivityDate = DateTime.Now,
                 ActivityPDate = "1395/03/22",
