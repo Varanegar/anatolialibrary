@@ -47,6 +47,9 @@
     <Reference Include="Anatoli.Common.ViewModel">
       <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
     </Reference>
+    <Reference Include="Anatoli.ViewModels">
+      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -97,10 +100,6 @@
     <ProjectReference Include="..\Anatoli.DataAccess\Anatoli.DataAccess.csproj">
       <Project>{507db6c2-a55a-4557-8dd6-7187c868aca9}</Project>
       <Name>Anatoli.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
-      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
-      <Name>Anatoli.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
