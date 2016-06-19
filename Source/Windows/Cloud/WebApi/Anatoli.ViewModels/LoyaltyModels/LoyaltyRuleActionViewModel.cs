@@ -1,24 +1,22 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Anatoli.Common.DataAccess.Models;
 
-namespace Loyalty.DataAccess.Models
+namespace Anatoli.ViewModels.LoyaltyModels
 {
-    public class LoyaltyRuleAction : BaseModel
+    public class LoyaltyRuleActionViewModel : BaseViewModel
     {
         public decimal ActionValue { get; set; }
-        [ForeignKey("LoyaltyRule")]
+
         public Guid LoyaltyRuleId { get; set; }
-        [ForeignKey("LoyaltyActionType")]
+        public string LoyaltyRuleName { get; set; }
+        
         public Guid LoyaltyActionTypeId { get; set; }
-        [ForeignKey("LoyaltyValueType")]
+        public string LoyaltyActionTypeName { get; set; }
+        
         public Guid LoyaltyValueTypeId { get; set; }
-        public virtual LoyaltyValueType LoyaltyValueType { get; set; }
-        public virtual LoyaltyActionType LoyaltyActionType { get; set; }
-        public virtual LoyaltyRule LoyaltyRule { get; set; }
+        public string LoyaltyValueTypeName { get; set; }
+
+
 
     }
 }

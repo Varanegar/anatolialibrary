@@ -1,11 +1,6 @@
-﻿using Anatoli.ViewModels.BaseModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Anatoli.ViewModels.LoyaltyModels
+namespace Anatoli.ViewModels.CustomerModels
 {
     public class CustomerShipAddressViewModel : BaseViewModel
     {

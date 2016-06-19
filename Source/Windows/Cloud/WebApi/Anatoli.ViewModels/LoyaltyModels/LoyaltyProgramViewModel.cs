@@ -5,12 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Anatoli.ViewModels.LoyaltyModels
 {
-    public class LoyaltyProgram : BaseViewModel
+    public class LoyaltyProgramViewModel : BaseViewModel
     {
-        [StringLength(100)]
         public string LoyaltyProgramName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<LoyaltyProgramRule> LoyaltyProgramRules { get; set; }
+        public List<LoyaltyProgramRuleViewModel> LoyaltyProgramRules { get; set; }
     }
 }

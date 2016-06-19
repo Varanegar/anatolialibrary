@@ -1,15 +1,10 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Anatoli.Common.DataAccess.Models;
 
-namespace Loyalty.DataAccess.Models
+namespace Anatoli.ViewModels.LoyaltyModels
 {
-    public class LoyaltyValueType : BaseModel
+    public class LoyaltyValueTypeViewModel : BaseViewModel
     {
-        [StringLength(100)]
         public string LoyaltyValueTypeName { get; set; }
-        public virtual ICollection<LoyaltyRuleAction> LoyaltyRuleActions { get; set; }
+       // public virtual ICollection<LoyaltyRuleAction> LoyaltyRuleActions { get; set; }
     }
 }

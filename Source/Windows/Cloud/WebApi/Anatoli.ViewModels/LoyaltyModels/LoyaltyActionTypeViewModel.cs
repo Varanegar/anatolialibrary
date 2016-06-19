@@ -8,6 +8,5 @@ namespace Anatoli.ViewModels.LoyaltyModels
     public class LoyaltyActionType : BaseViewModel
     {
         public string LoyaltyActionTypeName { get; set; }
-        public List<LoyaltyRuleActionViewModel> LoyaltyRuleActions { get; set; }
     }
 }

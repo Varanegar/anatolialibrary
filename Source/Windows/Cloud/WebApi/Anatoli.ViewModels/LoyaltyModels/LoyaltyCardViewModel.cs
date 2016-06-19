@@ -1,13 +1,9 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Anatoli.Common.DataAccess.Models;
 
-namespace Loyalty.DataAccess.Models
+namespace Anatoli.ViewModels.LoyaltyModels
 {
-    public class LoyaltyCard : BaseModel
+    public class LoyaltyCardViewModel : BaseViewModel
     {
         public string CardNo { get; set; }
         public DateTime ExpireDate { get; set; }
@@ -15,15 +11,15 @@ namespace Loyalty.DataAccess.Models
         public bool IsActive { get; set; }
         public bool AssignDate { get; set; }
         public Nullable<Guid> CancelReason { get; set; }
-        [ForeignKey("LoyaltyCardSet")]
+        
         public Guid LoyaltyCardSetId { get; set; }
-        [ForeignKey("LoyaltyCardBatch")]
+        public string LoyaltyCardSetName { get; set; }
+
         public Nullable<Guid> LoyaltyCardBatchId { get; set; }
-        [ForeignKey("Customer")]
+        //public string BatchGeneratePDate { get; set; }
+        
         public Nullable<Guid> CustomerId { get; set; }
-        public virtual LoyaltyCardSet LoyaltyCardSet { get; set; }
-        public virtual LoyaltyCardBatch LoyaltyCardBatch { get; set; }
-        public virtual Customer Customer { get; set; }
+        public string CustomerName { get; set; }
 
     }
 }
