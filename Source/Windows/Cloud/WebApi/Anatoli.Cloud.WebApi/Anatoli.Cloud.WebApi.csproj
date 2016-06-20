@@ -60,6 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedLibraries\Anatoli.Common.WebApi.dll</HintPath>
     </Reference>
+    <Reference Include="Anatoli.ViewModels">
+      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
@@ -365,10 +368,6 @@
     <ProjectReference Include="..\Anatoli.SDS.ViewModels\Anatoli.SDS.ViewModels.csproj">
       <Project>{eeebef7d-7124-4477-8acf-b9373028aeb8}</Project>
       <Name>Anatoli.SDS.ViewModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
-      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
-      <Name>Anatoli.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

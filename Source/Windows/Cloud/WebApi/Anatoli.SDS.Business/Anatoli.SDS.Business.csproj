@@ -37,6 +37,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
     </Reference>
+    <Reference Include="Anatoli.ViewModels, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -65,10 +69,6 @@
     <ProjectReference Include="..\Anatoli.SDS.ViewModels\Anatoli.SDS.ViewModels.csproj">
       <Project>{eeebef7d-7124-4477-8acf-b9373028aeb8}</Project>
       <Name>Anatoli.SDS.ViewModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Anatoli.ViewModels\Anatoli.ViewModels.csproj">
-      <Project>{113c8748-e1fb-42ef-9d33-77f5f0d0c0e1}</Project>
-      <Name>Anatoli.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Thunderstruck\Thunderstruck.csproj">
       <Project>{0dc5ab48-1da5-4185-a18e-46c111a82454}</Project>

@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedLibraries\Anatoli.Common.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="Anatoli.ViewModels">
+      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>

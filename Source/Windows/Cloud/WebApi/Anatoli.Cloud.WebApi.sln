@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Cloud.WebApi", "Anatoli.Cloud.WebApi\Anatoli.Cloud.WebApi.csproj", "{FE46F959-09B9-4182-9AEC-E66364EFC1AC}"
 EndProject
@@ -15,8 +15,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnatoliUnitTests", "AnatoliUnitTests\AnatoliUnitTests.csproj", "{58A467A1-D24E-4652-A622-2C2075C09E45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Business", "Anatoli.Business\Anatoli.Business.csproj", "{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.ViewModels", "Anatoli.ViewModels\Anatoli.ViewModels.csproj", "{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.PMC.DataAccess", "Anatoli.PMC.DataAccess\Anatoli.PMC.DataAccess.csproj", "{1F2144A0-F98C-4D81-A738-DCCD8E4E1C59}"
 EndProject
@@ -74,10 +72,6 @@ Global
 		{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF1618B-521D-4DD3-9485-FBE4C41EAF42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F2144A0-F98C-4D81-A738-DCCD8E4E1C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F2144A0-F98C-4D81-A738-DCCD8E4E1C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F2144A0-F98C-4D81-A738-DCCD8E4E1C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
