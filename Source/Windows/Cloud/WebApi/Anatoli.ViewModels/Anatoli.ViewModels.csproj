@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Anatoli.ViewModels</RootNamespace>
+    <AssemblyName>Anatoli.ViewModels</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Build\Anatoli.ViewModels\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Anatoli.Common.ViewModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\protobuf-net.2.0.0.480\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppModels\ApplicationItemViewModel.cs" />
+    <Compile Include="AppModels\ApplicationViewModel.cs" />
+    <Compile Include="AppModels\DataOwnerViewModel.cs" />
+    <Compile Include="AppModels\ModuleListViewModel.cs" />
+    <Compile Include="AppModels\ModuleViewModel.cs" />
+    <Compile Include="AppModels\ResourceViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionActionViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionCatalogViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionDetailViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionSaveViewModel.cs" />
+    <Compile Include="AuthorizationModels\PermissionViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalPermissionCatalogViewModel.cs" />
+    <Compile Include="AuthorizationModels\PrincipalPermissionViewModel.cs" />
+    <Compile Include="BaseModels\BrandViewModel.cs" />
+    <Compile Include="BaseModels\ReorderCalcTypeViewModel.cs" />
+    <Compile Include="BaseModels\FiscalYearViewModel.cs" />
+    <Compile Include="BaseModels\BaseTypeViewModel.cs" />
+    <Compile Include="BaseModels\BaseValueViewModel.cs" />
+    <Compile Include="BaseModels\ItemImageViewModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="BaseModels\BasketItemViewModel.cs" />
+    <Compile Include="BaseModels\BasketViewModel.cs" />
+    <Compile Include="CommonModels\SelectListItemViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerGroupViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerShipAddressViewModel.cs" />
+    <Compile Include="CustomerModels\CustomerViewModel.cs" />
+    <Compile Include="Enumeration.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyActionTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardBatchViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyCardSetViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyProgramViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyProgramRuleViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleActionViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleConditionViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleConditionTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyRuleTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyTierViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyTriggerTypeViewModel.cs" />
+    <Compile Include="LoyaltyModels\LoyaltyValueTypeViewModel.cs" />
+    <Compile Include="OrderModels\IncompletePurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderLineItemViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderStatusHistoryViewModel.cs" />
+    <Compile Include="OrderModels\IncompletePurchaseOrderViewModel.cs" />
+    <Compile Include="OrderModels\PurchaseOrderViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\BaseActivityEventViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\LackOfOrderActivityEventPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\LackOfVisitActivityEventPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\OrderActivityEventPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityPointViewModel.cs" />
+    <Compile Include="PersonnelAcitvityModel\PersonnelDailyActivityEventViewModel.cs" />
+    <Compile Include="ProductModels\ProductSupplierViewModel.cs" />
+    <Compile Include="ProductModels\ProductCharValueViewModel.cs" />
+    <Compile Include="ProductModels\ProductPictureViewModel.cs" />
+    <Compile Include="ProductModels\ProductTagValueViewModel.cs" />
+    <Compile Include="ProductModels\MainProductGroupViewModel.cs" />
+    <Compile Include="ProductModels\CharGroupViewModel.cs" />
+    <Compile Include="ProductModels\CharTypeViewModel.cs" />
+    <Compile Include="ProductModels\CharValueViewModel.cs" />
+    <Compile Include="ProductModels\ProductRateViewModel.cs" />
+    <Compile Include="BaseModels\ManufactureViewModel.cs" />
+    <Compile Include="ProductModels\ProductGroupViewModel.cs" />
+    <Compile Include="ProductModels\ProductTagViewModel.cs" />
+    <Compile Include="ProductModels\ProductTypeViewModel.cs" />
+    <Compile Include="ProductModels\ProductViewModel.cs" />
+    <Compile Include="BaseModels\CityRegionViewModel.cs" />
+    <Compile Include="RequestModel\LoyaltyRequestModel.cs" />
+    <Compile Include="RequestModel\PersonelTrackingRequestModel.cs" />
+    <Compile Include="RequestModel\PersonelRequestModel.cs" />
+    <Compile Include="RequestModel\ProductReportRequestModel.cs" />
+    <Compile Include="RequestModel\ReportDataRequestModel.cs" />
+    <Compile Include="RequestModel\UserRequestModel.cs" />
+    <Compile Include="RequestModel\RegionAreaRequestModel.cs" />
+    <Compile Include="RequestModel\ItemImageRequestModel.cs" />
+    <Compile Include="RequestModel\PurchaseOrderRequestModel.cs" />
+    <Compile Include="RequestModel\CustomerRequestModel.cs" />
+    <Compile Include="RequestModel\StoreRequestModel.cs" />
+    <Compile Include="RequestModel\StockRequestModel.cs" />
+    <Compile Include="RequestModel\GeneralRequestModel.cs" />
+    <Compile Include="RequestModel\AccountRequestModel.cs" />
+    <Compile Include="RequestModel\StockProductRequestRequestModel.cs" />
+    <Compile Include="RequestModel\ProductRequestModel.cs" />
+    <Compile Include="RequestModel\BaseRequestModel.cs" />
+    <Compile Include="VnGisModels\CustomerComboViewModel.cs" />
+    <Compile Include="VnGisModels\CustomerPointViewModel.cs" />
+    <Compile Include="VnGisModels\PointViewModel.cs" />
+    <Compile Include="VnGisModels\PolyViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaCustomerLocCountViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaPointViewModel.cs" />
+    <Compile Include="VnGisModels\RegionAreaCustomerViewModel.cs" />
+    <Compile Include="StockModels\StockHistoryOnHandViewModel.cs" />
+    <Compile Include="StockModels\StockOnHandSyncViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestProductDetailViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestProductViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestRuleViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestStatusViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestRuleTypeViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestSupplyTypeViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestTypeViewModel.cs" />
+    <Compile Include="StockModels\StockProductRequestViewModel.cs" />
+    <Compile Include="StockModels\StockProductViewModel.cs" />
+    <Compile Include="StockModels\StockTypeViewModel.cs" />
+    <Compile Include="StockModels\StockViewModel.cs" />
+    <Compile Include="StockModels\StockActiveOnHandViewModel.cs" />
+    <Compile Include="StockModels\UserViewModel.cs" />
+    <Compile Include="StoreModels\StoreActivePriceListViewModel.cs" />
+    <Compile Include="StoreModels\StoreCalendarViewModel.cs" />
+    <Compile Include="StoreModels\StoreActiveOnhandViewModel.cs" />
+    <Compile Include="StoreModels\StoreViewModel.cs" />
+    <Compile Include="BaseModels\SupplierViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\ChangePasswordBindingModel.cs" />
+    <Compile Include="User\UserReturnModel.cs" />
+    <Compile Include="User\CreateUserBindingModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CompanyModels\" />
+    <Folder Include="Route\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
