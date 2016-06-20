@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{113C8748-E1FB-42EF-9D33-77F5F0D0C0E1}</ProjectGuid>
+    <ProjectGuid>{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Anatoli.ViewModels</RootNamespace>

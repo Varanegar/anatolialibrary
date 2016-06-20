@@ -37,9 +37,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anatoli.Common.Business">
+      <HintPath>..\SharedLibraries\Anatoli.Common.Business.dll</HintPath>
+    </Reference>
     <Reference Include="Anatoli.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedLibraries\Anatoli.Common.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Anatoli.Common.ViewModel">
+      <HintPath>..\SharedLibraries\Anatoli.Common.ViewModel.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
