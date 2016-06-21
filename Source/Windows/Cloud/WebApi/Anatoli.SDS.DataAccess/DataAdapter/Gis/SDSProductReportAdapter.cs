@@ -44,9 +44,12 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
                             "@CustLevelList = '" + (filter.CustomerDegree == "" || filter.CustomerDegree == "null" ? "-1" : filter.CustomerDegree) + "'," +
                             "@CountNotVisit = '"+ filter.DayCount.ToString() +"',"+
                             "@GoodsGroupList = '" + (filter.GoodGroup == "" || filter.GoodGroup == "null" ? "-1" : filter.GoodGroup) + "'," +
-                                "@SubTypeList = '" + (filter.DynamicGroup == "" || filter.DynamicGroup == "null" ? "-1" : filter.DynamicGroup).ToString() + "'," +
+                            "@SubTypeList = '" + (filter.DynamicGroup == "" || filter.DynamicGroup == "null" ? "-1" : filter.DynamicGroup).ToString() + "'," +
                             "@BrandList = '-1' ,"+
                             "@GoodsList = '" + (filter.Good == "" || filter.Good == "null" ? "-1" : filter.Good) + "'," +
+
+                            "@UnSoldGoodsGroupList = '" + (filter.UnSoldGoodGroup == "" || filter.UnSoldGoodGroup == "null" ? "-1" : filter.UnSoldGoodGroup) + "'," +
+                            "@UnSoldGoodsList = '" + (filter.UnSoldGood == "" || filter.UnSoldGood == "null" ? "-1" : filter.UnSoldGood) + "'," +
 
                             "@ShowOrderCount = true,"+
                             "@ShowSaleCount = true,"+

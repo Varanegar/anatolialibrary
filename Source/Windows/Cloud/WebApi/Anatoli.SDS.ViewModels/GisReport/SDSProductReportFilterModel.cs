@@ -16,6 +16,8 @@
         public string Good { set; get; }
         public string CommercialName { set; get; }
         public int? DayCount { set; get; }
+        public string UnSoldGoodGroup { set; get; }
+        public string UnSoldGood { set; get; }
         /*
         public bool RequestCount { set; get; }
         public bool FactorCount { set; get; }

@@ -25,6 +25,9 @@ namespace Anatoli.DMC.ViewModels.Report
         public string DynamicGroup { set; get; }
         public string Good { set; get; }
         public string CommercialName { set; get; }
+        public string UnSoldGoodGroup { set; get; }
+        public string UnSoldGood { set; get; }
+
         public int? DayCount { set; get; }
         public bool RequestCount { set; get; }
         public bool FactorCount { set; get; }

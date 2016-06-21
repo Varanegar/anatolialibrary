@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.Cloud.WebApi", "Anatoli.Cloud.WebApi\Anatoli.Cloud.WebApi.csproj", "{FE46F959-09B9-4182-9AEC-E66364EFC1AC}"
 EndProject
@@ -49,6 +49,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rastak", "Rastak", "{2E5C8D19-174A-4156-94B2-DE35BDCD234F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDS", "SDS", "{3053EA04-7347-4354-8F3E-AB1B47825EDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anatoli.ViewModels", "..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels\Anatoli.ViewModels.csproj", "{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +126,10 @@ Global
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAB4A0F-CD57-4A97-A36D-8BE89890D0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41DD2CA9-EEDA-4EDB-B6F8-6F4A4ACFB259}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

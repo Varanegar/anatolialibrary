@@ -103,6 +103,8 @@ namespace Anatoli.DMC.Business.Domain
                 DynamicGroup = (filter.DynamicGroup ?? "-1"),
                 Good = (filter.Good ?? "-1"),
                 CommercialName = filter.CommercialName,
+                UnSoldGood = (filter.UnSoldGood ?? "-1"),
+                UnSoldGoodGroup = (filter.UnSoldGoodGroup ?? "-1"),
                 DayCount = filter.DayCount
             };
             var list = new SDSProductReportDomain().ReloadReportData(pmcfilter);
@@ -133,6 +135,7 @@ namespace Anatoli.DMC.Business.Domain
                 IntId = view.CustRef
                 
             }).ToList();
+            RemoveProductReportCache(filter.ClientId);
             DMCProductReportAdapter.Instance.UpdateReportCache(filter.ClientId, dmclist);
 
         }
