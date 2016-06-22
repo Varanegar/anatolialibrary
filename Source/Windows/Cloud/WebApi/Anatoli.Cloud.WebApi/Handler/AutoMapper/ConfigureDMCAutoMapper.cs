@@ -65,6 +65,9 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
             Mapper.CreateMap<ProductReportRequestModel, DMCProductReportFilterModel>();
             Mapper.CreateMap<ProductReportRequestModel, DMCProductValueReportFilterModel>();
 
+            Mapper.CreateMap<FinanceReportRequestModel, DMCFinanceReportFilterModel>();
+            Mapper.CreateMap<FinanceReportRequestModel, DMCFinanceValueReportFilterModel>();
+
             Mapper.CreateMap<PolyViewModel, DMCPolyViewModel>();
             Mapper.CreateMap<PointViewModel, DMCPointViewModel>();
             Mapper.CreateMap<CustomerPointViewModel, DMCCustomerPointViewModel>()

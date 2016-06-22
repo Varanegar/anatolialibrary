@@ -5,35 +5,33 @@ using Thunderstruck;
 
 namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
 {
-    public class SDSProductReportAdapter : SDSBaseAdapter
+    public class SDSFinanceReportAdapter : SDSBaseAdapter
     {
         #region ctor
-        private static SDSProductReportAdapter instance = null;
-        public static SDSProductReportAdapter Instance
+        private static SDSFinanceReportAdapter instance = null;
+        public static SDSFinanceReportAdapter Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new SDSProductReportAdapter();
+                    instance = new SDSFinanceReportAdapter();
                 }
                 return instance;
             }
         }
-        private SDSProductReportAdapter() { }
+        private SDSFinanceReportAdapter() { }
         #endregion
 
         #region method
 
-        public List<SDSProductReportViewModel> ReloadReportData(SDSProductReportFilterModel filter)
+        public List<SDSFinanceReportViewModel> ReloadReportData(SDSFinanceReportFilterModel filter)
         {
             using (var context = GetDataContext(Transaction.No))
             {
-                var views = context.All<SDSProductReportViewModel>("exec Usp_GIS_Load_getList " +
-
-                            "@ReportType = 1 ,"+
+                var views = context.All<SDSFinanceReportViewModel>("exec Usp_GIS_Load_getList " +
+                            "@ReportType = 3 ,"+
                             "@DcList = '-1',"+
-
                             "@Startdate = '"+ filter.FromDate.Substring(2)+"',"+
                             "@EndDate = '"+ filter.ToDate.Substring(2)+"',"+
                             "@SaleOfficeList ='" + (filter.SaleOffice == "" || filter.SaleOffice == "null" ? "-1" : filter.SaleOffice) + "'," +
@@ -49,11 +47,10 @@ namespace Anatoli.SDS.DataAccess.DataAdapter.Gis
                             "@GoodsList = '" + (filter.Good == "" || filter.Good == "null" ? "-1" : filter.Good) + "'," +
 
                             "@UnSoldGoodsGroupList = '" + (filter.UnSoldGoodGroup == "" || filter.UnSoldGoodGroup == "null" ? "-1" : filter.UnSoldGoodGroup) + "'," +
-                            "@UnSoldGoodsList = '" + (filter.UnSoldGood == "" || filter.UnSoldGood == "null" ? "-1" : filter.UnSoldGood) + "'," +
-
+                            "@UnSoldGoodsList = '" + (filter.UnSoldGood == "" || filter.UnSoldGood == "null" ? "-1" : filter.UnSoldGood) + "', " +
                             "@HavingCondition = '' "
 
-                                ).ToList();
+                          ).ToList();
 
                 return views;
             }

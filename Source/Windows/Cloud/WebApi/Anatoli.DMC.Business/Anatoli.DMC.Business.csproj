@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\DMCFinanceReportDomain.cs" />
     <Compile Include="Domain\DMCRegionAreaCustomerDomain.cs" />
     <Compile Include="Domain\DMCCustomerDomain.cs" />
     <Compile Include="Domain\DMCProductReportDomain.cs" />

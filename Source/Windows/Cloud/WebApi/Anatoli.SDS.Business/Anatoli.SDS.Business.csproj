@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Gis\SDSFinanceReportDomain.cs" />
     <Compile Include="Domain\Gis\SDSProductReportDomain.cs" />
     <Compile Include="Domain\Gis\SDSProductReportFilterDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

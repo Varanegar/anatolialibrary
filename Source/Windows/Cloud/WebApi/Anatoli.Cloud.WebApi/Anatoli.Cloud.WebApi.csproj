@@ -60,8 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedLibraries\Anatoli.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Anatoli.ViewModels">
-      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+    <Reference Include="Anatoli.ViewModels, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
@@ -161,8 +162,8 @@
       <HintPath>..\packages\PersianDate.1.3.5\lib\PersianDate.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <HintPath>..\packages\protobuf-net.2.0.0.480\lib\net40\protobuf-net.dll</HintPath>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid">
@@ -265,6 +266,7 @@
     <Compile Include="Controllers\DSD\BaseData\BackOfficeBaseDataController.cs" />
     <Compile Include="Controllers\DSD\Customer\CustomerController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelTrackingController.cs" />
+    <Compile Include="Controllers\DSD\Report\FinanceReportController.cs" />
     <Compile Include="Controllers\DSD\Report\ProductReportController.cs" />
     <Compile Include="Controllers\DSD\Report\ProductReportFilterController.cs" />
     <Compile Include="Controllers\DSD\Personnel\CompanyPersonnelController.cs" />

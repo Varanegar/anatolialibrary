@@ -57,7 +57,11 @@
     <Compile Include="Gis\DMCPolyViewModel.cs" />
     <Compile Include="Gis\DMCPointViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\DMCFinanceReportFilterModel.cs" />
     <Compile Include="Report\DMCProductReportFilterModel.cs" />
+    <Compile Include="Report\DMCFinanceValueReportFilterModel.cs" />
+    <Compile Include="Report\DMCFinanceReportViewModel.cs" />
+    <Compile Include="Report\DMCFinanceValueReportViewModel.cs" />
     <Compile Include="Report\DMCProductValueReportViewModel.cs" />
     <Compile Include="Report\DMCProductReportViewModel.cs" />
     <Compile Include="Report\DMCProductValueReportFilterModel.cs" />
