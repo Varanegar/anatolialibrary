@@ -39,7 +39,7 @@
     </Reference>
     <Reference Include="Anatoli.ViewModels, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Anatoli\Anatoli-SharedLibrary\Anatoli.ViewModels.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\DMCFinanceReportDomain.cs" />
+    <Compile Include="Domain\DMCGisReportDomain.cs" />
     <Compile Include="Domain\DMCRegionAreaCustomerDomain.cs" />
     <Compile Include="Domain\DMCCustomerDomain.cs" />
     <Compile Include="Domain\DMCProductReportDomain.cs" />

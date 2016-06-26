@@ -5,10 +5,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Anatoli.Cloud.WebApi.Classes;
+using Anatoli.DMC.Business.Domain;
 using Anatoli.SDS.Business.Domain.Gis;
 using Anatoli.ViewModels.CommonModels;
 using Anatoli.ViewModels.RequestModel;
 using System.Threading.Tasks;
+using Anatoli.ViewModels.VnGisModels;
 
 namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
 {
@@ -52,6 +54,30 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
                 {
                     var service = new SDSProductReportFilterDomain();
                     result = service.GetAutoCompleteData(filter.tblName, filter.textName, filter.valueName, filter.searchTrem);
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("ldrptlst")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadReportList([FromBody]ReportDataRequestModel filter)
+        {
+            try
+            {
+                var result = new List<ReportListViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var service = new DMCGisReportDomain();
+                    result = service.LoadReportList(filter.reportName);
+
                 });
 
                 return Ok(result);

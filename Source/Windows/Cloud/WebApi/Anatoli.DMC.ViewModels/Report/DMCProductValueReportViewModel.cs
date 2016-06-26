@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anatoli.DMC.ViewModels.Report
 {
-    public class DMCProductValueReportViewModel
+    public class DMCProductValueReportForPrintViewModel
     {
         public double? Latitude { set; get; }
         public double? Longitude { set; get; }
@@ -18,18 +18,18 @@ namespace Anatoli.DMC.ViewModels.Report
         public int? RetSaleCount { set; get; }
         public int? SaleItemCount { set; get; }
         public int? RetSaleItemCount { set; get; }
-        public double? SaleQty { set; get; }
-        public double? SaleCarton { set; get; }
-        public double? RetSaleQty { set; get; }
-        public double? RetSaleCarton { set; get; }
+        public decimal? SaleQty { set; get; }
+        public decimal? SaleCarton { set; get; }
+        public decimal? RetSaleQty { set; get; }
+        public decimal? RetSaleCarton { set; get; }
         public decimal? SaleAmount { set; get; }
         public decimal? RetSaleAmount { set; get; }
-        public double? SaleWeight { set; get; }
-        public double? RetSaleWeight { set; get; }
+        public decimal? SaleWeight { set; get; }
+        public decimal? RetSaleWeight { set; get; }
         public decimal? SaleDiscount { set; get; }
         public decimal? RetSaleDiscount { set; get; }
         public int? SalePrizeCount { set; get; }
-        public double? PrizeQty { set; get; }
-        public double? PrizeCarton { set; get; }
+        public decimal? PrizeQty { set; get; }
+        public decimal? PrizeCarton { set; get; }
     }
 }

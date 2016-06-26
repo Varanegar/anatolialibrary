@@ -46,6 +46,22 @@ namespace Anatoli.DMC.Business.Domain
 
             return polies;
         }
+        public List<DMCProductReportForPrintViewModel> LoadProductReportForPrint(DMCProductReportFilterModel filter)
+        {
+
+            if (filter.ChangeFilter)
+            {
+                ReloadCacheData(filter);
+            }
+
+            var list = new List<DMCProductReportForPrintViewModel>();
+            foreach (Guid id in filter.AreaIds)
+            {
+                var rep = DMCProductReportAdapter.Instance.LoadGoodReportForPrint(id, filter);
+                list.Add(rep);
+            }
+            return list;
+        }
 
 
 
@@ -73,6 +89,29 @@ namespace Anatoli.DMC.Business.Domain
 
         }
 
+        public List<DMCProductValueReportForPrintViewModel> LoadProductValueReportForPrint(DMCProductValueReportFilterModel filter)
+        {
+            if (filter.ChangeFilter)
+            {
+                ReloadCacheData(filter);
+            }
+            var data = new List<DMCProductValueReportForPrintViewModel>();
+
+            if ((filter.AreaIds != null) && (filter.AreaIds.Any()))
+                foreach (Guid id in filter.AreaIds)
+                {
+                    var list = DMCProductReportAdapter.Instance.LoadProductValueReportForPrint(id, filter);
+                    data.AddRange(list);
+                }
+            else
+                if ((filter.CustomPoint != null) && (filter.CustomPoint.Any()))
+                {
+                    var list = DMCProductReportAdapter.Instance.LoadProductValueReportForPrint(null, filter);
+                    data.AddRange(list);
+                }
+            return data;
+
+        }
 
         public bool RemoveProductReportCache(Guid guid)
         {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anatoli.DMC.DataAccess.Helpers.Entity;
+using Anatoli.DMC.ViewModels.Area;
 using Anatoli.DMC.ViewModels.Gis;
 using Anatoli.DMC.ViewModels.Report;
 using Anatoli.ViewModels.VnGisModels;
@@ -75,42 +76,62 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 var views = context.First<DMCProductReportForMapViewModel>("exec GisLoadProductReport " +
                                                                            "@ClientId = '" + filter.ClientId + "'," +
                                                                            "@AreaId= '" + areaId + "'," +
-                                                                           "@ShowOrderCount =" + filter.RequestCount +
-                                                                           " ," +
-                                                                           "@ShowSaleCount =" + filter.FactorCount +
-                                                                           " ," +
-                                                                           "@ShowRetSaleCount =" + filter.RejectCount +
-                                                                           " ," +
-                                                                           "@ShowSaleItemCount =" + filter.SaleItemCount +
-                                                                           " ," +
-                                                                           "@ShowRetSaleItemCount =" +
-                                                                           filter.RejectItemCount + " ," +
+                                                                           "@ShowOrderCount =" + filter.RequestCount +" ," +
+                                                                           "@ShowSaleCount =" + filter.FactorCount +" ," +
+                                                                           "@ShowRetSaleCount =" + filter.RejectCount +" ," +
+                                                                           "@ShowSaleItemCount =" + filter.SaleItemCount +" ," +
+                                                                           "@ShowRetSaleItemCount =" +filter.RejectItemCount + " ," +
                                                                            "@ShowSaleQty =" + filter.SaleQty + " ," +
-                                                                           "@ShowSaleCarton =" + filter.SaleCarton +
-                                                                           " ," +
+                                                                           "@ShowSaleCarton =" + filter.SaleCarton +" ," +
 
                                                                            "@ShowRetSaleQty =" + filter.RejectQty + " ," +
-                                                                           "@ShowRetSaleCarton =" + filter.RejectCarton +
-                                                                           " ," +
-                                                                           "@ShowSaleAmount =" + filter.SaleAmount +
-                                                                           " ," +
-                                                                           "@ShowRetSaleAmount =" + filter.RejectAmount +
-                                                                           " ," +
-                                                                           "@ShowSaleWeight =" + filter.SaleWeight +
-                                                                           " ," +
-                                                                           "@ShowRetSaleWeight =" + filter.RejectWeight +
-                                                                           " ," +
-                                                                           "@ShowSaleDiscount=" + filter.SaleDiscount +
-                                                                           " ," +
-                                                                           "@ShowRetSaleDiscount =" +
-                                                                           filter.RejectDiscount + " ," +
-                                                                           "@ShowPrizeCount =" + filter.BonusCount +
-                                                                           " ," +
+                                                                           "@ShowRetSaleCarton =" + filter.RejectCarton +" ," +
+                                                                           "@ShowSaleAmount =" + filter.SaleAmount +" ," +
+                                                                           "@ShowRetSaleAmount =" + filter.RejectAmount +" ," +
+                                                                           "@ShowSaleWeight =" + filter.SaleWeight +" ," +
+                                                                           "@ShowRetSaleWeight =" + filter.RejectWeight +" ," +
+                                                                           "@ShowSaleDiscount=" + filter.SaleDiscount +" ," +
+                                                                           "@ShowRetSaleDiscount =" +filter.RejectDiscount + " ," +
+                                                                           "@ShowPrizeCount =" + filter.BonusCount +" ," +
                                                                            "@ShowPrizeQty =" + filter.BonusQty + " ," +
-                                                                           "@ShowPrizeCarton =" + filter.BonusCarton +
-                                                                           " ," +
+                                                                           "@ShowPrizeCarton =" + filter.BonusCarton +" ," +
                                                                            "@HavingCondition='' ," +
-                                                                           "@DefaultFieldIndex =" + filter.DefaultField
+                                                                           "@DefaultFieldIndex =" + filter.DefaultField + " ," +
+                                                                           "@ReturnType =" + 0
+                    );
+
+                return views;
+            }
+        }
+        public DMCProductReportForPrintViewModel LoadGoodReportForPrint(Guid areaId, DMCProductReportFilterModel filter)
+        {
+            using (var context = GetDataContext(Transaction.No))
+            {
+                var views = context.First<DMCProductReportForPrintViewModel>("exec GisLoadProductReport " +
+                                                                           "@ClientId = '" + filter.ClientId + "'," +
+                                                                           "@AreaId= '" + areaId + "'," +
+                                                                           "@ShowOrderCount =" + filter.RequestCount + " ," +
+                                                                           "@ShowSaleCount =" + filter.FactorCount + " ," +
+                                                                           "@ShowRetSaleCount =" + filter.RejectCount + " ," +
+                                                                           "@ShowSaleItemCount =" + filter.SaleItemCount + " ," +
+                                                                           "@ShowRetSaleItemCount =" + filter.RejectItemCount + " ," +
+                                                                           "@ShowSaleQty =" + filter.SaleQty + " ," +
+                                                                           "@ShowSaleCarton =" + filter.SaleCarton + " ," +
+
+                                                                           "@ShowRetSaleQty =" + filter.RejectQty + " ," +
+                                                                           "@ShowRetSaleCarton =" + filter.RejectCarton + " ," +
+                                                                           "@ShowSaleAmount =" + filter.SaleAmount + " ," +
+                                                                           "@ShowRetSaleAmount =" + filter.RejectAmount + " ," +
+                                                                           "@ShowSaleWeight =" + filter.SaleWeight + " ," +
+                                                                           "@ShowRetSaleWeight =" + filter.RejectWeight + " ," +
+                                                                           "@ShowSaleDiscount=" + filter.SaleDiscount + " ," +
+                                                                           "@ShowRetSaleDiscount =" + filter.RejectDiscount + " ," +
+                                                                           "@ShowPrizeCount =" + filter.BonusCount + " ," +
+                                                                           "@ShowPrizeQty =" + filter.BonusQty + " ," +
+                                                                           "@ShowPrizeCarton =" + filter.BonusCarton + " ," +
+                                                                           "@HavingCondition='' ," +
+                                                                           "@DefaultFieldIndex =" + filter.DefaultField + " ," +
+                                                                           "@ReturnType =" + 1
                     );
 
                 return views;
@@ -150,30 +171,8 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
             }
         }
 
-        public List<DMCPointViewModel> LoadProductValueReport(Guid? id, DMCProductValueReportFilterModel filter)
+        private string GeneratWhere(DMCProductValueReportFilterModel filter)
         {
-            var custompoint = "";
-            var firstpoints = "";
-
-
-            if (id == null)
-            {
-                foreach (var point in filter.CustomPoint)
-                {
-                    if (custompoint == "")
-                    {
-                        firstpoints = point.Longitude + " " + point.Latitude;
-                        custompoint = firstpoints;
-                    }
-                    else
-                        custompoint += "," + point.Longitude + " " + point.Latitude;
-
-                }
-                if (custompoint != "")
-                    custompoint += "," + firstpoints;
-
-            }
-
             var where = "";
 
             if (filter.FromRequestCount != null)
@@ -265,25 +264,73 @@ namespace Anatoli.DMC.DataAccess.DataAdapter
                 where += "AND ( PrizeQty >= " + filter.FromBonusQty + ")";
             if (filter.ToBonusQty != null)
                 where += "AND ( PrizeQty <= " + filter.ToBonusQty + ")";
+            return where;
+        }
 
-            //if (filter.FromBonusAmount != null)
-            //    where = "AND ( SaleCount >= " + filter.FromBonusAmount + ")";
-            //if (filter.ToBonusAmount != null)
-            //    where = "AND ( SaleCount <= " + filter.ToBonusAmount + ")";
+        private string GeneratCustompoint(List<DMCRegionAreaPointViewModel> customPoint)
+        {
+            var custompointstr = "";
+            var firstpoints = "";
+
+                foreach (var point in customPoint)
+                {
+                    if (custompointstr == "")
+                    {
+                        firstpoints = point.Longitude + " " + point.Latitude;
+                        custompointstr = firstpoints;
+                    }
+                    else
+                        custompointstr += "," + point.Longitude + " " + point.Latitude;
+
+                }
+                if (custompointstr != "")
+                    custompointstr += "," + firstpoints;
+            return custompointstr;
+        }
+ 
+        public List<DMCPointViewModel> LoadProductValueReport(Guid? id, DMCProductValueReportFilterModel filter)
+        {
+
+            var where = GeneratWhere(filter);
+            var custompoint = "";
+            if (id == null)
+                custompoint = GeneratCustompoint(filter.CustomPoint);
 
             using (var context = GetDataContext(Transaction.No))
             {
-                var list = context.All<DMCPointViewModel>("exec GisLoadGoodByValueReport " +
+                var list = context.All<DMCPointViewModel>("exec [GisLoadProductByValueReport] " +
                                                           "@ClientId ='" + filter.ClientId + "'," +
                                                           "@AreaId = " + (id == null ? "null" : "'"+id+"'") + ", " +
                                                           "@HavingCondition = '" + where + "',"+
-                                                          "@CustomPoints =  '"+ custompoint +"' "
+                                                          "@CustomPoints =  '"+ custompoint +"', "+
+                                                          "@ReturnType =  0 "
                     ).ToList();
 
                 return list;
             }
         }
 
+        public List<DMCProductValueReportForPrintViewModel> LoadProductValueReportForPrint(Guid? id, DMCProductValueReportFilterModel filter)
+        {
+
+            var where = GeneratWhere(filter);
+            var custompoint = "";
+            if (id == null)
+                custompoint = GeneratCustompoint(filter.CustomPoint);
+
+            using (var context = GetDataContext(Transaction.No))
+            {
+                var list = context.All<DMCProductValueReportForPrintViewModel>("exec [GisLoadProductByValueReport] " +
+                                                          "@ClientId ='" + filter.ClientId + "'," +
+                                                          "@AreaId = " + (id == null ? "null" : "'" + id + "'") + ", " +
+                                                          "@HavingCondition = '" + where + "'," +
+                                                          "@CustomPoints =  '" + custompoint + "', " +
+                                                          "@ReturnType =  1 "
+                    ).ToList();
+
+                return list;
+            }
+        }
         #endregion
     }
 }

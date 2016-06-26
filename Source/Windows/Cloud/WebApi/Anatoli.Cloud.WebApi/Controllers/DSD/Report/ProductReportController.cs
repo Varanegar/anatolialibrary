@@ -7,9 +7,9 @@ using Anatoli.Cloud.WebApi.Classes;
 using Anatoli.Cloud.WebApi.Handler.AutoMapper;
 using Anatoli.DMC.Business.Domain;
 using Anatoli.DMC.ViewModels.Gis;
+using Anatoli.DMC.ViewModels.Report;
 using Anatoli.ViewModels.RequestModel;
 using Anatoli.ViewModels.VnGisModels;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
 {
@@ -48,6 +48,28 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
             }
         }
 
+        [Authorize(Roles = "User")]
+        [Route("prntprdrep")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadProductReportForPrint([FromBody]ProductReportRequestModel data)
+        {
+            try
+            {
+                var result = new List<DMCProductReportForPrintViewModel>();
+                await Task.Factory.StartNew(() =>
+                {
+                    var service = new DMCProductReportDomain();
+                    result = service.LoadProductReportForPrint(data.ToDMCProductReportFilterViewModel());
+                });
+
+                return Ok(result.Select(x => x.ToViewModel()).ToList());
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
 
         [Authorize(Roles = "User")]
         [Route("ldprdvalrep")]
@@ -75,6 +97,31 @@ namespace Anatoli.Cloud.WebApi.Controllers.DSD.Report
             }
         }
 
+        [Authorize(Roles = "User")]
+        [Route("prntprdvalrep")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LoadProductValueReportForPrint([FromBody]ProductReportRequestModel filter)
+        {
+            try
+            {
+                var result = new List<ProductValueReportForPrintViewModel>();
+
+                await Task.Factory.StartNew(() =>
+                {
+                    var service = new DMCProductReportDomain();
+
+                    var dmc = service.LoadProductValueReportForPrint(filter.ToDMCProductValueReportFilterViewModel());
+                    result.AddRange(dmc.Select(x => x.ToViewModel()).ToList());
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Web API Call Error", ex);
+                return GetErrorResult(ex);
+            }
+        }
 
         [Authorize(Roles = "User")]
         [Route("ldcust")]

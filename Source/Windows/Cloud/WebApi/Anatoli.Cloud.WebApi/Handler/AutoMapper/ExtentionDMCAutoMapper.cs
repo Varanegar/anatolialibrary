@@ -98,6 +98,15 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
         {
             return Mapper.Map<DMCProductReportFilterModel>(view);
         }
+        public static ProductValueReportForPrintViewModel ToViewModel(this DMCProductValueReportForPrintViewModel view)
+        {
+            return Mapper.Map<ProductValueReportForPrintViewModel>(view);
+        }
+        
+        public static ProductReportForPrintViewModel ToViewModel(this DMCProductReportForPrintViewModel view)
+        {
+            return Mapper.Map<ProductReportForPrintViewModel>(view);
+        }
 
         public static DMCFinanceValueReportFilterModel ToDMCFinanceValueReportFilterViewModel(this FinanceReportRequestModel view)
         {
@@ -108,6 +117,10 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
         {
             return Mapper.Map<DMCFinanceReportFilterModel>(view);
         }
+        //public static FinanceReportForPrintViewModel ToViewModel(this DMCFinanceReportForPrintViewModel view)
+        //{
+        //    return Mapper.Map<FinanceReportForPrintViewModel>(view);
+        //}
         #endregion
 
     }

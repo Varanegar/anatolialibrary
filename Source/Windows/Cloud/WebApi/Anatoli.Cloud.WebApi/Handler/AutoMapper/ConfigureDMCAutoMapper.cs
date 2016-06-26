@@ -51,6 +51,11 @@ namespace Anatoli.Cloud.WebApi.Handler.AutoMapper
                 .ForMember(dest => dest.hasLatLng, opt => opt.MapFrom(src => src.Latitude + src.Longitude > 0))
                 .ForMember(dest => dest.title, opt => opt.MapFrom(src => src.CustomerName + ' '+ src.CustomerCode));
 
+            Mapper.CreateMap<DMCProductReportForPrintViewModel, ProductReportForPrintViewModel>();
+            Mapper.CreateMap<DMCProductValueReportForPrintViewModel, ProductValueReportForPrintViewModel>();
+            //Mapper.CreateMap<DMCFinanceReportForPrintViewModel, FinanceReportForPrintViewModel>();
+            //Mapper.CreateMap<DMCFinanceValueReportForPrintViewModel, FinanceValueReportForPrintViewModel>();
+
 
         }
 
